@@ -22,10 +22,11 @@ jobs:
       - name: Apply agreed changes
         run: python3 scripts/chat_sync_maintenance.py
 
-      - name: Importer regression tests
-        run: |
-          python3 -m py_compile tools/book/import_arena_games.py
-          python3 tests/test_opening_book_pipeline.py
+      - name: Importer syntax check
+        run: python3 -m py_compile tools/book/import_arena_games.py
+
+      - name: Opening book pipeline tests
+        run: python3 tests/test_opening_book_pipeline.py
 
       - name: Verify nightly workflow configuration
         run: |
@@ -51,4 +52,4 @@ jobs:
           git rebase origin/main
           git push origin HEAD:main
 
-# one-shot trigger 2
+# one-shot trigger 3
