@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "policy": {
+    "champion": "main-at-run-start",
+    "auto_generate_only_configurable_variants": true,
+    "code_hypotheses_require_daytime_registration": true,
+    "paired_sides_required": true,
+    "automatic_promotion": false
+  },
+  "automatic_families": [
+    {
+      "id": "eval-weight-local",
+      "kind": "usi-option-mutation",
+      "options": ["EvalSafety", "EvalPressure", "EvalActivity", "EvalDanger"],
+      "change_one_or_two_only": true,
+      "step_percent": [10, 20]
+    },
+    {
+      "id": "search-switch-ablation",
+      "kind": "usi-option-ablation",
+      "options": ["Quiescence", "MateAssist", "ExperienceCache"]
+    }
+  ],
+  "registered_code_experiments": [],
+  "registration_template": {
+    "id": "example-influence-v1",
+    "ref": "branch-or-commit-sha",
+    "hypothesis": "What ability should improve?",
+    "changed_concept": "Influence",
+    "target_tags": ["control-conflict"],
+    "ablation": "How to disable only this feature",
+    "status": "ready-for-nightly"
+  }
+}
