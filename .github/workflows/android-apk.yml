@@ -2,13 +2,14 @@ name: Build Android OEX APK
 
 # Release/adoption validation. Ordinary strategy development stays on quick-ci;
 # changing android/VERSION is the explicit signal that a new installable build
-# should be produced.
+# should be produced. Changes to this release workflow also self-validate.
 on:
   workflow_dispatch:
   push:
     branches: [main]
     paths:
       - "android/VERSION"
+      - ".github/workflows/android-apk.yml"
 
 permissions:
   contents: read

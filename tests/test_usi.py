@@ -70,7 +70,15 @@ try:
     assert best() == "7g7f"
     send("go searchmoves 7g7g")
     assert best() == "resign"
-    send("go mate 1000"); assert until("checkmate ") == "checkmate notimplemented"
+
+    # go mate is now a bounded self-authored solver. The initial position has no
+    # mate proven inside its horizon, so USI reports timeout rather than the old
+    # pre-v0.0.16 "notimplemented" placeholder. Dedicated mate fixtures live in
+    # test_mate_usi.py; here we only verify that the command is wired into USI.
+    send("position startpos")
+    send("go mate 1000")
+    assert until("checkmate ") == "checkmate timeout"
+
     send("position startpos moves 7g7f 7g7f")
     until("info string illegal move")
     send("go"); assert best() == "resign"
@@ -90,7 +98,7 @@ try:
     send("go searchmoves 5c5b 5i4i")
     assert best() == "5c5b"
     print("PASS three-ply strategy finds the forced third-ply mate through USI")
-    print("PASS position recovery, searchmoves, ponder, stop, infinite and unsupported mate")
+    print("PASS position recovery, searchmoves, bounded mate, ponder, stop and infinite")
 finally:
     send("quit")
     engine.wait(timeout=5)
