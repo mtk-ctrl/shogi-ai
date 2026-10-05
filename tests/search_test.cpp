@@ -73,16 +73,33 @@ int main() {
         std::cout << "PASS safe three-ply transpositions retain exact score reuse\n";
         strategy::FeatureAlphaBeta3TT fixed;
         strategy::IterativeSearch features;
+        strategy::IterativeSearch baseline_pvs_off;
         features.set_quiescence_enabled(false);
+        baseline_pvs_off.set_quiescence_enabled(false);
+        baseline_pvs_off.set_pvs_enabled(false);
+        std::uint64_t baseline_nodes = 0, pvs_nodes = 0, pvs_scouts = 0, pvs_researches = 0;
         p = rules::Position();
         for (unsigned sample = 0; sample < 6; ++sample) {
-            fixed.set_seed(70000 + sample); features.set_seed(70000 + sample);
+            fixed.set_seed(70000 + sample);
+            features.set_seed(70000 + sample);
+            baseline_pvs_off.set_seed(70000 + sample);
             const auto expected = fixed.choose(p);
+            auto baseline_position = p.clone();
+            strategy::SearchControl baseline_control;
+            const auto baseline = baseline_pvs_off.choose(baseline_position, 3, baseline_control);
             strategy::SearchControl control;
             const auto actual = features.choose(p, 3, control);
             require(actual.move == expected && actual.score == fixed.last_score(), "v0.0.13 depth-three compatibility");
+            require(actual.move == baseline.move && actual.score == baseline.score, "PVS preserves fixed-depth move and score");
+            baseline_nodes += baseline_pvs_off.last_stats().nodes;
+            pvs_nodes += features.last_stats().nodes;
+            pvs_scouts += features.last_stats().pvs_scout_searches;
+            pvs_researches += features.last_stats().pvs_researches;
             validate_pv(p, actual); play(p, expected);
         }
+        std::cout << "DIAG PVS nodes baseline=" << baseline_nodes << " pvs=" << pvs_nodes
+                  << " delta_pct=" << (100.0 * (double(pvs_nodes) - baseline_nodes) / baseline_nodes)
+                  << " scouts=" << pvs_scouts << " researches=" << pvs_researches << '\n';
         std::cout << "PASS v0.0.13 exact depth-three move/score equivalence on six opening positions\n";
         features.set_quiescence_enabled(true);
         p = rules::Position(); const auto before = p.sfen(); const auto history = p.history_key();

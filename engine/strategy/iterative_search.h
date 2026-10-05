@@ -32,6 +32,7 @@ class BasicIterativeSearch {
 public:
     struct Stats : BasicAlphaBeta3TT<Evaluator>::Stats {
         std::uint64_t qnodes = 0, qcutoffs = 0, qlimit_leaves = 0;
+        std::uint64_t pvs_scout_searches = 0, pvs_researches = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -50,6 +51,7 @@ public:
         if (quiescence_enabled_ != enabled) experience_.clear();
         quiescence_enabled_ = enabled;
     }
+    void set_pvs_enabled(bool enabled) { pvs_enabled_ = enabled; }
     void clear_experience() { experience_.clear(); }
     bool load_experience(const std::string& path, std::uint64_t signature) {
         return experience_.load(path, signature);
@@ -223,16 +225,42 @@ private:
         auto moves = ordered(p, p.legal_moves(), tt_move);
         const bool maximizing = p.snapshot().turn == root_;
         Node best{maximizing ? -Infinity : Infinity, {}};
+        bool first_child = true;
         for (const auto& move : moves) {
             check_stop();
             Node child;
             {
                 make(p, move);
                 Undo undo{p};
-                visit(ply + 1);
-                child = search(p, depth - 1, ply + 1, alpha, beta,
-                               next_history(history, p.hash_key()));
+                const auto child_history = next_history(history, p.hash_key());
+                auto run = [&](int child_alpha, int child_beta) {
+                    visit(ply + 1);
+                    return search(p, depth - 1, ply + 1, child_alpha, child_beta, child_history);
+                };
+                // Principal Variation Search: the first move gets the full window.
+                // Later moves first prove that they cannot improve the current bound
+                // with a one-point scout window. Only a genuine improvement is
+                // re-searched at the full window. Root move handling is unchanged so
+                // the exact root tie set remains compatible with v0.0.19.
+                if (!pvs_enabled_ || first_child || alpha + 1 >= beta) {
+                    child = run(alpha, beta);
+                } else if (maximizing) {
+                    ++stats_.pvs_scout_searches;
+                    child = run(alpha, alpha + 1);
+                    if (child.value > alpha && child.value < beta) {
+                        ++stats_.pvs_researches;
+                        child = run(alpha, beta);
+                    }
+                } else {
+                    ++stats_.pvs_scout_searches;
+                    child = run(beta - 1, beta);
+                    if (child.value < beta && child.value > alpha) {
+                        ++stats_.pvs_researches;
+                        child = run(alpha, beta);
+                    }
+                }
             }
+            first_child = false;
             const int value = child.value;
             if ((maximizing && value > best.value) || (!maximizing && value < best.value)) {
                 best.value = value; best.pv = {move};
@@ -399,6 +427,7 @@ private:
     ExperienceCache experience_, iteration_hints_;
     bool experience_enabled_ = false;
     bool quiescence_enabled_ = true;
+    bool pvs_enabled_ = true;
     bool experience_allowed_ = false;
     bool board_scores_ = false;
     rules::Color root_ = rules::Color::Black;
