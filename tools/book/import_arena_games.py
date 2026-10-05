@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Extract unique decisive self-play games from arena JSON files.
 
-This tool uses only shogi-ai's own benchmark records. It does not import moves
-from another engine or an external opening database. Output is the simple TSV
+This tool accepts shogi-ai self-play benchmark records only. Files explicitly
+marked as ineligible for learning/opening-book use, and external-engine benchmark
+records, are rejected before any move is imported. Output is the simple TSV
 format consumed by tools/kifu/validate_games.cpp:
 
     game_id  split  winner  start_sfen  moves
@@ -37,6 +38,8 @@ def collect(root: Path) -> tuple[list[tuple[str, str, list[str]]], dict]:
     stats = {
         "files_scanned": 0,
         "files_with_games": 0,
+        "skipped_ineligible_files": 0,
+        "skipped_ineligible_games": 0,
         "raw_games": 0,
         "accepted_unique_decisive_games": 0,
         "duplicates": 0,
@@ -52,6 +55,15 @@ def collect(root: Path) -> tuple[list[tuple[str, str, list[str]]], dict]:
         except (OSError, json.JSONDecodeError):
             continue
         details = data.get("details") if isinstance(data, dict) else None
+        if isinstance(data, dict) and (
+            data.get("learning_eligible") is False
+            or data.get("opening_book_eligible") is False
+            or data.get("kind") == "external_engine_benchmark"
+        ):
+            stats["skipped_ineligible_files"] += 1
+            if isinstance(details, list):
+                stats["skipped_ineligible_games"] += len(details)
+            continue
         if not isinstance(details, list):
             continue
         stats["files_with_games"] += 1

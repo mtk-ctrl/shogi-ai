@@ -39,6 +39,25 @@ class OpeningBookPipelineTest(unittest.TestCase):
             self.assertEqual(stats["skipped_nondecisive"], 1)
             self.assertEqual(stats["skipped_illegal"], 1)
 
+    def test_import_rejects_external_or_explicitly_ineligible_files(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            game = {"winner": "A", "a_black": True, "reason": "checkmate",
+                    "moves": ["7g7f", "3c3d", "2g2f"]}
+            (root / "selfplay.json").write_text(
+                json.dumps({"details": [game]}), encoding="utf-8")
+            (root / "external.json").write_text(json.dumps({
+                "kind": "external_engine_benchmark",
+                "learning_eligible": False,
+                "opening_book_eligible": False,
+                "details": [game],
+            }), encoding="utf-8")
+
+            games, stats = importer.collect(root)
+            self.assertEqual(len(games), 1)
+            self.assertEqual(stats["skipped_ineligible_files"], 1)
+            self.assertEqual(stats["skipped_ineligible_games"], 1)
+
     def test_builder_keeps_supported_early_alternatives(self):
         with tempfile.TemporaryDirectory() as tmp:
             source = Path(tmp) / "samples.tsv"
