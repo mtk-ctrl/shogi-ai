@@ -1,9 +1,11 @@
 name: Nightly Book Learning
 
 on:
-  schedule:
-    # GitHub cron is UTC. 15:05 UTC = 00:05 JST.
-    - cron: "5 15 * * *"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/nightly-trigger.txt"
   workflow_dispatch:
     inputs:
       duration_minutes:
@@ -59,7 +61,7 @@ jobs:
           from zoneinfo import ZoneInfo
           now = datetime.now(ZoneInfo('Asia/Tokyo'))
           event = os.environ.get('EVENT_NAME')
-          if event == 'schedule':
+          if event == 'push':
               cutoff = now.replace(hour=5, minute=20, second=0, microsecond=0)
               if now >= cutoff:
                   cutoff = now
@@ -146,6 +148,7 @@ jobs:
               'job_timeout_minutes': 330,
               'scheduled_start_jst': '00:05', 'selfplay_cutoff_jst': '05:20',
               'target_finish_jst': '05:30',
+              'trigger': 'ChatGPT task -> nightly-trigger push',
               'training_match': 'Book ON vs same engine Book OFF',
           }
           Path('build/nightly-summary/summary.json').write_text(
@@ -182,7 +185,7 @@ jobs:
         run: python3 tests/test_opening_book_usi.py build/shogi-ai build/nightly-summary/learned-book.tsv
 
       - name: Promote learned book when evidence is sufficient
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         shell: bash
         env:
           START_BOOK_BLOB: ${{ steps.start.outputs.book_blob }}
