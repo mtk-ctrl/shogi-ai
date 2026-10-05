@@ -10,8 +10,8 @@ android {
         applicationId = "com.mtkctrl.shogiai"
         minSdk = 24
         targetSdk = 36
-        versionCode = 14
-        versionName = "0.0.13"
+        versionCode = 10101
+        versionName = "1.0.1"
     }
 
     val fixedDevKeystore = file("../signing/dev-signing.p12")

@@ -1,11 +1,14 @@
 #pragma once
 
+#include "embedded_opening_book.h"
 #include <algorithm>
 #include <cstdint>
 #include <fstream>
+#include <istream>
 #include <optional>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -25,9 +28,51 @@ struct OpeningBookEntry {
 class OpeningBook {
 public:
     bool load(const std::string& path) {
-        clear();
         std::ifstream input(path);
-        if (!input) return false;
+        if (input) return load_stream(input);
+
+        // Android OEX hosts normally receive only the engine executable.  Keep
+        // the standard self-play book available even when the external TSV is
+        // not beside the executable.  Custom paths still fail normally so a
+        // configuration mistake is never silently replaced by the default.
+        if (path == "shogi-ai-book.tsv") return load_text(detail::kEmbeddedOpeningBook);
+
+        clear();
+        return false;
+    }
+
+    bool load_text(std::string_view text) {
+        std::istringstream input{std::string(text)};
+        return load_stream(input);
+    }
+
+    void clear() { moves_.clear(); entry_count_ = 0; }
+    std::size_t positions() const { return moves_.size(); }
+    std::size_t entries() const { return entry_count_; }
+
+    std::optional<OpeningBookEntry> pick(std::uint64_t key,
+        const std::vector<std::string>& allowed_moves, std::uint64_t seed) const {
+        const auto found = moves_.find(key);
+        if (found == moves_.end()) return std::nullopt;
+        std::vector<const OpeningBookEntry*> eligible;
+        std::uint64_t total_weight = 0;
+        for (const auto& entry : found->second) {
+            if (std::find(allowed_moves.begin(), allowed_moves.end(), entry.move) == allowed_moves.end()) continue;
+            eligible.push_back(&entry);
+            total_weight += entry.weight;
+        }
+        if (eligible.empty() || total_weight == 0) return std::nullopt;
+        std::uint64_t target = mix64(key ^ (seed + 0x9e3779b97f4a7c15ULL)) % total_weight;
+        for (const auto* entry : eligible) {
+            if (target < entry->weight) return *entry;
+            target -= entry->weight;
+        }
+        return *eligible.back();
+    }
+
+private:
+    bool load_stream(std::istream& input) {
+        clear();
         std::string line;
         while (std::getline(input, line)) {
             if (line.empty() || line[0] == '#') continue;
@@ -60,31 +105,6 @@ public:
         return entry_count_ > 0;
     }
 
-    void clear() { moves_.clear(); entry_count_ = 0; }
-    std::size_t positions() const { return moves_.size(); }
-    std::size_t entries() const { return entry_count_; }
-
-    std::optional<OpeningBookEntry> pick(std::uint64_t key,
-        const std::vector<std::string>& allowed_moves, std::uint64_t seed) const {
-        const auto found = moves_.find(key);
-        if (found == moves_.end()) return std::nullopt;
-        std::vector<const OpeningBookEntry*> eligible;
-        std::uint64_t total_weight = 0;
-        for (const auto& entry : found->second) {
-            if (std::find(allowed_moves.begin(), allowed_moves.end(), entry.move) == allowed_moves.end()) continue;
-            eligible.push_back(&entry);
-            total_weight += entry.weight;
-        }
-        if (eligible.empty() || total_weight == 0) return std::nullopt;
-        std::uint64_t target = mix64(key ^ (seed + 0x9e3779b97f4a7c15ULL)) % total_weight;
-        for (const auto* entry : eligible) {
-            if (target < entry->weight) return *entry;
-            target -= entry->weight;
-        }
-        return *eligible.back();
-    }
-
-private:
     static std::uint64_t mix64(std::uint64_t x) {
         x += 0x9e3779b97f4a7c15ULL;
         x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9ULL;

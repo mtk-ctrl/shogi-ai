@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -33,6 +34,17 @@ int main() {
     require(a->move == "7g7f" || a->move == "2g2f", "stored legal move expected");
     require(book.pick(key, {"2g2f"}, 999)->move == "2g2f", "restriction must be respected");
     require(!book.pick(key + 1, legal, 1), "unknown position should miss");
+
+    std::ostringstream text;
+    text << "# in-memory book\n"
+         << key << "\t7g7f\t4\t3\t0\t1\t750\t100\n";
+    shogi::strategy::OpeningBook memory_book;
+    require(memory_book.load_text(text.str()), "in-memory book should load");
+    require(memory_book.positions() == 1 && memory_book.entries() == 1,
+            "in-memory book counts");
+    const auto in_memory = memory_book.pick(key, legal, 7);
+    require(in_memory && in_memory->move == "7g7f", "in-memory book move");
+
     std::remove(path.c_str());
     std::cout << "opening book tests passed\n";
 }

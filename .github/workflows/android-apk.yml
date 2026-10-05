@@ -1,9 +1,14 @@
 name: Build Android OEX APK
 
-# Full release/adoption validation only. Ordinary strategy development uses
-# quick-ci.yml and benchmark.yml; do not rebuild Android/Sanitizers on every push.
+# Release/adoption validation. Ordinary strategy development stays on quick-ci;
+# changing android/VERSION is the explicit signal that a new installable build
+# should be produced.
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "android/VERSION"
 
 permissions:
   contents: read
@@ -29,6 +34,17 @@ jobs:
           python3 tests/check_boundary.py build/shogi-ai
           python3 scripts/build.py --strategy-test --output build/strategy-test
           ./build/strategy-test
+          python3 scripts/build.py --search-test --output build/search-test
+          ./build/search-test
+          python3 scripts/build.py --quiescence-test --output build/quiescence-test
+          ./build/quiescence-test
+          python3 scripts/build.py --mate-search-test --output build/mate-search-test
+          ./build/mate-search-test
+          python3 scripts/build.py --mate-assist-test --output build/mate-assist-test
+          ./build/mate-assist-test
+          python3 scripts/build.py --opening-book-test --output build/opening-book-test
+          ./build/opening-book-test
+          python3 tests/test_embedded_book_usi.py build/shogi-ai
           python3 scripts/build.py --ordering-test --output build/ordering-test
           ./build/ordering-test
           python3 scripts/build.py --contact-ordering-test --output build/contact-ordering-test
@@ -40,6 +56,8 @@ jobs:
           python3 tests/test_attacks.py build/evaluation-probe
           python3 tests/test_eval_fixtures.py build/evaluation-probe
           python3 tests/test_eval_usi.py build/shogi-ai
+          python3 tests/test_search_usi.py build/shogi-ai
+          python3 tests/test_mate_usi.py build/shogi-ai
           python3 scripts/build.py --evaluation-test --sanitize --output build/evaluation-sanitized
           ./build/evaluation-sanitized
           python3 scripts/build.py --strategy-test --sanitize --output build/strategy-sanitized
@@ -84,7 +102,7 @@ jobs:
           echo "name=$(sed -n '1p' android/VERSION)" >> "$GITHUB_OUTPUT"
           echo "code=$(sed -n '2p' android/VERSION)" >> "$GITHUB_OUTPUT"
 
-      - name: Apply Android version
+      - name: Apply Android and OEX version
         env:
           VERSION_NAME: ${{ steps.version.outputs.name }}
           VERSION_CODE: ${{ steps.version.outputs.code }}
@@ -92,15 +110,29 @@ jobs:
           python3 - <<'PY'
           import os, re
           from pathlib import Path
-          path = Path("android/app/build.gradle.kts")
-          text = path.read_text()
+
+          gradle = Path("android/app/build.gradle.kts")
+          text = gradle.read_text()
           text, n1 = re.subn(r'versionCode = \d+', f'versionCode = {os.environ["VERSION_CODE"]}', text, count=1)
           text, n2 = re.subn(r'versionName = "[^"]+"', f'versionName = "{os.environ["VERSION_NAME"]}"', text, count=1)
           if n1 != 1 or n2 != 1:
               raise SystemExit("Android version fields not found exactly once")
-          path.write_text(text)
+          gradle.write_text(text)
+
+          engines = Path("android/app/src/main/res/xml/enginelist.xml")
+          text = engines.read_text()
+          text, n3 = re.subn(
+              r'name="雲路 KUMOJI v[^"]+"',
+              f'name="雲路 KUMOJI v{os.environ["VERSION_NAME"]}"',
+              text,
+              count=1,
+          )
+          if n3 != 1:
+              raise SystemExit("OEX engine version field not found exactly once")
+          engines.write_text(text)
           PY
           grep -E 'versionCode|versionName' android/app/build.gradle.kts
+          grep 'name="' android/app/src/main/res/xml/enginelist.xml
 
       - name: Build ARM64 USI engine
         run: |
@@ -130,11 +162,11 @@ jobs:
         run: |
           mkdir -p dist
           cp android/app/build/outputs/apk/debug/app-debug.apk \
-            "dist/shogi-ai-v${{ steps.version.outputs.name }}-fixed-debug.apk"
+            "dist/KUMOJI-v${{ steps.version.outputs.name }}-fixed-debug.apk"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: shogi-ai-v${{ steps.version.outputs.name }}-fixed-debug-apk
-          path: dist/shogi-ai-v${{ steps.version.outputs.name }}-fixed-debug.apk
+          name: KUMOJI-v${{ steps.version.outputs.name }}-fixed-debug-apk
+          path: dist/KUMOJI-v${{ steps.version.outputs.name }}-fixed-debug.apk
           if-no-files-found: error

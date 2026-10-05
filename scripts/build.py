@@ -30,9 +30,31 @@ args = parser.parse_args()
 source = prepare(args.source)
 out = (ROOT / args.output).resolve()
 out.parent.mkdir(parents=True, exist_ok=True)
+
+# The default opening book must travel with a standalone engine binary. Android
+# OEX hosts typically copy only the executable, so generate a tiny header from
+# the repository's current self-play book and compile it as a fallback. Host
+# builds still prefer an external shogi-ai-book.tsv when it is present, which
+# keeps book experiments editable without recompiling.
+generated = ROOT / "build/generated"
+generated.mkdir(parents=True, exist_ok=True)
+book_path = ROOT / "shogi-ai-book.tsv"
+book_text = book_path.read_text(encoding="utf-8")
+delimiter = "KUMOJIBOOK"
+if f'){delimiter}\"' in book_text:
+    raise SystemExit("opening book contains the generated raw-string delimiter")
+(generated / "embedded_opening_book.h").write_text(
+    "#pragma once\n"
+    "#include <string_view>\n"
+    "namespace shogi::strategy::detail {\n"
+    f'inline constexpr std::string_view kEmbeddedOpeningBook = R"{delimiter}({book_text}){delimiter}";\n'
+    "} // namespace shogi::strategy::detail\n",
+    encoding="utf-8",
+)
+
 flags = ["-std=c++17", "-O1" if args.sanitize else "-O2", "-g", "-pthread",
          "-DSHOGI_RULES_ONLY", "-DUSER_ENGINE", "-DNO_SSE", "-DASSERT_LV=3",
-         "-I" + str(ROOT / "engine"), "-I" + str(source)]
+         "-I" + str(generated), "-I" + str(ROOT / "engine"), "-I" + str(source)]
 if args.sanitize: flags += ["-fsanitize=address,undefined", "-fno-omit-frame-pointer", "-fno-pie", "-no-pie"]
 if args.android: flags += ["-fPIE", "-pie", "-static-libstdc++"]
 upstream = [source / n for n in ["bitboard.cpp", "position.cpp", "movegen.cpp", "types.cpp"]]

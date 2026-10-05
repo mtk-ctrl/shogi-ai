@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("shogi-ai OEX");
+        setTitle("雲路 KUMOJI");
 
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
@@ -29,7 +29,8 @@ public class MainActivity extends Activity {
         root.setPadding(pad, pad, pad, pad);
 
         TextView title = new TextView(this);
-        title.setText("shogi-ai v0.0.13\nOEX engine for ShogiDroid2");
+        title.setText("雲路 KUMOJI v" + BuildConfig.VERSION_NAME
+                + "\nOEX engine for ShogiDroid2");
         title.setTextSize(20f);
         root.addView(title, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
