@@ -13,12 +13,14 @@ with tempfile.TemporaryDirectory() as tmp:
     options = {
         "ExperienceFile": cache_file,
         "ExperienceCache": "true",
+        "OpeningBook": "false",
         "RandomSeed": 24680,
     }
 
     engine = Engine(binary, "experience", options)
     try:
-        # Cold search: empty long-lived cache.
+        # Cold search: empty long-lived cache. Book is deliberately disabled so
+        # this test measures search/experience behavior rather than a book hit.
         engine.configure_game(24680)
         first = engine.bestmove([])
         cold = engine.search_stats[-1]
@@ -58,6 +60,7 @@ with tempfile.TemporaryDirectory() as tmp:
     incompatible = Engine(binary, "incompatible", {
         "ExperienceFile": cache_file,
         "ExperienceCache": "true",
+        "OpeningBook": "false",
         "EvalDanger": 150,
         "RandomSeed": 24680,
     })
@@ -73,6 +76,7 @@ with tempfile.TemporaryDirectory() as tmp:
     disabled = Engine(binary, "disabled", {
         "ExperienceFile": cache_file,
         "ExperienceCache": "false",
+        "OpeningBook": "false",
         "RandomSeed": 24680,
     })
     try:
