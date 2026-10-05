@@ -1,0 +1,54 @@
+name: v0.0.20 Apply Killer History Ordering
+
+on:
+  push:
+    branches: [v0020-ordering-diagnostics]
+    paths:
+      - "scripts/apply_v0020_dynamic_ordering.py"
+      - ".github/workflows/v0020-apply-dynamic-ordering.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  apply-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v5
+        with:
+          ref: v0020-ordering-diagnostics
+          fetch-depth: 0
+
+      - name: Apply killer history patch
+        run: python3 scripts/apply_v0020_dynamic_ordering.py
+
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Run ordering tests
+        run: |
+          python3 scripts/build.py --ordering-test --output build/ordering-test
+          ./build/ordering-test
+          python3 scripts/build.py --contact-ordering-test --output build/contact-ordering-test
+          ./build/contact-ordering-test
+
+      - name: Run iterative search tests
+        run: |
+          python3 scripts/build.py --search-test --output build/search-test
+          ./build/search-test
+
+      - name: Commit tested implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add engine/strategy/move_order.h engine/strategy/iterative_search.h engine/main.cpp tests/search_test.cpp
+          if git diff --cached --quiet; then
+            echo "No code changes to commit"
+            exit 0
+          fi
+          git commit -m "feat: add killer and history move ordering"
+          git push origin HEAD:v0020-ordering-diagnostics
