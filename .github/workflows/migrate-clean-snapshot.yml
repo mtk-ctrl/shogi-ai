@@ -28,22 +28,25 @@ jobs:
           git -C /tmp/shogi-ai-old checkout --quiet c5b201a741baa2a3778822071d0e1e32a418d911
           test "$(git -C /tmp/shogi-ai-old rev-parse HEAD)" = "c5b201a741baa2a3778822071d0e1e32a418d911"
 
-      - name: Replace working tree with clean snapshot
+      - name: Replace non-workflow files with clean snapshot
         shell: bash
         run: |
           set -euo pipefail
-          rsync -a --delete --exclude='.git/' /tmp/shogi-ai-old/ ./
+          rsync -a --delete \
+            --exclude='.git/' \
+            --exclude='.github/workflows/' \
+            /tmp/shogi-ai-old/ ./
           test -f README.md
           test -f LICENSE
           test -f journal/2026-10-05_11_Book実戦フィードバック学習と移転前停止.md
           git status --short
 
-      - name: Commit clean snapshot
+      - name: Commit clean non-workflow snapshot
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "chore: import clean snapshot c5b201a [skip ci]"
+          git commit -m "chore: import clean snapshot c5b201a except workflows [skip ci]"
           git push origin HEAD:main
