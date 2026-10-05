@@ -28,25 +28,23 @@ jobs:
           git -C /tmp/shogi-ai-old checkout --quiet c5b201a741baa2a3778822071d0e1e32a418d911
           test "$(git -C /tmp/shogi-ai-old rev-parse HEAD)" = "c5b201a741baa2a3778822071d0e1e32a418d911"
 
-      - name: Replace non-workflow files with clean snapshot
+      - name: Stage workflow files outside protected path
         shell: bash
         run: |
           set -euo pipefail
-          rsync -a --delete \
-            --exclude='.git/' \
-            --exclude='.github/workflows/' \
-            /tmp/shogi-ai-old/ ./
-          test -f README.md
-          test -f LICENSE
-          test -f journal/2026-10-05_11_Book実戦フィードバック学習と移転前停止.md
+          rm -rf .migration-workflows
+          mkdir -p .migration-workflows
+          cp -a /tmp/shogi-ai-old/.github/workflows/. .migration-workflows/
+          test -f .migration-workflows/nightly-book-learning.yml
+          test -f .migration-workflows/quick-ci.yml
           git status --short
 
-      - name: Commit clean non-workflow snapshot
+      - name: Commit staged workflow blobs
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "chore: import clean snapshot c5b201a except workflows [skip ci]"
+          git add .migration-workflows
+          git commit -m "chore: stage workflow snapshot c5b201a [skip ci]"
           git push origin HEAD:main
