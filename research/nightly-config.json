@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "timezone": "Asia/Tokyo",
+  "scheduled_start": "00:05",
+  "new_game_cutoff": "05:20",
+  "job_timeout_minutes": 330,
+  "go_command": "go movetime 50",
+  "deep_go_command": "go movetime 500",
+  "max_plies": 300,
+  "lanes": 4,
+  "phase_budget_percent": {
+    "experience": 40,
+    "screening": 20,
+    "focused_validation": 25,
+    "diagnosis": 15
+  },
+  "experience_lanes": [
+    {"id": "E0", "purpose": "normal-distribution", "book": true, "source": "startpos"},
+    {"id": "E1", "purpose": "book-independent", "book": false, "source": "startpos"},
+    {"id": "E2", "purpose": "position-bank", "source": "position-bank", "capability_gate": "G2"},
+    {"id": "E3", "purpose": "controlled-diversity", "source": "near-equal-candidate-branch", "capability_gate": "G4"}
+  ],
+  "position_bank_sampling_percent": {
+    "king-danger": 20,
+    "influence-control": 15,
+    "mobility": 15,
+    "material-imbalance": 10,
+    "endgame": 10,
+    "surprise": 10,
+    "disagreement-blind-spot": 10,
+    "diversity-random": 10
+  },
+  "screening": {
+    "paired_games_per_candidate": 20,
+    "max_finalists": 3,
+    "automatic_parameter_mutation_percent": [10, 20],
+    "exploration_fraction": 0.15,
+    "illegal_games_allowed": 0
+  },
+  "focused_validation": {
+    "target_games_min": 200,
+    "target_games_max": 500,
+    "sequential_allocation": true
+  },
+  "diagnosis": {
+    "deep_reanalysis_ms": 500,
+    "max_positions_per_category": 50,
+    "categories": ["eval-swing", "surprise", "disagreement", "blind-spot", "valuable-novelty"]
+  },
+  "retention_days": {
+    "raw_games": 14,
+    "nightly_report": 180
+  },
+  "promotion": {
+    "automatic_main_promotion": false,
+    "require_illegal_zero": true,
+    "require_regression_suite": true
+  },
+  "book": {
+    "automatic_weight_update": false,
+    "primary_credit": "book-exit-position-quality",
+    "final_result_role": "secondary-statistic"
+  }
+}
