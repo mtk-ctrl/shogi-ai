@@ -1,0 +1,45 @@
+name: Chat Sync Main
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/chat-sync-main.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Apply agreed changes
+        run: python3 scripts/chat_sync_maintenance.py
+
+      - name: Focused regression tests
+        run: |
+          python3 -m py_compile tools/book/import_arena_games.py
+          python3 tests/test_opening_book_pipeline.py
+          grep -q 'cron: "5 15 \* \* \*"' .github/workflows/nightly-book-learning.yml
+          grep -q 'for lane in 0 1 2 3' .github/workflows/nightly-book-learning.yml
+          grep -q '00:05 JST開始' docs/22_自前棋譜小規模定跡.md
+          grep -q '棋力測定専用' README.md
+
+      - name: Commit synchronized state
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          git commit -m "docs: synchronize public nightly and learning boundaries"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
