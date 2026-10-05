@@ -1,0 +1,86 @@
+name: v0.0.20 Split Ordering Screen
+
+on:
+  push:
+    branches: [v0020-ordering-diagnostics]
+    paths:
+      - ".github/workflows/v0020-split-screen.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compare:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - variant: killer-only
+            candidate_options: '{"ExperienceCache":"false","OpeningBook":"false","KillerOrdering":"true","HistoryOrdering":"false"}'
+          - variant: history-only
+            candidate_options: '{"ExperienceCache":"false","OpeningBook":"false","KillerOrdering":"false","HistoryOrdering":"true"}'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v5
+        with:
+          ref: v0020-ordering-diagnostics
+          fetch-depth: 0
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: Build candidate and baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/build.py --output build/candidate
+          git worktree add --detach /tmp/shogi-v019 5df0efb40d00a07056b4024b84cc4ca430e0a038
+          (cd /tmp/shogi-v019 && python3 scripts/build.py --output "$GITHUB_WORKSPACE/build/v019")
+      - name: Run 100 balanced games
+        shell: bash
+        env:
+          VARIANT: ${{ matrix.variant }}
+          CANDIDATE_OPTIONS: ${{ matrix.candidate_options }}
+        run: |
+          set -euo pipefail
+          out="build/split-${VARIANT}"
+          mkdir -p "$out"
+          run_lane() {
+            lane="$1"
+            python3 benchmarks/arena.py \
+              --engine-a build/candidate --engine-b build/v019 \
+              --options-a "$CANDIDATE_OPTIONS" \
+              --options-b '{"ExperienceCache":"false","OpeningBook":"false"}' \
+              --games 25 --max-plies 200 \
+              --seed "$((2026122000 + lane * 10000))" \
+              --go-command 'go movetime 50' \
+              --output "$out/lane-${lane}.json"
+          }
+          pids=()
+          for lane in 0 1 2 3; do
+            run_lane "$lane" > "$out/lane-${lane}.log" 2>&1 &
+            pids+=("$!")
+          done
+          for pid in "${pids[@]}"; do wait "$pid"; done
+          python3 - "$out" "$VARIANT" <<'PY'
+          import json, sys
+          from pathlib import Path
+          out=Path(sys.argv[1]); variant=sys.argv[2]
+          rows=[json.loads(p.read_text()) for p in sorted(out.glob('lane-*.json'))]
+          g=sum(r['games'] for r in rows); w=sum(r['wins_a'] for r in rows); d=sum(r['draws'] for r in rows); l=sum(r['wins_b'] for r in rows)
+          illegal=sum(r['illegal_games'] for r in rows)
+          na=sum(r.get('search',{}).get('A',{}).get('nodes_total',0) for r in rows); nb=sum(r.get('search',{}).get('B',{}).get('nodes_total',0) for r in rows)
+          ma=sum(r.get('timing_ms',{}).get('A',{}).get('moves',0) for r in rows); mb=sum(r.get('timing_ms',{}).get('B',{}).get('moves',0) for r in rows)
+          result={'variant':variant,'games':g,'wins_candidate':w,'draws':d,'wins_v019':l,'score_candidate':(w+0.5*d)/g,'illegal_games':illegal,'nodes_candidate':na,'nodes_v019':nb,'moves_candidate':ma,'moves_v019':mb}
+          (out/'summary.json').write_text(json.dumps(result,indent=2)+'\n')
+          print(json.dumps(result,indent=2))
+          if g != 100 or illegal != 0: raise SystemExit(1)
+          PY
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v0020-${{ matrix.variant }}-${{ github.run_id }}
+          path: build/split-${{ matrix.variant }}
+          retention-days: 14
