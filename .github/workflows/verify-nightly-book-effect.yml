@@ -1,0 +1,97 @@
+name: Verify Nightly Book Effect
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/verify-nightly-book-effect-trigger.txt"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: Build engine and prepare books
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/build.py --output build/shogi-ai
+          # Learned Book is current main. Baseline is the parent of the nightly-learning commit.
+          cp shogi-ai-book.tsv build/book-learned.tsv
+          git show ee3665878022c9e78a07eee098739b0bc894b550:shogi-ai-book.tsv > build/book-before-nightly.tsv
+          python3 tests/test_opening_book_usi.py build/shogi-ai build/book-learned.tsv
+          python3 tests/test_opening_book_usi.py build/shogi-ai build/book-before-nightly.tsv
+      - name: Learned vs pre-learning Book 50-game shard
+        shell: bash
+        run: |
+          mkdir -p build/verify-book
+          seed=$((2026100600 + ${{ matrix.shard }} * 10000))
+          python3 benchmarks/arena.py \
+            --engine-a build/shogi-ai \
+            --engine-b build/shogi-ai \
+            --options-a '{"OpeningBook":true,"OpeningBookFile":"build/book-learned.tsv","ExperienceCache":false}' \
+            --options-b '{"OpeningBook":true,"OpeningBookFile":"build/book-before-nightly.tsv","ExperienceCache":false}' \
+            --games 50 --max-plies 200 --seed "$seed" \
+            --go-command 'go movetime 50' \
+            --output "build/verify-book/result-${{ matrix.shard }}.json"
+      - name: Upload shard
+        uses: actions/upload-artifact@v4
+        with:
+          name: verify-nightly-book-shard-${{ matrix.shard }}
+          path: build/verify-book/result-${{ matrix.shard }}.json
+          retention-days: 30
+
+  aggregate:
+    needs: compare
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download shards
+        uses: actions/download-artifact@v5
+        with:
+          pattern: verify-nightly-book-shard-*
+          path: build/verify-book
+          merge-multiple: true
+      - name: Aggregate result
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, math
+          from pathlib import Path
+          rows=[json.loads(p.read_text()) for p in sorted(Path('build/verify-book').glob('result-*.json'))]
+          games=sum(r['games'] for r in rows)
+          w=sum(r['wins_a'] for r in rows); l=sum(r['wins_b'] for r in rows); d=sum(r['draws'] for r in rows)
+          illegal=sum(r['illegal_games'] for r in rows)
+          score=(w+0.5*d)/games
+          decisive=w+l
+          decisive_rate=w/decisive if decisive else 0.5
+          elo=400*math.log10(score/(1-score)) if 0 < score < 1 else (9999 if score==1 else -9999)
+          out={'games':games,'learned_wins':w,'draws':d,'pre_learning_wins':l,'learned_score':score,'decisive_win_rate':decisive_rate,'elo_estimate':elo,'illegal_games':illegal,'learned_book':'current main shogi-ai-book.tsv','baseline_commit':'ee3665878022c9e78a07eee098739b0bc894b550','go_command':'go movetime 50','max_plies':200}
+          Path('build/verify-book/aggregate.json').write_text(json.dumps(out,indent=2)+'\n')
+          print(json.dumps(out,indent=2))
+          with open(Path(__import__('os').environ['GITHUB_STEP_SUMMARY']),'a') as f:
+              f.write('# Nightly Book effect verification\n\n')
+              f.write(f'- Learned vs pre-learning: **{w}-{d}-{l}**\n')
+              f.write(f'- Learned score: **{score:.1%}**\n')
+              f.write(f'- Estimated Elo difference: **{elo:+.1f}**\n')
+              f.write(f'- Illegal games: **{illegal}**\n')
+          PY
+      - name: Upload aggregate
+        uses: actions/upload-artifact@v4
+        with:
+          name: verify-nightly-book-effect-${{ github.run_id }}
+          path: build/verify-book/aggregate.json
+          retention-days: 90
