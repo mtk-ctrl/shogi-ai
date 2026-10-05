@@ -77,7 +77,7 @@ s = replace_once(s,
 'main vars')
 s = replace_once(s,
 '''                      << "option name MateAssist type check default true\\n"
-                      << "option name OpeningBook type check default true\\nn"'''.replace('\\n"\n                      << "option name OpeningBook', '\\n"\n                      << "option name OpeningBook'),
+                      << "option name OpeningBook type check default true\\n"''',
 '''                      << "option name MateAssist type check default true\\n"
                       << "option name KillerOrdering type check default true\\n"
                       << "option name HistoryOrdering type check default true\\n"
