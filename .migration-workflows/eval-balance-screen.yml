@@ -1,0 +1,108 @@
+name: Joint Evaluation Balance Screen
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: eval-balance-screen
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  screen:
+    name: ${{ matrix.id }} S${{ matrix.safety }} P${{ matrix.pressure }} A${{ matrix.activity }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {id: c01, safety: 50,  pressure: 50,  activity: 50}
+          - {id: c02, safety: 50,  pressure: 100, activity: 100}
+          - {id: c03, safety: 50,  pressure: 150, activity: 150}
+          - {id: c04, safety: 50,  pressure: 200, activity: 200}
+          - {id: c05, safety: 100, pressure: 50,  activity: 100}
+          - {id: c06, safety: 100, pressure: 100, activity: 150}
+          - {id: c07, safety: 100, pressure: 150, activity: 200}
+          - {id: c08, safety: 100, pressure: 200, activity: 50}
+          - {id: c09, safety: 150, pressure: 50,  activity: 150}
+          - {id: c10, safety: 150, pressure: 100, activity: 200}
+          - {id: c11, safety: 150, pressure: 150, activity: 50}
+          - {id: c12, safety: 150, pressure: 200, activity: 100}
+          - {id: c13, safety: 200, pressure: 50,  activity: 200}
+          - {id: c14, safety: 200, pressure: 100, activity: 50}
+          - {id: c15, safety: 200, pressure: 150, activity: 100}
+          - {id: c16, safety: 200, pressure: 200, activity: 150}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install match dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Run 12-game screen vs v0.0.12 defaults
+        run: |
+          mkdir -p build/results
+          python3 benchmarks/arena.py \
+            --engine-a build/shogi-ai \
+            --engine-b build/shogi-ai \
+            --games 12 \
+            --max-plies 400 \
+            --seed 20262000 \
+            --options-a '{"EvalSafety":${{ matrix.safety }},"EvalPressure":${{ matrix.pressure }},"EvalActivity":${{ matrix.activity }},"EvalDanger":200}' \
+            --options-b '{"EvalSafety":100,"EvalPressure":100,"EvalActivity":100,"EvalDanger":200}' \
+            --output build/results/${{ matrix.id }}.json
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-balance-screen-${{ matrix.id }}
+          path: build/results/${{ matrix.id }}.json
+          if-no-files-found: error
+
+  summarize:
+    name: Rank joint candidates
+    needs: screen
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: eval-balance-screen-*
+          path: results
+          merge-multiple: true
+
+      - name: Rank candidates
+        run: |
+          python3 - <<'PY' | tee summary.txt
+          import json
+          from pathlib import Path
+          rows=[]
+          for p in sorted(Path('results').glob('c*.json')):
+              r=json.loads(p.read_text())
+              o=r['options_a']
+              rows.append((r['score_a'], r['wins_a'], r['draws'], r['wins_b'],
+                           o['EvalSafety'],o['EvalPressure'],o['EvalActivity'],
+                           r['timing_ms']['A']['mean'], r['search']['A']['nodes_total'], p.stem))
+          rows.sort(reverse=True)
+          print('id\tS\tP\tA\tW-D-L\tscore\tmean_ms\tnodes')
+          for score,w,d,l,s,p,a,ms,nodes,cid in rows:
+              print(f'{cid}\t{s}\t{p}\t{a}\t{w}-{d}-{l}\t{score:.3f}\t{ms:.3f}\t{nodes}')
+          print('\nTOP4')
+          for row in rows[:4]:
+              score,w,d,l,s,p,a,ms,nodes,cid=row
+              print(f'{cid}: Safety={s}, Pressure={p}, Activity={a}, {w}-{d}-{l}, score={score:.3f}')
+          PY
+          cat summary.txt >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-balance-screen-summary
+          path: summary.txt

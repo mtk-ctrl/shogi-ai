@@ -1,0 +1,87 @@
+name: Self Opening Book CI
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: self-opening-book-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-and-match:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Python pipeline tests
+        run: python3 tests/test_opening_book_pipeline.py
+
+      - name: Build and test book reader
+        run: |
+          python3 scripts/build.py --opening-book-test --output build/opening-book-test
+          ./build/opening-book-test
+
+      - name: Build rule-layer validator and engine
+        run: |
+          python3 scripts/build.py --kifu-validator --output build/kifu-validator
+          python3 scripts/build.py --output build/shogi-ai
+
+      - name: Generate current self-play book
+        run: |
+          python3 tools/book/import_arena_games.py \
+            --input benchmarks/results \
+            --output build/self-games.tsv \
+            --report build/self-games-report.json
+          ./build/kifu-validator < build/self-games.tsv > build/self-samples.tsv
+          python3 tools/book/build_opening_book.py \
+            --input build/self-samples.tsv \
+            --output shogi-ai-book.tsv \
+            --report build/self-book-report.json \
+            --max-ply 20 --min-position-samples 8 --min-move-samples 3 \
+            --max-moves 3 --max-score-gap 0.12
+          cat build/self-games-report.json
+          cat build/self-book-report.json
+
+      - name: Verify runtime use through USI
+        run: python3 tests/test_opening_book_usi.py build/shogi-ai shogi-ai-book.tsv
+
+      - name: Book versus no-book 100 games at 50ms
+        run: |
+          mkdir -p build/results
+          python3 benchmarks/arena.py \
+            --engine-a build/shogi-ai \
+            --engine-b build/shogi-ai \
+            --options-a '{"OpeningBook":true,"OpeningBookFile":"shogi-ai-book.tsv","ExperienceCache":false}' \
+            --options-b '{"OpeningBook":false,"ExperienceCache":false}' \
+            --games 100 --max-plies 200 --seed 2026100551 \
+            --go-command 'go movetime 50' \
+            --output build/results/self-opening-book-vs-no-book-100.json
+
+      - name: Summarize result
+        run: |
+          python3 - <<'PY'
+          import json
+          p='build/results/self-opening-book-vs-no-book-100.json'
+          d=json.load(open(p, encoding='utf-8'))
+          print(f"book(A): {d['wins_a']}W {d['draws']}D {d['wins_b']}L score={d['score_a']:.3f}")
+          print('timing_ms', d['timing_ms'])
+          print('illegal_games', d['illegal_games'])
+          PY
+
+      - name: Upload book and benchmark
+        uses: actions/upload-artifact@v4
+        with:
+          name: self-opening-book-v019
+          path: |
+            shogi-ai-book.tsv
+            build/self-games-report.json
+            build/self-book-report.json
+            build/results/self-opening-book-vs-no-book-100.json

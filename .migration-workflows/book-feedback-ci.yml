@@ -1,0 +1,98 @@
+name: Book Feedback CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "shogi-ai-book.tsv"
+      - "benchmarks/book_feedback_arena.py"
+      - "tools/book/apply_book_feedback.py"
+      - "tools/book/extract_book_feedback.py"
+      - "tools/book/build_opening_book.py"
+      - "tests/test_book_feedback.py"
+      - "tests/test_opening_book_usi.py"
+      - ".github/workflows/book-feedback-ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: book-feedback-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Python checks
+        run: |
+          python3 -m py_compile \
+            benchmarks/book_feedback_arena.py \
+            tools/book/apply_book_feedback.py \
+            tools/book/extract_book_feedback.py \
+            tools/book/build_opening_book.py \
+            tests/test_book_feedback.py
+          python3 tests/test_book_feedback.py
+
+      - name: Build engine and kifu validator
+        run: |
+          python3 scripts/build.py --output build/shogi-ai
+          python3 scripts/build.py --kifu-validator --output build/kifu-validator
+
+      - name: End-to-end four-game feedback smoke
+        run: |
+          mkdir -p build/book-feedback
+          python3 benchmarks/book_feedback_arena.py \
+            --engine build/shogi-ai \
+            --book shogi-ai-book.tsv \
+            --games 4 \
+            --max-plies 120 \
+            --seed 2026100511 \
+            --go-command 'go movetime 20' \
+            --output build/book-feedback/arena.json
+          python3 tools/book/extract_book_feedback.py \
+            --input build/book-feedback \
+            --games-output build/book-feedback/games.tsv \
+            --hits-output build/book-feedback/hits.tsv \
+            --report build/book-feedback/extract-report.json
+          ./build/kifu-validator < build/book-feedback/games.tsv > build/book-feedback/samples.tsv
+          python3 tools/book/apply_book_feedback.py \
+            --book shogi-ai-book.tsv \
+            --samples build/book-feedback/samples.tsv \
+            --hits build/book-feedback/hits.tsv \
+            --output build/book-feedback/learned-book.tsv \
+            --report build/book-feedback/learn-report.json
+          python3 tests/test_opening_book_usi.py build/shogi-ai build/book-feedback/learned-book.tsv
+
+      - name: Verify exact-hit coverage
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          arena=json.loads(Path('build/book-feedback/arena.json').read_text())
+          extract=json.loads(Path('build/book-feedback/extract-report.json').read_text())
+          learn=json.loads(Path('build/book-feedback/learn-report.json').read_text())
+          assert arena['illegal_games'] == 0, arena
+          assert arena['book_hits'] > 0, arena
+          assert extract['book_hits'] == arena['book_hits'], (extract, arena)
+          assert learn['matched_hits'] == arena['book_hits'], (learn, arena)
+          assert learn['move_mismatches'] == 0 and learn['unmatched_hits'] == 0, learn
+          print(json.dumps({'arena': arena['book_hits'], 'learning': learn}, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Upload smoke artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: book-feedback-ci-${{ github.sha }}
+          path: build/book-feedback/*
+          if-no-files-found: warn
+          retention-days: 30

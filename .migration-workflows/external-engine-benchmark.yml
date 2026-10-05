@@ -1,0 +1,120 @@
+name: External Engine Benchmark
+
+on:
+  push:
+    branches:
+      - main
+      - feature/external-engine-benchmark
+    paths:
+      - "benchmarks/external_match.py"
+      - "benchmarks/external_levels.py"
+      - "tests/test_external_match.py"
+      - ".github/workflows/external-engine-benchmark.yml"
+  workflow_dispatch:
+    inputs:
+      games:
+        description: "Number of games"
+        required: true
+        default: "20"
+        type: string
+      opponent_level:
+        description: "YaneuraOu Material benchmark level (1-100)"
+        required: true
+        default: "21"
+        type: string
+      self_opening_book:
+        description: "Enable shogi-ai OpeningBook (false = core benchmark)"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: external-engine-benchmark-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  YANEURAOU_REF: c1b80eaa09fe13d5f12b1599d1ae4d53c224de30
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install python-shogi
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: External benchmark unit tests
+        run: python3 tests/test_external_match.py
+
+  yaneuraou-material:
+    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/feature/external-engine-benchmark'
+    needs: unit
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout shogi-ai
+        uses: actions/checkout@v5
+
+      - name: Install python-shogi
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build shogi-ai
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Fetch pinned YaneuraOu
+        run: |
+          git clone --filter=blob:none https://github.com/yaneurao/YaneuraOu.git external/YaneuraOu
+          git -C external/YaneuraOu checkout "$YANEURAOU_REF"
+
+      - name: Build YaneuraOu material edition
+        run: |
+          make -C external/YaneuraOu/source clean \
+            COMPILER=g++ TARGET_CPU=SSE42 \
+            YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          make -C external/YaneuraOu/source -j2 tournament \
+            COMPILER=g++ TARGET_CPU=SSE42 \
+            YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          test -x external/YaneuraOu/source/YaneuraOu-by-gcc
+
+      - name: Run external benchmark
+        shell: bash
+        run: |
+          GAMES="${{ inputs.games }}"
+          LEVEL="${{ inputs.opponent_level }}"
+          BOOK="${{ inputs.self_opening_book }}"
+          GAMES="${GAMES:-4}"
+          LEVEL="${LEVEL:-21}"
+          BOOK="${BOOK:-false}"
+          NODES="$(python3 benchmarks/external_levels.py --level "$LEVEL" --nodes-only)"
+          if [[ "$BOOK" == "true" ]]; then
+            SELF_OPTIONS='{"ExperienceCache":"false","OpeningBook":"true"}'
+            PROFILE="full"
+          else
+            SELF_OPTIONS='{"ExperienceCache":"false","OpeningBook":"false"}'
+            PROFILE="core"
+          fi
+          OUT="benchmarks/external-results/yaneuraou-material-${PROFILE}-level$(printf '%03d' "$LEVEL")-nodes${NODES}.json"
+          echo "YaneuraOu Material benchmark: level=$LEVEL nodes=$NODES"
+          python3 benchmarks/external_match.py \
+            --self-engine build/shogi-ai \
+            --opponent-engine external/YaneuraOu/source/YaneuraOu-by-gcc \
+            --self-options "$SELF_OPTIONS" \
+            --opponent-options '{"Threads":1,"USI_Hash":16,"USI_OwnBook":false}' \
+            --self-go "go movetime 50" \
+            --opponent-go "go nodes ${NODES}" \
+            --games "$GAMES" \
+            --seed 20261005 \
+            --output "$OUT"
+
+      - name: Upload benchmark result
+        uses: actions/upload-artifact@v4
+        with:
+          name: external-yaneuraou-material
+          path: benchmarks/external-results/*.json
+          if-no-files-found: error

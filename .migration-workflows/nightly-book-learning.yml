@@ -1,0 +1,271 @@
+name: Nightly Book Learning
+
+on:
+  schedule:
+    # GitHub cron is UTC. 15:05 UTC = 00:05 JST.
+    - cron: "5 15 * * *"
+  workflow_dispatch:
+    inputs:
+      duration_minutes:
+        description: "Manual Book-vs-Core duration in minutes"
+        required: false
+        default: "30"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nightly-book-learning
+  cancel-in-progress: false
+
+jobs:
+  learn:
+    name: nightly-book-learning
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Record starting book revision
+        id: start
+        shell: bash
+        run: |
+          echo "book_blob=$(git rev-parse HEAD:shogi-ai-book.tsv)" >> "$GITHUB_OUTPUT"
+          echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build engine and validator
+        run: |
+          python3 scripts/build.py --output build/shogi-ai
+          python3 scripts/build.py --kifu-validator --output build/kifu-validator
+
+      - name: Run Book-vs-Core lanes within nightly budget
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          MANUAL_DURATION_MINUTES: ${{ inputs.duration_minutes || '30' }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/nightly-book build/nightly-summary
+
+          CUTOFF_EPOCH="$(python3 - <<'PY'
+          import os
+          from datetime import datetime, timedelta
+          from zoneinfo import ZoneInfo
+          now = datetime.now(ZoneInfo('Asia/Tokyo'))
+          event = os.environ.get('EVENT_NAME')
+          if event == 'schedule':
+              cutoff = now.replace(hour=5, minute=20, second=0, microsecond=0)
+              if now >= cutoff:
+                  cutoff = now
+          elif event == 'workflow_dispatch':
+              try:
+                  minutes = int(os.environ.get('MANUAL_DURATION_MINUTES', '30'))
+              except ValueError:
+                  minutes = 30
+              minutes = max(1, min(minutes, 300))
+              cutoff = now + timedelta(minutes=minutes)
+              hard = now.replace(hour=5, minute=20, second=0, microsecond=0)
+              if now.hour < 5:
+                  cutoff = min(cutoff, hard)
+          else:
+              cutoff = now + timedelta(minutes=5)
+          print(int(cutoff.timestamp()))
+          PY
+          )"
+
+          run_lane() {
+            lane="$1"
+            batch=0
+            while true; do
+              now_epoch="$(date +%s)"
+              if (( now_epoch + 120 >= CUTOFF_EPOCH )); then
+                break
+              fi
+              run_mod=$(( GITHUB_RUN_ID % 100000 ))
+              arena_seed=$(( 1300000000 + lane * 1000000 + run_mod * 100 + batch * 1000 ))
+              out="build/nightly-book/lane-${lane}-batch-${batch}.json"
+              echo "lane=${lane} batch=${batch} seed=${arena_seed}"
+              if ! python3 benchmarks/book_feedback_arena.py \
+                --engine build/shogi-ai \
+                --book shogi-ai-book.tsv \
+                --games 10 --max-plies 200 --seed "$arena_seed" \
+                --go-command 'go movetime 50' \
+                --output "$out"; then
+                echo "::warning::Book-vs-Core arena failed on lane=${lane} batch=${batch}; stopping lane"
+                break
+              fi
+              batch=$((batch + 1))
+            done
+            echo "lane=${lane} completed_batches=${batch}"
+          }
+
+          pids=()
+          for lane in 0 1 2 3; do
+            run_lane "$lane" &
+            pids+=("$!")
+          done
+          for pid in "${pids[@]}"; do
+            wait "$pid"
+          done
+
+      - name: Aggregate and learn exact book hits
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from datetime import datetime
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+          files=sorted(Path('build/nightly-book').glob('*.json'))
+          games=book_wins=core_wins=draws=illegal=plies=hits=0
+          for p in files:
+              d=json.loads(p.read_text(encoding='utf-8'))
+              games += d.get('games',0)
+              book_wins += d.get('wins_a',0)
+              core_wins += d.get('wins_b',0)
+              draws += d.get('draws',0)
+              illegal += d.get('illegal_games',0)
+              hits += d.get('book_hits',0)
+              plies += sum(g.get('plies',0) for g in d.get('details',[]))
+          out={
+              'date_jst': datetime.now(ZoneInfo('Asia/Tokyo')).date().isoformat(),
+              'arena_files': len(files), 'games': games,
+              'book_wins': book_wins, 'draws': draws, 'core_wins': core_wins,
+              'book_score': (book_wins + 0.5*draws)/games if games else 0,
+              'book_hits': hits, 'illegal_games': illegal,
+              'average_plies': plies/games if games else 0,
+              'go_command': 'go movetime 50', 'max_plies': 200,
+              'runner_jobs': 1, 'lanes_per_runner': 4,
+              'job_timeout_minutes': 330,
+              'scheduled_start_jst': '00:05', 'selfplay_cutoff_jst': '05:20',
+              'target_finish_jst': '05:30',
+              'training_match': 'Book ON vs same engine Book OFF',
+          }
+          Path('build/nightly-summary/summary.json').write_text(
+              json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+
+          python3 tools/book/extract_book_feedback.py \
+            --input build/nightly-book \
+            --games-output build/nightly-summary/book-feedback-games.tsv \
+            --hits-output build/nightly-summary/book-hits.tsv \
+            --report build/nightly-summary/extract-report.json
+
+          ./build/kifu-validator \
+            < build/nightly-summary/book-feedback-games.tsv \
+            > build/nightly-summary/book-feedback-samples.tsv
+
+          python3 tools/book/apply_book_feedback.py \
+            --book shogi-ai-book.tsv \
+            --samples build/nightly-summary/book-feedback-samples.tsv \
+            --hits build/nightly-summary/book-hits.tsv \
+            --output build/nightly-summary/learned-book.tsv \
+            --report build/nightly-summary/learn-report.json \
+            --feedback-weight 4 \
+            --max-down-factor 0.50 \
+            --max-up-factor 1.35
+
+          python3 tools/book/import_arena_games.py \
+            --input build/nightly-book \
+            --output build/nightly-summary/decisive-games.tsv \
+            --report build/nightly-summary/decisive-report.json
+
+      - name: Validate learned book
+        run: python3 tests/test_opening_book_usi.py build/shogi-ai build/nightly-summary/learned-book.tsv
+
+      - name: Promote learned book when evidence is sufficient
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        shell: bash
+        env:
+          START_BOOK_BLOB: ${{ steps.start.outputs.book_blob }}
+        run: |
+          set -euo pipefail
+          read -r games illegal matched mismatches <<< "$(python3 - <<'PY'
+          import json
+          from pathlib import Path
+          s=json.loads(Path('build/nightly-summary/summary.json').read_text())
+          r=json.loads(Path('build/nightly-summary/learn-report.json').read_text())
+          print(s['games'], s['illegal_games'], r['matched_hits'], r['move_mismatches'] + r['unmatched_hits'])
+          PY
+          )"
+
+          if (( games < 20 )); then
+            echo "::warning::Only ${games} games completed; keeping candidate as artifact only"
+            exit 0
+          fi
+          if (( illegal != 0 || mismatches != 0 )); then
+            echo "::error::Feedback integrity failed: illegal=${illegal}, unmatched_or_mismatch=${mismatches}"
+            exit 1
+          fi
+          if (( matched < 50 )); then
+            echo "::warning::Only ${matched} exact book hits; keeping candidate as artifact only"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          current_blob="$(git rev-parse origin/main:shogi-ai-book.tsv)"
+          if [[ "$current_blob" != "$START_BOOK_BLOB" ]]; then
+            echo "::warning::Book changed during this run; skip automatic promotion to avoid overwriting newer evidence"
+            exit 0
+          fi
+
+          git checkout -B nightly-book-promote origin/main
+          cp build/nightly-summary/learned-book.tsv shogi-ai-book.tsv
+          git add shogi-ai-book.tsv
+          if git diff --cached --quiet; then
+            echo "No book changes to promote"
+            exit 0
+          fi
+          git commit -m "book: learn nightly Book-vs-Core outcomes"
+          git push origin HEAD:main
+
+      - name: Upload raw nightly games
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-book-raw-${{ github.run_id }}
+          path: build/nightly-book/*.json
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 6
+
+      - name: Upload compact learning result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-book-learning-${{ github.run_id }}
+          path: build/nightly-summary/*
+          if-no-files-found: warn
+          retention-days: 90
+          compression-level: 9
+
+      - name: Publish run summary
+        if: always()
+        shell: bash
+        run: |
+          if [[ -f build/nightly-summary/summary.json && -f build/nightly-summary/learn-report.json ]]; then
+            python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          s=json.loads(Path('build/nightly-summary/summary.json').read_text())
+          r=json.loads(Path('build/nightly-summary/learn-report.json').read_text())
+          print('# Nightly Book learning')
+          print()
+          print(f"- Games: **{s['games']}**")
+          print(f"- Book vs Core: **{s['book_wins']}-{s['draws']}-{s['core_wins']}**; score **{s['book_score']:.1%}**")
+          print(f"- Exact Book hits: **{s['book_hits']}**; matched feedback: **{r['matched_hits']}**")
+          print(f"- Book entries changed: **{r['entries_changed']}**")
+          print(f"- Illegal games: **{s['illegal_games']}**")
+          print('- Weak lines are suppressed, not deleted; minimum weight remains 1 for re-exploration.')
+          PY
+          fi

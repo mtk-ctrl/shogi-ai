@@ -1,0 +1,165 @@
+name: Self Play 1000 Book Refresh
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/self-play-1000-book-refresh.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: self-play-1000-book-refresh
+  cancel-in-progress: false
+
+jobs:
+  selfplay:
+    name: selfplay-${{ matrix.shard }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Run 100 self-play games
+        shell: bash
+        run: |
+          mkdir -p build/selfplay
+          A_SEED=$((2026100600 + ${{ matrix.shard }} * 2))
+          B_SEED=$((A_SEED + 1))
+          ARENA_SEED=$((1610000000 + ${{ matrix.shard }} * 1000))
+          python3 benchmarks/arena.py \
+            --engine-a build/shogi-ai \
+            --engine-b build/shogi-ai \
+            --options-a "{\"OpeningBook\":true,\"OpeningBookFile\":\"shogi-ai-book.tsv\",\"ExperienceCache\":false,\"RandomSeed\":${A_SEED}}" \
+            --options-b "{\"OpeningBook\":true,\"OpeningBookFile\":\"shogi-ai-book.tsv\",\"ExperienceCache\":false,\"RandomSeed\":${B_SEED}}" \
+            --games 100 --max-plies 200 --seed "$ARENA_SEED" \
+            --go-command 'go movetime 50' \
+            --output "build/selfplay/selfplay-1000-shard-${{ matrix.shard }}.json"
+
+      - name: Upload shard
+        uses: actions/upload-artifact@v4
+        with:
+          name: selfplay-1000-shard-${{ matrix.shard }}
+          path: build/selfplay/selfplay-1000-shard-${{ matrix.shard }}.json
+          retention-days: 14
+
+  refresh-and-test:
+    needs: selfplay
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Download 1000-game shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: selfplay-1000-shard-*
+          path: build/selfplay1000
+          merge-multiple: true
+
+      - name: Summarize 1000 self-play games
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          files=sorted(Path('build/selfplay1000').glob('*.json'))
+          assert len(files)==10, len(files)
+          games=wins_a=wins_b=draws=illegal=plies=0
+          for p in files:
+              d=json.load(open(p, encoding='utf-8'))
+              games += d['games']
+              wins_a += d['wins_a']; wins_b += d['wins_b']; draws += d['draws']
+              illegal += d.get('illegal_games', 0)
+              plies += sum(x.get('plies',0) for x in d.get('details',[]))
+          out={'files':len(files),'games':games,'wins_a':wins_a,'draws':draws,'wins_b':wins_b,
+               'illegal_games':illegal,'average_plies':plies/games if games else 0}
+          assert games == 1000, out
+          Path('build/selfplay-1000-summary.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Build validator and engine
+        run: |
+          python3 scripts/build.py --kifu-validator --output build/kifu-validator
+          python3 scripts/build.py --output build/shogi-ai
+
+      - name: Add new self-play to historical corpus
+        run: |
+          mkdir -p benchmarks/results/selfplay-1000-refresh
+          cp build/selfplay1000/*.json benchmarks/results/selfplay-1000-refresh/
+          python3 tools/book/import_arena_games.py \
+            --input benchmarks/results \
+            --output build/refreshed-games.tsv \
+            --report build/refreshed-games-report.json
+          ./build/kifu-validator < build/refreshed-games.tsv > build/refreshed-samples.tsv
+          python3 tools/book/build_opening_book.py \
+            --input build/refreshed-samples.tsv \
+            --output build/refreshed-book.tsv \
+            --report build/refreshed-book-report.json \
+            --max-ply 20 --min-position-samples 8 --min-move-samples 3 \
+            --max-moves 3 --max-score-gap 0.12
+          cat build/refreshed-games-report.json
+          cat build/refreshed-book-report.json
+
+      - name: Validate refreshed book through USI
+        run: python3 tests/test_opening_book_usi.py build/shogi-ai build/refreshed-book.tsv
+
+      - name: Fresh 200-game refreshed-vs-baseline match
+        run: |
+          mkdir -p build/results
+          python3 benchmarks/arena.py \
+            --engine-a build/shogi-ai \
+            --engine-b build/shogi-ai \
+            --options-a '{"OpeningBook":true,"OpeningBookFile":"build/refreshed-book.tsv","ExperienceCache":false,"RandomSeed":2026100699}' \
+            --options-b '{"OpeningBook":true,"OpeningBookFile":"shogi-ai-book.tsv","ExperienceCache":false,"RandomSeed":2026100699}' \
+            --games 200 --max-plies 200 --seed 16101337 \
+            --go-command 'go movetime 50' \
+            --output build/results/refreshed-vs-baseline-200.json
+
+      - name: Summarize strength test
+        run: |
+          python3 - <<'PY'
+          import json, math
+          from pathlib import Path
+          d=json.load(open('build/results/refreshed-vs-baseline-200.json',encoding='utf-8'))
+          n=d['games']; score=d['score_a']
+          se=math.sqrt(max(score*(1-score),1e-9)/n)
+          summary={
+            'refreshed_wins':d['wins_a'],'draws':d['draws'],'baseline_wins':d['wins_b'],
+            'refreshed_score':score,'approx_95pct':[max(0,score-1.96*se),min(1,score+1.96*se)],
+            'timing_ms':d.get('timing_ms'),'search':d.get('search'),'illegal_games':d.get('illegal_games',0),
+          }
+          Path('build/refreshed-vs-baseline-summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(summary,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Upload full experiment
+        uses: actions/upload-artifact@v4
+        with:
+          name: selfplay-1000-book-refresh
+          path: |
+            build/selfplay-1000-summary.json
+            build/refreshed-games-report.json
+            build/refreshed-book-report.json
+            build/refreshed-book.tsv
+            build/results/refreshed-vs-baseline-200.json
+            build/refreshed-vs-baseline-summary.json
+          retention-days: 30

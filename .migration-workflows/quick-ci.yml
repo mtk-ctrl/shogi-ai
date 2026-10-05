@@ -1,0 +1,86 @@
+name: Quick Strategy CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "engine/strategy/**"
+      - "engine/main.cpp"
+      - "engine/rules/**"
+      - "tests/strategy_test.cpp"
+      - "tests/ordering_test.cpp"
+      - "tests/contact_ordering_test.cpp"
+      - "tests/search_test.cpp"
+      - "tests/quiescence_test.cpp"
+      - "tests/mate_search_test.cpp"
+      - "tests/mate_assist_test.cpp"
+      - "tests/rules_test.cpp"
+      - "tests/generated_move_test.cpp"
+      - "tests/test_search_usi.py"
+      - "tests/test_eval_usi.py"
+      - "tests/test_mate_usi.py"
+      - "benchmarks/arena.py"
+      - "scripts/build.py"
+      - ".github/workflows/quick-ci.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: quick-strategy-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Strategy tests
+        run: |
+          python3 scripts/build.py --strategy-test --output build/strategy-test
+          ./build/strategy-test
+
+      - name: Move ordering tests
+        run: |
+          python3 scripts/build.py --ordering-test --output build/ordering-test
+          ./build/ordering-test
+          python3 scripts/build.py --contact-ordering-test --output build/contact-ordering-test
+          ./build/contact-ordering-test
+
+      - name: Iterative search tests
+        run: |
+          python3 scripts/build.py --search-test --output build/search-test
+          ./build/search-test
+          python3 scripts/build.py --quiescence-test --output build/quiescence-test
+          ./build/quiescence-test
+
+      - name: Rules and generated-move fast-path tests
+        run: |
+          python3 scripts/build.py --test --output build/rules-test
+          ./build/rules-test
+          python3 scripts/build.py --generated-move-test --output build/generated-move-test
+          ./build/generated-move-test
+
+      - name: Bounded mate search tests
+        run: |
+          python3 scripts/build.py --mate-search-test --output build/mate-search-test
+          ./build/mate-search-test
+
+      - name: Ordinary-go mate assist tests
+        run: |
+          python3 scripts/build.py --mate-assist-test --output build/mate-assist-test
+          ./build/mate-assist-test
+
+      - name: USI score time-control and mate tests
+        run: |
+          python3 -m pip install python-shogi==1.1.1
+          python3 tests/test_search_usi.py build/shogi-ai
+          python3 tests/test_eval_usi.py build/shogi-ai
+          python3 tests/test_mate_usi.py build/shogi-ai

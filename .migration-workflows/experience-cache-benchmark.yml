@@ -1,0 +1,111 @@
+name: Experience Cache Benchmark
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Compare repeated identical searches
+        run: |
+          mkdir -p build/results
+          python3 - <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, str(Path.cwd()))
+          from benchmarks.arena import Engine
+
+          path = "build/shogi-ai"
+          off = Engine(path, "off", {"ExperienceCache": "false", "RandomSeed": 24680})
+          on = Engine(path, "on", {"ExperienceCache": "true", "RandomSeed": 24680})
+          rows = []
+          try:
+              for i in range(8):
+                  off.configure_game(24680)
+                  move_off = off.bestmove([])
+                  stat_off = off.search_stats[-1]
+                  time_off = off.elapsed[-1]
+
+                  on.configure_game(24680)
+                  move_on = on.bestmove([])
+                  stat_on = on.search_stats[-1]
+                  time_on = on.elapsed[-1]
+
+                  if move_off != move_on:
+                      raise SystemExit(f"bestmove mismatch at repeat {i}: {move_off} != {move_on}")
+                  rows.append({
+                      "repeat": i,
+                      "bestmove": move_on,
+                      "off_nodes": stat_off["nodes"],
+                      "on_nodes": stat_on["nodes"],
+                      "off_ms": time_off * 1000,
+                      "on_ms": time_on * 1000,
+                      "experience_hits": stat_on.get("experience_hits", 0),
+                      "experience_move_first": stat_on.get("experience_move_first", 0),
+                  })
+          finally:
+              off.close(); on.close()
+
+          if rows[0]["experience_hits"] != 0:
+              raise SystemExit(f"cold search unexpectedly reused current-search data: {rows[0]}")
+          warm = rows[1:]
+          off_nodes = sum(r["off_nodes"] for r in warm)
+          on_nodes = sum(r["on_nodes"] for r in warm)
+          off_ms = sum(r["off_ms"] for r in warm)
+          on_ms = sum(r["on_ms"] for r in warm)
+          result = {
+              "repeats": len(rows),
+              "cold": rows[0],
+              "warm": warm,
+              "warm_off_nodes": off_nodes,
+              "warm_on_nodes": on_nodes,
+              "warm_node_ratio": on_nodes / off_nodes,
+              "warm_node_saved_fraction": 1 - on_nodes / off_nodes,
+              "warm_off_ms": off_ms,
+              "warm_on_ms": on_ms,
+              "warm_time_ratio": on_ms / off_ms,
+              "warm_time_saved_fraction": 1 - on_ms / off_ms,
+              "warm_experience_hits": sum(r["experience_hits"] for r in warm),
+              "warm_experience_move_first": sum(r["experience_move_first"] for r in warm),
+          }
+          Path("build/results/experience-cache-probe.json").write_text(
+              json.dumps(result, ensure_ascii=False, indent=2) + "\n")
+          print(json.dumps(result, ensure_ascii=False, indent=2))
+          if result["warm_experience_hits"] <= 0 or result["warm_experience_move_first"] <= 0:
+              raise SystemExit("warm cache did not produce usable move hints")
+          PY
+
+      - name: Write summary
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          r=json.loads(Path("build/results/experience-cache-probe.json").read_text())
+          print("## Experience Cache repeated-position probe")
+          print(f"- warm node reduction: {r['warm_node_saved_fraction']:.1%}")
+          print(f"- warm wall-time reduction: {r['warm_time_saved_fraction']:.1%}")
+          print(f"- experience hits: {r['warm_experience_hits']}")
+          print(f"- experience move-first: {r['warm_experience_move_first']}")
+          PY
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: experience-cache-probe
+          path: build/results/experience-cache-probe.json
+          if-no-files-found: error

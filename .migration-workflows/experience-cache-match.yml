@@ -1,0 +1,75 @@
+name: Experience Cache Match
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  match:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Run 20-game on/off validation
+        run: |
+          mkdir -p build/results
+          python3 benchmarks/run_series.py \
+            --engine-a build/shogi-ai \
+            --engine-b build/shogi-ai \
+            --games 20 \
+            --workers 1 \
+            --seed 20261304 \
+            --options-a '{"ExperienceCache":"true"}' \
+            --options-b '{"ExperienceCache":"false"}' \
+            --output build/results/experience-on-vs-off.json
+
+      - name: Validate result
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build/results/experience-on-vs-off.json')
+          r=json.loads(p.read_text())
+          if r['illegal_games'] != 0:
+              raise SystemExit(f"illegal games: {r['illegal_games']}")
+          a=r['search']['A']; b=r['search']['B']
+          print(f"ON {r['wins_a']}-{r['draws']}-{r['wins_b']} OFF")
+          print(f"nodes ON={a['nodes_total']} OFF={b['nodes_total']}")
+          print(f"experience hits={a.get('experience_hits_total',0)} move-first={a.get('experience_move_first_total',0)}")
+          if a.get('experience_hits_total',0) <= 0:
+              raise SystemExit('no cross-game experience hits in match')
+          PY
+
+      - name: Write summary
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          r=json.loads(Path('build/results/experience-on-vs-off.json').read_text())
+          a=r['search']['A']; b=r['search']['B']
+          print('## Experience Cache ON vs OFF — 20 games')
+          print(f"- ON: {r['wins_a']}勝 {r['draws']}分 {r['wins_b']}敗")
+          print(f"- illegal games: {r['illegal_games']}")
+          print(f"- nodes: ON {a['nodes_total']:,} / OFF {b['nodes_total']:,}")
+          if b['nodes_total']:
+              print(f"- node change: {(a['nodes_total']/b['nodes_total']-1):+.1%}")
+          print(f"- experience hits: {a.get('experience_hits_total',0):,}")
+          print(f"- experience move-first: {a.get('experience_move_first_total',0):,}")
+          PY
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: experience-cache-match
+          path: build/results/experience-on-vs-off.json
+          if-no-files-found: error

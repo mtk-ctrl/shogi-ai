@@ -1,0 +1,89 @@
+name: Joint Evaluation Final 100
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: eval-balance-final
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  match:
+    name: shard ${{ matrix.shard }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Run 20-game shard
+        run: |
+          mkdir -p build/results
+          SEED=$((20264000 + ${{ matrix.shard }} * 100))
+          python3 benchmarks/arena.py \
+            --engine-a build/shogi-ai \
+            --engine-b build/shogi-ai \
+            --games 20 \
+            --max-plies 400 \
+            --seed "$SEED" \
+            --options-a '{"EvalSafety":100,"EvalPressure":150,"EvalActivity":200,"EvalDanger":200}' \
+            --options-b '{"EvalSafety":50,"EvalPressure":150,"EvalActivity":150,"EvalDanger":200}' \
+            --output build/results/final-${{ matrix.shard }}.json
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-balance-final-${{ matrix.shard }}
+          path: build/results/final-${{ matrix.shard }}.json
+          if-no-files-found: error
+
+  summarize:
+    name: Final result
+    needs: match
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: eval-balance-final-*
+          path: results
+          merge-multiple: true
+
+      - name: Aggregate 100 games
+        run: |
+          python3 - <<'PY' | tee summary.txt
+          import json
+          from pathlib import Path
+          wa=dd=wb=illegal=0
+          na=nb=0
+          for p in sorted(Path('results').glob('final-*.json')):
+              r=json.loads(p.read_text())
+              wa+=r['wins_a']; dd+=r['draws']; wb+=r['wins_b']; illegal+=r['illegal_games']
+              na+=r['search']['A']['nodes_total']; nb+=r['search']['B']['nodes_total']
+          print('c07 = Safety100 Pressure150 Activity200 Danger200')
+          print('c03 = Safety50 Pressure150 Activity150 Danger200')
+          print(f'c07 {wa} - {dd} - {wb} c03')
+          print(f'illegal={illegal}')
+          print(f'nodes c07={na} c03={nb}')
+          PY
+          cat summary.txt >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-balance-final-summary
+          path: summary.txt

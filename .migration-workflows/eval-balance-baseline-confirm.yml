@@ -1,0 +1,96 @@
+name: Joint Evaluation Baseline Confirm
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: eval-balance-baseline-confirm
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  match:
+    name: ${{ matrix.candidate }} shard ${{ matrix.shard }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        candidate: [c07, c03]
+        shard: [0, 1, 2, 3, 4]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Run 20-game shard vs v0.0.12 defaults
+        run: |
+          mkdir -p build/results
+          SEED=$((20265000 + ${{ matrix.shard }} * 100))
+          if [ "${{ matrix.candidate }}" = "c07" ]; then
+            OPTS='{"EvalSafety":100,"EvalPressure":150,"EvalActivity":200,"EvalDanger":200}'
+          else
+            OPTS='{"EvalSafety":50,"EvalPressure":150,"EvalActivity":150,"EvalDanger":200}'
+          fi
+          python3 benchmarks/arena.py \
+            --engine-a build/shogi-ai \
+            --engine-b build/shogi-ai \
+            --games 20 \
+            --max-plies 400 \
+            --seed "$SEED" \
+            --options-a "$OPTS" \
+            --options-b '{"EvalSafety":100,"EvalPressure":100,"EvalActivity":100,"EvalDanger":200}' \
+            --output build/results/${{ matrix.candidate }}-${{ matrix.shard }}.json
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-balance-confirm-${{ matrix.candidate }}-${{ matrix.shard }}
+          path: build/results/${{ matrix.candidate }}-${{ matrix.shard }}.json
+          if-no-files-found: error
+
+  summarize:
+    name: Baseline confirmation result
+    needs: match
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: eval-balance-confirm-*
+          path: results
+          merge-multiple: true
+
+      - name: Aggregate candidates
+        run: |
+          python3 - <<'PY' | tee summary.txt
+          import json
+          from pathlib import Path
+          for candidate in ('c07','c03'):
+              wa=dd=wb=illegal=na=nb=0
+              times_a=[]; times_b=[]
+              for p in sorted(Path('results').glob(f'{candidate}-*.json')):
+                  r=json.loads(p.read_text())
+                  wa+=r['wins_a']; dd+=r['draws']; wb+=r['wins_b']; illegal+=r['illegal_games']
+                  na+=r['search']['A']['nodes_total']; nb+=r['search']['B']['nodes_total']
+                  times_a.append(r['timing_ms']['A']['mean']); times_b.append(r['timing_ms']['B']['mean'])
+              params='S100 P150 A200' if candidate=='c07' else 'S50 P150 A150'
+              print(f'{candidate} ({params}) vs baseline S100 P100 A100: {wa}-{dd}-{wb}, illegal={illegal}')
+              print(f'  nodes candidate/baseline={na}/{nb} ({(na/nb-1):+.1%})')
+              print(f'  shard mean-ms avg candidate/baseline={sum(times_a)/len(times_a):.3f}/{sum(times_b)/len(times_b):.3f}')
+          PY
+          cat summary.txt >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-balance-baseline-confirm-summary
+          path: summary.txt

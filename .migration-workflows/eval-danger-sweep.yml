@@ -1,0 +1,73 @@
+name: EvalDanger Weight Sweep
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  screen-danger:
+    name: Danger ${{ matrix.danger }} vs 100
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        danger: [50, 75, 125, 150]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Record runner CPU
+        run: |
+          mkdir -p build/results
+          lscpu | tee build/results/cpu.txt
+
+      - name: Install match dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build v0.0.10 engine
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Run 20-game paired screening
+        run: |
+          python3 benchmarks/run_series.py \
+            --engine-a build/shogi-ai \
+            --engine-b build/shogi-ai \
+            --games 20 \
+            --workers 1 \
+            --seed 20261004 \
+            --options-a '{"EvalDanger":${{ matrix.danger }}}' \
+            --options-b '{"EvalDanger":100}' \
+            --output build/results/danger-${{ matrix.danger }}-vs-100.json
+
+      - name: Write summary
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          danger = "${{ matrix.danger }}"
+          p = Path(f"build/results/danger-{danger}-vs-100.json")
+          r = json.loads(p.read_text())
+          a = r["timing_ms"]["A"]
+          b = r["timing_ms"]["B"]
+          print(f"## EvalDanger {danger} vs 100")
+          print(f"- score: {r['wins_a']}勝 {r['draws']}分 {r['wins_b']}敗 / 20局")
+          print(f"- candidate score rate: {r['score_a']:.1%}")
+          print(f"- illegal games: {r['illegal_games']}")
+          print(f"- mean response: candidate {a['mean']:.3f} ms / baseline {b['mean']:.3f} ms")
+          print(f"- max response: candidate {a['max']:.3f} ms / baseline {b['max']:.3f} ms")
+          print(f"- seed base: {r['seed']}")
+          PY
+
+      - name: Upload screening result
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-danger-${{ matrix.danger }}-vs-100
+          path: |
+            build/results/danger-${{ matrix.danger }}-vs-100.json
+            build/results/danger-${{ matrix.danger }}-vs-100-parts/
+            build/results/cpu.txt
+          if-no-files-found: error

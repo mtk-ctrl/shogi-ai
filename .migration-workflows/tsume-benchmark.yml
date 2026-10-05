@@ -1,0 +1,49 @@
+name: Tsume Benchmark
+
+on:
+  workflow_dispatch:
+    inputs:
+      plies:
+        description: "Comma-separated mate plies"
+        required: true
+        default: "3,5,7,9,11"
+        type: string
+      limit:
+        description: "Problems per mate ply (max 1000 in fixed set)"
+        required: true
+        default: "100"
+        type: string
+      time_ms:
+        description: "Time budget per problem in milliseconds"
+        required: true
+        default: "2000"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build engine
+        run: python3 scripts/build.py --output build/engine
+      - name: Run fixed tsume benchmark
+        run: |
+          mkdir -p benchmarks/results/manual
+          lscpu > benchmarks/results/manual/host-cpu.txt
+          python3 benchmarks/tsume_benchmark.py \
+            --engine build/engine \
+            --dataset-dir benchmarks/tsume_dataset \
+            --plies '${{ inputs.plies }}' \
+            --limit '${{ inputs.limit }}' \
+            --time-ms '${{ inputs.time_ms }}' \
+            --details \
+            --output benchmarks/results/manual/tsume-benchmark.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tsume-benchmark-${{ github.sha }}
+          path: benchmarks/results/manual/
+          retention-days: 30

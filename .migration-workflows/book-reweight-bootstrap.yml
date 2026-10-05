@@ -1,0 +1,177 @@
+name: Book Reweight Bootstrap
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/book-reweight-bootstrap.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: book-reweight-bootstrap
+  cancel-in-progress: true
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build engine and candidate
+        run: |
+          mkdir -p build/book-bootstrap
+          python3 scripts/build.py --output build/shogi-ai
+          python3 tools/book/apply_book_feedback.py \
+            --book shogi-ai-book.tsv \
+            --output build/book-bootstrap/reweighted-book.tsv \
+            --report build/book-bootstrap/reweight-report.json \
+            --reweight-all
+          python3 tests/test_opening_book_usi.py build/shogi-ai build/book-bootstrap/reweighted-book.tsv
+
+      - name: Candidate vs current book 50-game shard
+        shell: bash
+        run: |
+          seed=$((2026100512 + ${{ matrix.shard }} * 10000))
+          python3 benchmarks/arena.py \
+            --engine-a build/shogi-ai \
+            --engine-b build/shogi-ai \
+            --options-a '{"OpeningBook":true,"OpeningBookFile":"build/book-bootstrap/reweighted-book.tsv","ExperienceCache":false}' \
+            --options-b '{"OpeningBook":true,"OpeningBookFile":"shogi-ai-book.tsv","ExperienceCache":false}' \
+            --games 50 --max-plies 200 --seed "$seed" \
+            --go-command 'go movetime 50' \
+            --output "build/book-bootstrap/result-${{ matrix.shard }}.json"
+
+      - name: Upload shard
+        uses: actions/upload-artifact@v4
+        with:
+          name: book-reweight-shard-${{ matrix.shard }}
+          path: build/book-bootstrap/result-${{ matrix.shard }}.json
+          if-no-files-found: error
+          retention-days: 30
+
+  aggregate:
+    needs: compare
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Download shards
+        uses: actions/download-artifact@v5
+        with:
+          pattern: book-reweight-shard-*
+          path: build/book-bootstrap/shards
+          merge-multiple: true
+
+      - name: Aggregate 200 games and rebuild candidate
+        run: |
+          mkdir -p build/book-bootstrap
+          python3 tools/book/apply_book_feedback.py \
+            --book shogi-ai-book.tsv \
+            --output build/book-bootstrap/reweighted-book.tsv \
+            --report build/book-bootstrap/reweight-report.json \
+            --reweight-all
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          rows=[]
+          for p in sorted(Path('build/book-bootstrap/shards').glob('result-*.json')):
+              rows.append(json.loads(p.read_text(encoding='utf-8')))
+          assert len(rows) == 4, len(rows)
+          games=sum(r['games'] for r in rows)
+          wa=sum(r['wins_a'] for r in rows)
+          wb=sum(r['wins_b'] for r in rows)
+          draws=sum(r['draws'] for r in rows)
+          illegal=sum(r['illegal_games'] for r in rows)
+          out={
+              'games': games,
+              'wins_candidate': wa,
+              'draws': draws,
+              'wins_current': wb,
+              'score_candidate': (wa + 0.5*draws)/games,
+              'illegal_games': illegal,
+              'shards': 4,
+          }
+          Path('build/book-bootstrap/aggregate.json').write_text(
+              json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Promote only on clear win
+        shell: bash
+        run: |
+          set -euo pipefail
+          read -r score illegal <<< "$(python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('build/book-bootstrap/aggregate.json').read_text())
+          print(d['score_candidate'], d['illegal_games'])
+          PY
+          )"
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          d=json.loads(Path('build/book-bootstrap/aggregate.json').read_text())
+          r=json.loads(Path('build/book-bootstrap/reweight-report.json').read_text())
+          print('# Book bootstrap reweight')
+          print()
+          print(f"- Candidate vs current: **{d['wins_candidate']}-{d['draws']}-{d['wins_current']}**, score **{d['score_candidate']:.1%}**")
+          print(f"- Parallel shards: **{d['shards']} x 50 games**")
+          print(f"- Entries changed by historical W/D/L reweight: **{r['entries_changed']}**")
+          print(f"- Illegal games: **{d['illegal_games']}**")
+          PY
+          if (( illegal != 0 )); then
+            echo "::error::Illegal game detected"
+            exit 1
+          fi
+          if ! python3 - "$score" <<'PY'
+          import sys
+          raise SystemExit(0 if float(sys.argv[1]) >= 0.55 else 1)
+          PY
+          then
+            echo "Candidate did not reach 55%; current book is unchanged. Nightly exact-hit learning remains active."
+            exit 0
+          fi
+
+          start_blob="$(git rev-parse HEAD:shogi-ai-book.tsv)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          current_blob="$(git rev-parse origin/main:shogi-ai-book.tsv)"
+          if [[ "$current_blob" != "$start_blob" ]]; then
+            echo "::warning::Book changed during comparison; skip promotion"
+            exit 0
+          fi
+          git checkout -B book-reweight-promote origin/main
+          cp build/book-bootstrap/reweighted-book.tsv shogi-ai-book.tsv
+          git add shogi-ai-book.tsv
+          git commit -m "book: suppress historically weak opening lines"
+          git push origin HEAD:main
+
+      - name: Upload aggregate result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: book-reweight-bootstrap-${{ github.run_id }}
+          path: |
+            build/book-bootstrap/aggregate.json
+            build/book-bootstrap/reweight-report.json
+            build/book-bootstrap/reweighted-book.tsv
+          if-no-files-found: warn
+          retention-days: 90

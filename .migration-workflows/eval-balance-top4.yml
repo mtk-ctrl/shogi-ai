@@ -1,0 +1,111 @@
+name: Joint Evaluation Top4 Round Robin
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: eval-balance-top4
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  match:
+    name: ${{ matrix.id }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {id: c02-v-c07, as: 50,  ap: 100, aa: 100, bs: 100, bp: 150, ba: 200}
+          - {id: c02-v-c03, as: 50,  ap: 100, aa: 100, bs: 50,  bp: 150, ba: 150}
+          - {id: c02-v-c13, as: 50,  ap: 100, aa: 100, bs: 200, bp: 50,  ba: 200}
+          - {id: c07-v-c03, as: 100, ap: 150, aa: 200, bs: 50,  bp: 150, ba: 150}
+          - {id: c07-v-c13, as: 100, ap: 150, aa: 200, bs: 200, bp: 50,  ba: 200}
+          - {id: c03-v-c13, as: 50,  ap: 150, aa: 150, bs: 200, bp: 50,  ba: 200}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Run 20-game direct match
+        run: |
+          mkdir -p build/results
+          python3 benchmarks/arena.py \
+            --engine-a build/shogi-ai \
+            --engine-b build/shogi-ai \
+            --games 20 \
+            --max-plies 400 \
+            --seed 20263000 \
+            --options-a '{"EvalSafety":${{ matrix.as }},"EvalPressure":${{ matrix.ap }},"EvalActivity":${{ matrix.aa }},"EvalDanger":200}' \
+            --options-b '{"EvalSafety":${{ matrix.bs }},"EvalPressure":${{ matrix.bp }},"EvalActivity":${{ matrix.ba }},"EvalDanger":200}' \
+            --output build/results/${{ matrix.id }}.json
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-balance-top4-${{ matrix.id }}
+          path: build/results/${{ matrix.id }}.json
+          if-no-files-found: error
+
+  summarize:
+    name: Rank top four
+    needs: match
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: eval-balance-top4-*
+          path: results
+          merge-multiple: true
+
+      - name: Aggregate scores
+        run: |
+          python3 - <<'PY' | tee summary.txt
+          import json
+          from pathlib import Path
+          labels={
+            (50,100,100):'c02',
+            (100,150,200):'c07',
+            (50,150,150):'c03',
+            (200,50,200):'c13',
+          }
+          score={k:0.0 for k in labels.values()}
+          wins={k:0 for k in labels.values()}
+          draws={k:0 for k in labels.values()}
+          losses={k:0 for k in labels.values()}
+          games={k:0 for k in labels.values()}
+          print('MATCHES')
+          for p in sorted(Path('results').glob('*.json')):
+              r=json.loads(p.read_text())
+              oa=r['options_a']; ob=r['options_b']
+              ka=labels[(oa['EvalSafety'],oa['EvalPressure'],oa['EvalActivity'])]
+              kb=labels[(ob['EvalSafety'],ob['EvalPressure'],ob['EvalActivity'])]
+              wa,dd,wb=r['wins_a'],r['draws'],r['wins_b']
+              print(f'{ka} vs {kb}: {wa}-{dd}-{wb}')
+              wins[ka]+=wa; draws[ka]+=dd; losses[ka]+=wb; games[ka]+=wa+dd+wb; score[ka]+=wa+0.5*dd
+              wins[kb]+=wb; draws[kb]+=dd; losses[kb]+=wa; games[kb]+=wa+dd+wb; score[kb]+=wb+0.5*dd
+          print('\nRANKING')
+          ranking=sorted(labels.values(), key=lambda k:(score[k]/games[k],score[k],wins[k]), reverse=True)
+          for i,k in enumerate(ranking,1):
+              pct=score[k]/games[k] if games[k] else 0
+              params=next(x for x,n in labels.items() if n==k)
+              print(f'{i}. {k} S{params[0]} P{params[1]} A{params[2]}: {wins[k]}-{draws[k]}-{losses[k]}, score={pct:.3f}')
+          print(f'\nTOP2={ranking[0]},{ranking[1]}')
+          PY
+          cat summary.txt >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-balance-top4-summary
+          path: summary.txt

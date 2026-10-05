@@ -1,0 +1,167 @@
+name: Book Challenger Validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "shogi-ai-book-candidate.tsv"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: book-challenger-validation
+  cancel-in-progress: true
+
+jobs:
+  compare:
+    if: ${{ github.event_name == 'workflow_dispatch' || !contains(github.event.head_commit.message, '[seed-only]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        shard: [0, 1]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build and validate both books
+        run: |
+          python3 scripts/build.py --output build/shogi-ai
+          python3 tests/test_opening_book_usi.py build/shogi-ai shogi-ai-book.tsv
+          python3 tests/test_opening_book_usi.py build/shogi-ai shogi-ai-book-candidate.tsv
+
+      - name: Challenger vs champion 50-game shard
+        shell: bash
+        run: |
+          mkdir -p build/book-challenger
+          seed=$((2026100700 + ${{ matrix.shard }} * 10000 + (GITHUB_RUN_ID % 1000) * 100))
+          python3 benchmarks/arena.py \
+            --engine-a build/shogi-ai \
+            --engine-b build/shogi-ai \
+            --options-a '{"OpeningBook":true,"OpeningBookFile":"shogi-ai-book-candidate.tsv","ExperienceCache":false}' \
+            --options-b '{"OpeningBook":true,"OpeningBookFile":"shogi-ai-book.tsv","ExperienceCache":false}' \
+            --games 50 --max-plies 200 --seed "$seed" \
+            --go-command 'go movetime 50' \
+            --output "build/book-challenger/result-${{ matrix.shard }}.json"
+
+      - name: Upload shard
+        uses: actions/upload-artifact@v4
+        with:
+          name: book-challenger-shard-${{ matrix.shard }}
+          path: build/book-challenger/result-${{ matrix.shard }}.json
+          if-no-files-found: error
+          retention-days: 30
+
+  promote:
+    needs: compare
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Download shards
+        uses: actions/download-artifact@v5
+        with:
+          pattern: book-challenger-shard-*
+          path: build/book-challenger
+          merge-multiple: true
+
+      - name: Aggregate
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          rows=[json.loads(p.read_text()) for p in sorted(Path('build/book-challenger').glob('result-*.json'))]
+          assert len(rows)==2, len(rows)
+          games=sum(r['games'] for r in rows)
+          wc=sum(r['wins_a'] for r in rows)
+          wchamp=sum(r['wins_b'] for r in rows)
+          draws=sum(r['draws'] for r in rows)
+          illegal=sum(r['illegal_games'] for r in rows)
+          out={
+              'games':games,
+              'wins_challenger':wc,
+              'draws':draws,
+              'wins_champion':wchamp,
+              'score_challenger':(wc+0.5*draws)/games,
+              'illegal_games':illegal,
+              'promotion_threshold':0.55,
+          }
+          Path('build/book-challenger/aggregate.json').write_text(json.dumps(out,indent=2)+'\n')
+          print(json.dumps(out,indent=2))
+          PY
+
+      - name: Promote challenger only on clear win
+        shell: bash
+        run: |
+          set -euo pipefail
+          read -r score illegal <<< "$(python3 - <<'PY'
+          import json
+          d=json.load(open('build/book-challenger/aggregate.json'))
+          print(d['score_challenger'], d['illegal_games'])
+          PY
+          )"
+          if (( illegal != 0 )); then
+            echo "::error::Illegal game detected; challenger cannot be promoted"
+            exit 1
+          fi
+          if ! python3 - "$score" <<'PY'
+          import sys
+          raise SystemExit(0 if float(sys.argv[1]) >= 0.55 else 1)
+          PY
+          then
+            echo "Challenger stays in training: score=${score}, promotion requires >= 0.55"
+            exit 0
+          fi
+
+          start_candidate="$(git rev-parse HEAD:shogi-ai-book-candidate.tsv)"
+          start_champion="$(git rev-parse HEAD:shogi-ai-book.tsv)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          current_candidate="$(git rev-parse origin/main:shogi-ai-book-candidate.tsv)"
+          current_champion="$(git rev-parse origin/main:shogi-ai-book.tsv)"
+          if [[ "$current_candidate" != "$start_candidate" || "$current_champion" != "$start_champion" ]]; then
+            echo "::warning::Book changed during validation; skip promotion"
+            exit 0
+          fi
+          git checkout -B book-challenger-promote origin/main
+          cp shogi-ai-book-candidate.tsv shogi-ai-book.tsv
+          git add shogi-ai-book.tsv
+          git commit -m "book: promote challenger to champion"
+          git push origin HEAD:main
+
+      - name: Publish summary
+        if: always()
+        run: |
+          if [[ -f build/book-challenger/aggregate.json ]]; then
+            python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d=json.load(open('build/book-challenger/aggregate.json'))
+          print('# Book challenger validation')
+          print()
+          print(f"- Challenger vs champion: **{d['wins_challenger']}-{d['draws']}-{d['wins_champion']}**")
+          print(f"- Challenger score: **{d['score_challenger']:.1%}**")
+          print(f"- Promotion threshold: **{d['promotion_threshold']:.0%}**")
+          print(f"- Illegal games: **{d['illegal_games']}**")
+          PY
+          fi
+
+      - name: Upload aggregate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: book-challenger-validation-${{ github.run_id }}
+          path: build/book-challenger/aggregate.json
+          if-no-files-found: warn
+          retention-days: 90

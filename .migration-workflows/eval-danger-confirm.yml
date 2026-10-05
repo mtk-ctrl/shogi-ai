@@ -1,0 +1,124 @@
+name: EvalDanger 100-Game Confirmation
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  confirm-shards:
+    name: Danger ${{ matrix.danger }} shard ${{ matrix.shard }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        danger: [150, 200]
+        shard: [0, 1, 2, 3, 4]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install match dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build v0.0.10 engine
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Run 20-game confirmation shard
+        run: |
+          mkdir -p build/results
+          SEED=$((20261104 + 40 * ${{ matrix.shard }}))
+          python3 benchmarks/run_series.py \
+            --engine-a build/shogi-ai \
+            --engine-b build/shogi-ai \
+            --games 20 \
+            --workers 1 \
+            --seed "$SEED" \
+            --options-a '{"EvalDanger":${{ matrix.danger }}}' \
+            --options-b '{"EvalDanger":100}' \
+            --output build/results/danger-${{ matrix.danger }}-vs-100-shard-${{ matrix.shard }}.json
+
+      - name: Upload shard result
+        uses: actions/upload-artifact@v4
+        with:
+          name: danger-confirm-${{ matrix.danger }}-${{ matrix.shard }}
+          path: build/results/danger-${{ matrix.danger }}-vs-100-shard-${{ matrix.shard }}.json
+          if-no-files-found: error
+
+  aggregate:
+    name: Aggregate Danger ${{ matrix.danger }}
+    needs: confirm-shards
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        danger: [150, 200]
+
+    steps:
+      - name: Download candidate shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: danger-confirm-${{ matrix.danger }}-*
+          path: build/downloads
+          merge-multiple: true
+
+      - name: Aggregate 100 games
+        run: |
+          mkdir -p build/results
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          danger = int("${{ matrix.danger }}")
+          files = sorted(Path("build/downloads").glob(f"danger-{danger}-vs-100-shard-*.json"))
+          if len(files) != 5:
+              raise SystemExit(f"expected 5 shards, found {len(files)}: {files}")
+          rows = [json.loads(p.read_text()) for p in files]
+          games = sum(r["games"] for r in rows)
+          out = {
+              "candidate_eval_danger": danger,
+              "baseline_eval_danger": 100,
+              "games": games,
+              "wins_candidate": sum(r["wins_a"] for r in rows),
+              "wins_baseline": sum(r["wins_b"] for r in rows),
+              "draws": sum(r["draws"] for r in rows),
+              "illegal_games": sum(r["illegal_games"] for r in rows),
+              "seed_bases": [r["seed"] for r in rows],
+              "sha256_candidate": rows[0]["sha256_a"],
+              "sha256_baseline": rows[0]["sha256_b"],
+              "options_candidate": rows[0]["options_a"],
+              "options_baseline": rows[0]["options_b"],
+              "details": [g for r in rows for g in r["details"]],
+              "source_files": [p.name for p in files],
+              "timing_note": "Strength confirmation was sharded across hosted runners; do not compare aggregate wall-clock latency across candidates."
+          }
+          out["score_candidate"] = (out["wins_candidate"] + out["draws"] / 2) / games
+          dest = Path(f"build/results/danger-{danger}-vs-100-confirm-100.json")
+          dest.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n")
+          print(f"Danger {danger}: {out['wins_candidate']} wins, {out['draws']} draws, {out['wins_baseline']} losses; score={out['score_candidate']:.1%}; illegal={out['illegal_games']}")
+          PY
+
+      - name: Write summary
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          danger = "${{ matrix.danger }}"
+          r = json.loads(Path(f"build/results/danger-{danger}-vs-100-confirm-100.json").read_text())
+          print(f"## EvalDanger {danger} vs 100 — 100 games")
+          print(f"- {r['wins_candidate']}勝 {r['draws']}分 {r['wins_baseline']}敗")
+          print(f"- candidate score rate: {r['score_candidate']:.1%}")
+          print(f"- illegal games: {r['illegal_games']}")
+          print(f"- seed bases: {r['seed_bases']}")
+          PY
+
+      - name: Upload aggregate result
+        uses: actions/upload-artifact@v4
+        with:
+          name: danger-confirm-${{ matrix.danger }}-aggregate
+          path: build/results/danger-${{ matrix.danger }}-vs-100-confirm-100.json
+          if-no-files-found: error

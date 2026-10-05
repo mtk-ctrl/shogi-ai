@@ -1,0 +1,117 @@
+name: EvalDanger Final 150 vs 200
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  match-shards:
+    name: 150 vs 200 shard ${{ matrix.shard }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        shard: [0, 1, 2, 3, 4]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install match dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build v0.0.10 engine
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Run 20-game direct match shard
+        run: |
+          mkdir -p build/results
+          SEED=$((20261204 + 40 * ${{ matrix.shard }}))
+          python3 benchmarks/run_series.py \
+            --engine-a build/shogi-ai \
+            --engine-b build/shogi-ai \
+            --games 20 \
+            --workers 1 \
+            --seed "$SEED" \
+            --options-a '{"EvalDanger":150}' \
+            --options-b '{"EvalDanger":200}' \
+            --output build/results/danger-150-vs-200-shard-${{ matrix.shard }}.json
+
+      - name: Upload shard result
+        uses: actions/upload-artifact@v4
+        with:
+          name: danger-final-150-vs-200-${{ matrix.shard }}
+          path: build/results/danger-150-vs-200-shard-${{ matrix.shard }}.json
+          if-no-files-found: error
+
+  aggregate:
+    name: Aggregate 150 vs 200
+    needs: match-shards
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: danger-final-150-vs-200-*
+          path: build/downloads
+          merge-multiple: true
+
+      - name: Aggregate 100 games
+        run: |
+          mkdir -p build/results
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          files = sorted(Path("build/downloads").glob("danger-150-vs-200-shard-*.json"))
+          if len(files) != 5:
+              raise SystemExit(f"expected 5 shards, found {len(files)}: {files}")
+          rows = [json.loads(p.read_text()) for p in files]
+          games = sum(r["games"] for r in rows)
+          out = {
+              "eval_danger_a": 150,
+              "eval_danger_b": 200,
+              "games": games,
+              "wins_150": sum(r["wins_a"] for r in rows),
+              "wins_200": sum(r["wins_b"] for r in rows),
+              "draws": sum(r["draws"] for r in rows),
+              "illegal_games": sum(r["illegal_games"] for r in rows),
+              "seed_bases": [r["seed"] for r in rows],
+              "sha256_150": rows[0]["sha256_a"],
+              "sha256_200": rows[0]["sha256_b"],
+              "options_150": rows[0]["options_a"],
+              "options_200": rows[0]["options_b"],
+              "details": [g for r in rows for g in r["details"]],
+              "source_files": [p.name for p in files],
+              "timing_note": "Strength confirmation was sharded across hosted runners; direct strength result is primary."
+          }
+          out["score_150"] = (out["wins_150"] + out["draws"] / 2) / games
+          dest = Path("build/results/danger-150-vs-200-final-100.json")
+          dest.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n")
+          print(f"150: {out['wins_150']} wins, {out['draws']} draws, {out['wins_200']} losses; score={out['score_150']:.1%}; illegal={out['illegal_games']}")
+          PY
+
+      - name: Write summary
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          r = json.loads(Path("build/results/danger-150-vs-200-final-100.json").read_text())
+          print("## EvalDanger 150 vs 200 — 100 games")
+          print(f"- 150: {r['wins_150']}勝 {r['draws']}分 {r['wins_200']}敗")
+          print(f"- 150 score rate: {r['score_150']:.1%}")
+          print(f"- illegal games: {r['illegal_games']}")
+          print(f"- seed bases: {r['seed_bases']}")
+          PY
+
+      - name: Upload aggregate result
+        uses: actions/upload-artifact@v4
+        with:
+          name: danger-final-150-vs-200-aggregate
+          path: build/results/danger-150-vs-200-final-100.json
+          if-no-files-found: error

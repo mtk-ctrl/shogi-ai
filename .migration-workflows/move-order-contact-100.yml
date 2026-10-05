@@ -1,0 +1,77 @@
+name: Move Order Contact 100
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  match:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4]
+
+    steps:
+      - name: Checkout current
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - name: Read accepted baseline
+        id: baseline
+        run: echo "ref=$(tr -d '\r\n' < benchmarks/baseline_ref.txt)" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout baseline
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ steps.baseline.outputs.ref }}
+          path: baseline
+          fetch-depth: 1
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build current and baseline
+        run: |
+          python3 scripts/build.py --output build/current-engine
+          (cd baseline && python3 scripts/build.py --output build/baseline-engine)
+
+      - name: Run 20-game shard
+        run: |
+          mkdir -p build/results
+          SEED=$((20261404 + ${{ matrix.shard }} * 100))
+          python3 benchmarks/arena.py \
+            --engine-a build/current-engine \
+            --engine-b baseline/build/baseline-engine \
+            --games 20 \
+            --max-plies 400 \
+            --seed "$SEED" \
+            --output "build/results/contact-${{ matrix.shard }}.json"
+
+      - name: Write summary
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          p = next(Path('build/results').glob('contact-*.json'))
+          r = json.loads(p.read_text())
+          a, b = r['search']['A'], r['search']['B']
+          print(f"## shard ${{ matrix.shard }}")
+          print(f"- current: {r['wins_a']}勝 {r['draws']}分 {r['wins_b']}敗")
+          print(f"- illegal: {r['illegal_games']}")
+          print(f"- nodes current/baseline: {a['nodes_total']:,} / {b['nodes_total']:,}")
+          if b['nodes_total']:
+              print(f"- node change: {(a['nodes_total']/b['nodes_total']-1):+.1%}")
+          print(f"- mean ms current/baseline: {r['timing_ms']['A']['mean']} / {r['timing_ms']['B']['mean']}")
+          PY
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: move-order-contact-${{ matrix.shard }}
+          path: build/results/contact-${{ matrix.shard }}.json
+          if-no-files-found: error

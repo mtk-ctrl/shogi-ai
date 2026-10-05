@@ -1,0 +1,46 @@
+name: Kifu Learning CI
+
+on:
+  pull_request:
+    paths:
+      - "tools/kifu/**"
+      - "tests/test_kifu_pipeline.py"
+      - "tests/test_kifu_validation.py"
+      - "scripts/build.py"
+      - ".github/workflows/kifu-learning-ci.yml"
+  push:
+    branches: [main]
+    paths:
+      - "tools/kifu/**"
+      - "tests/test_kifu_pipeline.py"
+      - "tests/test_kifu_validation.py"
+      - "scripts/build.py"
+      - ".github/workflows/kifu-learning-ci.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: kifu-learning-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  kifu-learning:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Python notation and dataset tests
+        run: python3 tests/test_kifu_pipeline.py
+
+      - name: Build rule-layer validator
+        run: python3 scripts/build.py --kifu-validator --output build/kifu-validator
+
+      - name: Rule-layer validation and sample export
+        run: python3 tests/test_kifu_validation.py build/kifu-validator
+
+      - name: Rules-only boundary check
+        run: python3 tests/check_boundary.py build/kifu-validator

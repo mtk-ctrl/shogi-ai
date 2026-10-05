@@ -1,0 +1,363 @@
+name: Self Play 2000 Book Refresh
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/self-play-2000-book-refresh.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: self-play-2000-book-refresh
+  cancel-in-progress: false
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Download gen2 book and prior 200-game match
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p build/prior-run build/baselines
+          gh run download 37279312939 \
+            --repo "${{ github.repository }}" \
+            --name selfplay-1000-book-refresh \
+            --dir build/prior-run
+          test -f build/prior-run/refreshed-book.tsv
+          test -f build/prior-run/results/refreshed-vs-baseline-200.json
+          cp shogi-ai-book.tsv build/baselines/book-gen1-pre1000.tsv
+          cp build/prior-run/refreshed-book.tsv build/baselines/book-gen2-after1000.tsv
+
+      - name: Upload book baselines
+        uses: actions/upload-artifact@v4
+        with:
+          name: book-baselines
+          path: build/baselines/*.tsv
+          retention-days: 90
+
+      - name: Upload prior 200-game kifu
+        uses: actions/upload-artifact@v4
+        with:
+          name: prior-200-kifu
+          path: build/prior-run/results/refreshed-vs-baseline-200.json
+          retention-days: 90
+
+      - name: Promote gen2 to main and archive gen1
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git checkout -B main origin/main
+          mkdir -p benchmarks/books
+          cp shogi-ai-book.tsv benchmarks/books/book-gen1-pre1000.tsv
+          cp build/baselines/book-gen2-after1000.tsv benchmarks/books/book-gen2-after1000.tsv
+          cp build/baselines/book-gen2-after1000.tsv shogi-ai-book.tsv
+          git add shogi-ai-book.tsv benchmarks/books/book-gen1-pre1000.tsv benchmarks/books/book-gen2-after1000.tsv
+          if ! git diff --cached --quiet; then
+            git commit -m "book: promote gen2 after 1000-game self-play"
+            git push origin main
+          fi
+
+  selfplay:
+    needs: setup
+    name: selfplay-${{ matrix.shard }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Download book baselines
+        uses: actions/download-artifact@v4
+        with:
+          name: book-baselines
+          path: build/baselines
+
+      - name: Run 100 self-play games from book gen2
+        shell: bash
+        run: |
+          mkdir -p build/selfplay
+          A_SEED=$((2026102000 + ${{ matrix.shard }} * 2))
+          B_SEED=$((A_SEED + 1))
+          ARENA_SEED=$((1611000000 + ${{ matrix.shard }} * 1000))
+          python3 benchmarks/arena.py \
+            --engine-a build/shogi-ai \
+            --engine-b build/shogi-ai \
+            --options-a "{\"OpeningBook\":true,\"OpeningBookFile\":\"build/baselines/book-gen2-after1000.tsv\",\"ExperienceCache\":false,\"RandomSeed\":${A_SEED}}" \
+            --options-b "{\"OpeningBook\":true,\"OpeningBookFile\":\"build/baselines/book-gen2-after1000.tsv\",\"ExperienceCache\":false,\"RandomSeed\":${B_SEED}}" \
+            --games 100 --max-plies 200 --seed "$ARENA_SEED" \
+            --go-command 'go movetime 50' \
+            --output "build/selfplay/selfplay-2000-shard-${{ matrix.shard }}.json"
+
+      - name: Upload shard
+        uses: actions/upload-artifact@v4
+        with:
+          name: selfplay-2000-shard-${{ matrix.shard }}
+          path: build/selfplay/selfplay-2000-shard-${{ matrix.shard }}.json
+          retention-days: 90
+
+  build-book:
+    needs: [setup, selfplay]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Download 2000-game shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: selfplay-2000-shard-*
+          path: build/selfplay2000
+          merge-multiple: true
+
+      - name: Download book baselines
+        uses: actions/download-artifact@v4
+        with:
+          name: book-baselines
+          path: build/baselines
+
+      - name: Download prior 200-game kifu
+        uses: actions/download-artifact@v4
+        with:
+          name: prior-200-kifu
+          path: build/prior200
+
+      - name: Summarize 2000 self-play games
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          files=sorted(Path('build/selfplay2000').glob('*.json'))
+          assert len(files)==20, len(files)
+          games=wins_a=wins_b=draws=illegal=plies=0
+          for p in files:
+              d=json.load(open(p, encoding='utf-8'))
+              games += d['games']
+              wins_a += d['wins_a']; wins_b += d['wins_b']; draws += d['draws']
+              illegal += d.get('illegal_games', 0)
+              plies += sum(x.get('plies',0) for x in d.get('details',[]))
+          out={'files':len(files),'games':games,'wins_a':wins_a,'draws':draws,'wins_b':wins_b,
+               'illegal_games':illegal,'average_plies':plies/games if games else 0}
+          assert games == 2000, out
+          Path('build/selfplay-2000-summary.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Build validator and engine
+        run: |
+          python3 scripts/build.py --kifu-validator --output build/kifu-validator
+          python3 scripts/build.py --output build/shogi-ai
+
+      - name: Build gen3 from gen2 plus prior 200 and new 2000 games
+        run: |
+          mkdir -p build/incremental
+          cp build/selfplay2000/*.json build/incremental/
+          cp build/prior200/refreshed-vs-baseline-200.json build/incremental/book-gen2-vs-gen1-200.json
+          python3 tools/book/import_arena_games.py \
+            --input build/incremental \
+            --output build/incremental-games.tsv \
+            --report build/incremental-games-report.json
+          ./build/kifu-validator < build/incremental-games.tsv > build/incremental-samples.tsv
+          python3 tools/book/build_opening_book.py \
+            --input build/incremental-samples.tsv \
+            --prior-book build/baselines/book-gen2-after1000.tsv \
+            --output build/book-gen3-after2000.tsv \
+            --report build/book-gen3-report.json \
+            --max-ply 20 --min-position-samples 8 --min-move-samples 3 \
+            --max-moves 3 --max-score-gap 0.12
+          cat build/incremental-games-report.json
+          cat build/book-gen3-report.json
+
+      - name: Validate gen3 through USI
+        run: python3 tests/test_opening_book_usi.py build/shogi-ai build/book-gen3-after2000.tsv
+
+      - name: Create compact permanent kifu files
+        run: |
+          mkdir -p build/kifu-learning build/kifu-all
+          split -d -a 2 -l 500 --additional-suffix=.tsv \
+            build/incremental-games.tsv build/kifu-learning/gen3-learning-
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          out=Path('build/all-games.tsv')
+          with out.open('w',encoding='utf-8',newline='\n') as f:
+              for p in sorted(Path('build/incremental').glob('*.json')):
+                  d=json.load(open(p,encoding='utf-8'))
+                  for i,g in enumerate(d.get('details',[]),1):
+                      moves=g.get('moves') or []
+                      winner=g.get('winner') or 'draw'
+                      reason=str(g.get('reason','')).replace('\t',' ')
+                      a_black='1' if g.get('a_black') else '0'
+                      f.write('\t'.join([p.name,str(i),winner,reason,a_black,' '.join(moves)])+'\n')
+          PY
+          split -d -a 2 -l 500 --additional-suffix=.tsv \
+            build/all-games.tsv build/kifu-all/gen3-all-
+          wc -l build/incremental-games.tsv build/all-games.tsv build/kifu-learning/*.tsv build/kifu-all/*.tsv
+
+      - name: Upload candidate book and kifu
+        uses: actions/upload-artifact@v4
+        with:
+          name: book-gen3-candidate
+          path: |
+            build/book-gen3-after2000.tsv
+            build/book-gen3-report.json
+            build/incremental-games-report.json
+            build/selfplay-2000-summary.json
+            build/kifu-learning/*.tsv
+            build/kifu-all/*.tsv
+          retention-days: 90
+
+  compare:
+    needs: [setup, build-book]
+    name: compare-gen3-vs-${{ matrix.baseline }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        baseline: [gen2, gen1]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Download gen3 candidate
+        uses: actions/download-artifact@v4
+        with:
+          name: book-gen3-candidate
+          path: build/candidate
+
+      - name: Download book baselines
+        uses: actions/download-artifact@v4
+        with:
+          name: book-baselines
+          path: build/baselines
+
+      - name: Fresh 200-game comparison
+        shell: bash
+        run: |
+          mkdir -p build/results
+          if [ "${{ matrix.baseline }}" = "gen2" ]; then
+            BASE_BOOK="build/baselines/book-gen2-after1000.tsv"
+            ARENA_SEED=1612000000
+          else
+            BASE_BOOK="build/baselines/book-gen1-pre1000.tsv"
+            ARENA_SEED=1612100000
+          fi
+          python3 benchmarks/arena.py \
+            --engine-a build/shogi-ai \
+            --engine-b build/shogi-ai \
+            --options-a '{"OpeningBook":true,"OpeningBookFile":"build/candidate/book-gen3-after2000.tsv","ExperienceCache":false,"RandomSeed":2026102999}' \
+            --options-b "{\"OpeningBook\":true,\"OpeningBookFile\":\"${BASE_BOOK}\",\"ExperienceCache\":false,\"RandomSeed\":2026102999}" \
+            --games 200 --max-plies 200 --seed "$ARENA_SEED" \
+            --go-command 'go movetime 50' \
+            --output "build/results/gen3-vs-${{ matrix.baseline }}-200.json"
+
+      - name: Summarize comparison
+        run: |
+          python3 - <<'PY'
+          import json, math
+          from pathlib import Path
+          baseline='${{ matrix.baseline }}'
+          p=Path(f'build/results/gen3-vs-{baseline}-200.json')
+          d=json.load(open(p, encoding='utf-8'))
+          n=d['games']; score=d['score_a']
+          se=math.sqrt(max(score*(1-score),1e-9)/n)
+          s={'baseline':baseline,'gen3_wins':d['wins_a'],'draws':d['draws'],
+             'baseline_wins':d['wins_b'],'gen3_score':score,
+             'approx_95pct':[max(0,score-1.96*se),min(1,score+1.96*se)],
+             'timing_ms':d.get('timing_ms'),'search':d.get('search'),
+             'illegal_games':d.get('illegal_games',0)}
+          Path(f'build/results/gen3-vs-{baseline}-summary.json').write_text(
+              json.dumps(s,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(s,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Upload comparison
+        uses: actions/upload-artifact@v4
+        with:
+          name: compare-gen3-vs-${{ matrix.baseline }}
+          path: build/results/*
+          retention-days: 90
+
+  preserve:
+    needs: [setup, build-book, compare]
+    runs-on: ubuntu-latest
+    if: always() && needs.build-book.result == 'success'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Download gen3 candidate
+        uses: actions/download-artifact@v4
+        with:
+          name: book-gen3-candidate
+          path: build/candidate
+
+      - name: Download comparisons
+        uses: actions/download-artifact@v4
+        with:
+          pattern: compare-gen3-vs-*
+          path: build/comparisons
+          merge-multiple: true
+
+      - name: Download prior 200-game kifu
+        uses: actions/download-artifact@v4
+        with:
+          name: prior-200-kifu
+          path: build/prior200
+
+      - name: Preserve kifu and experiment on data branch
+        shell: bash
+        run: |
+          BRANCH="data/selfplay-2000-${GITHUB_RUN_ID}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git checkout -B "$BRANCH" origin/main
+          mkdir -p data/selfplay/2026-10-05-gen3/all data/selfplay/2026-10-05-gen3/learning \
+                   benchmarks/books/candidates benchmarks/results/book-generations
+          cp build/candidate/kifu-all/*.tsv data/selfplay/2026-10-05-gen3/all/
+          cp build/candidate/kifu-learning/*.tsv data/selfplay/2026-10-05-gen3/learning/
+          cp build/candidate/book-gen3-after2000.tsv benchmarks/books/candidates/
+          cp build/candidate/*report.json build/candidate/selfplay-2000-summary.json benchmarks/results/book-generations/
+          cp build/prior200/refreshed-vs-baseline-200.json \
+             benchmarks/results/book-generations/book-gen2-vs-gen1-200.json
+          cp build/comparisons/*.json benchmarks/results/book-generations/ 2>/dev/null || true
+          git add data/selfplay benchmarks/books/candidates benchmarks/results/book-generations
+          git commit -m "data: preserve 2000-game self-play book experiment"
+          git push origin "$BRANCH" || echo "::warning::Could not push permanent data branch; artifacts remain available for 90 days"

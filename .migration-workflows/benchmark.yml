@@ -1,0 +1,88 @@
+name: Engine Benchmark
+
+on:
+  workflow_dispatch:
+    inputs:
+      games:
+        description: "Number of games"
+        required: false
+        default: "100"
+
+# Benchmarks are intentionally manual. Normal pushes run Quick Strategy CI only.
+concurrency:
+  group: engine-benchmark-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GAMES: ${{ inputs.games }}
+
+    steps:
+      - name: Checkout current
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - name: Read accepted baseline
+        id: baseline
+        run: echo "ref=$(tr -d '\r\n' < benchmarks/baseline_ref.txt)" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout baseline
+        uses: actions/checkout@v5
+        with:
+          repository: ${{ github.repository }}
+          ref: ${{ steps.baseline.outputs.ref }}
+          path: baseline
+          fetch-depth: 1
+
+      - name: Record runner CPU
+        run: |
+          mkdir -p build
+          lscpu | tee build/cpu.txt
+
+      - name: Install test dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Test match adjudication
+        run: python3 tests/test_arena.py
+
+      - name: Build current and baseline
+        run: |
+          python3 scripts/build.py --output build/current-engine
+          (cd baseline && python3 scripts/build.py --output build/baseline-engine)
+
+      - name: Run head-to-head games
+        run: |
+          set -o pipefail
+          python3 benchmarks/arena.py \
+            --engine-a build/current-engine \
+            --engine-b baseline/build/baseline-engine \
+            --games "$GAMES" \
+            --max-plies 400 \
+            --output build/benchmark.json | tee build/benchmark.txt
+
+      - name: Write summary
+        run: |
+          echo '```text' >> "$GITHUB_STEP_SUMMARY"
+          tail -n 5 build/benchmark.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          echo "Baseline: ${{ steps.baseline.outputs.ref }}" >> "$GITHUB_STEP_SUMMARY"
+          echo '' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Runner CPU:' >> "$GITHUB_STEP_SUMMARY"
+          grep -E 'Model name|CPU\(s\)|Thread|Core|Socket|Architecture' build/cpu.txt >> "$GITHUB_STEP_SUMMARY" || true
+
+      - name: Upload benchmark result
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-${{ github.sha }}
+          path: |
+            build/benchmark.json
+            build/benchmark.txt
+            build/cpu.txt
+          if-no-files-found: error

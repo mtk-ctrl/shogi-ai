@@ -1,0 +1,173 @@
+name: Exact-Hit Book Candidate Validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/book-feedback-smoke-candidate.yml"
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: exact-hit-book-candidate
+  cancel-in-progress: true
+
+env:
+  SOURCE_RUN_ID: "37300407574"
+  SOURCE_ARTIFACT: "nightly-book-learning-37300407574"
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Download exact-hit candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p build/source
+          gh run download "$SOURCE_RUN_ID" -n "$SOURCE_ARTIFACT" -D build/source
+          test -s build/source/learned-book.tsv
+
+      - name: Build and validate
+        run: |
+          python3 scripts/build.py --output build/shogi-ai
+          python3 tests/test_opening_book_usi.py build/shogi-ai build/source/learned-book.tsv
+
+      - name: Candidate vs current 50-game shard
+        shell: bash
+        run: |
+          mkdir -p build/result
+          seed=$((2026100600 + ${{ matrix.shard }} * 10000))
+          python3 benchmarks/arena.py \
+            --engine-a build/shogi-ai \
+            --engine-b build/shogi-ai \
+            --options-a '{"OpeningBook":true,"OpeningBookFile":"build/source/learned-book.tsv","ExperienceCache":false}' \
+            --options-b '{"OpeningBook":true,"OpeningBookFile":"shogi-ai-book.tsv","ExperienceCache":false}' \
+            --games 50 --max-plies 200 --seed "$seed" \
+            --go-command 'go movetime 50' \
+            --output "build/result/result-${{ matrix.shard }}.json"
+
+      - name: Upload shard
+        uses: actions/upload-artifact@v4
+        with:
+          name: exact-hit-candidate-shard-${{ matrix.shard }}
+          path: build/result/result-${{ matrix.shard }}.json
+          if-no-files-found: error
+          retention-days: 30
+
+  aggregate:
+    needs: compare
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Download shards
+        uses: actions/download-artifact@v5
+        with:
+          pattern: exact-hit-candidate-shard-*
+          path: build/shards
+          merge-multiple: true
+
+      - name: Download exact-hit candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p build/source
+          gh run download "$SOURCE_RUN_ID" -n "$SOURCE_ARTIFACT" -D build/source
+          test -s build/source/learned-book.tsv
+
+      - name: Aggregate and decide
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          rows=[json.loads(p.read_text()) for p in sorted(Path('build/shards').glob('result-*.json'))]
+          assert len(rows)==4, len(rows)
+          games=sum(r['games'] for r in rows)
+          wa=sum(r['wins_a'] for r in rows)
+          wb=sum(r['wins_b'] for r in rows)
+          draws=sum(r['draws'] for r in rows)
+          illegal=sum(r['illegal_games'] for r in rows)
+          d={'games':games,'wins_candidate':wa,'draws':draws,'wins_current':wb,
+             'score_candidate':(wa+0.5*draws)/games,'illegal_games':illegal,'shards':4,
+             'source_run_id':37300407574}
+          Path('build/aggregate.json').write_text(json.dumps(d,indent=2)+'\n')
+          print(json.dumps(d,indent=2))
+          PY
+          read -r score illegal <<< "$(python3 - <<'PY'
+          import json
+          d=json.load(open('build/aggregate.json'))
+          print(d['score_candidate'], d['illegal_games'])
+          PY
+          )"
+          if (( illegal != 0 )); then
+            echo "::error::Illegal game detected"
+            exit 1
+          fi
+          if ! python3 - "$score" <<'PY'
+          import sys
+          raise SystemExit(0 if float(sys.argv[1]) >= 0.55 else 1)
+          PY
+          then
+            echo "Exact-hit candidate did not reach 55%; leave current book unchanged."
+            exit 0
+          fi
+
+          start_blob="$(git rev-parse HEAD:shogi-ai-book.tsv)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          current_blob="$(git rev-parse origin/main:shogi-ai-book.tsv)"
+          if [[ "$current_blob" != "$start_blob" ]]; then
+            echo "::warning::Book changed during validation; skip promotion"
+            exit 0
+          fi
+          git checkout -B exact-hit-book-promote origin/main
+          cp build/source/learned-book.tsv shogi-ai-book.tsv
+          git add shogi-ai-book.tsv
+          git commit -m "book: learn exact Book-vs-Core outcomes"
+          git push origin HEAD:main
+
+      - name: Publish summary
+        if: always()
+        run: |
+          if [[ -f build/aggregate.json ]]; then
+            python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d=json.load(open('build/aggregate.json'))
+          print('# Exact-hit Book candidate')
+          print()
+          print(f"- Candidate vs current: **{d['wins_candidate']}-{d['draws']}-{d['wins_current']}**, score **{d['score_candidate']:.1%}**")
+          print(f"- Source feedback run: `{d['source_run_id']}`")
+          print(f"- Illegal games: **{d['illegal_games']}**")
+          PY
+          fi
+
+      - name: Upload aggregate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: exact-hit-book-candidate-${{ github.run_id }}
+          path: build/aggregate.json
+          if-no-files-found: warn
+          retention-days: 90
