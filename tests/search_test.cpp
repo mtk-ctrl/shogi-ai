@@ -75,14 +75,31 @@ int main() {
         strategy::IterativeSearch features;
         features.set_quiescence_enabled(false);
         p = rules::Position();
+        std::array<std::uint64_t, strategy::IterativeSearch::Stats::CutoffRankBuckets> cutoff_ranks{};
+        std::uint64_t cutoff_overflow = 0, cutoff_rank_sum = 0, cutoff_count = 0;
         for (unsigned sample = 0; sample < 6; ++sample) {
             fixed.set_seed(70000 + sample); features.set_seed(70000 + sample);
             const auto expected = fixed.choose(p);
             strategy::SearchControl control;
             const auto actual = features.choose(p, 3, control);
             require(actual.move == expected && actual.score == fixed.last_score(), "v0.0.13 depth-three compatibility");
+            const auto& stats = features.last_stats();
+            cutoff_count += stats.cutoffs;
+            cutoff_overflow += stats.cutoff_move_rank_overflow;
+            cutoff_rank_sum += stats.cutoff_move_rank_sum;
+            for (std::size_t i = 0; i < cutoff_ranks.size(); ++i)
+                cutoff_ranks[i] += stats.cutoff_move_rank[i];
             validate_pv(p, actual); play(p, expected);
         }
+        std::uint64_t recorded_cutoffs = cutoff_overflow;
+        for (const auto count : cutoff_ranks) recorded_cutoffs += count;
+        require(cutoff_count > 0 && recorded_cutoffs == cutoff_count, "every full-width cutoff has a rank");
+        std::cout << "DIAG cutoff-rank total=" << cutoff_count
+                  << " first=" << cutoff_ranks[0]
+                  << " second=" << cutoff_ranks[1]
+                  << " third=" << cutoff_ranks[2]
+                  << " overflow8=" << cutoff_overflow
+                  << " avg=" << (double(cutoff_rank_sum) / cutoff_count) << '\n';
         std::cout << "PASS v0.0.13 exact depth-three move/score equivalence on six opening positions\n";
         features.set_quiescence_enabled(true);
         p = rules::Position(); const auto before = p.sfen(); const auto history = p.history_key();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "strategy/alphabeta3_tt.h"
+#include <array>
 #include <atomic>
 #include <chrono>
 #include <cstdlib>
@@ -31,7 +32,11 @@ template<class Evaluator = FeatureEvaluator>
 class BasicIterativeSearch {
 public:
     struct Stats : BasicAlphaBeta3TT<Evaluator>::Stats {
+        static constexpr std::size_t CutoffRankBuckets = 8;
         std::uint64_t qnodes = 0, qcutoffs = 0, qlimit_leaves = 0;
+        std::array<std::uint64_t, CutoffRankBuckets> cutoff_move_rank{};
+        std::uint64_t cutoff_move_rank_overflow = 0;
+        std::uint64_t cutoff_move_rank_sum = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -164,6 +169,13 @@ private:
         stats_.seldepth = std::max(stats_.seldepth, ply);
         if (ply < static_cast<int>(stats_.nodes_by_ply.size())) ++stats_.nodes_by_ply[ply];
     }
+    void record_cutoff_rank(std::size_t zero_based_rank) {
+        stats_.cutoff_move_rank_sum += zero_based_rank + 1;
+        if (zero_based_rank < stats_.cutoff_move_rank.size())
+            ++stats_.cutoff_move_rank[zero_based_rank];
+        else
+            ++stats_.cutoff_move_rank_overflow;
+    }
     static void make(rules::Position& position, const std::string& move) {
         std::string error;
         if (!position.play(move, error)) throw std::logic_error(error);
@@ -223,7 +235,8 @@ private:
         auto moves = ordered(p, p.legal_moves(), tt_move);
         const bool maximizing = p.snapshot().turn == root_;
         Node best{maximizing ? -Infinity : Infinity, {}};
-        for (const auto& move : moves) {
+        for (std::size_t move_index = 0; move_index < moves.size(); ++move_index) {
+            const auto& move = moves[move_index];
             check_stop();
             Node child;
             {
@@ -246,6 +259,7 @@ private:
                 || (!maximizing && best.value < original_alpha)) {
                 ++stats_.cutoffs;
                 if (maximizing) ++stats_.max_cutoffs; else ++stats_.min_cutoffs;
+                record_cutoff_rank(move_index);
                 break;
             }
         }
