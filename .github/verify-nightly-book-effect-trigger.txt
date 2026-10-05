@@ -1,0 +1,1 @@
+2026-10-06 Asia/Tokyo verify learned Book after 6520 nightly games vs pre-learning Book; 100 games; run-1
