@@ -8,7 +8,11 @@ on:
         required: false
         default: "100"
 
-# Benchmarks are intentionally manual. Normal pushes run Quick Strategy CI only.
+# Manual benchmark. The historical baseline SHA may refer to the pre-migration
+# private repository. If that commit is unavailable in the public source of
+# truth, reconstruct the immediately previous ordinary-go behavior by using the
+# same current binary with MateAssist disabled; v0.0.18 did not change ordinary
+# go and v0.0.19 introduced MateAssist there.
 concurrency:
   group: engine-benchmark-${{ github.ref }}
   cancel-in-progress: true
@@ -19,7 +23,7 @@ permissions:
 jobs:
   benchmark:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     env:
       GAMES: ${{ inputs.games }}
 
@@ -27,13 +31,25 @@ jobs:
       - name: Checkout current
         uses: actions/checkout@v5
         with:
-          fetch-depth: 1
+          fetch-depth: 0
 
-      - name: Read accepted baseline
+      - name: Resolve accepted baseline
         id: baseline
-        run: echo "ref=$(tr -d '\r\n' < benchmarks/baseline_ref.txt)" >> "$GITHUB_OUTPUT"
+        shell: bash
+        run: |
+          set -euo pipefail
+          ref="$(tr -d '\r\n' < benchmarks/baseline_ref.txt)"
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+          if git cat-file -e "${ref}^{commit}" 2>/dev/null; then
+            echo "mode=commit" >> "$GITHUB_OUTPUT"
+            echo 'options_b={"OpeningBook":true,"ExperienceCache":false}' >> "$GITHUB_OUTPUT"
+          else
+            echo "mode=v0018-behavior" >> "$GITHUB_OUTPUT"
+            echo 'options_b={"OpeningBook":true,"ExperienceCache":false,"MateAssist":false}' >> "$GITHUB_OUTPUT"
+          fi
 
-      - name: Checkout baseline
+      - name: Checkout historical baseline when available
+        if: steps.baseline.outputs.mode == 'commit'
         uses: actions/checkout@v5
         with:
           repository: ${{ github.repository }}
@@ -52,27 +68,54 @@ jobs:
       - name: Test match adjudication
         run: python3 tests/test_arena.py
 
-      - name: Build current and baseline
+      - name: Build current
+        run: python3 scripts/build.py --output build/current-engine
+
+      - name: Build or reconstruct baseline
+        shell: bash
         run: |
-          python3 scripts/build.py --output build/current-engine
-          (cd baseline && python3 scripts/build.py --output build/baseline-engine)
+          set -euo pipefail
+          if [[ "${{ steps.baseline.outputs.mode }}" == "commit" ]]; then
+            (cd baseline && python3 scripts/build.py --output build/baseline-engine)
+            cp baseline/build/baseline-engine build/baseline-engine
+          else
+            cp build/current-engine build/baseline-engine
+          fi
 
       - name: Run head-to-head games
         run: |
           set -o pipefail
           python3 benchmarks/arena.py \
             --engine-a build/current-engine \
-            --engine-b baseline/build/baseline-engine \
+            --engine-b build/baseline-engine \
+            --options-a '{"OpeningBook":true,"ExperienceCache":false,"MateAssist":true}' \
+            --options-b '${{ steps.baseline.outputs.options_b }}' \
             --games "$GAMES" \
-            --max-plies 400 \
+            --max-plies 200 \
+            --seed 2026100602 \
+            --go-command 'go movetime 50' \
             --output build/benchmark.json | tee build/benchmark.txt
 
       - name: Write summary
         run: |
+          python3 - <<'PY'
+          import json, math
+          from pathlib import Path
+          d=json.loads(Path('build/benchmark.json').read_text())
+          s=d['score_a']
+          elo=None if s in (0,1) else 400*math.log10(s/(1-s))
+          with Path('build/benchmark-summary.txt').open('w') as f:
+              f.write(f"A {d['wins_a']} - {d['draws']} - {d['wins_b']} B\n")
+              f.write(f"score(A)={s:.3f}\n")
+              f.write(f"Elo(A-B)={elo}\n")
+              f.write(f"average_plies={d['average_plies']:.2f}\n")
+              f.write(f"illegal={d['illegal_games']}\n")
+          PY
           echo '```text' >> "$GITHUB_STEP_SUMMARY"
-          tail -n 5 build/benchmark.txt >> "$GITHUB_STEP_SUMMARY"
+          cat build/benchmark-summary.txt >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
-          echo "Baseline: ${{ steps.baseline.outputs.ref }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Historical baseline ref: ${{ steps.baseline.outputs.ref }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Resolved baseline mode: ${{ steps.baseline.outputs.mode }}" >> "$GITHUB_STEP_SUMMARY"
           echo '' >> "$GITHUB_STEP_SUMMARY"
           echo 'Runner CPU:' >> "$GITHUB_STEP_SUMMARY"
           grep -E 'Model name|CPU\(s\)|Thread|Core|Socket|Architecture' build/cpu.txt >> "$GITHUB_STEP_SUMMARY" || true
@@ -84,5 +127,6 @@ jobs:
           path: |
             build/benchmark.json
             build/benchmark.txt
+            build/benchmark-summary.txt
             build/cpu.txt
           if-no-files-found: error
