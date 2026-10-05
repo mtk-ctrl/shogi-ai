@@ -29,7 +29,7 @@ std::uint64_t experience_signature(const shogi::strategy::EvaluationParameters& 
             h *= 1099511628211ULL;
         }
     };
-    mix(3); // Quiescence, history-safe score keys and extended mate distance.
+    mix(4); // v0.0.20 killer/history ordering changes timed-search move preference.
     mix(quiescence_enabled ? 1 : 0);
     mix(shogi::strategy::IterativeSearch::QuiescenceDepth);
     mix(material_profile ? 1 : 0);

@@ -20,8 +20,8 @@ public:
         std::size_t original_index = 0;
     };
 
-    static std::vector<std::string> order(const rules::Snapshot& snapshot,
-                                          const std::vector<std::string>& moves) {
+    static std::vector<OrderedMove> order_scored(const rules::Snapshot& snapshot,
+                                                 const std::vector<std::string>& moves) {
         // Source-square danger is the same for every candidate. Build it once
         // per position instead of rescanning the board for every move.
         const AttackMap before_attacks(snapshot);
@@ -33,7 +33,12 @@ public:
         std::stable_sort(scored.begin(), scored.end(), [](const auto& a, const auto& b) {
             return a.score > b.score;
         });
+        return scored;
+    }
 
+    static std::vector<std::string> order(const rules::Snapshot& snapshot,
+                                          const std::vector<std::string>& moves) {
+        auto scored = order_scored(snapshot, moves);
         std::vector<std::string> ordered;
         ordered.reserve(scored.size());
         for (const auto& item : scored) ordered.push_back(item.move);

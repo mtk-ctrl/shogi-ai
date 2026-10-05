@@ -73,17 +73,31 @@ int main() {
         std::cout << "PASS safe three-ply transpositions retain exact score reuse\n";
         strategy::FeatureAlphaBeta3TT fixed;
         strategy::IterativeSearch features;
+        strategy::IterativeSearch baseline_order;
         features.set_quiescence_enabled(false);
+        baseline_order.set_quiescence_enabled(false);
+        baseline_order.set_dynamic_ordering_enabled(false);
         p = rules::Position();
         std::array<std::uint64_t, strategy::IterativeSearch::Stats::CutoffRankBuckets> cutoff_ranks{};
         std::uint64_t cutoff_overflow = 0, cutoff_rank_sum = 0, cutoff_count = 0;
+        std::uint64_t baseline_nodes = 0, dynamic_nodes = 0, dynamic_reorders = 0;
         for (unsigned sample = 0; sample < 6; ++sample) {
-            fixed.set_seed(70000 + sample); features.set_seed(70000 + sample);
+            fixed.set_seed(70000 + sample);
+            features.set_seed(70000 + sample);
+            baseline_order.set_seed(70000 + sample);
             const auto expected = fixed.choose(p);
+            auto baseline_position = p.clone();
+            strategy::SearchControl baseline_control;
+            const auto baseline_result = baseline_order.choose(baseline_position, 3, baseline_control);
             strategy::SearchControl control;
             const auto actual = features.choose(p, 3, control);
+            require(baseline_result.move == actual.move && baseline_result.score == actual.score,
+                    "dynamic ordering preserves fixed-depth move and score");
+            baseline_nodes += baseline_order.last_stats().nodes;
             require(actual.move == expected && actual.score == fixed.last_score(), "v0.0.13 depth-three compatibility");
             const auto& stats = features.last_stats();
+            dynamic_nodes += stats.nodes;
+            dynamic_reorders += stats.dynamic_reorders;
             cutoff_count += stats.cutoffs;
             cutoff_overflow += stats.cutoff_move_rank_overflow;
             cutoff_rank_sum += stats.cutoff_move_rank_sum;
@@ -100,6 +114,10 @@ int main() {
                   << " third=" << cutoff_ranks[2]
                   << " overflow8=" << cutoff_overflow
                   << " avg=" << (double(cutoff_rank_sum) / cutoff_count) << '\n';
+        std::cout << "DIAG dynamic-order nodes baseline=" << baseline_nodes
+                  << " candidate=" << dynamic_nodes
+                  << " delta_pct=" << (100.0 * (double(dynamic_nodes) - baseline_nodes) / baseline_nodes)
+                  << " reorders=" << dynamic_reorders << '\n';
         std::cout << "PASS v0.0.13 exact depth-three move/score equivalence on six opening positions\n";
         features.set_quiescence_enabled(true);
         p = rules::Position(); const auto before = p.sfen(); const auto history = p.history_key();

@@ -37,6 +37,8 @@ public:
         std::array<std::uint64_t, CutoffRankBuckets> cutoff_move_rank{};
         std::uint64_t cutoff_move_rank_overflow = 0;
         std::uint64_t cutoff_move_rank_sum = 0;
+        std::uint64_t dynamic_order_calls = 0, dynamic_reorders = 0;
+        std::uint64_t killer_cutoff_updates = 0, history_cutoff_updates = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -55,6 +57,7 @@ public:
         if (quiescence_enabled_ != enabled) experience_.clear();
         quiescence_enabled_ = enabled;
     }
+    void set_dynamic_ordering_enabled(bool enabled) { dynamic_ordering_enabled_ = enabled; }
     void clear_experience() { experience_.clear(); }
     bool load_experience(const std::string& path, std::uint64_t signature) {
         return experience_.load(path, signature);
@@ -69,6 +72,8 @@ public:
                         const std::vector<std::string>& allowed = {},
                         const std::function<void(const SearchResult&)>& completed = {}) {
         stats_ = {};
+        killers_ = {};
+        history_scores_.fill(0);
         control_ = &control;
         tt_.new_search();
         experience_.new_search();
@@ -108,7 +113,7 @@ public:
             iteration_hints_.new_search();
             try {
                 check_stop();
-                auto moves = ordered(position, original, {}, depth >= 4 && result.depth ? result.move : "");
+                auto moves = ordered(position, original, {}, depth >= 4 && result.depth ? result.move : "", 0);
                 int best = -Infinity;
                 std::vector<SearchResult> tied;
                 for (const auto& move : moves) {
@@ -176,6 +181,65 @@ private:
         else
             ++stats_.cutoff_move_rank_overflow;
     }
+    static constexpr int HistoryFromCount = 88; // 81 board squares + 7 drop piece kinds
+    static constexpr int HistorySize = 2 * HistoryFromCount * 81 * 2;
+    static int square_index(char file, char rank) {
+        if (file < '1' || file > '9' || rank < 'a' || rank > 'i') return -1;
+        return (file - '1') * 9 + (rank - 'a');
+    }
+    static int drop_source(char piece) {
+        switch (piece) {
+            case 'P': return 81; case 'L': return 82; case 'N': return 83;
+            case 'S': return 84; case 'B': return 85; case 'R': return 86;
+            case 'G': return 87; default: return -1;
+        }
+    }
+    static int history_index(const std::string& move, rules::Color side) {
+        if (move.size() < 4) return -1;
+        const bool drop = move[1] == '*';
+        const int from = drop ? drop_source(move[0]) : square_index(move[0], move[1]);
+        const int to = drop ? square_index(move[2], move[3]) : square_index(move[2], move[3]);
+        if (from < 0 || to < 0) return -1;
+        const int promotion = !drop && move.size() >= 5 && move[4] == '+' ? 1 : 0;
+        return (((static_cast<int>(side) * HistoryFromCount + from) * 81 + to) * 2 + promotion);
+    }
+    static bool quiet_move(const rules::Snapshot& snapshot, const std::string& move) {
+        if (move.size() < 4) return false;
+        if (move[1] == '*') return true;
+        const int to = square_index(move[2], move[3]);
+        if (to < 0) return false;
+        const bool capture = snapshot.board[to].kind != 0;
+        const bool promotion = move.size() >= 5 && move[4] == '+';
+        return !capture && !promotion;
+    }
+    int dynamic_order_score(const rules::Snapshot& snapshot, const std::string& move, int ply) const {
+        int score = 0;
+        const int index = history_index(move, snapshot.turn);
+        if (index >= 0) score += history_scores_[index];
+        if (ply >= 0 && ply < MaxPly) {
+            if (killers_[ply][0] == move) score += 2000000;
+            else if (killers_[ply][1] == move) score += 1000000;
+        }
+        return score;
+    }
+    void note_cutoff(const rules::Position& p, const std::string& move, int depth, int ply) {
+        if (!dynamic_ordering_enabled_) return;
+        const auto snapshot = p.snapshot();
+        if (!quiet_move(snapshot, move)) return;
+        if (ply >= 0 && ply < MaxPly) {
+            if (killers_[ply][0] != move) {
+                killers_[ply][1] = killers_[ply][0];
+                killers_[ply][0] = move;
+            }
+            ++stats_.killer_cutoff_updates;
+        }
+        const int index = history_index(move, snapshot.turn);
+        if (index >= 0) {
+            const int bonus = std::min(4096, std::max(1, depth * depth * 64));
+            history_scores_[index] = std::min(1000000, history_scores_[index] + bonus);
+            ++stats_.history_cutoff_updates;
+        }
+    }
     static void make(rules::Position& position, const std::string& move) {
         std::string error;
         if (!position.play(move, error)) throw std::logic_error(error);
@@ -232,7 +296,7 @@ private:
             if (tt_.store(score_key, depth, value, Bound::Exact)) ++stats_.tt_replacements;
             return {value, {}};
         }
-        auto moves = ordered(p, p.legal_moves(), tt_move);
+        auto moves = ordered(p, p.legal_moves(), tt_move, {}, ply);
         const bool maximizing = p.snapshot().turn == root_;
         Node best{maximizing ? -Infinity : Infinity, {}};
         for (std::size_t move_index = 0; move_index < moves.size(); ++move_index) {
@@ -260,6 +324,7 @@ private:
                 ++stats_.cutoffs;
                 if (maximizing) ++stats_.max_cutoffs; else ++stats_.min_cutoffs;
                 record_cutoff_rank(move_index);
+                note_cutoff(p, move, depth, ply);
                 break;
             }
         }
@@ -375,10 +440,29 @@ private:
     std::vector<std::string> ordered(const rules::Position& p,
                                     const std::vector<std::string>& moves,
                                     const std::string& tt_move = {},
-                                    const std::string& previous_root = {}) {
+                                    const std::string& previous_root = {},
+                                    int ply = -1) {
         ++stats_.order_calls;
         stats_.ordered_moves += moves.size();
-        auto result = MoveOrder::order(p.snapshot(), moves);
+        const auto snapshot = p.snapshot();
+        auto scored = MoveOrder::order_scored(snapshot, moves);
+        if (dynamic_ordering_enabled_ && ply >= 0) {
+            auto first_quiet = std::find_if(scored.begin(), scored.end(), [](const auto& item) {
+                return item.score == 0;
+            });
+            if (first_quiet != scored.end()) {
+                ++stats_.dynamic_order_calls;
+                const std::string old_first = first_quiet->move;
+                std::stable_sort(first_quiet, scored.end(), [&](const auto& a, const auto& b) {
+                    return dynamic_order_score(snapshot, a.move, ply)
+                        > dynamic_order_score(snapshot, b.move, ply);
+                });
+                if (first_quiet->move != old_first) ++stats_.dynamic_reorders;
+            }
+        }
+        std::vector<std::string> result;
+        result.reserve(scored.size());
+        for (const auto& item : scored) result.push_back(item.move);
         auto promote = [&](const std::string& hint) {
             auto it = std::find(result.begin(), result.end(), hint);
             if (it == result.end()) return false;
@@ -411,8 +495,11 @@ private:
     Stats stats_{};
     TranspositionTable tt_;
     ExperienceCache experience_, iteration_hints_;
+    std::array<std::array<std::string, 2>, MaxPly> killers_{};
+    std::array<int, HistorySize> history_scores_{};
     bool experience_enabled_ = false;
     bool quiescence_enabled_ = true;
+    bool dynamic_ordering_enabled_ = true;
     bool experience_allowed_ = false;
     bool board_scores_ = false;
     rules::Color root_ = rules::Color::Black;
