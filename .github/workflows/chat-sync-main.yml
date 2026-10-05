@@ -22,14 +22,21 @@ jobs:
       - name: Apply agreed changes
         run: python3 scripts/chat_sync_maintenance.py
 
-      - name: Focused regression tests
+      - name: Importer regression tests
         run: |
           python3 -m py_compile tools/book/import_arena_games.py
           python3 tests/test_opening_book_pipeline.py
-          grep -q 'cron: "5 15 \* \* \*"' .github/workflows/nightly-book-learning.yml
-          grep -q 'for lane in 0 1 2 3' .github/workflows/nightly-book-learning.yml
-          grep -q '00:05 JST開始' docs/22_自前棋譜小規模定跡.md
-          grep -q '棋力測定専用' README.md
+
+      - name: Verify nightly workflow configuration
+        run: |
+          grep -Fq 'cron: "5 15 * * *"' .github/workflows/nightly-book-learning.yml
+          grep -Fq 'for lane in 0 1 2 3; do' .github/workflows/nightly-book-learning.yml
+
+      - name: Verify documentation boundaries
+        run: |
+          grep -Fq '00:05 JST開始' docs/22_自前棋譜小規模定跡.md
+          grep -Fq '棋力測定専用' README.md
+          grep -Fq 'skipped_ineligible_files' tools/book/import_arena_games.py
 
       - name: Commit synchronized state
         shell: bash
@@ -44,4 +51,4 @@ jobs:
           git rebase origin/main
           git push origin HEAD:main
 
-# one-shot trigger
+# one-shot trigger 2
