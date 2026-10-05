@@ -14,6 +14,10 @@ android {
         versionName = "1.0.1"
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     val fixedDevKeystore = file("../signing/dev-signing.p12")
     signingConfigs {
         create("fixedDev") {
