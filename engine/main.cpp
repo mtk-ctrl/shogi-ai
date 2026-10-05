@@ -54,6 +54,8 @@ int main() {
     bool material_profile = false;
     bool quiescence_enabled = true;
     bool mate_assist_enabled = true;
+    bool killer_ordering_enabled = true;
+    bool history_ordering_enabled = true;
     bool opening_book_enabled = true;
     bool opening_book_loaded = false;
     bool valid_position = true;
@@ -144,6 +146,8 @@ int main() {
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
                       << "option name Quiescence type check default true\n"
                       << "option name MateAssist type check default true\n"
+                      << "option name KillerOrdering type check default true\n"
+                      << "option name HistoryOrdering type check default true\n"
                       << "option name OpeningBook type check default true\n"
                       << "option name OpeningBookFile type string default shogi-ai-book.tsv\n"
                       << "option name RandomSeed type spin default 5489 min 0 max 2147483647\n"
@@ -422,6 +426,16 @@ int main() {
                     }
                 } else if (name == "MateAssist") {
                     if (value == "true" || value == "false") mate_assist_enabled = value == "true";
+                } else if (name == "KillerOrdering") {
+                    if (value == "true" || value == "false") {
+                        killer_ordering_enabled = value == "true";
+                        strategy.set_killer_ordering_enabled(killer_ordering_enabled);
+                    }
+                } else if (name == "HistoryOrdering") {
+                    if (value == "true" || value == "false") {
+                        history_ordering_enabled = value == "true";
+                        strategy.set_history_ordering_enabled(history_ordering_enabled);
+                    }
                 } else if (name == "OpeningBook") {
                     if (value == "true" || value == "false") {
                         opening_book_enabled = value == "true";
