@@ -1,0 +1,97 @@
+name: Current vs Previous Adopted Engine
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/current-vs-previous-adopted.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: current-vs-previous-adopted
+  cancel-in-progress: false
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build current engine
+        run: python3 scripts/build.py --output build/kumoji
+
+      - name: Record comparison identity
+        run: |
+          mkdir -p build/generation-benchmark
+          cat > build/generation-benchmark/identity.json <<EOF
+          {
+            "analysis_sha": "$(git rev-parse HEAD)",
+            "current_label": "v1.0.1 / v0.0.19 ordinary-go behavior",
+            "previous_label": "v0.0.18 ordinary-go behavior",
+            "previous_reconstruction": "same current binary with MateAssist=false; v0.0.18 journal states ordinary go was unchanged, while v0.0.19 integrated MateAssist",
+            "book_condition": "same current shogi-ai-book.tsv, OpeningBook=true for both",
+            "experience_condition": "ExperienceCache=false for both to isolate Engine generation delta",
+            "movetime_ms": 50,
+            "max_plies": 200,
+            "games": 100,
+            "seed": 2026100602
+          }
+          EOF
+
+      - name: Run 100-game paired generation benchmark
+        run: |
+          python3 benchmarks/arena.py \
+            --engine-a build/kumoji \
+            --engine-b build/kumoji \
+            --options-a '{"OpeningBook":true,"ExperienceCache":false,"MateAssist":true}' \
+            --options-b '{"OpeningBook":true,"ExperienceCache":false,"MateAssist":false}' \
+            --games 100 \
+            --max-plies 200 \
+            --seed 2026100602 \
+            --go-command 'go movetime 50' \
+            --output build/generation-benchmark/result.json
+
+      - name: Summarize result
+        run: |
+          python3 - <<'PY'
+          import json, math
+          from pathlib import Path
+          p=Path('build/generation-benchmark/result.json')
+          d=json.loads(p.read_text())
+          s=d['score_a']
+          elo=None if s in (0,1) else 400*math.log10(s/(1-s))
+          out={
+            'current_wins':d['wins_a'], 'draws':d['draws'], 'previous_wins':d['wins_b'],
+            'current_score_rate':s, 'elo_current_minus_previous':elo,
+            'average_plies':d['average_plies'], 'illegal_games':d['illegal_games'],
+            'timing_ms':d.get('timing_ms'), 'search':d.get('search'),
+          }
+          Path('build/generation-benchmark/summary.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
+          with Path('build/generation-benchmark/report.md').open('w') as f:
+            f.write('# Current vs Previous Adopted Engine\n\n')
+            f.write('Current: v1.0.1 / v0.0.19 ordinary-go behavior (MateAssist ON)  \n')
+            f.write('Previous: v0.0.18 ordinary-go behavior (MateAssist OFF)\n\n')
+            f.write(f"- current wins: {d['wins_a']}\n- previous wins: {d['wins_b']}\n- draws: {d['draws']}\n")
+            f.write(f"- score(current): {s:.1%}\n- Elo(current-previous): {elo if elo is not None else 'n/a'}\n")
+            f.write(f"- average plies: {d['average_plies']:.2f}\n- illegal: {d['illegal_games']}\n")
+            for side in ('A','B'):
+              st=(d.get('search') or {}).get(side) or {}
+              if st: f.write(f"- {side} nodes: {st.get('nodes_total')}\n")
+          PY
+          cat build/generation-benchmark/report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload benchmark result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: current-vs-previous-adopted-${{ github.run_id }}
+          path: build/generation-benchmark
+          retention-days: 180
