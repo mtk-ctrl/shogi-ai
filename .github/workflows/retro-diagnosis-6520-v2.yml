@@ -1,0 +1,93 @@
+name: Retrospective Diagnosis 6520 v2
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/retro-diagnosis-6520-v2.yml"
+      - "tools/research/retro_diagnose_games_v2.py"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: retrospective-diagnosis-6520-v2
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      SOURCE_RUN_ID: "37349399400"
+      SOURCE_ARTIFACT_ID: "11369690131"
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: Validate tool
+        run: python3 -m py_compile tools/research/retro_diagnose_games_v2.py
+      - name: Build current Champion
+        run: python3 scripts/build.py --output build/champion
+      - name: Download 6520-game source artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/retro-v2/raw build/retro-v2/out build/retro-v2/experience
+          curl -fL \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            -o build/retro-v2/source.zip \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${SOURCE_ARTIFACT_ID}/zip"
+          unzip -q build/retro-v2/source.zip -d build/retro-v2/raw
+          test "$(find build/retro-v2/raw -type f -name '*.json' | wc -l)" -eq 652
+      - name: Record identity
+        run: |
+          cat > build/retro-v2/out/run-metadata.json <<EOF
+          {
+            "analysis_sha": "$(git rev-parse HEAD)",
+            "source_run_id": ${SOURCE_RUN_ID},
+            "source_artifact_id": ${SOURCE_ARTIFACT_ID},
+            "version": 2,
+            "changes": ["dedupe repeated swing patterns before deep search", "attribute quiet opponent mistakes by deep loss even before static score moves"]
+          }
+          EOF
+      - name: Run refined full retrospective diagnosis
+        run: |
+          python3 tools/research/retro_diagnose_games_v2.py \
+            --input build/retro-v2/raw \
+            --engine build/champion \
+            --output-dir build/retro-v2/out \
+            --expected-games 6520 \
+            --expected-plies 875422 \
+            --max-window-plies 4 \
+            --swing-threshold 300 \
+            --deep-intervals 300 \
+            --shallow-ms 50 \
+            --deep-ms 500 \
+            --move-signal 100 \
+            --blunder-threshold 150 \
+            --good-tolerance 80 \
+            --score-gap 200 \
+            --experience-file build/retro-v2/experience/retro-6520-v2-experience.bin \
+            --learning-ms 500 \
+            --warm-verify 100
+      - name: Publish report
+        if: always()
+        run: |
+          if [[ -f build/retro-v2/out/report.md ]]; then
+            cat build/retro-v2/out/report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload refined diagnosis
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: retrospective-diagnosis-6520-v2-${{ github.run_id }}
+          path: |
+            build/retro-v2/out
+            build/retro-v2/experience
+          retention-days: 180
