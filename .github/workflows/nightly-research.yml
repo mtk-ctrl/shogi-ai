@@ -1,12 +1,9 @@
 name: Nightly Research Arena
 
 on:
+  schedule:
+    - cron: "5 15 * * *" # 00:05 Asia/Tokyo
   workflow_dispatch:
-    inputs:
-      duration_minutes:
-        description: "Research budget for branch validation"
-        required: false
-        default: "30"
 
 permissions:
   contents: read
@@ -18,76 +15,73 @@ concurrency:
 jobs:
   research:
     runs-on: ubuntu-latest
-    timeout-minutes: 330
+    timeout-minutes: 295 # hard ceiling near 05:00 JST
     steps:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-
       - name: Install dependency
         run: python3 -m pip install python-shogi==1.1.1
-
       - name: Validate research configuration
         run: |
           python3 -m json.tool research/nightly-config.json >/dev/null
           python3 -m json.tool research/challengers.json >/dev/null
-
       - name: Build Champion and validator
         run: |
           python3 scripts/build.py --output build/champion
           python3 scripts/build.py --kifu-validator --output build/kifu-validator
-
       - name: Unit and smoke checks
         run: |
+          mkdir -p build/research/raw build/research/report build/research/experience
           python3 tests/test_opening_book_usi.py build/champion shogi-ai-book.tsv
           python3 benchmarks/arena.py --engine-a build/champion --engine-b build/champion \
             --options-a '{"OpeningBook":false,"ExperienceCache":false}' \
             --options-b '{"OpeningBook":false,"ExperienceCache":false}' \
             --games 2 --max-plies 80 --seed 2026100601 --go-command 'go movetime 20' \
             --output build/research/smoke.json
-
       - name: Freeze run identity
         run: |
-          mkdir -p build/research/raw build/research/report
           printf '%s\n' "$(git rev-parse HEAD)" > build/research/report/champion-sha.txt
           printf '%s\n' "$(git rev-parse HEAD:shogi-ai-book.tsv)" > build/research/report/book-blob.txt
           cp research/nightly-config.json build/research/report/
           cp research/challengers.json build/research/report/
-
-      - name: Experience E0 - Book ON
+      - name: Experience E0 - Book ON with persistent experience
         run: |
           python3 benchmarks/arena.py --engine-a build/champion --engine-b build/champion \
-            --options-a '{"OpeningBook":true,"ExperienceCache":false}' \
-            --options-b '{"OpeningBook":true,"ExperienceCache":false}' \
-            --games 20 --max-plies 300 --seed 2026100610 --go-command 'go movetime 50' \
+            --options-a '{"OpeningBook":true,"ExperienceCache":true,"ExperienceFile":"build/research/experience/e0-a.bin"}' \
+            --options-b '{"OpeningBook":true,"ExperienceCache":true,"ExperienceFile":"build/research/experience/e0-b.bin"}' \
+            --games 200 --max-plies 300 --seed 2026100610 --go-command 'go movetime 50' \
             --output build/research/raw/E0-book-on.json
-
-      - name: Experience E1 - Book OFF
+      - name: Experience E1 - Book OFF with persistent experience
         run: |
           python3 benchmarks/arena.py --engine-a build/champion --engine-b build/champion \
-            --options-a '{"OpeningBook":false,"ExperienceCache":false}' \
-            --options-b '{"OpeningBook":false,"ExperienceCache":false}' \
-            --games 20 --max-plies 300 --seed 2026100620 --go-command 'go movetime 50' \
+            --options-a '{"OpeningBook":false,"ExperienceCache":true,"ExperienceFile":"build/research/experience/e1-a.bin"}' \
+            --options-b '{"OpeningBook":false,"ExperienceCache":true,"ExperienceFile":"build/research/experience/e1-b.bin"}' \
+            --games 200 --max-plies 300 --seed 2026100620 --go-command 'go movetime 50' \
             --output build/research/raw/E1-book-off.json
-
       - name: Build Position Bank seed
         run: |
           python3 tools/research/build_position_bank.py --input build/research/raw \
-            --output build/research/position-bank.jsonl --stride 20 --min-ply 20
-
+            --output build/research/position-bank.jsonl --stride 10 --min-ply 20
+      - name: Diagnosis - evaluation breakdown and shallow/deep disagreement
+        run: |
+          python3 tools/research/diagnose_positions.py --engine build/champion \
+            --bank build/research/position-bank.jsonl \
+            --output build/research/report/diagnosis.json \
+            --problems-output build/research/report/problem-suite.jsonl \
+            --limit 200 --shallow-ms 50 --deep-ms 500 --score-gap 200
       - name: Experience E2 - Position Bank paired replay
         run: |
           if [[ -s build/research/position-bank.jsonl ]]; then
             PYTHONPATH=benchmarks python3 benchmarks/position_arena.py \
               --engine-a build/champion --engine-b build/champion \
-              --options-a '{"OpeningBook":false,"ExperienceCache":false}' \
-              --options-b '{"OpeningBook":false,"ExperienceCache":false}' \
-              --bank build/research/position-bank.jsonl --positions 10 --max-plies 240 \
+              --options-a '{"OpeningBook":false,"ExperienceCache":true,"ExperienceFile":"build/research/experience/e2-a.bin"}' \
+              --options-b '{"OpeningBook":false,"ExperienceCache":true,"ExperienceFile":"build/research/experience/e2-b.bin"}' \
+              --bank build/research/position-bank.jsonl --positions 100 --max-plies 240 \
               --seed 2026100630 --go-command 'go movetime 50' \
               --output build/research/raw/E2-position-bank.json
           fi
-
-      - name: Challenger screening - evaluation hypotheses
+      - name: Challenger screening - registered evaluation hypotheses
         shell: bash
         run: |
           set -euo pipefail
@@ -103,7 +97,6 @@ jobs:
               --seed $((2026100700 + RANDOM % 5000)) --go-command 'go movetime 50' \
               --output "build/research/raw/C-${id}.json"
           done
-
       - name: Aggregate research report
         if: always()
         run: |
@@ -115,36 +108,31 @@ jobs:
               try: d=json.loads(p.read_text())
               except Exception: continue
               n=d.get('games',0); score=d.get('score_a')
-              if score is None and n:
-                  score=(d.get('wins_a',0)+.5*d.get('draws',0))/n
-              elo=None
-              if score is not None and 0<score<1:
-                  elo=400*math.log10(score/(1-score))
-              rows.append({'file':p.name,'games':n,'wins_a':d.get('wins_a'),
-                           'draws':d.get('draws'),'wins_b':d.get('wins_b'),
-                           'score_a':score,'elo_a_estimate':elo,
+              if score is None and n: score=(d.get('wins_a',0)+.5*d.get('draws',0))/n
+              elo=400*math.log10(score/(1-score)) if score is not None and 0<score<1 else None
+              rows.append({'file':p.name,'games':n,'wins_a':d.get('wins_a'),'draws':d.get('draws'),
+                           'wins_b':d.get('wins_b'),'score_a':score,'elo_a_estimate':elo,
                            'illegal_games':d.get('illegal_games',0)})
-          report={'schema_version':1,'champion_sha':Path('build/research/report/champion-sha.txt').read_text().strip(),
-                  'results':rows,
-                  'capability_gates':{
-                    'G1_paired_arena':True,'G2_position_bank':True,
-                    'G3_per_position_breakdown':False,'G4_disagreement_eval_swing':False,
-                    'G5_problem_suite':False,'G6_challenger_manifest':True,
-                    'G7_sequential_allocation_uncertainty':False,'G8_book_exit_credit':False,
-                    'G9_valuable_novelty':False,'G10_external_benchmark':False}}
+          diag={}
+          dp=Path('build/research/report/diagnosis.json')
+          if dp.exists(): diag=json.loads(dp.read_text())
+          report={'schema_version':2,'champion_sha':Path('build/research/report/champion-sha.txt').read_text().strip(),
+                  'results':rows,'diagnosis_summary':{'positions':diag.get('positions',0),'problems':diag.get('problems',0)},
+                  'capability_gates':{'G1_paired_arena':True,'G2_position_bank':True,
+                    'G3_per_position_breakdown':True,'G4_disagreement_eval_swing':True,'G5_problem_suite':True,
+                    'G6_challenger_manifest':True,'G7_sequential_allocation_uncertainty':False,
+                    'G8_book_exit_credit':False,'G9_valuable_novelty':False,'G10_external_benchmark':False}}
           Path('build/research/report/nightly-report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
           with Path('build/research/report/nightly-report.md').open('w') as f:
-              f.write('# Nightly Research branch validation\n\n')
+              f.write('# Nightly Research\n\n')
               f.write(f"Champion: `{report['champion_sha']}`\n\n")
-              f.write('## Results\n\n')
-              for r in rows:
-                  f.write(f"- {r['file']}: {r['games']} games, score(A)={r['score_a']}, illegal={r['illegal_games']}\n")
-              f.write('\n## Capability gaps\n\n')
+              f.write(f"Diagnosis: {report['diagnosis_summary']['positions']} positions, {report['diagnosis_summary']['problems']} problems\n\n")
+              for r in rows: f.write(f"- {r['file']}: {r['games']} games, score(A)={r['score_a']}, illegal={r['illegal_games']}\n")
+              f.write('\n## Remaining capability gaps\n')
               for k,v in report['capability_gates'].items():
                   if not v: f.write(f'- {k}: NOT IMPLEMENTED; do not substitute a simpler metric.\n')
           PY
           cat build/research/report/nightly-report.md >> "$GITHUB_STEP_SUMMARY"
-
       - name: Upload raw research games
         if: always()
         uses: actions/upload-artifact@v4
@@ -152,8 +140,7 @@ jobs:
           name: nightly-research-raw-${{ github.run_id }}
           path: build/research/raw
           retention-days: 14
-
-      - name: Upload research report and Position Bank seed
+      - name: Upload research report, problems, Position Bank and experience
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -161,4 +148,5 @@ jobs:
           path: |
             build/research/report
             build/research/position-bank.jsonl
+            build/research/experience
           retention-days: 180
