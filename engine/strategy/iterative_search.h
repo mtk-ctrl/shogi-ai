@@ -32,6 +32,7 @@ class BasicIterativeSearch {
 public:
     struct Stats : BasicAlphaBeta3TT<Evaluator>::Stats {
         std::uint64_t qnodes = 0, qcutoffs = 0, qlimit_leaves = 0;
+        std::uint64_t aspiration_attempts = 0, aspiration_fail_low = 0, aspiration_fail_high = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -39,6 +40,7 @@ public:
     static constexpr int MaxDepth = 64;
     static constexpr int QuiescenceDepth = 8;
     static constexpr int MaxPly = 128;
+    static constexpr int AspirationDelta = 300; // centipawn-like units; one pawn = 100
     static bool is_mate_score(int value) { return std::abs(value) >= MateScore - MaxPly; }
 
     explicit BasicIterativeSearch(unsigned seed = 5489u, Evaluator evaluator = Evaluator{})
@@ -50,6 +52,7 @@ public:
         if (quiescence_enabled_ != enabled) experience_.clear();
         quiescence_enabled_ = enabled;
     }
+    void set_aspiration_enabled(bool enabled) { aspiration_enabled_ = enabled; }
     void clear_experience() { experience_.clear(); }
     bool load_experience(const std::string& path, std::uint64_t signature) {
         return experience_.load(path, signature);
@@ -103,36 +106,64 @@ public:
             iteration_hints_.new_search();
             try {
                 check_stop();
-                auto moves = ordered(position, original, {}, depth >= 4 && result.depth ? result.move : "");
-                int best = -Infinity;
-                std::vector<SearchResult> tied;
-                for (const auto& move : moves) {
-                    check_stop();
-                    Node child;
-                    {
-                        make(position, move);
-                        Undo undo{position};
-                        visit(1);
-                        child = search(position, depth - 1, 1, best, Infinity,
-                                       next_history(root_history, position.hash_key()));
+                struct RootAttempt {
+                    int best = -Infinity;
+                    std::vector<SearchResult> tied;
+                };
+                auto run_root = [&](int window_alpha, int window_beta) {
+                    RootAttempt attempt;
+                    auto moves = ordered(position, original, {}, depth >= 4 && result.depth ? result.move : "");
+                    int alpha = window_alpha;
+                    for (const auto& move : moves) {
+                        check_stop();
+                        Node child;
+                        {
+                            make(position, move);
+                            Undo undo{position};
+                            visit(1);
+                            child = search(position, depth - 1, 1, alpha, window_beta,
+                                           next_history(root_history, position.hash_key()));
+                        }
+                        const int value = child.value;
+                        if (value > attempt.best) { attempt.best = value; attempt.tied.clear(); }
+                        if (value == attempt.best) {
+                            SearchResult candidate;
+                            candidate.move = move; candidate.score = value;
+                            candidate.depth = depth; candidate.has_score = true;
+                            candidate.pv = {move};
+                            candidate.pv.insert(candidate.pv.end(), child.pv.begin(), child.pv.end());
+                            attempt.tied.push_back(std::move(candidate));
+                        }
+                        alpha = std::max(alpha, attempt.best);
+                        if (attempt.best >= window_beta) break;
                     }
-                    const int value = child.value;
-                    if (value > best) { best = value; tied.clear(); }
-                    if (value == best) {
-                        SearchResult candidate;
-                        candidate.move = move; candidate.score = value;
-                        candidate.depth = depth; candidate.has_score = true;
-                        candidate.pv = {move};
-                        candidate.pv.insert(candidate.pv.end(), child.pv.begin(), child.pv.end());
-                        tied.push_back(std::move(candidate));
+                    return attempt;
+                };
+
+                RootAttempt attempt;
+                const bool use_aspiration = aspiration_enabled_ && result.has_score && depth >= 2;
+                if (use_aspiration) {
+                    ++stats_.aspiration_attempts;
+                    const int lower = std::max(-Infinity, result.score - AspirationDelta);
+                    const int upper = std::min(Infinity, result.score + AspirationDelta);
+                    attempt = run_root(lower, upper);
+                    if (attempt.best <= lower) {
+                        ++stats_.aspiration_fail_low;
+                        attempt = run_root(-Infinity, Infinity);
+                    } else if (attempt.best >= upper) {
+                        ++stats_.aspiration_fail_high;
+                        attempt = run_root(-Infinity, Infinity);
                     }
+                } else {
+                    attempt = run_root(-Infinity, Infinity);
                 }
-                std::sort(tied.begin(), tied.end(), [&](const auto& a, const auto& b) {
+                if (attempt.tied.empty()) throw std::logic_error("root search produced no move");
+                std::sort(attempt.tied.begin(), attempt.tied.end(), [&](const auto& a, const auto& b) {
                     return std::find(original.begin(), original.end(), a.move)
                         < std::find(original.begin(), original.end(), b.move);
                 });
                 auto choice_rng = initial_rng;
-                result = tied[std::uniform_int_distribution<std::size_t>(0, tied.size() - 1)(choice_rng)];
+                result = attempt.tied[std::uniform_int_distribution<std::size_t>(0, attempt.tied.size() - 1)(choice_rng)];
                 rng_ = choice_rng; // consume one tie draw, not one per iteration
                 store_experience(position, depth, result.move);
                 if (completed) completed(result);
@@ -399,6 +430,7 @@ private:
     ExperienceCache experience_, iteration_hints_;
     bool experience_enabled_ = false;
     bool quiescence_enabled_ = true;
+    bool aspiration_enabled_ = true;
     bool experience_allowed_ = false;
     bool board_scores_ = false;
     rules::Color root_ = rules::Color::Black;

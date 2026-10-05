@@ -73,16 +73,33 @@ int main() {
         std::cout << "PASS safe three-ply transpositions retain exact score reuse\n";
         strategy::FeatureAlphaBeta3TT fixed;
         strategy::IterativeSearch features;
+        strategy::IterativeSearch baseline_aspiration_off;
         features.set_quiescence_enabled(false);
+        baseline_aspiration_off.set_quiescence_enabled(false);
+        baseline_aspiration_off.set_aspiration_enabled(false);
+        std::uint64_t baseline_nodes = 0, aspiration_nodes = 0, aspiration_attempts = 0, aspiration_failures = 0;
         p = rules::Position();
         for (unsigned sample = 0; sample < 6; ++sample) {
-            fixed.set_seed(70000 + sample); features.set_seed(70000 + sample);
+            fixed.set_seed(70000 + sample);
+            features.set_seed(70000 + sample);
+            baseline_aspiration_off.set_seed(70000 + sample);
             const auto expected = fixed.choose(p);
+            auto baseline_position = p.clone();
+            strategy::SearchControl baseline_control;
+            const auto baseline = baseline_aspiration_off.choose(baseline_position, 3, baseline_control);
             strategy::SearchControl control;
             const auto actual = features.choose(p, 3, control);
             require(actual.move == expected && actual.score == fixed.last_score(), "v0.0.13 depth-three compatibility");
+            require(actual.move == baseline.move && actual.score == baseline.score, "aspiration preserves fixed-depth move and score");
+            baseline_nodes += baseline_aspiration_off.last_stats().nodes;
+            aspiration_nodes += features.last_stats().nodes;
+            aspiration_attempts += features.last_stats().aspiration_attempts;
+            aspiration_failures += features.last_stats().aspiration_fail_low + features.last_stats().aspiration_fail_high;
             validate_pv(p, actual); play(p, expected);
         }
+        std::cout << "DIAG aspiration nodes baseline=" << baseline_nodes << " candidate=" << aspiration_nodes
+                  << " delta_pct=" << (100.0 * (double(aspiration_nodes) - baseline_nodes) / baseline_nodes)
+                  << " attempts=" << aspiration_attempts << " failures=" << aspiration_failures << '\n';
         std::cout << "PASS v0.0.13 exact depth-three move/score equivalence on six opening positions\n";
         features.set_quiescence_enabled(true);
         p = rules::Position(); const auto before = p.sfen(); const auto history = p.history_key();
