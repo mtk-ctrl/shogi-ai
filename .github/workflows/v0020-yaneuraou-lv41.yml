@@ -1,0 +1,92 @@
+name: v0.0.20 YaneuraOu Lv41
+
+on:
+  push:
+    branches: [v0020-ordering-diagnostics]
+    paths:
+      - ".github/workflows/v0020-yaneuraou-lv41.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  YANEURAOU_REF: c1b80eaa09fe13d5f12b1599d1ae4d53c224de30
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v5
+        with:
+          ref: v0020-ordering-diagnostics
+
+      - name: Install python-shogi
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build shogi-ai
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Fetch and build pinned YaneuraOu Material
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none https://github.com/yaneurao/YaneuraOu.git external/YaneuraOu
+          git -C external/YaneuraOu checkout "$YANEURAOU_REF"
+          make -C external/YaneuraOu/source clean COMPILER=g++ TARGET_CPU=SSE42 YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          make -C external/YaneuraOu/source -j2 tournament COMPILER=g++ TARGET_CPU=SSE42 YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          test -x external/YaneuraOu/source/YaneuraOu-by-gcc
+
+      - name: Run 104 games in four lanes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p benchmarks/external-results/v0020-lv41
+          NODES="$(python3 benchmarks/external_levels.py --level 41 --nodes-only)"
+          test "$NODES" = "1048"
+          run_lane() {
+            lane="$1"
+            python3 benchmarks/external_match.py \
+              --self-engine build/shogi-ai \
+              --opponent-engine external/YaneuraOu/source/YaneuraOu-by-gcc \
+              --self-options '{"ExperienceCache":"false","OpeningBook":"false"}' \
+              --opponent-options '{"Threads":1,"USI_Hash":16,"USI_OwnBook":false}' \
+              --self-go 'go movetime 50' \
+              --opponent-go "go nodes $NODES" \
+              --games 26 --max-plies 400 \
+              --seed "$((2026102041 + lane * 10000))" \
+              --output "benchmarks/external-results/v0020-lv41/lane-${lane}.json"
+          }
+          pids=()
+          for lane in 0 1 2 3; do
+            run_lane "$lane" > "benchmarks/external-results/v0020-lv41/lane-${lane}.log" 2>&1 &
+            pids+=("$!")
+          done
+          for pid in "${pids[@]}"; do wait "$pid"; done
+
+      - name: Aggregate result
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          rows=[json.loads(p.read_text()) for p in sorted(Path('benchmarks/external-results/v0020-lv41').glob('lane-*.json'))]
+          games=sum(r['games'] for r in rows)
+          w=sum(r['wins_self'] for r in rows); d=sum(r['draws'] for r in rows); l=sum(r['losses_self'] for r in rows)
+          illegal=sum(r['illegal_games'] for r in rows)
+          out={'level':41,'nodes':1048,'games':games,'wins':w,'draws':d,'losses':l,
+               'score':(w+0.5*d)/games,'illegal_games':illegal}
+          Path('benchmarks/external-results/v0020-lv41/summary.json').write_text(json.dumps(out,indent=2)+'\n')
+          print(json.dumps(out,indent=2))
+          if games != 104 or illegal != 0: raise SystemExit(1)
+          PY
+
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v0020-yaneuraou-lv41-${{ github.run_id }}
+          path: benchmarks/external-results/v0020-lv41
+          retention-days: 14
