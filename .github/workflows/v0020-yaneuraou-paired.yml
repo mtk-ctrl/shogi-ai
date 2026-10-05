@@ -1,0 +1,62 @@
+name: v0.0.20 YaneuraOu Paired Control
+
+on:
+  push:
+    branches: [v0020-ordering-diagnostics]
+    paths:
+      - ".github/workflows/v0020-yaneuraou-paired.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  YANEURAOU_REF: c1b80eaa09fe13d5f12b1599d1ae4d53c224de30
+
+jobs:
+  paired:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: v0020-ordering-diagnostics
+          fetch-depth: 0
+      - run: python3 -m pip install python-shogi==1.1.1
+      - name: Build candidate baseline and opponent
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/build.py --output build/v0020
+          git worktree add --detach /tmp/shogi-v019 5df0efb40d00a07056b4024b84cc4ca430e0a038
+          (cd /tmp/shogi-v019 && python3 scripts/build.py --output "$GITHUB_WORKSPACE/build/v019")
+          git clone --filter=blob:none https://github.com/yaneurao/YaneuraOu.git external/YaneuraOu
+          git -C external/YaneuraOu checkout "$YANEURAOU_REF"
+          make -C external/YaneuraOu/source clean COMPILER=g++ TARGET_CPU=SSE42 YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          make -C external/YaneuraOu/source -j2 tournament COMPILER=g++ TARGET_CPU=SSE42 YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+      - name: Run old and candidate sequentially with identical seeds
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/paired
+          common=(--opponent-engine external/YaneuraOu/source/YaneuraOu-by-gcc --self-options '{"ExperienceCache":"false","OpeningBook":"false"}' --opponent-options '{"Threads":1,"USI_Hash":16,"USI_OwnBook":false}' --self-go 'go movetime 50' --opponent-go 'go nodes 1048' --games 20 --max-plies 400 --seed 20261005)
+          python3 benchmarks/external_match.py --self-engine build/v019 "${common[@]}" --output build/paired/v019.json > build/paired/v019.log 2>&1
+          python3 benchmarks/external_match.py --self-engine build/v0020 "${common[@]}" --output build/paired/v0020.json > build/paired/v0020.log 2>&1
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          out={}
+          for name in ('v019','v0020'):
+              r=json.loads(Path(f'build/paired/{name}.json').read_text())
+              out[name]={'wins':r['wins_self'],'draws':r['draws'],'losses':r['losses_self'],'score':r['score_self'],'illegal_games':r['illegal_games'],'mean_ms':r['timing']['self']['mean_ms']}
+          out['score_delta']=out['v0020']['score']-out['v019']['score']
+          Path('build/paired/summary.json').write_text(json.dumps(out,indent=2)+'\n')
+          print(json.dumps(out,indent=2))
+          if out['v019']['illegal_games'] or out['v0020']['illegal_games']: raise SystemExit(1)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v0020-yaneuraou-paired-${{ github.run_id }}
+          path: build/paired
+          retention-days: 14
