@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-05",
+  "scale": "yaneuraou-material-v1",
+  "tested_engine": {
+    "version": "v0.0.19",
+    "base_commit": "48fb6a22baef24a6ce672dbea09b57f00b5bd820",
+    "self_go": "go movetime 50",
+    "experience_cache": false,
+    "opening_book_full_profile": "gen3"
+  },
+  "opponent": {
+    "engine": "YaneuraOu",
+    "edition": "YANEURAOU_ENGINE_MATERIAL",
+    "material_level": 1,
+    "ref": "c1b80eaa09fe13d5f12b1599d1ae4d53c224de30",
+    "threads": 1,
+    "usi_hash_mb": 16,
+    "opening_book": false
+  },
+  "policy": {
+    "certification_games": 100,
+    "clear_score_min": 0.55,
+    "equal_zone_score_min": 0.45,
+    "illegal_moves_required": 0
+  },
+  "initial_sweep_20_games_each": [
+    {"profile":"core","level":21,"nodes":102,"wins":19,"draws":1,"losses":0,"score":0.975,"illegal_games":0},
+    {"profile":"core","level":31,"nodes":327,"wins":12,"draws":2,"losses":6,"score":0.65,"illegal_games":0},
+    {"profile":"core","level":41,"nodes":1048,"wins":12,"draws":0,"losses":8,"score":0.60,"illegal_games":0},
+    {"profile":"core","level":51,"nodes":3352,"wins":3,"draws":0,"losses":17,"score":0.15,"illegal_games":0},
+    {"profile":"core","level":61,"nodes":10723,"wins":0,"draws":0,"losses":20,"score":0.0,"illegal_games":0},
+    {"profile":"full","level":21,"nodes":102,"wins":18,"draws":0,"losses":2,"score":0.90,"illegal_games":0},
+    {"profile":"full","level":31,"nodes":327,"wins":15,"draws":1,"losses":4,"score":0.775,"illegal_games":0},
+    {"profile":"full","level":41,"nodes":1048,"wins":7,"draws":0,"losses":13,"score":0.35,"illegal_games":0},
+    {"profile":"full","level":51,"nodes":3352,"wins":0,"draws":0,"losses":20,"score":0.0,"illegal_games":0},
+    {"profile":"full","level":61,"nodes":10723,"wins":0,"draws":0,"losses":20,"score":0.0,"illegal_games":0}
+  ],
+  "refinement_20_games_each": [
+    {"profile":"core","level":43,"nodes":1322,"wins":6,"draws":0,"losses":14,"score":0.30,"illegal_games":0},
+    {"profile":"core","level":45,"nodes":1668,"wins":5,"draws":0,"losses":15,"score":0.25,"illegal_games":0},
+    {"profile":"core","level":47,"nodes":2105,"wins":7,"draws":0,"losses":13,"score":0.35,"illegal_games":0},
+    {"profile":"core","level":49,"nodes":2656,"wins":2,"draws":1,"losses":17,"score":0.125,"illegal_games":0},
+    {"profile":"full","level":33,"nodes":413,"wins":11,"draws":0,"losses":9,"score":0.55,"illegal_games":0},
+    {"profile":"full","level":35,"nodes":521,"wins":8,"draws":0,"losses":12,"score":0.40,"illegal_games":0},
+    {"profile":"full","level":37,"nodes":658,"wins":4,"draws":1,"losses":15,"score":0.225,"illegal_games":0},
+    {"profile":"full","level":39,"nodes":830,"wins":9,"draws":1,"losses":10,"score":0.475,"illegal_games":0}
+  ],
+  "certification_100_games_each": [
+    {"profile":"core","level":41,"nodes":1048,"wins":54,"draws":2,"losses":44,"score":0.55,"illegal_games":0,"status":"clear","average_plies":106.0,"self_mean_ms":44.473,"opponent_mean_ms":0.781},
+    {"profile":"core","level":42,"nodes":1177,"wins":35,"draws":3,"losses":62,"score":0.365,"illegal_games":0,"status":"not_clear","average_plies":113.97,"self_mean_ms":44.931,"opponent_mean_ms":0.982},
+    {"profile":"full","level":33,"nodes":413,"wins":55,"draws":3,"losses":42,"score":0.565,"illegal_games":0,"status":"clear","average_plies":121.81,"self_mean_ms":44.155,"opponent_mean_ms":0.564},
+    {"profile":"full","level":34,"nodes":464,"wins":41,"draws":2,"losses":57,"score":0.42,"illegal_games":0,"status":"not_clear","average_plies":111.27,"self_mean_ms":44.239,"opponent_mean_ms":0.712}
+  ],
+  "conclusion": {
+    "core_highest_certified_clear_level": 41,
+    "core_equivalent_nodes": 1048,
+    "full_highest_certified_clear_level": 33,
+    "full_equivalent_nodes": 413,
+    "workflow_run_id": 37296979311,
+    "note": "This is a project-local fixed-opponent benchmark and is not a direct human dan/kyu or Elo conversion. The lower full-profile level suggests the current self-play opening book may not generalize well to this external opponent; a paired same-level book ON/OFF test is needed before attributing causality."
+  }
+}

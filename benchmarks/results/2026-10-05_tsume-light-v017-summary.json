@@ -1,0 +1,94 @@
+{
+  "date": "2026-10-05",
+  "dataset": {
+    "name": "YaneuraOu 5M tsume fixed benchmark subset",
+    "source_page": "https://yaneuraou.yaneu.com/2020/12/25/christmas-present/",
+    "source_drive_file_id": "1nJbFFaQeOx3gFafiVIR_oDIcG8iCOHf4",
+    "source_archive_bytes": 190188473,
+    "source_archive_sha256": "b8c89b98662d01447230bac481c875729cb54145a1eca8a7d52e2b9474812a8b",
+    "base_seed": 20261005,
+    "fixed_problems_per_label": 1000,
+    "labels": [3, 5, 7, 9, 11]
+  },
+  "comparison": {
+    "workflow_run": 37247666278,
+    "old_commit": "1eb6b8ac2f7b3a633080a96566c923877e6748ba",
+    "measured_candidate_commit": "9c81e8e0bd5e7dfe6776273278d92772490fbe01",
+    "same_host": true,
+    "time_ms_per_problem": 2000,
+    "problems_per_label": 100,
+    "3": {
+      "old": {"solved_within_horizon": 100, "median_ms": 30.484605499992767, "p95_ms": 133.31126900001777, "median_nodes": 26.0},
+      "new": {"solved_within_horizon": 100, "median_ms": 1.6087410000125146, "p95_ms": 9.223154999972394, "median_nodes": 26.0},
+      "median_speedup": 18.95
+    },
+    "5": {
+      "old": {"solved_within_horizon": 86, "median_ms": 360.54753850001475, "p95_ms": 2000.2282129999571, "median_nodes": 345.0},
+      "new": {"solved_within_horizon": 100, "median_ms": 17.270406500017543, "p95_ms": 302.35051800002566, "median_nodes": 345.0},
+      "median_speedup": 20.88
+    }
+  },
+  "current_fixed_1000": {
+    "time_ms_per_problem": 2000,
+    "3": {
+      "problems": 1000,
+      "solved_within_horizon": 1000,
+      "solved_exact_label": 999,
+      "solved_shorter": 1,
+      "timeout_or_unproven": 0,
+      "median_ms": 1.4997645000107696,
+      "mean_ms": 2.4371894669998255,
+      "p95_ms": 7.350417999987258,
+      "median_nodes": 26.0,
+      "mean_nodes": 28.073
+    },
+    "5": {
+      "problems": 1000,
+      "solved_within_horizon": 1000,
+      "solved_exact_label": 998,
+      "solved_shorter": 2,
+      "timeout_or_unproven": 0,
+      "median_ms": 17.29717750001214,
+      "mean_ms": 48.82194571199983,
+      "p95_ms": 193.0464069999971,
+      "median_nodes": 352.5,
+      "mean_nodes": 542.606
+    }
+  },
+  "short_budget_first_100": {
+    "5ms": {"3ply_solved": 87, "5ply_solved": 20},
+    "10ms": {"3ply_solved": 96, "5ply_solved": 38},
+    "50ms": {"3ply_solved": 100, "5ply_solved": 74}
+  },
+  "shorter_than_label_validation": {
+    "independent_checker": "python-shogi 1.1.1",
+    "workflow_run": 37247925516,
+    "confirmed_cases": [
+      {
+        "label": 3,
+        "sample_index": 824,
+        "sfen": "l3k3l/2G1gsg2/2npppn1p/p1p3rp1/4PP2P/P4G3/2P+s2Pb1/1R7/LN+p1K2NL b B2SP3p 161",
+        "shorter_line": ["8h8a"]
+      },
+      {
+        "label": 5,
+        "sample_index": 606,
+        "sfen": "ln1g4l/3sksg2/5r3/2pPpbppp/p3P1N2/4b3P/PPS2gP2/2G6/LN2K2RL w sn6p 90",
+        "shorter_line": ["S*5h", "5i6h", "4d3e"]
+      },
+      {
+        "label": 5,
+        "sample_index": 847,
+        "sfen": "lR2+S1k1l/6gb1/p2pNs1p1/4ppp2/1p2b2np/2p6/PP1PPPP2/3S1KS2/LN1G1G1NL b Gr3p 49",
+        "shorter_line": ["5a5b", "R*7a", "8a7a"]
+      }
+    ],
+    "interpretation": "The source page describes an N-vs-N-2 generation guarantee, but these three fixed-sample positions are also shorter mates under an independent python-shogi checker. Benchmark success is therefore defined as proving mate within the labelled horizon; exact-label counts remain diagnostic."
+  },
+  "ordinary_go": {
+    "changed": false,
+    "strategy_comparison_default_ms": 50,
+    "baseline_ref_unchanged": "167095f227b00a477939be1a0ca2bb8521bc0da4",
+    "integration_decision": "Do not run full five-ply mate search unconditionally every move. Evaluate a small-budget mate-3 helper and conditional mate-5 triggering separately."
+  }
+}

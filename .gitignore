@@ -1,0 +1,27 @@
+# Build outputs
+build/
+out/
+*.o
+*.obj
+*.exe
+*.so
+*.a
+
+# Android build outputs
+.gradle/
+**/build/
+*.apk
+*.aab
+android/signing/dev-signing.p12
+
+# Python
+__pycache__/
+*.pyc
+
+# Logs / temporary files
+*.log
+*.tmp
+
+# Large models / datasets (do not commit directly)
+models/
+datasets/

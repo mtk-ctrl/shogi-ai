@@ -1,0 +1,95 @@
+{
+  "scale": "yaneuraou-material-v1",
+  "scale_definition": {
+    "levels": 100,
+    "level_1_nodes": 10,
+    "level_100_nodes": 1000000,
+    "spacing": "logarithmic",
+    "opponent": "YaneuraOu YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1",
+    "threads": 1,
+    "usi_hash_mb": 16,
+    "opponent_book": false,
+    "yaneuraou_ref": "c1b80eaa09fe13d5f12b1599d1ae4d53c224de30",
+    "self_go": "go movetime 50",
+    "core_opening_book": false,
+    "core_experience_cache": false
+  },
+  "certification": {
+    "games": 100,
+    "clear_score_min": 0.55,
+    "equal_zone_score_min": 0.45,
+    "illegal_moves_required": 0
+  },
+  "tested_engine": {
+    "version": "v0.0.19",
+    "base_commit": "48fb6a22baef24a6ce672dbea09b57f00b5bd820",
+    "opening_book": "gen3",
+    "note": "The five later main commits through 8e1028597be7748ac4dc0bb26070fb262c98086d only add/adjust nightly self-play automation and its journal; engine/book contents tested here are unchanged."
+  },
+  "highest_certified_clear_level": 41,
+  "highest_certified_clear": {
+    "profile": "core",
+    "level": 41,
+    "opponent_nodes": 1048,
+    "games": 100,
+    "wins": 54,
+    "draws": 2,
+    "losses": 44,
+    "score": 0.55,
+    "illegal_games": 0,
+    "status": "clear",
+    "workflow_run_id": 37296979311
+  },
+  "next_level_check": {
+    "profile": "core",
+    "level": 42,
+    "opponent_nodes": 1177,
+    "games": 100,
+    "wins": 35,
+    "draws": 3,
+    "losses": 62,
+    "score": 0.365,
+    "illegal_games": 0,
+    "status": "not_clear",
+    "workflow_run_id": 37296979311
+  },
+  "full_engine_highest_certified_clear_level": 33,
+  "full_engine_highest_certified_clear": {
+    "profile": "full_opening_book_gen3",
+    "level": 33,
+    "opponent_nodes": 413,
+    "games": 100,
+    "wins": 55,
+    "draws": 3,
+    "losses": 42,
+    "score": 0.565,
+    "illegal_games": 0,
+    "status": "clear",
+    "workflow_run_id": 37296979311
+  },
+  "full_engine_next_level_check": {
+    "profile": "full_opening_book_gen3",
+    "level": 34,
+    "opponent_nodes": 464,
+    "games": 100,
+    "wins": 41,
+    "draws": 2,
+    "losses": 57,
+    "score": 0.42,
+    "illegal_games": 0,
+    "status": "not_clear",
+    "workflow_run_id": 37296979311
+  },
+  "latest_provisional": {
+    "level_equivalent": 21,
+    "opponent_nodes": 100,
+    "games": 4,
+    "wins": 3,
+    "draws": 0,
+    "losses": 1,
+    "score": 0.75,
+    "illegal_games": 0,
+    "status": "superseded_by_certification",
+    "workflow_run_id": 37286360882
+  }
+}

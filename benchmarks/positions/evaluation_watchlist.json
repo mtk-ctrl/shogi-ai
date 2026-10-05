@@ -1,0 +1,176 @@
+{
+  "source_match": "2026-10-04_features-vs-v009-100.json",
+  "early_unforced_forward_king_moves": 98,
+  "shelter_increasing_events": 98,
+  "unique_shelter_increasing_positions": 45,
+  "examples": [
+    {
+      "game": 5,
+      "ply": 5,
+      "move": "5i5h",
+      "before": "lnsgk1sn1/1r4gbl/ppppppppp/9/4B4/2P6/PP1PPPPPP/7R1/LNSGKGSNL b - 5",
+      "after": "lnsgk1sn1/1r4gbl/ppppppppp/9/4B4/2P6/PP1PPPPPP/4K2R1/LNSG1GSNL w - 6",
+      "color": 0,
+      "winner": "A",
+      "before_eval": {
+        "material": 0,
+        "safety": 12,
+        "pressure": 0,
+        "activity": 17,
+        "danger": 0,
+        "clamp": 0,
+        "total": 29
+      },
+      "after_eval": {
+        "material": 0,
+        "safety": 24,
+        "pressure": 0,
+        "activity": 11,
+        "danger": 0,
+        "clamp": 0,
+        "total": 35
+      },
+      "review_note": "王手回避ではない序盤の玉前進で守備配置点が増える例。悪手と断定せず、重み調整時の監視局面にする。"
+    },
+    {
+      "game": 100,
+      "ply": 2,
+      "move": "5a5b",
+      "before": "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 2",
+      "after": "lnsg1gsnl/1r2k2b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL b - 3",
+      "color": 1,
+      "winner": "A",
+      "before_eval": {
+        "material": 0,
+        "safety": 0,
+        "pressure": 0,
+        "activity": 7,
+        "danger": 0,
+        "clamp": 0,
+        "total": 7
+      },
+      "after_eval": {
+        "material": 0,
+        "safety": -12,
+        "pressure": 0,
+        "activity": 9,
+        "danger": 0,
+        "clamp": 0,
+        "total": -3
+      },
+      "review_note": "王手回避ではない序盤の玉前進で守備配置点が増える例。悪手と断定せず、重み調整時の監視局面にする。"
+    },
+    {
+      "game": 3,
+      "ply": 5,
+      "move": "5i5h",
+      "before": "lnsgk1snl/1r2g2b1/p1ppppppp/1p7/4B4/2P6/PP1PPPPPP/7R1/LNSGKGSNL b - 5",
+      "after": "lnsgk1snl/1r2g2b1/p1ppppppp/1p7/4B4/2P6/PP1PPPPPP/4K2R1/LNSG1GSNL w - 6",
+      "color": 0,
+      "winner": "A",
+      "before_eval": {
+        "material": 0,
+        "safety": 0,
+        "pressure": 0,
+        "activity": 15,
+        "danger": 0,
+        "clamp": 0,
+        "total": 15
+      },
+      "after_eval": {
+        "material": 0,
+        "safety": 12,
+        "pressure": 0,
+        "activity": 9,
+        "danger": 0,
+        "clamp": 0,
+        "total": 21
+      },
+      "review_note": "王手回避ではない序盤の玉前進で守備配置点が増える例。悪手と断定せず、重み調整時の監視局面にする。"
+    },
+    {
+      "game": 7,
+      "ply": 5,
+      "move": "5i5h",
+      "before": "lnsgkgsnl/4r2b1/ppppppppp/9/4B4/2P6/PP1PPPPPP/7R1/LNSGKGSNL b - 5",
+      "after": "lnsgkgsnl/4r2b1/ppppppppp/9/4B4/2P6/PP1PPPPPP/4K2R1/LNSG1GSNL w - 6",
+      "color": 0,
+      "winner": "B",
+      "before_eval": {
+        "material": 0,
+        "safety": 0,
+        "pressure": 0,
+        "activity": 11,
+        "danger": 0,
+        "clamp": 0,
+        "total": 11
+      },
+      "after_eval": {
+        "material": 0,
+        "safety": 12,
+        "pressure": 0,
+        "activity": 5,
+        "danger": 0,
+        "clamp": 0,
+        "total": 17
+      },
+      "review_note": "王手回避ではない序盤の玉前進で守備配置点が増える例。悪手と断定せず、重み調整時の監視局面にする。"
+    },
+    {
+      "game": 9,
+      "ply": 5,
+      "move": "5i5h",
+      "before": "lnsgkgsnl/5r1b1/p1ppppppp/1p7/4B4/2P6/PP1PPPPPP/7R1/LNSGKGSNL b - 5",
+      "after": "lnsgkgsnl/5r1b1/p1ppppppp/1p7/4B4/2P6/PP1PPPPPP/4K2R1/LNSG1GSNL w - 6",
+      "color": 0,
+      "winner": "B",
+      "before_eval": {
+        "material": 0,
+        "safety": 0,
+        "pressure": 0,
+        "activity": 11,
+        "danger": 0,
+        "clamp": 0,
+        "total": 11
+      },
+      "after_eval": {
+        "material": 0,
+        "safety": 12,
+        "pressure": 0,
+        "activity": 5,
+        "danger": 0,
+        "clamp": 0,
+        "total": 17
+      },
+      "review_note": "王手回避ではない序盤の玉前進で守備配置点が増える例。悪手と断定せず、重み調整時の監視局面にする。"
+    },
+    {
+      "game": 11,
+      "ply": 5,
+      "move": "5i5h",
+      "before": "lnsgkgsnb/1r6l/ppppppppp/9/4B4/2P6/PP1PPPPPP/7R1/LNSGKGSNL b - 5",
+      "after": "lnsgkgsnb/1r6l/ppppppppp/9/4B4/2P6/PP1PPPPPP/4K2R1/LNSG1GSNL w - 6",
+      "color": 0,
+      "winner": "A",
+      "before_eval": {
+        "material": 0,
+        "safety": 0,
+        "pressure": 0,
+        "activity": 10,
+        "danger": 0,
+        "clamp": 0,
+        "total": 10
+      },
+      "after_eval": {
+        "material": 0,
+        "safety": 12,
+        "pressure": 0,
+        "activity": 4,
+        "danger": 0,
+        "clamp": 0,
+        "total": 16
+      },
+      "review_note": "王手回避ではない序盤の玉前進で守備配置点が増える例。悪手と断定せず、重み調整時の監視局面にする。"
+    }
+  ]
+}

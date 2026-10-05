@@ -1,0 +1,38 @@
+#include "rules/position.h"
+#include "strategy/opening_book.h"
+#include <cstdio>
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <vector>
+
+namespace {
+void require(bool ok, const std::string& message) {
+    if (!ok) { std::cerr << "FAIL: " << message << '\n'; std::exit(1); }
+}
+}
+
+int main() {
+    shogi::rules::Position position;
+    const auto key = position.hash_key();
+    const std::string path = "build/opening-book-test.tsv";
+    {
+        std::ofstream out(path);
+        out << "# shogi-ai opening book v1\n";
+        out << key << "\t7g7f\t20\t12\t0\t8\t583\t400\n";
+        out << key << "\t2g2f\t10\t5\t0\t5\t500\t200\n";
+    }
+    shogi::strategy::OpeningBook book;
+    require(book.load(path), "valid book should load");
+    require(book.positions() == 1 && book.entries() == 2, "book counts");
+    const auto legal = position.legal_moves();
+    const auto a = book.pick(key, legal, 12345);
+    const auto b = book.pick(key, legal, 12345);
+    require(a && b && a->move == b->move, "same seed must be deterministic");
+    require(a->move == "7g7f" || a->move == "2g2f", "stored legal move expected");
+    require(book.pick(key, {"2g2f"}, 999)->move == "2g2f", "restriction must be respected");
+    require(!book.pick(key + 1, legal, 1), "unknown position should miss");
+    std::remove(path.c_str());
+    std::cout << "opening book tests passed\n";
+}

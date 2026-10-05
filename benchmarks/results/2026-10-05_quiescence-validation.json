@@ -1,0 +1,29 @@
+{
+  "base_commit": "245de7dc0e4e7def41e2cc47f64e5a47c5aba2ec",
+  "baseline_implementation": "bf5ad5e0e0a32f9690d114beba2eb06ff8ee972d",
+  "passed": [
+    "quiescence_test: exhaustive material oracle for both colors/depths 1,2; poisoned pawn; quiet check evasions; blocking drops; non-capture promotion; node interruption and board/history rollback; perpetual-check rule loss in qsearch",
+    "search_test: legacy minimax/TT equivalence with Quiescence OFF; stop/deadline/nodes; mate; repetition and clock limits with Quiescence ON",
+    "strategy_test: material, promotion, terminal and prior search regression",
+    "test_search_usi.py: score, PV, perspective, mate, Quiescence toggles, seldepth, tactical node/time limits, stop/isready/ponderhit/quit/EOF",
+    "test_eval_usi.py: promotion and evaluation settings",
+    "test_experience_cache.py: cross-game/restart persistence, settings signature and OFF",
+    "check_boundary.py: four upstream rule translation units only",
+    "checkpointed_match.py: resume at next game index after atomic checkpoint"
+  ],
+  "adopt_commit": "ccc04f2fe1c5f7da592f78db1ea0da358766dd1c",
+  "ci": {
+    "run_id": 37236484832,
+    "job_id": 111536493608,
+    "conclusion": "success",
+    "url": "https://github.com/mtk-ctrl/shogi-ai/actions/runs/37236484832"
+  },
+  "match": {
+    "games": 100,
+    "wins": 58,
+    "losses": 38,
+    "draws": 4,
+    "illegal_games": 0,
+    "go": "go movetime 50"
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "version": "v0.0.18",
+  "date": "2026-10-05",
+  "dataset": "benchmarks/tsume_dataset fixed seed 20261005",
+  "time_limit_ms_per_problem": 2000,
+  "baseline_main_commit": "1664195fdd0e3f2fe026abf4ec7733ae2ebd0e29",
+  "fastpath_candidate_commit": "1d35600cf498ecec686cf2f2884743413321b675",
+  "seven_ply_candidate_commit": "6247c035d89f6fd600155637f2e3022c50854672",
+  "same_runner_3_5": {
+    "actions_run": 37261005652,
+    "cpu": "AMD EPYC 7763 64-Core Processor",
+    "logical_cpus_visible": 2,
+    "baseline": {
+      "3": {
+        "problems": 1000,
+        "solved": 1000,
+        "exact": 999,
+        "shorter": 1,
+        "timeout": 0,
+        "wall_ms_median": 1.9330455,
+        "wall_ms_mean": 3.10752989,
+        "wall_ms_p95": 9.656423,
+        "nodes_median": 26.0,
+        "nodes_mean": 28.073
+      },
+      "5": {
+        "problems": 1000,
+        "solved": 999,
+        "exact": 997,
+        "shorter": 2,
+        "timeout": 1,
+        "wall_ms_median": 22.23858,
+        "wall_ms_mean": 62.924309944,
+        "wall_ms_p95": 251.513941,
+        "nodes_median": 352.5,
+        "nodes_mean": 542.355
+      }
+    },
+    "candidate": {
+      "3": {
+        "problems": 1000,
+        "solved": 1000,
+        "exact": 999,
+        "shorter": 1,
+        "timeout": 0,
+        "wall_ms_median": 0.231747,
+        "wall_ms_mean": 0.265684235,
+        "wall_ms_p95": 0.491925,
+        "nodes_median": 26.0,
+        "nodes_mean": 28.073
+      },
+      "5": {
+        "problems": 1000,
+        "solved": 1000,
+        "exact": 998,
+        "shorter": 2,
+        "timeout": 0,
+        "wall_ms_median": 1.353834,
+        "wall_ms_mean": 2.703037024,
+        "wall_ms_p95": 8.886919,
+        "nodes_median": 352.5,
+        "nodes_mean": 542.606
+      }
+    },
+    "median_speedup": {
+      "3": 8.34,
+      "5": 16.43
+    }
+  },
+  "seven_ply": {
+    "actions_run": 37261344533,
+    "cpu": "AMD EPYC 9V45 96-Core Processor",
+    "logical_cpus_visible": 2,
+    "problems": 100,
+    "solved": 100,
+    "exact": 100,
+    "shorter": 0,
+    "timeout": 0,
+    "wall_ms_median": 8.6627565,
+    "wall_ms_mean": 27.72364963,
+    "wall_ms_p95": 82.484646,
+    "nodes_median": 4130.0,
+    "nodes_mean": 9170.06,
+    "max_observed_wall_ms": 749.728075
+  },
+  "validation": {
+    "generated_move_equivalence_random_positions": 1440,
+    "generated_move_equivalence_in_check_positions": 24,
+    "rules_regression": "pass",
+    "mate_regression": "pass",
+    "usi_regression": "pass",
+    "ordinary_go_changed": false
+  }
+}

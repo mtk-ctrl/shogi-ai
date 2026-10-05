@@ -1,0 +1,29 @@
+{
+  "sha256": "c1607559882e3d7e1a6506097c2dde2da5fc8708c87cbb626b36c9065b3cba56",
+  "rows": [
+    {
+      "command": "go movetime 100",
+      "elapsed_ms": 90.36014999992403,
+      "output": [
+        "info depth 1 time 0 nodes 30 score cp 10 pv 7g7f",
+        "info depth 2 time 3 nodes 216 score cp 0 pv 7g7f 3c3d",
+        "info depth 3 time 13 nodes 1754 score cp 207 pv 7g7f 8b4b 8h3c+",
+        "info depth 4 time 56 nodes 6172 score cp 0 pv 7g7f 3c3d 8h2b+ 8b2b",
+        "info nodes 8888 string cutoffs 1685 min_cutoffs 1060 max_cutoffs 625 leaves 6481 terminals 0 ply1 121 ply2 382 ply3 2471 order_calls 1973 ordered_moves 69850 tt_probes 8888 tt_hits 439 tt_exact_hits 439 tt_bound_cutoffs 0 tt_stores 8445 tt_replacements 47 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+        "bestmove 7g7f"
+      ]
+    },
+    {
+      "command": "go movetime 500",
+      "elapsed_ms": 490.3006780000396,
+      "output": [
+        "info depth 1 time 0 nodes 30 score cp 10 pv 7g7f",
+        "info depth 2 time 1 nodes 216 score cp 0 pv 7g7f 3c3d",
+        "info depth 3 time 16 nodes 1754 score cp 207 pv 7g7f 8b4b 8h3c+",
+        "info depth 4 time 61 nodes 6172 score cp 0 pv 7g7f 3c3d 8h2b+ 8b2b",
+        "info nodes 57066 string cutoffs 5998 min_cutoffs 2248 max_cutoffs 3750 leaves 48728 terminals 0 ply1 148 ply2 477 ply3 3707 order_calls 7903 ordered_moves 250228 tt_probes 57065 tt_hits 439 tt_exact_hits 439 tt_bound_cutoffs 0 tt_stores 56622 tt_replacements 4017 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+        "bestmove 7g7f"
+      ]
+    }
+  ]
+}

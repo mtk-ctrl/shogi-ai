@@ -1,0 +1,80 @@
+{
+  "date": "2026-10-05",
+  "base_version": "v0.0.19",
+  "method": "self-play exact-position opening book",
+  "external_opening_data_used": false,
+  "corpus": {
+    "files_scanned": 54,
+    "files_with_games": 38,
+    "raw_games": 1103,
+    "accepted_unique_decisive_games": 754,
+    "duplicates": 242,
+    "skipped_nondecisive": 38,
+    "skipped_illegal": 69,
+    "accepted_moves": 92089
+  },
+  "book": {
+    "max_ply": 20,
+    "early_sample_rows": 15080,
+    "positions_seen": 6710,
+    "positions_kept": 158,
+    "entries": 191,
+    "file_bytes": 8360,
+    "min_position_samples": 8,
+    "min_move_samples": 3,
+    "max_moves_per_position": 3,
+    "max_score_gap": 0.12
+  },
+  "match": {
+    "run_id": 37270399469,
+    "artifact_id": 11327529423,
+    "condition": "same v0.0.19 binary; A=OpeningBook on; B=OpeningBook off; ExperienceCache off on both; go movetime 50; max 200 plies; alternating colors",
+    "seed": 2026100551,
+    "games": 100,
+    "wins_book": 45,
+    "draws": 29,
+    "losses_book": 26,
+    "score_book": 0.595,
+    "average_plies": 142.5,
+    "illegal_games": 0,
+    "timing_ms_per_move": {
+      "book": 42.711,
+      "no_book": 45.268,
+      "delta_percent": -5.6486
+    },
+    "nodes": {
+      "book": 21606602,
+      "no_book": 23467653,
+      "delta_percent": -7.9299
+    },
+    "book_as_black": {
+      "games": 50,
+      "wins": 20,
+      "draws": 16,
+      "losses": 14,
+      "score": 0.56
+    },
+    "book_as_white": {
+      "games": 50,
+      "wins": 25,
+      "draws": 13,
+      "losses": 12,
+      "score": 0.63
+    },
+    "score_prefixes": {
+      "10": 0.70,
+      "20": 0.575,
+      "25": 0.58,
+      "50": 0.60,
+      "75": 0.60,
+      "100": 0.595
+    },
+    "approx_score_95pct_interval": [0.5141, 0.6759]
+  },
+  "observations": [
+    "OpeningBook is a move decision layer, unlike ExperienceCache which is only a move-ordering hint.",
+    "A book hit bypasses the 50ms search; a miss falls through to v0.0.19 MateAssist and ordinary search.",
+    "The first 100-game result is positive but should be replicated before permanent adoption.",
+    "Self-play-only data produced unconventional black opening moves such as 2h3h, 4i3h, and 6i7h. This may exploit the current engine's own weaknesses and may not generalize to human or external-engine play."
+  ]
+}

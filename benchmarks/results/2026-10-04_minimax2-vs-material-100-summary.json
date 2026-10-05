@@ -1,0 +1,26 @@
+{
+  "version": "v0.0.4",
+  "strategy": "two-ply minimax with unchanged v0.0.3 material evaluation",
+  "implementation_commit": "bcea7d901a11165dcaa213d8e1976b493754442e",
+  "baseline_commit": "fb99c668e3355ee4cfded57abd0c3f6a50dbba51",
+  "benchmark_workflow_commit": "6600294b0c37d89e9b148bea74630ee1513dc787",
+  "benchmark_run": 37161850151,
+  "benchmark_artifact": 11288251173,
+  "games": 100,
+  "wins_v004": 100,
+  "draws": 0,
+  "wins_v003": 0,
+  "illegal_games": 0,
+  "average_plies": 87.14,
+  "timing_ms": {
+    "v0.0.4_mean": 22.067,
+    "v0.0.4_max": 852.364,
+    "v0.0.3_mean": 0.499,
+    "v0.0.3_max": 4.824
+  },
+  "android_run": 37161632564,
+  "apk_artifact": 11287674992,
+  "apk_size_bytes": 1204231,
+  "apk_sha256": "9a2ab634d78cda9e8fba8f793fb4b57517471b3542e2409a5d56a7ffa9966dd7",
+  "note": "CI wall time includes position reconstruction and USI I/O; no strict 1ms time forfeits. v0.0.4 was not installed on Pixel because routine strategy validation is automated."
+}

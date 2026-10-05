@@ -1,0 +1,22 @@
+{
+  "repository": "https://github.com/yaneurao/YaneuraOu",
+  "revision": "c1b80eaa09fe13d5f12b1599d1ae4d53c224de30",
+  "files": {
+    "LICENSE": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+    "source/position.cpp": "bd8ac4e00121013ba9939de6a90c64c78390c6c77e44417fb7293ef0c06f4506",
+    "source/bitboard.cpp": "cc0c561ccf9398f04e259ceeb813d7df7d6efc78d437a211f35e55403d53d831",
+    "source/types.cpp": "711d198f6427e5a569d4356566a192f06fb115108dbfb1b706aedd9152f78e24",
+    "source/movegen.cpp": "cda3ece7016edc19d37743b3e7a4df08b6bf60d15e502c8740b7ac516f84a9f2",
+    "source/position.h": "88268aad4fc763508bee35a20d1ebfa9f96e38f2664e180f231558096f68a925",
+    "source/bitboard.h": "5d5e42db93d577c347f7c751f7d005351a91be4eb5785c474a4b4a9e317d1f85",
+    "source/types.h": "194444f4c24ae87e99a2c6546cd34e8b66aabcf64982e6ced3bb4c5cd7ba376e",
+    "source/movegen.h": "1cda73ee5c5458f254bfe6bd5f50be4809f1cc494026cd062d865cd135484d13",
+    "source/config.h": "1f21c359cb282f3bd674a9a92229e49d62dfe6e78d374d304d7af45418e599a3",
+    "source/evaluate.h": "cfbd32ab8429aca735b7d548615edd6f85d40a483924ca2a2d924df519245243",
+    "source/misc.h": "1bfa12d34460e39ffe7cb0690629658678529dcc7b9c3b3992fea269d755f41b",
+    "source/extra/long_effect.h": "8c9453444a8f879d847a4665542ca6ea9e5d871c1b874180fc39cd7cd4b4e534",
+    "source/extra/key128.h": "9e6cc65c51fd598ce056248ecffb6240bf74041312d19c9e8122bb9a62e34f9f",
+    "source/extra/bitop.h": "fbccdf858cefcc6c33eba9ff3f1723d002fa8b1b539a1a4784f084ab0269e49b",
+    "source/extra/macros.h": "900d3e56a41d7253d679b931d54125bf9525ad11b057a48e83ea0a1e1d051505"
+  }
+}

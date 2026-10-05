@@ -1,0 +1,9 @@
+run_id=37263969958
+head_sha=8ec126751d92814fa413810b74d0cebac62be5c6
+CPU(s):                                  2
+On-line CPU(s) list:                     0,1
+Model name:                              AMD EPYC 9V45 96-Core Processor
+Thread(s) per core:                      2
+Core(s) per socket:                      1
+Socket(s):                               1
+NUMA node0 CPU(s):                       0,1

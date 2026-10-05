@@ -1,0 +1,26 @@
+[
+  {
+    "name": "king_shelter",
+    "term": "safety",
+    "better": "8k/9/9/9/9/9/9/3PGS3/4K4 b - 1",
+    "worse": "8k/9/9/9/1GSP5/9/9/9/4K4 b - 1"
+  },
+  {
+    "name": "king_pressure",
+    "term": "pressure",
+    "better": "4k4/9/9/2B2R3/9/9/9/9/K8 b - 1",
+    "worse": "4k4/9/9/B7R/9/9/9/9/K8 b - 1"
+  },
+  {
+    "name": "rook_activity",
+    "term": "activity",
+    "better": "8k/9/9/9/4R4/9/3PPP3/9/K3G4 b - 1",
+    "worse": "8k/9/9/9/9/9/4P4/3PRP3/K3G4 b - 1"
+  },
+  {
+    "name": "major_defense",
+    "term": "danger",
+    "better": "4r3k/9/9/9/4R4/4G4/9/9/K8 b - 1",
+    "worse": "4r3k/9/9/9/4R4/9/9/1G7/K8 b - 1"
+  }
+]

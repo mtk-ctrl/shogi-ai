@@ -1,0 +1,10 @@
+run_id=37264786776
+head_sha=bb1666dc784cb0b8dfd7175bf0b0ed64e2206f4e
+CPU(s):                                  2
+On-line CPU(s) list:                     0,1
+Model name:                              Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz
+Thread(s) per core:                      2
+Core(s) per socket:                      1
+Socket(s):                               1
+CPU(s) scaling MHz:                      123%
+NUMA node0 CPU(s):                       0,1

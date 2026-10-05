@@ -1,0 +1,57 @@
+{
+  "name": "YaneuraOu 5M tsume fixed benchmark subset",
+  "source_page": "https://yaneuraou.yaneu.com/2020/12/25/christmas-present/",
+  "source_drive_file_id": "1nJbFFaQeOx3gFafiVIR_oDIcG8iCOHf4",
+  "source_archive_bytes": 190188473,
+  "source_archive_sha256": "b8c89b98662d01447230bac481c875729cb54145a1eca8a7d52e2b9474812a8b",
+  "sample_count_per_ply": 1000,
+  "base_seed": 20261005,
+  "sampling": "random.Random(base_seed + ply).sample(range(nonempty_line_count), count), sorted by source index",
+  "files": {
+    "3": {
+      "source_member": "mate3.sfen",
+      "source_nonempty_lines": 998404,
+      "source_member_sha256": "fa2cf99839cf7e2121212c76c1a1a369ebe9930c199c638a4a2299e03adecd38",
+      "sample_file": "mate3_1000.sfen",
+      "sample_sha256": "3174c6e82fef1d91ab2cd064c8bd7c0111d6f1621fb1d0f898b94e69dc5ca13a",
+      "first_source_index": 2546,
+      "last_source_index": 993944
+    },
+    "5": {
+      "source_member": "mate5.sfen",
+      "source_nonempty_lines": 998824,
+      "source_member_sha256": "3e076153e632738b48fdebc59d11227229efcc213e1e31c62e3eb2e91a31b604",
+      "sample_file": "mate5_1000.sfen",
+      "sample_sha256": "cb1acc083d2e72d107d74764b1194885baf6dab1e2d2e0e117af1d80ad7282b8",
+      "first_source_index": 183,
+      "last_source_index": 997729
+    },
+    "7": {
+      "source_member": "mate7.sfen",
+      "source_nonempty_lines": 999071,
+      "source_member_sha256": "bde3a5302265da808295cf0dc56fc7091da046f8a3cc268e3980da38666d7ea0",
+      "sample_file": "mate7_1000.sfen",
+      "sample_sha256": "ea6fcb0e22d5355bd9b3096f114ecaa0c58c9335bdd11b257aa234d2ac70567f",
+      "first_source_index": 830,
+      "last_source_index": 998097
+    },
+    "9": {
+      "source_member": "mate9.sfen",
+      "source_nonempty_lines": 999672,
+      "source_member_sha256": "5e23e73cc4d2b8f2d2fb024cf9bde5f1849b4b21d2eddfd2c465244fa1fd1ec6",
+      "sample_file": "mate9_1000.sfen",
+      "sample_sha256": "7c88a637c81811ad93247dab0734614577dc0bb42007e65dfaf4f39a44d8a79e",
+      "first_source_index": 6,
+      "last_source_index": 999112
+    },
+    "11": {
+      "source_member": "mate11.sfen",
+      "source_nonempty_lines": 999998,
+      "source_member_sha256": "a973072d5269fb827163361476c322bc0af23c7a6ba2dd61c9537ca6f7231277",
+      "sample_file": "mate11_1000.sfen",
+      "sample_sha256": "cd231bece9729e4642d266ddc0e032d489ca14ae1242ecba5b876bc52f6a25f1",
+      "first_source_index": 552,
+      "last_source_index": 999874
+    }
+  }
+}

@@ -1,0 +1,441 @@
+{
+  "status": "interrupted; outcome log only; excluded from final acceptance match",
+  "seed": 20262005,
+  "go": "go movetime 50",
+  "binary_sha256": {
+    "current": "6db1564fc8b59789baca73fb996125952fb692e311a0eb9cf6ae36d261f21604",
+    "baseline": "ccfd2f42dfc29a9708ae7670c36373ae0efca1c20728fa4fc66be8c58b8a1c68"
+  },
+  "completed_games": 71,
+  "wins_a": 41,
+  "wins_b": 28,
+  "draws": 2,
+  "details": [
+    {
+      "game": 1,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 95
+    },
+    {
+      "game": 2,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 137
+    },
+    {
+      "game": 3,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 71
+    },
+    {
+      "game": 4,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 124
+    },
+    {
+      "game": 5,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 135
+    },
+    {
+      "game": 6,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 112
+    },
+    {
+      "game": 7,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 206
+    },
+    {
+      "game": 8,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 111
+    },
+    {
+      "game": 9,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 127
+    },
+    {
+      "game": 10,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 85
+    },
+    {
+      "game": 11,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 181
+    },
+    {
+      "game": 12,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 165
+    },
+    {
+      "game": 13,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 108
+    },
+    {
+      "game": 14,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 138
+    },
+    {
+      "game": 15,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 47
+    },
+    {
+      "game": 16,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 88
+    },
+    {
+      "game": 17,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 138
+    },
+    {
+      "game": 18,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 141
+    },
+    {
+      "game": 19,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 89
+    },
+    {
+      "game": 20,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 135
+    },
+    {
+      "game": 21,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 164
+    },
+    {
+      "game": 22,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 56
+    },
+    {
+      "game": 23,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 165
+    },
+    {
+      "game": 24,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 92
+    },
+    {
+      "game": 25,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 139
+    },
+    {
+      "game": 26,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 96
+    },
+    {
+      "game": 27,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 57
+    },
+    {
+      "game": 28,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 58
+    },
+    {
+      "game": 29,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 110
+    },
+    {
+      "game": 30,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 110
+    },
+    {
+      "game": 31,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 77
+    },
+    {
+      "game": 32,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 139
+    },
+    {
+      "game": 33,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 154
+    },
+    {
+      "game": 34,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 105
+    },
+    {
+      "game": 35,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 120
+    },
+    {
+      "game": 36,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 169
+    },
+    {
+      "game": 37,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 129
+    },
+    {
+      "game": 38,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 161
+    },
+    {
+      "game": 39,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 69
+    },
+    {
+      "game": 40,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 66
+    },
+    {
+      "game": 41,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 47
+    },
+    {
+      "game": 42,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 90
+    },
+    {
+      "game": 43,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 116
+    },
+    {
+      "game": 44,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 109
+    },
+    {
+      "game": 45,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 149
+    },
+    {
+      "game": 46,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 100
+    },
+    {
+      "game": 47,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 166
+    },
+    {
+      "game": 48,
+      "winner": "draw",
+      "reason": "move_limit",
+      "plies": 256
+    },
+    {
+      "game": 49,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 75
+    },
+    {
+      "game": 50,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 134
+    },
+    {
+      "game": 51,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 114
+    },
+    {
+      "game": 52,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 69
+    },
+    {
+      "game": 53,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 181
+    },
+    {
+      "game": 54,
+      "winner": "draw",
+      "reason": "move_limit",
+      "plies": 256
+    },
+    {
+      "game": 55,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 111
+    },
+    {
+      "game": 56,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 62
+    },
+    {
+      "game": 57,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 75
+    },
+    {
+      "game": 58,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 124
+    },
+    {
+      "game": 59,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 81
+    },
+    {
+      "game": 60,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 153
+    },
+    {
+      "game": 61,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 89
+    },
+    {
+      "game": 62,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 171
+    },
+    {
+      "game": 63,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 63
+    },
+    {
+      "game": 64,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 155
+    },
+    {
+      "game": 65,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 85
+    },
+    {
+      "game": 66,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 90
+    },
+    {
+      "game": 67,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 129
+    },
+    {
+      "game": 68,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 93
+    },
+    {
+      "game": 69,
+      "winner": "A",
+      "reason": "checkmate",
+      "plies": 87
+    },
+    {
+      "game": 70,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 89
+    },
+    {
+      "game": 71,
+      "winner": "B",
+      "reason": "checkmate",
+      "plies": 118
+    }
+  ]
+}

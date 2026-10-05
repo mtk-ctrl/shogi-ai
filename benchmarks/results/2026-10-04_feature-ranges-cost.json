@@ -1,0 +1,2958 @@
+{
+  "source_match": "benchmarks/results/2026-10-04_features-vs-v009-smoke.json",
+  "sampling": "start position and every fourth ply of each recorded game; includes repeats",
+  "samples": 287,
+  "ranges": {
+    "material": {
+      "min": -7000,
+      "p05": -2200,
+      "median": 200,
+      "p95": 3200,
+      "max": 7200
+    },
+    "safety": {
+      "min": -56,
+      "p05": -44,
+      "median": -6,
+      "p95": 36,
+      "max": 54
+    },
+    "pressure": {
+      "min": -56,
+      "p05": -30,
+      "median": 0,
+      "p95": 24,
+      "max": 50
+    },
+    "activity": {
+      "min": -30,
+      "p05": -17,
+      "median": 3,
+      "p95": 26,
+      "max": 47
+    },
+    "danger": {
+      "min": -160,
+      "p05": -113,
+      "median": 0,
+      "p95": 100,
+      "max": 160
+    },
+    "clamp": {
+      "min": 0,
+      "p05": 0,
+      "median": 0,
+      "p95": 0,
+      "max": 0
+    },
+    "total": {
+      "min": -7010,
+      "p05": -2278,
+      "median": 114,
+      "p95": 3199,
+      "max": 7373
+    }
+  },
+  "microbenchmark": {
+    "samples": 287,
+    "repeats": 100,
+    "trials": [
+      {
+        "material_ns": 429.477,
+        "features_ns": 9422.91
+      },
+      {
+        "material_ns": 422.806,
+        "features_ns": 9470.78
+      },
+      {
+        "material_ns": 416.029,
+        "features_ns": 9180.64
+      },
+      {
+        "material_ns": 423.454,
+        "features_ns": 9996.73
+      },
+      {
+        "material_ns": 485.927,
+        "features_ns": 9571.48
+      }
+    ],
+    "checksum": 127257000,
+    "material_ns_median": 423.454,
+    "features_ns_median": 9470.78,
+    "ratio": 22.365546198642594
+  },
+  "positions": [
+    {
+      "sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+      "material": 0,
+      "safety": 0,
+      "pressure": 0,
+      "activity": 0,
+      "danger": 0,
+      "clamp": 0,
+      "total": 0
+    },
+    {
+      "sfen": "lnsg1gsnl/r3k2b1/ppppppppp/9/4B4/2P6/PP1PPPPPP/7R1/LNSGKGSNL b - 5",
+      "material": 0,
+      "safety": -12,
+      "pressure": 0,
+      "activity": 16,
+      "danger": 0,
+      "clamp": 0,
+      "total": 4
+    },
+    {
+      "sfen": "lnsg1gsnl/2r1k2b1/pppppppp1/8p/4B4/2P6/PP1PPPPPP/3SK2R1/LN1G1GSNL b - 9",
+      "material": 0,
+      "safety": 10,
+      "pressure": 0,
+      "activity": 8,
+      "danger": 0,
+      "clamp": 0,
+      "total": 18
+    },
+    {
+      "sfen": "lnsg1gsnl/2r1k4/pppp1pppb/4p3p/4B4/2P3P2/PP1PPP1PP/3SKS1R1/LN1G1G1NL b - 13",
+      "material": 0,
+      "safety": 24,
+      "pressure": -6,
+      "activity": 13,
+      "danger": -100,
+      "clamp": 0,
+      "total": -69
+    },
+    {
+      "sfen": "lns2g1nl/2rgks3/pppp1pppb/4p3p/9/2PB2P2/PP1PPP1PP/3SKSR2/LN1G1G1NL b - 17",
+      "material": 0,
+      "safety": 14,
+      "pressure": -6,
+      "activity": 8,
+      "danger": 0,
+      "clamp": 0,
+      "total": 16
+    },
+    {
+      "sfen": "lnsk1g1nl/2rg1s3/ppp2pppb/3pp1P1p/9/2PB5/PP1PPP1PP/3SKSR2/LN1G1G1NL b - 21",
+      "material": 0,
+      "safety": 34,
+      "pressure": -6,
+      "activity": 5,
+      "danger": 0,
+      "clamp": 0,
+      "total": 33
+    },
+    {
+      "sfen": "lnsk3nl/2rg2g2/ppp2pspb/3pp3p/9/2PB5/PP1PPP1PP/3SKSR2/LN1G1G1NL b 2p 25",
+      "material": -200,
+      "safety": 34,
+      "pressure": -6,
+      "activity": 1,
+      "danger": 0,
+      "clamp": 0,
+      "total": -171
+    },
+    {
+      "sfen": "lnsk2pnl/2rg2g2/ppp2pspb/4p3p/3p5/P1P6/1P1PPP1PP/1B1SKSR2/LN1G1G1NL b p 29",
+      "material": -200,
+      "safety": 34,
+      "pressure": -6,
+      "activity": 7,
+      "danger": 0,
+      "clamp": 0,
+      "total": -165
+    },
+    {
+      "sfen": "lnsk2pnl/2rg2g2/ppp2p1p1/4psRbp/3p5/P1P5P/1P1PPP1P1/1B1SKS3/LN1G1G1NL b p 33",
+      "material": -200,
+      "safety": 34,
+      "pressure": -6,
+      "activity": 4,
+      "danger": 0,
+      "clamp": 0,
+      "total": -168
+    },
+    {
+      "sfen": "lnsk2pnl/2rg5/ppp2pgp1/4p2bp/3p1s3/P1P3R1P/1PNPPP1P1/1B1SKS3/L2G1G1NL b p 37",
+      "material": -200,
+      "safety": 34,
+      "pressure": -6,
+      "activity": 7,
+      "danger": -113,
+      "clamp": 0,
+      "total": -278
+    },
+    {
+      "sfen": "lnsk2pnl/2rg5/ppp2pgp1/3pp1sbp/3N5/P1P5P/1P1PPP1P1/1B1SKS3/L2G1GRNL b P 41",
+      "material": 0,
+      "safety": 34,
+      "pressure": -6,
+      "activity": 9,
+      "danger": -37,
+      "clamp": 0,
+      "total": 0
+    },
+    {
+      "sfen": "lnsk2pnl/3g5/ppr2pgp1/3pp1sbp/4n4/P1P5P/1P1PPP1P1/1B1S1S3/L2GKGRNL b 2P 45",
+      "material": -400,
+      "safety": 22,
+      "pressure": 0,
+      "activity": 6,
+      "danger": -12,
+      "clamp": 0,
+      "total": -384
+    },
+    {
+      "sfen": "lnsk2pnl/3g5/ppr2p1p1/3pp1gbp/4n1s2/P1P5P/1P1PPP1P1/1B1S1S3/L2GKGRNL b 2p 49",
+      "material": -800,
+      "safety": 22,
+      "pressure": 0,
+      "activity": 0,
+      "danger": -12,
+      "clamp": 0,
+      "total": -790
+    },
+    {
+      "sfen": "lnsk2pnl/3g5/pp3p1p1/3pp1gbp/4n1s2/P4r2P/1P1PP2P1/1B1SKS3/L2G1GRNL b 4p 53",
+      "material": -1200,
+      "safety": 30,
+      "pressure": -24,
+      "activity": -6,
+      "danger": 0,
+      "clamp": 0,
+      "total": -1200
+    },
+    {
+      "sfen": "lnsk2pnl/3g5/pp3pbp1/3pp1g1p/4n1s2/P2r4P/BP2P2P1/3SKS3/L2G1GRNL b 5p 57",
+      "material": -1400,
+      "safety": 26,
+      "pressure": -22,
+      "activity": -12,
+      "danger": -12,
+      "clamp": 0,
+      "total": -1420
+    },
+    {
+      "sfen": "lnsk2pnl/3g5/pp3pbp1/3pp1g1p/6s2/P4r2P/1P1+nP2P1/1BGSKS3/L4GRNL b 5p 61",
+      "material": -1700,
+      "safety": 14,
+      "pressure": -34,
+      "activity": -18,
+      "danger": 0,
+      "clamp": 0,
+      "total": -1738
+    },
+    {
+      "sfen": "lnsk2pnl/3g5/pp3p1p1/3pp1g1p/6sb1/P4r2P/1P1SP2P1/1G2KS3/L4GRNL b BN5p 65",
+      "material": -800,
+      "safety": 14,
+      "pressure": -34,
+      "activity": -7,
+      "danger": 0,
+      "clamp": 0,
+      "total": -827
+    },
+    {
+      "sfen": "lnsk2pnl/3g5/pp3p1p1/3ppsg1p/5r1b1/P7P/1P1SPN1P1/1G2KS1B1/L4GRNL b 5p 69",
+      "material": -800,
+      "safety": 14,
+      "pressure": -14,
+      "activity": 4,
+      "danger": 12,
+      "clamp": 0,
+      "total": -784
+    },
+    {
+      "sfen": "lnsk2pnl/3g5/pp3p1p1/3ppsg1p/6rb1/P3S2PP/1P2PN3/1G2KS1B1/L4GRNL b 5p 73",
+      "material": -800,
+      "safety": 4,
+      "pressure": -6,
+      "activity": -3,
+      "danger": 160,
+      "clamp": 0,
+      "total": -645
+    },
+    {
+      "sfen": "lnsk2pnl/3g5/pp3p1p1/3ppsg1p/6R2/P2n3PP/1P2PS3/1G2KS1B1/L4G1NL b RB5p 77",
+      "material": 2200,
+      "safety": 14,
+      "pressure": -12,
+      "activity": 20,
+      "danger": -38,
+      "clamp": 0,
+      "total": 2184
+    },
+    {
+      "sfen": "lnskrRpnl/3g5/pp3p1p1/3pps2p/6g2/P2n3PP/1P1KPS3/1G3S1B1/L4G1NL b B5p 81",
+      "material": 200,
+      "safety": -18,
+      "pressure": -2,
+      "activity": 5,
+      "danger": -62,
+      "clamp": 0,
+      "total": 123
+    },
+    {
+      "sfen": "lnskr1pnl/4g2+R1/pp3p1p1/3pps2p/6g2/P2n3PP/1PpKPS3/1G3S1B1/L4G1NL b B4p 85",
+      "material": 400,
+      "safety": -18,
+      "pressure": -2,
+      "activity": 3,
+      "danger": 138,
+      "clamp": 0,
+      "total": 521
+    },
+    {
+      "sfen": "lnskr1pnl/4g2+R1/pp3p1p1/3pps2p/B5g2/P6PP/1P1KPS3/2+n2S1B1/L4G1NL b Pg4p 89",
+      "material": -900,
+      "safety": -18,
+      "pressure": 16,
+      "activity": -1,
+      "danger": 148,
+      "clamp": 0,
+      "total": -755
+    },
+    {
+      "sfen": "lnskr1pn+R/4g4/pp3p1p1/3pps2p/6g2/P6PP/1P+nKPS3/5S1B1/L4G1NL b GLPb4p 93",
+      "material": -700,
+      "safety": -18,
+      "pressure": -24,
+      "activity": 5,
+      "danger": 112,
+      "clamp": 0,
+      "total": -625
+    },
+    {
+      "sfen": "lnskr1pn+R/4g4/pp3p1p1/2ppps2p/1b4g2/P1L4PP/1PK1PS3/5S1B1/L4G1NL b GNP3p 97",
+      "material": 200,
+      "safety": -18,
+      "pressure": -6,
+      "activity": 6,
+      "danger": 50,
+      "clamp": 0,
+      "total": 232
+    },
+    {
+      "sfen": "lnskr2+R1/4g1p2/p4p1p1/1pppps2p/Gb4g2/P1L4PP/1PK1PS3/5S1B1/L4G1NL b 2NP3p 101",
+      "material": 800,
+      "safety": -18,
+      "pressure": 0,
+      "activity": 10,
+      "danger": -85,
+      "clamp": 0,
+      "total": 707
+    },
+    {
+      "sfen": "ln2k4/3sg1p2/p4p1p1/1pppps2p/Gb4g2/P1L4PP/1PK1PS3/5S1B1/L4G1NL b R2Nr4p 105",
+      "material": 400,
+      "safety": -18,
+      "pressure": -6,
+      "activity": 6,
+      "danger": 38,
+      "clamp": 0,
+      "total": 420
+    },
+    {
+      "sfen": "ln3k3/3sg1p2/p4p1p1/1pppps2p/Gb4g2/P1L4PP/1PK1PS3/5S1B1/L4G1NL b R2Nr4p 109",
+      "material": 400,
+      "safety": -12,
+      "pressure": -6,
+      "activity": 6,
+      "danger": 38,
+      "clamp": 0,
+      "total": 426
+    },
+    {
+      "sfen": "ln4k2/3sg1p2/p4p1p1/1pppps2p/Gb4g2/P1L4PP/1PK1PS3/5S1B1/L4G1NL b R2Nr4p 113",
+      "material": 400,
+      "safety": 0,
+      "pressure": -6,
+      "activity": 4,
+      "danger": 38,
+      "clamp": 0,
+      "total": 436
+    },
+    {
+      "sfen": "ln6R/3sg1pk1/p3sp1p1/1ppBp3p/Gb4g2/P1L4PP/1PK1PS3/5S3/L4G1NL b 2NPr4p 117",
+      "material": 600,
+      "safety": -4,
+      "pressure": 10,
+      "activity": 14,
+      "danger": -35,
+      "clamp": 0,
+      "total": 585
+    },
+    {
+      "sfen": "ln6k/3sg1p2/p3+Bp1p1/1pp1p3p/Gb4g2/P1L4PP/1P2PS3/1K3S3/L1r2G1NL b S2NPr4p 121",
+      "material": -200,
+      "safety": 4,
+      "pressure": -18,
+      "activity": 6,
+      "danger": 0,
+      "clamp": 0,
+      "total": -208
+    },
+    {
+      "sfen": "ln6k/3sg1p2/p3+Bp1p1/1pp1p3p/Gb4g2/P1L4PP/1P2PS3/2+r2S3/L1K2G1NL b R2NPs4p 125",
+      "material": 600,
+      "safety": 0,
+      "pressure": -28,
+      "activity": 8,
+      "danger": 0,
+      "clamp": 0,
+      "total": 580
+    },
+    {
+      "sfen": "ln3R1bk/3s2p2/p3gp1p1/1pp1p3p/Gb4g2/P1L4PP/1P2PS3/2K2S3/L4G1NL b R2NPs4p 129",
+      "material": 1000,
+      "safety": 4,
+      "pressure": 6,
+      "activity": 9,
+      "danger": 25,
+      "clamp": 0,
+      "total": 1044
+    },
+    {
+      "sfen": "ln3R1bk/3s2p1s/p3gp1pR/2p1p3p/1p4g2/P1L4PP/1P2PS3/2K2S3/L4G1NL b B2NPg4p 133",
+      "material": 1400,
+      "safety": -6,
+      "pressure": 12,
+      "activity": 9,
+      "danger": -75,
+      "clamp": 0,
+      "total": 1340
+    },
+    {
+      "sfen": "ln3R1bk/3s2p1s/p3gpgpp/2p1p3+R/1p4g2/P1L4PP/1PB1PS3/2K2S3/L4G1NL b 2N2P3p 137",
+      "material": 1800,
+      "safety": -6,
+      "pressure": 6,
+      "activity": 16,
+      "danger": -110,
+      "clamp": 0,
+      "total": 1706
+    },
+    {
+      "sfen": "ln3R1bk/3s2p1s/p3gpgpp/2p1p4/1p4g1+R/PBL4PP/1P2PS3/2K2S3/L4G1NL b 2N3P2p 141",
+      "material": 2000,
+      "safety": -6,
+      "pressure": 6,
+      "activity": 12,
+      "danger": 38,
+      "clamp": 0,
+      "total": 2050
+    },
+    {
+      "sfen": "ln3R1bk/3s2p1s/p4p1pp/2p1pg1g1/1p4g1+R/P1L4PP/1PB1PS3/2K2S3/L4G1NL b 2N3P2p 145",
+      "material": 2000,
+      "safety": -6,
+      "pressure": 6,
+      "activity": 14,
+      "danger": -25,
+      "clamp": 0,
+      "total": 1989
+    },
+    {
+      "sfen": "ln5k1/3s2p1s/p6pp/2p1pp1g1/1p4g1+R/P1L4PP/1P2PS3/2K2S3/L4G1NL b BG2N3Prb2p 149",
+      "material": 1200,
+      "safety": -10,
+      "pressure": 0,
+      "activity": 4,
+      "danger": -63,
+      "clamp": 0,
+      "total": 1131
+    },
+    {
+      "sfen": "ln5k1/3s2n1s/p4Bppp/2p1pp1g1/1p4g1+R/P1L4PP/1P2PS3/2K2S3/L4G1NL b GN3Prb2p 153",
+      "material": 600,
+      "safety": -6,
+      "pressure": 6,
+      "activity": 8,
+      "danger": -50,
+      "clamp": 0,
+      "total": 558
+    },
+    {
+      "sfen": "ln4k2/3s4s/p5ppp/2p1pp1g1/1p4g1+R/P1L4PP/1P2PS3/2K2S3/L4G1NL b 2N3Pr2bg2p 157",
+      "material": -1600,
+      "safety": 4,
+      "pressure": 0,
+      "activity": 4,
+      "danger": -63,
+      "clamp": 0,
+      "total": -1655
+    },
+    {
+      "sfen": "ln7/3s1k2s/p4N1pp/2p1pppg1/1p4g1+R/P1L4PP/1P2PS3/2K2S3/L4G1NL b 3Pr2bgn2p 161",
+      "material": -2200,
+      "safety": 4,
+      "pressure": 8,
+      "activity": 8,
+      "danger": -100,
+      "clamp": 0,
+      "total": -2280
+    },
+    {
+      "sfen": "ln7/3s1k2s/p2P1N1pp/2p1pppg1/1p3bg1+R/P1LnS2PP/1P2P4/2K2S3/L4G1NL b 2Prbg2p 165",
+      "material": -2200,
+      "safety": 4,
+      "pressure": -4,
+      "activity": 0,
+      "danger": -13,
+      "clamp": 0,
+      "total": -2213
+    },
+    {
+      "sfen": "ln7/3s1k2s/p2P1N1pp/2p1pppg1/1p3bg1+R/P1LnS2PP/1P2P4/2r2S3/LK1b1G1NL b 2Pg2p 169",
+      "material": -2200,
+      "safety": 0,
+      "pressure": -26,
+      "activity": -8,
+      "danger": -48,
+      "clamp": 0,
+      "total": -2282
+    },
+    {
+      "sfen": "ln4+N2/3s4s/p2Pk2pp/2p1pppg1/1p3bg1+R/P1LnS2PP/1P1pP4/2r2SG2/LK1b3NL b 2Pgp 173",
+      "material": -1900,
+      "safety": -18,
+      "pressure": -28,
+      "activity": -9,
+      "danger": -13,
+      "clamp": 0,
+      "total": -1968
+    },
+    {
+      "sfen": "ln7/3s2+N1s/p2Pk1Ppp/4pppg1/1pp2bg1+R/P1LnS2PP/1P2P4/2r+p1SG2/LK1b3NL b Pgp 177",
+      "material": -2400,
+      "safety": -18,
+      "pressure": -32,
+      "activity": -2,
+      "danger": -25,
+      "clamp": 0,
+      "total": -2477
+    },
+    {
+      "sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+      "material": 0,
+      "safety": 0,
+      "pressure": 0,
+      "activity": 0,
+      "danger": 0,
+      "clamp": 0,
+      "total": 0
+    },
+    {
+      "sfen": "lnsg1g1nl/1r2ks1b1/ppppppppp/9/9/2PB5/PP1PPPPPP/7R1/LNSGKGSNL b - 5",
+      "material": 0,
+      "safety": -22,
+      "pressure": 0,
+      "activity": 12,
+      "danger": 0,
+      "clamp": 0,
+      "total": -10
+    },
+    {
+      "sfen": "lnsg1g1nl/1r2ks3/ppppppppb/8p/9/2PBP4/PP1P1PPPP/4R4/LNSGKGSNL b - 9",
+      "material": 0,
+      "safety": -22,
+      "pressure": -4,
+      "activity": 9,
+      "danger": 0,
+      "clamp": 0,
+      "total": -17
+    },
+    {
+      "sfen": "ln1g1g1nl/1r1sks3/pppppppp1/8p/6b2/2PBP2P1/PP1P1PP1P/7R1/LNSGKGSNL b - 13",
+      "material": 0,
+      "safety": -32,
+      "pressure": -4,
+      "activity": 7,
+      "danger": 0,
+      "clamp": 0,
+      "total": -29
+    },
+    {
+      "sfen": "ln1g1g1nl/1r1sks3/pp1ppppp1/8p/2p3b2/2PBP2P1/PP1P1PP1P/7R1/LNSGKGSNL b - 17",
+      "material": 0,
+      "safety": -32,
+      "pressure": -4,
+      "activity": 3,
+      "danger": 0,
+      "clamp": 0,
+      "total": -33
+    },
+    {
+      "sfen": "ln1g1g1nl/3sks3/pp1ppppp1/2r5p/2B3b2/2P1P2P1/PPNP1PP1P/7R1/L1SGKGSNL b P 21",
+      "material": 200,
+      "safety": -32,
+      "pressure": 2,
+      "activity": -9,
+      "danger": 0,
+      "clamp": 0,
+      "total": 161
+    },
+    {
+      "sfen": "ln1g1g1nl/3sks3/pp1ppppp1/2r6/2B1P1b2/2P4Pp/PPNP1PP1P/6GR1/L1SGK1SNL b P 25",
+      "material": 200,
+      "safety": -44,
+      "pressure": 2,
+      "activity": -20,
+      "danger": 0,
+      "clamp": 0,
+      "total": 138
+    },
+    {
+      "sfen": "ln1gkg1nl/3s1s3/1p1ppppp1/p1r6/2BNP1b2/2P4PP/PP1P1PP2/6GR1/L1SGK1SNL b 2P 29",
+      "material": 400,
+      "safety": -32,
+      "pressure": -4,
+      "activity": -14,
+      "danger": 0,
+      "clamp": 0,
+      "total": 350
+    },
+    {
+      "sfen": "ln1gkg1nl/3s5/1p1psppp1/p1r6/2B1P4/2P3PPP/PP1P1P3/6GR1/L1+bGK1SNL b 3Psn 33",
+      "material": -1200,
+      "safety": -22,
+      "pressure": -10,
+      "activity": -18,
+      "danger": 125,
+      "clamp": 0,
+      "total": -1125
+    },
+    {
+      "sfen": "ln1gkg1n1/3s5/1p1psppp1/p1r6/2B1P4/2P3PPL/PP1P1P3/4p1GR1/L1G1K1SN1 b BL3Psn 37",
+      "material": 1000,
+      "safety": -34,
+      "pressure": -12,
+      "activity": -1,
+      "danger": 12,
+      "clamp": 0,
+      "total": 965
+    },
+    {
+      "sfen": "ln1gkg1n1/3s5/1p1psppp1/p1r6/2B1P4/2P2PPPL/PP1P5/4K1GR1/L1G3SNs b BNL4P 41",
+      "material": 1800,
+      "safety": -30,
+      "pressure": 0,
+      "activity": -3,
+      "danger": -62,
+      "clamp": 0,
+      "total": 1705
+    },
+    {
+      "sfen": "ln2kg1n1/3sg4/1p1psppp1/p1r6/2B1P4/2P1lPPPL/PP1P3R1/4K1G2/L1G3SNs b BN4P 45",
+      "material": 1200,
+      "safety": -30,
+      "pressure": -20,
+      "activity": -2,
+      "danger": 0,
+      "clamp": 0,
+      "total": 1148
+    },
+    {
+      "sfen": "ln2kg1n1/3sg4/1p1psppp1/p8/4P4/1Br2PPPL/PP1P1K1R1/6G2/L1G1+l1SNs b BN4Pp 49",
+      "material": 700,
+      "safety": -14,
+      "pressure": -14,
+      "activity": -1,
+      "danger": 0,
+      "clamp": 0,
+      "total": 671
+    },
+    {
+      "sfen": "ln2kg1n1/3sg4/1p1psppp1/p8/4P4/1B3PPPL/PP1P1K1R1/G5G2/L1+r2+lSNs b BN4Pp 53",
+      "material": 500,
+      "safety": -14,
+      "pressure": -4,
+      "activity": -13,
+      "danger": 0,
+      "clamp": 0,
+      "total": 469
+    },
+    {
+      "sfen": "ln2kg1n1/3sg4/1p1psppp1/p8/4P4/1B3PPPL/PP1+rBK1R1/GN4G2/L4+lSNs b 4P2p 57",
+      "material": 300,
+      "safety": -14,
+      "pressure": -26,
+      "activity": 5,
+      "danger": 0,
+      "clamp": 0,
+      "total": 265
+    },
+    {
+      "sfen": "ln2kg1n+L/3sg4/1p1psppp1/p8/3+rP4/1B2pPPP1/PP2BK1R1/GN1P2G2/L4+lSNs b 3Pp 61",
+      "material": 600,
+      "safety": -14,
+      "pressure": -32,
+      "activity": -2,
+      "danger": -63,
+      "clamp": 0,
+      "total": 489
+    },
+    {
+      "sfen": "ln2kg1+L1/3sg4/1p1p1ppp1/p8/2B+rs4/1B2pPPP1/PP3K1R1/GN1P2G2/L4+lSNs b N3P2p 65",
+      "material": 1000,
+      "safety": -14,
+      "pressure": -40,
+      "activity": -9,
+      "danger": 0,
+      "clamp": 0,
+      "total": 937
+    },
+    {
+      "sfen": "ln2kg1+L1/4g4/1p1p+Bppp1/p8/3+rs4/1B3PPP1/PP2+pK1R1/GN1P2G2/L4+lSNs b S3Pn2p 69",
+      "material": 1100,
+      "safety": -4,
+      "pressure": -32,
+      "activity": 3,
+      "danger": 25,
+      "clamp": 0,
+      "total": 1092
+    },
+    {
+      "sfen": "ln2kg1+L1/4g4/1p1p+Bppp1/p8/3+rs2n1/1B3PPP1/PP2+p1KR1/GN1P5/L5GNs b SL3Ps2p 73",
+      "material": 1000,
+      "safety": -12,
+      "pressure": -32,
+      "activity": -4,
+      "danger": -13,
+      "clamp": 0,
+      "total": 939
+    },
+    {
+      "sfen": "ln2kg1+L1/4g4/1p1p+Bppp1/p8/4s2P1/1B2+rPP2/PP3K1R1/GN1P5/L5GNs b SNL4Ps2p 77",
+      "material": 2300,
+      "safety": -16,
+      "pressure": -26,
+      "activity": 10,
+      "danger": -50,
+      "clamp": 0,
+      "total": 2218
+    },
+    {
+      "sfen": "ln2kg1+L1/9/1p1pgppp1/p8/7P1/1B2+rsPK1/PP5R1/GN1P5/L5GNs b SNL4Pbs3p 81",
+      "material": 300,
+      "safety": -4,
+      "pressure": -8,
+      "activity": -14,
+      "danger": 0,
+      "clamp": 0,
+      "total": 274
+    },
+    {
+      "sfen": "ln3g1+L1/5k3/1p1pgppp1/p3+r4/7P1/1B3sPK1/PP5R1/GN1P5/L5GNs b L4Pb2sn3p 85",
+      "material": -1300,
+      "safety": -24,
+      "pressure": 10,
+      "activity": -20,
+      "danger": 0,
+      "clamp": 0,
+      "total": -1334
+    },
+    {
+      "sfen": "ln3g1+L1/5ks2/1p1pgppp1/p3+rb3/7PL/1B3sP1K/PP5R1/GN1P5/L5GNs b 4Psn3p 89",
+      "material": -1300,
+      "safety": -38,
+      "pressure": 2,
+      "activity": -14,
+      "danger": -75,
+      "clamp": 0,
+      "total": -1425
+    },
+    {
+      "sfen": "ln3g3/5ks+L1/1p1pgpp2/p3+rb1p1/8L/1B3sP1K/PP5R1/GN1P5/L5GNs b N4Ps4p 93",
+      "material": -900,
+      "safety": -42,
+      "pressure": 12,
+      "activity": -16,
+      "danger": 12,
+      "clamp": 0,
+      "total": -934
+    },
+    {
+      "sfen": "ln7/5kg2/1p1pgpp2/p4b1R1/8L/1B3sP1K/PP7/GN1P5/L3+r1GNs b SN5Psl4p 97",
+      "material": -600,
+      "safety": -32,
+      "pressure": -2,
+      "activity": -17,
+      "danger": -75,
+      "clamp": 0,
+      "total": -726
+    },
+    {
+      "sfen": "ln7/5kg2/1p1pgpp2/p4b1R1/8L/1BP1+rsP1K/PP3l3/GN1P1S3/L5GNs b N4Ps4p 101",
+      "material": -600,
+      "safety": -32,
+      "pressure": -2,
+      "activity": -10,
+      "danger": -25,
+      "clamp": 0,
+      "total": -669
+    },
+    {
+      "sfen": "ln7/5kg2/1p1pgpp2/p4R3/8L/1BP3+r1K/PP3+s3/GN1P5/L5GNs b BNL4P2s5p 105",
+      "material": 300,
+      "safety": -32,
+      "pressure": -12,
+      "activity": 0,
+      "danger": -160,
+      "clamp": 0,
+      "total": 96
+    },
+    {
+      "sfen": "ln7/5kg2/1p1pgpp2/p4R3/8L/1BP3+rN1/PP3+s1sK/GN1P3s1/L5GNs b BL4P5p 109",
+      "material": 300,
+      "safety": -32,
+      "pressure": -50,
+      "activity": -2,
+      "danger": -160,
+      "clamp": 0,
+      "total": 56
+    },
+    {
+      "sfen": "ln7/5kg2/1p1pgpp2/p4R3/8L/1BP3+rN1/PP3+s2p/GN1P3sK/L6Ns b BSL4Pg4p 113",
+      "material": 100,
+      "safety": -32,
+      "pressure": -52,
+      "activity": -8,
+      "danger": -160,
+      "clamp": 0,
+      "total": -152
+    },
+    {
+      "sfen": "ln7/5kg2/1p1pgpp2/p4R3/8L/1BP3+rN1/PP3+s2N/GN1P4g/L6sK b B2SL5P4p 117",
+      "material": 1300,
+      "safety": -32,
+      "pressure": -24,
+      "activity": -11,
+      "danger": -160,
+      "clamp": 0,
+      "total": 1073
+    },
+    {
+      "sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+      "material": 0,
+      "safety": 0,
+      "pressure": 0,
+      "activity": 0,
+      "danger": 0,
+      "clamp": 0,
+      "total": 0
+    },
+    {
+      "sfen": "lnsg1gsnl/1r3k1b1/pppp1pppp/4p4/9/2PB5/PP1PPPPPP/7R1/LNSGKGSNL b - 5",
+      "material": 0,
+      "safety": -6,
+      "pressure": 6,
+      "activity": 11,
+      "danger": 0,
+      "clamp": 0,
+      "total": 11
+    },
+    {
+      "sfen": "lnsg2snl/1r3kgb1/pp1p1pppp/2p1p4/9/2PB5/PP1PPPPPP/4KS1R1/LNSG1G1NL b - 9",
+      "material": 0,
+      "safety": 16,
+      "pressure": 6,
+      "activity": 3,
+      "danger": 0,
+      "clamp": 0,
+      "total": 25
+    },
+    {
+      "sfen": "ln1g2snl/2sr1kgb1/pp1p1pppp/2p1p4/9/2PB2P2/PP1PPP1PP/3SKS1R1/LN1G1G1NL b - 13",
+      "material": 0,
+      "safety": 26,
+      "pressure": 6,
+      "activity": 14,
+      "danger": 0,
+      "clamp": 0,
+      "total": 46
+    },
+    {
+      "sfen": "ln2g1snl/2sr1kgb1/pp3pppp/2ppp4/9/P1PB2P2/1P1PPP1PP/3SKSR2/LN1G1G1NL b - 17",
+      "material": 0,
+      "safety": 14,
+      "pressure": 6,
+      "activity": 13,
+      "danger": 0,
+      "clamp": 0,
+      "total": 33
+    },
+    {
+      "sfen": "l3g1snl/2sr1kgb1/pp3pppp/2ppp4/3n2P2/P1PB4P/1P1PPP1P1/3SKSR2/LN1G1G1NL b - 21",
+      "material": 0,
+      "safety": 14,
+      "pressure": 0,
+      "activity": 14,
+      "danger": 0,
+      "clamp": 0,
+      "total": 28
+    },
+    {
+      "sfen": "l3g1snl/2sr1kg2/pp3p1pp/2ppp1R2/3n5/P1Pb4P/1P1PPP1P1/3SKS3/LN1G1G1NL b Pbp 25",
+      "material": -1600,
+      "safety": 18,
+      "pressure": 4,
+      "activity": 1,
+      "danger": 75,
+      "clamp": 0,
+      "total": -1502
+    },
+    {
+      "sfen": "l3g1snl/2sr1k3/pp2ppgpp/2ppR4/3n5/P1PP4P/1P2PP1P1/3SKS3/LN1G1G1NL b B2Pb 29",
+      "material": 200,
+      "safety": 10,
+      "pressure": 0,
+      "activity": 4,
+      "danger": -100,
+      "clamp": 0,
+      "total": 114
+    },
+    {
+      "sfen": "l3g1snl/2sr1k3/pp2pp1pp/2pp3g1/3n2R2/P1PP4P/1P2PP1P1/3SKS1b1/LN1G1G1NL b B2P 33",
+      "material": 200,
+      "safety": 22,
+      "pressure": 8,
+      "activity": 4,
+      "danger": -135,
+      "clamp": 0,
+      "total": 99
+    },
+    {
+      "sfen": "l3g1snl/2sr1k3/pp2pp1pp/2pp3g1/3P5/P1P5P/1P2PP1P1/3SKSR2/LN1G1G1+b1 b BN2Pnl 37",
+      "material": -600,
+      "safety": 22,
+      "pressure": 14,
+      "activity": 0,
+      "danger": -12,
+      "clamp": 0,
+      "total": -576
+    },
+    {
+      "sfen": "l3g1snl/2sr1k3/pp3p1pp/2ppp2g1/3P5/P1P3R1P/1P2PP1P1/1l1SKS3/LN1G1G1+b1 b B2P2n 41",
+      "material": -1200,
+      "safety": 26,
+      "pressure": 8,
+      "activity": 5,
+      "danger": -50,
+      "clamp": 0,
+      "total": -1211
+    },
+    {
+      "sfen": "l5snl/2sg1k3/pp3p1pp/2ppp2g1/3P5/P1P3R1P/1P2PP1P1/3SKS3/L+l1G1G1+b1 b R2Pb3n 45",
+      "material": -1700,
+      "safety": 38,
+      "pressure": 8,
+      "activity": 4,
+      "danger": -38,
+      "clamp": 0,
+      "total": -1688
+    },
+    {
+      "sfen": "l5snl/2sg1k3/pp3p1pp/2pPpn1g1/9/P1P4RP/1P2PP1P1/3SKS3/+l2G1G1+b1 b R3Pb2nl 49",
+      "material": -2100,
+      "safety": 38,
+      "pressure": -6,
+      "activity": -7,
+      "danger": 0,
+      "clamp": 0,
+      "total": -2075
+    },
+    {
+      "sfen": "l5snl/1Rsg1k3/pp3p1pp/2p1pn1g1/9/P1P4RP/1P2PP1P1/3SKS3/+l2G1G1+b1 b 3Pb2nlp 53",
+      "material": -2300,
+      "safety": 38,
+      "pressure": -6,
+      "activity": -10,
+      "danger": 0,
+      "clamp": 0,
+      "total": -2278
+    },
+    {
+      "sfen": "l5snl/1bsg1k3/pp3p1pp/2p1pn1g1/9/P1P2R2P/1P2PP1P1/3SKS3/+l2G2G+b1 b 3Pr2nlp 57",
+      "material": -4300,
+      "safety": 26,
+      "pressure": -6,
+      "activity": -15,
+      "danger": 100,
+      "clamp": 0,
+      "total": -4195
+    },
+    {
+      "sfen": "l5snl/1bsg1k3/pp3p1pp/2p1pn1g1/2n6/P1P4RP/1P2PP1P1/3SKS3/+lr1G3G1 b B3Pnlp 61",
+      "material": -2500,
+      "safety": 26,
+      "pressure": -18,
+      "activity": -12,
+      "danger": 13,
+      "clamp": 0,
+      "total": -2491
+    },
+    {
+      "sfen": "l5snl/1bsg1k3/pp3p1pp/2plpnng1/2P6/P2R4P/1P2PP1P1/3SKS3/+lr1G3G1 b BN3Pp 65",
+      "material": -1900,
+      "safety": 26,
+      "pressure": -6,
+      "activity": -5,
+      "danger": -138,
+      "clamp": 0,
+      "total": -2023
+    },
+    {
+      "sfen": "l5snl/1bsg1k3/pp3p1pp/2pppnng1/2PR5/P7P/1P2PP1P1/3SKS3/+lr1G3G1 b BNL2Pp 69",
+      "material": -1500,
+      "safety": 26,
+      "pressure": -6,
+      "activity": -4,
+      "danger": -125,
+      "clamp": 0,
+      "total": -1609
+    },
+    {
+      "sfen": "l5s1l/1bsg1k3/pp3pnpp/2pppnng1/2P2R3/P7P/1+r2PP1P1/3SKS3/+l1G4G1 b BNL2P2p 73",
+      "material": -1900,
+      "safety": 14,
+      "pressure": -10,
+      "activity": -22,
+      "danger": -125,
+      "clamp": 0,
+      "total": -2043
+    },
+    {
+      "sfen": "l5s1l/1bsg1k3/pp3pnpp/2pppnng1/2P2R3/P7P/+r3PP1P1/3SKS3/1+lGB3G1 b L2Pn2p 77",
+      "material": -2500,
+      "safety": 14,
+      "pressure": -10,
+      "activity": -13,
+      "danger": -38,
+      "clamp": 0,
+      "total": -2547
+    },
+    {
+      "sfen": "l5s1l/1bsg1k3/pp3pnpp/2pppnng1/2P2R3/P2n4P/4PP1P1/+r2S1S3/1+lGBK2G1 b 2Pl2p 81",
+      "material": -3100,
+      "safety": 6,
+      "pressure": -18,
+      "activity": -14,
+      "danger": -113,
+      "clamp": 0,
+      "total": -3239
+    },
+    {
+      "sfen": "l5s1l/1bsg1k3/pp3p1pp/2pppnng1/2P2n3/P2n4P/3SPP1P1/5S3/1+r1BK2G1 b L2Prgl2p 85",
+      "material": -5400,
+      "safety": -4,
+      "pressure": -10,
+      "activity": -25,
+      "danger": 38,
+      "clamp": 0,
+      "total": -5401
+    },
+    {
+      "sfen": "l5s1l/1bsg1k3/pp3p1pp/2Pppnng1/5n3/P2n4P/4PP1P1/4SS3/1+r1+rK2G1 b L3Pbgl2p 89",
+      "material": -7000,
+      "safety": 6,
+      "pressure": -48,
+      "activity": -30,
+      "danger": 62,
+      "clamp": 0,
+      "total": -7010
+    },
+    {
+      "sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+      "material": 0,
+      "safety": 0,
+      "pressure": 0,
+      "activity": 0,
+      "danger": 0,
+      "clamp": 0,
+      "total": 0
+    },
+    {
+      "sfen": "ln1g1gsnl/1r1sk2b1/ppppppppp/9/9/2PB5/PP1PPPPPP/7R1/LNSGKGSNL b - 5",
+      "material": 0,
+      "safety": -22,
+      "pressure": 0,
+      "activity": 14,
+      "danger": 0,
+      "clamp": 0,
+      "total": -8
+    },
+    {
+      "sfen": "ln1g1gsnl/1r1sk4/pppppp1pp/6p2/9/2Pb5/PP1PPPPPP/2SK3R1/LN1G1GSNL b b 9",
+      "material": -1600,
+      "safety": -16,
+      "pressure": -10,
+      "activity": -14,
+      "danger": 63,
+      "clamp": 0,
+      "total": -1577
+    },
+    {
+      "sfen": "ln1g1gsnl/1r1sk4/pppppp1pp/6p2/9/2PP5/PP+b1PPPPP/2SK3R1/LN1G1GSNL b b 13",
+      "material": -1800,
+      "safety": -20,
+      "pressure": -26,
+      "activity": -5,
+      "danger": 63,
+      "clamp": 0,
+      "total": -1788
+    },
+    {
+      "sfen": "ln1g1g1nl/1r1sks3/pppppp1pp/6p2/5b3/2PP1B3/PPK1PPPPP/2S4R1/LN1G1GSNL b - 17",
+      "material": 0,
+      "safety": -34,
+      "pressure": -10,
+      "activity": 3,
+      "danger": 0,
+      "clamp": 0,
+      "total": -41
+    },
+    {
+      "sfen": "ln1g1g1nl/1r1sks3/2pppp1pp/pp4p2/5b3/P1PP1B3/1PK1PPPPP/2SG3R1/LN3GSNL b - 21",
+      "material": 0,
+      "safety": -22,
+      "pressure": -10,
+      "activity": 1,
+      "danger": 0,
+      "clamp": 0,
+      "total": -31
+    },
+    {
+      "sfen": "ln1g1g1nl/1r1sks3/2pppp1pp/p5p2/5b3/PpPP1B3/1P2PPPPP/LKSG3R1/1N3GSNL b - 25",
+      "material": 0,
+      "safety": -42,
+      "pressure": -20,
+      "activity": -3,
+      "danger": 0,
+      "clamp": 0,
+      "total": -65
+    },
+    {
+      "sfen": "ln1g1g1nl/1r1sks3/2pppp1pp/p5p2/5b3/PpPP1B3/1S2PPPPP/LK1G1S1R1/1N3G1NL b P 29",
+      "material": 0,
+      "safety": -46,
+      "pressure": -24,
+      "activity": -9,
+      "danger": -50,
+      "clamp": 0,
+      "total": -129
+    },
+    {
+      "sfen": "ln1g1g1nl/3sks3/2pppp1pp/pr4p2/5b3/P1PP1B3/1S2PPPPP/LK1G1S1R1/1N3G1NL b 2P 33",
+      "material": 200,
+      "safety": -46,
+      "pressure": -24,
+      "activity": -10,
+      "danger": 0,
+      "clamp": 0,
+      "total": 120
+    },
+    {
+      "sfen": "ln1g1g1nl/3sks3/2pppp1pp/pr4p2/2P6/P1bP1B3/1S2PPPPP/LKG2S1R1/1N3G1NL b 2P 37",
+      "material": 200,
+      "safety": -34,
+      "pressure": -6,
+      "activity": -11,
+      "danger": 25,
+      "clamp": 0,
+      "total": 174
+    },
+    {
+      "sfen": "ln1g1g1nl/3sks3/2pppp1pp/pr4p2/2P6/P1bP1B3/1S2PPPPP/LKG2S1R1/1N3G1NL b 2P 41",
+      "material": 200,
+      "safety": -34,
+      "pressure": -6,
+      "activity": -11,
+      "danger": 25,
+      "clamp": 0,
+      "total": 174
+    },
+    {
+      "sfen": "ln1g1g1nl/3sks3/2pppp1pp/pr4p2/2P6/P1bP1B3/1S2PPPPP/LKG2S1R1/1N3G1NL b 2P 45",
+      "material": 200,
+      "safety": -34,
+      "pressure": -6,
+      "activity": -11,
+      "danger": 25,
+      "clamp": 0,
+      "total": 174
+    },
+    {
+      "sfen": "ln1g1g1nl/3sks3/2pppp1p1/prP3p1p/9/P2P1B3/1+b2PPPPP/LKG2S1R1/1N2G2NL b 2Ps 49",
+      "material": -1000,
+      "safety": -44,
+      "pressure": -46,
+      "activity": -15,
+      "danger": 38,
+      "clamp": 0,
+      "total": -1067
+    },
+    {
+      "sfen": "ln1g1g1nl/3sks3/2pppp1p1/prP1s1p1p/4B4/P2P5/1G2PPPPP/LK3S1R1/1N2G2NL b B2P 53",
+      "material": 800,
+      "safety": -44,
+      "pressure": -6,
+      "activity": -4,
+      "danger": -75,
+      "clamp": 0,
+      "total": 671
+    },
+    {
+      "sfen": "ln1g1g1n+B/3sks3/3ppp1p1/prp1s3p/6p2/P2P2B2/1G2PPPPP/LK3S1R1/1N2G2NL b L2Pp 57",
+      "material": 1400,
+      "safety": -44,
+      "pressure": -6,
+      "activity": -4,
+      "danger": -37,
+      "clamp": 0,
+      "total": 1309
+    },
+    {
+      "sfen": "ln1g1g1n+B/3sks3/3ppp1+Bp/prp1s4/9/P2P2p2/1G2PPPPP/LK3S1R1/1N2G2NL b L4P 61",
+      "material": 2000,
+      "safety": -44,
+      "pressure": 0,
+      "activity": 8,
+      "danger": 50,
+      "clamp": 0,
+      "total": 2014
+    },
+    {
+      "sfen": "ln1g1g1n+B/3sks3/3ppp1+Bp/prp1s4/1p7/PL1P5/1G2PPSPP/LK5R1/1N2G2NL b 5P 65",
+      "material": 2000,
+      "safety": -44,
+      "pressure": 6,
+      "activity": 19,
+      "danger": 12,
+      "clamp": 0,
+      "total": 1993
+    },
+    {
+      "sfen": "ln1g1g1n+B/3sks3/3ppp1+Bp/p1p1s4/7r1/PP1P5/1G2PPSPP/LK5R1/1N2G2NL b 5Pl 69",
+      "material": 1600,
+      "safety": -44,
+      "pressure": 6,
+      "activity": 12,
+      "danger": -88,
+      "clamp": 0,
+      "total": 1486
+    },
+    {
+      "sfen": "ln1g1g1n+B/3sks3/3ppp2p/p1p1s2r1/4l4/PP1P3S1/1G1+BPP1PP/LK5R1/1N2G2NL b 5P 73",
+      "material": 1600,
+      "safety": -44,
+      "pressure": 0,
+      "activity": 19,
+      "danger": 0,
+      "clamp": 0,
+      "total": 1575
+    },
+    {
+      "sfen": "ln1g1g1n+B/3sks3/3ppp2p/p1p1s2r1/4l4/PP1P3S1/1G1+BPP1PP/LK5R1/1N2G2NL b 5P 77",
+      "material": 1600,
+      "safety": -44,
+      "pressure": 0,
+      "activity": 19,
+      "danger": 0,
+      "clamp": 0,
+      "total": 1575
+    },
+    {
+      "sfen": "ln1g1g1n+B/3sks3/3ppp2p/p1p1s2r1/4l4/PP1P3S1/1G1+BPP1PP/LK5R1/1N2G2NL b 5P 81",
+      "material": 1600,
+      "safety": -44,
+      "pressure": 0,
+      "activity": 19,
+      "danger": 0,
+      "clamp": 0,
+      "total": 1575
+    },
+    {
+      "sfen": "ln1g1g2+B/3sks3/3pppn1p/p1p1s4/4l2rS/PP1P4P/1G1+BPP1P1/LK5R1/1N2G2NL b 5P 85",
+      "material": 1600,
+      "safety": -44,
+      "pressure": 0,
+      "activity": 22,
+      "danger": 0,
+      "clamp": 0,
+      "total": 1578
+    },
+    {
+      "sfen": "ln1g1g2+B/3sks3/3pppn1p/p1p1s1+B2/6PrS/PP1P4P/1G3+l1P1/LK5R1/1N2G2NL b 4P2p 89",
+      "material": 900,
+      "safety": -44,
+      "pressure": 6,
+      "activity": 6,
+      "danger": 0,
+      "clamp": 0,
+      "total": 868
+    },
+    {
+      "sfen": "ln1g1g2+B/3sks3/3pppn1p/p1p3+B2/3s2PrS/PP6P/1G4+lP1/LK5R1/1N2GP1NL b 3P3p 93",
+      "material": 700,
+      "safety": -44,
+      "pressure": 6,
+      "activity": 2,
+      "danger": -50,
+      "clamp": 0,
+      "total": 614
+    },
+    {
+      "sfen": "ln1g1g2+B/3sks3/3pppn1p/p1p3+B2/6PNS/PP6P/1+s5P1/LK5R1/1N2GP2L b RL3Pg3p 97",
+      "material": 2300,
+      "safety": -56,
+      "pressure": -24,
+      "activity": 22,
+      "danger": 75,
+      "clamp": 0,
+      "total": 2317
+    },
+    {
+      "sfen": "ln1g1g2+B/3sks3/3ppp2p/p1p2g3/6PnS/PP6P/1K1+B3P1/L6R1/1N2GP2L b RSL3Pn3p 101",
+      "material": 2800,
+      "safety": -48,
+      "pressure": 0,
+      "activity": 25,
+      "danger": -12,
+      "clamp": 0,
+      "total": 2765
+    },
+    {
+      "sfen": "ln1g1g2+B/3sks3/3ppp2p/p4g3/2p3PnS/PP6P/1K1+B3P1/L6R1/1N2GP2L b SNL3Pr3p 105",
+      "material": 1400,
+      "safety": -48,
+      "pressure": -4,
+      "activity": 26,
+      "danger": -12,
+      "clamp": 0,
+      "total": 1362
+    },
+    {
+      "sfen": "ln1g1g2+B/3Pks3/2sppp2p/p1N2g3/2p3P1S/PP6P/1K1+B2+nP1/L6R1/1N2GP2L b SL2Pr3p 109",
+      "material": 1100,
+      "safety": -38,
+      "pressure": 8,
+      "activity": 23,
+      "danger": -98,
+      "clamp": 0,
+      "total": 995
+    },
+    {
+      "sfen": "ln1g1g2+B/3Pks3/2sppp2p/p1N2g3/2p3P1S/PP6P/1K1+B2r+n1/LR7/1N2GP2L b SL2P4p 113",
+      "material": 900,
+      "safety": -38,
+      "pressure": 8,
+      "activity": 11,
+      "danger": -98,
+      "clamp": 0,
+      "total": 783
+    },
+    {
+      "sfen": "ln2gg2+B/3Pks3/2sppp2p/p1N2g3/2p3P1S/PP3S2P/1K1+BL+r1+n1/LR7/1N2GP2L b 2P4p 117",
+      "material": 700,
+      "safety": -38,
+      "pressure": 20,
+      "activity": 27,
+      "danger": -100,
+      "clamp": 0,
+      "total": 609
+    },
+    {
+      "sfen": "ln2gg2+B/3Pk4/2spsp2p/p1N2g3/2p3P1S/PP3S+r1P/1K2+B2+n1/LR7/1N2GP2L b 3Pl4p 121",
+      "material": 300,
+      "safety": -34,
+      "pressure": 6,
+      "activity": 31,
+      "danger": -25,
+      "clamp": 0,
+      "total": 278
+    },
+    {
+      "sfen": "ln1g1g2+B/3Pk4/2spsp2p/p1N2g3/2p3P1S/PP2pS+r1P/1K2+B2+n1/LR7/1N2GP2L b 2Pl4p 125",
+      "material": 100,
+      "safety": -34,
+      "pressure": 8,
+      "activity": 27,
+      "danger": -63,
+      "clamp": 0,
+      "total": 38
+    },
+    {
+      "sfen": "ln1g1g2+B/4k4/2spsp2p/p1N2g3/2p3P1S/PP2+BS+r1P/1K5+n1/LR7/1N2GP2L b 3Pl5p 129",
+      "material": 100,
+      "safety": -34,
+      "pressure": 0,
+      "activity": 26,
+      "danger": 0,
+      "clamp": 0,
+      "total": 92
+    },
+    {
+      "sfen": "ln1g1g2+B/4k4/2spsp2p/p1N2g3/2p3P1S/PP2+BS+r1P/1K5+n1/LR7/1N2GP2L b 2Pl6p 133",
+      "material": -100,
+      "safety": -34,
+      "pressure": 0,
+      "activity": 26,
+      "danger": 0,
+      "clamp": 0,
+      "total": -108
+    },
+    {
+      "sfen": "ln1g1g2+B/4k4/2spsp2p/p1N2g3/2p3P1S/PP2+BS+r1P/1K5+n1/LR7/1N2GP2L b Pl7p 137",
+      "material": -300,
+      "safety": -34,
+      "pressure": 0,
+      "activity": 26,
+      "danger": 0,
+      "clamp": 0,
+      "total": -308
+    },
+    {
+      "sfen": "ln1g1g2+B/4k4/2spsp2p/p1N2g3/2p3P1S/PP2+BS+r1P/1K5+n1/LR7/1N2GP2L b l8p 141",
+      "material": -500,
+      "safety": -34,
+      "pressure": 0,
+      "activity": 26,
+      "danger": 0,
+      "clamp": 0,
+      "total": -508
+    },
+    {
+      "sfen": "ln1g1g2+B/3sk4/3psp2p/p4gP2/2p5S/PPn1+BS+r1P/1K5+n1/LR7/1N2GP2L b l8p 145",
+      "material": -1100,
+      "safety": -44,
+      "pressure": -20,
+      "activity": 21,
+      "danger": -87,
+      "clamp": 0,
+      "total": -1230
+    },
+    {
+      "sfen": "ln1g1g2+B/3sk4/3psp2p/p5g2/2p2l2S/PPn1+BS+r1P/1K5+n1/L1R6/1N1G1P2L b 9p 149",
+      "material": -1300,
+      "safety": -44,
+      "pressure": -18,
+      "activity": 23,
+      "danger": -25,
+      "clamp": 0,
+      "total": -1364
+    },
+    {
+      "sfen": "ln1g1g2+B/3sk4/3psp2p/p8/2p2g1+rS/PPn5P/1K2+B2+n1/L1R6/1N1G1P2L b Ls9p 153",
+      "material": -1700,
+      "safety": -44,
+      "pressure": -10,
+      "activity": 11,
+      "danger": 25,
+      "clamp": 0,
+      "total": -1718
+    },
+    {
+      "sfen": "ln1g1g2+B/3sk4/3psp2+B/p8/2p2g1+rS/PPn1+s3P/1KR4+n1/L8/1N1G1P2L b LP9p 157",
+      "material": -1600,
+      "safety": -44,
+      "pressure": -18,
+      "activity": -2,
+      "danger": 0,
+      "clamp": 0,
+      "total": -1664
+    },
+    {
+      "sfen": "ln1g1g2+B/3sk4/3psp2+B/p7S/2p2g3/PPn1+s1+r1P/1KR4+n1/Lp7/1N1G1PP1L b L8p 161",
+      "material": -1600,
+      "safety": -44,
+      "pressure": -20,
+      "activity": -4,
+      "danger": -50,
+      "clamp": 0,
+      "total": -1718
+    },
+    {
+      "sfen": "ln1g1g2+B/3sk4/3psp2+B/p7S/2p2g3/PPn1+s1+r1P/NKR4+n1/L+pG6/5PP1L b L8p 165",
+      "material": -2100,
+      "safety": -32,
+      "pressure": -52,
+      "activity": -11,
+      "danger": -12,
+      "clamp": 0,
+      "total": -2207
+    },
+    {
+      "sfen": "ln1g1g3/3sk3+B/3psp2+B/p7S/2p2g3/PPn+s2+r1P/NKR4+n1/LG7/5PP1L b L2P7p 169",
+      "material": -1200,
+      "safety": -32,
+      "pressure": -34,
+      "activity": -4,
+      "danger": -100,
+      "clamp": 0,
+      "total": -1370
+    },
+    {
+      "sfen": "ln1g1g3/3sk4/3psp2+B/p7S/2p2+r3/PPn5P/N1K4+n1/LG7/5PP1L b GSL2Prb7p 173",
+      "material": -2700,
+      "safety": -36,
+      "pressure": -24,
+      "activity": -8,
+      "danger": -50,
+      "clamp": 0,
+      "total": -2818
+    },
+    {
+      "sfen": "ln1g1g3/3sk4/3psp1+B1/p4b2S/2p2+r3/PPn5P/N1KG1r1+n1/LG7/5PP1L b SL2P7p 177",
+      "material": -2700,
+      "safety": -24,
+      "pressure": -56,
+      "activity": -24,
+      "danger": -25,
+      "clamp": 0,
+      "total": -2829
+    },
+    {
+      "sfen": "ln1g1g3/3sk4/3psp1+B1/p4b2S/2p2+r3/PP1L4P/Np1G1r1+n1/LK7/5PP1L b SN2Pg6p 181",
+      "material": -3300,
+      "safety": -52,
+      "pressure": 8,
+      "activity": -21,
+      "danger": -50,
+      "clamp": 0,
+      "total": -3415
+    },
+    {
+      "sfen": "ln1g1g3/3sk4/3psp1+B1/p4b2S/2p2+r3/PP1L4P/Np1g1r1+n1/L2K5/5PP1L b SN2Pg6p 185",
+      "material": -4500,
+      "safety": -52,
+      "pressure": -30,
+      "activity": -27,
+      "danger": -25,
+      "clamp": 0,
+      "total": -4634
+    },
+    {
+      "sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+      "material": 0,
+      "safety": 0,
+      "pressure": 0,
+      "activity": 0,
+      "danger": 0,
+      "clamp": 0,
+      "total": 0
+    },
+    {
+      "sfen": "lnsgkgsnl/1r7/ppppppppb/8p/4B4/2P6/PP1PPPPPP/7R1/LNSGKGSNL b - 5",
+      "material": 0,
+      "safety": 0,
+      "pressure": 0,
+      "activity": 3,
+      "danger": -12,
+      "clamp": 0,
+      "total": -9
+    },
+    {
+      "sfen": "lnsgkgsnl/1r7/pppp1ppp1/4p3p/6b2/2PB5/PP1PPPPPP/5S1R1/LNSGKG1NL b - 9",
+      "material": 0,
+      "safety": 10,
+      "pressure": 0,
+      "activity": -9,
+      "danger": 0,
+      "clamp": 0,
+      "total": 1
+    },
+    {
+      "sfen": "lnsgkgsnl/1r7/1pppbppp1/p3p3p/9/2PB2P2/PP1PPP1PP/4KS1R1/LNSG1G1NL b - 13",
+      "material": 0,
+      "safety": 22,
+      "pressure": 0,
+      "activity": -5,
+      "danger": 0,
+      "clamp": 0,
+      "total": 17
+    },
+    {
+      "sfen": "lnsgk1snl/1r3g3/1ppp1ppp1/p2bp3p/9/2PB2P1P/PP1PPP1P1/3SKS1R1/LN1G1G1NL b - 17",
+      "material": 0,
+      "safety": 32,
+      "pressure": 0,
+      "activity": 4,
+      "danger": -125,
+      "clamp": 0,
+      "total": -89
+    },
+    {
+      "sfen": "lnsgk1snl/1r4g2/1ppp2pp1/p2bpp2p/9/2PBP1P1P/PP1P1P1P1/3SKS2R/LN1G1G1NL b - 21",
+      "material": 0,
+      "safety": 40,
+      "pressure": 0,
+      "activity": 3,
+      "danger": 12,
+      "clamp": 0,
+      "total": 55
+    },
+    {
+      "sfen": "lnsgk1snl/6g2/1ppp2pp1/p2bp3p/5r3/2PBP1P1P/PP1P1P1P1/3SKS2R/LN1G1G1NL b P 25",
+      "material": 200,
+      "safety": 40,
+      "pressure": -6,
+      "activity": -1,
+      "danger": 0,
+      "clamp": 0,
+      "total": 233
+    },
+    {
+      "sfen": "lnsgk1snl/6g2/1ppp2pp1/p2bp3p/9/2PrP1P1P/PPNP1PNP1/3SKS2R/L2G1G2L b Pb 29",
+      "material": -1400,
+      "safety": 40,
+      "pressure": -6,
+      "activity": 4,
+      "danger": 100,
+      "clamp": 0,
+      "total": -1262
+    },
+    {
+      "sfen": "lnsgk1sn1/6g1l/1ppp2pp1/p2bp3p/bR7/2PPP1P1P/PPN2PNP1/3SKS2R/L2G1G2L b P 33",
+      "material": 600,
+      "safety": 36,
+      "pressure": 0,
+      "activity": 12,
+      "danger": 12,
+      "clamp": 0,
+      "total": 660
+    },
+    {
+      "sfen": "lnsgk1sn1/6g1l/1ppp2pp1/p2b4p/1R2p4/1bPP2P1P/P1N2PNP1/3SKS2R/L2G1G2L b P2p 37",
+      "material": 200,
+      "safety": 36,
+      "pressure": 0,
+      "activity": 3,
+      "danger": 12,
+      "clamp": 0,
+      "total": 251
+    },
+    {
+      "sfen": "lns1k1sn1/1p2g1g1l/1+Rpp2pp1/p2b4p/4p4/1bPP2P1P/P1N2PNP1/3SKS2R/L2G1G2L b P2p 41",
+      "material": 400,
+      "safety": 36,
+      "pressure": 0,
+      "activity": 7,
+      "danger": -150,
+      "clamp": 0,
+      "total": 293
+    },
+    {
+      "sfen": "lns3sn1/1p2gkg1l/2ppb1pp1/p7p/1+R1Pp4/1bP3P1P/P1N2PNP1/3SKS2R/L2G1G2L b P2p 45",
+      "material": 400,
+      "safety": 10,
+      "pressure": 0,
+      "activity": -2,
+      "danger": 0,
+      "clamp": 0,
+      "total": 408
+    },
+    {
+      "sfen": "lns3sn1/1p2g1g1l/2ppk1pp1/p7p/1+R1Pp4/2P3P1P/P1+b2PNP1/3SKS2R/L2G1G2L b Bn3p 49",
+      "material": 1000,
+      "safety": 32,
+      "pressure": -6,
+      "activity": 3,
+      "danger": 88,
+      "clamp": 0,
+      "total": 1117
+    },
+    {
+      "sfen": "lns2Bsn1/1p2gng1l/2ppk1pp1/8p/p+R1Pp4/2P3P1P/P1S2PNP1/4KS2R/L2G1G2L b B3p 53",
+      "material": 2800,
+      "safety": 22,
+      "pressure": 18,
+      "activity": 17,
+      "danger": 0,
+      "clamp": 0,
+      "total": 2857
+    },
+    {
+      "sfen": "lns2Bsn1/1p2gng1l/2pp1kpp1/5p2p/p+R1PpNB2/2P3P1P/P1S2P1P1/4KS2R/L2G1G2L b 2p 57",
+      "material": 2800,
+      "safety": 6,
+      "pressure": 36,
+      "activity": 23,
+      "danger": -37,
+      "clamp": 0,
+      "total": 2828
+    },
+    {
+      "sfen": "lns2Bsn1/1p2g1g1l/2p2kpp1/3+Rnp2p/p2PpNB2/2P3P1P/P1S2P1P1/4KS2R/L2G1G2L b P2p 61",
+      "material": 3000,
+      "safety": 6,
+      "pressure": 50,
+      "activity": 12,
+      "danger": -25,
+      "clamp": 0,
+      "total": 3043
+    },
+    {
+      "sfen": "lns2Bs2/1p2g1g1l/2p1Pknp1/3+Rnp2p/p2Pp1B2/2Pn2P1P/P1S2P1P1/4KS2R/L2G1G2L b P2p 65",
+      "material": 2600,
+      "safety": 10,
+      "pressure": 42,
+      "activity": 9,
+      "danger": 75,
+      "clamp": 0,
+      "total": 2736
+    },
+    {
+      "sfen": "lns+R1Bs2/1p4g1l/2p1gknp1/4npp1p/p2Pp1B2/2Pn2P1P/P1SK1P1P1/5S2R/L2G1G2L b P2p 69",
+      "material": 2400,
+      "safety": -18,
+      "pressure": -2,
+      "activity": 15,
+      "danger": -25,
+      "clamp": 0,
+      "total": 2370
+    },
+    {
+      "sfen": "lns+R1Bs2/1p4g1l/2p1gk1p1/4npp1p/p2Pp2n1/2Pn2P1P/P1SK1P1P1/3p1S1BR/L2G1G2L b Pp 73",
+      "material": 2400,
+      "safety": -18,
+      "pressure": -8,
+      "activity": 4,
+      "danger": 12,
+      "clamp": 0,
+      "total": 2390
+    },
+    {
+      "sfen": "lns+R2s2/1p3g2l/2p1gk1+B1/4npp1p/p2Pp2n1/2P3P1P/P1SK1P1P1/2+nG1S1BR/L4G2L b 3Pp 77",
+      "material": 2700,
+      "safety": -6,
+      "pressure": 6,
+      "activity": 1,
+      "danger": 160,
+      "clamp": 0,
+      "total": 2861
+    },
+    {
+      "sfen": "lns+R2s2/1p4g1l/2p1gk1+B1/4npp1p/p2Pp2n1/2P3P1P/P1SK1P1P1/3G1S1BR/L4G2L b N4P 81",
+      "material": 3800,
+      "safety": -6,
+      "pressure": 12,
+      "activity": 6,
+      "danger": -13,
+      "clamp": 0,
+      "total": 3799
+    },
+    {
+      "sfen": "lns2+R3/1p3s1g+B/2p1gk3/4npp1p/p2Pp2n1/2P3P1P/P1SK1P1P1/3G1S1BR/L4G2L b NL4P 85",
+      "material": 4400,
+      "safety": -4,
+      "pressure": 12,
+      "activity": 4,
+      "danger": 25,
+      "clamp": 0,
+      "total": 4437
+    },
+    {
+      "sfen": "lns2+R3/1p2gs1+B1/2p2k3/3Gnpp1p/p2P3n1/2P1p1P1P/P1SK1P1P1/3G1S1BR/L4G2L b NL4P 89",
+      "material": 5600,
+      "safety": -4,
+      "pressure": 44,
+      "activity": 17,
+      "danger": 75,
+      "clamp": 0,
+      "total": 5732
+    },
+    {
+      "sfen": "ln3+R3/1ps1gs1+B1/2p2k3/3Gnpp1p/pP1P5/2P1K1P1P/P1S2P+nP1/3G1S1BR/L4G2L b NL4P 93",
+      "material": 5500,
+      "safety": -22,
+      "pressure": 26,
+      "activity": 22,
+      "danger": 25,
+      "clamp": 0,
+      "total": 5551
+    },
+    {
+      "sfen": "ln3+R3/1ps1gs1+B1/2p2k3/3Gnpp1p/pP1P2+n2/2P1K3P/P1S2P1P1/3G1S1BR/L4GL1L b 4Pnp 97",
+      "material": 4700,
+      "safety": -22,
+      "pressure": 24,
+      "activity": 24,
+      "danger": 37,
+      "clamp": 0,
+      "total": 4763
+    },
+    {
+      "sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+      "material": 0,
+      "safety": 0,
+      "pressure": 0,
+      "activity": 0,
+      "danger": 0,
+      "clamp": 0,
+      "total": 0
+    },
+    {
+      "sfen": "lnsg1g1nl/1r2ks1b1/ppppppppp/9/4B4/2P6/PP1PPPPPP/7R1/LNSGKGSNL b - 5",
+      "material": 0,
+      "safety": -22,
+      "pressure": 0,
+      "activity": 13,
+      "danger": 0,
+      "clamp": 0,
+      "total": -9
+    },
+    {
+      "sfen": "lnsg1g1nl/1r2ks3/ppppppppb/8p/4B4/2P6/PP1PPPPPP/1S1R5/LN1GKGSNL b - 9",
+      "material": 0,
+      "safety": -22,
+      "pressure": 0,
+      "activity": 5,
+      "danger": -12,
+      "clamp": 0,
+      "total": -29
+    },
+    {
+      "sfen": "lnsg1g1nl/1r2ks3/pppp1ppp1/4p3p/6b2/2PB5/PP1PPPPPP/1S1RK4/LN1G1GSNL b - 13",
+      "material": 0,
+      "safety": -6,
+      "pressure": -6,
+      "activity": -4,
+      "danger": 0,
+      "clamp": 0,
+      "total": -16
+    },
+    {
+      "sfen": "ln1g1g1nl/1r1sks3/pp1p1ppp1/2p1p3p/6b2/2PB5/PP1PPPPPP/1SGRKG3/LN4SNL b - 17",
+      "material": 0,
+      "safety": -28,
+      "pressure": -6,
+      "activity": -11,
+      "danger": 0,
+      "clamp": 0,
+      "total": -45
+    },
+    {
+      "sfen": "ln1g1g1nl/2rsks3/1p1p1ppp1/p1p1p3p/6b2/PPPB5/3PPPPPP/1SGRKG3/LN4SNL b - 21",
+      "material": 0,
+      "safety": -28,
+      "pressure": -6,
+      "activity": -11,
+      "danger": 0,
+      "clamp": 0,
+      "total": -45
+    },
+    {
+      "sfen": "ln1g1g1nl/2rsks3/1p1p1ppp1/p1p1p3p/9/PbPB2P2/3PPP1PP/1SG1KG3/LN1R2SNL b p 25",
+      "material": -200,
+      "safety": -28,
+      "pressure": -8,
+      "activity": -4,
+      "danger": 0,
+      "clamp": 0,
+      "total": -240
+    },
+    {
+      "sfen": "ln1g1g1nl/2rsks3/1p1p1ppp1/p2bp3p/2p6/P1PB2P2/1S1PPPNPP/2G1KG3/LN1R2S1L b p 29",
+      "material": -200,
+      "safety": -28,
+      "pressure": 0,
+      "activity": -9,
+      "danger": 0,
+      "clamp": 0,
+      "total": -237
+    },
+    {
+      "sfen": "ln1g1g1nl/2rsks3/1p1p1ppp1/3bp3p/p1P6/P2B2P2/1SNPPPNPP/2G1KG3/L2R2S1L b 2P 33",
+      "material": 200,
+      "safety": -28,
+      "pressure": 0,
+      "activity": -9,
+      "danger": 0,
+      "clamp": 0,
+      "total": 163
+    },
+    {
+      "sfen": "1n1g1g1nl/2rsks3/1pbp1ppp1/4p3p/L1P6/3B2P2/1SNPPPNPP/2G1KG3/3R2S1L b L3Pp 37",
+      "material": 800,
+      "safety": -28,
+      "pressure": 0,
+      "activity": 2,
+      "danger": -37,
+      "clamp": 0,
+      "total": 737
+    },
+    {
+      "sfen": "1n1g1g1nl/2+Lsks3/1p1p1ppp1/4p3p/L1P6/3B1nP2/1SNPPP+bPP/2G1KG3/3R2S1L b R3Pp 41",
+      "material": 2300,
+      "safety": -28,
+      "pressure": -12,
+      "activity": 5,
+      "danger": 23,
+      "clamp": 0,
+      "total": 2288
+    },
+    {
+      "sfen": "1n1g1g1nl/2+Lsks3/1p1p1ppp1/4p3p/L1P6/3B2P2/1SNPPP1PP/2G1K+b3/3R2S1L b RN3Pgp 45",
+      "material": 1700,
+      "safety": -40,
+      "pressure": -20,
+      "activity": 6,
+      "danger": 85,
+      "clamp": 0,
+      "total": 1731
+    },
+    {
+      "sfen": "Rn3g1nl/2gsks3/1p1p1ppp1/3lp3p/L1P6/3B2P2/1SNPPP1PP/2G2K3/3R2S1L b BN3Pgp 49",
+      "material": 2600,
+      "safety": -22,
+      "pressure": 0,
+      "activity": 12,
+      "danger": -25,
+      "clamp": 0,
+      "total": 2565
+    },
+    {
+      "sfen": "1+R1B1g1nl/2gs1s3/1p1pkppp1/4p3p/L1P6/3l2P2/1SNPPP1PP/2G2K3/3R2S1L b 2N3Pbgp 53",
+      "material": 1800,
+      "safety": -14,
+      "pressure": 10,
+      "activity": 14,
+      "danger": 112,
+      "clamp": 0,
+      "total": 1922
+    },
+    {
+      "sfen": "1+R3g1nl/2+Bs1s3/1p1p1ppp1/4pk2p/L1PN4b/3l2P2/1SNPPP1PP/2G2K3/3R2S1L b GN3Pgp 57",
+      "material": 3200,
+      "safety": 6,
+      "pressure": -4,
+      "activity": 24,
+      "danger": 160,
+      "clamp": 0,
+      "total": 3386
+    },
+    {
+      "sfen": "1+R3g1nl/2+Bs1s3/1p1p1ppp1/4pk2p/L1PN4b/6P2/1SN+lPPNPP/2G1K4/3R2S1L b 2G3P2p 61",
+      "material": 3900,
+      "safety": -4,
+      "pressure": -2,
+      "activity": 22,
+      "danger": 123,
+      "clamp": 0,
+      "total": 4039
+    },
+    {
+      "sfen": "1+R3g1nl/3+B1s3/1p1pnppp1/4pk2p/L1PN5/6P2/1SNKPP+bPP/2G6/3R2S1L b 2GSL3P2p 65",
+      "material": 5000,
+      "safety": 4,
+      "pressure": 18,
+      "activity": 24,
+      "danger": 25,
+      "clamp": 0,
+      "total": 5071
+    },
+    {
+      "sfen": "5+R1nl/3+B1s3/1p1pnppp1/4p3p/L1PNk4/6P2/1SNKP+b1PP/2G6/3R1LS1L b 3GS3P3p 69",
+      "material": 6000,
+      "safety": 12,
+      "pressure": 4,
+      "activity": 37,
+      "danger": 23,
+      "clamp": 0,
+      "total": 6076
+    },
+    {
+      "sfen": "5+R1nl/3+B1s3/1p1p1ppp1/3kp3p/L1Pn5/4P1P2/1SNK1L1PP/2G6/3R2S1L b B3GS3Pn3p 73",
+      "material": 7200,
+      "safety": 8,
+      "pressure": 34,
+      "activity": 43,
+      "danger": 88,
+      "clamp": 0,
+      "total": 7373
+    },
+    {
+      "sfen": "5+R1nl/3+B1s3/1pB2ppp1/3pp3p/L1kn5/4P1P2/1SNK1L1PP/2G6/3R2S1L b 3G3Psn4p 77",
+      "material": 6000,
+      "safety": 12,
+      "pressure": 34,
+      "activity": 47,
+      "danger": 100,
+      "clamp": 0,
+      "total": 6193
+    },
+    {
+      "sfen": "5+R1nl/3+B1s3/5ppp1/1pkpp3p/L2n5/2S1P1P2/2NK1L1PP/2G6/3R2S1L b 3G3Pbsn4p 81",
+      "material": 4400,
+      "safety": 18,
+      "pressure": 34,
+      "activity": 41,
+      "danger": 100,
+      "clamp": 0,
+      "total": 4593
+    },
+    {
+      "sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+      "material": 0,
+      "safety": 0,
+      "pressure": 0,
+      "activity": 0,
+      "danger": 0,
+      "clamp": 0,
+      "total": 0
+    },
+    {
+      "sfen": "lnsg1gsn1/1r2k2bl/ppppppppp/9/4B4/2P6/PP1PPPPPP/7R1/LNSGKGSNL b - 5",
+      "material": 0,
+      "safety": -12,
+      "pressure": 0,
+      "activity": 15,
+      "danger": 0,
+      "clamp": 0,
+      "total": 3
+    },
+    {
+      "sfen": "lnsg2sn1/1r2k1gbl/1pppppppp/p8/4B4/2P6/PP1PPPPPP/4KS1R1/LNSG1G1NL b - 9",
+      "material": 0,
+      "safety": 22,
+      "pressure": 0,
+      "activity": 10,
+      "danger": 0,
+      "clamp": 0,
+      "total": 32
+    },
+    {
+      "sfen": "lnsg3n1/1r2ksgbl/1ppp1pppp/p3p4/4B4/2P3P2/PP1PPP1PP/3SKS1R1/LN1G1G1NL b - 13",
+      "material": 0,
+      "safety": 26,
+      "pressure": 0,
+      "activity": 12,
+      "danger": -100,
+      "clamp": 0,
+      "total": -62
+    },
+    {
+      "sfen": "lnsg3n1/1r2ksg1l/1ppp1p1pp/p3pbp2/9/2P2BP2/PPNPPP1PP/3SKS1R1/L2G1G1NL b - 17",
+      "material": 0,
+      "safety": 26,
+      "pressure": 0,
+      "activity": -5,
+      "danger": 0,
+      "clamp": 0,
+      "total": 21
+    },
+    {
+      "sfen": "lnsg3n1/1r2ksg1l/1ppp1p1pp/4pbp2/9/p1P2BP1P/PPNPPP1P1/3SKSR2/L2G1G1NL b - 21",
+      "material": 0,
+      "safety": 26,
+      "pressure": 0,
+      "activity": 0,
+      "danger": 0,
+      "clamp": 0,
+      "total": 26
+    },
+    {
+      "sfen": "1nsg3n1/1r2ksg1l/1ppp1p1pp/4pbp2/p8/L1P2BP1P/1PNPPP1P1/3SKSR2/3G1G1NL b LP 25",
+      "material": 600,
+      "safety": 26,
+      "pressure": 0,
+      "activity": 3,
+      "danger": -25,
+      "clamp": 0,
+      "total": 604
+    },
+    {
+      "sfen": "1nsg3n1/1r2ksg1l/1ppp2bpp/4ppp2/L4L3/2P2BP1P/1PNPPP1P1/3SKSR2/3G1G1NL b 2P 29",
+      "material": 800,
+      "safety": 30,
+      "pressure": 0,
+      "activity": 14,
+      "danger": -37,
+      "clamp": 0,
+      "total": 807
+    },
+    {
+      "sfen": "+Lnsg3n1/1r2ksg1l/1ppp2bpp/4p1p2/5p3/2P3P1P/1PNPPPBP1/l2SKSR2/3G1G1NL b 2P 33",
+      "material": 500,
+      "safety": 30,
+      "pressure": 0,
+      "activity": 4,
+      "danger": 0,
+      "clamp": 0,
+      "total": 534
+    },
+    {
+      "sfen": "1rsg3n1/4ksg1l/1ppp2bpp/4p1p2/5p3/2P3PBP/1PNPPP1P1/3SKSR2/+l2G1G1NL b N2Pl 37",
+      "material": -100,
+      "safety": 30,
+      "pressure": 8,
+      "activity": 5,
+      "danger": 0,
+      "clamp": 0,
+      "total": -57
+    },
+    {
+      "sfen": "2sg3n1/r3ksg1l/Nppp2bpp/4p1p2/5p3/2P3PBP/1PNPPP1P1/3SKSR2/+l2G1G1NL b Plp 41",
+      "material": -300,
+      "safety": 30,
+      "pressure": 8,
+      "activity": 4,
+      "danger": -37,
+      "clamp": 0,
+      "total": -295
+    },
+    {
+      "sfen": "2+Ng3n1/r1s1ksg1l/1ppp2bpp/4p1p2/5p1l1/2P3PBP/1PNPPP1P1/3SKSR2/+l2G1G1NL b Pp 45",
+      "material": 0,
+      "safety": 30,
+      "pressure": 22,
+      "activity": -5,
+      "danger": -62,
+      "clamp": 0,
+      "total": -15
+    },
+    {
+      "sfen": "2+Ng3n1/2s1ksg1l/1ppp2bpp/4p1p2/1N3p1l1/2P3PBP/+rP1PPP1P1/3SKSR2/+l2G1G1NL b 2p 49",
+      "material": -400,
+      "safety": 30,
+      "pressure": 22,
+      "activity": -5,
+      "danger": -75,
+      "clamp": 0,
+      "total": -428
+    },
+    {
+      "sfen": "3g3n1/2+N1ksg1l/1ppp2bpp/4p1p2/1N3p3/2P3P1P/+rP1PPP2B/3SKS+l2/+l2G1G1NL b Sr3p 53",
+      "material": -1900,
+      "safety": 30,
+      "pressure": 2,
+      "activity": -17,
+      "danger": -38,
+      "clamp": 0,
+      "total": -1923
+    },
+    {
+      "sfen": "3+N3n1/2r1ksg1l/1ppp2bpp/4p1p2/1N3p3/2P3P1P/+rP1PPP2B/3SKG3/+l2G3NL b GSLs3p 57",
+      "material": -800,
+      "safety": 32,
+      "pressure": 12,
+      "activity": -16,
+      "danger": -87,
+      "clamp": 0,
+      "total": -859
+    },
+    {
+      "sfen": "5k1n1/3r1sg1l/1ppp2bpp/4p1p2/1N3p3/2P3P1P/+rP1PPP2B/3SKG3/+l2G3NL b GL2sn3p 61",
+      "material": -2700,
+      "safety": 24,
+      "pressure": 0,
+      "activity": -24,
+      "danger": 125,
+      "clamp": 0,
+      "total": -2575
+    },
+    {
+      "sfen": "6kn1/3+BGsg1l/1ppp3pp/4p1p2/1N3p3/2P3P1P/+rP1PPP3/1+b1SKG3/+l2G3NL b RL2sn3p 65",
+      "material": -700,
+      "safety": 24,
+      "pressure": 10,
+      "activity": -10,
+      "danger": 13,
+      "clamp": 0,
+      "total": -663
+    },
+    {
+      "sfen": "5R1n1/3+B1Ggkl/1ppp3pp/4p1p2/1N3p3/2Pn2P1P/+rP1PPP3/1+b1SKG3/+l2G3NL b SL2s3p 69",
+      "material": 300,
+      "safety": 26,
+      "pressure": 12,
+      "activity": 21,
+      "danger": 38,
+      "clamp": 0,
+      "total": 397
+    },
+    {
+      "sfen": "5R1n1/5Ggkl/1ppp2spp/4p+Bp2/1N3p3/2PP2P1P/+r+b2PP3/3SKG3/+l2G3NL b SNLs4p 73",
+      "material": 700,
+      "safety": 12,
+      "pressure": 24,
+      "activity": 6,
+      "danger": -113,
+      "clamp": 0,
+      "total": 629
+    },
+    {
+      "sfen": "7n1/7kl/1ppp1+Rspp/4p+Bp2/1N3p3/2PP2P1P/+r+b2PP3/3SKG3/+l2G3NL b GSNLgs4p 77",
+      "material": 900,
+      "safety": 24,
+      "pressure": 12,
+      "activity": -3,
+      "danger": -25,
+      "clamp": 0,
+      "total": 908
+    },
+    {
+      "sfen": "7nk/6Gsl/1ppp1+R+Bpp/4p1p2/1N3p3/2PP2P1P/+r+b2PP3/3SKG3/+l2G3NL b 2SNLg4p 81",
+      "material": 1900,
+      "safety": 32,
+      "pressure": 14,
+      "activity": 2,
+      "danger": -38,
+      "clamp": 0,
+      "total": 1910
+    },
+    {
+      "sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+      "material": 0,
+      "safety": 0,
+      "pressure": 0,
+      "activity": 0,
+      "danger": 0,
+      "clamp": 0,
+      "total": 0
+    },
+    {
+      "sfen": "ln1g1gsnl/1r1sk2b1/ppppppppp/9/4B4/2P6/PP1PPPPPP/7R1/LNSGKGSNL b - 5",
+      "material": 0,
+      "safety": -22,
+      "pressure": 0,
+      "activity": 15,
+      "danger": 0,
+      "clamp": 0,
+      "total": -7
+    },
+    {
+      "sfen": "ln1g1g1nl/1r1sks1b1/pppppppp1/8p/4B4/2PP2P2/PP2PP1PP/7R1/LNSGKGSNL b - 9",
+      "material": 0,
+      "safety": -32,
+      "pressure": 0,
+      "activity": 5,
+      "danger": 0,
+      "clamp": 0,
+      "total": -27
+    },
+    {
+      "sfen": "ln1g1g1nl/1r1sks3/pppp1pppb/4p3p/4B4/2PP2P2/PP2PP1PP/1S2K2R1/LN1G1GSNL b - 13",
+      "material": 0,
+      "safety": -20,
+      "pressure": -6,
+      "activity": 1,
+      "danger": -100,
+      "clamp": 0,
+      "total": -125
+    },
+    {
+      "sfen": "ln1g1g1nl/1r1sks3/2pp1pppb/pp2p3p/3P5/2P3P2/PP2PPBPP/1S2K2R1/LN1G1GSNL b - 17",
+      "material": 0,
+      "safety": -20,
+      "pressure": -6,
+      "activity": -5,
+      "danger": 0,
+      "clamp": 0,
+      "total": -31
+    },
+    {
+      "sfen": "ln1g1g1nl/1r1sks1b1/2pp1p1p1/pp2p1p1p/3P5/2P3P2/PP2PPBPP/1S3G1R1/LN1GK1SNL b - 21",
+      "material": 0,
+      "safety": -28,
+      "pressure": 0,
+      "activity": -15,
+      "danger": -62,
+      "clamp": 0,
+      "total": -105
+    },
+    {
+      "sfen": "ln1g1g1nl/1r1sks1b1/2pp1p1p1/p3p3p/1p1P2p2/2P3PP1/PP2PPB1P/1SG2G1R1/LN2K1SNL b - 25",
+      "material": 0,
+      "safety": -40,
+      "pressure": 0,
+      "activity": -16,
+      "danger": 0,
+      "clamp": 0,
+      "total": -56
+    },
+    {
+      "sfen": "ln1g1g1n1/1r1sks2l/2pp1p1p1/p3pbP1p/1p1P5/2P4P1/PP2PPB1P/1SG2G1R1/LN2K1SNL b P 29",
+      "material": 200,
+      "safety": -40,
+      "pressure": 0,
+      "activity": -9,
+      "danger": 0,
+      "clamp": 0,
+      "total": 151
+    },
+    {
+      "sfen": "ln1g1g1n1/1r1sk3l/2ppsp3/p3pbPpp/1p1P5/P1P4P1/1PS1PPB1P/2G2G1R1/LN2K1SNL b P 33",
+      "material": 200,
+      "safety": -40,
+      "pressure": 0,
+      "activity": -5,
+      "danger": 0,
+      "clamp": 0,
+      "total": 155
+    },
+    {
+      "sfen": "ln1g1g1n1/1r1sk3l/2p1sp3/p2ppbPpp/3P5/PPP4P1/L1S1PPB1P/2G2G1R1/1N2K1SNL b 2P 37",
+      "material": 400,
+      "safety": -36,
+      "pressure": 0,
+      "activity": -6,
+      "danger": -12,
+      "clamp": 0,
+      "total": 346
+    },
+    {
+      "sfen": "ln1g1g1n1/1r1sk3l/2pp1p3/p2BpbPpp/9/PPP4P1/L1S1PP2P/2G2G1R1/1N2K1SNL b S3P 41",
+      "material": 1400,
+      "safety": -30,
+      "pressure": 8,
+      "activity": 0,
+      "danger": -100,
+      "clamp": 0,
+      "total": 1278
+    },
+    {
+      "sfen": "ln1g1g1n1/1r2k3l/3psp3/p1p1pbPpp/2B6/PPP4P1/L1S1PP2P/2G2G1R1/1N2K1SNL b 3Ps 45",
+      "material": 400,
+      "safety": -30,
+      "pressure": 6,
+      "activity": -2,
+      "danger": -87,
+      "clamp": 0,
+      "total": 287
+    },
+    {
+      "sfen": "ln1g1g1n1/1r1sk3l/3p1p3/p1p1pbPpp/4s4/PPPB3P1/L1S1PP2P/2G2G1R1/1N2K1SNL b 2Pp 49",
+      "material": 200,
+      "safety": -30,
+      "pressure": 0,
+      "activity": -4,
+      "danger": -37,
+      "clamp": 0,
+      "total": 129
+    },
+    {
+      "sfen": "ln1g1g1n1/1r1sk3l/3p1p3/p1p1pb+Ppp/9/PPP4P1/L1s1PP2P/2G2G1R1/1N2K1SNL b 2Pbsp 53",
+      "material": -1900,
+      "safety": -30,
+      "pressure": 2,
+      "activity": -14,
+      "danger": -25,
+      "clamp": 0,
+      "total": -1967
+    },
+    {
+      "sfen": "ln1g1g1n1/1r1sk3l/3p1p3/p1pbp+P1pp/9/PPP4P1/L1N1PP2P/2G1sG1R1/4K1SNL b BS2Pp 57",
+      "material": 700,
+      "safety": -30,
+      "pressure": -10,
+      "activity": -8,
+      "danger": -37,
+      "clamp": 0,
+      "total": 615
+    },
+    {
+      "sfen": "ln1g1g1n1/1r1s4l/3p1k3/p1p1p2pp/9/PPP4P1/L1N1PP2P/2G1G2+b1/4K1SNL b B2S3Pr2p 61",
+      "material": -1000,
+      "safety": 8,
+      "pressure": 0,
+      "activity": -19,
+      "danger": -25,
+      "clamp": 0,
+      "total": -1036
+    },
+    {
+      "sfen": "ln1g1g1n1/1r1s4l/3p1k3/p1p1p1p1p/7B1/PPP4P1/L1N1PP2P/2G1G2+b1/4K1SNL b 2S4Prp 65",
+      "material": -800,
+      "safety": 4,
+      "pressure": 6,
+      "activity": -16,
+      "danger": -25,
+      "clamp": 0,
+      "total": -831
+    },
+    {
+      "sfen": "ln1g1g1n1/3s4l/3p1k3/p1p1p1p1p/7B1/PrP4P1/L1N1PP2P/rBG1G2S1/4K2NL b 2S4P2p 69",
+      "material": 800,
+      "safety": 4,
+      "pressure": 6,
+      "activity": -2,
+      "danger": -12,
+      "clamp": 0,
+      "total": 796
+    },
+    {
+      "sfen": "ln1g1g1n1/3s4l/3p1k3/p1p1p1p1p/7B1/P1r4P1/L1N1PP2P/1SG1G2S1/4K2NL b RS4Pb3p 73",
+      "material": 1000,
+      "safety": 4,
+      "pressure": 6,
+      "activity": -4,
+      "danger": -12,
+      "clamp": 0,
+      "total": 994
+    },
+    {
+      "sfen": "ln1g1g3/3s3Rl/3p1kn2/p1p1p1p2/8p/P1r4PB/L1N1PP2P/1SG1G2S1/4K2NL b S4Pb3p 77",
+      "material": 1000,
+      "safety": 4,
+      "pressure": 26,
+      "activity": 0,
+      "danger": -50,
+      "clamp": 0,
+      "total": 980
+    },
+    {
+      "sfen": "ln1g5/3s2gRl/3p1kn2/p1p1p1p2/8p/P1r4P1/LGN1PP1BP/1S2G2S1/1b2K2NL b S4P3p 81",
+      "material": 1000,
+      "safety": -8,
+      "pressure": 12,
+      "activity": -6,
+      "danger": 35,
+      "clamp": 0,
+      "total": 1033
+    },
+    {
+      "sfen": "ln1g5/3s2g1+R/3p1kn2/p1p1p1p2/5p2p/P4L1r1/LGN1PP1BP/1S2G2S1/1b2K2NL b S4P3p 85",
+      "material": 1600,
+      "safety": -8,
+      "pressure": 6,
+      "activity": -8,
+      "danger": -13,
+      "clamp": 0,
+      "total": 1577
+    },
+    {
+      "sfen": "ln1g5/3s2g2/3p1k1r1/p1p1p1p2/5n2+R/P8/LGN1PP1BP/1S2G2S1/1b2K2NL b S6Pl3p 89",
+      "material": 1400,
+      "safety": -8,
+      "pressure": 0,
+      "activity": -4,
+      "danger": 0,
+      "clamp": 0,
+      "total": 1388
+    },
+    {
+      "sfen": "ln1g5/3s2g2/3p1kr2/p1p1p1pP1/5B2+R/P8/LGN1PP2P/+bS2G2S1/4K2NL b SN5Pl3p 93",
+      "material": 1800,
+      "safety": -8,
+      "pressure": 12,
+      "activity": 24,
+      "danger": 0,
+      "clamp": 0,
+      "total": 1828
+    },
+    {
+      "sfen": "ln1g5/3s5/3p1kg2/p1p1p1pP1/5B2+R/P8/L+bN1PP2P/1S2G2S1/4K2NL b RS5Pgnl3p 97",
+      "material": 2000,
+      "safety": -8,
+      "pressure": 8,
+      "activity": 22,
+      "danger": 63,
+      "clamp": 0,
+      "total": 2085
+    },
+    {
+      "sfen": "ln1g2g2/3s5/3p1kg1+R/p1p1p1pP1/5B3/P6l1/LSN1PP2P/4G2S1/4K2NL b RBS5Pn3p 101",
+      "material": 3800,
+      "safety": -8,
+      "pressure": 26,
+      "activity": 19,
+      "danger": -62,
+      "clamp": 0,
+      "total": 3775
+    },
+    {
+      "sfen": "ln1g2+P2/3s1g3/3p1kg1+R/p1p1p1pP1/5B3/P8/LSN1PP2P/4G2+l1/4K2NL b RBS4Psn3p 105",
+      "material": 3000,
+      "safety": -20,
+      "pressure": 38,
+      "activity": 19,
+      "danger": -75,
+      "clamp": 0,
+      "total": 2962
+    },
+    {
+      "sfen": "ln1g2+P2/3skg3/3p2g1+R/p1p1+B1pP1/5B3/P8/LSN1PP2P/4G4/4K2+lL b RS5Ps2n3p 109",
+      "material": 2800,
+      "safety": -26,
+      "pressure": 26,
+      "activity": 32,
+      "danger": -37,
+      "clamp": 0,
+      "total": 2795
+    },
+    {
+      "sfen": "ln1g2+P2/3skg3/3p2+P1+R/p1p1s1p2/5B3/P8/LSN1PP2P/4G4/4K2+lL b RGS5Pb2n3p 113",
+      "material": 2700,
+      "safety": -26,
+      "pressure": 22,
+      "activity": 31,
+      "danger": -62,
+      "clamp": 0,
+      "total": 2665
+    },
+    {
+      "sfen": "ln1g1G+P2/3sk4/3p4+R/p1p1s1p2/5B3/P8/LSN1PP2P/4G4/4K2+lL b RGS5Pb2n4p 117",
+      "material": 3200,
+      "safety": -14,
+      "pressure": 44,
+      "activity": 31,
+      "danger": -62,
+      "clamp": 0,
+      "total": 3199
+    },
+    {
+      "sfen": "ln1g1G+P2/3sknR2/3p1s3/p1p3p2/5B3/P8/LSN1PP2P/4G4/4K2+lL b GS5Prbn4p 121",
+      "material": 1000,
+      "safety": -24,
+      "pressure": 46,
+      "activity": 16,
+      "danger": -100,
+      "clamp": 0,
+      "total": 938
+    },
+    {
+      "sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+      "material": 0,
+      "safety": 0,
+      "pressure": 0,
+      "activity": 0,
+      "danger": 0,
+      "clamp": 0,
+      "total": 0
+    },
+    {
+      "sfen": "lnsg1gsnl/1r3k1b1/pppp1pppp/4p4/9/2PB5/PP1PPPPPP/7R1/LNSGKGSNL b - 5",
+      "material": 0,
+      "safety": -6,
+      "pressure": 6,
+      "activity": 11,
+      "danger": 0,
+      "clamp": 0,
+      "total": 11
+    },
+    {
+      "sfen": "lnsgkg1nl/1r4sb1/pppp1pppp/4p4/9/2PB5/PP1PPPPPP/3SK2R1/LN1G1GSNL b - 9",
+      "material": 0,
+      "safety": 22,
+      "pressure": 0,
+      "activity": 7,
+      "danger": 0,
+      "clamp": 0,
+      "total": 29
+    },
+    {
+      "sfen": "lnsgkg1nl/1r4s2/pppp1pppp/3bp4/9/2PB4P/PP1PPPPP1/3SKS1R1/LN1G1G1NL b - 13",
+      "material": 0,
+      "safety": 32,
+      "pressure": 0,
+      "activity": 7,
+      "danger": 0,
+      "clamp": 0,
+      "total": 39
+    },
+    {
+      "sfen": "lnsgkg1nl/3r2s2/1ppp1pppp/p2bp4/7P1/2PB4P/PP1PPPP2/3SKS1R1/LN1G1G1NL b - 17",
+      "material": 0,
+      "safety": 32,
+      "pressure": 0,
+      "activity": 6,
+      "danger": 0,
+      "clamp": 0,
+      "total": 38
+    },
+    {
+      "sfen": "lns1k2nl/2gr1gs2/1ppp1pppp/p2bp4/7P1/P1PBP3P/1P1P1PP2/3SKS1R1/LN1G1G1NL b - 21",
+      "material": 0,
+      "safety": 40,
+      "pressure": 0,
+      "activity": 19,
+      "danger": 0,
+      "clamp": 0,
+      "total": 59
+    },
+    {
+      "sfen": "lns1k2nl/2gr2s2/1pppgpp1p/p2bp2p1/9/P1PBP3P/1P1PSPP2/3SK2R1/LN1G1G1NL b p 25",
+      "material": -200,
+      "safety": 52,
+      "pressure": 0,
+      "activity": 19,
+      "danger": 12,
+      "clamp": 0,
+      "total": -117
+    },
+    {
+      "sfen": "lnsk3nl/2gr2s2/1pppgpppp/p2bp4/9/P1PBP3P/1P1PSPP2/3SK2R1/LN1G1G1NL b P 29",
+      "material": 0,
+      "safety": 30,
+      "pressure": 0,
+      "activity": 19,
+      "danger": 0,
+      "clamp": 0,
+      "total": 49
+    },
+    {
+      "sfen": "lnsk3nl/2gr2sP1/1pppgpp1p/p2b3R1/4p4/P1PBP3P/1P1PSPP2/3SK4/LN1G1G1NL b P 33",
+      "material": 200,
+      "safety": 30,
+      "pressure": 0,
+      "activity": 16,
+      "danger": 25,
+      "clamp": 0,
+      "total": 271
+    },
+    {
+      "sfen": "lnsk3+Pl/2gr2s2/1pppgpp1p/p2b3R1/9/P1PBS3P/1P1PpPP2/3SK4/LN1G1G1NL b N2P 37",
+      "material": 1300,
+      "safety": 20,
+      "pressure": -12,
+      "activity": 24,
+      "danger": 38,
+      "clamp": 0,
+      "total": 1370
+    },
+    {
+      "sfen": "lnsk1s1+P1/2gr3+Rl/1pppgpp1p/p2b5/9/P1P1S3P/1P1PBPP2/3SK4/LN1G1G1NL b N3P 41",
+      "material": 1700,
+      "safety": 20,
+      "pressure": 10,
+      "activity": 34,
+      "danger": 25,
+      "clamp": 0,
+      "total": 1789
+    },
+    {
+      "sfen": "lns1ks+R2/2gr3+Pl/1ppp1pp1p/p2b1g3/9/P1P1S3P/1P1PBPP2/3SK4/LN1G1G1NL b N3P 45",
+      "material": 1700,
+      "safety": 32,
+      "pressure": 10,
+      "activity": 24,
+      "danger": 0,
+      "clamp": 0,
+      "total": 1766
+    },
+    {
+      "sfen": "l1s1ks1+R1/2g1r2+Pl/nppp1pp1p/p2b1g3/4P4/P1P1S3P/1P1PBPP2/3SK4/LN1G1G1NL b N2P 49",
+      "material": 1700,
+      "safety": 32,
+      "pressure": 6,
+      "activity": 22,
+      "danger": 37,
+      "clamp": 0,
+      "total": 1797
+    },
+    {
+      "sfen": "l1s1ks1+R1/2g1r3+P/1ppp1pp1+B/p2b1g2p/1n2P4/P1P1S3P/1P1P1PP2/3SK4/LN1G1G1NL b NL2P 53",
+      "material": 2500,
+      "safety": 32,
+      "pressure": 6,
+      "activity": 24,
+      "danger": 12,
+      "clamp": 0,
+      "total": 2574
+    },
+    {
+      "sfen": "l1s1kr1+R1/2g5+P/1ppp1pp2/p2b1g3/1n2P4/P1P1S3P/1P1P1PP2/3SK4/LN1G1G1NL b SNL3Pb 57",
+      "material": 1900,
+      "safety": 42,
+      "pressure": 6,
+      "activity": 25,
+      "danger": -25,
+      "clamp": 0,
+      "total": 1948
+    },
+    {
+      "sfen": "l1s1k1r2/2g2b+R1+P/1ppp1pp2/p4g3/1n2P4/P1P1SL2P/1P1P1PP2/3SK4/LN1G1G1NL b SN3Pb 61",
+      "material": 1900,
+      "safety": 42,
+      "pressure": 10,
+      "activity": 13,
+      "danger": -113,
+      "clamp": 0,
+      "total": 1852
+    },
+    {
+      "sfen": "l1s1k1r2/2g2b1+R+P/1ppp1pp2/p4b3/1n2P4/P1P1S3P/1P1P1PP2/3SK4/LN1G1G1NL b GSN3Pl 65",
+      "material": 2500,
+      "safety": 42,
+      "pressure": 6,
+      "activity": 14,
+      "danger": 0,
+      "clamp": 0,
+      "total": 2562
+    },
+    {
+      "sfen": "l1s1kr3/2g2bS+R+P/1ppp1pp2/p4b3/4P4/P1P1S3P/1P+nPGPP2/3SK4/LN1G1G1NL b N3Pl 69",
+      "material": 2200,
+      "safety": 54,
+      "pressure": -6,
+      "activity": 20,
+      "danger": 125,
+      "clamp": 0,
+      "total": 2393
+    },
+    {
+      "sfen": "l1s2k3/2g2b1+R+P/1ppp1pp2/p3lb3/4P4/P1P1S3P/1PNPGPP2/3SK4/L2G1G1NL b R2N3Ps 73",
+      "material": 4100,
+      "safety": 54,
+      "pressure": 14,
+      "activity": 19,
+      "danger": 37,
+      "clamp": 0,
+      "total": 4224
+    },
+    {
+      "sfen": "l1s2kb2/2g4+R+P/1ppp1pp2/p3lb3/4P4/P1P1S3P/1PNPGPP2/3SK4/L2G1G1NL b S2N3Pr 77",
+      "material": 3100,
+      "safety": 54,
+      "pressure": 18,
+      "activity": 19,
+      "danger": -13,
+      "clamp": 0,
+      "total": 3178
+    },
+    {
+      "sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+      "material": 0,
+      "safety": 0,
+      "pressure": 0,
+      "activity": 0,
+      "danger": 0,
+      "clamp": 0,
+      "total": 0
+    },
+    {
+      "sfen": "lnsg1g1nl/1r2ks1b1/ppppppppp/9/9/2PB5/PP1PPPPPP/7R1/LNSGKGSNL b - 5",
+      "material": 0,
+      "safety": -22,
+      "pressure": 0,
+      "activity": 12,
+      "danger": 0,
+      "clamp": 0,
+      "total": -10
+    },
+    {
+      "sfen": "ln1g1g1nl/1r1sks1b1/ppp1ppppp/3p5/9/2PB5/PP1PPPPPP/2GR5/LNS1KGSNL b - 9",
+      "material": 0,
+      "safety": -40,
+      "pressure": 0,
+      "activity": 8,
+      "danger": 0,
+      "clamp": 0,
+      "total": -32
+    },
+    {
+      "sfen": "ln1g1g1nl/1r1sks3/ppp1ppppb/3p4p/9/2PBP2P1/PP1P1PP1P/2GR5/LNS1KGSNL b - 13",
+      "material": 0,
+      "safety": -40,
+      "pressure": -6,
+      "activity": 2,
+      "danger": -25,
+      "clamp": 0,
+      "total": -69
+    },
+    {
+      "sfen": "ln1g1g1nl/1r1sks3/ppp2pppb/4p3p/3pB4/2P1P2P1/PP1P1PP1P/2G1R4/LNS1KGSNL b - 17",
+      "material": 0,
+      "safety": -36,
+      "pressure": -4,
+      "activity": 1,
+      "danger": -87,
+      "clamp": 0,
+      "total": -126
+    },
+    {
+      "sfen": "ln1g1g1nl/1r1sk4/pp2spppb/2p1p3p/2Bp5/2P1P2P1/PP1P1PP1P/2G1R4/LNS1KGSNL b - 21",
+      "material": 0,
+      "safety": -36,
+      "pressure": 2,
+      "activity": -6,
+      "danger": -87,
+      "clamp": 0,
+      "total": -127
+    },
+    {
+      "sfen": "ln1g1g1nl/1r1sk4/pp2spppb/4p3p/2p6/1BPPP2P1/PP3PP1P/2G1R4/LNS1KGSNL b P 25",
+      "material": 200,
+      "safety": -36,
+      "pressure": -4,
+      "activity": -5,
+      "danger": 0,
+      "clamp": 0,
+      "total": 155
+    },
+    {
+      "sfen": "ln1g1g1nl/2rsk4/pp3pppb/4ps2p/2B6/2PPP2P1/PP3PP1P/2G5R/LNS1KGSNL b 2P 29",
+      "material": 400,
+      "safety": -26,
+      "pressure": 4,
+      "activity": -11,
+      "danger": 0,
+      "clamp": 0,
+      "total": 367
+    },
+    {
+      "sfen": "ln1g1g1nl/2r1k4/pp1s1pppb/4p3p/2B1Ps3/2PP2PP1/PP3P2P/2G5R/LNS1KGSNL b 2P 33",
+      "material": 400,
+      "safety": -26,
+      "pressure": 4,
+      "activity": -11,
+      "danger": -25,
+      "clamp": 0,
+      "total": 342
+    },
+    {
+      "sfen": "ln1gkg1nl/2r6/pp1s+Pppp1/8p/2B2s3/2PP2PP1/PP3P2P/2G5R/LN+b1KGSNL b 3Ps 37",
+      "material": -100,
+      "safety": -12,
+      "pressure": 4,
+      "activity": -20,
+      "danger": 110,
+      "clamp": 0,
+      "total": -18
+    },
+    {
+      "sfen": "ln1gkg1nl/2r6/1p1s+Pppp1/p7p/2B2s3/2PP2PP1/PP3P2P/5R3/LNG1KGSNL b BS3P 41",
+      "material": 2700,
+      "safety": -12,
+      "pressure": 12,
+      "activity": -8,
+      "danger": 63,
+      "clamp": 0,
+      "total": 2755
+    },
+    {
+      "sfen": "ln2kg1nl/4g4/1p1+P1ppp1/p1r5p/2B2s3/2PP2PP1/PP3P2P/5R3/LNG1KGSNL b B2S2Pp 45",
+      "material": 3500,
+      "safety": -12,
+      "pressure": 14,
+      "activity": 6,
+      "danger": -87,
+      "clamp": 0,
+      "total": 3421
+    },
+    {
+      "sfen": "ln2k2nl/5g3/1p3ppp1/p1r5p/2B2s3/2PP2PP1/PP3P2P/5R3/LNG1KGSNL b BGS2Ps2p 49",
+      "material": 3000,
+      "safety": 0,
+      "pressure": 6,
+      "activity": 0,
+      "danger": -12,
+      "clamp": 0,
+      "total": 2994
+    },
+    {
+      "sfen": "ln2k2nl/5g3/1p3ppp1/p1r5p/2B2s3/2PP2PP1/PP3P2P/5R3/LNG1KGSNL b BG2P2s2p 53",
+      "material": 2000,
+      "safety": 0,
+      "pressure": 6,
+      "activity": 0,
+      "danger": -12,
+      "clamp": 0,
+      "total": 1994
+    },
+    {
+      "sfen": "ln5nl/4sk3/1p3ppp1/p1r5p/5s3/2PP2PP1/PP3P2P/4R4/LNG1KGSNL b B2G2Pbs2p 57",
+      "material": 1600,
+      "safety": -6,
+      "pressure": 10,
+      "activity": -3,
+      "danger": -25,
+      "clamp": 0,
+      "total": 1576
+    },
+    {
+      "sfen": "ln5nl/4sk3/1p3ppp1/p7p/1G3s3/3r2PP1/PPP2P2P/4R4/LNG1KGSNL b BGPbs4p 61",
+      "material": 1200,
+      "safety": -6,
+      "pressure": 2,
+      "activity": 2,
+      "danger": -12,
+      "clamp": 0,
+      "total": 1186
+    },
+    {
+      "sfen": "ln5nl/4sk3/1p3ppp1/p7p/1G3s3/3B2PP1/PPP2P2P/4R4/LNG1KGSN+b b RGPsl4p 65",
+      "material": 2400,
+      "safety": -6,
+      "pressure": 24,
+      "activity": 13,
+      "danger": -50,
+      "clamp": 0,
+      "total": 2381
+    },
+    {
+      "sfen": "ln5nl/4sksR1/1p2lppp1/p7p/1GB2s3/6PP1/PPP2P2P/4R4/LNG1KGSN+b b GP4p 69",
+      "material": 2400,
+      "safety": -16,
+      "pressure": 22,
+      "activity": 4,
+      "danger": -137,
+      "clamp": 0,
+      "total": 2273
+    },
+    {
+      "sfen": "ln4kn1/4s1sRl/1p2lppp1/p7p/1GB2s3/6PP1/PPP2P2P/4R1S2/LNG1KG1N+b b Pg4p 73",
+      "material": 1200,
+      "safety": 2,
+      "pressure": 6,
+      "activity": -1,
+      "danger": -123,
+      "clamp": 0,
+      "total": 1084
+    },
+    {
+      "sfen": "ln4kn1/6s1+R/1p2sppp1/p7p/1G3s3/6PP1/PPPg1P2P/4R1S2/LNG1KG1N+b b 2LPb4p 77",
+      "material": 1000,
+      "safety": 2,
+      "pressure": 6,
+      "activity": -8,
+      "danger": 13,
+      "clamp": 0,
+      "total": 1013
+    },
+    {
+      "sfen": "ln4kn1/6s1+R/1p2+Rppp1/p7p/1G3s3/6PP1/PPPg1P2P/3pp1S2/LNGK1G1N+b b S2LPb2p 81",
+      "material": 2200,
+      "safety": 2,
+      "pressure": -20,
+      "activity": -1,
+      "danger": 13,
+      "clamp": 0,
+      "total": 2194
+    },
+    {
+      "sfen": "ln4kn1/6s1+R/1p2+Rppp1/p7p/1G3s3/6PP1/PPP2P2P/3g2S2/LN1KG2N+b b S2L3Pbg2p 85",
+      "material": 1400,
+      "safety": 2,
+      "pressure": -2,
+      "activity": 2,
+      "danger": 88,
+      "clamp": 0,
+      "total": 1490
+    },
+    {
+      "sfen": "ln3k1n1/5bsG+R/1p2+Rppp1/p7p/1G3s3/6PP1/PPP2P2P/3G2S2/LN1K3N+b b S2L3Pg2p 89",
+      "material": 2600,
+      "safety": 2,
+      "pressure": 24,
+      "activity": 0,
+      "danger": -135,
+      "clamp": 0,
+      "total": 2491
+    },
+    {
+      "sfen": "ln3kb2/6sG1/1p2+Rppp1/p7p/1G3s3/6PP1/PPP2P2P/3G2S2/LN1K3N+b b GSN2L3Pr2p 93",
+      "material": 2200,
+      "safety": 2,
+      "pressure": 24,
+      "activity": -1,
+      "danger": -123,
+      "clamp": 0,
+      "total": 2102
+    }
+  ]
+}

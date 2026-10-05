@@ -1,0 +1,165 @@
+--- a/source/position.cpp
++++ b/source/position.cpp
+@@ -5,11 +5,19 @@
+ 
+ #include "position.h"
+ #include "misc.h"
++#if !defined(SHOGI_RULES_ONLY)
+ #include "tt.h"
++#endif // !SHOGI_RULES_ONLY
++#if !defined(SHOGI_RULES_ONLY)
+ #include "mate/mate.h"
++#endif // !SHOGI_RULES_ONLY
++#if !defined(SHOGI_RULES_ONLY)
+ #include "book/book.h"
++#endif // !SHOGI_RULES_ONLY
+ #include "movegen.h"
++#if !defined(SHOGI_RULES_ONLY)
+ #include "testcmd/unit_test.h"
++#endif // !SHOGI_RULES_ONLY
+ 
+ #if defined(EVAL_KPPT) || defined(EVAL_KPP_KKPT) || defined(EVAL_NNUE)
+ #include "eval/evaluate_common.h"
+@@ -17,6 +25,9 @@
+ 
+ using namespace std;
+ namespace YaneuraOu {
++#if defined(SHOGI_RULES_ONLY)
++class TranspositionTable; // type tag only; never instantiated or linked
++#endif
+ 
+ #if !STOCKFISH
+ using namespace Effect8;
+@@ -2421,6 +2432,7 @@
+ 		undo_move_impl<BLACK>(m);
+ }
+ 
++#if !defined(SHOGI_RULES_ONLY)
+ // null move searchに使われる。手番だけ変更する。
+ template <typename T>
+ void Position::do_null_move(StateInfo& newSt, const T& tt) {
+@@ -2532,6 +2544,8 @@
+ // algorithm similar to alpha-beta pruning with a null window.
+ 
+ 
++
++#endif // !SHOGI_RULES_ONLY
+ // Position::see()は指し手のSEE(静的交換評価)の値が、与えられたthreshold(しきい値)以上であるかをテストする。
+ // null windowの時のalpha-beta法に似たアルゴリズムを用いる。
+ //
+@@ -3315,6 +3329,7 @@
+ //			UnitTest
+ // ----------------------------------
+ 
++#if !defined(SHOGI_RULES_ONLY)
+ namespace {
+ 	// performance test
+ 	// ある局面から、全合法手を生成して depth深さまで辿り、局面数がいくらあったかを返す。
+@@ -3990,16 +4005,24 @@
+ }
+ 
+ 
++
++#endif // !SHOGI_RULES_ONLY
+ // ----------------------------------
+ //         明示的な実体化
+ // ----------------------------------
+ template bool Position::pseudo_legal_s<false>(const Move m) const;
+ template bool Position::pseudo_legal_s< true>(const Move m) const;
+ 
++#if !defined(SHOGI_RULES_ONLY)
+ template void Position::do_move(Move m, StateInfo& newSt, bool givesCheck, const TranspositionTable* tt);
++#endif // !SHOGI_RULES_ONLY
+ template void Position::do_move(Move m, StateInfo& newSt, bool givesCheck, const void* tt);
+ 
++#if !defined(SHOGI_RULES_ONLY)
+ template void Position::do_null_move(StateInfo& st, const TranspositionTable& tt);
++#endif // !SHOGI_RULES_ONLY
++#if !defined(SHOGI_RULES_ONLY)
+ template void Position::do_null_move(StateInfo& st, const int& tt);
++#endif // !SHOGI_RULES_ONLY
+ 
+ } // namespace YaneuraOu
+--- a/source/bitboard.cpp
++++ b/source/bitboard.cpp
+@@ -1,7 +1,11 @@
+ ﻿#include "bitboard.h"
+ #include "extra/long_effect.h"
++#if !defined(SHOGI_RULES_ONLY)
+ #include "mate/mate.h"
++#endif // !SHOGI_RULES_ONLY
++#if !defined(SHOGI_RULES_ONLY)
+ #include "testcmd/unit_test.h"
++#endif // !SHOGI_RULES_ONLY
+ #include "misc.h"
+ 
+ #include <sstream>
+@@ -940,6 +944,7 @@
+ 	}
+ }
+ 
++#if !defined(SHOGI_RULES_ONLY)
+ // UnitTest
+ void Bitboard::UnitTest(Test::UnitTester& tester, IEngine& engine)
+ {
+@@ -1154,4 +1159,6 @@
+ 	}
+ }
+ 
++
++#endif // !SHOGI_RULES_ONLY
+ } // namespace YaneuraOu
+--- a/source/types.cpp
++++ b/source/types.cpp
+@@ -1,7 +1,13 @@
+ ﻿#include "types.h"
++#if !defined(SHOGI_RULES_ONLY)
+ #include "usi.h"
++#endif // !SHOGI_RULES_ONLY
++#if !defined(SHOGI_RULES_ONLY)
+ #include "search.h"
++#endif // !SHOGI_RULES_ONLY
++#if !defined(SHOGI_RULES_ONLY)
+ #include "tt.h"
++#endif // !SHOGI_RULES_ONLY
+ 
+ namespace YaneuraOu {
+ 
+@@ -46,8 +52,12 @@
+ 		return pretty(m.to_sq()) + pretty2(movedPieceType) + (m.is_promote() ? (pretty_jp ? "成" : "+") : "") + "[" + pretty(m.from_sq()) + "]";
+ }
+ 
++#if !defined(SHOGI_RULES_ONLY)
+ std::string to_usi_string(Move   m){ return USIEngine::move(m); }
++#endif // !SHOGI_RULES_ONLY
++#if !defined(SHOGI_RULES_ONLY)
+ std::string to_usi_string(Move16 m){ return USIEngine::move(m); }
++#endif // !SHOGI_RULES_ONLY
+ 
+ std::ostream& operator<<(std::ostream& os, Color c) { os << ((c == BLACK) ? (pretty_jp ? "先手" : "BLACK") : (pretty_jp ? "後手" : "WHITE")); return os; }
+ 
+@@ -120,6 +130,7 @@
+ 
+ 
+ // 引き分け時のスコア(とそのdefault値)
++#if !defined(SHOGI_RULES_ONLY)
+ Value drawValueTable[REPETITION_NB][COLOR_NB] =
+ {
+ 	{  VALUE_ZERO        ,  VALUE_ZERO        }, // REPETITION_NONE
+@@ -129,11 +140,16 @@
+ 	{  VALUE_SUPERIOR    ,  VALUE_SUPERIOR    }, // REPETITION_SUPERIOR
+ 	{ -VALUE_SUPERIOR    , -VALUE_SUPERIOR    }, // REPETITION_INFERIOR
+ };
++#endif // !SHOGI_RULES_ONLY
+ 
++#if !defined(SHOGI_RULES_ONLY)
+ Move Move::from_string(const Position& pos, const std::string usi_move) { return USIEngine::to_move(pos, usi_move); }
++#endif // !SHOGI_RULES_ONLY
+ 
+ Move16 Move::to_move16() const { return Move16(data); }
++#if !defined(SHOGI_RULES_ONLY)
+ Move16 Move16::from_string(const std::string usi_move) { return USIEngine::to_move16(usi_move); }
++#endif // !SHOGI_RULES_ONLY
+ 
+ 
+ } // namespace YaneuraOu

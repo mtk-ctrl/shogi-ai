@@ -1,0 +1,47 @@
+{
+  "book_generation": "gen3",
+  "adopted_as_default": true,
+  "source_workflow_run": 37284821256,
+  "selfplay_added": {
+    "games": 2000,
+    "wins_a": 817,
+    "draws": 380,
+    "wins_b": 803,
+    "illegal_games": 0,
+    "average_plies": 136.536
+  },
+  "incremental_learning": {
+    "raw_games": 2200,
+    "accepted_unique_decisive_games": 1472,
+    "duplicates": 318,
+    "skipped_nondecisive": 410,
+    "skipped_illegal": 0
+  },
+  "book": {
+    "prior_generation": "gen2",
+    "prior_entries": 458,
+    "prior_samples": 14066,
+    "positions_seen": 2410,
+    "positions_kept": 885,
+    "entries": 1000,
+    "max_ply": 20
+  },
+  "comparisons": {
+    "gen3_vs_gen2_200": {
+      "wins": 89,
+      "draws": 47,
+      "losses": 64,
+      "score": 0.5625,
+      "approx_95pct": [0.49374704551802884, 0.6312529544819712],
+      "illegal_games": 0
+    },
+    "gen3_vs_gen1_200": {
+      "wins": 81,
+      "draws": 52,
+      "losses": 67,
+      "score": 0.535,
+      "approx_95pct": [0.4658735202690026, 0.6041264797309974],
+      "illegal_games": 0
+    }
+  }
+}
