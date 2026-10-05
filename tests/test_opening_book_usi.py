@@ -44,6 +44,11 @@ def main():
         send("go movetime 50")
         played = wait_until(lines, lambda x: x.startswith("bestmove "))
         assert any("opening_book hit" in x for x in played), played
+        book_scores = [x for x in played
+                       if x.startswith("info depth 0 ") and " score cp " in x and " pv " in x]
+        assert book_scores, played
+        book_move = next(x.split()[1] for x in played if x.startswith("bestmove "))
+        assert any(x.endswith(f" pv {book_move}") for x in book_scores), (book_move, book_scores)
 
         send("setoption name OpeningBook value false")
         send("isready")
