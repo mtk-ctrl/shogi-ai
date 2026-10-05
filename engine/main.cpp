@@ -277,6 +277,26 @@ int main() {
                         << " samples " << picked->samples
                         << " score_milli " << picked->score_milli << "\n";
                     emit(out.str());
+
+                    // Book moves bypass ordinary search, but GUIs such as ShogiDroid
+                    // still need a score sample to build a continuous evaluation graph.
+                    // Evaluate the position after the selected legal book move and
+                    // convert Black-minus-White into the root side's perspective.
+                    auto book_position = position.clone();
+                    std::string book_error;
+                    if (book_position.play_generated_legal(picked->move, book_error)) {
+                        const auto root_turn = position.turn();
+                        const auto book_eval = shogi::strategy::evaluate(
+                            book_position.snapshot(), material_profile
+                                ? shogi::strategy::EvaluationParameters::material_only()
+                                : evaluation_parameters);
+                        const int book_score = root_turn == shogi::rules::Color::Black
+                            ? book_eval.total : -book_eval.total;
+                        std::ostringstream score;
+                        score << "info depth 0 seldepth 0 time 0 nodes 0 score cp " << book_score
+                              << " pv " << picked->move << "\n";
+                        emit(score.str());
+                    }
                     bestmove(picked->move);
                     continue;
                 }
