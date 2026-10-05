@@ -1,6 +1,7 @@
 name: Migrate clean snapshot
 
 # One-shot clean migration from shogi-ai-old at c5b201a741baa2a3778822071d0e1e32a418d911.
+# Trigger this file once to stage workflow blobs outside .github/workflows.
 on:
   push:
     branches: [main]
