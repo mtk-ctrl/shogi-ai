@@ -1,0 +1,2 @@
+ChatGPT task trigger file for Nightly Book Learning.
+This file is updated once per night by the ChatGPT scheduled task.
