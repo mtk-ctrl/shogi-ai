@@ -8,6 +8,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "tools/book"))
 
 def load_module(name, path):
     spec = importlib.util.spec_from_file_location(name, path)
@@ -70,8 +71,8 @@ class OpeningBookPipelineTest(unittest.TestCase):
                 "# shogi-ai opening book v1: key move samples wins draws losses score_milli weight\n"
                 "100\t7g7f\t8\t5\t0\t3\t600\t1000\n",
                 encoding="utf-8")
-            args = SimpleNamespace(input=source, prior_book=prior, max_ply=20,
-                min_position_samples=8, min_move_samples=3, max_moves=3, max_score_gap=0.12)
+            args = SimpleNamespace(input=source, prior_book=prior, max_ply=20, min_position_samples=8,
+                min_move_samples=3, max_moves=3, max_score_gap=0.12)
             entries, report = builder.build(args)
             self.assertEqual(report["prior_book_entries"], 1)
             self.assertEqual(report["prior_book_samples"], 8)
