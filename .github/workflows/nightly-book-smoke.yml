@@ -1,0 +1,98 @@
+name: Nightly Book Smoke
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/nightly-book-smoke.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Record runner
+        run: |
+          mkdir -p build/smoke
+          nproc | tee build/smoke/nproc.txt
+          lscpu | tee build/smoke/cpu.txt
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build engine and validator
+        run: |
+          python3 scripts/build.py --output build/shogi-ai
+          python3 scripts/build.py --kifu-validator --output build/kifu-validator
+
+      - name: Run four short Book-vs-Core lanes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/smoke/games build/smoke/summary
+          run_lane() {
+            lane="$1"
+            python3 benchmarks/book_feedback_arena.py \
+              --engine build/shogi-ai \
+              --book shogi-ai-book.tsv \
+              --games 2 --max-plies 200 --seed "$((2026100500 + lane * 1000))" \
+              --go-command 'go movetime 50' \
+              --output "build/smoke/games/lane-${lane}.json"
+          }
+          pids=()
+          for lane in 0 1 2 3; do
+            run_lane "$lane" &
+            pids+=("$!")
+          done
+          for pid in "${pids[@]}"; do
+            wait "$pid"
+          done
+
+      - name: Aggregate and learn candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          files=sorted(Path('build/smoke/games').glob('*.json'))
+          games=sum(json.loads(p.read_text())['games'] for p in files)
+          illegal=sum(json.loads(p.read_text()).get('illegal_games',0) for p in files)
+          hits=sum(json.loads(p.read_text()).get('book_hits',0) for p in files)
+          out={'files':len(files),'games':games,'illegal_games':illegal,'book_hits':hits}
+          Path('build/smoke/summary/summary.json').write_text(json.dumps(out,indent=2)+'\n')
+          print(json.dumps(out,indent=2))
+          if len(files) != 4 or games != 8 or illegal != 0:
+              raise SystemExit(1)
+          PY
+          python3 tools/book/extract_book_feedback.py \
+            --input build/smoke/games \
+            --games-output build/smoke/summary/book-feedback-games.tsv \
+            --hits-output build/smoke/summary/book-hits.tsv \
+            --report build/smoke/summary/extract-report.json
+          ./build/kifu-validator \
+            < build/smoke/summary/book-feedback-games.tsv \
+            > build/smoke/summary/book-feedback-samples.tsv
+          python3 tools/book/apply_book_feedback.py \
+            --book shogi-ai-book.tsv \
+            --samples build/smoke/summary/book-feedback-samples.tsv \
+            --hits build/smoke/summary/book-hits.tsv \
+            --output build/smoke/summary/learned-book.tsv \
+            --report build/smoke/summary/learn-report.json \
+            --feedback-weight 4 --max-down-factor 0.50 --max-up-factor 1.35
+          python3 tests/test_opening_book_usi.py build/shogi-ai build/smoke/summary/learned-book.tsv
+
+      - name: Upload smoke result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-book-smoke-${{ github.run_id }}
+          path: build/smoke
+          if-no-files-found: warn
+          retention-days: 7
