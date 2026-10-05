@@ -1,0 +1,45 @@
+name: v0.0.20 Apply Split Ordering Controls
+
+on:
+  push:
+    branches: [v0020-ordering-diagnostics]
+    paths:
+      - "scripts/apply_v0020_split_ordering.py"
+      - ".github/workflows/v0020-apply-split-ordering.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  apply-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: v0020-ordering-diagnostics
+          fetch-depth: 0
+      - name: Apply split controls
+        run: python3 scripts/apply_v0020_split_ordering.py
+      - name: Build and test
+        run: |
+          python3 scripts/build.py --output build/shogi-ai
+          python3 scripts/build.py --search-test --output build/search-test
+          ./build/search-test
+          python3 - <<'PY'
+          import subprocess
+          p=subprocess.Popen(['build/shogi-ai'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,text=True)
+          out,_=p.communicate('usi\nquit\n',timeout=5)
+          assert 'option name KillerOrdering type check default true' in out
+          assert 'option name HistoryOrdering type check default true' in out
+          print('split USI options passed')
+          PY
+      - name: Commit tested split controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add engine/strategy/iterative_search.h engine/main.cpp
+          git commit -m "test: expose killer and history ordering separately"
+          git push origin HEAD:v0020-ordering-diagnostics
