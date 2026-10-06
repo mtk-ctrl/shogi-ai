@@ -12,7 +12,7 @@ from pathlib import Path
 
 import shogi
 
-from arena import Engine, Adjudicator, can_declare_win
+from arena import Engine, Adjudicator, can_declare_win, compact_search_telemetry
 
 
 def load_bank(path, limit):
@@ -51,24 +51,31 @@ def play(a,b,row,a_black,max_plies,seed):
     for token in prefix:
         board.push(shogi.Move.from_usi(token))
     moves=[]
+    move_records=[]
     adjudicator=Adjudicator(board)
 
     def result(winner,reason,**extra):
         return {"position_id":row.get("id"),"tags":row.get("tags",[]),
                 "opening_moves":prefix,"winner":winner,"reason":reason,
                 "plies":len(moves),"a_black":a_black,"moves":moves,
-                "final_sfen":board.sfen(),**extra}
+                "move_records":move_records,"final_sfen":board.sfen(),**extra}
 
     for _ in range(max_plies):
         engine=black if board.turn==shogi.BLACK else white
+        side_to_move=board.turn
+        in_check_before=board.is_check()
+        legal_moves_before=sum(1 for _ in board.legal_moves)
         token=engine.bestmove(prefix+moves)
+        search=compact_search_telemetry(engine.last_search,side_to_move)
         if token=="resign":
-            return result(white.label if engine is black else black.label,"resign")
+            return result(white.label if engine is black else black.label,"resign",
+                          terminal_search=search)
         if token=="win":
             if not can_declare_win(board):
                 return result(white.label if engine is black else black.label,
-                              "invalid_declaration",illegal_by=engine.label)
-            return result(engine.label,"declare_win")
+                              "invalid_declaration",illegal_by=engine.label,
+                              terminal_search=search)
+            return result(engine.label,"declare_win",terminal_search=search)
         try:
             move=shogi.Move.from_usi(token)
         except Exception:
@@ -76,8 +83,21 @@ def play(a,b,row,a_black,max_plies,seed):
                           f"invalid_usi:{token}",illegal_by=engine.label)
         if move not in board.legal_moves:
             return result(white.label if engine is black else black.label,
-                          f"illegal_move:{token}",illegal_by=engine.label)
+                          f"illegal_move:{token}",illegal_by=engine.label,
+                          terminal_search=search)
+        record={"ply":len(prefix)+len(moves)+1,
+                "relative_ply":len(moves)+1,
+                "side_to_move":"black" if side_to_move==shogi.BLACK else "white",
+                "engine":engine.label,"move":token,
+                "in_check_before":in_check_before,
+                "legal_moves_before":legal_moves_before,
+                "is_capture":board.piece_at(move.to_square) is not None,
+                "is_promotion":bool(move.promotion),
+                "is_drop":move.drop_piece_type is not None,
+                "search":search}
         board.push(move); moves.append(token)
+        record["gave_check"]=board.is_check()
+        move_records.append(record)
         terminal=adjudicator.after_move(board)
         if terminal is not None:
             color,reason=terminal
@@ -111,7 +131,9 @@ def main():
         a.close(); b.close()
     wa=sum(g["winner"]=="A" for g in games); wb=sum(g["winner"]=="B" for g in games)
     draws=len(games)-wa-wb
-    out={"positions":len(rows),"games":len(games),"wins_a":wa,"draws":draws,"wins_b":wb,
+    out={"telemetry_schema_version":1,
+         "telemetry_note":"Per-move live telemetry is retained; causal learning requires selective fixed-analyzer re-analysis.",
+         "positions":len(rows),"games":len(games),"wins_a":wa,"draws":draws,"wins_b":wb,
          "score_a":(wa+0.5*draws)/len(games),"illegal_games":sum("illegal_by" in g for g in games),
          "go_command":args.go_command,"details":games}
     path=Path(args.output); path.parent.mkdir(parents=True,exist_ok=True)
