@@ -17,26 +17,36 @@ COMMON={
     'AdaptiveLongThink':False,
 }
 CANDIDATES=[
-    ('A_balanced',{
-        'EvalMaterialWeight':100,'EvalSafety':75,'EvalPressure':150,'EvalActivity':150,'EvalDanger':175,
-        'EvalInfluence':75,'EvalPotential':75,'EvalCoordination':50,'EvalHandPotential':80,'EvalThreat':25,
+    # First isolate the structural hypothesis: widen the old evaluator's room
+    # before adding any new concept.
+    ('A_wider_core',{
+        'EvalMaterialWeight':100,'EvalSafety':50,'EvalPressure':150,'EvalActivity':150,'EvalDanger':200,
+        'EvalInfluence':0,'EvalPotential':0,'EvalCoordination':0,'EvalHandPotential':0,'EvalThreat':0,
+        'EvalPositionalCap':700}),
+    # The first genuinely new model: unresolved tactical value plus hand option
+    # value, without paying for weaker research signals.
+    ('B_threat_core',{
+        'EvalMaterialWeight':100,'EvalSafety':65,'EvalPressure':160,'EvalActivity':150,'EvalDanger':185,
+        'EvalInfluence':0,'EvalPotential':0,'EvalCoordination':0,'EvalHandPotential':60,'EvalThreat':25,
         'EvalPositionalCap':900}),
-    ('B_positional',{
-        'EvalMaterialWeight':90,'EvalSafety':100,'EvalPressure':175,'EvalActivity':175,'EvalDanger':180,
-        'EvalInfluence':100,'EvalPotential':100,'EvalCoordination':75,'EvalHandPotential':100,'EvalThreat':25,
-        'EvalPositionalCap':1200}),
-    ('C_tactical',{
-        'EvalMaterialWeight':100,'EvalSafety':75,'EvalPressure':175,'EvalActivity':150,'EvalDanger':175,
-        'EvalInfluence':60,'EvalPotential':50,'EvalCoordination':50,'EvalHandPotential':60,'EvalThreat':35,
+    # Broad but still conservative. Influence/coordination are lightweight and
+    # Potential is omitted because its previous standalone 50-weight test lost.
+    ('C_balanced_lite',{
+        'EvalMaterialWeight':100,'EvalSafety':75,'EvalPressure':160,'EvalActivity':160,'EvalDanger':180,
+        'EvalInfluence':50,'EvalPotential':0,'EvalCoordination':50,'EvalHandPotential':60,'EvalThreat':25,
         'EvalPositionalCap':1000}),
-    ('D_conservative',{
-        'EvalMaterialWeight':100,'EvalSafety':60,'EvalPressure':150,'EvalActivity':150,'EvalDanger':190,
-        'EvalInfluence':50,'EvalPotential':50,'EvalCoordination':40,'EvalHandPotential':50,'EvalThreat':20,
-        'EvalPositionalCap':600}),
-    ('E_broad',{
-        'EvalMaterialWeight':90,'EvalSafety':100,'EvalPressure':150,'EvalActivity':175,'EvalDanger':175,
-        'EvalInfluence':100,'EvalPotential':75,'EvalCoordination':75,'EvalHandPotential':80,'EvalThreat':30,
-        'EvalPositionalCap':1500}),
+    # Permit positional factors collectively to outweigh material when several
+    # independent signals agree; keep only a tiny Potential contribution.
+    ('D_broad',{
+        'EvalMaterialWeight':90,'EvalSafety':90,'EvalPressure':170,'EvalActivity':170,'EvalDanger':180,
+        'EvalInfluence':75,'EvalPotential':15,'EvalCoordination':60,'EvalHandPotential':75,'EvalThreat':25,
+        'EvalPositionalCap':1300}),
+    # Tactical variant: stronger unresolved fork/skewer value, but material stays
+    # at full scale and the global position budget is bounded.
+    ('E_tactical',{
+        'EvalMaterialWeight':100,'EvalSafety':70,'EvalPressure':175,'EvalActivity':150,'EvalDanger':175,
+        'EvalInfluence':40,'EvalPotential':0,'EvalCoordination':40,'EvalHandPotential':50,'EvalThreat':35,
+        'EvalPositionalCap':1000}),
 ]
 
 def run(engine,out,pairs,seed,a,b,adaptive=False):
