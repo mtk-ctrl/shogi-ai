@@ -153,6 +153,28 @@ int main() {
                 "rook drop must recognize an enemy piece behind the front target as a skewer");
         std::cout << "PASS compressed hand-drop forks/skewers and exchange safety\n";
 
+        // Effective-response mode keeps a genuine fork, but rejects an apparent
+        // fork when one target can answer with a forcing counter-check that
+        // prevents the dropped piece from taking the other target immediately.
+        p = fixture({{"9i","K"},{"1a","k"},{"4d","r"},{"6d","n"}}, "S");
+        auto effective_moves = strategy::MoveOrder::order(p, p.legal_moves(), true, true);
+        require(!effective_moves.empty(), "effective-response ordering must return legal moves");
+        const int genuine_base = strategy::MoveOrder::score_move(p.snapshot(), "S*5e", false);
+        strategy::MoveOrder::Diagnostics genuine_diag;
+        (void)strategy::MoveOrder::order(p, std::vector<std::string>{"S*5e"}, true, true, &genuine_diag);
+        require(genuine_diag.geometric_candidates == 1 && genuine_diag.effective_candidates == 1,
+                "genuine silver fork must survive legal-response validation");
+        require(strategy::MoveOrder::score_move(p.snapshot(), "S*5e", true) > genuine_base,
+                "genuine fork fixture must remain a geometric candidate");
+
+        p = fixture({{"5i","K"},{"1a","k"},{"4d","r"},{"6d","n"}}, "S");
+        strategy::MoveOrder::Diagnostics refuted_diag;
+        (void)strategy::MoveOrder::order(p, std::vector<std::string>{"S*5e"}, true, true, &refuted_diag);
+        require(refuted_diag.geometric_candidates == 1 && refuted_diag.effective_candidates == 0,
+                "counter-check must refute the apparent immediate fork");
+        require(refuted_diag.reply_checks > 0, "response validator must inspect legal replies");
+        std::cout << "PASS legal-response validation keeps real forks and rejects forcing counter-checks\n";
+
         // The neutral hash follows the full position and survives undo exactly.
         p = rules::Position();
         const auto start_key = p.hash_key();

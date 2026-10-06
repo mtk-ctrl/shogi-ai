@@ -1,0 +1,78 @@
+name: Effective Hand Drop 200ms
+
+on:
+  push:
+    branches: [research/hand-drop-effective-200ms]
+    paths:
+      - 'engine/strategy/move_order.h'
+      - 'engine/strategy/iterative_search.h'
+      - 'engine/main.cpp'
+      - 'tests/ordering_test.cpp'
+      - 'benchmarks/arena.py'
+      - 'benchmarks/hand_drop_effective_match.py'
+      - '.github/workflows/hand-drop-effective-200ms.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hand-drop-effective-200ms-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: Build engine and correctness tests
+        run: |
+          python3 scripts/build.py --output build/effective-engine
+          python3 scripts/build.py --ordering-test --output build/ordering-test
+      - name: Correctness
+        run: build/ordering-test
+      - name: Paired 100 games at 200ms
+        run: |
+          mkdir -p build/effective-200ms
+          python3 benchmarks/hand_drop_effective_match.py \
+            --engine build/effective-engine \
+            --pairs 50 \
+            --lanes 4 \
+            --seed 2026100620 \
+            --max-plies 240 \
+            --go-command 'go movetime 200' \
+            --output-dir build/effective-200ms/match
+      - name: Summary
+        if: always()
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          p=Path('build/effective-200ms/match/summary.json')
+          if p.exists():
+              s=json.loads(p.read_text())
+              print('## Effective response check vs geometric only, 200ms')
+              print(f"- effective: {s['wins_effective']}勝 {s['draws']}分 {s['wins_geometric']}敗")
+              print(f"- score: {s['score_effective']:.1%}")
+              print(f"- paired 95% approx interval: {s['paired_normal_approx_interval'][0]:.1%}–{s['paired_normal_approx_interval'][1]:.1%}")
+              a,b=s['search']['A'],s['search']['B']
+              if b.get('nodes_total'):
+                  print(f"- nodes effective/geometric: {a.get('nodes_total',0):,} / {b.get('nodes_total',0):,} ({a.get('nodes_total',0)/b['nodes_total']-1:+.1%})")
+              print(f"- mean elapsed ms effective/geometric: {s['timing_ms']['A']['mean']:.2f} / {s['timing_ms']['B']['mean']:.2f}")
+              print(f"- geometric candidates checked: {a.get('hand_tactic_geometric_total',0):,}")
+              print(f"- candidates surviving every legal reply: {a.get('hand_tactic_effective_total',0):,}")
+              print(f"- opponent replies inspected: {a.get('hand_tactic_reply_checks_total',0):,}")
+              print(f"- illegal games: {s['illegal_games']}")
+          PY
+      - name: Upload records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: effective-hand-drop-200ms-${{ github.run_id }}
+          path: build/effective-200ms
+          retention-days: 180

@@ -20,6 +20,12 @@ public:
         std::size_t original_index = 0;
     };
 
+    struct Diagnostics {
+        std::uint64_t geometric_candidates = 0;
+        std::uint64_t effective_candidates = 0;
+        std::uint64_t reply_checks = 0;
+    };
+
     static std::vector<std::string> order(const rules::Snapshot& snapshot,
                                           const std::vector<std::string>& moves,
                                           bool hand_drop_tactics = false) {
@@ -36,6 +42,53 @@ public:
             return a.score > b.score;
         });
 
+        std::vector<std::string> ordered;
+        ordered.reserve(scored.size());
+        for (const auto& item : scored) ordered.push_back(item.move);
+        return ordered;
+    }
+
+    // Optional second-stage validation for geometric hand-drop tactics. Only
+    // candidate drops pay the cost of looking at the opponent's legal replies.
+    // A tactic survives only when every legal reply leaves an immediate legal
+    // material capture (or a non-losing recapture on the drop square).
+    static std::vector<std::string> order(const rules::Position& position,
+                                          const std::vector<std::string>& moves,
+                                          bool hand_drop_tactics,
+                                          bool response_check,
+                                          Diagnostics* diagnostics = nullptr) {
+        if (!response_check)
+            return order(position.snapshot(), moves, hand_drop_tactics);
+
+        const auto snapshot = position.snapshot();
+        const AttackMap before_attacks(snapshot);
+        std::vector<OrderedMove> scored;
+        scored.reserve(moves.size());
+        for (std::size_t i = 0; i < moves.size(); ++i) {
+            const int ordinary = score_move(snapshot, moves[i], before_attacks, false);
+            const int geometric = score_move(snapshot, moves[i], before_attacks, hand_drop_tactics);
+            int score = geometric;
+            if (hand_drop_tactics && geometric > ordinary
+                && eligible_hand_drop_move(moves[i])) {
+                if (diagnostics) ++diagnostics->geometric_candidates;
+                std::uint64_t replies = 0;
+                const int gain = effective_hand_drop_gain(position, moves[i], replies);
+                if (diagnostics) diagnostics->reply_checks += replies;
+                // In response-check mode the geometric bonus is replaced, not
+                // stacked. Failed apparent forks/skewers fall back to the
+                // ordinary ordering signals (check, first target, etc.).
+                score = ordinary;
+                if (gain > 0) {
+                    if (diagnostics) ++diagnostics->effective_candidates;
+                    score += 2000000 + 1000 * gain;
+                }
+            }
+            scored.push_back({moves[i], score, i});
+        }
+
+        std::stable_sort(scored.begin(), scored.end(), [](const auto& a, const auto& b) {
+            return a.score > b.score;
+        });
         std::vector<std::string> ordered;
         ordered.reserve(scored.size());
         for (const auto& item : scored) ordered.push_back(item.move);
@@ -163,6 +216,81 @@ private:
             case 'G': return 7;
             default: return 0;
         }
+    }
+
+    static bool eligible_hand_drop_move(const std::string& move) {
+        if (move.size() < 4 || move[1] != '*') return false;
+        const int kind = drop_kind(move[0]);
+        return kind >= 2 && kind <= 7;
+    }
+
+    static int effective_hand_drop_gain(const rules::Position& position,
+                                        const std::string& move,
+                                        std::uint64_t& reply_checks) {
+        if (!eligible_hand_drop_move(move)) return 0;
+        const int destination = square_index(move[2], move[3]);
+        const int dropped_kind = drop_kind(move[0]);
+        if (destination < 0) return 0;
+        const auto mover = position.turn();
+        const auto enemy = other(mover);
+
+        auto child = position.clone();
+        std::string error;
+        if (!child.play_generated_legal(move, error)) return 0;
+        const auto replies = child.legal_moves();
+        // Checkmate/check terminality is already handled by the much stronger
+        // ordinary check ordering signal; no extra material bonus is needed.
+        if (replies.empty()) return 0;
+
+        int guaranteed_gain = -1;
+        for (const auto& reply : replies) {
+            ++reply_checks;
+            if (!child.play_generated_legal(reply, error)) return 0;
+            int best_gain = 0;
+            if (child.repetition_status().result == rules::Result::Ongoing) {
+                const auto after_reply = child.snapshot();
+                const auto& occupant = after_reply.board[destination];
+                const auto followups = child.legal_moves();
+
+                if (occupant.kind == dropped_kind && occupant.color == mover) {
+                    // The dropped piece survived. Count only its immediate legal
+                    // captures, so pins and forcing counter-checks are respected
+                    // automatically by the rule layer.
+                    for (const auto& follow : followups) {
+                        if (follow.size() < 4 || follow[1] == '*') continue;
+                        if (square_index(follow[0], follow[1]) != destination) continue;
+                        const int to = square_index(follow[2], follow[3]);
+                        if (to < 0) continue;
+                        const auto& target = after_reply.board[to];
+                        if (target.kind != 0 && target.kind != 8 && target.color == enemy)
+                            best_gain = std::max(best_gain, capture_gain(target));
+                    }
+                } else if (occupant.kind != 0 && occupant.color == enemy) {
+                    // The reply captured the dropped piece. Preserve the old
+                    // exchange-safety idea: a legal immediate recapture counts
+                    // only when the three-ply same-square exchange is non-losing.
+                    const int exchange = capture_gain(occupant)
+                        - 2 * piece_value(dropped_kind, false);
+                    if (exchange > 0) {
+                        for (const auto& follow : followups) {
+                            if (follow.size() < 4 || follow[1] == '*') continue;
+                            if (square_index(follow[2], follow[3]) == destination) {
+                                best_gain = exchange;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            child.undo();
+
+            if (guaranteed_gain < 0 || best_gain < guaranteed_gain)
+                guaranteed_gain = best_gain;
+            // One refutation is enough: this geometric tactic is not a forced
+            // immediate material threat after the opponent's best reply.
+            if (guaranteed_gain == 0) break;
+        }
+        return std::max(0, guaranteed_gain);
     }
 
     static ParsedMove apply_to_snapshot(rules::Snapshot& snapshot,

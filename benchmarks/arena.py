@@ -66,6 +66,7 @@ SEARCH_STAT_NAMES = (
     "experience_hits", "experience_move_first", "experience_stores",
     "experience_replacements", "experience_disabled_repetition",
     "qnodes", "qcutoffs", "qlimit_leaves",
+    "hand_tactic_geometric", "hand_tactic_effective", "hand_tactic_reply_checks",
 )
 
 USI_INFO_INTEGER_NAMES = (

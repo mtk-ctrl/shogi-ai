@@ -19,7 +19,8 @@
 namespace {
 std::uint64_t experience_signature(const shogi::strategy::EvaluationParameters& p,
                                    bool material_profile, bool quiescence_enabled,
-                                   bool hand_drop_tactics_enabled) {
+                                   bool hand_drop_tactics_enabled,
+                                   bool hand_drop_response_check_enabled) {
     // FNV-1a over every evaluation setting that can change move preference plus
     // a search-semantics version. Disk experience from incompatible settings is
     // ignored rather than silently influencing move ordering.
@@ -30,9 +31,10 @@ std::uint64_t experience_signature(const shogi::strategy::EvaluationParameters& 
             h *= 1099511628211ULL;
         }
     };
-    mix(4); // Quiescence/history safety plus optional hand-drop move ordering.
+    mix(5); // Add optional legal-response validation for hand-drop tactics.
     mix(quiescence_enabled ? 1 : 0);
     mix(hand_drop_tactics_enabled ? 1 : 0);
+    mix(hand_drop_response_check_enabled ? 1 : 0);
     mix(shogi::strategy::IterativeSearch::QuiescenceDepth);
     mix(material_profile ? 1 : 0);
     mix(p.guard_gold); mix(p.guard_silver); mix(p.guard_pawn);
@@ -56,6 +58,7 @@ int main() {
     bool material_profile = false;
     bool quiescence_enabled = true;
     bool hand_drop_tactics_enabled = false;
+    bool hand_drop_response_check_enabled = false;
     bool mate_assist_enabled = true;
     bool opening_book_enabled = true;
     bool opening_book_loaded = false;
@@ -109,7 +112,7 @@ int main() {
     };
     auto current_experience_signature = [&]() {
         return experience_signature(evaluation_parameters, material_profile, quiescence_enabled,
-                                    hand_drop_tactics_enabled);
+                                    hand_drop_tactics_enabled, hand_drop_response_check_enabled);
     };
     auto ensure_experience_loaded = [&]() {
         if (!experience_enabled || experience_loaded) return;
@@ -148,6 +151,7 @@ int main() {
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
                       << "option name Quiescence type check default true\n"
                       << "option name HandDropTactics type check default false\n"
+                      << "option name HandDropResponseCheck type check default false\n"
                       << "option name MateAssist type check default true\n"
                       << "option name OpeningBook type check default true\n"
                       << "option name OpeningBookFile type string default shogi-ai-book.tsv\n"
@@ -411,7 +415,10 @@ int main() {
                         << " experience_probes " << stats.experience_probes << " experience_hits " << stats.experience_hits
                         << " experience_move_first " << stats.experience_move_first << " experience_stores " << stats.experience_stores
                         << " experience_replacements " << stats.experience_replacements
-                        << " experience_disabled_repetition " << stats.experience_disabled_repetition << '\n';
+                        << " experience_disabled_repetition " << stats.experience_disabled_repetition
+                        << " hand_tactic_geometric " << stats.hand_tactic_geometric
+                        << " hand_tactic_effective " << stats.hand_tactic_effective
+                        << " hand_tactic_reply_checks " << stats.hand_tactic_reply_checks << '\n';
                     emit(out.str());
                 }
                 { std::unique_lock<std::mutex> lock(active->mutex);
@@ -450,6 +457,13 @@ int main() {
                         persist_experience();
                         hand_drop_tactics_enabled = value == "true";
                         strategy.set_hand_drop_tactics_enabled(hand_drop_tactics_enabled);
+                        invalidate_experience();
+                    }
+                } else if (name == "HandDropResponseCheck") {
+                    if (value == "true" || value == "false") {
+                        persist_experience();
+                        hand_drop_response_check_enabled = value == "true";
+                        strategy.set_hand_drop_response_check_enabled(hand_drop_response_check_enabled);
                         invalidate_experience();
                     }
                 } else if (name == "MateAssist") {
