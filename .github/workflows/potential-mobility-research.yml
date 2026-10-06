@@ -1,8 +1,6 @@
 name: Potential Mobility Research
 
 on:
-  push:
-    branches: [research/potential-mobility]
   workflow_dispatch:
 
 permissions:

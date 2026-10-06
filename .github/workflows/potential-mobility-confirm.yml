@@ -1,0 +1,74 @@
+name: Potential Mobility 100-Game Confirmation
+
+on:
+  push:
+    branches: [research/potential-mobility]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  shard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
+      - name: Install arena dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: Paired 20-game shard at 200ms
+        run: |
+          mkdir -p build/results
+          SEED=$((20261100 + ${{ matrix.shard }} * 1000))
+          python3 benchmarks/arena.py \
+            --engine-a build/shogi-ai --engine-b build/shogi-ai \
+            --games 20 --max-plies 250 --seed "$SEED" \
+            --go-command "go movetime 200" \
+            --options-a '{"OpeningBook":false,"ExperienceCache":false,"EvalPotential":50}' \
+            --options-b '{"OpeningBook":false,"ExperienceCache":false,"EvalPotential":0}' \
+            --output build/results/shard-${{ matrix.shard }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: potential-confirm-${{ matrix.shard }}
+          path: build/results/shard-${{ matrix.shard }}.json
+
+  aggregate:
+    needs: shard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: potential-confirm-*
+          path: results
+          merge-multiple: true
+      - name: Aggregate 100 games
+        run: |
+          python3 - <<'PY'
+          import glob,json,math
+          rows=[json.load(open(p,encoding='utf-8')) for p in sorted(glob.glob('results/*.json'))]
+          games=sum(r['games'] for r in rows); wa=sum(r['wins_a'] for r in rows)
+          wb=sum(r['wins_b'] for r in rows); d=sum(r['draws'] for r in rows)
+          score=(wa+0.5*d)/games
+          nodes_a=sum((r.get('search',{}).get('A') or {}).get('nodes_total',0) for r in rows)
+          nodes_b=sum((r.get('search',{}).get('B') or {}).get('nodes_total',0) for r in rows)
+          ratio=nodes_a/nodes_b if nodes_b else 0
+          se=math.sqrt(max(score*(1-score),1e-9)/games)
+          lo=max(0,score-1.96*se); hi=min(1,score+1.96*se)
+          print(f'TOTAL A {wa} - {d} - {wb} B; score(A)={score:.3f}; simple95={lo:.3f}-{hi:.3f}')
+          print(f'NODES A={nodes_a} B={nodes_b} ratio={ratio:.4f}')
+          print('SHARDS',[(r['wins_a'],r['draws'],r['wins_b'],r['score_a']) for r in rows])
+          out={'games':games,'wins_a':wa,'draws':d,'wins_b':wb,'score_a':score,
+               'simple95':[lo,hi],'nodes_a':nodes_a,'nodes_b':nodes_b,'node_ratio':ratio,
+               'shards':[{'wins_a':r['wins_a'],'draws':r['draws'],'wins_b':r['wins_b'],'score_a':r['score_a']} for r in rows]}
+          open('potential-confirm-summary.json','w',encoding='utf-8').write(json.dumps(out,indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: potential-confirm-summary
+          path: potential-confirm-summary.json
