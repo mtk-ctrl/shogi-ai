@@ -1,0 +1,103 @@
+name: Adaptive Long Think Validation
+
+on:
+  push:
+    branches:
+      - feature/adaptive-long-think-continuation
+    paths:
+      - ".github/workflows/adaptive-long-think-validation.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: adaptive-long-think-validation
+  cancel-in-progress: false
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: Build
+        run: python3 scripts/build.py --output build/shogi-ai
+      - name: Search and USI tests
+        run: |
+          python3 scripts/build.py --search-test --output build/search-test
+          ./build/search-test
+          python3 tests/test_search_usi.py build/shogi-ai
+      - name: Arena tests
+        run: python3 tests/test_arena.py
+
+  benchmark:
+    needs: tests
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4]
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: Build
+        run: python3 scripts/build.py --output build/shogi-ai
+      - name: Run 20 paired-color games
+        shell: bash
+        run: |
+          seed=$((2026100800 + ${{ matrix.shard }} * 1000))
+          python3 benchmarks/arena.py             --engine-a build/shogi-ai             --engine-b build/shogi-ai             --options-a '{"OpeningBook":true,"ExperienceCache":false,"AdaptiveLongThink":true}'             --options-b '{"OpeningBook":true,"ExperienceCache":false,"AdaptiveLongThink":false}'             --games 20 --max-plies 400 --seed "$seed"             --go-command 'go movetime 200'             --output "build/long-think-shard-${{ matrix.shard }}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: long-think-shard-${{ matrix.shard }}
+          path: build/long-think-shard-${{ matrix.shard }}.json
+          retention-days: 30
+
+  aggregate:
+    needs: benchmark
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v5
+        with:
+          pattern: long-think-shard-*
+          path: build/results
+          merge-multiple: true
+      - name: Aggregate 100 games
+        run: |
+          python3 - <<'PY'
+          import json, math
+          from pathlib import Path
+          rows=[json.loads(p.read_text()) for p in sorted(Path('build/results').glob('*.json'))]
+          games=sum(r['games'] for r in rows)
+          wa=sum(r['wins_a'] for r in rows); wb=sum(r['wins_b'] for r in rows); d=sum(r['draws'] for r in rows)
+          plies=sum(r['average_plies']*r['games'] for r in rows)
+          elapsed=max(r['elapsed_seconds'] for r in rows)
+          ta=sum(r['timing_ms']['A']['mean']*r['timing_ms']['A']['moves'] for r in rows)
+          tb=sum(r['timing_ms']['B']['mean']*r['timing_ms']['B']['moves'] for r in rows)
+          ma=sum(r['timing_ms']['A']['moves'] for r in rows); mb=sum(r['timing_ms']['B']['moves'] for r in rows)
+          long_moves=sum((r.get('search',{}).get('A') or {}).get('long_think_moves',0) for r in rows)
+          reasons={}
+          for r in rows:
+              for k,v in ((r.get('search',{}).get('A') or {}).get('long_think_reasons') or {}).items():
+                  reasons[k]=reasons.get(k,0)+v
+          s=(wa+.5*d)/games
+          se=math.sqrt(max(1e-12,s*(1-s)/games))
+          out={'games':games,'long_think_wins':wa,'fixed200_wins':wb,'draws':d,'score_long_think':s,
+               'normal_approx_95_ci':[max(0,s-1.96*se),min(1,s+1.96*se)],
+               'average_plies':plies/games,'parallel_wall_seconds_max_shard':elapsed,
+               'mean_move_ms_long_think':ta/ma,'mean_move_ms_fixed200':tb/mb,
+               'long_think_moves':long_moves,'long_think_per_game':long_moves/games,
+               'long_think_reasons':reasons,'illegal_games':sum(r['illegal_games'] for r in rows)}
+          Path('build/summary.json').write_text(json.dumps(out,indent=2)+'\n')
+          print(json.dumps(out,indent=2))
+          PY
+          cat build/summary.json >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: adaptive-long-think-100game-summary
+          path: build/summary.json
+          retention-days: 90
