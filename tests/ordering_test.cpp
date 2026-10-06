@@ -156,7 +156,7 @@ int main() {
         // Effective-response mode keeps a genuine fork, but rejects an apparent
         // fork when one target can answer with a forcing counter-check that
         // prevents the dropped piece from taking the other target immediately.
-        p = fixture({{"9i","K"},{"1a","k"},{"4d","r"},{"6d","n"}}, "S");
+        p = fixture({{"9i","K"},{"1a","k"},{"4d","n"},{"6d","n"}}, "S");
         auto effective_moves = strategy::MoveOrder::order(p, p.legal_moves(), true, true);
         require(!effective_moves.empty(), "effective-response ordering must return legal moves");
         const int genuine_base = strategy::MoveOrder::score_move(p.snapshot(), "S*5e", false);
