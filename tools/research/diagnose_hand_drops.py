@@ -68,6 +68,8 @@ def fixtures():
                   '王手を伴わない桂の飛車二枚への両取り。'),
         make_case('silver_two_rooks','両取り', dict(base, **{'4d':'r','6d':'r'}), 'S','S*5e','gain',
                   '銀で二枚の飛車を同時に狙う。'),
+        make_case('gold_two_rooks','両取り', dict(base, **{'4d':'r','6d':'r'}), 'G','G*5e','gain',
+                  '金の前斜め二方向で二枚の飛車を同時に狙う。銀とは別の移動能力として検証する。'),
         make_case('countercheck_silver_fork','反撃可能な両取り', dict(base, **{'4d':'r','6d':'r'}), 'S','S*5e','observe',
                   '玉の遮蔽物がなく、飛車の王手によって両取りを回避できる。形だけで有効と判定しない対照例。'),
         make_case('bishop_two_rooks','両取り', dict(base, **{'3c':'r','7c':'r'}), 'B','B*5e','gain',

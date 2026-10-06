@@ -48,6 +48,22 @@
     "note": "銀で二枚の飛車を同時に狙う。"
   },
   {
+    "id": "gold_two_rooks",
+    "motif": "両取り",
+    "sfen": "8k/9/9/3r1r3/9/9/9/P8/KP7 b G 1",
+    "target": "G*5e",
+    "expected": "gain",
+    "note": "金の前斜め二方向で二枚の飛車を同時に狙う。銀とは別の移動能力として検証する。"
+  },
+  {
+    "id": "gold_two_rooks_white",
+    "motif": "両取り",
+    "sfen": "7pk/8p/9/9/9/3R1R3/9/9/K8 w g 1",
+    "target": "G*5e",
+    "expected": "gain",
+    "note": "金の前斜め二方向で二枚の飛車を同時に狙う。銀とは別の移動能力として検証する。"
+  },
+  {
     "id": "countercheck_silver_fork",
     "motif": "反撃可能な両取り",
     "sfen": "8k/9/9/3r1r3/9/9/9/9/K8 b S 1",

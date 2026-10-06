@@ -2443,6 +2443,800 @@
       }
     },
     {
+      "id": "gold_two_rooks",
+      "motif": "両取り",
+      "sfen": "8k/9/9/3r1r3/9/9/9/P8/KP7 b G 1",
+      "target": "G*5e",
+      "expected": "gain",
+      "note": "金の前斜め二方向で二枚の飛車を同時に狙う。銀とは別の移動能力として検証する。",
+      "certificate": {
+        "legal": true,
+        "reply_count": 33,
+        "material_gain_4ply": 800,
+        "worst_witness": [
+          "G*5e",
+          "6d9d",
+          "5e4d",
+          "9d4d"
+        ],
+        "scope": "four-ply material result, not a full-game guarantee"
+      },
+      "core": {
+        "50ms": {
+          "target_legal": true,
+          "legal_count": 78,
+          "drop_count": 75,
+          "target_order_rank": 9,
+          "target_order_score": 6000000,
+          "bestmove": "G*5e",
+          "depth": 3,
+          "score": -430,
+          "has_score": true,
+          "nodes": 4797,
+          "qnodes": 4304,
+          "elapsed_ms": 45.1788,
+          "pv": [
+            "G*5e",
+            "6d8d",
+            "5e4d",
+            "8d4d"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -1048
+            },
+            {
+              "depth": 2,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -430
+            },
+            {
+              "depth": 3,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -430
+            },
+            {
+              "depth": 4,
+              "started": 13,
+              "finished": 12,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -430
+            }
+          ]
+        },
+        "500ms": {
+          "target_legal": true,
+          "legal_count": 78,
+          "drop_count": 75,
+          "target_order_rank": 9,
+          "target_order_score": 6000000,
+          "bestmove": "G*5e",
+          "depth": 5,
+          "score": -203,
+          "has_score": true,
+          "nodes": 48612,
+          "qnodes": 43036,
+          "elapsed_ms": 490.14,
+          "pv": [
+            "G*5e",
+            "6d8d",
+            "5e4d",
+            "8d4d",
+            "R*3a",
+            "G*2a",
+            "3a3h+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -1048
+            },
+            {
+              "depth": 2,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -430
+            },
+            {
+              "depth": 3,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -430
+            },
+            {
+              "depth": 4,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -430
+            },
+            {
+              "depth": 5,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -203
+            },
+            {
+              "depth": 6,
+              "started": 1,
+              "finished": 0,
+              "target_started": true,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        "depth3": {
+          "target_legal": true,
+          "legal_count": 78,
+          "drop_count": 75,
+          "target_order_rank": 9,
+          "target_order_score": 6000000,
+          "bestmove": "G*5e",
+          "depth": 3,
+          "score": -430,
+          "has_score": true,
+          "nodes": 3391,
+          "qnodes": 3037,
+          "elapsed_ms": 30.3508,
+          "pv": [
+            "G*5e",
+            "6d8d",
+            "5e4d",
+            "8d4d"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -1048
+            },
+            {
+              "depth": 2,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -430
+            },
+            {
+              "depth": 3,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -430
+            }
+          ]
+        },
+        "material_depth3": {
+          "target_legal": true,
+          "legal_count": 78,
+          "drop_count": 75,
+          "target_order_rank": 9,
+          "target_order_score": 6000000,
+          "bestmove": "G*5e",
+          "depth": 3,
+          "score": -400,
+          "has_score": true,
+          "nodes": 3450,
+          "qnodes": 3096,
+          "elapsed_ms": 23.3928,
+          "pv": [
+            "G*5e",
+            "6d8d",
+            "5e4d",
+            "8d4d"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -1200
+            },
+            {
+              "depth": 2,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -400
+            },
+            {
+              "depth": 3,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -400
+            }
+          ]
+        },
+        "no_q_depth3": {
+          "target_legal": true,
+          "legal_count": 78,
+          "drop_count": 75,
+          "target_order_rank": 9,
+          "target_order_score": 6000000,
+          "bestmove": "G*5e",
+          "depth": 3,
+          "score": 564,
+          "has_score": true,
+          "nodes": 1392,
+          "qnodes": 0,
+          "elapsed_ms": 10.7396,
+          "pv": [
+            "G*5e",
+            "4d4h+",
+            "5e6d"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -1048
+            },
+            {
+              "depth": 2,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -1224
+            },
+            {
+              "depth": 3,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 564
+            }
+          ]
+        },
+        "target_depth3": {
+          "target_legal": true,
+          "legal_count": 78,
+          "drop_count": 75,
+          "target_order_rank": 9,
+          "target_order_score": 6000000,
+          "bestmove": "G*5e",
+          "depth": 3,
+          "score": -430,
+          "has_score": true,
+          "nodes": 568,
+          "qnodes": 533,
+          "elapsed_ms": 4.34943,
+          "pv": [
+            "G*5e",
+            "6d8d",
+            "5e4d",
+            "8d4d"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -1048
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -430
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -430
+            }
+          ]
+        }
+      },
+      "production": {
+        "50": {
+          "depth": 3,
+          "pv": [
+            "G*5e",
+            "6d8d",
+            "5e4d",
+            "8d4d"
+          ],
+          "score": [
+            "cp",
+            "-430"
+          ],
+          "bestmove": "G*5e",
+          "raw": [
+            "info string mate_assist budget 4 time 0 offense_nodes 8 defense_nodes 182 examined 78 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 5 time 2 nodes 118 score cp -1048 pv G*5e",
+            "info depth 2 seldepth 5 time 8 nodes 742 score cp -430 pv G*5e 6d8d 5e4d 8d4d",
+            "info depth 3 seldepth 11 time 30 nodes 3391 score cp -430 pv G*5e 6d8d 5e4d 8d4d",
+            "info nodes 4814 string cutoffs 336 min_cutoffs 203 max_cutoffs 133 leaves 3848 terminals 33 qnodes 4320 qcutoffs 3317 qlimit_leaves 81 ply1 247 ply2 467 ply3 977 order_calls 937 ordered_moves 13246 tt_probes 494 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 491 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove G*5e"
+          ]
+        },
+        "500": {
+          "depth": 5,
+          "pv": [
+            "G*5e",
+            "6d8d",
+            "5e4d",
+            "8d4d",
+            "R*3a",
+            "G*2a",
+            "3a3h+"
+          ],
+          "score": [
+            "cp",
+            "-203"
+          ],
+          "bestmove": "G*5e",
+          "raw": [
+            "info string mate_assist budget 5 time 0 offense_nodes 8 defense_nodes 182 examined 78 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 5 time 2 nodes 118 score cp -1048 pv G*5e",
+            "info depth 2 seldepth 5 time 9 nodes 742 score cp -430 pv G*5e 6d8d 5e4d 8d4d",
+            "info depth 3 seldepth 11 time 31 nodes 3391 score cp -430 pv G*5e 6d8d 5e4d 8d4d",
+            "info depth 4 seldepth 12 time 92 nodes 8407 score cp -430 pv G*5e 6d8d 5e4d 8d4d",
+            "info depth 5 seldepth 12 time 319 nodes 31755 score cp -203 pv G*5e 6d8d 5e4d 8d4d R*3a G*2a 3a3h+",
+            "info nodes 48499 string cutoffs 3243 min_cutoffs 1667 max_cutoffs 1576 leaves 35475 terminals 383 qnodes 42961 qcutoffs 27254 qlimit_leaves 154 ply1 391 ply2 668 ply3 2076 order_calls 12647 ordered_moves 216251 tt_probes 5418 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 5414 tt_replacements 16 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove G*5e"
+          ]
+        }
+      },
+      "selected_certificates": {
+        "G*5e": {
+          "legal": true,
+          "reply_count": 33,
+          "material_gain_4ply": 800,
+          "worst_witness": [
+            "G*5e",
+            "6d9d",
+            "5e4d",
+            "9d4d"
+          ],
+          "scope": "four-ply material result, not a full-game guarantee"
+        }
+      }
+    },
+    {
+      "id": "gold_two_rooks_white",
+      "motif": "両取り",
+      "sfen": "7pk/8p/9/9/9/3R1R3/9/9/K8 w g 1",
+      "target": "G*5e",
+      "expected": "gain",
+      "note": "金の前斜め二方向で二枚の飛車を同時に狙う。銀とは別の移動能力として検証する。",
+      "certificate": {
+        "legal": true,
+        "reply_count": 33,
+        "material_gain_4ply": 800,
+        "worst_witness": [
+          "G*5e",
+          "6f9f",
+          "5e4f",
+          "9f4f"
+        ],
+        "scope": "four-ply material result, not a full-game guarantee"
+      },
+      "core": {
+        "50ms": {
+          "target_legal": true,
+          "legal_count": 78,
+          "drop_count": 75,
+          "target_order_rank": 8,
+          "target_order_score": 6000000,
+          "bestmove": "G*5e",
+          "depth": 3,
+          "score": -430,
+          "has_score": true,
+          "nodes": 4376,
+          "qnodes": 3855,
+          "elapsed_ms": 45.101,
+          "pv": [
+            "G*5e",
+            "4f1f",
+            "5e6f",
+            "1f6f"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -1048
+            },
+            {
+              "depth": 2,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -430
+            },
+            {
+              "depth": 3,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -430
+            },
+            {
+              "depth": 4,
+              "started": 14,
+              "finished": 13,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -430
+            }
+          ]
+        },
+        "500ms": {
+          "target_legal": true,
+          "legal_count": 78,
+          "drop_count": 75,
+          "target_order_rank": 8,
+          "target_order_score": 6000000,
+          "bestmove": "G*5e",
+          "depth": 5,
+          "score": -203,
+          "has_score": true,
+          "nodes": 44095,
+          "qnodes": 40784,
+          "elapsed_ms": 490.107,
+          "pv": [
+            "G*5e",
+            "4f1f",
+            "5e6f",
+            "1f6f",
+            "R*5i",
+            "G*8i",
+            "5i5b+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -1048
+            },
+            {
+              "depth": 2,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -430
+            },
+            {
+              "depth": 3,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -430
+            },
+            {
+              "depth": 4,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -430
+            },
+            {
+              "depth": 5,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -203
+            },
+            {
+              "depth": 6,
+              "started": 1,
+              "finished": 0,
+              "target_started": true,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        "depth3": {
+          "target_legal": true,
+          "legal_count": 78,
+          "drop_count": 75,
+          "target_order_rank": 8,
+          "target_order_score": 6000000,
+          "bestmove": "G*5e",
+          "depth": 3,
+          "score": -430,
+          "has_score": true,
+          "nodes": 2433,
+          "qnodes": 2119,
+          "elapsed_ms": 21.6853,
+          "pv": [
+            "G*5e",
+            "4f1f",
+            "5e6f",
+            "1f6f"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -1048
+            },
+            {
+              "depth": 2,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -430
+            },
+            {
+              "depth": 3,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -430
+            }
+          ]
+        },
+        "material_depth3": {
+          "target_legal": true,
+          "legal_count": 78,
+          "drop_count": 75,
+          "target_order_rank": 8,
+          "target_order_score": 6000000,
+          "bestmove": "G*5e",
+          "depth": 3,
+          "score": -400,
+          "has_score": true,
+          "nodes": 2528,
+          "qnodes": 2210,
+          "elapsed_ms": 17.3578,
+          "pv": [
+            "G*5e",
+            "4f1f",
+            "5e6f",
+            "1f6f"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -1200
+            },
+            {
+              "depth": 2,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -400
+            },
+            {
+              "depth": 3,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -400
+            }
+          ]
+        },
+        "no_q_depth3": {
+          "target_legal": true,
+          "legal_count": 78,
+          "drop_count": 75,
+          "target_order_rank": 8,
+          "target_order_score": 6000000,
+          "bestmove": "G*5e",
+          "depth": 3,
+          "score": 564,
+          "has_score": true,
+          "nodes": 1235,
+          "qnodes": 0,
+          "elapsed_ms": 10.0564,
+          "pv": [
+            "G*5e",
+            "4f4b+",
+            "5e6f"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -1048
+            },
+            {
+              "depth": 2,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -1224
+            },
+            {
+              "depth": 3,
+              "started": 78,
+              "finished": 78,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 564
+            }
+          ]
+        },
+        "target_depth3": {
+          "target_legal": true,
+          "legal_count": 78,
+          "drop_count": 75,
+          "target_order_rank": 8,
+          "target_order_score": 6000000,
+          "bestmove": "G*5e",
+          "depth": 3,
+          "score": -430,
+          "has_score": true,
+          "nodes": 583,
+          "qnodes": 548,
+          "elapsed_ms": 5.0457,
+          "pv": [
+            "G*5e",
+            "4f1f",
+            "5e6f",
+            "1f6f"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -1048
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -430
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -430
+            }
+          ]
+        }
+      },
+      "production": {
+        "50": {
+          "depth": 3,
+          "pv": [
+            "G*5e",
+            "4f1f",
+            "5e6f",
+            "1f6f"
+          ],
+          "score": [
+            "cp",
+            "-430"
+          ],
+          "bestmove": "G*5e",
+          "raw": [
+            "info string mate_assist budget 4 time 0 offense_nodes 8 defense_nodes 174 examined 78 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 5 time 1 nodes 111 score cp -1048 pv G*5e",
+            "info depth 2 seldepth 5 time 7 nodes 653 score cp -430 pv G*5e 4f1f 5e6f 1f6f",
+            "info depth 3 seldepth 11 time 21 nodes 2433 score cp -430 pv G*5e 4f1f 5e6f 1f6f",
+            "info nodes 4514 string cutoffs 381 min_cutoffs 283 max_cutoffs 98 leaves 3488 terminals 12 qnodes 3980 qcutoffs 2830 qlimit_leaves 33 ply1 248 ply2 381 ply3 942 order_calls 1017 ordered_moves 16068 tt_probes 533 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 530 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove G*5e"
+          ]
+        },
+        "500": {
+          "depth": 5,
+          "pv": [
+            "G*5e",
+            "4f1f",
+            "5e6f",
+            "1f6f",
+            "R*5i",
+            "G*8i",
+            "5i5b+"
+          ],
+          "score": [
+            "cp",
+            "-203"
+          ],
+          "bestmove": "G*5e",
+          "raw": [
+            "info string mate_assist budget 5 time 0 offense_nodes 8 defense_nodes 174 examined 78 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 5 time 1 nodes 111 score cp -1048 pv G*5e",
+            "info depth 2 seldepth 5 time 6 nodes 653 score cp -430 pv G*5e 4f1f 5e6f 1f6f",
+            "info depth 3 seldepth 11 time 21 nodes 2433 score cp -430 pv G*5e 4f1f 5e6f 1f6f",
+            "info depth 4 seldepth 12 time 106 nodes 8714 score cp -430 pv G*5e 4f1f 5e6f 1f6f",
+            "info depth 5 seldepth 12 time 453 nodes 39916 score cp -203 pv G*5e 4f1f 5e6f 1f6f R*5i G*8i 5i5b+",
+            "info nodes 42417 string cutoffs 2382 min_cutoffs 1404 max_cutoffs 978 leaves 31680 terminals 127 qnodes 39119 qcutoffs 24551 qlimit_leaves 136 ply1 391 ply2 558 ply3 1926 order_calls 10616 ordered_moves 160267 tt_probes 3240 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 3235 tt_replacements 6 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove G*5e"
+          ]
+        }
+      },
+      "selected_certificates": {
+        "G*5e": {
+          "legal": true,
+          "reply_count": 33,
+          "material_gain_4ply": 800,
+          "worst_witness": [
+            "G*5e",
+            "6f9f",
+            "5e4f",
+            "9f4f"
+          ],
+          "scope": "four-ply material result, not a full-game guarantee"
+        }
+      }
+    },
+    {
       "id": "countercheck_silver_fork",
       "motif": "反撃可能な両取り",
       "sfen": "8k/9/9/3r1r3/9/9/9/9/K8 b S 1",
@@ -7091,6 +7885,765 @@
       }
     },
     {
+      "id": "capture_instead_of_harassment",
+      "motif": "直接の駒取りがある対照例",
+      "sfen": "8k/9/9/4r4/9/5G3/4R4/P8/KP7 b P 1",
+      "target": "P*5e",
+      "expected": "observe",
+      "note": "歩で飛車に当てることもできるが、自分の飛車で相手飛車を直接取れる。打ち手を選ばなくても見落としではない。",
+      "certificate": {
+        "legal": true,
+        "reply_count": 15,
+        "material_gain_4ply": -200,
+        "worst_witness": [
+          "P*5e",
+          "5d1d",
+          "5e5d",
+          "1d5d"
+        ],
+        "scope": "four-ply material result, not a full-game guarantee"
+      },
+      "core": {
+        "50ms": {
+          "target_legal": true,
+          "legal_count": 75,
+          "drop_count": 53,
+          "target_order_rank": 17,
+          "target_order_score": 6000000,
+          "bestmove": "5g5d",
+          "depth": 2,
+          "score": 3162,
+          "has_score": true,
+          "nodes": 2299,
+          "qnodes": 2214,
+          "elapsed_ms": 46.718,
+          "pv": [
+            "5g5d",
+            "1a1b",
+            "5d5a+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1163
+            },
+            {
+              "depth": 2,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2749
+            },
+            {
+              "depth": 3,
+              "started": 3,
+              "finished": 2,
+              "target_started": false,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        "500ms": {
+          "target_legal": true,
+          "legal_count": 75,
+          "drop_count": 53,
+          "target_order_rank": 17,
+          "target_order_score": 6000000,
+          "bestmove": "5g5d",
+          "depth": 3,
+          "score": 3422,
+          "has_score": true,
+          "nodes": 26477,
+          "qnodes": 24073,
+          "elapsed_ms": 490.035,
+          "pv": [
+            "5g5d",
+            "1a2a",
+            "R*2d",
+            "2a1b",
+            "5d5b+",
+            "1b1c",
+            "2d2a+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1163
+            },
+            {
+              "depth": 2,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2749
+            },
+            {
+              "depth": 3,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3168
+            },
+            {
+              "depth": 4,
+              "started": 43,
+              "finished": 42,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3168
+            }
+          ]
+        },
+        "depth3": {
+          "target_legal": true,
+          "legal_count": 75,
+          "drop_count": 53,
+          "target_order_rank": 17,
+          "target_order_score": 6000000,
+          "bestmove": "5g5d",
+          "depth": 3,
+          "score": 3422,
+          "has_score": true,
+          "nodes": 7061,
+          "qnodes": 6830,
+          "elapsed_ms": 128.703,
+          "pv": [
+            "5g5d",
+            "1a2a",
+            "R*2d",
+            "2a1b",
+            "5d5b+",
+            "1b1c",
+            "2d2a+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1163
+            },
+            {
+              "depth": 2,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2749
+            },
+            {
+              "depth": 3,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3168
+            }
+          ]
+        },
+        "material_depth3": {
+          "target_legal": true,
+          "legal_count": 75,
+          "drop_count": 53,
+          "target_order_rank": 17,
+          "target_order_score": 6000000,
+          "bestmove": "5g5d",
+          "depth": 3,
+          "score": 3300,
+          "has_score": true,
+          "nodes": 6504,
+          "qnodes": 6273,
+          "elapsed_ms": 83.848,
+          "pv": [
+            "5g5d",
+            "1a1b",
+            "R*1e",
+            "1b2a",
+            "5d5a+",
+            "2a2b",
+            "1e1a+",
+            "2b3c"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 900
+            },
+            {
+              "depth": 2,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2700
+            },
+            {
+              "depth": 3,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3100
+            }
+          ]
+        },
+        "no_q_depth3": {
+          "target_legal": true,
+          "legal_count": 75,
+          "drop_count": 53,
+          "target_order_rank": 17,
+          "target_order_score": 6000000,
+          "bestmove": "5g5d",
+          "depth": 3,
+          "score": 3174,
+          "has_score": true,
+          "nodes": 2583,
+          "qnodes": 0,
+          "elapsed_ms": 34.1641,
+          "pv": [
+            "5g5d",
+            "1a1b",
+            "5d5b+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1163
+            },
+            {
+              "depth": 2,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 716
+            },
+            {
+              "depth": 3,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2749
+            }
+          ]
+        },
+        "target_depth3": {
+          "target_legal": true,
+          "legal_count": 75,
+          "drop_count": 53,
+          "target_order_rank": 17,
+          "target_order_score": 6000000,
+          "bestmove": "P*5e",
+          "depth": 3,
+          "score": 911,
+          "has_score": true,
+          "nodes": 276,
+          "qnodes": 259,
+          "elapsed_ms": 3.20167,
+          "pv": [
+            "P*5e",
+            "5d8d",
+            "5g1g",
+            "1a2a"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1163
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 767
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 911
+            }
+          ]
+        }
+      },
+      "production": {
+        "50": {
+          "depth": 2,
+          "score": [
+            "cp",
+            "3162"
+          ],
+          "pv": [
+            "5g5d",
+            "1a1b",
+            "5d5a+"
+          ],
+          "bestmove": "5g5d",
+          "raw": [
+            "info string mate_assist budget 4 time 0 offense_nodes 6 defense_nodes 152 examined 75 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 6 time 5 nodes 106 score cp 2950 pv 5g5d",
+            "info depth 2 seldepth 6 time 10 nodes 385 score cp 3162 pv 5g5d 1a1b 5d5a+",
+            "info nodes 1645 string cutoffs 75 min_cutoffs 72 max_cutoffs 3 leaves 1180 terminals 21 qnodes 1560 qcutoffs 959 qlimit_leaves 0 ply1 153 ply2 94 ply3 287 order_calls 447 ordered_moves 3076 tt_probes 85 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 83 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove 5g5d"
+          ]
+        },
+        "500": {
+          "depth": 4,
+          "score": [
+            "cp",
+            "3671"
+          ],
+          "pv": [
+            "5g5d",
+            "1a2b",
+            "P*7c",
+            "2b1a",
+            "5d5a+",
+            "1a1b",
+            "7c7b+"
+          ],
+          "bestmove": "5g5d",
+          "raw": [
+            "info string mate_assist budget 5 time 0 offense_nodes 6 defense_nodes 152 examined 75 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 6 time 2 nodes 106 score cp 2950 pv 5g5d",
+            "info depth 2 seldepth 6 time 5 nodes 385 score cp 3162 pv 5g5d 1a1b 5d5a+",
+            "info depth 3 seldepth 10 time 95 nodes 7061 score cp 3422 pv 5g5d 1a2a R*2d 2a1b 5d5b+ 1b1c 2d2a+",
+            "info depth 4 seldepth 10 time 386 nodes 27528 score cp 3671 pv 5g5d 1a2b P*7c 2b1a 5d5a+ 1a1b 7c7b+",
+            "info nodes 38508 string cutoffs 2588 min_cutoffs 2577 max_cutoffs 11 leaves 27664 terminals 839 qnodes 35688 qcutoffs 23383 qlimit_leaves 338 ply1 301 ply2 246 ply3 4865 order_calls 10009 ordered_moves 170881 tt_probes 2819 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 2815 tt_replacements 10 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove 5g5d"
+          ]
+        }
+      },
+      "selected_certificates": {
+        "P*5e": {
+          "legal": true,
+          "reply_count": 15,
+          "material_gain_4ply": -200,
+          "worst_witness": [
+            "P*5e",
+            "5d1d",
+            "5e5d",
+            "1d5d"
+          ],
+          "scope": "four-ply material result, not a full-game guarantee"
+        }
+      }
+    },
+    {
+      "id": "capture_instead_of_harassment_white",
+      "motif": "直接の駒取りがある対照例",
+      "sfen": "7pk/8p/4r4/3g5/9/4R4/9/9/K8 w p 1",
+      "target": "P*5e",
+      "expected": "observe",
+      "note": "歩で飛車に当てることもできるが、自分の飛車で相手飛車を直接取れる。打ち手を選ばなくても見落としではない。",
+      "certificate": {
+        "legal": true,
+        "reply_count": 15,
+        "material_gain_4ply": -200,
+        "worst_witness": [
+          "P*5e",
+          "5f9f",
+          "2a2b",
+          "9f9a+"
+        ],
+        "scope": "four-ply material result, not a full-game guarantee"
+      },
+      "core": {
+        "50ms": {
+          "target_legal": true,
+          "legal_count": 75,
+          "drop_count": 53,
+          "target_order_rank": 17,
+          "target_order_score": 6000000,
+          "bestmove": "5c5f",
+          "depth": 2,
+          "score": 3162,
+          "has_score": true,
+          "nodes": 3518,
+          "qnodes": 3432,
+          "elapsed_ms": 45.1566,
+          "pv": [
+            "5c5f",
+            "9i9h",
+            "5f5g+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1163
+            },
+            {
+              "depth": 2,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2749
+            },
+            {
+              "depth": 3,
+              "started": 3,
+              "finished": 2,
+              "target_started": false,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        "500ms": {
+          "target_legal": true,
+          "legal_count": 75,
+          "drop_count": 53,
+          "target_order_rank": 17,
+          "target_order_score": 6000000,
+          "bestmove": "5c5f",
+          "depth": 4,
+          "score": 3671,
+          "has_score": true,
+          "nodes": 38877,
+          "qnodes": 36157,
+          "elapsed_ms": 490.039,
+          "pv": [
+            "5c5f",
+            "9i8h",
+            "P*3f",
+            "8h8g",
+            "5f5g+",
+            "8g9f",
+            "3f3g+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1163
+            },
+            {
+              "depth": 2,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2749
+            },
+            {
+              "depth": 3,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2968
+            },
+            {
+              "depth": 4,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2968
+            },
+            {
+              "depth": 5,
+              "started": 1,
+              "finished": 0,
+              "target_started": false,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        "depth3": {
+          "target_legal": true,
+          "legal_count": 75,
+          "drop_count": 53,
+          "target_order_rank": 17,
+          "target_order_score": 6000000,
+          "bestmove": "5c5f",
+          "depth": 3,
+          "score": 3422,
+          "has_score": true,
+          "nodes": 7095,
+          "qnodes": 6864,
+          "elapsed_ms": 87.8196,
+          "pv": [
+            "5c5f",
+            "9i8i",
+            "R*1i",
+            "8i8h",
+            "5f5h+",
+            "8h9g",
+            "1i1f+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1163
+            },
+            {
+              "depth": 2,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2749
+            },
+            {
+              "depth": 3,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2968
+            }
+          ]
+        },
+        "material_depth3": {
+          "target_legal": true,
+          "legal_count": 75,
+          "drop_count": 53,
+          "target_order_rank": 17,
+          "target_order_score": 6000000,
+          "bestmove": "5c5f",
+          "depth": 3,
+          "score": 3300,
+          "has_score": true,
+          "nodes": 5316,
+          "qnodes": 5085,
+          "elapsed_ms": 46.6768,
+          "pv": [
+            "5c5f",
+            "9i8h",
+            "R*1h",
+            "8h7g",
+            "1h1g+",
+            "7g8h",
+            "5f5g+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 900
+            },
+            {
+              "depth": 2,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2700
+            },
+            {
+              "depth": 3,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2900
+            }
+          ]
+        },
+        "no_q_depth3": {
+          "target_legal": true,
+          "legal_count": 75,
+          "drop_count": 53,
+          "target_order_rank": 17,
+          "target_order_score": 6000000,
+          "bestmove": "5c5f",
+          "depth": 3,
+          "score": 3174,
+          "has_score": true,
+          "nodes": 2815,
+          "qnodes": 0,
+          "elapsed_ms": 29.4943,
+          "pv": [
+            "5c5f",
+            "9i9h",
+            "5f5h+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1163
+            },
+            {
+              "depth": 2,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 716
+            },
+            {
+              "depth": 3,
+              "started": 75,
+              "finished": 75,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2749
+            }
+          ]
+        },
+        "target_depth3": {
+          "target_legal": true,
+          "legal_count": 75,
+          "drop_count": 53,
+          "target_order_rank": 17,
+          "target_order_score": 6000000,
+          "bestmove": "P*5e",
+          "depth": 3,
+          "score": 911,
+          "has_score": true,
+          "nodes": 281,
+          "qnodes": 264,
+          "elapsed_ms": 2.40014,
+          "pv": [
+            "P*5e",
+            "5f2f",
+            "5c9c",
+            "9i8i"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1163
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 767
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 911
+            }
+          ]
+        }
+      },
+      "production": {
+        "50": {
+          "depth": 2,
+          "score": [
+            "cp",
+            "3162"
+          ],
+          "pv": [
+            "5c5f",
+            "9i9h",
+            "5f5g+"
+          ],
+          "bestmove": "5c5f",
+          "raw": [
+            "info string mate_assist budget 4 time 0 offense_nodes 6 defense_nodes 152 examined 75 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 6 time 3 nodes 108 score cp 2950 pv 5c5f",
+            "info depth 2 seldepth 6 time 10 nodes 392 score cp 3162 pv 5c5f 9i9h 5f5g+",
+            "info nodes 1720 string cutoffs 74 min_cutoffs 72 max_cutoffs 2 leaves 1337 terminals 13 qnodes 1634 qcutoffs 1022 qlimit_leaves 0 ply1 153 ply2 94 ply3 355 order_calls 372 ordered_moves 2916 tt_probes 85 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 83 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove 5c5f"
+          ]
+        },
+        "500": {
+          "depth": 4,
+          "score": [
+            "cp",
+            "3671"
+          ],
+          "pv": [
+            "5c5f",
+            "9i8h",
+            "P*3f",
+            "8h8g",
+            "5f5g+",
+            "8g9f",
+            "3f3g+"
+          ],
+          "bestmove": "5c5f",
+          "raw": [
+            "info string mate_assist budget 5 time 0 offense_nodes 6 defense_nodes 152 examined 75 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 6 time 2 nodes 108 score cp 2950 pv 5c5f",
+            "info depth 2 seldepth 6 time 5 nodes 392 score cp 3162 pv 5c5f 9i9h 5f5g+",
+            "info depth 3 seldepth 10 time 91 nodes 7095 score cp 3422 pv 5c5f 9i8i R*1i 8i8h 5f5h+ 8h9g 1i1f+",
+            "info depth 4 seldepth 10 time 375 nodes 25141 score cp 3671 pv 5c5f 9i8h P*3f 8h8g 5f5g+ 8g9f 3f3g+",
+            "info nodes 37630 string cutoffs 2517 min_cutoffs 2508 max_cutoffs 9 leaves 27713 terminals 720 qnodes 34910 qcutoffs 23570 qlimit_leaves 225 ply1 301 ply2 246 ply3 4844 order_calls 9201 ordered_moves 170200 tt_probes 2719 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 2715 tt_replacements 12 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove 5c5f"
+          ]
+        }
+      },
+      "selected_certificates": {
+        "P*5e": {
+          "legal": true,
+          "reply_count": 15,
+          "material_gain_4ply": -200,
+          "worst_witness": [
+            "P*5e",
+            "5f9f",
+            "2a2b",
+            "9f9a+"
+          ],
+          "scope": "four-ply material result, not a full-game guarantee"
+        }
+      }
+    },
+    {
       "id": "gold_drop_mate",
       "motif": "攻め",
       "sfen": "8k/9/9/9/9/7R1/9/P8/KP7 b G 1",
@@ -9920,765 +11473,6 @@
       "selected_certificates": {
         "N*5e": {
           "legal": false
-        }
-      }
-    },
-    {
-      "id": "capture_instead_of_harassment",
-      "motif": "直接の駒取りがある対照例",
-      "sfen": "8k/9/9/4r4/9/5G3/4R4/P8/KP7 b P 1",
-      "target": "P*5e",
-      "expected": "observe",
-      "note": "歩で飛車に当てることもできるが、自分の飛車で相手飛車を直接取れる。打ち手を選ばなくても見落としではない。",
-      "certificate": {
-        "legal": true,
-        "reply_count": 15,
-        "material_gain_4ply": -200,
-        "worst_witness": [
-          "P*5e",
-          "5d1d",
-          "5e5d",
-          "1d5d"
-        ],
-        "scope": "four-ply material result, not a full-game guarantee"
-      },
-      "core": {
-        "50ms": {
-          "target_legal": true,
-          "legal_count": 75,
-          "drop_count": 53,
-          "target_order_rank": 17,
-          "target_order_score": 6000000,
-          "bestmove": "5g5d",
-          "depth": 2,
-          "score": 3162,
-          "has_score": true,
-          "nodes": 2299,
-          "qnodes": 2214,
-          "elapsed_ms": 46.718,
-          "pv": [
-            "5g5d",
-            "1a1b",
-            "5d5a+"
-          ],
-          "root_iterations": [
-            {
-              "depth": 1,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 1163
-            },
-            {
-              "depth": 2,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 2749
-            },
-            {
-              "depth": 3,
-              "started": 3,
-              "finished": 2,
-              "target_started": false,
-              "target_finished": false,
-              "target_returned_bound": 0
-            }
-          ]
-        },
-        "500ms": {
-          "target_legal": true,
-          "legal_count": 75,
-          "drop_count": 53,
-          "target_order_rank": 17,
-          "target_order_score": 6000000,
-          "bestmove": "5g5d",
-          "depth": 3,
-          "score": 3422,
-          "has_score": true,
-          "nodes": 26477,
-          "qnodes": 24073,
-          "elapsed_ms": 490.035,
-          "pv": [
-            "5g5d",
-            "1a2a",
-            "R*2d",
-            "2a1b",
-            "5d5b+",
-            "1b1c",
-            "2d2a+"
-          ],
-          "root_iterations": [
-            {
-              "depth": 1,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 1163
-            },
-            {
-              "depth": 2,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 2749
-            },
-            {
-              "depth": 3,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 3168
-            },
-            {
-              "depth": 4,
-              "started": 43,
-              "finished": 42,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 3168
-            }
-          ]
-        },
-        "depth3": {
-          "target_legal": true,
-          "legal_count": 75,
-          "drop_count": 53,
-          "target_order_rank": 17,
-          "target_order_score": 6000000,
-          "bestmove": "5g5d",
-          "depth": 3,
-          "score": 3422,
-          "has_score": true,
-          "nodes": 7061,
-          "qnodes": 6830,
-          "elapsed_ms": 128.703,
-          "pv": [
-            "5g5d",
-            "1a2a",
-            "R*2d",
-            "2a1b",
-            "5d5b+",
-            "1b1c",
-            "2d2a+"
-          ],
-          "root_iterations": [
-            {
-              "depth": 1,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 1163
-            },
-            {
-              "depth": 2,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 2749
-            },
-            {
-              "depth": 3,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 3168
-            }
-          ]
-        },
-        "material_depth3": {
-          "target_legal": true,
-          "legal_count": 75,
-          "drop_count": 53,
-          "target_order_rank": 17,
-          "target_order_score": 6000000,
-          "bestmove": "5g5d",
-          "depth": 3,
-          "score": 3300,
-          "has_score": true,
-          "nodes": 6504,
-          "qnodes": 6273,
-          "elapsed_ms": 83.848,
-          "pv": [
-            "5g5d",
-            "1a1b",
-            "R*1e",
-            "1b2a",
-            "5d5a+",
-            "2a2b",
-            "1e1a+",
-            "2b3c"
-          ],
-          "root_iterations": [
-            {
-              "depth": 1,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 900
-            },
-            {
-              "depth": 2,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 2700
-            },
-            {
-              "depth": 3,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 3100
-            }
-          ]
-        },
-        "no_q_depth3": {
-          "target_legal": true,
-          "legal_count": 75,
-          "drop_count": 53,
-          "target_order_rank": 17,
-          "target_order_score": 6000000,
-          "bestmove": "5g5d",
-          "depth": 3,
-          "score": 3174,
-          "has_score": true,
-          "nodes": 2583,
-          "qnodes": 0,
-          "elapsed_ms": 34.1641,
-          "pv": [
-            "5g5d",
-            "1a1b",
-            "5d5b+"
-          ],
-          "root_iterations": [
-            {
-              "depth": 1,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 1163
-            },
-            {
-              "depth": 2,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 716
-            },
-            {
-              "depth": 3,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 2749
-            }
-          ]
-        },
-        "target_depth3": {
-          "target_legal": true,
-          "legal_count": 75,
-          "drop_count": 53,
-          "target_order_rank": 17,
-          "target_order_score": 6000000,
-          "bestmove": "P*5e",
-          "depth": 3,
-          "score": 911,
-          "has_score": true,
-          "nodes": 276,
-          "qnodes": 259,
-          "elapsed_ms": 3.20167,
-          "pv": [
-            "P*5e",
-            "5d8d",
-            "5g1g",
-            "1a2a"
-          ],
-          "root_iterations": [
-            {
-              "depth": 1,
-              "started": 1,
-              "finished": 1,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 1163
-            },
-            {
-              "depth": 2,
-              "started": 1,
-              "finished": 1,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 767
-            },
-            {
-              "depth": 3,
-              "started": 1,
-              "finished": 1,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 911
-            }
-          ]
-        }
-      },
-      "production": {
-        "50": {
-          "depth": 2,
-          "score": [
-            "cp",
-            "3162"
-          ],
-          "pv": [
-            "5g5d",
-            "1a1b",
-            "5d5a+"
-          ],
-          "bestmove": "5g5d",
-          "raw": [
-            "info string mate_assist budget 4 time 0 offense_nodes 6 defense_nodes 152 examined 75 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
-            "info depth 1 seldepth 6 time 5 nodes 106 score cp 2950 pv 5g5d",
-            "info depth 2 seldepth 6 time 10 nodes 385 score cp 3162 pv 5g5d 1a1b 5d5a+",
-            "info nodes 1645 string cutoffs 75 min_cutoffs 72 max_cutoffs 3 leaves 1180 terminals 21 qnodes 1560 qcutoffs 959 qlimit_leaves 0 ply1 153 ply2 94 ply3 287 order_calls 447 ordered_moves 3076 tt_probes 85 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 83 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
-            "bestmove 5g5d"
-          ]
-        },
-        "500": {
-          "depth": 4,
-          "score": [
-            "cp",
-            "3671"
-          ],
-          "pv": [
-            "5g5d",
-            "1a2b",
-            "P*7c",
-            "2b1a",
-            "5d5a+",
-            "1a1b",
-            "7c7b+"
-          ],
-          "bestmove": "5g5d",
-          "raw": [
-            "info string mate_assist budget 5 time 0 offense_nodes 6 defense_nodes 152 examined 75 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
-            "info depth 1 seldepth 6 time 2 nodes 106 score cp 2950 pv 5g5d",
-            "info depth 2 seldepth 6 time 5 nodes 385 score cp 3162 pv 5g5d 1a1b 5d5a+",
-            "info depth 3 seldepth 10 time 95 nodes 7061 score cp 3422 pv 5g5d 1a2a R*2d 2a1b 5d5b+ 1b1c 2d2a+",
-            "info depth 4 seldepth 10 time 386 nodes 27528 score cp 3671 pv 5g5d 1a2b P*7c 2b1a 5d5a+ 1a1b 7c7b+",
-            "info nodes 38508 string cutoffs 2588 min_cutoffs 2577 max_cutoffs 11 leaves 27664 terminals 839 qnodes 35688 qcutoffs 23383 qlimit_leaves 338 ply1 301 ply2 246 ply3 4865 order_calls 10009 ordered_moves 170881 tt_probes 2819 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 2815 tt_replacements 10 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
-            "bestmove 5g5d"
-          ]
-        }
-      },
-      "selected_certificates": {
-        "P*5e": {
-          "legal": true,
-          "reply_count": 15,
-          "material_gain_4ply": -200,
-          "worst_witness": [
-            "P*5e",
-            "5d1d",
-            "5e5d",
-            "1d5d"
-          ],
-          "scope": "four-ply material result, not a full-game guarantee"
-        }
-      }
-    },
-    {
-      "id": "capture_instead_of_harassment_white",
-      "motif": "直接の駒取りがある対照例",
-      "sfen": "7pk/8p/4r4/3g5/9/4R4/9/9/K8 w p 1",
-      "target": "P*5e",
-      "expected": "observe",
-      "note": "歩で飛車に当てることもできるが、自分の飛車で相手飛車を直接取れる。打ち手を選ばなくても見落としではない。",
-      "certificate": {
-        "legal": true,
-        "reply_count": 15,
-        "material_gain_4ply": -200,
-        "worst_witness": [
-          "P*5e",
-          "5f9f",
-          "2a2b",
-          "9f9a+"
-        ],
-        "scope": "four-ply material result, not a full-game guarantee"
-      },
-      "core": {
-        "50ms": {
-          "target_legal": true,
-          "legal_count": 75,
-          "drop_count": 53,
-          "target_order_rank": 17,
-          "target_order_score": 6000000,
-          "bestmove": "5c5f",
-          "depth": 2,
-          "score": 3162,
-          "has_score": true,
-          "nodes": 3518,
-          "qnodes": 3432,
-          "elapsed_ms": 45.1566,
-          "pv": [
-            "5c5f",
-            "9i9h",
-            "5f5g+"
-          ],
-          "root_iterations": [
-            {
-              "depth": 1,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 1163
-            },
-            {
-              "depth": 2,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 2749
-            },
-            {
-              "depth": 3,
-              "started": 3,
-              "finished": 2,
-              "target_started": false,
-              "target_finished": false,
-              "target_returned_bound": 0
-            }
-          ]
-        },
-        "500ms": {
-          "target_legal": true,
-          "legal_count": 75,
-          "drop_count": 53,
-          "target_order_rank": 17,
-          "target_order_score": 6000000,
-          "bestmove": "5c5f",
-          "depth": 4,
-          "score": 3671,
-          "has_score": true,
-          "nodes": 38877,
-          "qnodes": 36157,
-          "elapsed_ms": 490.039,
-          "pv": [
-            "5c5f",
-            "9i8h",
-            "P*3f",
-            "8h8g",
-            "5f5g+",
-            "8g9f",
-            "3f3g+"
-          ],
-          "root_iterations": [
-            {
-              "depth": 1,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 1163
-            },
-            {
-              "depth": 2,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 2749
-            },
-            {
-              "depth": 3,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 2968
-            },
-            {
-              "depth": 4,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 2968
-            },
-            {
-              "depth": 5,
-              "started": 1,
-              "finished": 0,
-              "target_started": false,
-              "target_finished": false,
-              "target_returned_bound": 0
-            }
-          ]
-        },
-        "depth3": {
-          "target_legal": true,
-          "legal_count": 75,
-          "drop_count": 53,
-          "target_order_rank": 17,
-          "target_order_score": 6000000,
-          "bestmove": "5c5f",
-          "depth": 3,
-          "score": 3422,
-          "has_score": true,
-          "nodes": 7095,
-          "qnodes": 6864,
-          "elapsed_ms": 87.8196,
-          "pv": [
-            "5c5f",
-            "9i8i",
-            "R*1i",
-            "8i8h",
-            "5f5h+",
-            "8h9g",
-            "1i1f+"
-          ],
-          "root_iterations": [
-            {
-              "depth": 1,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 1163
-            },
-            {
-              "depth": 2,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 2749
-            },
-            {
-              "depth": 3,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 2968
-            }
-          ]
-        },
-        "material_depth3": {
-          "target_legal": true,
-          "legal_count": 75,
-          "drop_count": 53,
-          "target_order_rank": 17,
-          "target_order_score": 6000000,
-          "bestmove": "5c5f",
-          "depth": 3,
-          "score": 3300,
-          "has_score": true,
-          "nodes": 5316,
-          "qnodes": 5085,
-          "elapsed_ms": 46.6768,
-          "pv": [
-            "5c5f",
-            "9i8h",
-            "R*1h",
-            "8h7g",
-            "1h1g+",
-            "7g8h",
-            "5f5g+"
-          ],
-          "root_iterations": [
-            {
-              "depth": 1,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 900
-            },
-            {
-              "depth": 2,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 2700
-            },
-            {
-              "depth": 3,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 2900
-            }
-          ]
-        },
-        "no_q_depth3": {
-          "target_legal": true,
-          "legal_count": 75,
-          "drop_count": 53,
-          "target_order_rank": 17,
-          "target_order_score": 6000000,
-          "bestmove": "5c5f",
-          "depth": 3,
-          "score": 3174,
-          "has_score": true,
-          "nodes": 2815,
-          "qnodes": 0,
-          "elapsed_ms": 29.4943,
-          "pv": [
-            "5c5f",
-            "9i9h",
-            "5f5h+"
-          ],
-          "root_iterations": [
-            {
-              "depth": 1,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 1163
-            },
-            {
-              "depth": 2,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 716
-            },
-            {
-              "depth": 3,
-              "started": 75,
-              "finished": 75,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 2749
-            }
-          ]
-        },
-        "target_depth3": {
-          "target_legal": true,
-          "legal_count": 75,
-          "drop_count": 53,
-          "target_order_rank": 17,
-          "target_order_score": 6000000,
-          "bestmove": "P*5e",
-          "depth": 3,
-          "score": 911,
-          "has_score": true,
-          "nodes": 281,
-          "qnodes": 264,
-          "elapsed_ms": 2.40014,
-          "pv": [
-            "P*5e",
-            "5f2f",
-            "5c9c",
-            "9i8i"
-          ],
-          "root_iterations": [
-            {
-              "depth": 1,
-              "started": 1,
-              "finished": 1,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 1163
-            },
-            {
-              "depth": 2,
-              "started": 1,
-              "finished": 1,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 767
-            },
-            {
-              "depth": 3,
-              "started": 1,
-              "finished": 1,
-              "target_started": true,
-              "target_finished": true,
-              "target_returned_bound": 911
-            }
-          ]
-        }
-      },
-      "production": {
-        "50": {
-          "depth": 2,
-          "score": [
-            "cp",
-            "3162"
-          ],
-          "pv": [
-            "5c5f",
-            "9i9h",
-            "5f5g+"
-          ],
-          "bestmove": "5c5f",
-          "raw": [
-            "info string mate_assist budget 4 time 0 offense_nodes 6 defense_nodes 152 examined 75 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
-            "info depth 1 seldepth 6 time 3 nodes 108 score cp 2950 pv 5c5f",
-            "info depth 2 seldepth 6 time 10 nodes 392 score cp 3162 pv 5c5f 9i9h 5f5g+",
-            "info nodes 1720 string cutoffs 74 min_cutoffs 72 max_cutoffs 2 leaves 1337 terminals 13 qnodes 1634 qcutoffs 1022 qlimit_leaves 0 ply1 153 ply2 94 ply3 355 order_calls 372 ordered_moves 2916 tt_probes 85 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 83 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
-            "bestmove 5c5f"
-          ]
-        },
-        "500": {
-          "depth": 4,
-          "score": [
-            "cp",
-            "3671"
-          ],
-          "pv": [
-            "5c5f",
-            "9i8h",
-            "P*3f",
-            "8h8g",
-            "5f5g+",
-            "8g9f",
-            "3f3g+"
-          ],
-          "bestmove": "5c5f",
-          "raw": [
-            "info string mate_assist budget 5 time 0 offense_nodes 6 defense_nodes 152 examined 75 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
-            "info depth 1 seldepth 6 time 2 nodes 108 score cp 2950 pv 5c5f",
-            "info depth 2 seldepth 6 time 5 nodes 392 score cp 3162 pv 5c5f 9i9h 5f5g+",
-            "info depth 3 seldepth 10 time 91 nodes 7095 score cp 3422 pv 5c5f 9i8i R*1i 8i8h 5f5h+ 8h9g 1i1f+",
-            "info depth 4 seldepth 10 time 375 nodes 25141 score cp 3671 pv 5c5f 9i8h P*3f 8h8g 5f5g+ 8g9f 3f3g+",
-            "info nodes 37630 string cutoffs 2517 min_cutoffs 2508 max_cutoffs 9 leaves 27713 terminals 720 qnodes 34910 qcutoffs 23570 qlimit_leaves 225 ply1 301 ply2 246 ply3 4844 order_calls 9201 ordered_moves 170200 tt_probes 2719 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 2715 tt_replacements 12 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
-            "bestmove 5c5f"
-          ]
-        }
-      },
-      "selected_certificates": {
-        "P*5e": {
-          "legal": true,
-          "reply_count": 15,
-          "material_gain_4ply": -200,
-          "worst_witness": [
-            "P*5e",
-            "5f9f",
-            "2a2b",
-            "9f9a+"
-          ],
-          "scope": "four-ply material result, not a full-game guarantee"
         }
       }
     }
