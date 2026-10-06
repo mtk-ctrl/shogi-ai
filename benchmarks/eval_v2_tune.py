@@ -64,13 +64,13 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--engine',required=True);p.add_argument('--output-dir',required=True)
     args=p.parse_args();root=Path(args.output_dir);root.mkdir(parents=True,exist_ok=True)
     plan={'baseline':BASELINE,'candidates':[{'id':i,'options':o} for i,o in CANDIDATES],
-          'screen_games_each':20,'holdout_games_each':40,'final_games':100,'product_games':100,
-          'movetime_ms':200,'selection':'screen top2, independent 40-game holdout, then 100-game confirmation'}
+          'screen_games_each':10,'holdout_games_each':20,'final_games':60,
+          'movetime_ms':200,'selection':'screen top2, independent 20-game holdout, then 60-game confirmation'}
     (root/'plan.json').write_text(json.dumps(plan,ensure_ascii=False,indent=2)+'\n')
 
     screen=[]
     for ident,opts in CANDIDATES:
-        s=run(args.engine,root/'screen'/ident,10,2026102000,opts,{})
+        s=run(args.engine,root/'screen'/ident,5,2026102000,opts,{})
         screen.append({'id':ident,'options':opts,'score':s['score_a'],'wins':s['wins_a'],
                        'draws':s['draws'],'losses':s['wins_b']})
     screen.sort(key=lambda x:(x['score'],x['id']),reverse=True)
@@ -78,16 +78,15 @@ def main():
 
     holdout=[]
     for identrow in finalists:
-        s=run(args.engine,root/'holdout'/identrow['id'],20,2026103000,identrow['options'],{})
+        s=run(args.engine,root/'holdout'/identrow['id'],10,2026103000,identrow['options'],{})
         holdout.append({**identrow,'holdout_score':s['score_a'],'holdout_wins':s['wins_a'],
                         'holdout_draws':s['draws'],'holdout_losses':s['wins_b']})
     holdout.sort(key=lambda x:(x['holdout_score'],x['score'],x['id']),reverse=True)
     selected=holdout[0]
 
-    final=run(args.engine,root/'final',50,2026104000,selected['options'],{})
-    product=run(args.engine,root/'product',50,2026105000,selected['options'],{},adaptive=True)
+    final=run(args.engine,root/'final',30,2026104000,selected['options'],{})
     summary={'screen':screen,'holdout':holdout,'selected':selected,
-             'final_200ms_no_longthink':final,'product_200ms_adaptive':product}
+             'final_200ms_no_longthink':final}
     (root/'summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n')
     print(json.dumps(summary,ensure_ascii=False,indent=2))
 
