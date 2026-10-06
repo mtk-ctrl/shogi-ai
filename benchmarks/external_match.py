@@ -20,7 +20,7 @@ from pathlib import Path
 
 import shogi
 
-from arena import Adjudicator, can_declare_win
+from arena import Adjudicator, can_declare_win, parse_info_line, compact_search_telemetry
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -71,12 +71,15 @@ def usi_value(value) -> str:
 class UsiEngine:
     RESPONSE_TIMEOUT = 30
 
-    def __init__(self, path: str, label: str, options: dict, go_command: str):
+    def __init__(self, path: str, label: str, options: dict, go_command: str,
+                 capture_info: bool = False):
         self.path = str(Path(path).resolve())
         self.label = label
         self.requested_options = dict(options)
         self.go_command = validate_go_command(go_command)
+        self.capture_info = capture_info
         self.elapsed: list[float] = []
+        self.last_search: dict = {}
         self.id_name = ""
         self.id_author = ""
         self.option_names: dict[str, str] = {}
@@ -171,13 +174,27 @@ class UsiEngine:
         started = time.monotonic()
         self.send(self.go_command)
         deadline = time.monotonic() + self.RESPONSE_TIMEOUT
+        info: dict = {}
         while True:
             line = self._next_line(deadline, "waiting for bestmove")
-            # Deliberately ignore all `info` data from the opponent. In particular,
-            # score/PV output is not recorded as a learning signal.
+            if line.startswith("info "):
+                # Only KUMOJI's own search telemetry is retained.  Opponent
+                # score/PV remains intentionally discarded and never becomes a
+                # teacher signal.
+                if self.capture_info:
+                    info.update(parse_info_line(line))
+                continue
             if line.startswith("bestmove "):
-                self.elapsed.append(time.monotonic() - started)
-                return line.split(maxsplit=1)[1].strip().split()[0]
+                elapsed_s = time.monotonic() - started
+                self.elapsed.append(elapsed_s)
+                token = line.split(maxsplit=1)[1].strip().split()[0]
+                if self.capture_info:
+                    self.last_search = dict(info)
+                    self.last_search["bestmove"] = token
+                    self.last_search["elapsed_ms"] = round(elapsed_s * 1000, 3)
+                else:
+                    self.last_search = {}
+                return token
 
     def metadata(self) -> dict:
         binary = Path(self.path)
@@ -209,6 +226,7 @@ def play_game(self_engine: UsiEngine, opponent: UsiEngine, game_index: int,
 
     board = shogi.Board()
     moves: list[str] = []
+    move_records: list[dict] = []
     adjudicator = Adjudicator(board)
 
     def result(winner: str | None, reason: str, **extra) -> dict:
@@ -218,31 +236,53 @@ def play_game(self_engine: UsiEngine, opponent: UsiEngine, game_index: int,
             "plies": len(moves),
             "self_black": self_black,
             "moves": moves,
+            "move_records": move_records,
             "final_sfen": board.sfen(),
             **extra,
         }
 
     for _ in range(max_plies):
         engine = black if board.turn == shogi.BLACK else white
+        side_to_move = board.turn
+        in_check_before = board.is_check()
+        legal_moves_before = sum(1 for _ in board.legal_moves)
         token = engine.bestmove(moves)
         other = white if engine is black else black
+        self_search = (compact_search_telemetry(engine.last_search, side_to_move)
+                       if engine is self_engine else {})
 
         if token == "resign":
-            return result(other.label, "resign")
+            return result(other.label, "resign", terminal_self_search=self_search)
         if token == "win":
             if not can_declare_win(board):
-                return result(other.label, "invalid_declaration", illegal_by=engine.label)
-            return result(engine.label, "declare_win")
+                return result(other.label, "invalid_declaration", illegal_by=engine.label,
+                              terminal_self_search=self_search)
+            return result(engine.label, "declare_win", terminal_self_search=self_search)
 
         try:
             move = shogi.Move.from_usi(token)
         except Exception:
             return result(other.label, f"invalid_usi:{token}", illegal_by=engine.label)
         if move not in board.legal_moves:
-            return result(other.label, f"illegal_move:{token}", illegal_by=engine.label)
+            return result(other.label, f"illegal_move:{token}", illegal_by=engine.label,
+                          terminal_self_search=self_search)
 
+        record = {
+            "ply": len(moves) + 1,
+            "side_to_move": "black" if side_to_move == shogi.BLACK else "white",
+            "actor": "self" if engine is self_engine else "opponent",
+            "move": token,
+            "in_check_before": in_check_before,
+            "legal_moves_before": legal_moves_before,
+            "is_capture": board.piece_at(move.to_square) is not None,
+            "is_promotion": bool(move.promotion),
+            "is_drop": move.drop_piece_type is not None,
+            "self_search": self_search,
+        }
         board.push(move)
         moves.append(token)
+        record["gave_check"] = board.is_check()
+        move_records.append(record)
         terminal = adjudicator.after_move(board)
         if terminal is not None:
             color, reason = terminal
@@ -299,8 +339,10 @@ def main() -> None:
     except (ValueError, json.JSONDecodeError) as exc:
         raise SystemExit(str(exc)) from exc
 
-    self_engine = UsiEngine(args.self_engine, "self", self_options, args.self_go)
-    opponent = UsiEngine(args.opponent_engine, "opponent", opponent_options, args.opponent_go)
+    self_engine = UsiEngine(args.self_engine, "self", self_options, args.self_go,
+                            capture_info=True)
+    opponent = UsiEngine(args.opponent_engine, "opponent", opponent_options, args.opponent_go,
+                         capture_info=False)
     games: list[dict] = []
     started = time.monotonic()
     try:
@@ -321,11 +363,14 @@ def main() -> None:
     illegal = [g for g in games if "illegal_by" in g]
     summary = {
         "kind": "external_engine_benchmark",
+        "telemetry_schema_version": 1,
         "learning_eligible": False,
+        "diagnosis_eligible": True,
         "opening_book_eligible": False,
         "policy": {
             "purpose": "strength measurement only",
             "opponent_scores_and_pv_ignored": True,
+            "self_search_telemetry_recorded": True,
             "opponent_games_must_not_feed_training": True,
             "opponent_games_must_not_feed_opening_book": True,
         },
