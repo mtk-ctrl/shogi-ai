@@ -1,0 +1,74 @@
+name: King Defense Network Research
+
+on:
+  push:
+    branches: [research/king-defense-network]
+    paths:
+      - "engine/strategy/**"
+      - "engine/main.cpp"
+      - "tests/evaluation_test.cpp"
+      - ".github/workflows/king-defense-research.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
+      - name: Fixed evaluation tests
+        run: |
+          python3 scripts/build.py --evaluation-test --output build/evaluation-test
+          ./build/evaluation-test | tee build/evaluation-test.txt
+      - name: USI evaluation integration
+        run: python3 tests/test_eval_usi.py build/shogi-ai
+      - name: 200ms no-book screen
+        run: |
+          mkdir -p build/results
+          python3 benchmarks/arena.py --engine-a build/shogi-ai --engine-b build/shogi-ai --games 16 --max-plies 240 --seed 2026100620 --go-command "go movetime 200" --options-a '{"EvalKingDefense":50,"OpeningBook":false}' --options-b '{"EvalKingDefense":0,"OpeningBook":false}' --output build/results/no_book.json
+      - name: 200ms book-on validation
+        run: python3 benchmarks/arena.py --engine-a build/shogi-ai --engine-b build/shogi-ai --games 30 --max-plies 240 --seed 2026100630 --go-command "go movetime 200" --options-a '{"EvalKingDefense":50,"OpeningBook":true}' --options-b '{"EvalKingDefense":0,"OpeningBook":true}' --output build/results/book_on.json
+      - name: Write result
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          no_book=json.loads(Path('build/results/no_book.json').read_text())
+          book=json.loads(Path('build/results/book_on.json').read_text())
+          fixed=Path('build/evaluation-test.txt').read_text().strip()
+          lines=[
+              '# King Defense Network 初期検証',
+              '',
+              '二重King Zone（距離1/距離2）と8方向ごとの敵到達度で、守備連携を機械判定する研究用Challenger。囲い名は使用しない。',
+              '',
+              '## 固定局面',
+              '```', fixed, '```', '',
+              '## 200ms / Book OFF / 16局',
+              f"- Challenger: {no_book['wins_a']}勝 / Baseline: {no_book['wins_b']}勝 / 引分: {no_book['draws']}",
+              f"- Challenger得点率: {no_book['score_a']:.3f}",
+              f"- 平均応答: A {no_book['timing_ms']['A']['mean']:.1f}ms / B {no_book['timing_ms']['B']['mean']:.1f}ms",
+              '',
+              '## 200ms / Book ON / 30局',
+              f"- Challenger: {book['wins_a']}勝 / Baseline: {book['wins_b']}勝 / 引分: {book['draws']}",
+              f"- Challenger得点率: {book['score_a']:.3f}",
+              f"- 平均応答: A {book['timing_ms']['A']['mean']:.1f}ms / B {book['timing_ms']['B']['mean']:.1f}ms",
+              '',
+              '## 扱い',
+              '固定局面は機械判定の妥当性確認、対局は初期シグナル。30局だけで本採用は決めない。',
+              ''
+          ]
+          Path('research/king_defense_network_result.md').write_text('\n'.join(lines),encoding='utf-8')
+          PY
+      - name: Commit research result
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/king_defense_network_result.md
+          git commit -m "research: record king defense network initial validation"
+          git push origin HEAD:research/king-defense-network
