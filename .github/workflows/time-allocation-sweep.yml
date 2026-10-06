@@ -1,0 +1,105 @@
+name: Time Allocation Sweep
+
+on:
+  push:
+    branches:
+      - research/time-allocation-sweep
+    paths:
+      - ".github/workflows/time-allocation-sweep.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: time-allocation-sweep
+  cancel-in-progress: false
+
+jobs:
+  compare:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: fixed-100ms
+            policy: none
+            normal_ms: 100
+            baseline_ms: 50
+            bonus_ms: 100
+            max_uses: 1
+          - id: fixed-150ms
+            policy: none
+            normal_ms: 150
+            baseline_ms: 50
+            bonus_ms: 150
+            max_uses: 1
+          - id: adaptive-12x1s
+            policy: adaptive
+            normal_ms: 50
+            baseline_ms: 50
+            bonus_ms: 1000
+            max_uses: 12
+          - id: adaptive-20x500ms
+            policy: adaptive
+            normal_ms: 50
+            baseline_ms: 50
+            bonus_ms: 500
+            max_uses: 20
+          - id: adaptive-30x250ms
+            policy: adaptive
+            normal_ms: 50
+            baseline_ms: 50
+            bonus_ms: 250
+            max_uses: 30
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Verify runner
+        run: python3 tests/test_bonus_time.py build/shogi-ai
+
+      - name: Run 100-game comparison
+        run: |
+          python3 benchmarks/bonus_time_match.py \
+            --engine build/shogi-ai \
+            --policy "${{ matrix.policy }}" \
+            --pairs 50 \
+            --workers 4 \
+            --seed 2026100617 \
+            --normal-ms "${{ matrix.normal_ms }}" \
+            --baseline-ms "${{ matrix.baseline_ms }}" \
+            --bonus-ms "${{ matrix.bonus_ms }}" \
+            --max-bonus-uses "${{ matrix.max_uses }}" \
+            --output "benchmarks/results/2026-10-06_time-allocation/${{ matrix.id }}"
+
+      - name: Validate and analyze
+        run: |
+          python3 benchmarks/analyze_bonus_time.py "benchmarks/results/2026-10-06_time-allocation/${{ matrix.id }}"
+          cat "benchmarks/results/2026-10-06_time-allocation/${{ matrix.id }}/summary.json"
+          cat "benchmarks/results/2026-10-06_time-allocation/${{ matrix.id }}/analysis.json"
+
+      - name: Write job summary
+        if: always()
+        run: |
+          echo "## ${{ matrix.id }}" >> "$GITHUB_STEP_SUMMARY"
+          if [[ -f "benchmarks/results/2026-10-06_time-allocation/${{ matrix.id }}/summary.json" ]]; then
+            echo '~~~json' >> "$GITHUB_STEP_SUMMARY"
+            cat "benchmarks/results/2026-10-06_time-allocation/${{ matrix.id }}/summary.json" >> "$GITHUB_STEP_SUMMARY"
+            echo '~~~' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload experiment records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: time-allocation-${{ matrix.id }}-${{ github.run_id }}
+          path: "benchmarks/results/2026-10-06_time-allocation/${{ matrix.id }}"
+          retention-days: 30
+          if-no-files-found: warn
