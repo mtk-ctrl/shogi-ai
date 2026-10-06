@@ -20,12 +20,24 @@ import shogi
 from arena import Engine, parse_info_line, play_game
 
 
-def select_bonus(policy, ply, used, previous, probe, iterations, board, normal_ms):
+def select_bonus(policy, ply, used, previous, probe, iterations, board, normal_ms,
+                 last_bonus_ply=None):
     if policy == "none" or used >= 5 or ply < 24:
         return None
     # Do not spend a coupon on a Book decision, forced move or proven mate.
     if probe.get("book_hit") or "score_mate" in probe or len(list(board.legal_moves)) <= 1:
         return None
+    if policy == "emergency":
+        # Emergency overrides the phase reservation. Wait at least two own
+        # turns between coupons, and retain the last known score across a
+        # depth-zero fallback (caller), because it carries no new score.
+        if last_bonus_ply is not None and ply - last_bonus_ply < 4:
+            return None
+        if board.is_check():
+            return "emergency_check"
+        score = probe.get("score_cp")
+        if previous is not None and score is not None and previous - score >= 150:
+            return "emergency_score_drop_150"
     starts = (24, 56, 88, 120, 160)
     ends = (54, 86, 118, 158, 198)
     if ply < starts[used]:
@@ -63,6 +75,7 @@ class BonusEngine(Engine):
         self.book_hit = False
         self.used = 0
         self.previous = None
+        self.last_bonus_ply = None
         self.decisions = []
         super().__init__(path, label, options, f"go movetime {normal_ms}")
 
@@ -82,6 +95,7 @@ class BonusEngine(Engine):
         super().configure_game(self.pair_seed + (seed - self.pair_seed) % 2)
         self.used = 0
         self.previous = None
+        self.last_bonus_ply = None
         self.decisions = []
 
     def bestmove(self, moves):
@@ -97,7 +111,8 @@ class BonusEngine(Engine):
         for move in moves:
             board.push_usi(move)
         reason = select_bonus(self.policy, len(moves) + 1, self.used,
-                              self.previous, probe, iterations, board, self.normal_ms)
+                              self.previous, probe, iterations, board, self.normal_ms,
+                              self.last_bonus_ply)
         if token in ("resign", "win"):
             reason = None
         decision = {"ply": len(moves) + 1, "probe": probe,
@@ -107,6 +122,7 @@ class BonusEngine(Engine):
             remaining = math.floor(self.bonus_ms - (time.monotonic() - started) * 1000)
             if remaining > self.normal_ms:
                 self.used += 1
+                self.last_bonus_ply = len(moves) + 1
                 self.iterations = []
                 self.go_command = f"go movetime {remaining}"
                 token = super().bestmove(moves)
@@ -115,7 +131,8 @@ class BonusEngine(Engine):
                                  "deep_iterations": list(self.iterations),
                                  "changed_move": token != probe["bestmove"]})
         self.last_search["elapsed_ms"] = round((time.monotonic() - started) * 1000, 3)
-        self.previous = self.last_search.get("score_cp")
+        if self.policy != "emergency" or "score_cp" in self.last_search:
+            self.previous = self.last_search.get("score_cp")
         decision["final"] = dict(self.last_search)
         self.decisions.append(decision)
         return token
@@ -186,7 +203,7 @@ def summarize(games):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--engine", required=True)
-    p.add_argument("--policy", choices=["adaptive", "scheduled", "none"], default="adaptive")
+    p.add_argument("--policy", choices=["adaptive", "scheduled", "emergency", "none"], default="adaptive")
     p.add_argument("--pairs", type=int, default=20)
     p.add_argument("--workers", type=int, default=6)
     p.add_argument("--seed", type=int, default=20261006)

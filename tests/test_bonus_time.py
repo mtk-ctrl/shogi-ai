@@ -17,6 +17,8 @@ assert select_bonus("adaptive", 24, 0, None, {**probe, "depth": 0}, [], b, 50) i
 assert select_bonus("adaptive", 24, 0, 300, {**probe, "score_mate": 3}, [], b, 50) is None
 assert select_bonus("adaptive", 24, 1, 300, probe, [], b, 50) is None
 assert select_bonus("none", 100, 0, 300, probe, [], b, 50) is None
+assert select_bonus("emergency", 30, 1, 300, probe, [], b, 50, 25) == "emergency_score_drop_150"
+assert select_bonus("emergency", 27, 1, 300, probe, [], b, 50, 25) is None
 
 if len(sys.argv) > 1:
     e = BonusEngine(sys.argv[1], "test", {"OpeningBook": False,
