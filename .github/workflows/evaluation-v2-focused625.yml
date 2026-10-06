@@ -1,0 +1,200 @@
+name: Evaluation V2 Focused 625
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/evaluation-v2-challenger
+    paths:
+      - "benchmarks/eval_v2_focused625.py"
+      - ".github/workflows/evaluation-v2-focused625.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: evaluation-v2-focused625-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  YANEURAOU_REF: c1b80eaa09fe13d5f12b1599d1ae4d53c224de30
+  STAGE1_RUN_ID: "37466626100"
+  YANEURAOU_LEVEL: "42"
+  YANEURAOU_NODES: "1177"
+
+jobs:
+  quick:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[eval-focused625]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build KUMOJI
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Fetch pinned YaneuraOu
+        run: |
+          git clone --filter=blob:none https://github.com/yaneurao/YaneuraOu.git external/YaneuraOu
+          git -C external/YaneuraOu checkout "$YANEURAOU_REF"
+
+      - name: Build YaneuraOu material edition
+        run: |
+          make -C external/YaneuraOu/source clean \
+            COMPILER=g++ TARGET_CPU=SSE42 \
+            YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          make -C external/YaneuraOu/source -j2 tournament \
+            COMPILER=g++ TARGET_CPU=SSE42 \
+            YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          test -x external/YaneuraOu/source/YaneuraOu-by-gcc
+
+      - name: Validate 625 full grid
+        run: |
+          python3 - <<'PY'
+          from benchmarks.eval_v2_focused625 import design_rows, AXES
+          rows=design_rows()
+          assert len(rows)==625
+          assert len({tuple(r["codes"]) for r in rows})==625
+          assert max(r["options"]["EvalMaterialWeight"] for r in rows)==10000
+          assert max(r["options"]["EvalSafety"] for r in rows)==5000
+          print("rows",len(rows))
+          for axis in AXES:
+              print(axis,sorted({r["options"][axis] for r in rows}))
+          PY
+
+      - name: Download stage-1 broad artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: eval-v2-broad100-*
+          path: build/stage1-broad
+          merge-multiple: false
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ env.STAGE1_RUN_ID }}
+
+      - name: Build phase-balanced benchmark bank
+        run: |
+          python3 tools/research/build_eval_v2_stage1_bank.py \
+            --input build/stage1-broad \
+            --output build/eval-v2-stage1-bank.jsonl \
+            --source-run-id "$STAGE1_RUN_ID"
+          test "$(wc -l < build/eval-v2-stage1-bank.jsonl)" -eq 300
+
+      - name: Show runner capacity
+        run: |
+          echo "logical_cpus=$(nproc)"
+          free -h
+
+      - name: Upload runtime
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-focused625-runtime
+          path: |
+            build/shogi-ai
+            external/YaneuraOu/source/YaneuraOu-by-gcc
+            build/eval-v2-stage1-bank.jsonl
+          if-no-files-found: error
+          retention-days: 14
+
+  grid:
+    needs: quick
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Download runtime
+        uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-focused625-runtime
+          path: build/runtime
+
+      - name: Prepare runtime
+        run: |
+          KUMOJI="$(find build/runtime -type f -name shogi-ai | head -1)"
+          YANE="$(find build/runtime -type f -name YaneuraOu-by-gcc | head -1)"
+          BANK="$(find build/runtime -type f -name eval-v2-stage1-bank.jsonl | head -1)"
+          test -n "$KUMOJI" && test -n "$YANE" && test -n "$BANK"
+          chmod +x "$KUMOJI" "$YANE"
+          echo "KUMOJI=$KUMOJI" >> "$GITHUB_ENV"
+          echo "YANE=$YANE" >> "$GITHUB_ENV"
+          echo "BANK=$BANK" >> "$GITHUB_ENV"
+
+      - name: Run startpos and phase-bank evidence
+        run: |
+          python3 benchmarks/eval_v2_focused625.py self \
+            --engine "$KUMOJI" \
+            --bank "$BANK" \
+            --output-dir "build/focused-self-${{ matrix.shard }}" \
+            --shards 20 --shard "${{ matrix.shard }}" \
+            --parallel "$(nproc)" --movetime 100
+
+      - name: Run YaneuraOu evidence
+        run: |
+          python3 benchmarks/eval_v2_focused625.py external \
+            --engine "$KUMOJI" \
+            --opponent "$YANE" \
+            --output-dir "build/focused-external-${{ matrix.shard }}" \
+            --shards 20 --shard "${{ matrix.shard }}" \
+            --parallel "$(nproc)" --movetime 100 \
+            --opponent-level "$YANEURAOU_LEVEL" \
+            --opponent-nodes "$YANEURAOU_NODES"
+
+      - name: Upload shard evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-focused625-${{ matrix.shard }}
+          path: |
+            build/focused-self-${{ matrix.shard }}
+            build/focused-external-${{ matrix.shard }}
+          if-no-files-found: error
+          retention-days: 180
+          compression-level: 6
+
+  analyze:
+    needs: grid
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Download all evidence
+        uses: actions/download-artifact@v4
+        with:
+          pattern: eval-v2-focused625-*
+          path: build/focused-all
+          merge-multiple: false
+
+      - name: Analyze complete factorial
+        run: |
+          python3 benchmarks/eval_v2_focused625.py analyze \
+            --self-root build/focused-all \
+            --external-root build/focused-all \
+            --output build/eval-v2-focused625-analysis.json \
+            --summary build/eval-v2-focused625-summary.md
+          cat build/eval-v2-focused625-summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload analysis
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-focused625-analysis
+          path: |
+            build/eval-v2-focused625-analysis.json
+            build/eval-v2-focused625-summary.md
+          if-no-files-found: error
+          retention-days: 365
