@@ -312,3 +312,15 @@
 
 詳細：`journal/2026-10-05_16_publicリポジトリ移転と夜間スモーク.md`
 
+
+## 2026-10-06 — 対局データ収集・Diagnosis基盤の標準化
+
+- 標準Arena対局で、各着手の盤面事実とlive search telemetryをRaw Match Recordへ保存するよう変更
+- Black基準score、depth / seldepth、nodes / nps、PV、TT、Experience、quiescence等を後日再解析できる形で保持
+- Position Bank対局にも同じ計測を適用
+- 外部AI対局ではKUMOJI自身のtelemetryのみ保存し、相手AIのscore / PVは従来どおり破棄。外部AIを教師にしない境界を維持
+- 評価急変を「自分の好手」「相手ミス」「mixed」「forced concession」「評価関数」「探索不足」へ分ける方針を全対局へ一般化
+- 全局面を深く読むのではなく、情報価値で候補選抜 → 固定Champion 50ms/500ms再解析 → dedupe → Position Bank / Problem Suite / Experience候補 / Daytime Backlogへ振り分ける
+- Quick CIにArena telemetry / adjudication / external benchmark policyの回帰テストを追加
+
+詳細：journal/2026-10-06_04_対局データ収集標準化.md / docs/26_対局データ収集・分析・学習設計.md
