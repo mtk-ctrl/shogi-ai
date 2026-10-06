@@ -1,0 +1,38 @@
+{
+  "batches": [
+    {"run_id": 37418708995, "games": 100, "pairs": 50, "wins_on": 41, "draws": 27, "wins_off": 32},
+    {"run_id": 37427387344, "games": 300, "pairs": 150, "wins_on": 115, "draws": 74, "wins_off": 111}
+  ],
+  "games": 400,
+  "pairs": 200,
+  "wins_on": 156,
+  "draws": 101,
+  "wins_off": 143,
+  "score_on": 0.51625,
+  "paired_normal_approx_interval": [0.4827386520757745, 0.5497613479242255],
+  "approx_two_sided_p": 0.3418966923528295,
+  "elo_estimate": 11.295634654995855,
+  "elo_interval_from_score_interval": [-11.999181502838631, 34.692570827565355],
+  "pair_outcomes": {"better_than_half": 45, "equal_half": 118, "worse_than_half": 37},
+  "on_by_color": {
+    "black": {"wins": 100, "draws": 45, "losses": 55, "score": 0.6125},
+    "white": {"wins": 56, "draws": 56, "losses": 88, "score": 0.42}
+  },
+  "off_by_color_scores": {"black": 0.58, "white": 0.3875},
+  "mean_elapsed_ms_weighted": {"on": 40.63477961381343, "off": 40.66108029241463},
+  "nodes_total": {"on": 25768792, "off": 25949900},
+  "first_divergence": {
+    "identical_pairs": 65,
+    "diverged_pairs": 135,
+    "median_ply": 53,
+    "mean_ply": 62.68888888888889,
+    "on_first_move_was_drop": 47,
+    "off_first_move_was_drop": 44
+  },
+  "played_moves": {
+    "on": {"moves": 26192, "all_drops": 3250, "target_piece_drops": 2324},
+    "off": {"moves": 26182, "all_drops": 3358, "target_piece_drops": 2394}
+  },
+  "illegal_games": 0,
+  "decision": "small positive point estimate but not statistically established; runtime cost is operationally negligible at 50ms"
+}
