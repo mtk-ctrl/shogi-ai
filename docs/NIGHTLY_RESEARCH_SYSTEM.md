@@ -19,6 +19,23 @@
 7. **Noveltyを悪手と混同しない**: 珍しさだけを報酬にしない。独自手は深い再探索・その後の成績とセットで評価する。
 8. **経験を資産化**: 対局を使い捨てず、問題局面・失敗局面・新奇成功局面を Position Bank に蓄積する。
 
+## 全対局共通のデータ収集
+
+Nightly専用対局だけでなく、旧版比較、Challenger比較、Position Bank再戦、外部benchmark等、標準runnerを通る対局では **Raw Match Recordを必ず残す**。
+
+保存するのは勝敗と棋譜だけではない。
+
+- 各着手の手番 / Engine / 指し手
+- 王手中、合法手数、駒取り、成り、持駒打ち、王手付与
+- live searchのdepth / seldepth / score / mate / nodes / nps / PV
+- TT / Experience / quiescence関連の探索統計
+- Black基準へ正規化したlive score
+- 対局条件、Engine hash、options、seed、終局理由
+
+live scoreはそのEngine自身の観測値であり、異なるEngine間の隣接scoreを直接比較して原因判定しない。評価急変等の候補を抽出した後、固定Champion Analyzerの50ms / 500ms再探索で原因を判定する。
+
+詳細は docs/26_対局データ収集・分析・学習設計.md を正本とする。
+
 ## 一晩のフェーズ
 
 標準実行時間は JST 00:05–05:20。05:20以降は新規対局を開始せず、集計を優先する。ジョブのハードタイムアウトは 330 分。
