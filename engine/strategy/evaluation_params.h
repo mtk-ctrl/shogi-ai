@@ -40,6 +40,8 @@ struct EvaluationParameters {
             throw std::invalid_argument("invalid evaluation cap");
         for (int v : weights) if (v < 0 || v > 400)
             throw std::invalid_argument("evaluation weight outside 0..400");
+        if (king_defense_weight < 0 || king_defense_weight > 400)
+            throw std::invalid_argument("king defense weight outside 0..400");
     }
 };
 } // namespace shogi::strategy
