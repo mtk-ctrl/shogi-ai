@@ -17,7 +17,7 @@ permissions:
 # Any newer commit supersedes an older experiment. This group is intentionally
 # shared by quick and heavy work so a new edit cancels stale 200ms matches.
 concurrency:
-  group: evaluation-v2-latest-${{ github.ref }}
+  group: evaluation-v2-challenger-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
