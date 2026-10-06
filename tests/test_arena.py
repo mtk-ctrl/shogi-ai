@@ -3,7 +3,8 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import shogi
-from benchmarks.arena import Adjudicator, can_declare_win
+from benchmarks.arena import (Adjudicator, can_declare_win,
+                              parse_info_line, compact_search_telemetry)
 
 
 def fixture(pieces, hand="-", turn="b"):
@@ -50,4 +51,28 @@ assert not can_declare_win(fixture(rotated, "r2bp", "w"))
 del camp["9c"]
 assert not can_declare_win(fixture(camp, "2R2B"))  # only nine pieces in camp
 assert not can_declare_win(shogi.Board())
-print("PASS arena: mate, exact fourfold, perpetual check for both colors and 27-point declarations")
+
+
+info = parse_info_line(
+    "info depth 7 seldepth 10 score cp -123 nodes 4567 nps 90000 "
+    "tt_probes 100 tt_hits 40 experience_probes 30 experience_hits 5 "
+    "qnodes 88 pv 7g7f 3c3d 2g2f"
+)
+assert info["depth"] == 7
+assert info["seldepth"] == 10
+assert info["score_cp"] == -123
+assert info["nodes"] == 4567
+assert info["tt_hits"] == 40
+assert info["experience_hits"] == 5
+assert info["pv"] == ["7g7f", "3c3d", "2g2f"]
+black_view = compact_search_telemetry(info, shogi.BLACK)
+white_view = compact_search_telemetry(info, shogi.WHITE)
+assert black_view["score_black_cp"] == -123
+assert white_view["score_black_cp"] == 123
+assert black_view["tt_probes"] == 100
+assert black_view["experience_probes"] == 30
+
+mate = parse_info_line("info depth 5 score mate -3 nodes 99 pv 5a5b")
+assert compact_search_telemetry(mate, shogi.WHITE)["score_black_mate"] == 3
+
+print("PASS arena: judge, declarations and per-move telemetry parsing")
