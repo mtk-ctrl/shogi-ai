@@ -39,6 +39,8 @@
 
 評価の現行重みは `Safety=50 / Pressure=150 / Activity=150 / Danger=200`。
 
+正式な候補採否を決める自己対局は、2026-10-06の思考時間比較以降 **1手200msを標準**とする。高速スクリーニングは50〜100ms、夜間学習・Diagnosis・外部Benchmarkは各用途の固定条件を維持する。
+
 ## Opening Book
 
 標準Bookは `shogi-ai-book.tsv` で管理する。

@@ -37,8 +37,8 @@ def main():
     parser.add_argument('--games',type=int,default=100)
     parser.add_argument('--seed',type=int,default=20263005)
     parser.add_argument('--max-plies',type=int,default=256)
-    parser.add_argument('--movetime',type=int,default=50,
-                        help='Default movetime for both engines')
+    parser.add_argument('--movetime',type=int,default=200,
+                        help='Default formal-comparison movetime for both engines')
     parser.add_argument('--movetime-current',type=int,
                         help='Override movetime for engine A/current')
     parser.add_argument('--movetime-baseline',type=int,
