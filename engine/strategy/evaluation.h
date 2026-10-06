@@ -11,6 +11,7 @@ struct SideFeatures {
     int exposure=0;
 };
 struct EvaluationBreakdown {
+    InfluenceBreakdown influence{};
     int material=0;
     std::array<SideFeatures,2> raw{};
     std::array<std::array<int,4>,2> side_points{};
@@ -81,7 +82,7 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
                                      const EvaluationParameters& p=EvaluationParameters{}) {
     EvaluationBreakdown b;
     b.material=material_black(s);
-    if(std::all_of(p.weights.begin(),p.weights.end(),[](int w){return w==0;})){
+    if(!p.influence_enabled&&std::all_of(p.weights.begin(),p.weights.end(),[](int w){return w==0;})){
         b.total=b.material;return b;
     }
     AttackMap a(s);
@@ -97,8 +98,16 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
             int(std::int64_t(f.exposure)*p.danger_numerator/p.danger_denominator)};
         for(int i=0;i<4;++i)b.side_points[c][i]=std::min(b.side_points[c][i],p.caps[i]);
     }
+    if(p.influence_enabled) {
+        b.influence=influence_features(s,a,p.influence);
+        for(int side=0;side<2;++side) {
+            b.side_points[side][0]=b.influence.side[side].guard;
+            b.side_points[side][1]=b.influence.side[side].pressure;
+        }
+    }
     for(int i=0;i<4;++i) {
-        b.terms[i]=(b.side_points[0][i]-b.side_points[1][i])*p.weights[i]/100;
+        int weight=p.influence_enabled&&i<2?p.influence.weight:p.weights[i];
+        b.terms[i]=(b.side_points[0][i]-b.side_points[1][i])*weight/100;
         if(i==3)b.terms[i]=-b.terms[i];
         b.positional_unclamped+=b.terms[i];
     }

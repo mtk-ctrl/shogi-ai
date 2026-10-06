@@ -40,6 +40,11 @@ std::uint64_t experience_signature(const shogi::strategy::EvaluationParameters& 
     for (int value : p.caps) mix(static_cast<std::uint64_t>(value));
     for (int value : p.weights) mix(static_cast<std::uint64_t>(value));
     mix(p.positional_cap);
+    mix(p.influence_enabled);
+    for(int v:p.influence.guard_points)mix(v);
+    mix(p.influence.outer_guard_percent);mix(p.influence.guard_cap);
+    mix(p.influence.pressure_per_surplus);mix(p.influence.surplus_cap);
+    mix(p.influence.site_cap);mix(p.influence.pressure_cap);mix(p.influence.weight);
     return h;
 }
 } // namespace
@@ -152,6 +157,8 @@ int main() {
                       << "option name EvalPressure type spin default 150 min 0 max 400\n"
                       << "option name EvalActivity type spin default 150 min 0 max 400\n"
                       << "option name EvalDanger type spin default 200 min 0 max 400\n"
+                      << "option name EvalInfluence type check default false\n"
+                      << "option name EvalInfluenceWeight type spin default 150 min 0 max 400\n"
                       << "option name ExperienceCache type check default true\n"
                       << "option name ExperienceFile type string default shogi-ai-experience.bin\n"
                       << "usiok\n" << std::flush;
@@ -161,7 +168,19 @@ int main() {
             std::cout << "info string evaluation material " << b.material
                       << " safety " << b.terms[0] << " pressure " << b.terms[1]
                       << " activity " << b.terms[2] << " danger " << b.terms[3]
-                      << " clamp " << b.clamp_adjustment << " total " << b.total << '\n' << std::flush;
+                      << " clamp " << b.clamp_adjustment << " total " << b.total << '\n';
+            if(evaluation_parameters.influence_enabled&&!material_profile) {
+                for(int side=0;side<2;++side) {
+                    const auto& f=b.influence.side[side];
+                    std::cout << "info string influence side " << side << " guard " << f.guard
+                        << " pressure " << f.pressure << " overloads " << f.overloads
+                        << " pinned " << f.pinned << " reinforcement_one " << f.reinforcement_one
+                        << " reinforcement_two " << f.reinforcement_two
+                        << " reinforcement_unknown " << f.reinforcement_unknown
+                        << " fastest_threat_estimate " << f.fastest_threat << '\n';
+                }
+            }
+            std::cout << std::flush;
         } else if (command == "isready") {
             if (!session) {
                 ensure_experience_loaded();
@@ -475,6 +494,20 @@ int main() {
                             ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
                         experience_loaded = false;
                         experience_dirty = false;
+                    }
+                } else if(name=="EvalInfluence"||name=="EvalInfluenceWeight") {
+                    auto next=evaluation_parameters;bool accepted=false;
+                    if(name=="EvalInfluence"&&(value=="true"||value=="false")) {
+                        next.influence_enabled=value=="true";accepted=true;
+                    } else if(name=="EvalInfluenceWeight")try {
+                        std::size_t used=0;int weight=std::stoi(value,&used);
+                        if(used==value.size()&&weight>=0&&weight<=400){next.influence.weight=weight;accepted=true;}
+                    }catch(const std::exception&){}
+                    if(accepted) {
+                        persist_experience();evaluation_parameters=next;
+                        strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
+                            ? shogi::strategy::EvaluationParameters::material_only():evaluation_parameters));
+                        invalidate_experience();
                     }
                 } else if (name == "EvalSafety" || name == "EvalPressure" || name == "EvalActivity" || name == "EvalDanger") {
                     try {

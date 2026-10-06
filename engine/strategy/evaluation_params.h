@@ -1,10 +1,13 @@
 #pragma once
 #include <array>
 #include <stdexcept>
+#include "strategy/influence.h"
 
 namespace shogi::strategy {
 // All tunable positional constants. Material values remain in material.h.
 struct EvaluationParameters {
+    bool influence_enabled=false;
+    InfluenceParameters influence{};
     int guard_gold = 12, guard_silver = 10, guard_pawn = 4;
     int pressure_king = 12, pressure_occupied = 6, pressure_empty = 4;
     int pressure_partner = 8;
@@ -24,6 +27,8 @@ struct EvaluationParameters {
         return p;
     }
     void validate() const {
+        if(influence.weight<0||influence.weight>400)
+            throw std::invalid_argument("invalid influence weight");
         const int values[] = {guard_gold, guard_silver, guard_pawn, pressure_king,
             pressure_occupied, pressure_empty, pressure_partner, mobility_major,
             mobility_minor, mobility_piece_cap, danger_numerator, positional_cap};
