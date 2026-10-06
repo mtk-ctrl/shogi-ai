@@ -128,7 +128,7 @@ int main() {
         // Hand-drop tactics stay completely OFF unless requested. ON recognizes
         // a second direct target, rejects an unsupported immediate loss, accepts
         // a defended non-losing exchange, and recognizes slider skewers.
-        p = fixture({{"9i","K"},{"1a","k"},{"4d","r"},{"6d","g"}}, "S");
+        p = fixture({{"9i","K"},{"1a","k"},{"4d","r"},{"6d","n"}}, "S");
         auto hand_snap = p.snapshot();
         const int fork_off = strategy::MoveOrder::score_move(hand_snap, "S*5e");
         const int fork_on = strategy::MoveOrder::score_move(hand_snap, "S*5e", true);
