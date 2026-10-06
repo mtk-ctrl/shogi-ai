@@ -1,4 +1,4 @@
-name: Evaluation V2 OA729
+name: Evaluation V2 Overnight
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
       - 'engine/strategy/evaluation*.h'
       - 'engine/main.cpp'
       - 'tests/evaluation_test.cpp'
-      - 'benchmarks/eval_v2_oa729*.py'
       - 'benchmarks/eval_v2_match.py'
+      - 'benchmarks/eval_v2_overnight.py'
       - '.github/workflows/evaluation-v2-challenger.yml'
   workflow_dispatch:
 
@@ -16,81 +16,406 @@ permissions:
   contents: read
 
 concurrency:
-  group: evaluation-v2-challenger-${{ github.ref }}
+  group: evaluation-v2-overnight-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   quick:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-depth: 1
-      - name: Build and correctness
-        run: |
-          python3 scripts/build.py --output build/eval-v2-engine
-          python3 scripts/build.py --evaluation-test --output build/evaluation-test
-          build/evaluation-test
-      - name: Upload tested engine
-        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[eval-grid]')
-        uses: actions/upload-artifact@v4
-        with:
-          name: eval-v2-tested-engine
-          path: build/eval-v2-engine
-          retention-days: 7
-
-  oa729:
-    needs: quick
-    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[eval-grid]')
-    runs-on: ubuntu-latest
-    timeout-minutes: 35
-    strategy:
-      fail-fast: false
-      max-parallel: 27
-      matrix:
-        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 1
       - run: python3 -m pip install python-shogi==1.1.1
-      - uses: actions/download-artifact@v4
-        with:
-          name: eval-v2-tested-engine
-          path: build/bin
-      - run: chmod +x build/bin/eval-v2-engine
-      - name: Run 27 OA configurations, one color-swapped pair each
+      - name: Build and correctness
         run: |
-          python3 benchmarks/eval_v2_oa729.py \
-            --engine build/bin/eval-v2-engine \
-            --output-dir build/oa729/shard-${{ matrix.shard }} \
-            --shard ${{ matrix.shard }} --shards 27 --parallel 4 \
-            --seed 2026109000
+          python3 scripts/build.py --output build/eval-v2-engine
+          python3 scripts/build.py --evaluation-test --output build/evaluation-test
+          build/evaluation-test
+          python3 benchmarks/eval_v2_overnight.py design --output build/oa3125-design.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('build/oa3125-design.json'))
+          assert len(d['candidates'])==3125
+          print('OA3125 design OK')
+          PY
       - uses: actions/upload-artifact@v4
         with:
-          name: eval-v2-oa729-${{ matrix.shard }}
-          path: build/oa729/shard-${{ matrix.shard }}
-          retention-days: 60
+          name: eval-v2-overnight-engine
+          path: build/eval-v2-engine
+          retention-days: 7
 
-  analyze:
-    needs: oa729
+  broad100:
+    needs: quick
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[eval-overnight]')
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 25
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-overnight-engine
+          path: build/bin
+      - run: chmod +x build/bin/eval-v2-engine
+      - name: Broad OA3125 at 100ms, 6 games/config
+        run: |
+          python3 benchmarks/eval_v2_overnight.py run \
+            --engine build/bin/eval-v2-engine \
+            --output-dir build/broad100/shard-${{ matrix.shard }} \
+            --games 6 --movetime 100 \
+            --shard ${{ matrix.shard }} --shards 25 --parallel 4 --match-lanes 1 \
+            --seed 2026110000
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-v2-broad100-${{ matrix.shard }}
+          path: build/broad100/shard-${{ matrix.shard }}
+          if-no-files-found: warn
+          retention-days: 30
+
+  fidelity:
+    needs: quick
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[eval-overnight]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9]
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-overnight-engine
+          path: build/bin
+      - run: chmod +x build/bin/eval-v2-engine
+      - name: Calibrate 50/100/200ms transfer on 250 representative configs
+        run: |
+          python3 benchmarks/eval_v2_overnight.py fidelity \
+            --engine build/bin/eval-v2-engine \
+            --output-dir build/fidelity/shard-${{ matrix.shard }} \
+            --games 6 --movetimes 50 200 --sample 250 \
+            --shard ${{ matrix.shard }} --shards 10 --parallel 4 --match-lanes 1 \
+            --seed 2026111000
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-v2-fidelity-${{ matrix.shard }}
+          path: build/fidelity/shard-${{ matrix.shard }}
+          if-no-files-found: warn
+          retention-days: 30
+
+  select_broad:
+    needs: [quick, broad100, fidelity]
+    if: always() && needs.quick.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5
       - uses: actions/download-artifact@v4
         with:
-          pattern: eval-v2-oa729-*
-          path: build/all
-      - name: Aggregate main effects and pair interactions
-        run: |
-          python3 benchmarks/eval_v2_oa729_analyze.py \
-            --input build/all \
-            --output build/eval-v2-oa729-analysis.json | tee build/summary.txt
-          cat build/summary.txt >> "$GITHUB_STEP_SUMMARY"
-      - uses: actions/upload-artifact@v4
+          pattern: eval-v2-broad100-*
+          path: build/broad-all
+      - uses: actions/download-artifact@v4
         with:
-          name: evaluation-v2-oa729-analysis-${{ github.run_id }}
-          path: build/eval-v2-oa729-analysis.json
+          pattern: eval-v2-fidelity-*
+          path: build/fidelity-all
+      - name: Conservative broad selection
+        run: |
+          python3 benchmarks/eval_v2_overnight.py select-broad \
+            --broad build/broad-all \
+            --fidelity build/fidelity-all \
+            --output build/candidates-1.json | tee build/select-broad.txt
+          cat build/select-broad.txt >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-v2-candidates-1
+          path: build/candidates-1.json
+          if-no-files-found: error
+          retention-days: 90
+
+  refine1:
+    needs: select_broad
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 25
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-overnight-engine
+          path: build/bin
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-candidates-1
+          path: build/candidate
+      - run: chmod +x build/bin/eval-v2-engine
+      - name: Refine broad survivors at 200ms, 12 games/config
+        run: |
+          python3 benchmarks/eval_v2_overnight.py run \
+            --engine build/bin/eval-v2-engine \
+            --candidates build/candidate/candidates-1.json \
+            --output-dir build/refine1/shard-${{ matrix.shard }} \
+            --games 12 --movetime 200 \
+            --shard ${{ matrix.shard }} --shards 25 --parallel 4 --match-lanes 1 \
+            --seed 2026112000
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-v2-refine1-${{ matrix.shard }}
+          path: build/refine1/shard-${{ matrix.shard }}
+          if-no-files-found: warn
+          retention-days: 60
+
+  select2:
+    needs: refine1
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-candidates-1
+          path: build/candidate
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: eval-v2-refine1-*
+          path: build/results
+      - name: Keep 125 without collapsing parameter directions
+        run: |
+          python3 benchmarks/eval_v2_overnight.py select-stage \
+            --candidates build/candidate/candidates-1.json \
+            --results build/results --output build/candidates-2.json \
+            --stage refine1_to_125 --keep 125 --min-level 10 \
+            --games 12 --prior-strength 12 | tee build/select2.txt
+          cat build/select2.txt >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-v2-candidates-2
+          path: build/candidates-2.json
+          if-no-files-found: error
+          retention-days: 90
+
+  refine2:
+    needs: select2
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 25
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-overnight-engine
+          path: build/bin
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-candidates-2
+          path: build/candidate
+      - run: chmod +x build/bin/eval-v2-engine
+      - name: 125 candidates at 200ms, 50 games/config
+        run: |
+          python3 benchmarks/eval_v2_overnight.py run \
+            --engine build/bin/eval-v2-engine \
+            --candidates build/candidate/candidates-2.json \
+            --output-dir build/refine2/shard-${{ matrix.shard }} \
+            --games 50 --movetime 200 \
+            --shard ${{ matrix.shard }} --shards 25 --parallel 2 --match-lanes 2 \
+            --seed 2026113000
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-v2-refine2-${{ matrix.shard }}
+          path: build/refine2/shard-${{ matrix.shard }}
+          if-no-files-found: warn
+          retention-days: 90
+
+  select3:
+    needs: refine2
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-candidates-2
+          path: build/candidate
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: eval-v2-refine2-*
+          path: build/results
+      - name: Keep 25
+        run: |
+          python3 benchmarks/eval_v2_overnight.py select-stage \
+            --candidates build/candidate/candidates-2.json \
+            --results build/results --output build/candidates-3.json \
+            --stage refine2_to_25 --keep 25 --min-level 2 \
+            --games 50 --prior-strength 30 | tee build/select3.txt
+          cat build/select3.txt >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-v2-candidates-3
+          path: build/candidates-3.json
+          if-no-files-found: error
+          retention-days: 120
+
+  refine3:
+    needs: select3
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    strategy:
+      fail-fast: false
+      max-parallel: 25
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24]
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-overnight-engine
+          path: build/bin
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-candidates-3
+          path: build/candidate
+      - run: chmod +x build/bin/eval-v2-engine
+      - name: 25 candidates at 200ms, 200 games/config
+        run: |
+          python3 benchmarks/eval_v2_overnight.py run \
+            --engine build/bin/eval-v2-engine \
+            --candidates build/candidate/candidates-3.json \
+            --output-dir build/refine3/shard-${{ matrix.shard }} \
+            --games 200 --movetime 200 \
+            --shard ${{ matrix.shard }} --shards 25 --parallel 1 --match-lanes 4 \
+            --seed 2026114000
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-v2-refine3-${{ matrix.shard }}
+          path: build/refine3/shard-${{ matrix.shard }}
+          if-no-files-found: warn
+          retention-days: 120
+
+  select4:
+    needs: refine3
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-candidates-3
+          path: build/candidate
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: eval-v2-refine3-*
+          path: build/results
+      - name: Keep 9 finalists
+        run: |
+          python3 benchmarks/eval_v2_overnight.py select-stage \
+            --candidates build/candidate/candidates-3.json \
+            --results build/results --output build/candidates-4.json \
+            --stage refine3_to_9 --keep 9 --min-level 0 \
+            --games 200 --prior-strength 50 | tee build/select4.txt
+          cat build/select4.txt >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-v2-candidates-4
+          path: build/candidates-4.json
+          if-no-files-found: error
           retention-days: 180
+
+  refine4:
+    needs: select4
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 9
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8]
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-overnight-engine
+          path: build/bin
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-candidates-4
+          path: build/candidate
+      - run: chmod +x build/bin/eval-v2-engine
+      - name: 9 finalists at 200ms, 500 games/config
+        run: |
+          python3 benchmarks/eval_v2_overnight.py run \
+            --engine build/bin/eval-v2-engine \
+            --candidates build/candidate/candidates-4.json \
+            --output-dir build/refine4/shard-${{ matrix.shard }} \
+            --games 500 --movetime 200 \
+            --shard ${{ matrix.shard }} --shards 9 --parallel 1 --match-lanes 4 \
+            --seed 2026115000
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-v2-refine4-${{ matrix.shard }}
+          path: build/refine4/shard-${{ matrix.shard }}
+          if-no-files-found: warn
+          retention-days: 180
+
+  final3:
+    needs: refine4
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-candidates-4
+          path: build/candidate
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: eval-v2-refine4-*
+          path: build/results
+      - name: Select three overnight candidates
+        run: |
+          python3 benchmarks/eval_v2_overnight.py final3 \
+            --candidates build/candidate/candidates-4.json \
+            --results build/results --output build/final3.json \
+            --prior-strength 100 | tee build/final3.txt
+          echo '## Evaluation-v2 overnight final 3' >> "$GITHUB_STEP_SUMMARY"
+          cat build/final3.txt >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evaluation-v2-overnight-final3-${{ github.run_id }}
+          path: build/final3.json
+          if-no-files-found: error
+          retention-days: 365
