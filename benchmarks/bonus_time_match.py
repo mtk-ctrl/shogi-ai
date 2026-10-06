@@ -24,7 +24,7 @@ def select_bonus(policy, ply, used, previous, probe, iterations, board, normal_m
     if policy == "none" or used >= 5 or ply < 24:
         return None
     # Do not spend a coupon on a Book decision, forced move or proven mate.
-    if probe.get("depth", 0) == 0 or "score_mate" in probe or len(list(board.legal_moves)) <= 1:
+    if probe.get("book_hit") or "score_mate" in probe or len(list(board.legal_moves)) <= 1:
         return None
     starts = (24, 56, 88, 120, 160)
     ends = (54, 86, 118, 158, 198)
@@ -60,6 +60,7 @@ class BonusEngine(Engine):
         self.normal_ms = normal_ms
         self.bonus_ms = bonus_ms
         self.iterations = []
+        self.book_hit = False
         self.used = 0
         self.previous = None
         self.decisions = []
@@ -68,6 +69,8 @@ class BonusEngine(Engine):
     def _reader(self):
         for line in self.proc.stdout:
             line = line.rstrip("\n")
+            if line.startswith("info string opening_book hit "):
+                self.book_hit = True
             row = parse_info_line(line)
             if "depth" in row:
                 self.iterations.append(row)
@@ -84,9 +87,11 @@ class BonusEngine(Engine):
     def bestmove(self, moves):
         started = time.monotonic()
         self.iterations = []
+        self.book_hit = False
         self.go_command = f"go movetime {self.normal_ms}"
         token = super().bestmove(moves)
         probe = dict(self.last_search)
+        probe["book_hit"] = self.book_hit
         iterations = list(self.iterations)
         board = shogi.Board()
         for move in moves:

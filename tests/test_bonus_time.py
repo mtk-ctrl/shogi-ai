@@ -12,7 +12,8 @@ b = shogi.Board()
 probe = {"depth": 2, "score_cp": 0, "elapsed_ms": 50}
 assert select_bonus("adaptive", 24, 5, 300, probe, [], b, 50) is None
 assert select_bonus("adaptive", 23, 0, 300, probe, [], b, 50) is None
-assert select_bonus("adaptive", 24, 0, 300, {**probe, "depth": 0}, [], b, 50) is None
+assert select_bonus("adaptive", 24, 0, 300, {**probe, "book_hit": True}, [], b, 50) is None
+assert select_bonus("adaptive", 24, 0, None, {**probe, "depth": 0}, [], b, 50) is not None
 assert select_bonus("adaptive", 24, 0, 300, {**probe, "score_mate": 3}, [], b, 50) is None
 assert select_bonus("adaptive", 24, 1, 300, probe, [], b, 50) is None
 assert select_bonus("none", 100, 0, 300, probe, [], b, 50) is None
