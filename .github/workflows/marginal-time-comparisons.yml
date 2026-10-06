@@ -1,0 +1,92 @@
+name: Marginal Time Comparisons
+
+on:
+  push:
+    branches:
+      - research/time-allocation-sweep
+    paths:
+      - ".github/workflows/marginal-time-comparisons.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: marginal-time-comparisons
+  cancel-in-progress: false
+
+jobs:
+  compare:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: fixed125-vs100
+            policy: none
+            normal_ms: 125
+            baseline_ms: 100
+            bonus_ms: 125
+            max_uses: 1
+          - id: fixed150-vs125
+            policy: none
+            normal_ms: 150
+            baseline_ms: 125
+            bonus_ms: 150
+            max_uses: 1
+          - id: fixed200-vs150
+            policy: none
+            normal_ms: 200
+            baseline_ms: 150
+            bonus_ms: 200
+            max_uses: 1
+          - id: fixed250-vs200
+            policy: none
+            normal_ms: 250
+            baseline_ms: 200
+            bonus_ms: 250
+            max_uses: 1
+          - id: adaptive20x500-vs100
+            policy: adaptive
+            normal_ms: 50
+            baseline_ms: 100
+            bonus_ms: 500
+            max_uses: 20
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Run 100-game marginal comparison
+        run: |
+          python3 benchmarks/bonus_time_match.py \
+            --engine build/shogi-ai \
+            --policy "${{ matrix.policy }}" \
+            --pairs 50 \
+            --workers 4 \
+            --seed 2026100627 \
+            --normal-ms "${{ matrix.normal_ms }}" \
+            --baseline-ms "${{ matrix.baseline_ms }}" \
+            --bonus-ms "${{ matrix.bonus_ms }}" \
+            --max-bonus-uses "${{ matrix.max_uses }}" \
+            --output "benchmarks/results/2026-10-06_marginal-time/${{ matrix.id }}"
+
+      - name: Validate and analyze
+        run: |
+          python3 benchmarks/analyze_bonus_time.py "benchmarks/results/2026-10-06_marginal-time/${{ matrix.id }}"
+          cat "benchmarks/results/2026-10-06_marginal-time/${{ matrix.id }}/summary.json"
+          cat "benchmarks/results/2026-10-06_marginal-time/${{ matrix.id }}/analysis.json"
+
+      - name: Upload experiment records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: marginal-time-${{ matrix.id }}-${{ github.run_id }}
+          path: "benchmarks/results/2026-10-06_marginal-time/${{ matrix.id }}"
+          retention-days: 30
+          if-no-files-found: warn
