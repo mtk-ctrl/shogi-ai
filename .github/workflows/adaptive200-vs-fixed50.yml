@@ -1,0 +1,88 @@
+name: Adaptive 200 vs Fixed 50
+
+on:
+  push:
+    branches:
+      - research/adaptive200-vs-fixed50
+    paths:
+      - ".github/workflows/adaptive200-vs-fixed50.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: adaptive200-vs-fixed50
+  cancel-in-progress: false
+
+jobs:
+  match:
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4]
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
+      - name: Run 20 games
+        shell: bash
+        run: |
+          seed=$((2026100900 + ${{ matrix.shard }} * 1000))
+          python3 benchmarks/checkpointed_match.py             --current build/shogi-ai             --baseline build/shogi-ai             --games 20             --seed "$seed"             --max-plies 400             --movetime-current 200             --movetime-baseline 50             --output "build/result-${{ matrix.shard }}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: adaptive200-vs-fixed50-${{ matrix.shard }}
+          path: "build/result-${{ matrix.shard }}.json"
+          retention-days: 30
+
+  aggregate:
+    needs: match
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v5
+        with:
+          pattern: adaptive200-vs-fixed50-*
+          path: build/results
+          merge-multiple: true
+      - name: Aggregate
+        run: |
+          python3 - <<'PY'
+          import json, math
+          from pathlib import Path
+          rows=[json.loads(p.read_text()) for p in sorted(Path('build/results').glob('*.json'))]
+          games=sum(r['games'] for r in rows)
+          wa=sum(r['wins_a'] for r in rows); wb=sum(r['wins_b'] for r in rows); d=sum(r['draws'] for r in rows)
+          score=(wa+.5*d)/games
+          se=math.sqrt(max(1e-12, score*(1-score)/games))
+          ta=sum(r['timing_ms']['A']['mean']*r['timing_ms']['A']['moves'] for r in rows)
+          tb=sum(r['timing_ms']['B']['mean']*r['timing_ms']['B']['moves'] for r in rows)
+          ma=sum(r['timing_ms']['A']['moves'] for r in rows); mb=sum(r['timing_ms']['B']['moves'] for r in rows)
+          long_moves=sum((r.get('search',{}).get('A') or {}).get('long_think_moves',0) for r in rows)
+          reasons={}
+          for r in rows:
+              for k,v in ((r.get('search',{}).get('A') or {}).get('long_think_reasons') or {}).items():
+                  reasons[k]=reasons.get(k,0)+v
+          out={
+            'games':games,'adaptive200_wins':wa,'fixed50_wins':wb,'draws':d,
+            'score_adaptive200':score,
+            'normal_approx_95_ci':[max(0,score-1.96*se),min(1,score+1.96*se)],
+            'mean_move_ms_adaptive200':ta/ma,'mean_move_ms_fixed50':tb/mb,
+            'long_think_moves':long_moves,'long_think_per_game':long_moves/games,
+            'long_think_reasons':reasons,
+            'illegal_games':sum(r['illegal_games'] for r in rows),
+            'average_plies':sum(sum(g['plies'] for g in r['details']) for r in rows)/games,
+            'max_shard_elapsed_seconds':max(sum(g['timing']['A']['total_ms']+g['timing']['B']['total_ms'] for g in r['details'])/1000 for r in rows)
+          }
+          Path('build/summary.json').write_text(json.dumps(out,indent=2)+'\n')
+          print(json.dumps(out,indent=2))
+          PY
+          cat build/summary.json >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: adaptive200-vs-fixed50-summary
+          path: build/summary.json
+          retention-days: 90
