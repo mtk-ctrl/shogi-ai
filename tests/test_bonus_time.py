@@ -11,6 +11,8 @@ from bonus_time_match import BonusEngine, select_bonus
 b = shogi.Board()
 probe = {"depth": 2, "score_cp": 0, "elapsed_ms": 50}
 assert select_bonus("adaptive", 24, 5, 300, probe, [], b, 50) is None
+assert select_bonus("adaptive", 24, 12, 300, probe, [], b, 50, max_uses=12) is None
+assert select_bonus("adaptive", 24, 0, 300, probe, [], b, 50, max_uses=12) is not None
 assert select_bonus("adaptive", 23, 0, 300, probe, [], b, 50) is None
 assert select_bonus("adaptive", 24, 0, 300, {**probe, "book_hit": True}, [], b, 50) is None
 assert select_bonus("adaptive", 24, 0, None, {**probe, "depth": 0}, [], b, 50) is not None
