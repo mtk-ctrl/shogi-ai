@@ -160,14 +160,17 @@ def cmd_fidelity(args):
                 done+=1
                 print(f"fidelity {movetime}ms shard {args.shard}: {done}/{len(chosen)} cfg={idx}",flush=True)
 
-def collect(root):
+def collect_pattern(pattern):
     out={}
-    for sp in glob.glob(str(Path(root)/"**/summary.json"),recursive=True):
+    for sp in glob.glob(pattern,recursive=True):
         d=Path(sp).parent/"design.json"
         if not d.exists():continue
         row=json.loads(d.read_text(encoding="utf-8"))
         out[row["index"]]={"row":row,"result":json.loads(Path(sp).read_text(encoding="utf-8"))}
     return out
+
+def collect(root):
+    return collect_pattern(str(Path(root)/"**/summary.json"))
 
 def game_score(result):
     return result["score_a"],result["games"]
@@ -289,7 +292,10 @@ def conservative_select(rows,evidence,k,min_level,seed=20261006):
 
 def cmd_select_broad(args):
     rows=design_rows();broad=collect(args.broad)
-    f50=collect(str(Path(args.fidelity)/"50ms"));f200=collect(str(Path(args.fidelity)/"200ms"))
+    f50=collect_pattern(str(Path(args.fidelity)/"**/50ms/**/summary.json"))
+    f200=collect_pattern(str(Path(args.fidelity)/"**/200ms/**/summary.json"))
+    if len(f50) != 250 or len(f200) != 250:
+        raise SystemExit(f"fidelity incomplete: 50ms={len(f50)}/250 200ms={len(f200)}/250")
     if len(broad)!=3125:raise SystemExit(f"broad incomplete: {len(broad)}/3125")
     cal=calibration_correlations(broad,f50,f200)
     mu,main=main_effects(broad);pairs,ranked=pair_effects(broad,mu,main)
