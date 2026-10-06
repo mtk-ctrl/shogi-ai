@@ -1,0 +1,37 @@
+{
+  "run_id": 37418708995,
+  "artifact_id": 11392290983,
+  "commit": "750186759ed50c1e4378b28f88505050c3dd66fc",
+  "baseline": "same binary, HandDropTactics=false",
+  "candidate": "same binary, HandDropTactics=true",
+  "games": 100,
+  "pairs": 50,
+  "go_command": "go movetime 50",
+  "opening_book": true,
+  "mate_assist": true,
+  "experience_cache": false,
+  "wins_on": 41,
+  "draws": 27,
+  "wins_off": 32,
+  "score_on": 0.545,
+  "paired_normal_approx_interval": [0.47979846627570794, 0.6102015337242921],
+  "pair_outcomes": {
+    "better_than_half": 15,
+    "equal_half": 26,
+    "worse_than_half": 9
+  },
+  "on_by_color": {
+    "black": {"wins": 25, "draws": 14, "losses": 11, "score": 0.64},
+    "white": {"wins": 16, "draws": 13, "losses": 21, "score": 0.45}
+  },
+  "off_by_color": {
+    "black": {"wins": 21, "draws": 13, "losses": 16, "score": 0.55},
+    "white": {"wins": 11, "draws": 14, "losses": 25, "score": 0.36}
+  },
+  "average_plies": 139.45,
+  "mean_elapsed_ms": {"on": 41.03127983627228, "off": 41.12862577159285},
+  "nodes_total": {"on": 7147890, "off": 7116882},
+  "illegal_games": 0,
+  "reasons": {"checkmate": 73, "move_limit": 17, "fourfold_repetition": 10},
+  "decision": "promising but not conclusive; keep default OFF pending confirmation"
+}

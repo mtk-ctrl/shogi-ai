@@ -1,0 +1,15 @@
+{
+  "run_id": 37418708995,
+  "commit": "750186759ed50c1e4378b28f88505050c3dd66fc",
+  "mixed_samples": 256,
+  "mixed_mean_legal_moves": 41.3125,
+  "mixed_off_ns_per_order": 26334.7,
+  "mixed_on_ns_per_order": 27908.2,
+  "mixed_overhead_pct": 5.97502,
+  "drop_rich_samples": 256,
+  "drop_rich_mean_legal_moves": 85.8047,
+  "drop_rich_mean_tactical_drops": 44.1992,
+  "drop_rich_off_ns_per_order": 47832.9,
+  "drop_rich_on_ns_per_order": 63253.9,
+  "drop_rich_overhead_pct": 32.2391
+}
