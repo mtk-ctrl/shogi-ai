@@ -56,15 +56,13 @@ jobs:
                   print(f"- {r['id']}: {r['wins']}W {r['draws']}D {r['losses']}L = {r['score']:.1%}")
               sel=s['selected']
               print(f"### Selected: {sel['id']} (holdout {sel['holdout_score']:.1%})")
-              for key,label in [('final_200ms_no_longthink','200ms fixed'),
-                                ('product_200ms_adaptive','200ms + AdaptiveLongThink')]:
-                  r=s[key]
-                  print(f"- {label}: {r['wins_a']}W {r['draws']}D {r['wins_b']}L = {r['score_a']:.1%}")
-                  print(f"  - paired 95% approx: {r['paired_normal_approx_interval'][0]:.1%}–{r['paired_normal_approx_interval'][1]:.1%}")
-                  print(f"  - mean ms A/B: {r['timing_ms']['A']['mean']:.1f}/{r['timing_ms']['B']['mean']:.1f}")
-                  an=r['search']['A'].get('nodes_total',0);bn=r['search']['B'].get('nodes_total',0)
-                  if bn: print(f"  - nodes A/B: {an:,}/{bn:,} ({an/bn-1:+.1%})")
-                  print(f"  - illegal: {r['illegal_games']}")
+              r=s['final_200ms_no_longthink']
+              print(f"- 200ms fixed: {r['wins_a']}W {r['draws']}D {r['wins_b']}L = {r['score_a']:.1%}")
+              print(f"  - paired 95% approx: {r['paired_normal_approx_interval'][0]:.1%}–{r['paired_normal_approx_interval'][1]:.1%}")
+              print(f"  - mean ms A/B: {r['timing_ms']['A']['mean']:.1f}/{r['timing_ms']['B']['mean']:.1f}")
+              an=r['search']['A'].get('nodes_total',0);bn=r['search']['B'].get('nodes_total',0)
+              if bn: print(f"  - nodes A/B: {an:,}/{bn:,} ({an/bn-1:+.1%})")
+              print(f"  - illegal: {r['illegal_games']}")
           PY
       - name: Upload study
         if: always()
