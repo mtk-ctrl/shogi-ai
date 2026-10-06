@@ -1,0 +1,226 @@
+[
+  {
+    "id": "knight_royal_fork",
+    "motif": "両取り",
+    "sfen": "9/9/3k1r3/9/9/9/9/P8/KP7 b N 1",
+    "target": "N*5e",
+    "expected": "gain",
+    "note": "王手で玉を動かし、桂で飛車を取る。"
+  },
+  {
+    "id": "knight_royal_fork_white",
+    "motif": "両取り",
+    "sfen": "7pk/8p/9/9/9/9/3R1K3/9/9 w n 1",
+    "target": "N*5e",
+    "expected": "gain",
+    "note": "王手で玉を動かし、桂で飛車を取る。"
+  },
+  {
+    "id": "knight_two_rooks",
+    "motif": "両取り",
+    "sfen": "8k/9/3r1r3/9/9/9/9/P8/KP7 b N 1",
+    "target": "N*5e",
+    "expected": "gain",
+    "note": "王手を伴わない桂の飛車二枚への両取り。"
+  },
+  {
+    "id": "knight_two_rooks_white",
+    "motif": "両取り",
+    "sfen": "7pk/8p/9/9/9/9/3R1R3/9/K8 w n 1",
+    "target": "N*5e",
+    "expected": "gain",
+    "note": "王手を伴わない桂の飛車二枚への両取り。"
+  },
+  {
+    "id": "silver_two_rooks",
+    "motif": "両取り",
+    "sfen": "8k/9/9/3r1r3/9/9/9/P8/KP7 b S 1",
+    "target": "S*5e",
+    "expected": "gain",
+    "note": "銀で二枚の飛車を同時に狙う。"
+  },
+  {
+    "id": "silver_two_rooks_white",
+    "motif": "両取り",
+    "sfen": "7pk/8p/9/9/9/3R1R3/9/9/K8 w s 1",
+    "target": "S*5e",
+    "expected": "gain",
+    "note": "銀で二枚の飛車を同時に狙う。"
+  },
+  {
+    "id": "countercheck_silver_fork",
+    "motif": "反撃可能な両取り",
+    "sfen": "8k/9/9/3r1r3/9/9/9/9/K8 b S 1",
+    "target": "S*5e",
+    "expected": "observe",
+    "note": "玉の遮蔽物がなく、飛車の王手によって両取りを回避できる。形だけで有効と判定しない対照例。"
+  },
+  {
+    "id": "countercheck_silver_fork_white",
+    "motif": "反撃可能な両取り",
+    "sfen": "8k/9/9/9/9/3R1R3/9/9/K8 w s 1",
+    "target": "S*5e",
+    "expected": "observe",
+    "note": "玉の遮蔽物がなく、飛車の王手によって両取りを回避できる。形だけで有効と判定しない対照例。"
+  },
+  {
+    "id": "bishop_two_rooks",
+    "motif": "両取り",
+    "sfen": "8k/9/2r3r2/9/9/9/9/P8/KP7 b B 1",
+    "target": "B*5e",
+    "expected": "gain",
+    "note": "角の二方向の射線で二枚の飛車を狙う。"
+  },
+  {
+    "id": "bishop_two_rooks_white",
+    "motif": "両取り",
+    "sfen": "7pk/8p/9/9/9/9/2R3R2/9/K8 w b 1",
+    "target": "B*5e",
+    "expected": "gain",
+    "note": "角の二方向の射線で二枚の飛車を狙う。"
+  },
+  {
+    "id": "bishop_royal_skewer",
+    "motif": "串刺し",
+    "sfen": "9/9/6r2/9/4k4/9/9/P8/KP7 b B 1",
+    "target": "B*7g",
+    "expected": "gain",
+    "note": "角で玉の背後の飛車を狙う。"
+  },
+  {
+    "id": "bishop_royal_skewer_white",
+    "motif": "串刺し",
+    "sfen": "7pk/8p/9/9/4K4/9/2R6/9/9 w b 1",
+    "target": "B*3c",
+    "expected": "gain",
+    "note": "角で玉の背後の飛車を狙う。"
+  },
+  {
+    "id": "rook_royal_skewer",
+    "motif": "串刺し",
+    "sfen": "9/4b4/9/9/4k4/9/9/P8/KP7 b R 1",
+    "target": "R*5h",
+    "expected": "gain",
+    "note": "飛車で玉の背後の角を狙う。"
+  },
+  {
+    "id": "rook_royal_skewer_white",
+    "motif": "串刺し",
+    "sfen": "7pk/8p/9/9/4K4/9/9/4B4/9 w r 1",
+    "target": "R*5b",
+    "expected": "gain",
+    "note": "飛車で玉の背後の角を狙う。"
+  },
+  {
+    "id": "lance_royal_skewer",
+    "motif": "串刺し",
+    "sfen": "9/4r4/9/9/4k4/9/9/P8/KP7 b L 1",
+    "target": "L*5h",
+    "expected": "gain",
+    "note": "香で玉の背後の飛車を狙う。"
+  },
+  {
+    "id": "lance_royal_skewer_white",
+    "motif": "串刺し",
+    "sfen": "7pk/8p/9/9/4K4/9/9/4R4/9 w l 1",
+    "target": "L*5b",
+    "expected": "gain",
+    "note": "香で玉の背後の飛車を狙う。"
+  },
+  {
+    "id": "pawn_rook_harassment",
+    "motif": "攻め駒への当たり",
+    "sfen": "8k/9/9/4r4/9/5G3/4S4/P8/KP7 b P 1",
+    "target": "P*5e",
+    "expected": "observe",
+    "note": "銀取りを遮断し、金で支えた歩で相手飛車に当てる。別の有効な受けもあり、指定手のみを正解とはしない。"
+  },
+  {
+    "id": "pawn_rook_harassment_white",
+    "motif": "攻め駒への当たり",
+    "sfen": "7pk/8p/4s4/3g5/9/4R4/9/9/K8 w p 1",
+    "target": "P*5e",
+    "expected": "observe",
+    "note": "銀取りを遮断し、金で支えた歩で相手飛車に当てる。別の有効な受けもあり、指定手のみを正解とはしない。"
+  },
+  {
+    "id": "capture_instead_of_harassment",
+    "motif": "直接の駒取りがある対照例",
+    "sfen": "8k/9/9/4r4/9/5G3/4R4/P8/KP7 b P 1",
+    "target": "P*5e",
+    "expected": "observe",
+    "note": "歩で飛車に当てることもできるが、自分の飛車で相手飛車を直接取れる。打ち手を選ばなくても見落としではない。"
+  },
+  {
+    "id": "capture_instead_of_harassment_white",
+    "motif": "直接の駒取りがある対照例",
+    "sfen": "7pk/8p/4r4/3g5/9/4R4/9/9/K8 w p 1",
+    "target": "P*5e",
+    "expected": "observe",
+    "note": "歩で飛車に当てることもできるが、自分の飛車で相手飛車を直接取れる。打ち手を選ばなくても見落としではない。"
+  },
+  {
+    "id": "gold_drop_mate",
+    "motif": "攻め",
+    "sfen": "8k/9/9/9/9/7R1/9/P8/KP7 b G 1",
+    "target": "G*2b",
+    "expected": "mate",
+    "note": "飛車に支えられた金打ちの一手詰め。"
+  },
+  {
+    "id": "gold_drop_mate_white",
+    "motif": "攻め",
+    "sfen": "7pk/8p/9/1r7/9/9/9/9/K8 w g 1",
+    "target": "G*8h",
+    "expected": "mate",
+    "note": "飛車に支えられた金打ちの一手詰め。"
+  },
+  {
+    "id": "poisoned_silver_fork",
+    "motif": "偽の両取り",
+    "sfen": "8k/9/9/3rpr3/9/9/9/P8/KP7 b S 1",
+    "target": "S*5e",
+    "expected": "avoid",
+    "note": "二枚の飛車に当たるが、歩で銀を取られる。"
+  },
+  {
+    "id": "poisoned_silver_fork_white",
+    "motif": "偽の両取り",
+    "sfen": "7pk/8p/9/9/9/3RPR3/9/9/K8 w s 1",
+    "target": "S*5e",
+    "expected": "avoid",
+    "note": "二枚の飛車に当たるが、歩で銀を取られる。"
+  },
+  {
+    "id": "poisoned_bishop_skewer",
+    "motif": "偽の串刺し",
+    "sfen": "9/9/6r2/9/4k4/9/3g5/P8/KP7 b B 1",
+    "target": "B*7g",
+    "expected": "avoid",
+    "note": "王手の串刺しに見えるが、金で角を取って王手を解消できる。"
+  },
+  {
+    "id": "poisoned_bishop_skewer_white",
+    "motif": "偽の串刺し",
+    "sfen": "7pk/8p/5G3/9/4K4/9/2R6/9/9 w b 1",
+    "target": "B*3c",
+    "expected": "avoid",
+    "note": "王手の串刺しに見えるが、金で角を取って王手を解消できる。"
+  },
+  {
+    "id": "fork_ignores_check",
+    "motif": "王手放置",
+    "sfen": "r8/9/3k1r3/9/9/9/9/9/K8 b N 1",
+    "target": "N*5e",
+    "expected": "illegal",
+    "note": "桂の両取りは自玉への飛車の王手を解消せず、合法候補にならない。"
+  },
+  {
+    "id": "fork_ignores_check_white",
+    "motif": "王手放置",
+    "sfen": "8k/9/9/9/9/9/3R1K3/9/8R w n 1",
+    "target": "N*5e",
+    "expected": "illegal",
+    "note": "桂の両取りは自玉への飛車の王手を解消せず、合法候補にならない。"
+  }
+]
