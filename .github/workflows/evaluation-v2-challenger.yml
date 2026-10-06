@@ -116,7 +116,7 @@ jobs:
 
   select_broad:
     needs: [quick, broad100, fidelity]
-    if: always() && needs.quick.result == 'success'
+    if: needs.quick.result == 'success' && needs.broad100.result == 'success' && needs.fidelity.result == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -184,7 +184,6 @@ jobs:
 
   select2:
     needs: refine1
-    if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -253,7 +252,6 @@ jobs:
 
   select3:
     needs: refine2
-    if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -322,7 +320,6 @@ jobs:
 
   select4:
     needs: refine3
-    if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -391,7 +388,6 @@ jobs:
 
   final3:
     needs: refine4
-    if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
