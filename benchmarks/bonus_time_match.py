@@ -150,7 +150,7 @@ class BonusEngine(Engine):
 
 
 def run_pair(job):
-    engine, options, policy, index, seed, max_plies, output, cpu, normal_ms, bonus_ms, max_uses = job
+    engine, options, policy, index, seed, max_plies, output, cpu, normal_ms, bonus_ms, max_uses, baseline_ms = job
     if cpu is not None:
         os.sched_setaffinity(0, {cpu})  # children inherit: no oversubscribed search
     pair_seed = seed + index * 2
@@ -158,7 +158,7 @@ def run_pair(job):
     games = []
     try:
         a = BonusEngine(engine, "A", options, policy, pair_seed, normal_ms, bonus_ms, max_uses)
-        b = BonusEngine(engine, "B", options, "none", pair_seed, normal_ms, bonus_ms, max_uses)
+        b = BonusEngine(engine, "B", options, "none", pair_seed, baseline_ms, baseline_ms, max_uses)
         for half in range(2):
             started = time.monotonic()
             result = play_game(a, b, half, max_plies, pair_seed)
@@ -223,10 +223,13 @@ def main():
     p.add_argument("--normal-ms", type=int, default=50)
     p.add_argument("--bonus-ms", type=int, default=30000)
     p.add_argument("--max-bonus-uses", type=int, default=5)
+    p.add_argument("--baseline-ms", type=int, default=None,
+                   help="Engine B fixed movetime; defaults to --normal-ms")
     p.add_argument("--output", required=True)
     args = p.parse_args()
-    if (not 1 <= args.normal_ms <= args.bonus_ms <= 30000 or args.pairs < 1
-            or args.workers < 1 or not 1 <= args.max_bonus_uses <= 50):
+    baseline_ms = args.normal_ms if args.baseline_ms is None else args.baseline_ms
+    if (not 1 <= args.normal_ms <= args.bonus_ms <= 30000 or not 1 <= baseline_ms <= 30000
+            or args.pairs < 1 or args.workers < 1 or not 1 <= args.max_bonus_uses <= 50):
         p.error("positive pairs/workers; 1 <= normal-ms <= bonus-ms <= 30000 required")
     out = Path(args.output)
     out.mkdir(parents=True, exist_ok=True)
@@ -236,7 +239,7 @@ def main():
     started = time.monotonic()
     jobs = [(str(Path(args.engine).resolve()), options, args.policy, i, args.seed,
              args.max_plies, str(out), cpus[i % workers], args.normal_ms, args.bonus_ms,
-             args.max_bonus_uses) for i in range(args.pairs)]
+             args.max_bonus_uses, baseline_ms) for i in range(args.pairs)]
     # Assign one stable CPU per process rather than one per job. ProcessPool may
     # otherwise run different job IDs concurrently on the same chosen CPU.
     import multiprocessing
@@ -256,8 +259,8 @@ def main():
     summary.update({"base_commit": "8a750d9f90395b6f9a1cee49547b125c52a6f60b",
                     "engine_sha256": hashlib.sha256(Path(args.engine).read_bytes()).hexdigest(),
                     "options": options, "policy": args.policy, "seed": args.seed,
-                    "normal_ms": args.normal_ms, "bonus_ms": args.bonus_ms,
-                    "max_bonus_uses": args.max_bonus_uses,
+                    "normal_ms": args.normal_ms, "baseline_ms": baseline_ms,
+                    "bonus_ms": args.bonus_ms, "max_bonus_uses": args.max_bonus_uses,
                     "max_plies": args.max_plies, "workers": workers,
                     "elapsed_seconds": round(time.monotonic() - started, 3),
                     "method_note": "Restarted short probe plus remaining budget; RNG advances on both searches. Pair shares color seeds, not forced opening. CI is pair-normal approximation."})

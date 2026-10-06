@@ -1,0 +1,62 @@
+name: Fixed Movetime Curve
+
+on:
+  push:
+    branches:
+      - research/time-allocation-sweep
+    paths:
+      - ".github/workflows/fixed-movetime-curve.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fixed-movetime-curve
+  cancel-in-progress: false
+
+jobs:
+  compare:
+    strategy:
+      fail-fast: false
+      matrix:
+        movetime: [75, 125, 200, 250]
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Run 100-game fixed comparison
+        run: |
+          python3 benchmarks/bonus_time_match.py \
+            --engine build/shogi-ai \
+            --policy none \
+            --pairs 50 \
+            --workers 4 \
+            --seed 2026100617 \
+            --normal-ms "${{ matrix.movetime }}" \
+            --baseline-ms 50 \
+            --bonus-ms "${{ matrix.movetime }}" \
+            --max-bonus-uses 1 \
+            --output "benchmarks/results/2026-10-06_fixed-curve/${{ matrix.movetime }}ms"
+
+      - name: Validate and analyze
+        run: |
+          python3 benchmarks/analyze_bonus_time.py "benchmarks/results/2026-10-06_fixed-curve/${{ matrix.movetime }}ms"
+          cat "benchmarks/results/2026-10-06_fixed-curve/${{ matrix.movetime }}ms/summary.json"
+          cat "benchmarks/results/2026-10-06_fixed-curve/${{ matrix.movetime }}ms/analysis.json"
+
+      - name: Upload experiment records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fixed-curve-${{ matrix.movetime }}ms-${{ github.run_id }}
+          path: "benchmarks/results/2026-10-06_fixed-curve/${{ matrix.movetime }}ms"
+          retention-days: 30
+          if-no-files-found: warn
