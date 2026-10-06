@@ -77,26 +77,26 @@ int main(){try{
     auto flank_defended=snap({{"5e","K"},{"9a","k"},{"3a","r"},{"3i","R"}});
     auto weak_kd=evaluate(flank_threat,kd), strong_kd=evaluate(flank_defended,kd);
     require(weak_kd.material==strong_kd.material,"king defence fixture material equality");
-    require(strong_kd.raw[0].king_defense.raw_score>weak_kd.raw[0].king_defense.raw_score,
-            "defence on attacked flank must outrank quiet-flank defence");
+    require(strong_kd.raw[0].king_defense.risk_score<weak_kd.raw[0].king_defense.risk_score,
+            "defence on attacked flank must reduce king risk");
     require(strong_kd.king_defense_term>weak_kd.king_defense_term,
             "directional king defence term must reward relevant flank");
-    std::cout<<"PASS king defence relevant flank "
-             <<strong_kd.raw[0].king_defense.raw_score<<" > "
-             <<weak_kd.raw[0].king_defense.raw_score<<"\n";
+    std::cout<<"PASS king defence relevant flank risk "
+             <<strong_kd.raw[0].king_defense.risk_score<<" < "
+             <<weak_kd.raw[0].king_defense.risk_score<<"\n";
 
     // Inner-ring contact should be treated as more urgent than otherwise
     // analogous outer-only contact.
-    auto outer_contact=snap({{"5e","K"},{"9a","k"},{"3a","r"},{"3i","R"}});
-    auto inner_contact=snap({{"5e","K"},{"9a","k"},{"4a","r"},{"4i","R"}});
+    auto outer_contact=snap({{"5e","K"},{"9a","k"},{"3a","r"},{"7i","R"}});
+    auto inner_contact=snap({{"5e","K"},{"9a","k"},{"4a","r"},{"7i","R"}});
     auto outer_f=king_defense_features(outer_contact,AttackMap(outer_contact),0);
     auto inner_f=king_defense_features(inner_contact,AttackMap(inner_contact),0);
     require(inner_f.inner_threat_total>outer_f.inner_threat_total,
             "inner fixture must create more inner-ring threat");
-    require(inner_f.raw_score>outer_f.raw_score,
-            "inner-ring relevant defence must receive larger coordination score");
-    std::cout<<"PASS two-ring urgency inner "<<inner_f.raw_score
-             <<" > outer "<<outer_f.raw_score<<"\n";
+    require(inner_f.risk_score>outer_f.risk_score,
+            "unanswered inner-ring threat must carry more risk than outer-only threat");
+    std::cout<<"PASS two-ring urgency risk inner "<<inner_f.risk_score
+             <<" > outer "<<outer_f.risk_score<<"\n";
 
     // Supported nearby guards should improve the threatened sector, while the
     // same pieces parked far away should not receive a castle-name bonus.
@@ -106,10 +106,18 @@ int main(){try{
     auto near_f=king_defense_features(guards_near,AttackMap(guards_near),0);
     require(near_f.supported_inner_pieces>far_f.supported_inner_pieces,
             "near guard network should contain supported inner pieces");
-    require(near_f.raw_score>far_f.raw_score,
-            "supported guard network in threatened zone should score higher");
-    std::cout<<"PASS supported guard network "<<near_f.raw_score
-             <<" > scattered "<<far_f.raw_score<<"\n";
+    require(near_f.risk_score<far_f.risk_score,
+            "supported guard network in threatened zone should reduce risk");
+    std::cout<<"PASS supported guard network risk "<<near_f.risk_score
+             <<" < scattered "<<far_f.risk_score<<"\n";
+
+    // Monotonic safety invariant: if enemy king-zone pressure disappears while
+    // our defence stays unchanged, the feature must never become worse.
+    auto no_threat=snap({{"5e","K"},{"9a","k"},{"4e","G"},{"4f","S"},{"9h","r"}});
+    auto no_threat_f=king_defense_features(no_threat,AttackMap(no_threat),0);
+    require(no_threat_f.risk_score<=near_f.risk_score,
+            "removing enemy pressure must not worsen king defence evaluation");
+    std::cout<<"PASS removing pressure never loses defence value\n";
 
     auto kd_rot=evaluate(rotate(guards_near),kd);
     auto kd_base=evaluate(guards_near,kd);
