@@ -61,12 +61,12 @@ struct EvaluationParameters {
             throw std::invalid_argument("invalid evaluation cap");
         for (int v : v2_caps) if (v < 0 || v > 10000)
             throw std::invalid_argument("invalid v2 evaluation cap");
-        for (int v : weights) if (v < 0 || v > 2000)
-            throw std::invalid_argument("evaluation weight outside 0..2000");
+        for (int v : weights) if (v < 0 || v > 10000)
+            throw std::invalid_argument("evaluation weight outside 0..10000");
         const int extra_weights[] = {material_weight, influence_weight, potential_weight,
             coordination_weight, hand_potential_weight, threat_weight};
-        for (int v : extra_weights) if (v < 0 || v > 2000)
-            throw std::invalid_argument("v2 evaluation weight outside 0..2000");
+        for (int v : extra_weights) if (v < 0 || v > 10000)
+            throw std::invalid_argument("v2 evaluation weight outside 0..10000");
     }
 };
 } // namespace shogi::strategy
