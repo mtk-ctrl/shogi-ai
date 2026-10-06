@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Screen self-play positions for safe geometric drop forks, then diagnose.
+"""Screen self-play positions for drop forks and skewers, then diagnose.
 
 Geometry is a candidate screen, not a proof of advantage. Preserve source
 game/ply and its actual move; do not treat a different engine choice as a miss.
@@ -10,15 +10,59 @@ import json
 from pathlib import Path
 import subprocess
 import shogi
-from diagnose_hand_drops import ROOT, VALUES, full_search
+from diagnose_hand_drops import ROOT, delta, full_search
 from diagnose_positions import Usi
+
+
+def drop_targets(board, move):
+    """All enemy kinds; also the first enemy behind each sliding target.
+
+    Rear targets are potential pressure, not simultaneous legal captures.
+    """
+    enemy=1-board.turn
+    targets=sum(1<<s for s in shogi.SQUARES
+                if board.piece_at(s) and board.piece_at(s).color==enemy)
+    attack=board.attacks_from(move.drop_piece_type,move.to_square,board.occupied,board.turn)&targets
+    rear=0
+    if move.drop_piece_type in (shogi.LANCE,shogi.BISHOP,shogi.ROOK):
+        for square in shogi.SQUARES:
+            if attack&(1<<square):
+                occupied=shogi.Occupied(board.occupied[shogi.BLACK]&~(1<<square),
+                                        board.occupied[shogi.WHITE]&~(1<<square))
+                rear |= board.attacks_from(move.drop_piece_type,move.to_square,occupied,board.turn)&targets&~attack
+    return attack,rear
+
+
+def immediate_capture_screen(board, move):
+    """Reject free drops and unfavorable immediate capture/recapture trades.
+
+    Geometric attacks include pinned pieces. Check actual legal captures after
+    the drop, and legal recaptures if needed. This is a candidate filter only:
+    it does not establish safety after subsequent replies or defender removal.
+    """
+    root=board.turn
+    if not board.is_attacked_by(1-root,move.to_square):
+        return {'accepted':True,'legal_captures':0,'scope':'immediate capture/recapture only'}
+    board.push(move)
+    captures=[m for m in board.legal_moves if m.to_square==move.to_square and m.from_square is not None]
+    worst=None
+    for reply in captures:
+        loss=delta(board,reply,root)
+        board.push(reply)
+        recaptures=[m for m in board.legal_moves if m.to_square==move.to_square and m.from_square is not None]
+        gain=loss+max([delta(board,m,root) for m in recaptures],default=0)
+        board.pop()
+        worst=gain if worst is None else min(worst,gain)
+    board.pop()
+    return {'accepted':worst is None or worst>=0,'legal_captures':len(captures),
+            'worst_immediate_exchange':worst,'scope':'immediate capture/recapture only'}
 
 
 def main():
     p=argparse.ArgumentParser()
     p.add_argument('--games',default='benchmarks/results/2026-10-05_v019-mate-assist-50ms-100games-run2.json')
     p.add_argument('--limit',type=int,default=12)
-    p.add_argument('--output',default='benchmarks/results/2026-10-06_real-hand-drop-screen.json')
+    p.add_argument('--output',default='benchmarks/results/2026-10-06_broad-hand-drop-screen.json')
     args=p.parse_args()
     source=ROOT/args.games; games=json.loads(source.read_text())['details']
     bank=[]; seen=set(); examined=0
@@ -27,25 +71,28 @@ def main():
         for ply,played in enumerate(game['moves']):
             examined+=1
             if ply>=30 and board.pieces_in_hand[board.turn] and board.sfen() not in seen:
-                targets=0; enemy=1-board.turn; king=0
+                king=0
                 for square in shogi.SQUARES:
                     piece=board.piece_at(square)
-                    if piece and piece.color==enemy and (VALUES[piece.piece_type]>=500 or piece.piece_type==shogi.KING):
-                        targets |= 1<<square
-                        if piece.piece_type==shogi.KING: king=1<<square
+                    if piece and piece.color!=board.turn and piece.piece_type==shogi.KING:
+                        king=1<<square
                 candidates=[]
                 for move in board.legal_moves:
                     if not move.drop_piece_type: continue
-                    attack=board.attacks_from(move.drop_piece_type,move.to_square,board.occupied,board.turn)&targets
-                    if attack.bit_count()<2 or board.is_attacked_by(enemy,move.to_square): continue
-                    candidates.append((bool(attack&king),attack.bit_count(),move.usi(),
-                                       [shogi.SQUARE_NAMES[s] for s in shogi.SQUARES if attack&(1<<s)]))
+                    attack,rear=drop_targets(board,move)
+                    if (attack|rear).bit_count()<2: continue
+                    safety=immediate_capture_screen(board,move)
+                    if not safety['accepted']: continue
+                    candidates.append((bool(attack&king),(attack|rear).bit_count(),move.usi(),
+                                       [shogi.SQUARE_NAMES[s] for s in shogi.SQUARES if attack&(1<<s)],
+                                       [shogi.SQUARE_NAMES[s] for s in shogi.SQUARES if rear&(1<<s)],safety))
                 if candidates:
                     candidates.sort(key=lambda c:(-c[0],-c[1],c[2]))
-                    _,_,target,attacked=candidates[0]
+                    _,_,target,attacked,rear,safety=candidates[0]
                     bank.append({'game_index':game_index,'ply':ply,'sfen':board.sfen(),
                                  'history':game['moves'][:ply],'played':played,'target':target,
-                                 'attacked_squares':attacked,'royal_fork':candidates[0][0]})
+                                 'attacked_squares':attacked,'rear_squares':rear,
+                                 'immediate_capture_screen':safety,'royal_fork':candidates[0][0]})
                     seen.add(board.sfen())
             board.push_usi(played)
             if len(bank)>=args.limit: break
@@ -88,7 +135,8 @@ def main():
                     'screened_position_occurrences':examined,'limit':args.limit,
                     'conditions':{'book':False,'experience':False,'history':'fresh SFEN for tactical isolation; original history retained',
                                   'selection':'first qualifying positions in source order; not a random or exhaustive sample',
-                                  'candidates':'geometric forks not immediately attacked; not certified optimal'},'rows':rows}
+                                  'target_kinds':'all enemy pieces including pawn, lance, knight and promoted pieces',
+                                  'candidates':'forks or sliding rear-target pressure; non-losing immediate capture/recapture screen; not certified safe or optimal'},'rows':rows}
             (ROOT/args.output).write_text(json.dumps(output,ensure_ascii=False,indent=2)+'\n')
     finally: engine.close()
 

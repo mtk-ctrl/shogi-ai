@@ -238,5 +238,213 @@
     "target": "N*5e",
     "expected": "illegal",
     "note": "桂の両取りは自玉への飛車の王手を解消せず、合法候補にならない。"
+  },
+  {
+    "id": "small_s_fork_pawns",
+    "motif": "小駒への両取り",
+    "sfen": "8k/9/9/3p1p3/9/4G4/9/P8/KP7 b S 1",
+    "target": "S*5e",
+    "expected": "gain",
+    "note": "銀を支えて打ち、歩・香・桂や異種の小駒を二つ狙う。大駒がない形でも検討する。"
+  },
+  {
+    "id": "small_s_fork_pawns_white",
+    "motif": "小駒への両取り",
+    "sfen": "7pk/8p/9/4g4/9/3P1P3/9/9/K8 w s 1",
+    "target": "S*5e",
+    "expected": "gain",
+    "note": "銀を支えて打ち、歩・香・桂や異種の小駒を二つ狙う。大駒がない形でも検討する。"
+  },
+  {
+    "id": "small_s_fork_lances",
+    "motif": "小駒への両取り",
+    "sfen": "8k/9/9/3l1l3/9/4G4/9/P8/KP7 b S 1",
+    "target": "S*5e",
+    "expected": "gain",
+    "note": "銀を支えて打ち、歩・香・桂や異種の小駒を二つ狙う。大駒がない形でも検討する。"
+  },
+  {
+    "id": "small_s_fork_lances_white",
+    "motif": "小駒への両取り",
+    "sfen": "7pk/8p/9/4g4/9/3L1L3/9/9/K8 w s 1",
+    "target": "S*5e",
+    "expected": "gain",
+    "note": "銀を支えて打ち、歩・香・桂や異種の小駒を二つ狙う。大駒がない形でも検討する。"
+  },
+  {
+    "id": "small_s_fork_knights",
+    "motif": "小駒への両取り",
+    "sfen": "8k/9/9/3n1n3/9/3G5/9/P8/KP7 b S 1",
+    "target": "S*5e",
+    "expected": "gain",
+    "note": "銀を支えて打ち、歩・香・桂や異種の小駒を二つ狙う。大駒がない形でも検討する。"
+  },
+  {
+    "id": "small_s_fork_knights_white",
+    "motif": "小駒への両取り",
+    "sfen": "7pk/8p/9/5g3/9/3N1N3/9/9/K8 w s 1",
+    "target": "S*5e",
+    "expected": "gain",
+    "note": "銀を支えて打ち、歩・香・桂や異種の小駒を二つ狙う。大駒がない形でも検討する。"
+  },
+  {
+    "id": "small_s_fork_pawn_knight",
+    "motif": "小駒への両取り",
+    "sfen": "8k/9/9/3n1p3/9/3G5/9/P8/KP7 b S 1",
+    "target": "S*5e",
+    "expected": "gain",
+    "note": "銀を支えて打ち、歩・香・桂や異種の小駒を二つ狙う。大駒がない形でも検討する。"
+  },
+  {
+    "id": "small_s_fork_pawn_knight_white",
+    "motif": "小駒への両取り",
+    "sfen": "7pk/8p/9/5g3/9/3P1N3/9/9/K8 w s 1",
+    "target": "S*5e",
+    "expected": "gain",
+    "note": "銀を支えて打ち、歩・香・桂や異種の小駒を二つ狙う。大駒がない形でも検討する。"
+  },
+  {
+    "id": "small_g_fork_pawns",
+    "motif": "小駒への両取り",
+    "sfen": "8k/9/9/3p1p3/9/4G4/9/P8/KP7 b G 1",
+    "target": "G*5e",
+    "expected": "gain",
+    "note": "金を支えて打ち、歩・香・桂や異種の小駒を二つ狙う。大駒がない形でも検討する。"
+  },
+  {
+    "id": "small_g_fork_pawns_white",
+    "motif": "小駒への両取り",
+    "sfen": "7pk/8p/9/4g4/9/3P1P3/9/9/K8 w g 1",
+    "target": "G*5e",
+    "expected": "gain",
+    "note": "金を支えて打ち、歩・香・桂や異種の小駒を二つ狙う。大駒がない形でも検討する。"
+  },
+  {
+    "id": "small_g_fork_lances",
+    "motif": "小駒への両取り",
+    "sfen": "8k/9/9/3l1l3/9/4G4/9/P8/KP7 b G 1",
+    "target": "G*5e",
+    "expected": "gain",
+    "note": "金を支えて打ち、歩・香・桂や異種の小駒を二つ狙う。大駒がない形でも検討する。"
+  },
+  {
+    "id": "small_g_fork_lances_white",
+    "motif": "小駒への両取り",
+    "sfen": "7pk/8p/9/4g4/9/3L1L3/9/9/K8 w g 1",
+    "target": "G*5e",
+    "expected": "gain",
+    "note": "金を支えて打ち、歩・香・桂や異種の小駒を二つ狙う。大駒がない形でも検討する。"
+  },
+  {
+    "id": "small_g_fork_knights",
+    "motif": "小駒への両取り",
+    "sfen": "8k/9/9/3n1n3/9/3G5/9/P8/KP7 b G 1",
+    "target": "G*5e",
+    "expected": "gain",
+    "note": "金を支えて打ち、歩・香・桂や異種の小駒を二つ狙う。大駒がない形でも検討する。"
+  },
+  {
+    "id": "small_g_fork_knights_white",
+    "motif": "小駒への両取り",
+    "sfen": "7pk/8p/9/5g3/9/3N1N3/9/9/K8 w g 1",
+    "target": "G*5e",
+    "expected": "gain",
+    "note": "金を支えて打ち、歩・香・桂や異種の小駒を二つ狙う。大駒がない形でも検討する。"
+  },
+  {
+    "id": "small_g_fork_pawn_knight",
+    "motif": "小駒への両取り",
+    "sfen": "8k/9/9/3n1p3/9/3G5/9/P8/KP7 b G 1",
+    "target": "G*5e",
+    "expected": "gain",
+    "note": "金を支えて打ち、歩・香・桂や異種の小駒を二つ狙う。大駒がない形でも検討する。"
+  },
+  {
+    "id": "small_g_fork_pawn_knight_white",
+    "motif": "小駒への両取り",
+    "sfen": "7pk/8p/9/5g3/9/3P1N3/9/9/K8 w g 1",
+    "target": "G*5e",
+    "expected": "gain",
+    "note": "金を支えて打ち、歩・香・桂や異種の小駒を二つ狙う。大駒がない形でも検討する。"
+  },
+  {
+    "id": "small_lance_silver_gold",
+    "motif": "小駒の串刺し",
+    "sfen": "8k/9/4g4/9/4s4/9/9/P8/KP3G3 b L 1",
+    "target": "L*5h",
+    "expected": "gain",
+    "note": "支えた香で前の銀と後ろの金を狙う。玉・飛車・角が串刺しの対象にない。"
+  },
+  {
+    "id": "small_lance_silver_gold_white",
+    "motif": "小駒の串刺し",
+    "sfen": "3g3pk/8p/9/9/4S4/9/4G4/9/K8 w l 1",
+    "target": "L*5b",
+    "expected": "gain",
+    "note": "支えた香で前の銀と後ろの金を狙う。玉・飛車・角が串刺しの対象にない。"
+  },
+  {
+    "id": "small_lance_gold_knight",
+    "motif": "小駒の串刺し",
+    "sfen": "8k/9/4n4/9/4g4/9/9/P8/KP3G3 b L 1",
+    "target": "L*5h",
+    "expected": "gain",
+    "note": "金の背後に桂がいる香打ち。前の駒が逃げた後の当たりまで調べる。"
+  },
+  {
+    "id": "small_lance_gold_knight_white",
+    "motif": "小駒の串刺し",
+    "sfen": "3g3pk/8p/9/9/4G4/9/4N4/9/K8 w l 1",
+    "target": "L*5b",
+    "expected": "gain",
+    "note": "金の背後に桂がいる香打ち。前の駒が逃げた後の当たりまで調べる。"
+  },
+  {
+    "id": "small_lance_pawn_silver_defense",
+    "motif": "支え直せる串刺し",
+    "sfen": "8k/9/4s4/9/4p4/9/9/P8/KP3G3 b L 1",
+    "target": "L*5h",
+    "expected": "observe",
+    "note": "歩と銀を縦に狙うが、銀で歩を支え直せる。圧力候補として残し、即時の駒得を強制しない。"
+  },
+  {
+    "id": "small_lance_pawn_silver_defense_white",
+    "motif": "支え直せる串刺し",
+    "sfen": "3g3pk/8p/9/9/4P4/9/4S4/9/K8 w l 1",
+    "target": "L*5b",
+    "expected": "observe",
+    "note": "歩と銀を縦に狙うが、銀で歩を支え直せる。圧力候補として残し、即時の駒得を強制しない。"
+  },
+  {
+    "id": "small_lance_knight_pawn_defense",
+    "motif": "支え直せる串刺し",
+    "sfen": "8k/9/4p4/9/4n4/9/9/P8/KP3G3 b L 1",
+    "target": "L*5h",
+    "expected": "observe",
+    "note": "桂と歩への香打ち。歩を進めて桂を支えられるので、形だけで駒得確定としない。"
+  },
+  {
+    "id": "small_lance_knight_pawn_defense_white",
+    "motif": "支え直せる串刺し",
+    "sfen": "3g3pk/8p/9/9/4N4/9/4P4/9/K8 w l 1",
+    "target": "L*5b",
+    "expected": "observe",
+    "note": "桂と歩への香打ち。歩を進めて桂を支えられるので、形だけで駒得確定としない。"
+  },
+  {
+    "id": "small_unprotected_silver_pawns",
+    "motif": "小駒への両取りの対照",
+    "sfen": "8k/9/9/3ppp3/9/9/9/P8/KP7 b S 1",
+    "target": "S*5e",
+    "expected": "avoid",
+    "note": "歩二枚への当たりでも、別の歩に銀をただで取られる打ち手は除く。"
+  },
+  {
+    "id": "small_unprotected_silver_pawns_white",
+    "motif": "小駒への両取りの対照",
+    "sfen": "7pk/8p/9/9/9/3PPP3/9/9/K8 w s 1",
+    "target": "S*5e",
+    "expected": "avoid",
+    "note": "歩二枚への当たりでも、別の歩に銀をただで取られる打ち手は除く。"
   }
 ]

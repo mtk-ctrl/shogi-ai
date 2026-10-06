@@ -93,6 +93,33 @@ def fixtures():
         make_case('fork_ignores_check','王手放置', {'9i':'K','6c':'k','4c':'r','9a':'r'}, 'N','N*5e','illegal',
                   '桂の両取りは自玉への飛車の王手を解消せず、合法候補にならない。'),
     ]
+    # Small targets matter too. A supporter must not itself be immediately
+    # capturable by either fork target; knight forks need a different support.
+    for hand, label in (('S','銀'), ('G','金')):
+        for name, left, right, support in (
+                ('pawns','p','p','5f'), ('lances','l','l','5f'),
+                ('knights','n','n','6f'), ('pawn_knight','p','n','6f')):
+            rows.append(make_case('small_'+hand.lower()+'_fork_'+name,'小駒への両取り',
+                        dict(base, **{'4d':left,'6d':right,support:'G'}),
+                        hand,hand+'*5e','gain',
+                        label+'を支えて打ち、歩・香・桂や異種の小駒を二つ狙う。大駒がない形でも検討する。'))
+    rows.extend([
+        make_case('small_lance_silver_gold','小駒の串刺し',
+                  dict(base, **{'5e':'s','5c':'g','4i':'G'}), 'L','L*5h','gain',
+                  '支えた香で前の銀と後ろの金を狙う。玉・飛車・角が串刺しの対象にない。'),
+        make_case('small_lance_gold_knight','小駒の串刺し',
+                  dict(base, **{'5e':'g','5c':'n','4i':'G'}), 'L','L*5h','gain',
+                  '金の背後に桂がいる香打ち。前の駒が逃げた後の当たりまで調べる。'),
+        make_case('small_lance_pawn_silver_defense','支え直せる串刺し',
+                  dict(base, **{'5e':'p','5c':'s','4i':'G'}), 'L','L*5h','observe',
+                  '歩と銀を縦に狙うが、銀で歩を支え直せる。圧力候補として残し、即時の駒得を強制しない。'),
+        make_case('small_lance_knight_pawn_defense','支え直せる串刺し',
+                  dict(base, **{'5e':'n','5c':'p','4i':'G'}), 'L','L*5h','observe',
+                  '桂と歩への香打ち。歩を進めて桂を支えられるので、形だけで駒得確定としない。'),
+        make_case('small_unprotected_silver_pawns','小駒への両取りの対照',
+                  dict(base, **{'4d':'p','6d':'p','5d':'p'}), 'S','S*5e','avoid',
+                  '歩二枚への当たりでも、別の歩に銀をただで取られる打ち手は除く。'),
+    ])
     return [item for case in rows for item in (case, rotated(case))]
 
 
