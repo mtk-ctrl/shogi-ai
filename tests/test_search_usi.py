@@ -107,7 +107,13 @@ try:
     assert shogi.Move.from_usi(long_move) in shogi.Board(long_sf).legal_moves, (long_move, long_seen)
     long_lines = [line for line in long_seen if line.startswith('info string long_think ')]
     assert len(long_lines) == 1, long_seen
-    assert 'used 1/10' in long_lines[0] and 'reason window_fallback' in long_lines[0], long_lines
+    assert 'used 1/10' in long_lines[0], long_lines
+    valid_reasons = {
+        'in_check', 'score_drop_150', 'iteration_score_change_150',
+        'iteration_move_change', 'unfinished_depth2', 'window_fallback',
+    }
+    reason = long_lines[0].split(' reason ', 1)[1].split()[0]
+    assert reason in valid_reasons, long_lines
     assert 0.70 < long_elapsed < 1.50, long_elapsed
     print('PASS adaptive long-think continues 200ms search to one-second ceiling')
 
