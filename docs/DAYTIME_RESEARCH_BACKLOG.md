@@ -8,6 +8,30 @@
 
 ## Engine — 評価システム
 
+### E0 評価関数v2統合【最優先】
+
+目的:
+- 「何を先に読むか」ではなく「読みがそこで止まっても何を良い局面とみなすか」を広げる。
+- Materialを含む各概念を同じ総合評価で比較し、詰み・勝敗以外に恒久的な絶対優先軸を置かない。
+- 現行の`positional_cap=300`が位置評価全体を過度に抑えていないか検証する。
+
+原則:
+- 終局・証明詰み > すべての通常評価。
+- 非終局ではMaterial / Safety / Pressure / Danger / Influence / Coordination / Mobility / Potential Mobility / Space / Flexibility / Hand Potential / Threat等を重み付きで統合する。
+- 「読み切れなくても価値が残る」概念は静的評価へ入れる。
+- move orderingは探索効率化であり、局面評価の代用品にしない。
+- qsearch・探索延長はhorizon対策であり、featureの価値付けの代用品にしない。
+- featureごとのsoft capは許容するが、全非Material項目を一律に3歩分へ押し込むglobal capは再検証する。
+
+最初の検証:
+1. 現行4特徴のまま`positional_cap`を300 / 450 / 600 / 実質無制限で比較し、飽和率・固定局面・固定探索量・200ms対局を見る。
+2. 評価内訳にraw / weighted / clipped / totalを残し、どのfeatureがcapで消えたか計測する。
+3. 評価変更の純粋比較ではAdaptiveLongThink OFFの200msも併用し、最終製品条件としてONでも再確認する。
+4. その後、持ち駒両取り・串刺しを`Threat`として静的評価へ導入する。
+5. Influence / Potential Mobilityは旧cap下の成績を最終結論とせず、v2統合後に再評価する。
+
+正本: `docs/32_評価関数v2統合設計.md`
+
 ### E1 Influence（効き・盤面支配）
 
 検討事項:
