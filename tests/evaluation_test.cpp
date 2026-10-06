@@ -122,7 +122,7 @@ int main(){try{
     v2.threat_weight=25;
     v2.positional_cap=1200;
 
-    auto fork=snap({{"9i","K"},{"1a","k"},{"5e","S"},{"4d","r"},{"6d","g"}});
+    auto fork=snap({{"9i","K"},{"1a","k"},{"5e","S"},{"4d","r"},{"6d","n"}});
     auto fork_eval=evaluate(fork,v2);
     require(fork_eval.raw[0].v2.threat>0&&fork_eval.terms[8]>0,
             "unresolved fork has static Threat value before material is won");
