@@ -87,6 +87,30 @@ try:
         if command in ('go movetime 0', 'go nodes 1'):
             assert infos[-1][infos[-1].index('depth')+1] == '0' and 'score' not in infos[-1], infos
     print('PASS real movetime/byoyomi/zero-time/node limits and legal fallback')
+
+    # Adopted time allocation: a 200ms fixed request may continue the SAME
+    # iterative search up to ~1s, at most ten times per game. Use move number 54
+    # so the first reserved coupon window reaches its fallback deterministically.
+    long_sf = '3lkl3/3p1p3/9/9/9/9/9/5R3/K8 b g 54'
+    send('setoption name AdaptiveLongThink value false')
+    _, _, plain_elapsed = search(long_sf, 'go movetime 200', 2)
+    assert plain_elapsed < 0.55, plain_elapsed
+
+    send('usinewgame')
+    send('setoption name AdaptiveLongThink value true')
+    send('position sfen ' + long_sf)
+    long_started = time.monotonic()
+    send('go movetime 200')
+    long_best, long_seen = until('bestmove ', 2)
+    long_elapsed = time.monotonic() - long_started
+    long_move = long_best.split()[1]
+    assert shogi.Move.from_usi(long_move) in shogi.Board(long_sf).legal_moves, (long_move, long_seen)
+    long_lines = [line for line in long_seen if line.startswith('info string long_think ')]
+    assert len(long_lines) == 1, long_seen
+    assert 'used 1/10' in long_lines[0] and 'reason window_fallback' in long_lines[0], long_lines
+    assert 0.70 < long_elapsed < 1.50, long_elapsed
+    print('PASS adaptive long-think continues 200ms search to one-second ceiling')
+
     send('position startpos'); send('go infinite')
     send('isready'); until('readyok', 1)
     no_best(); started = time.monotonic(); send('stop'); until('bestmove ', 1)
