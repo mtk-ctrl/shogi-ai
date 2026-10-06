@@ -1,0 +1,85 @@
+"""Coarse-to-holdout Evaluation-v2 tuning against the adopted evaluator.
+
+The goal is not to discover a final universal optimum in one run. It is to
+construct one coherent multi-axis challenger, select its rough scale without
+peeking at the final seeds, and then ask whether it can beat the adopted
+material-dominant model at 200ms.
+"""
+import argparse,json,subprocess,sys
+from pathlib import Path
+
+BASELINE={
+    'EvalV2':False,
+    'AdaptiveLongThink':False,
+}
+COMMON={
+    'EvalV2':True,
+    'AdaptiveLongThink':False,
+}
+CANDIDATES=[
+    ('A_balanced',{
+        'EvalMaterialWeight':100,'EvalSafety':75,'EvalPressure':150,'EvalActivity':150,'EvalDanger':175,
+        'EvalInfluence':75,'EvalPotential':75,'EvalCoordination':50,'EvalHandPotential':80,'EvalThreat':25,
+        'EvalPositionalCap':900}),
+    ('B_positional',{
+        'EvalMaterialWeight':90,'EvalSafety':100,'EvalPressure':175,'EvalActivity':175,'EvalDanger':180,
+        'EvalInfluence':100,'EvalPotential':100,'EvalCoordination':75,'EvalHandPotential':100,'EvalThreat':25,
+        'EvalPositionalCap':1200}),
+    ('C_tactical',{
+        'EvalMaterialWeight':100,'EvalSafety':75,'EvalPressure':175,'EvalActivity':150,'EvalDanger':175,
+        'EvalInfluence':60,'EvalPotential':50,'EvalCoordination':50,'EvalHandPotential':60,'EvalThreat':35,
+        'EvalPositionalCap':1000}),
+    ('D_conservative',{
+        'EvalMaterialWeight':100,'EvalSafety':60,'EvalPressure':150,'EvalActivity':150,'EvalDanger':190,
+        'EvalInfluence':50,'EvalPotential':50,'EvalCoordination':40,'EvalHandPotential':50,'EvalThreat':20,
+        'EvalPositionalCap':600}),
+    ('E_broad',{
+        'EvalMaterialWeight':90,'EvalSafety':100,'EvalPressure':150,'EvalActivity':175,'EvalDanger':175,
+        'EvalInfluence':100,'EvalPotential':75,'EvalCoordination':75,'EvalHandPotential':80,'EvalThreat':30,
+        'EvalPositionalCap':1500}),
+]
+
+def run(engine,out,pairs,seed,a,b,adaptive=False):
+    a={**COMMON,**a,'AdaptiveLongThink':adaptive}
+    b={**BASELINE,**b,'AdaptiveLongThink':adaptive}
+    cmd=[sys.executable,'benchmarks/eval_v2_match.py','--engine',engine,
+         '--pairs',str(pairs),'--lanes','4','--seed',str(seed),'--max-plies','240',
+         '--go-command','go movetime 200','--output-dir',str(out),
+         '--options-a',json.dumps(a,separators=(',',':')),
+         '--options-b',json.dumps(b,separators=(',',':'))]
+    subprocess.run(cmd,check=True)
+    return json.loads((Path(out)/'summary.json').read_text())
+
+def main():
+    p=argparse.ArgumentParser();p.add_argument('--engine',required=True);p.add_argument('--output-dir',required=True)
+    args=p.parse_args();root=Path(args.output_dir);root.mkdir(parents=True,exist_ok=True)
+    plan={'baseline':BASELINE,'candidates':[{'id':i,'options':o} for i,o in CANDIDATES],
+          'screen_games_each':20,'holdout_games_each':40,'final_games':100,'product_games':100,
+          'movetime_ms':200,'selection':'screen top2, independent 40-game holdout, then 100-game confirmation'}
+    (root/'plan.json').write_text(json.dumps(plan,ensure_ascii=False,indent=2)+'\n')
+
+    screen=[]
+    for ident,opts in CANDIDATES:
+        s=run(args.engine,root/'screen'/ident,10,2026102000,opts,{})
+        screen.append({'id':ident,'options':opts,'score':s['score_a'],'wins':s['wins_a'],
+                       'draws':s['draws'],'losses':s['wins_b']})
+    screen.sort(key=lambda x:(x['score'],x['id']),reverse=True)
+    finalists=screen[:2]
+
+    holdout=[]
+    for identrow in finalists:
+        s=run(args.engine,root/'holdout'/identrow['id'],20,2026103000,identrow['options'],{})
+        holdout.append({**identrow,'holdout_score':s['score_a'],'holdout_wins':s['wins_a'],
+                        'holdout_draws':s['draws'],'holdout_losses':s['wins_b']})
+    holdout.sort(key=lambda x:(x['holdout_score'],x['score'],x['id']),reverse=True)
+    selected=holdout[0]
+
+    final=run(args.engine,root/'final',50,2026104000,selected['options'],{})
+    product=run(args.engine,root/'product',50,2026105000,selected['options'],{},adaptive=True)
+    summary={'screen':screen,'holdout':holdout,'selected':selected,
+             'final_200ms_no_longthink':final,'product_200ms_adaptive':product}
+    (root/'summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2)+'\n')
+    print(json.dumps(summary,ensure_ascii=False,indent=2))
+
+if __name__=='__main__':
+    main()

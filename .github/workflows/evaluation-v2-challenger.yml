@@ -1,0 +1,75 @@
+name: Evaluation V2 Challenger
+
+on:
+  push:
+    branches: [research/evaluation-v2-challenger]
+    paths:
+      - 'engine/strategy/evaluation*.h'
+      - 'engine/main.cpp'
+      - 'tests/evaluation_test.cpp'
+      - 'benchmarks/eval_v2_*.py'
+      - '.github/workflows/evaluation-v2-challenger.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: evaluation-v2-challenger-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: Build engine and evaluation tests
+        run: |
+          python3 scripts/build.py --output build/eval-v2-engine
+          python3 scripts/build.py --evaluation-test --output build/evaluation-test
+      - name: Correctness
+        run: build/evaluation-test
+      - name: Tune and validate at 200ms
+        run: |
+          python3 benchmarks/eval_v2_tune.py \
+            --engine build/eval-v2-engine \
+            --output-dir build/eval-v2-study
+      - name: Summary
+        if: always()
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          p=Path('build/eval-v2-study/summary.json')
+          if not p.exists():
+              print('Evaluation-v2 study did not reach summary generation.')
+          else:
+              s=json.loads(p.read_text())
+              print('## Evaluation-v2 vs adopted evaluator')
+              print('### Screen')
+              for r in s['screen']:
+                  print(f"- {r['id']}: {r['wins']}W {r['draws']}D {r['losses']}L = {r['score']:.1%}")
+              sel=s['selected']
+              print(f"### Selected: {sel['id']} (holdout {sel['holdout_score']:.1%})")
+              for key,label in [('final_200ms_no_longthink','200ms fixed'),
+                                ('product_200ms_adaptive','200ms + AdaptiveLongThink')]:
+                  r=s[key]
+                  print(f"- {label}: {r['wins_a']}W {r['draws']}D {r['wins_b']}L = {r['score_a']:.1%}")
+                  print(f"  - paired 95% approx: {r['paired_normal_approx_interval'][0]:.1%}–{r['paired_normal_approx_interval'][1]:.1%}")
+                  print(f"  - mean ms A/B: {r['timing_ms']['A']['mean']:.1f}/{r['timing_ms']['B']['mean']:.1f}")
+                  an=r['search']['A'].get('nodes_total',0);bn=r['search']['B'].get('nodes_total',0)
+                  if bn: print(f"  - nodes A/B: {an:,}/{bn:,} ({an/bn-1:+.1%})")
+                  print(f"  - illegal: {r['illegal_games']}")
+          PY
+      - name: Upload study
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-v2-challenger-${{ github.run_id }}
+          path: build/eval-v2-study
+          retention-days: 180
