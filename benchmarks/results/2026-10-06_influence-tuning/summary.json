@@ -1,0 +1,803 @@
+{
+  "plan": {
+    "engine_sha256": "012568238649b925acf5d75fae960fe806f6ff0dc209362b00850d19b3bfc888",
+    "anchor": {
+      "EvalInfluence": true,
+      "EvalInfluenceGuardWeight": 150,
+      "EvalInfluencePressureWeight": 150,
+      "EvalInfluenceLegacyMix": 0,
+      "EvalInfluenceReinforcementBonus": 50,
+      "EvalInfluenceTempoBonus": 50
+    },
+    "candidates": [
+      {
+        "id": "A_guard75_pressure150",
+        "options": {
+          "EvalInfluence": true,
+          "EvalInfluenceGuardWeight": 75,
+          "EvalInfluencePressureWeight": 150,
+          "EvalInfluenceLegacyMix": 0,
+          "EvalInfluenceReinforcementBonus": 50,
+          "EvalInfluenceTempoBonus": 50
+        },
+        "hypothesis": "reduce overweighted guard"
+      },
+      {
+        "id": "B_guard50_pressure250",
+        "options": {
+          "EvalInfluence": true,
+          "EvalInfluenceGuardWeight": 50,
+          "EvalInfluencePressureWeight": 250,
+          "EvalInfluenceLegacyMix": 0,
+          "EvalInfluenceReinforcementBonus": 50,
+          "EvalInfluenceTempoBonus": 50
+        },
+        "hypothesis": "restore observed attack/defence scale"
+      },
+      {
+        "id": "C_guard50_pressure75",
+        "options": {
+          "EvalInfluence": true,
+          "EvalInfluenceGuardWeight": 50,
+          "EvalInfluencePressureWeight": 75,
+          "EvalInfluenceLegacyMix": 0,
+          "EvalInfluenceReinforcementBonus": 50,
+          "EvalInfluenceTempoBonus": 50
+        },
+        "hypothesis": "reduce noisy new positional influence"
+      },
+      {
+        "id": "D_mix50_guard75_pressure200",
+        "options": {
+          "EvalInfluence": true,
+          "EvalInfluenceGuardWeight": 75,
+          "EvalInfluencePressureWeight": 200,
+          "EvalInfluenceLegacyMix": 50,
+          "EvalInfluenceReinforcementBonus": 50,
+          "EvalInfluenceTempoBonus": 50
+        },
+        "hypothesis": "retain half of existing shelter/escape-denial cues"
+      },
+      {
+        "id": "E_mix75_guard75_pressure200",
+        "options": {
+          "EvalInfluence": true,
+          "EvalInfluenceGuardWeight": 75,
+          "EvalInfluencePressureWeight": 200,
+          "EvalInfluenceLegacyMix": 75,
+          "EvalInfluenceReinforcementBonus": 50,
+          "EvalInfluenceTempoBonus": 50
+        },
+        "hypothesis": "retain more existing cues with a smaller new correction"
+      },
+      {
+        "id": "F_mix50_uncertainty_neutral",
+        "options": {
+          "EvalInfluence": true,
+          "EvalInfluenceGuardWeight": 75,
+          "EvalInfluencePressureWeight": 200,
+          "EvalInfluenceLegacyMix": 50,
+          "EvalInfluenceReinforcementBonus": 0,
+          "EvalInfluenceTempoBonus": 0
+        },
+        "hypothesis": "avoid scoring uncertain arrival/tempo approximations"
+      },
+      {
+        "id": "G_mix50_guard150_pressure150",
+        "options": {
+          "EvalInfluence": true,
+          "EvalInfluenceGuardWeight": 150,
+          "EvalInfluencePressureWeight": 150,
+          "EvalInfluenceLegacyMix": 50,
+          "EvalInfluenceReinforcementBonus": 50,
+          "EvalInfluenceTempoBonus": 50
+        },
+        "hypothesis": "blend old and first-candidate scales"
+      },
+      {
+        "id": "H_mix75_guard150_pressure150",
+        "options": {
+          "EvalInfluence": true,
+          "EvalInfluenceGuardWeight": 150,
+          "EvalInfluencePressureWeight": 150,
+          "EvalInfluenceLegacyMix": 75,
+          "EvalInfluenceReinforcementBonus": 50,
+          "EvalInfluenceTempoBonus": 50
+        },
+        "hypothesis": "small correction with original common new weights"
+      }
+    ],
+    "screen_games_per_candidate": 40,
+    "screen_seed": 2026100640,
+    "final_seed": 2026100740,
+    "on_holdout_seed": 2026100840,
+    "off_holdout_seed": 2026100940,
+    "final_games": 100,
+    "on_holdout_games": 100,
+    "off_holdout_games": 200,
+    "selection": "rank screen score vs anchor; tie by ID; top 2 head-to-head on independent seed; choose score>=0.5 as A else B",
+    "all_candidates_compute_same_influence_features": true,
+    "movetime_ms": 50,
+    "book": true,
+    "experience": false,
+    "mate_assist": true,
+    "max_plies": 200,
+    "no_parameter_changes_after_plan": true
+  },
+  "screen": [
+    {
+      "id": "G_mix50_guard150_pressure150",
+      "score": 0.625,
+      "wins": 20,
+      "losses": 10,
+      "draws": 10,
+      "illegal": 0
+    },
+    {
+      "id": "F_mix50_uncertainty_neutral",
+      "score": 0.5,
+      "wins": 15,
+      "losses": 15,
+      "draws": 10,
+      "illegal": 0
+    },
+    {
+      "id": "D_mix50_guard75_pressure200",
+      "score": 0.4875,
+      "wins": 16,
+      "losses": 17,
+      "draws": 7,
+      "illegal": 0
+    },
+    {
+      "id": "H_mix75_guard150_pressure150",
+      "score": 0.4875,
+      "wins": 13,
+      "losses": 14,
+      "draws": 13,
+      "illegal": 0
+    },
+    {
+      "id": "E_mix75_guard75_pressure200",
+      "score": 0.4625,
+      "wins": 14,
+      "losses": 17,
+      "draws": 9,
+      "illegal": 0
+    },
+    {
+      "id": "B_guard50_pressure250",
+      "score": 0.45,
+      "wins": 11,
+      "losses": 15,
+      "draws": 14,
+      "illegal": 0
+    },
+    {
+      "id": "A_guard75_pressure150",
+      "score": 0.4125,
+      "wins": 9,
+      "losses": 16,
+      "draws": 15,
+      "illegal": 0
+    },
+    {
+      "id": "C_guard50_pressure75",
+      "score": 0.4125,
+      "wins": 11,
+      "losses": 18,
+      "draws": 11,
+      "illegal": 0
+    }
+  ],
+  "finalists": [
+    "G_mix50_guard150_pressure150",
+    "F_mix50_uncertainty_neutral"
+  ],
+  "final": {
+    "config": {
+      "engine_sha256": "012568238649b925acf5d75fae960fe806f6ff0dc209362b00850d19b3bfc888",
+      "book_sha256": "a1f3628ae0ef766d895148a74ddad4a5d0e9fe21deedd25a279f6b7efc246edf",
+      "pairs": 50,
+      "seed": 2026100740,
+      "max_plies": 200,
+      "go_command": "go movetime 50",
+      "options_a": {
+        "ExperienceCache": false,
+        "OpeningBook": true,
+        "MateAssist": true,
+        "EvalInfluence": true,
+        "EvalInfluenceGuardWeight": 150,
+        "EvalInfluencePressureWeight": 150,
+        "EvalInfluenceLegacyMix": 50,
+        "EvalInfluenceReinforcementBonus": 50,
+        "EvalInfluenceTempoBonus": 50
+      },
+      "options_b": {
+        "ExperienceCache": false,
+        "OpeningBook": true,
+        "MateAssist": true,
+        "EvalInfluence": true,
+        "EvalInfluenceGuardWeight": 75,
+        "EvalInfluencePressureWeight": 200,
+        "EvalInfluenceLegacyMix": 50,
+        "EvalInfluenceReinforcementBonus": 0,
+        "EvalInfluenceTempoBonus": 0
+      },
+      "paired_seed_policy": "same Black seed and White seed within each swapped pair",
+      "lanes": 4,
+      "host": "Linux-6.18.44-x86_64-with-glibc2.39",
+      "logical_cpus": 9
+    },
+    "games": 100,
+    "wins_a": 30,
+    "draws": 27,
+    "wins_b": 43,
+    "score_a": 0.435,
+    "paired_normal_approx_interval": [
+      0.3585620513095753,
+      0.5114379486904247
+    ],
+    "illegal_games": 0,
+    "reasons": {
+      "checkmate": 73,
+      "fourfold_repetition": 11,
+      "move_limit": 16
+    },
+    "on_by_color": {
+      "True": {
+        "wins": 18,
+        "losses": 23,
+        "draws": 9
+      },
+      "False": {
+        "wins": 12,
+        "losses": 20,
+        "draws": 18
+      }
+    },
+    "average_plies": 124.62,
+    "timing_ms": {
+      "A": {
+        "moves": 6230,
+        "mean": 41.42446811749899,
+        "max": 211.64862400019047
+      },
+      "B": {
+        "moves": 6232,
+        "mean": 41.193419200738376,
+        "max": 216.19493500020326
+      }
+    },
+    "search": {
+      "A": {
+        "samples": 6178,
+        "nodes_total": 6241483,
+        "cutoffs_total": 60709,
+        "min_cutoffs_total": 38309,
+        "max_cutoffs_total": 22400,
+        "leaves_total": 5478107,
+        "terminals_total": 6276,
+        "ply1_total": 267503,
+        "ply2_total": 521111,
+        "ply3_total": 709496,
+        "order_calls_total": 765051,
+        "ordered_moves_total": 8309013,
+        "tt_probes_total": 74763,
+        "tt_hits_total": 0,
+        "tt_exact_hits_total": 0,
+        "tt_bound_cutoffs_total": 0,
+        "tt_stores_total": 71300,
+        "tt_replacements_total": 3,
+        "tt_move_first_total": 0,
+        "tt_disabled_repetition_total": 0,
+        "experience_probes_total": 0,
+        "experience_hits_total": 0,
+        "experience_move_first_total": 0,
+        "experience_stores_total": 0,
+        "experience_replacements_total": 0,
+        "experience_disabled_repetition_total": 0,
+        "qnodes_total": 6165669,
+        "qcutoffs_total": 3838720,
+        "qlimit_leaves_total": 852328
+      },
+      "B": {
+        "samples": 6154,
+        "nodes_total": 6274595,
+        "cutoffs_total": 61844,
+        "min_cutoffs_total": 40153,
+        "max_cutoffs_total": 21691,
+        "leaves_total": 5509356,
+        "terminals_total": 5510,
+        "ply1_total": 281261,
+        "ply2_total": 502199,
+        "ply3_total": 734152,
+        "order_calls_total": 767732,
+        "ordered_moves_total": 8354882,
+        "tt_probes_total": 76106,
+        "tt_hits_total": 0,
+        "tt_exact_hits_total": 0,
+        "tt_bound_cutoffs_total": 0,
+        "tt_stores_total": 72637,
+        "tt_replacements_total": 1,
+        "tt_move_first_total": 0,
+        "tt_disabled_repetition_total": 0,
+        "experience_probes_total": 0,
+        "experience_hits_total": 0,
+        "experience_move_first_total": 0,
+        "experience_stores_total": 0,
+        "experience_replacements_total": 0,
+        "experience_disabled_repetition_total": 0,
+        "qnodes_total": 6197526,
+        "qcutoffs_total": 3856836,
+        "qlimit_leaves_total": 861891
+      }
+    },
+    "elapsed_seconds": 151.99394700599987
+  },
+  "selected": {
+    "id": "F_mix50_uncertainty_neutral",
+    "options": {
+      "EvalInfluence": true,
+      "EvalInfluenceGuardWeight": 75,
+      "EvalInfluencePressureWeight": 200,
+      "EvalInfluenceLegacyMix": 50,
+      "EvalInfluenceReinforcementBonus": 0,
+      "EvalInfluenceTempoBonus": 0
+    },
+    "hypothesis": "avoid scoring uncertain arrival/tempo approximations"
+  },
+  "on_holdout": {
+    "config": {
+      "engine_sha256": "012568238649b925acf5d75fae960fe806f6ff0dc209362b00850d19b3bfc888",
+      "book_sha256": "a1f3628ae0ef766d895148a74ddad4a5d0e9fe21deedd25a279f6b7efc246edf",
+      "pairs": 50,
+      "seed": 2026100840,
+      "max_plies": 200,
+      "go_command": "go movetime 50",
+      "options_a": {
+        "ExperienceCache": false,
+        "OpeningBook": true,
+        "MateAssist": true,
+        "EvalInfluence": true,
+        "EvalInfluenceGuardWeight": 75,
+        "EvalInfluencePressureWeight": 200,
+        "EvalInfluenceLegacyMix": 50,
+        "EvalInfluenceReinforcementBonus": 0,
+        "EvalInfluenceTempoBonus": 0
+      },
+      "options_b": {
+        "ExperienceCache": false,
+        "OpeningBook": true,
+        "MateAssist": true,
+        "EvalInfluence": true,
+        "EvalInfluenceGuardWeight": 150,
+        "EvalInfluencePressureWeight": 150,
+        "EvalInfluenceLegacyMix": 0,
+        "EvalInfluenceReinforcementBonus": 50,
+        "EvalInfluenceTempoBonus": 50
+      },
+      "paired_seed_policy": "same Black seed and White seed within each swapped pair",
+      "lanes": 4,
+      "host": "Linux-6.18.44-x86_64-with-glibc2.39",
+      "logical_cpus": 9
+    },
+    "games": 100,
+    "wins_a": 34,
+    "draws": 23,
+    "wins_b": 43,
+    "score_a": 0.455,
+    "paired_normal_approx_interval": [
+      0.37871605673537845,
+      0.5312839432646216
+    ],
+    "illegal_games": 0,
+    "reasons": {
+      "checkmate": 77,
+      "fourfold_repetition": 5,
+      "move_limit": 18
+    },
+    "on_by_color": {
+      "True": {
+        "wins": 22,
+        "losses": 16,
+        "draws": 12
+      },
+      "False": {
+        "wins": 12,
+        "losses": 27,
+        "draws": 11
+      }
+    },
+    "average_plies": 131.25,
+    "timing_ms": {
+      "A": {
+        "moves": 6559,
+        "mean": 41.76718800975426,
+        "max": 207.2332899997491
+      },
+      "B": {
+        "moves": 6566,
+        "mean": 41.65025518139242,
+        "max": 178.38934900009917
+      }
+    },
+    "search": {
+      "A": {
+        "samples": 6499,
+        "nodes_total": 6259302,
+        "cutoffs_total": 57440,
+        "min_cutoffs_total": 40257,
+        "max_cutoffs_total": 17183,
+        "leaves_total": 5511348,
+        "terminals_total": 5162,
+        "ply1_total": 317033,
+        "ply2_total": 550836,
+        "ply3_total": 725269,
+        "order_calls_total": 751160,
+        "ordered_moves_total": 8341570,
+        "tt_probes_total": 71283,
+        "tt_hits_total": 0,
+        "tt_exact_hits_total": 0,
+        "tt_bound_cutoffs_total": 0,
+        "tt_stores_total": 67612,
+        "tt_replacements_total": 4,
+        "tt_move_first_total": 0,
+        "tt_disabled_repetition_total": 0,
+        "experience_probes_total": 0,
+        "experience_hits_total": 0,
+        "experience_move_first_total": 0,
+        "experience_stores_total": 0,
+        "experience_replacements_total": 0,
+        "experience_disabled_repetition_total": 0,
+        "qnodes_total": 6186921,
+        "qcutoffs_total": 3910698,
+        "qlimit_leaves_total": 785046
+      },
+      "B": {
+        "samples": 6490,
+        "nodes_total": 6328261,
+        "cutoffs_total": 58658,
+        "min_cutoffs_total": 40775,
+        "max_cutoffs_total": 17883,
+        "leaves_total": 5570976,
+        "terminals_total": 5525,
+        "ply1_total": 318274,
+        "ply2_total": 564261,
+        "ply3_total": 749496,
+        "order_calls_total": 760131,
+        "ordered_moves_total": 8223889,
+        "tt_probes_total": 72724,
+        "tt_hits_total": 0,
+        "tt_exact_hits_total": 0,
+        "tt_bound_cutoffs_total": 0,
+        "tt_stores_total": 69082,
+        "tt_replacements_total": 6,
+        "tt_move_first_total": 0,
+        "tt_disabled_repetition_total": 0,
+        "experience_probes_total": 0,
+        "experience_hits_total": 0,
+        "experience_move_first_total": 0,
+        "experience_stores_total": 0,
+        "experience_replacements_total": 0,
+        "experience_disabled_repetition_total": 0,
+        "qnodes_total": 6254456,
+        "qcutoffs_total": 3975975,
+        "qlimit_leaves_total": 779637
+      }
+    },
+    "elapsed_seconds": 162.31487561599988
+  },
+  "off_holdout": {
+    "config": {
+      "engine_sha256": "012568238649b925acf5d75fae960fe806f6ff0dc209362b00850d19b3bfc888",
+      "book_sha256": "a1f3628ae0ef766d895148a74ddad4a5d0e9fe21deedd25a279f6b7efc246edf",
+      "pairs": 100,
+      "seed": 2026100940,
+      "max_plies": 200,
+      "go_command": "go movetime 50",
+      "options_a": {
+        "ExperienceCache": false,
+        "OpeningBook": true,
+        "MateAssist": true,
+        "EvalInfluence": true,
+        "EvalInfluenceGuardWeight": 75,
+        "EvalInfluencePressureWeight": 200,
+        "EvalInfluenceLegacyMix": 50,
+        "EvalInfluenceReinforcementBonus": 0,
+        "EvalInfluenceTempoBonus": 0
+      },
+      "options_b": {
+        "ExperienceCache": false,
+        "OpeningBook": true,
+        "MateAssist": true,
+        "EvalInfluence": false
+      },
+      "paired_seed_policy": "same Black seed and White seed within each swapped pair",
+      "lanes": 4,
+      "host": "Linux-6.18.44-x86_64-with-glibc2.39",
+      "logical_cpus": 9
+    },
+    "games": 200,
+    "wins_a": 78,
+    "draws": 46,
+    "wins_b": 76,
+    "score_a": 0.505,
+    "paired_normal_approx_interval": [
+      0.45061399095541227,
+      0.5593860090445878
+    ],
+    "illegal_games": 0,
+    "reasons": {
+      "checkmate": 154,
+      "move_limit": 26,
+      "fourfold_repetition": 20
+    },
+    "on_by_color": {
+      "True": {
+        "wins": 44,
+        "losses": 34,
+        "draws": 22
+      },
+      "False": {
+        "wins": 34,
+        "losses": 42,
+        "draws": 24
+      }
+    },
+    "average_plies": 124.525,
+    "timing_ms": {
+      "A": {
+        "moves": 12453,
+        "mean": 41.56652248654623,
+        "max": 267.80215700000554
+      },
+      "B": {
+        "moves": 12452,
+        "mean": 41.60293005822137,
+        "max": 335.87174500007677
+      }
+    },
+    "search": {
+      "A": {
+        "samples": 12320,
+        "nodes_total": 11592887,
+        "cutoffs_total": 93554,
+        "min_cutoffs_total": 63599,
+        "max_cutoffs_total": 29955,
+        "leaves_total": 10200372,
+        "terminals_total": 10503,
+        "ply1_total": 535365,
+        "ply2_total": 1020369,
+        "ply3_total": 1242659,
+        "order_calls_total": 1397558,
+        "ordered_moves_total": 14818769,
+        "tt_probes_total": 117883,
+        "tt_hits_total": 0,
+        "tt_exact_hits_total": 0,
+        "tt_bound_cutoffs_total": 0,
+        "tt_stores_total": 111256,
+        "tt_replacements_total": 4,
+        "tt_move_first_total": 0,
+        "tt_disabled_repetition_total": 0,
+        "experience_probes_total": 0,
+        "experience_hits_total": 0,
+        "experience_move_first_total": 0,
+        "experience_stores_total": 0,
+        "experience_replacements_total": 0,
+        "experience_disabled_repetition_total": 0,
+        "qnodes_total": 11472990,
+        "qcutoffs_total": 7173830,
+        "qlimit_leaves_total": 1568918
+      },
+      "B": {
+        "samples": 12318,
+        "nodes_total": 15333186,
+        "cutoffs_total": 150360,
+        "min_cutoffs_total": 98217,
+        "max_cutoffs_total": 52143,
+        "leaves_total": 13456585,
+        "terminals_total": 15275,
+        "ply1_total": 652555,
+        "ply2_total": 1109236,
+        "ply3_total": 1807122,
+        "order_calls_total": 1877012,
+        "ordered_moves_total": 20327475,
+        "tt_probes_total": 182137,
+        "tt_hits_total": 0,
+        "tt_exact_hits_total": 0,
+        "tt_bound_cutoffs_total": 0,
+        "tt_stores_total": 174822,
+        "tt_replacements_total": 11,
+        "tt_move_first_total": 0,
+        "tt_disabled_repetition_total": 0,
+        "experience_probes_total": 0,
+        "experience_hits_total": 0,
+        "experience_move_first_total": 0,
+        "experience_stores_total": 0,
+        "experience_replacements_total": 0,
+        "experience_disabled_repetition_total": 0,
+        "qnodes_total": 15148452,
+        "qcutoffs_total": 9386320,
+        "qlimit_leaves_total": 2226355
+      }
+    },
+    "elapsed_seconds": 309.81225508199987
+  },
+  "total_games": 720,
+  "automatically_adopted": false,
+  "additional_cost_control": {
+    "plan": {
+      "engine_sha256": "012568238649b925acf5d75fae960fe806f6ff0dc209362b00850d19b3bfc888",
+      "options_a": {
+        "EvalInfluence": true,
+        "EvalInfluenceLegacyMix": 100
+      },
+      "options_b": {
+        "EvalInfluence": false
+      },
+      "hypothesis": "same score function, extra influence computation under equal wall time",
+      "seed": 2026101040,
+      "games": 100,
+      "go_command": "go movetime 50",
+      "book": true,
+      "experience": false,
+      "mate_assist": true,
+      "max_plies": 200,
+      "selection": "none; this control is never a candidate"
+    },
+    "summary": {
+      "config": {
+        "engine_sha256": "012568238649b925acf5d75fae960fe806f6ff0dc209362b00850d19b3bfc888",
+        "book_sha256": "a1f3628ae0ef766d895148a74ddad4a5d0e9fe21deedd25a279f6b7efc246edf",
+        "pairs": 50,
+        "seed": 2026101040,
+        "max_plies": 200,
+        "go_command": "go movetime 50",
+        "options_a": {
+          "ExperienceCache": false,
+          "OpeningBook": true,
+          "MateAssist": true,
+          "EvalInfluence": true,
+          "EvalInfluenceLegacyMix": 100
+        },
+        "options_b": {
+          "ExperienceCache": false,
+          "OpeningBook": true,
+          "MateAssist": true,
+          "EvalInfluence": false
+        },
+        "paired_seed_policy": "same Black seed and White seed within each swapped pair",
+        "lanes": 4,
+        "host": "Linux-6.18.44-x86_64-with-glibc2.39",
+        "logical_cpus": 9
+      },
+      "games": 100,
+      "wins_a": 38,
+      "draws": 17,
+      "wins_b": 45,
+      "score_a": 0.465,
+      "paired_normal_approx_interval": [
+        0.3857916671050325,
+        0.5442083328949676
+      ],
+      "illegal_games": 0,
+      "reasons": {
+        "checkmate": 83,
+        "move_limit": 8,
+        "fourfold_repetition": 9
+      },
+      "on_by_color": {
+        "True": {
+          "wins": 26,
+          "losses": 17,
+          "draws": 7
+        },
+        "False": {
+          "wins": 12,
+          "losses": 28,
+          "draws": 10
+        }
+      },
+      "average_plies": 121.54,
+      "timing_ms": {
+        "A": {
+          "moves": 6075,
+          "mean": 41.38607938831824,
+          "max": 232.8324199997951
+        },
+        "B": {
+          "moves": 6079,
+          "mean": 41.20237210412997,
+          "max": 137.7452510000694
+        }
+      },
+      "search": {
+        "A": {
+          "samples": 6005,
+          "nodes_total": 4947548,
+          "cutoffs_total": 41085,
+          "min_cutoffs_total": 29111,
+          "max_cutoffs_total": 11974,
+          "leaves_total": 4352401,
+          "terminals_total": 4158,
+          "ply1_total": 249778,
+          "ply2_total": 444318,
+          "ply3_total": 543806,
+          "order_calls_total": 598218,
+          "ordered_moves_total": 6657847,
+          "tt_probes_total": 51546,
+          "tt_hits_total": 0,
+          "tt_exact_hits_total": 0,
+          "tt_bound_cutoffs_total": 0,
+          "tt_stores_total": 48642,
+          "tt_replacements_total": 8,
+          "tt_move_first_total": 0,
+          "tt_disabled_repetition_total": 0,
+          "experience_probes_total": 0,
+          "experience_hits_total": 0,
+          "experience_move_first_total": 0,
+          "experience_stores_total": 0,
+          "experience_replacements_total": 0,
+          "experience_disabled_repetition_total": 0,
+          "qnodes_total": 4895019,
+          "qcutoffs_total": 3072109,
+          "qlimit_leaves_total": 659912
+        },
+        "B": {
+          "samples": 6004,
+          "nodes_total": 6478646,
+          "cutoffs_total": 63826,
+          "min_cutoffs_total": 43724,
+          "max_cutoffs_total": 20102,
+          "leaves_total": 5679385,
+          "terminals_total": 7576,
+          "ply1_total": 306572,
+          "ply2_total": 481399,
+          "ply3_total": 742565,
+          "order_calls_total": 798925,
+          "ordered_moves_total": 9277386,
+          "tt_probes_total": 77093,
+          "tt_hits_total": 0,
+          "tt_exact_hits_total": 0,
+          "tt_bound_cutoffs_total": 0,
+          "tt_stores_total": 73897,
+          "tt_replacements_total": 3,
+          "tt_move_first_total": 0,
+          "tt_disabled_repetition_total": 0,
+          "experience_probes_total": 0,
+          "experience_hits_total": 0,
+          "experience_move_first_total": 0,
+          "experience_stores_total": 0,
+          "experience_replacements_total": 0,
+          "experience_disabled_repetition_total": 0,
+          "qnodes_total": 6400281,
+          "qcutoffs_total": 3936186,
+          "qlimit_leaves_total": 965756
+        }
+      },
+      "elapsed_seconds": 150.72780897199982
+    },
+    "common_positions": {
+      "samples": 100,
+      "fixed_depth": 2,
+      "changed_evaluations": 0,
+      "changed_moves": 0,
+      "mean_response_ms": {
+        "on": 21.16389,
+        "off": 19.11702
+      },
+      "median_paired_response_ratio": 1.1383965531954003
+    }
+  },
+  "total_games_including_control": 820,
+  "raw_archive": {
+    "file": "raw-study.json.gz",
+    "sha256": "697c8e6edbdccfbdad88812df09646f0da723b60b8726e2aa3acf0c97f0eb8af",
+    "bytes": 4589954,
+    "studies": 12,
+    "games": 820,
+    "move_records": 107917
+  },
+  "baseline_commit": "8a750d9f90395b6f9a1cee49547b125c52a6f60b"
+}

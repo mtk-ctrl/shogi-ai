@@ -1,0 +1,51 @@
+name: Influence ON OFF Experiment
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: influence-experiment-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: Build experimental engine and original control
+        run: |
+          python3 scripts/build.py --output build/influence
+          git worktree add --detach build/original-control 8a750d9f90395b6f9a1cee49547b125c52a6f60b
+          python3 build/original-control/scripts/build.py --source "$PWD/build/upstream/YaneuraOu" --output "$PWD/build/baseline"
+      - name: Influence fixed tests and USI transitions
+        run: |
+          g++ -std=c++17 -O2 -Iengine tests/influence_test.cpp -o build/influence-test
+          build/influence-test
+          python3 tests/test_influence_usi.py build/influence
+          python3 scripts/build.py --evaluation-test --output build/evaluation-test
+          build/evaluation-test
+      - name: Verify actual choice changes and exact OFF equivalence
+        run: python3 benchmarks/influence_validation.py --engine build/influence --baseline build/baseline --output build/influence-experiment/choices.json
+      - name: Isolate evaluation cost on common positions
+        run: |
+          python3 scripts/build.py --evaluation-probe --output build/evaluation-probe
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          rows=json.loads(Path('build/influence-experiment/choices.json').read_text())['rows']
+          Path('build/influence-experiment/positions.sfen').write_text('\n'.join(r['sfen'] for r in rows)+'\n')
+          PY
+          build/evaluation-probe --influence-bench 30 < build/influence-experiment/positions.sfen > build/influence-experiment/cost.json
+      - name: Paired 100 game comparison
+        run: python3 benchmarks/influence_match.py --engine build/influence --pairs 50 --lanes 4 --output-dir build/influence-experiment/match
+      - name: Upload records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: influence-experiment-${{ github.run_id }}
+          path: build/influence-experiment
+          retention-days: 180

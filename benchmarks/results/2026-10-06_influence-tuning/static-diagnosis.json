@@ -1,0 +1,146 @@
+[
+  {
+    "id": "anchor",
+    "options": {
+      "EvalInfluence": true,
+      "EvalInfluenceGuardWeight": 150,
+      "EvalInfluencePressureWeight": 150,
+      "EvalInfluenceLegacyMix": 0,
+      "EvalInfluenceReinforcementBonus": 50,
+      "EvalInfluenceTempoBonus": 50
+    },
+    "mean_abs_safety": 26.28,
+    "mean_abs_pressure": 4.62,
+    "pressure_zero": 72,
+    "clamped": 4,
+    "changed_evaluations_vs_off": 96
+  },
+  {
+    "id": "A_guard75_pressure150",
+    "options": {
+      "EvalInfluence": true,
+      "EvalInfluenceGuardWeight": 75,
+      "EvalInfluencePressureWeight": 150,
+      "EvalInfluenceLegacyMix": 0,
+      "EvalInfluenceReinforcementBonus": 50,
+      "EvalInfluenceTempoBonus": 50
+    },
+    "mean_abs_safety": 12.89,
+    "mean_abs_pressure": 4.62,
+    "pressure_zero": 72,
+    "clamped": 3,
+    "changed_evaluations_vs_off": 94
+  },
+  {
+    "id": "B_guard50_pressure250",
+    "options": {
+      "EvalInfluence": true,
+      "EvalInfluenceGuardWeight": 50,
+      "EvalInfluencePressureWeight": 250,
+      "EvalInfluenceLegacyMix": 0,
+      "EvalInfluenceReinforcementBonus": 50,
+      "EvalInfluenceTempoBonus": 50
+    },
+    "mean_abs_safety": 8.59,
+    "mean_abs_pressure": 7.72,
+    "pressure_zero": 72,
+    "clamped": 4,
+    "changed_evaluations_vs_off": 96
+  },
+  {
+    "id": "C_guard50_pressure75",
+    "options": {
+      "EvalInfluence": true,
+      "EvalInfluenceGuardWeight": 50,
+      "EvalInfluencePressureWeight": 75,
+      "EvalInfluenceLegacyMix": 0,
+      "EvalInfluenceReinforcementBonus": 50,
+      "EvalInfluenceTempoBonus": 50
+    },
+    "mean_abs_safety": 8.59,
+    "mean_abs_pressure": 2.25,
+    "pressure_zero": 72,
+    "clamped": 3,
+    "changed_evaluations_vs_off": 96
+  },
+  {
+    "id": "D_mix50_guard75_pressure200",
+    "options": {
+      "EvalInfluence": true,
+      "EvalInfluenceGuardWeight": 75,
+      "EvalInfluencePressureWeight": 200,
+      "EvalInfluenceLegacyMix": 50,
+      "EvalInfluenceReinforcementBonus": 50,
+      "EvalInfluenceTempoBonus": 50
+    },
+    "mean_abs_safety": 9.23,
+    "mean_abs_pressure": 6.26,
+    "pressure_zero": 56,
+    "clamped": 2,
+    "changed_evaluations_vs_off": 93
+  },
+  {
+    "id": "E_mix75_guard75_pressure200",
+    "options": {
+      "EvalInfluence": true,
+      "EvalInfluenceGuardWeight": 75,
+      "EvalInfluencePressureWeight": 200,
+      "EvalInfluenceLegacyMix": 75,
+      "EvalInfluenceReinforcementBonus": 50,
+      "EvalInfluenceTempoBonus": 50
+    },
+    "mean_abs_safety": 7.92,
+    "mean_abs_pressure": 6.5,
+    "pressure_zero": 58,
+    "clamped": 2,
+    "changed_evaluations_vs_off": 83
+  },
+  {
+    "id": "F_mix50_uncertainty_neutral",
+    "options": {
+      "EvalInfluence": true,
+      "EvalInfluenceGuardWeight": 75,
+      "EvalInfluencePressureWeight": 200,
+      "EvalInfluenceLegacyMix": 50,
+      "EvalInfluenceReinforcementBonus": 0,
+      "EvalInfluenceTempoBonus": 0
+    },
+    "mean_abs_safety": 9.23,
+    "mean_abs_pressure": 6.01,
+    "pressure_zero": 56,
+    "clamped": 2,
+    "changed_evaluations_vs_off": 93
+  },
+  {
+    "id": "G_mix50_guard150_pressure150",
+    "options": {
+      "EvalInfluence": true,
+      "EvalInfluenceGuardWeight": 150,
+      "EvalInfluencePressureWeight": 150,
+      "EvalInfluenceLegacyMix": 50,
+      "EvalInfluenceReinforcementBonus": 50,
+      "EvalInfluenceTempoBonus": 50
+    },
+    "mean_abs_safety": 15.76,
+    "mean_abs_pressure": 5.47,
+    "pressure_zero": 57,
+    "clamped": 3,
+    "changed_evaluations_vs_off": 96
+  },
+  {
+    "id": "H_mix75_guard150_pressure150",
+    "options": {
+      "EvalInfluence": true,
+      "EvalInfluenceGuardWeight": 150,
+      "EvalInfluencePressureWeight": 150,
+      "EvalInfluenceLegacyMix": 75,
+      "EvalInfluenceReinforcementBonus": 50,
+      "EvalInfluenceTempoBonus": 50
+    },
+    "mean_abs_safety": 10.89,
+    "mean_abs_pressure": 6.19,
+    "pressure_zero": 56,
+    "clamped": 2,
+    "changed_evaluations_vs_off": 94
+  }
+]

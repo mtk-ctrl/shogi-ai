@@ -1,0 +1,53 @@
+name: Influence Parameter Study
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: influence-tuning-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: Build experimental engine and original control
+        run: |
+          python3 scripts/build.py --output build/influence-tuning
+          git worktree add --detach build/original-control 8a750d9f90395b6f9a1cee49547b125c52a6f60b
+          python3 build/original-control/scripts/build.py --source "$PWD/build/upstream/YaneuraOu" --output "$PWD/build/baseline"
+      - name: Fixed tests and compatibility
+        run: |
+          g++ -std=c++17 -O2 -Iengine tests/influence_test.cpp -o build/influence-test
+          build/influence-test
+          python3 tests/test_influence_usi.py build/influence-tuning
+          python3 tests/test_eval_usi.py build/influence-tuning
+          python3 benchmarks/influence_validation.py --engine build/influence-tuning --baseline build/baseline --output build/influence-tuning-study/compatibility.json
+      - name: Preregister and run 720 games
+        run: |
+          python3 benchmarks/influence_cost_control.py --engine build/influence-tuning --baseline build/baseline --output-dir build/influence-tuning-study/cost-control --plan-only
+          python3 benchmarks/tune_influence.py --engine build/influence-tuning --output-dir build/influence-tuning-study --lanes 4
+      - name: Score-identical computation control (100 games)
+        run: python3 benchmarks/influence_cost_control.py --engine build/influence-tuning --baseline build/baseline --output-dir build/influence-tuning-study/cost-control --lanes 4
+      - name: Diagnose static scales on shared positions
+        run: python3 benchmarks/influence_diagnosis.py --engine build/influence-tuning --study-dir build/influence-tuning-study
+      - name: Verify selected candidate changes choices
+        run: |
+          python3 - <<'PY'
+          import json, subprocess
+          from pathlib import Path
+          options=json.loads(Path('build/influence-tuning-study/summary.json').read_text())['selected']['options']
+          subprocess.run(['python3','benchmarks/influence_validation.py','--engine','build/influence-tuning','--baseline','build/baseline','--options-on',json.dumps(options),'--output','build/influence-tuning-study/selected-choices.json'],check=True)
+          PY
+      - name: Upload records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: influence-tuning-${{ github.run_id }}
+          path: build/influence-tuning-study
+          retention-days: 180

@@ -1,0 +1,204 @@
+{
+  "config": {
+    "engine_sha256": "f16461ef50e017dcfb765a73ced03024136682d3f6c4803b37c0207325a74d37",
+    "book_sha256": "a1f3628ae0ef766d895148a74ddad4a5d0e9fe21deedd25a279f6b7efc246edf",
+    "pairs": 50,
+    "seed": 2026100612,
+    "max_plies": 200,
+    "movetime_ms": 50,
+    "options_a": {
+      "EvalInfluence": true,
+      "EvalInfluenceWeight": 150,
+      "ExperienceCache": false,
+      "OpeningBook": true,
+      "MateAssist": true
+    },
+    "options_b": {
+      "EvalInfluence": false,
+      "ExperienceCache": false,
+      "OpeningBook": true,
+      "MateAssist": true
+    },
+    "paired_seed_policy": "same Black seed and White seed within each swapped pair",
+    "lanes": 4,
+    "host": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "logical_cpus": 9
+  },
+  "games": 100,
+  "wins_a": 36,
+  "draws": 22,
+  "wins_b": 42,
+  "score_a": 0.47,
+  "paired_normal_approx_interval": [
+    0.3888,
+    0.5511999999999999
+  ],
+  "illegal_games": 0,
+  "reasons": {
+    "checkmate": 78,
+    "move_limit": 17,
+    "fourfold_repetition": 5
+  },
+  "on_by_color": {
+    "True": {
+      "wins": 17,
+      "losses": 21,
+      "draws": 12
+    },
+    "False": {
+      "wins": 19,
+      "losses": 21,
+      "draws": 10
+    }
+  },
+  "average_plies": 125.12,
+  "timing_ms": {
+    "A": {
+      "moves": 6254,
+      "mean": 41.84674103885325,
+      "max": 188.23534800003472
+    },
+    "B": {
+      "moves": 6258,
+      "mean": 41.788293399648666,
+      "max": 220.5511160000242
+    }
+  },
+  "search": {
+    "A": {
+      "samples": 6191,
+      "nodes_total": 6157058,
+      "cutoffs_total": 47837,
+      "min_cutoffs_total": 31198,
+      "max_cutoffs_total": 16639,
+      "leaves_total": 5422831,
+      "terminals_total": 7837,
+      "ply1_total": 261894,
+      "ply2_total": 575942,
+      "ply3_total": 629628,
+      "order_calls_total": 734453,
+      "ordered_moves_total": 7670548,
+      "tt_probes_total": 60422,
+      "tt_hits_total": 0,
+      "tt_exact_hits_total": 0,
+      "tt_bound_cutoffs_total": 0,
+      "tt_stores_total": 56962,
+      "tt_replacements_total": 1,
+      "tt_move_first_total": 0,
+      "tt_disabled_repetition_total": 0,
+      "experience_probes_total": 0,
+      "experience_hits_total": 0,
+      "experience_move_first_total": 0,
+      "experience_stores_total": 0,
+      "experience_replacements_total": 0,
+      "experience_disabled_repetition_total": 0,
+      "qnodes_total": 6095679,
+      "qcutoffs_total": 3840172,
+      "qlimit_leaves_total": 819621
+    },
+    "B": {
+      "samples": 6179,
+      "nodes_total": 8079912,
+      "cutoffs_total": 81200,
+      "min_cutoffs_total": 54126,
+      "max_cutoffs_total": 27074,
+      "leaves_total": 7080359,
+      "terminals_total": 8161,
+      "ply1_total": 345843,
+      "ply2_total": 584263,
+      "ply3_total": 976847,
+      "order_calls_total": 999377,
+      "ordered_moves_total": 10747456,
+      "tt_probes_total": 97888,
+      "tt_hits_total": 0,
+      "tt_exact_hits_total": 0,
+      "tt_bound_cutoffs_total": 0,
+      "tt_stores_total": 94149,
+      "tt_replacements_total": 3,
+      "tt_move_first_total": 0,
+      "tt_disabled_repetition_total": 0,
+      "experience_probes_total": 0,
+      "experience_hits_total": 0,
+      "experience_move_first_total": 0,
+      "experience_stores_total": 0,
+      "experience_replacements_total": 0,
+      "experience_disabled_repetition_total": 0,
+      "qnodes_total": 7980728,
+      "qcutoffs_total": 5001447,
+      "qlimit_leaves_total": 1111253
+    }
+  },
+  "elapsed_seconds": 153.70762777999994,
+  "common_position_choices": {
+    "samples": 100,
+    "fixed_depth": 2,
+    "quiescence": false,
+    "book": false,
+    "changed_moves": 12,
+    "changed_evaluations": 96,
+    "off_equivalence": "evaluation, bestmove, score and nodes exactly match original on all samples"
+  },
+  "static_evaluation_cost": {
+    "samples": 100,
+    "off_median_ns": 11246.6,
+    "on_median_ns": 23626.1,
+    "on_off_ratio": 2.100732665872352,
+    "repeats": 30,
+    "trials": [
+      {
+        "off_ns": 12716.9,
+        "on_ns": 32379.3
+      },
+      {
+        "off_ns": 11246.6,
+        "on_ns": 22717.3
+      },
+      {
+        "off_ns": 10605.7,
+        "on_ns": 23840.7
+      },
+      {
+        "off_ns": 9967.57,
+        "on_ns": 21850.8
+      },
+      {
+        "off_ns": 11530.2,
+        "on_ns": 23626.1
+      }
+    ],
+    "note": "timed during the 4-lane match; same-process alternating trials over identical positions"
+  },
+  "fixed_depth_cost": {
+    "on": {
+      "mean_ms": 20.07903,
+      "nodes": 50889
+    },
+    "off": {
+      "mean_ms": 15.91737,
+      "nodes": 48689
+    }
+  },
+  "search_depth_observation": {
+    "A": {
+      "searched_samples": 2905,
+      "mean_completed_depth": 1.2165232358003442,
+      "mean_seldepth": 8.143201376936316,
+      "note": "different trajectories, book/depth-0/fallback excluded; descriptive, not a controlled cost isolation"
+    },
+    "B": {
+      "searched_samples": 3001,
+      "mean_completed_depth": 1.2715761412862379,
+      "mean_seldepth": 8.391202932355881,
+      "note": "different trajectories, book/depth-0/fallback excluded; descriptive, not a controlled cost isolation"
+    }
+  },
+  "decision": "Not adopted: score 47%, no evidence of improvement; confidence interval includes equality. Preserve the research candidate and split guard/pressure/cost hypotheses next.",
+  "base_ref": "8a750d9f90395b6f9a1cee49547b125c52a6f60b",
+  "host_cpu": "Intel Xeon Platinum 8573C; 9 exposed CPUs, 8 CPU cgroup quota; 4 match lanes",
+  "raw_match": {
+    "path": "benchmarks/results/2026-10-06_influence/raw-match.json.gz",
+    "sha256": "3a2ae5d9d8c550392174e5ce1ce8b7ebb734d4ac0e388926660858a7cf7752ee",
+    "uncompressed_bytes": 5251803,
+    "compressed_bytes": 544359
+  }
+}
