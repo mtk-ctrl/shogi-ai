@@ -6,6 +6,11 @@ on:
       - feature/adaptive-long-think-continuation
     paths:
       - ".github/workflows/adaptive-long-think-validation.yml"
+      - "engine/main.cpp"
+      - "engine/strategy/iterative_search.h"
+      - "engine/strategy/search_limits.h"
+      - "tests/test_search_usi.py"
+      - "benchmarks/arena.py"
 
 permissions:
   contents: read
