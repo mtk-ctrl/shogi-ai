@@ -6,6 +6,7 @@
 #include "strategy/search_limits.h"
 #include "strategy/promotion_policy.h"
 #include <algorithm>
+#include <array>
 #include <chrono>
 #include <cstdint>
 #include <atomic>
@@ -65,6 +66,10 @@ int main() {
     std::string opening_book_file = "shogi-ai-book.tsv";
     std::string experience_file = "shogi-ai-experience.bin";
     int default_depth = 3;
+    bool adaptive_long_think_enabled = true;
+    int long_think_used = 0;
+    bool previous_root_score_valid = false;
+    int previous_root_score = 0;
     std::string line;
     struct Session {
         shogi::strategy::SearchControl control;
@@ -146,6 +151,7 @@ int main() {
                       << "option name MateAssist type check default true\n"
                       << "option name OpeningBook type check default true\n"
                       << "option name OpeningBookFile type string default shogi-ai-book.tsv\n"
+                      << "option name AdaptiveLongThink type check default true\n"
                       << "option name RandomSeed type spin default 5489 min 0 max 2147483647\n"
                       << "option name EvalProfile type combo default features var features var material\n"
                       << "option name EvalSafety type spin default 50 min 0 max 400\n"
@@ -173,6 +179,9 @@ int main() {
             ensure_experience_loaded();
             ensure_opening_book_loaded();
             strategy.set_seed(random_seed);
+            long_think_used = 0;
+            previous_root_score_valid = false;
+            previous_root_score = 0;
             std::string error;
             valid_position = position.set(shogi::rules::Position::start_sfen(), {}, error);
         } else if (command == "position") {
@@ -292,6 +301,8 @@ int main() {
                                 : evaluation_parameters);
                         const int book_score = root_turn == shogi::rules::Color::Black
                             ? book_eval.total : -book_eval.total;
+                        previous_root_score = book_score;
+                        previous_root_score_valid = true;
                         std::ostringstream score;
                         score << "info depth 0 seldepth 0 time 0 nodes 0 score cp " << book_score
                               << " pv " << picked->move << "\n";
@@ -303,6 +314,32 @@ int main() {
             }
 
             const auto limits = shogi::strategy::parse_go_limits(tokens, position.snapshot().turn, default_depth);
+            int current_ply = 1;
+            {
+                std::istringstream sfen_stream(position.sfen());
+                std::string field;
+                while (sfen_stream >> field) {
+                    try {
+                        std::size_t used = 0;
+                        const int parsed = std::stoi(field, &used);
+                        if (used == field.size()) current_ply = parsed;
+                    } catch (...) {}
+                }
+            }
+            static constexpr std::array<int, 10> LongThinkStarts =
+                {24, 39, 54, 69, 84, 100, 115, 130, 145, 160};
+            static constexpr std::array<int, 10> LongThinkEnds =
+                {54, 70, 86, 102, 118, 134, 150, 166, 182, 198};
+            const bool long_think_slot =
+                adaptive_long_think_enabled
+                && limits.requested_movetime_ms == 200
+                && !limits.ponder && !limits.infinite && limits.nodes == 0
+                && long_think_used < static_cast<int>(LongThinkStarts.size())
+                && current_ply >= LongThinkStarts[long_think_used]
+                && candidates.size() > 1;
+            const bool long_think_fallback =
+                long_think_slot && current_ply >= LongThinkEnds[long_think_used];
+
             const auto started_ns = shogi::strategy::SearchControl::now_ns();
             session = std::make_unique<Session>();
             auto* active = session.get();
@@ -311,6 +348,15 @@ int main() {
             active->control.node_limit = limits.nodes;
             if (!limits.ponder && !limits.infinite && limits.budget_ms >= 0)
                 active->control.deadline_ns.store(started_ns + limits.budget_ms * 1000000);
+            if (long_think_slot) {
+                active->control.adaptive_long_think = true;
+                active->control.force_long_think = long_think_fallback;
+                active->control.has_previous_score = previous_root_score_valid;
+                active->control.previous_score = previous_root_score;
+                // parse_go_limits keeps a 10ms communication margin. Match a
+                // "go movetime 1000" ceiling while continuing the same search.
+                active->control.hard_deadline_ns = started_ns + 990LL * 1000000;
+            }
             auto search_position = position.clone();
             active->worker = std::thread([&, active, started_ns, limits,
                                           candidates = std::move(candidates),
@@ -382,8 +428,29 @@ int main() {
                             }
                         }
                     }
-                    if (!mate_assist_forced)
+                    if (!mate_assist_forced) {
                         result = strategy.choose(p, limits.max_depth, active->control, candidates, info);
+                        const auto reason = static_cast<shogi::strategy::LongThinkReason>(
+                            active->control.long_think_reason.load(std::memory_order_relaxed));
+                        if (reason != shogi::strategy::LongThinkReason::None) {
+                            ++long_think_used;
+                            if (!active->suppress.load()) {
+                                std::ostringstream out;
+                                out << "info string long_think used " << long_think_used << "/10"
+                                    << " reason " << shogi::strategy::long_think_reason_name(reason)
+                                    << " base_ms 200 max_ms 1000\n";
+                                emit(out.str());
+                            }
+                        }
+                        if (result.has_score && !shogi::strategy::IterativeSearch::is_mate_score(result.score)) {
+                            previous_root_score = result.score;
+                            previous_root_score_valid = true;
+                        } else {
+                            previous_root_score_valid = false;
+                        }
+                    } else {
+                        previous_root_score_valid = false;
+                    }
                 } catch (const std::exception& error) {
                     if (!active->suppress.load()) emit("info string search error " + std::string(error.what()) + "\n");
                 }
@@ -442,6 +509,9 @@ int main() {
                     }
                 } else if (name == "MateAssist") {
                     if (value == "true" || value == "false") mate_assist_enabled = value == "true";
+                } else if (name == "AdaptiveLongThink") {
+                    if (value == "true" || value == "false")
+                        adaptive_long_think_enabled = value == "true";
                 } else if (name == "OpeningBook") {
                     if (value == "true" || value == "false") {
                         opening_book_enabled = value == "true";
