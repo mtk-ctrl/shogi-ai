@@ -113,6 +113,19 @@ def parse_info_line(line):
     if "pv" in parts:
         i = parts.index("pv")
         info["pv"] = parts[i + 1:i + 9]
+    if len(parts) >= 3 and parts[1:3] == ["string", "long_think"]:
+        for name in ("used", "base_ms", "max_ms"):
+            if name in parts:
+                try:
+                    value = parts[parts.index(name) + 1]
+                    info["long_think_" + name] = int(value.split("/", 1)[0])
+                except (ValueError, IndexError):
+                    pass
+        if "reason" in parts:
+            try:
+                info["long_think_reason"] = parts[parts.index("reason") + 1]
+            except IndexError:
+                pass
     return info
 
 
@@ -133,6 +146,9 @@ def compact_search_telemetry(info, side_to_move):
         out["score_lowerbound"] = True
     if info.get("score_upperbound"):
         out["score_upperbound"] = True
+    for name in ("long_think_used", "long_think_reason", "long_think_base_ms", "long_think_max_ms"):
+        if name in info:
+            out[name] = info[name]
     return out
 
 
@@ -328,6 +344,14 @@ def search_summary(engine):
     if summary.get("experience_probes_total"):
         summary["experience_hit_rate"] = (
             summary.get("experience_hits_total", 0) / summary["experience_probes_total"])
+    long_rows = [row for row in rows if "long_think_used" in row]
+    if long_rows:
+        summary["long_think_moves"] = len(long_rows)
+        reasons = {}
+        for row in long_rows:
+            reason = row.get("long_think_reason", "unknown")
+            reasons[reason] = reasons.get(reason, 0) + 1
+        summary["long_think_reasons"] = reasons
     if all("full_nodes" in row for row in rows):
         full = sum(row["full_nodes"] for row in rows)
         nodes = summary["nodes_total"]

@@ -9,10 +9,38 @@
 namespace shogi::strategy {
 
 // All decisions, limits and search code here are ours. Upstream supplies rules.
+enum class LongThinkReason : int {
+    None = 0,
+    InCheck,
+    ScoreDrop150,
+    IterationScoreChange150,
+    IterationMoveChange,
+    UnfinishedDepth2,
+    WindowFallback,
+};
+
+inline const char* long_think_reason_name(LongThinkReason reason) {
+    switch (reason) {
+    case LongThinkReason::InCheck: return "in_check";
+    case LongThinkReason::ScoreDrop150: return "score_drop_150";
+    case LongThinkReason::IterationScoreChange150: return "iteration_score_change_150";
+    case LongThinkReason::IterationMoveChange: return "iteration_move_change";
+    case LongThinkReason::UnfinishedDepth2: return "unfinished_depth2";
+    case LongThinkReason::WindowFallback: return "window_fallback";
+    default: return "none";
+    }
+}
+
 struct SearchControl {
     std::atomic<bool> stop{false};
-    std::atomic<std::int64_t> deadline_ns{0}; // zero means no time limit
+    std::atomic<std::int64_t> deadline_ns{0}; // current soft/hard deadline; zero means no time limit
+    std::int64_t hard_deadline_ns = 0;        // optional continuation ceiling
     std::uint64_t node_limit = 0;
+    bool adaptive_long_think = false;
+    bool force_long_think = false;
+    bool has_previous_score = false;
+    int previous_score = 0;
+    std::atomic<int> long_think_reason{static_cast<int>(LongThinkReason::None)};
     static std::int64_t now_ns() {
         return std::chrono::duration_cast<std::chrono::nanoseconds>(
             std::chrono::steady_clock::now().time_since_epoch()).count();
@@ -70,6 +98,9 @@ public:
         experience_allowed_ = experience_enabled_ && !position.has_repeated_history();
         if (experience_enabled_ && !experience_allowed_) ++stats_.experience_disabled_repetition;
         iteration_hints_.clear();
+        root_in_check_ = position.in_check();
+        has_previous_completed_ = false;
+        has_last_completed_ = false;
         auto original = position.legal_moves();
         if (!allowed.empty())
             original.erase(std::remove_if(original.begin(), original.end(), [&](const auto& m) {
@@ -134,6 +165,10 @@ public:
                 auto choice_rng = initial_rng;
                 result = tied[std::uniform_int_distribution<std::size_t>(0, tied.size() - 1)(choice_rng)];
                 rng_ = choice_rng; // consume one tie draw, not one per iteration
+                previous_completed_ = last_completed_;
+                has_previous_completed_ = has_last_completed_;
+                last_completed_ = result;
+                has_last_completed_ = true;
                 store_experience(position, depth, result.move);
                 if (completed) completed(result);
             } catch (const Interrupted&) {
@@ -153,11 +188,53 @@ private:
     static std::uint64_t next_history(std::uint64_t h, std::uint64_t board) {
         return (h ^ board) * 1099511628211ULL;
     }
+    bool maybe_extend_deadline(std::int64_t now) const {
+        if (!control_->adaptive_long_think
+            || control_->long_think_reason.load(std::memory_order_relaxed)
+                != static_cast<int>(LongThinkReason::None)
+            || control_->hard_deadline_ns <= now) return false;
+
+        // Match the adopted experimental policy, but continue the current
+        // iterative-deepening search instead of restarting from the root.
+        if (has_last_completed_ && last_completed_.has_score
+            && is_mate_score(last_completed_.score)) return false;
+
+        LongThinkReason reason = LongThinkReason::None;
+        if (root_in_check_) {
+            reason = LongThinkReason::InCheck;
+        } else if (control_->has_previous_score && has_last_completed_
+                   && last_completed_.has_score
+                   && control_->previous_score - last_completed_.score >= 150) {
+            reason = LongThinkReason::ScoreDrop150;
+        } else if (has_previous_completed_ && has_last_completed_
+                   && previous_completed_.has_score && last_completed_.has_score
+                   && !is_mate_score(previous_completed_.score)
+                   && !is_mate_score(last_completed_.score)
+                   && std::abs(previous_completed_.score - last_completed_.score) >= 150) {
+            reason = LongThinkReason::IterationScoreChange150;
+        } else if (has_previous_completed_ && has_last_completed_
+                   && previous_completed_.move != last_completed_.move) {
+            reason = LongThinkReason::IterationMoveChange;
+        } else if (!has_last_completed_ || last_completed_.depth < 2) {
+            reason = LongThinkReason::UnfinishedDepth2;
+        } else if (control_->force_long_think) {
+            reason = LongThinkReason::WindowFallback;
+        }
+        if (reason == LongThinkReason::None) return false;
+
+        control_->long_think_reason.store(static_cast<int>(reason), std::memory_order_relaxed);
+        control_->deadline_ns.store(control_->hard_deadline_ns, std::memory_order_relaxed);
+        return true;
+    }
     void check_stop() const {
-        const auto deadline = control_->deadline_ns.load(std::memory_order_relaxed);
         if (control_->stop.load(std::memory_order_relaxed)
-            || (control_->node_limit && stats_.nodes >= control_->node_limit)
-            || (deadline && SearchControl::now_ns() >= deadline)) throw Interrupted{};
+            || (control_->node_limit && stats_.nodes >= control_->node_limit))
+            throw Interrupted{};
+        const auto deadline = control_->deadline_ns.load(std::memory_order_relaxed);
+        if (deadline) {
+            const auto now = SearchControl::now_ns();
+            if (now >= deadline && !maybe_extend_deadline(now)) throw Interrupted{};
+        }
     }
     void visit(int ply) {
         ++stats_.nodes;
@@ -403,6 +480,9 @@ private:
     bool board_scores_ = false;
     rules::Color root_ = rules::Color::Black;
     int iteration_depth_ = 0;
+    bool root_in_check_ = false;
+    bool has_previous_completed_ = false, has_last_completed_ = false;
+    SearchResult previous_completed_{}, last_completed_{};
     SearchControl* control_ = nullptr;
 };
 using IterativeSearch = BasicIterativeSearch<FeatureEvaluator>;

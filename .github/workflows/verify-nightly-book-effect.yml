@@ -46,7 +46,7 @@ jobs:
             --options-a '{"OpeningBook":true,"OpeningBookFile":"build/book-learned.tsv","ExperienceCache":false}' \
             --options-b '{"OpeningBook":true,"OpeningBookFile":"build/book-before-nightly.tsv","ExperienceCache":false}' \
             --games 50 --max-plies 200 --seed "$seed" \
-            --go-command 'go movetime 50' \
+            --go-command 'go movetime 200' \
             --output "build/verify-book/result-${{ matrix.shard }}.json"
       - name: Upload shard
         uses: actions/upload-artifact@v4
@@ -79,7 +79,7 @@ jobs:
           decisive=w+l
           decisive_rate=w/decisive if decisive else 0.5
           elo=400*math.log10(score/(1-score)) if 0 < score < 1 else (9999 if score==1 else -9999)
-          out={'games':games,'learned_wins':w,'draws':d,'pre_learning_wins':l,'learned_score':score,'decisive_win_rate':decisive_rate,'elo_estimate':elo,'illegal_games':illegal,'learned_book':'current main shogi-ai-book.tsv','baseline_commit':'ee3665878022c9e78a07eee098739b0bc894b550','go_command':'go movetime 50','max_plies':200}
+          out={'games':games,'learned_wins':w,'draws':d,'pre_learning_wins':l,'learned_score':score,'decisive_win_rate':decisive_rate,'elo_estimate':elo,'illegal_games':illegal,'learned_book':'current main shogi-ai-book.tsv','baseline_commit':'ee3665878022c9e78a07eee098739b0bc894b550','go_command':'go movetime 200','max_plies':200}
           Path('build/verify-book/aggregate.json').write_text(json.dumps(out,indent=2)+'\n')
           print(json.dumps(out,indent=2))
           with open(Path(__import__('os').environ['GITHUB_STEP_SUMMARY']),'a') as f:

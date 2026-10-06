@@ -7,6 +7,7 @@ struct GoLimits {
     int max_depth = 3;
     std::uint64_t nodes = 0;
     std::int64_t budget_ms = -1;
+    std::int64_t requested_movetime_ms = -1;
     bool ponder = false, infinite = false;
 };
 
@@ -26,7 +27,10 @@ inline GoLimits parse_go_limits(const std::vector<std::string>& tokens,
     out.infinite = std::find(tokens.begin(), tokens.end(), "infinite") != tokens.end();
     if (auto nodes = number("nodes"); nodes && *nodes > 0) out.nodes = *nodes;
     const auto remaining = number(turn == rules::Color::Black ? "btime" : "wtime");
-    if (auto fixed = number("movetime")) out.budget_ms = std::min<std::int64_t>(*fixed, 86400000);
+    if (auto fixed = number("movetime")) {
+        out.requested_movetime_ms = std::min<std::int64_t>(*fixed, 86400000);
+        out.budget_ms = out.requested_movetime_ms;
+    }
     else if (remaining || number("byoyomi")) {
         const auto rem = std::min<std::int64_t>(remaining.value_or(0), 86400000);
         const auto byo = bounded("byoyomi");

@@ -324,3 +324,18 @@
 - Quick CIにArena telemetry / adjudication / external benchmark policyの回帰テストを追加
 
 詳細：journal/2026-10-06_04_対局データ収集標準化.md / docs/26_対局データ収集・分析・学習設計.md
+
+
+## 2026-10-06 — AdaptiveLongThink継続型を正式採用
+
+- 正式比較の通常思考を `go movetime 200` とし、AdaptiveLongThinkを既定ON
+- 王手、評価急落、反復深化の評価変動・第一候補変更、depth2未完了、予約枠期限でのみ最大1秒まで延長
+- 1局最大10回、`usinewgame` で回数と前回評価をリセット
+- 研究runnerの再スタート方式ではなく、TT・反復深化・PVを保持した**同一探索の継続**として実装
+- 同一バイナリON/OFF 100局で **59勝38敗3分、得点率60.5%、違法手0**
+- 長考669回、平均6.69回/局。1手平均応答はON 248.50ms / OFF 167.69ms
+- 先行の再スタート方式61.5%と同じ改善方向を再現
+- Nightly Book Learning / Nightly Researchも200ms＋AdaptiveLongThinkへ統一し、夜間枠を守るためバッチ・局数を縮小
+- Diagnosis専用の50ms/500ms再解析は固定分析条件として維持
+
+詳細：`journal/2026-10-06_08_継続型AdaptiveLongThink正式採用.md` / `docs/31_AdaptiveLongThink正式採用.md`

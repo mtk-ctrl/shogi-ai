@@ -50,14 +50,14 @@ jobs:
           python3 benchmarks/arena.py --engine-a build/champion --engine-b build/champion \
             --options-a '{"OpeningBook":true,"ExperienceCache":true,"ExperienceFile":"build/research/experience/e0-a.bin"}' \
             --options-b '{"OpeningBook":true,"ExperienceCache":true,"ExperienceFile":"build/research/experience/e0-b.bin"}' \
-            --games 200 --max-plies 300 --seed 2026100610 --go-command 'go movetime 50' \
+            --games 100 --max-plies 300 --seed 2026100610 --go-command 'go movetime 200' \
             --output build/research/raw/E0-book-on.json
       - name: Experience E1 - Book OFF with persistent experience
         run: |
           python3 benchmarks/arena.py --engine-a build/champion --engine-b build/champion \
             --options-a '{"OpeningBook":false,"ExperienceCache":true,"ExperienceFile":"build/research/experience/e1-a.bin"}' \
             --options-b '{"OpeningBook":false,"ExperienceCache":true,"ExperienceFile":"build/research/experience/e1-b.bin"}' \
-            --games 200 --max-plies 300 --seed 2026100620 --go-command 'go movetime 50' \
+            --games 100 --max-plies 300 --seed 2026100620 --go-command 'go movetime 200' \
             --output build/research/raw/E1-book-off.json
       - name: Build Position Bank seed
         run: |
@@ -77,8 +77,8 @@ jobs:
               --engine-a build/champion --engine-b build/champion \
               --options-a '{"OpeningBook":false,"ExperienceCache":true,"ExperienceFile":"build/research/experience/e2-a.bin"}' \
               --options-b '{"OpeningBook":false,"ExperienceCache":true,"ExperienceFile":"build/research/experience/e2-b.bin"}' \
-              --bank build/research/position-bank.jsonl --positions 100 --max-plies 240 \
-              --seed 2026100630 --go-command 'go movetime 50' \
+              --bank build/research/position-bank.jsonl --positions 50 --max-plies 240 \
+              --seed 2026100630 --go-command 'go movetime 200' \
               --output build/research/raw/E2-position-bank.json
           fi
       - name: Challenger screening - registered evaluation hypotheses
@@ -93,8 +93,8 @@ jobs:
           for id in safety-up pressure-up activity-up danger-up; do
             python3 benchmarks/arena.py --engine-a build/champion --engine-b build/champion \
               --options-a '{"OpeningBook":false,"ExperienceCache":false}' \
-              --options-b "${opts[$id]}" --games 40 --max-plies 300 \
-              --seed $((2026100700 + RANDOM % 5000)) --go-command 'go movetime 50' \
+              --options-b "${opts[$id]}" --games 20 --max-plies 300 \
+              --seed $((2026100700 + RANDOM % 5000)) --go-command 'go movetime 200' \
               --output "build/research/raw/C-${id}.json"
           done
       - name: Aggregate research report
