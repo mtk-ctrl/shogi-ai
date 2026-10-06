@@ -14,60 +14,190 @@ on:
 permissions:
   contents: read
 
+# Any newer commit supersedes an older experiment. This group is intentionally
+# shared by quick and heavy work so a new edit cancels stale 200ms matches.
 concurrency:
-  group: evaluation-v2-challenger-${{ github.ref }}
+  group: evaluation-v2-latest-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  experiment:
+  quick:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 1
-      - name: Install dependency
-        run: python3 -m pip install python-shogi==1.1.1
       - name: Build engine and evaluation tests
         run: |
           python3 scripts/build.py --output build/eval-v2-engine
           python3 scripts/build.py --evaluation-test --output build/evaluation-test
       - name: Correctness
         run: build/evaluation-test
-      - name: Tune and validate at 200ms
-        run: |
-          python3 benchmarks/eval_v2_tune.py \
-            --engine build/eval-v2-engine \
-            --output-dir build/eval-v2-study
-      - name: Summary
-        if: always()
-        run: |
-          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
-          import json
-          from pathlib import Path
-          p=Path('build/eval-v2-study/summary.json')
-          if not p.exists():
-              print('Evaluation-v2 study did not reach summary generation.')
-          else:
-              s=json.loads(p.read_text())
-              print('## Evaluation-v2 vs adopted evaluator')
-              print('### Screen')
-              for r in s['screen']:
-                  print(f"- {r['id']}: {r['wins']}W {r['draws']}D {r['losses']}L = {r['score']:.1%}")
-              sel=s['selected']
-              print(f"### Selected: {sel['id']} (holdout {sel['holdout_score']:.1%})")
-              r=s['final_200ms_no_longthink']
-              print(f"- 200ms fixed: {r['wins_a']}W {r['draws']}D {r['wins_b']}L = {r['score_a']:.1%}")
-              print(f"  - paired 95% approx: {r['paired_normal_approx_interval'][0]:.1%}–{r['paired_normal_approx_interval'][1]:.1%}")
-              print(f"  - mean ms A/B: {r['timing_ms']['A']['mean']:.1f}/{r['timing_ms']['B']['mean']:.1f}")
-              an=r['search']['A'].get('nodes_total',0);bn=r['search']['B'].get('nodes_total',0)
-              if bn: print(f"  - nodes A/B: {an:,}/{bn:,} ({an/bn-1:+.1%})")
-              print(f"  - illegal: {r['illegal_games']}")
-          PY
-      - name: Upload study
-        if: always()
+      - name: Upload one tested engine for heavy jobs
+        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[eval-final]')
         uses: actions/upload-artifact@v4
         with:
-          name: evaluation-v2-challenger-${{ github.run_id }}
-          path: build/eval-v2-study
+          name: eval-v2-tested-engine
+          path: build/eval-v2-engine
+          retention-days: 7
+
+  screen:
+    needs: quick
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[eval-final]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: A_wider_core
+            options: '{"EvalV2":true,"AdaptiveLongThink":false,"EvalMaterialWeight":100,"EvalSafety":50,"EvalPressure":150,"EvalActivity":150,"EvalDanger":200,"EvalInfluence":0,"EvalPotential":0,"EvalCoordination":0,"EvalHandPotential":0,"EvalThreat":0,"EvalPositionalCap":700}'
+          - id: B_threat_core
+            options: '{"EvalV2":true,"AdaptiveLongThink":false,"EvalMaterialWeight":100,"EvalSafety":65,"EvalPressure":160,"EvalActivity":150,"EvalDanger":185,"EvalInfluence":0,"EvalPotential":0,"EvalCoordination":0,"EvalHandPotential":60,"EvalThreat":25,"EvalPositionalCap":900}'
+          - id: C_balanced_lite
+            options: '{"EvalV2":true,"AdaptiveLongThink":false,"EvalMaterialWeight":100,"EvalSafety":75,"EvalPressure":160,"EvalActivity":160,"EvalDanger":180,"EvalInfluence":50,"EvalPotential":0,"EvalCoordination":50,"EvalHandPotential":60,"EvalThreat":25,"EvalPositionalCap":1000}'
+          - id: D_broad
+            options: '{"EvalV2":true,"AdaptiveLongThink":false,"EvalMaterialWeight":90,"EvalSafety":90,"EvalPressure":170,"EvalActivity":170,"EvalDanger":180,"EvalInfluence":75,"EvalPotential":15,"EvalCoordination":60,"EvalHandPotential":75,"EvalThreat":25,"EvalPositionalCap":1300}'
+          - id: E_tactical
+            options: '{"EvalV2":true,"AdaptiveLongThink":false,"EvalMaterialWeight":100,"EvalSafety":70,"EvalPressure":175,"EvalActivity":150,"EvalDanger":175,"EvalInfluence":40,"EvalPotential":0,"EvalCoordination":40,"EvalHandPotential":50,"EvalThreat":35,"EvalPositionalCap":1000}'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+      - run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-tested-engine
+          path: build/bin
+      - run: chmod +x build/bin/eval-v2-engine
+      - name: Screen 16 games at 200ms
+        run: |
+          python3 benchmarks/eval_v2_match.py \
+            --engine build/bin/eval-v2-engine \
+            --pairs 8 --lanes 4 --seed 2026106000 --max-plies 240 \
+            --go-command 'go movetime 200' \
+            --options-a '${{ matrix.options }}' \
+            --options-b '{"EvalV2":false,"AdaptiveLongThink":false}' \
+            --output-dir build/screen/${{ matrix.id }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v2-screen-${{ matrix.id }}
+          path: build/screen/${{ matrix.id }}
+          retention-days: 30
+
+  select:
+    needs: screen
+    runs-on: ubuntu-latest
+    outputs:
+      options: ${{ steps.pick.outputs.options }}
+      selected_id: ${{ steps.pick.outputs.selected_id }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: v2-screen-*
+          path: build/screens
+      - id: pick
+        name: Pick best screen result
+        run: |
+          python3 - <<'PY'
+          import glob,json,os
+          rows=[]
+          for p in glob.glob('build/screens/**/summary.json',recursive=True):
+              s=json.load(open(p,encoding='utf-8'))
+              ident=p.split('/')[-2].replace('v2-screen-','')
+              rows.append((s['score_a'],ident,p,s))
+          rows.sort(key=lambda x:(x[0],x[1]),reverse=True)
+          if not rows: raise SystemExit('no screen results')
+          best=rows[0]
+          ranking=[{'id':i,'score':score,'wins':s['wins_a'],'draws':s['draws'],'losses':s['wins_b']} for score,i,p,s in rows]
+          open('screen-ranking.json','w').write(json.dumps(ranking,indent=2)+'\n')
+          opts=json.dumps(best[3]['config']['options_a'],separators=(',',':'))
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+              out.write('selected_id='+best[1]+'\n')
+              out.write('options='+opts+'\n')
+          print('ranking',json.dumps(ranking))
+          print('selected',best[1],opts)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v2-screen-ranking
+          path: screen-ranking.json
+          retention-days: 30
+
+  confirm:
+    needs: [quick, select]
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+      - run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-tested-engine
+          path: build/bin
+      - run: chmod +x build/bin/eval-v2-engine
+      - name: Independent 16-game confirmation shard
+        env:
+          SELECTED_OPTIONS: ${{ needs.select.outputs.options }}
+        run: |
+          SEED=$((2026107000 + ${{ matrix.shard }} * 1000))
+          python3 benchmarks/eval_v2_match.py \
+            --engine build/bin/eval-v2-engine \
+            --pairs 8 --lanes 4 --seed "$SEED" --max-plies 240 \
+            --go-command 'go movetime 200' \
+            --options-a "$SELECTED_OPTIONS" \
+            --options-b '{"EvalV2":false,"AdaptiveLongThink":false}' \
+            --output-dir build/final/shard-${{ matrix.shard }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v2-final-${{ matrix.shard }}
+          path: build/final/shard-${{ matrix.shard }}
+          retention-days: 180
+
+  summary:
+    needs: [select, confirm]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: v2-final-*
+          path: build/final
+      - uses: actions/download-artifact@v4
+        with:
+          name: v2-screen-ranking
+          path: build
+      - name: Aggregate 64 games
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import glob,json,math
+          rows=[json.load(open(p,encoding='utf-8')) for p in glob.glob('build/final/**/summary.json',recursive=True)]
+          if not rows: raise SystemExit('no final results')
+          n=sum(r['games'] for r in rows);w=sum(r['wins_a'] for r in rows);d=sum(r['draws'] for r in rows);l=sum(r['wins_b'] for r in rows)
+          score=(w+0.5*d)/n
+          se=math.sqrt(max(score*(1-score),1e-9)/n)
+          lo=max(0,score-1.96*se);hi=min(1,score+1.96*se)
+          ma=sum(r['timing_ms']['A']['mean']*r['timing_ms']['A']['moves'] for r in rows)/sum(r['timing_ms']['A']['moves'] for r in rows)
+          mb=sum(r['timing_ms']['B']['mean']*r['timing_ms']['B']['moves'] for r in rows)/sum(r['timing_ms']['B']['moves'] for r in rows)
+          na=sum(r['search']['A'].get('nodes_total',0) for r in rows);nb=sum(r['search']['B'].get('nodes_total',0) for r in rows)
+          rank=json.load(open('build/screen-ranking.json',encoding='utf-8'))
+          out={'selected':'${{ needs.select.outputs.selected_id }}','games':n,'wins_v2':w,'draws':d,'wins_old':l,'score_v2':score,'simple95':[lo,hi],'mean_ms_v2':ma,'mean_ms_old':mb,'nodes_v2':na,'nodes_old':nb,'screen':rank}
+          open('build/evaluation-v2-final-summary.json','w').write(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
+          print('## Evaluation-v2 latest proof')
+          print(f"- selected: {out['selected']}")
+          print(f"- V2 {w}W {d}D {l}L = {score:.1%}")
+          print(f"- simple 95% approx: {lo:.1%}–{hi:.1%}")
+          print(f"- mean ms V2/old: {ma:.1f}/{mb:.1f}")
+          if nb: print(f"- nodes V2/old: {na:,}/{nb:,} ({na/nb-1:+.1%})")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-v2-latest-proof-${{ github.run_id }}
+          path: build/evaluation-v2-final-summary.json
           retention-days: 180
