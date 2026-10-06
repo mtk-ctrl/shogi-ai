@@ -68,6 +68,73 @@ SEARCH_STAT_NAMES = (
     "qnodes", "qcutoffs", "qlimit_leaves",
 )
 
+USI_INFO_INTEGER_NAMES = (
+    "depth", "seldepth", "time", "nodes", "nps", "hashfull", "multipv",
+)
+
+PER_MOVE_SEARCH_FIELDS = (
+    "depth", "seldepth", "time", "nodes", "nps",
+    "full_nodes", "cutoffs", "tt_probes", "tt_hits",
+    "experience_probes", "experience_hits", "qnodes", "qcutoffs",
+)
+
+
+def parse_info_line(line):
+    """Parse the reusable part of one USI info line.
+
+    Scores are kept from the side-to-move point of view here.  A game record
+    later adds a Black-normalized score so evaluation trajectories remain
+    comparable across alternating turns.
+    """
+    parts = line.split()
+    if not parts or parts[0] != "info":
+        return {}
+    info = {}
+    for name in USI_INFO_INTEGER_NAMES + SEARCH_STAT_NAMES:
+        if name in parts:
+            try:
+                info[name] = int(parts[parts.index(name) + 1])
+            except (ValueError, IndexError):
+                pass
+    if "score" in parts:
+        try:
+            i = parts.index("score")
+            kind, value = parts[i + 1], int(parts[i + 2])
+            if kind == "cp":
+                info["score_cp"] = value
+            elif kind == "mate":
+                info["score_mate"] = value
+            if "lowerbound" in parts[i + 3:]:
+                info["score_lowerbound"] = True
+            if "upperbound" in parts[i + 3:]:
+                info["score_upperbound"] = True
+        except (ValueError, IndexError):
+            pass
+    if "pv" in parts:
+        i = parts.index("pv")
+        info["pv"] = parts[i + 1:i + 9]
+    return info
+
+
+def compact_search_telemetry(info, side_to_move):
+    """Keep enough per-move search data for later diagnosis without huge logs."""
+    out = {name: info[name] for name in PER_MOVE_SEARCH_FIELDS if name in info}
+    if "elapsed_ms" in info:
+        out["elapsed_ms"] = info["elapsed_ms"]
+    if "pv" in info:
+        out["pv"] = info["pv"]
+    if "score_cp" in info:
+        out["score_cp_stm"] = info["score_cp"]
+        out["score_black_cp"] = info["score_cp"] if side_to_move == shogi.BLACK else -info["score_cp"]
+    if "score_mate" in info:
+        out["score_mate_stm"] = info["score_mate"]
+        out["score_black_mate"] = info["score_mate"] if side_to_move == shogi.BLACK else -info["score_mate"]
+    if info.get("score_lowerbound"):
+        out["score_lowerbound"] = True
+    if info.get("score_upperbound"):
+        out["score_upperbound"] = True
+    return out
+
 
 def usi_value(value):
     if isinstance(value, bool):
@@ -85,6 +152,7 @@ class Engine:
         self.go_command = go_command
         self.elapsed = []
         self.search_stats = []
+        self.last_search = {}
         self.proc = subprocess.Popen(
             [self.path], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT, text=True, bufsize=1)
@@ -149,19 +217,17 @@ class Engine:
                 raise TimeoutError(f"{self.label}: waiting for bestmove; seen={seen[-8:]}") from exc
             seen.append(line)
             if line.startswith("info "):
-                parts = line.split()
-                for name in SEARCH_STAT_NAMES:
-                    if name in parts:
-                        try:
-                            info[name] = int(parts[parts.index(name) + 1])
-                        except (ValueError, IndexError):
-                            pass
+                info.update(parse_info_line(line))
                 continue
             if line.startswith("bestmove "):
                 token = line.split(maxsplit=1)[1].strip()
                 break
 
-        self.elapsed.append(time.monotonic() - started)
+        elapsed_s = time.monotonic() - started
+        self.elapsed.append(elapsed_s)
+        self.last_search = dict(info)
+        self.last_search["bestmove"] = token
+        self.last_search["elapsed_ms"] = round(elapsed_s * 1000, 3)
         if info:
             self.search_stats.append(info)
         return token
@@ -184,21 +250,29 @@ def play_game(a, b, game_index, max_plies, seed_base):
 
     board = shogi.Board()
     moves = []
+    move_records = []
     adjudicator = Adjudicator(board)
     def result(winner, reason, **extra):
         return {"winner": winner, "reason": reason, "plies": len(moves),
-                "a_black": a_black, "moves": moves, "final_sfen": board.sfen(), **extra}
+                "a_black": a_black, "moves": moves, "move_records": move_records,
+                "final_sfen": board.sfen(), **extra}
     for ply in range(max_plies):
         engine = black if board.turn == shogi.BLACK else white
+        side_to_move = board.turn
+        in_check_before = board.is_check()
+        legal_moves_before = sum(1 for _ in board.legal_moves)
         token = engine.bestmove(moves)
+        search = compact_search_telemetry(engine.last_search, side_to_move)
 
         if token == "resign":
-            return result(white.label if engine is black else black.label, "resign")
+            return result(white.label if engine is black else black.label, "resign",
+                          terminal_search=search)
         if token == "win":
             if not can_declare_win(board):
                 return result(white.label if engine is black else black.label,
-                              "invalid_declaration", illegal_by=engine.label)
-            return result(engine.label, "declare_win")
+                              "invalid_declaration", illegal_by=engine.label,
+                              terminal_search=search)
+            return result(engine.label, "declare_win", terminal_search=search)
 
         try:
             move = shogi.Move.from_usi(token)
@@ -207,10 +281,25 @@ def play_game(a, b, game_index, max_plies, seed_base):
                           f"invalid_usi:{token}", illegal_by=engine.label)
         if move not in board.legal_moves:
             return result(white.label if engine is black else black.label,
-                          f"illegal_move:{token}", illegal_by=engine.label)
+                          f"illegal_move:{token}", illegal_by=engine.label,
+                          terminal_search=search)
 
+        record = {
+            "ply": len(moves) + 1,
+            "side_to_move": "black" if side_to_move == shogi.BLACK else "white",
+            "engine": engine.label,
+            "move": token,
+            "in_check_before": in_check_before,
+            "legal_moves_before": legal_moves_before,
+            "is_capture": board.piece_at(move.to_square) is not None,
+            "is_promotion": bool(move.promotion),
+            "is_drop": move.drop_piece_type is not None,
+            "search": search,
+        }
         board.push(move)
         moves.append(token)
+        record["gave_check"] = board.is_check()
+        move_records.append(record)
         terminal = adjudicator.after_move(board)
         if terminal is not None:
             color, reason = terminal
@@ -294,6 +383,10 @@ def main():
     draws = args.games - wins_a - wins_b
     illegal = [g for g in games if "illegal_by" in g]
     summary = {
+        "telemetry_schema_version": 1,
+        "telemetry_note": ("Every played move carries side/engine/tactical facts plus compact live-search "
+                           "telemetry. Live scores are evidence, not causal labels; selective fixed-analyzer "
+                           "re-analysis is required before learning."),
         "engine_a": str(Path(args.engine_a)),
         "engine_b": str(Path(args.engine_b)),
         "sha256_a": hashlib.sha256(Path(args.engine_a).read_bytes()).hexdigest(),
