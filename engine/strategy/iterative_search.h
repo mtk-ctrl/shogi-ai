@@ -50,6 +50,10 @@ public:
         if (quiescence_enabled_ != enabled) experience_.clear();
         quiescence_enabled_ = enabled;
     }
+    void set_hand_drop_tactics_enabled(bool enabled) {
+        if (hand_drop_tactics_enabled_ != enabled) experience_.clear();
+        hand_drop_tactics_enabled_ = enabled;
+    }
     void clear_experience() { experience_.clear(); }
     bool load_experience(const std::string& path, std::uint64_t signature) {
         return experience_.load(path, signature);
@@ -364,7 +368,7 @@ private:
                                     const std::string& previous_root = {}) {
         ++stats_.order_calls;
         stats_.ordered_moves += moves.size();
-        auto result = MoveOrder::order(p.snapshot(), moves);
+        auto result = MoveOrder::order(p.snapshot(), moves, hand_drop_tactics_enabled_);
         auto promote = [&](const std::string& hint) {
             auto it = std::find(result.begin(), result.end(), hint);
             if (it == result.end()) return false;
@@ -399,6 +403,7 @@ private:
     ExperienceCache experience_, iteration_hints_;
     bool experience_enabled_ = false;
     bool quiescence_enabled_ = true;
+    bool hand_drop_tactics_enabled_ = false;
     bool experience_allowed_ = false;
     bool board_scores_ = false;
     rules::Color root_ = rules::Color::Black;

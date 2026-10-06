@@ -1,0 +1,83 @@
+name: Hand Drop Tactics 100
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/hand-drop-tactics-100]
+    paths:
+      - 'engine/**'
+      - 'tests/**'
+      - 'scripts/build.py'
+      - 'benchmarks/hand_drop_*'
+      - '.github/workflows/hand-drop-tactics-100.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hand-drop-tactics-100-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build engine and tests
+        run: |
+          python3 scripts/build.py --output build/hand-drop-engine
+          python3 scripts/build.py --ordering-test --output build/ordering-test
+          python3 scripts/build.py --hand-drop-order-bench --output build/hand-drop-order-bench
+
+      - name: Correctness
+        run: build/ordering-test
+
+      - name: Ordering cost
+        run: |
+          mkdir -p build/hand-drop-experiment
+          build/hand-drop-order-bench | tee build/hand-drop-experiment/order-cost.json
+
+      - name: Paired 100 games at 50ms
+        run: |
+          python3 benchmarks/hand_drop_match.py             --engine build/hand-drop-engine             --pairs 50             --lanes 4             --max-plies 240             --go-command 'go movetime 50'             --output-dir build/hand-drop-experiment/match
+
+      - name: Summary
+        if: always()
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          cost=Path('build/hand-drop-experiment/order-cost.json')
+          if cost.exists():
+              c=json.loads(cost.read_text())
+              print('## Move-order cost')
+              print(f"- mixed positions: {c['mixed_overhead_pct']:+.2f}%")
+              print(f"- drop-rich positions: {c['drop_rich_overhead_pct']:+.2f}%")
+          summary=Path('build/hand-drop-experiment/match/summary.json')
+          if summary.exists():
+              s=json.loads(summary.read_text())
+              print('## 100-game paired match')
+              print(f"- ON: {s['wins_on']}勝 {s['draws']}分 {s['wins_off']}敗")
+              print(f"- score: {s['score_on']:.1%}")
+              print(f"- paired 95% approx interval: {s['paired_normal_approx_interval'][0]:.1%}–{s['paired_normal_approx_interval'][1]:.1%}")
+              a,b=s['search']['A'],s['search']['B']
+              if b.get('nodes_total'):
+                  print(f"- nodes ON/OFF: {a.get('nodes_total',0):,} / {b.get('nodes_total',0):,} ({a.get('nodes_total',0)/b['nodes_total']-1:+.1%})")
+              print(f"- mean elapsed ms ON/OFF: {s['timing_ms']['A']['mean']:.2f} / {s['timing_ms']['B']['mean']:.2f}")
+              print(f"- illegal games: {s['illegal_games']}")
+          PY
+
+      - name: Upload records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hand-drop-tactics-100-${{ github.run_id }}
+          path: build/hand-drop-experiment
+          retention-days: 180
