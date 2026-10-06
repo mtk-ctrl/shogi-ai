@@ -92,7 +92,7 @@ def load_candidates(path):
     data=json.loads(Path(path).read_text(encoding="utf-8"))
     return data["candidates"] if isinstance(data,dict) else data
 
-def match_one(row,engine,out_root,games,movetime,seed,opening_book=False):
+def match_one(row,engine,out_root,games,movetime,seed,opening_book=False,match_lanes=1):
     if games%2:raise ValueError("games must be even for exact color balance")
     out=Path(out_root)/f"cfg-{row['index']:04d}"
     result=out/"summary.json"
@@ -108,7 +108,7 @@ def match_one(row,engine,out_root,games,movetime,seed,opening_book=False):
     cmd=[
         sys.executable,"benchmarks/eval_v2_match.py",
         "--engine",str(Path(engine).resolve()),
-        "--pairs",str(games//2),"--lanes","1",
+        "--pairs",str(games//2),"--lanes",str(match_lanes),
         "--seed",str(seed+row["index"]*32+movetime),
         "--max-plies","240","--go-command",f"go movetime {movetime}",
         "--output-dir",str(out),
@@ -128,7 +128,7 @@ def cmd_run(args):
         "movetime":args.movetime,"candidate_count":len(rows),
         "chosen":len(chosen),"factors":FACTORS,"base":BASE,"multipliers":MULT,
     })
-    jobs=[(r,args.engine,root,args.games,args.movetime,args.seed,args.opening_book) for r in chosen]
+    jobs=[(r,args.engine,root,args.games,args.movetime,args.seed,args.opening_book,args.match_lanes) for r in chosen]
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.parallel) as pool:
         done=0
         for idx in pool.map(lambda j:match_one(*j),jobs):
@@ -153,7 +153,7 @@ def cmd_fidelity(args):
     root=Path(args.output_dir);root.mkdir(parents=True,exist_ok=True)
     for movetime in args.movetimes:
         stage=root/f"{movetime}ms"
-        jobs=[(r,args.engine,stage,args.games,movetime,args.seed+movetime*1000,False) for r in chosen]
+        jobs=[(r,args.engine,stage,args.games,movetime,args.seed+movetime*1000,False,args.match_lanes) for r in chosen]
         with concurrent.futures.ThreadPoolExecutor(max_workers=args.parallel) as pool:
             done=0
             for idx in pool.map(lambda j:match_one(*j),jobs):
@@ -388,11 +388,11 @@ def parser():
     r=sub.add_parser("run");r.add_argument("--engine",required=True);r.add_argument("--output-dir",required=True)
     r.add_argument("--candidates");r.add_argument("--games",type=int,required=True);r.add_argument("--movetime",type=int,required=True)
     r.add_argument("--shard",type=int,required=True);r.add_argument("--shards",type=int,required=True);r.add_argument("--parallel",type=int,default=4)
-    r.add_argument("--seed",type=int,default=20261006);r.add_argument("--opening-book",action="store_true")
+    r.add_argument("--seed",type=int,default=20261006);r.add_argument("--opening-book",action="store_true");r.add_argument("--match-lanes",type=int,default=1)
     f=sub.add_parser("fidelity");f.add_argument("--engine",required=True);f.add_argument("--output-dir",required=True)
     f.add_argument("--games",type=int,default=6);f.add_argument("--movetimes",type=int,nargs="+",default=[50,200])
     f.add_argument("--sample",type=int,default=250);f.add_argument("--shard",type=int,required=True);f.add_argument("--shards",type=int,required=True)
-    f.add_argument("--parallel",type=int,default=4);f.add_argument("--seed",type=int,default=20261006)
+    f.add_argument("--parallel",type=int,default=4);f.add_argument("--match-lanes",type=int,default=1);f.add_argument("--seed",type=int,default=20261006)
     b=sub.add_parser("select-broad");b.add_argument("--broad",required=True);b.add_argument("--fidelity",required=True);b.add_argument("--output",required=True)
     s=sub.add_parser("select-stage");s.add_argument("--candidates",required=True);s.add_argument("--results",required=True);s.add_argument("--output",required=True)
     s.add_argument("--stage",required=True);s.add_argument("--keep",type=int,required=True);s.add_argument("--min-level",type=int,default=0)
