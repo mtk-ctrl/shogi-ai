@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Same engine, 50ms normally, at most five 30s decisions per game.
+"""Same engine, 50ms normally, with configurable bounded longer decisions.
 
 Only this experimental runner changes time allocation. Production engine and
 book are unchanged. A short probe is restarted with the remaining wall budget;
@@ -21,8 +21,8 @@ from arena import Engine, parse_info_line, play_game
 
 
 def select_bonus(policy, ply, used, previous, probe, iterations, board, normal_ms,
-                 last_bonus_ply=None):
-    if policy == "none" or used >= 5 or ply < 24:
+                 last_bonus_ply=None, max_uses=5):
+    if policy == "none" or used >= max_uses or ply < 24:
         return None
     # Do not spend a coupon on a Book decision, forced move or proven mate.
     if probe.get("book_hit") or "score_mate" in probe or len(list(board.legal_moves)) <= 1:
@@ -38,8 +38,17 @@ def select_bonus(policy, ply, used, previous, probe, iterations, board, normal_m
         score = probe.get("score_cp")
         if previous is not None and score is not None and previous - score >= 150:
             return "emergency_score_drop_150"
-    starts = (24, 56, 88, 120, 160)
-    ends = (54, 86, 118, 158, 198)
+    if max_uses == 5:
+        # Preserve the pre-registered 30-second experiment exactly.
+        starts = (24, 56, 88, 120, 160)
+        ends = (54, 86, 118, 158, 198)
+    elif max_uses == 1:
+        starts, ends = (24,), (198,)
+    else:
+        # Spread additional coupons over the same practical game horizon rather
+        # than spending them all in the first tactical cluster.
+        starts = tuple(round(24 + i * (160 - 24) / (max_uses - 1)) for i in range(max_uses))
+        ends = tuple(round(54 + i * (198 - 54) / (max_uses - 1)) for i in range(max_uses))
     if ply < starts[used]:
         return None
     if policy == "scheduled":
@@ -66,11 +75,13 @@ def select_bonus(policy, ply, used, previous, probe, iterations, board, normal_m
 class BonusEngine(Engine):
     RESPONSE_TIMEOUT = 45  # watchdog must exceed the 30s search budget
 
-    def __init__(self, path, label, options, policy, pair_seed, normal_ms=50, bonus_ms=30000):
+    def __init__(self, path, label, options, policy, pair_seed, normal_ms=50, bonus_ms=30000,
+                 max_uses=5):
         self.policy = policy
         self.pair_seed = pair_seed
         self.normal_ms = normal_ms
         self.bonus_ms = bonus_ms
+        self.max_uses = max_uses
         self.iterations = []
         self.book_hit = False
         self.used = 0
@@ -112,7 +123,7 @@ class BonusEngine(Engine):
             board.push_usi(move)
         reason = select_bonus(self.policy, len(moves) + 1, self.used,
                               self.previous, probe, iterations, board, self.normal_ms,
-                              self.last_bonus_ply)
+                              self.last_bonus_ply, self.max_uses)
         if token in ("resign", "win"):
             reason = None
         decision = {"ply": len(moves) + 1, "probe": probe,
@@ -139,22 +150,23 @@ class BonusEngine(Engine):
 
 
 def run_pair(job):
-    engine, options, policy, index, seed, max_plies, output, cpu, normal_ms, bonus_ms = job
+    engine, options, policy, index, seed, max_plies, output, cpu, normal_ms, bonus_ms, max_uses = job
     if cpu is not None:
         os.sched_setaffinity(0, {cpu})  # children inherit: no oversubscribed search
     pair_seed = seed + index * 2
     a = b = None
     games = []
     try:
-        a = BonusEngine(engine, "A", options, policy, pair_seed, normal_ms, bonus_ms)
-        b = BonusEngine(engine, "B", options, "none", pair_seed, normal_ms, bonus_ms)
+        a = BonusEngine(engine, "A", options, policy, pair_seed, normal_ms, bonus_ms, max_uses)
+        b = BonusEngine(engine, "B", options, "none", pair_seed, normal_ms, bonus_ms, max_uses)
         for half in range(2):
             started = time.monotonic()
             result = play_game(a, b, half, max_plies, pair_seed)
             result.update({"pair": index, "half": half, "pair_seed": pair_seed,
                            "elapsed_seconds": round(time.monotonic() - started, 3),
                            "decisions": {"A": a.decisions, "B": b.decisions},
-                           "bonus_used": a.used})
+                           "bonus_used": a.used, "max_bonus_uses": max_uses,
+                           "bonus_ms": bonus_ms})
             if "illegal_by" in result:
                 raise RuntimeError(f"Illegal game: {result}")
             games.append(result)
@@ -210,9 +222,11 @@ def main():
     p.add_argument("--max-plies", type=int, default=400)
     p.add_argument("--normal-ms", type=int, default=50)
     p.add_argument("--bonus-ms", type=int, default=30000)
+    p.add_argument("--max-bonus-uses", type=int, default=5)
     p.add_argument("--output", required=True)
     args = p.parse_args()
-    if not 1 <= args.normal_ms <= args.bonus_ms <= 30000 or args.pairs < 1 or args.workers < 1:
+    if (not 1 <= args.normal_ms <= args.bonus_ms <= 30000 or args.pairs < 1
+            or args.workers < 1 or not 1 <= args.max_bonus_uses <= 50):
         p.error("positive pairs/workers; 1 <= normal-ms <= bonus-ms <= 30000 required")
     out = Path(args.output)
     out.mkdir(parents=True, exist_ok=True)
@@ -221,7 +235,8 @@ def main():
     workers = min(args.workers, len(cpus))
     started = time.monotonic()
     jobs = [(str(Path(args.engine).resolve()), options, args.policy, i, args.seed,
-             args.max_plies, str(out), cpus[i % workers], args.normal_ms, args.bonus_ms) for i in range(args.pairs)]
+             args.max_plies, str(out), cpus[i % workers], args.normal_ms, args.bonus_ms,
+             args.max_bonus_uses) for i in range(args.pairs)]
     # Assign one stable CPU per process rather than one per job. ProcessPool may
     # otherwise run different job IDs concurrently on the same chosen CPU.
     import multiprocessing
@@ -242,6 +257,7 @@ def main():
                     "engine_sha256": hashlib.sha256(Path(args.engine).read_bytes()).hexdigest(),
                     "options": options, "policy": args.policy, "seed": args.seed,
                     "normal_ms": args.normal_ms, "bonus_ms": args.bonus_ms,
+                    "max_bonus_uses": args.max_bonus_uses,
                     "max_plies": args.max_plies, "workers": workers,
                     "elapsed_seconds": round(time.monotonic() - started, 3),
                     "method_note": "Restarted short probe plus remaining budget; RNG advances on both searches. Pair shares color seeds, not forced opening. CI is pair-normal approximation."})
