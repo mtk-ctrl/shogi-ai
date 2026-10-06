@@ -39,11 +39,14 @@ jobs:
           python3 - <<'PY'
           import json
           from pathlib import Path
+          from collections import Counter
           no_book=json.loads(Path('build/results/no_book.json').read_text())
           book=json.loads(Path('build/results/book_on.json').read_text())
           fixed=Path('build/evaluation-test.txt').read_text().strip()
+          nb_reasons=Counter(g['reason'] for g in no_book['details'])
+          book_reasons=Counter(g['reason'] for g in book['details'])
           lines=[
-              '# King Defense Network 初期検証',
+              '# King Defense Network 再検証（monotonic risk）',
               '',
               '二重King Zone（距離1/距離2）と8方向ごとの敵到達度で、守備連携を機械判定する研究用Challenger。囲い名は使用しない。',
               '',
@@ -53,22 +56,26 @@ jobs:
               f"- Challenger: {no_book['wins_a']}勝 / Baseline: {no_book['wins_b']}勝 / 引分: {no_book['draws']}",
               f"- Challenger得点率: {no_book['score_a']:.3f}",
               f"- 平均応答: A {no_book['timing_ms']['A']['mean']:.1f}ms / B {no_book['timing_ms']['B']['mean']:.1f}ms",
+              f"- 平均手数: {no_book['average_plies']:.1f} ply / 終局理由: {dict(nb_reasons)}",
               '',
               '## 200ms / Book ON / 30局',
               f"- Challenger: {book['wins_a']}勝 / Baseline: {book['wins_b']}勝 / 引分: {book['draws']}",
               f"- Challenger得点率: {book['score_a']:.3f}",
               f"- 平均応答: A {book['timing_ms']['A']['mean']:.1f}ms / B {book['timing_ms']['B']['mean']:.1f}ms",
+              f"- 平均手数: {book['average_plies']:.1f} ply / 終局理由: {dict(book_reasons)}",
               '',
               '## 扱い',
               '固定局面は機械判定の妥当性確認、対局は初期シグナル。30局だけで本採用は決めない。',
               ''
           ]
-          Path('research/king_defense_network_result.md').write_text('\n'.join(lines),encoding='utf-8')
+          Path('research/king_defense_network_result_v2.md').write_text('\n'.join(lines),encoding='utf-8')
+          Path('research/king_defense_v2_no_book.json').write_text(json.dumps(no_book,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          Path('research/king_defense_v2_book_on.json').write_text(json.dumps(book,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
           PY
       - name: Commit research result
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add research/king_defense_network_result.md
-          git commit -m "research: record king defense network initial validation"
+          git add research/king_defense_network_result_v2.md research/king_defense_v2_no_book.json research/king_defense_v2_book_on.json
+          git commit -m "research: record monotonic king defense validation"
           git push origin HEAD:research/king-defense-network
