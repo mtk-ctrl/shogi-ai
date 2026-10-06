@@ -18,7 +18,7 @@ struct EvaluationBreakdown {
     std::array<std::array<int,4>,2> side_points{};
     // Signed Black-minus-White terms; danger already has its minus sign.
     std::array<int,4> terms{};
-    std::array<int,2> king_defense_points{};
+    std::array<int,2> king_defense_risk{};
     int king_defense_term=0;
     int positional_unclamped=0, positional=0, clamp_adjustment=0, total=0;
 };
@@ -104,7 +104,7 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
             int(std::int64_t(f.exposure)*p.danger_numerator/p.danger_denominator)};
         for(int i=0;i<4;++i)b.side_points[c][i]=std::min(b.side_points[c][i],p.caps[i]);
         if(p.king_defense_weight>0)
-            b.king_defense_points[c]=std::min(f.king_defense.raw_score,p.king_defense_cap);
+            b.king_defense_risk[c]=std::min(f.king_defense.risk_score,p.king_defense_cap);
     }
     for(int i=0;i<4;++i) {
         b.terms[i]=(b.side_points[0][i]-b.side_points[1][i])*p.weights[i]/100;
@@ -112,7 +112,7 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
         b.positional_unclamped+=b.terms[i];
     }
     if(p.king_defense_weight>0) {
-        b.king_defense_term=(b.king_defense_points[0]-b.king_defense_points[1])
+        b.king_defense_term=-(b.king_defense_risk[0]-b.king_defense_risk[1])
             *p.king_defense_weight/100;
         b.positional_unclamped+=b.king_defense_term;
     }
