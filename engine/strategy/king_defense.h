@@ -31,7 +31,9 @@ struct KingDefenseFeatures {
     int supported_inner_pieces = 0;
     int supported_outer_pieces = 0;
     int active_sectors = 0;
-    int raw_score = 0;
+    // Higher is worse: unanswered king-zone pressure after accounting for
+    // direction-relevant control and supported guards.
+    int risk_score = 0;
 };
 
 inline int king_sector(int df, int dr) {
@@ -102,13 +104,15 @@ inline KingDefenseFeatures king_defense_features(const rules::Snapshot& s,
         else ++out.supported_outer_pieces;
     }
 
-    // Threat-gated coordination:
-    // - a quiet/closed sector contributes nothing, so "missing guards" there
-    //   are not mechanically punished;
-    // - a sector under attack rewards control that meets the pressure and
-    //   supported guard pieces in that same direction;
-    // - inner-ring contact is intentionally more important than outer-only
-    //   contact, while the outer ring still matters as an early warning layer.
+    // Monotonic risk formulation:
+    // - quiet/closed sector => zero risk;
+    // - more enemy pressure cannot become a bonus by itself;
+    // - relevant friendly control and supported guards only REDUCE risk;
+    // - removing enemy pressure can therefore never lower this feature.
+    //
+    // This fixes the first research version, where a well-defended attacked
+    // sector earned a positive bonus that disappeared when the attack itself
+    // was removed.
     for (int sector = 0; sector < 8; ++sector) {
         const int inner_t = out.inner_threat[sector];
         const int outer_t = out.outer_threat[sector];
@@ -117,14 +121,14 @@ inline KingDefenseFeatures king_defense_features(const rules::Snapshot& s,
         ++out.active_sectors;
 
         const int control = out.inner_control[sector] + out.outer_control[sector];
-        const int covered = std::min(threat, control);
-        const int supported = std::min(threat, out.support[sector]);
+        // Support is deliberately secondary: two support-edge units are worth
+        // roughly one additional unit of useful control.
+        const int effective_defence = std::min(threat, control + out.support[sector] / 2);
+        const int unanswered = threat - effective_defence;
 
         const bool inner_contact = inner_t > 0;
-        const int coverage_max = inner_contact ? 10 : 6;
-        const int support_max = inner_contact ? 5 : 3;
-        out.raw_score += coverage_max * covered / threat;
-        out.raw_score += support_max * supported / threat;
+        const int max_risk = inner_contact ? 15 : 9;
+        out.risk_score += max_risk * unanswered / threat;
     }
     return out;
 }
