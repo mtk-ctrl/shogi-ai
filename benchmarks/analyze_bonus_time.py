@@ -28,7 +28,7 @@ def analyze(directory):
         assert len(game["move_records"]) == game["plies"]
         a = game["decisions"]["A"]
         ext = [d for d in a if d["extended"]]
-        assert len(ext) == game["bonus_used"] <= 5
+        assert len(ext) == game["bonus_used"] <= game.get("max_bonus_uses", 5)
         assert [d["coupon"] for d in ext] == list(range(1, len(ext)+1))
         board = shogi.Board()
         decisions = {(side, d["ply"]):d for side in ("A", "B") for d in game["decisions"][side]}
@@ -45,7 +45,7 @@ def analyze(directory):
             if decision["extended"]:
                 assert not decision["probe"]["book_hit"]
                 assert decision["changed_move"] == (token != decision["probe"]["bestmove"])
-                assert decision["final"]["elapsed_ms"] <= 30500
+                assert decision["final"]["elapsed_ms"] <= game.get("bonus_ms", 30000) + 500
                 assert shogi.Move.from_usi(decision["probe"]["bestmove"]) in board.legal_moves
                 extended.append(decision)
                 if decision["changed_move"]:

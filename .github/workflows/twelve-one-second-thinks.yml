@@ -1,0 +1,69 @@
+name: Twelve One-Second Thinks Research
+
+on:
+  push:
+    branches:
+      - research/twelve-one-second-thinks
+    paths:
+      - ".github/workflows/twelve-one-second-thinks.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: twelve-one-second-thinks
+  cancel-in-progress: false
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Verify configurable bonus-time runner
+        run: python3 tests/test_bonus_time.py build/shogi-ai
+
+      - name: Run 100-game adaptive 12x1s comparison
+        run: |
+          python3 benchmarks/bonus_time_match.py \
+            --engine build/shogi-ai \
+            --policy adaptive \
+            --pairs 50 \
+            --workers 4 \
+            --normal-ms 50 \
+            --bonus-ms 1000 \
+            --max-bonus-uses 12 \
+            --output benchmarks/results/2026-10-06_bonus-time/adaptive-12x1s
+
+      - name: Validate and analyze
+        run: |
+          python3 benchmarks/analyze_bonus_time.py benchmarks/results/2026-10-06_bonus-time/adaptive-12x1s
+          cat benchmarks/results/2026-10-06_bonus-time/adaptive-12x1s/summary.json
+          cat benchmarks/results/2026-10-06_bonus-time/adaptive-12x1s/analysis.json
+
+      - name: Write job summary
+        if: always()
+        run: |
+          echo '## 12回まで1秒・adaptive 100局' >> "$GITHUB_STEP_SUMMARY"
+          if [[ -f benchmarks/results/2026-10-06_bonus-time/adaptive-12x1s/summary.json ]]; then
+            echo '~~~json' >> "$GITHUB_STEP_SUMMARY"
+            cat benchmarks/results/2026-10-06_bonus-time/adaptive-12x1s/summary.json >> "$GITHUB_STEP_SUMMARY"
+            echo '~~~' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload experiment records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adaptive-12x1s-${{ github.run_id }}
+          path: benchmarks/results/2026-10-06_bonus-time/adaptive-12x1s
+          retention-days: 30
+          if-no-files-found: warn
