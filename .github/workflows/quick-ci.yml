@@ -23,6 +23,8 @@ on:
       - "tests/test_mate_usi.py"
       - "tests/test_embedded_book_usi.py"
       - "benchmarks/arena.py"
+      - "benchmarks/position_arena.py"
+      - "tests/test_arena.py"
       - "scripts/build.py"
       - ".github/workflows/quick-ci.yml"
   workflow_dispatch:
@@ -93,3 +95,6 @@ jobs:
           python3 tests/test_search_usi.py build/shogi-ai
           python3 tests/test_eval_usi.py build/shogi-ai
           python3 tests/test_mate_usi.py build/shogi-ai
+
+      - name: Arena telemetry and adjudication tests
+        run: python3 tests/test_arena.py
