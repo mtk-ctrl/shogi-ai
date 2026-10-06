@@ -52,7 +52,7 @@ public:
     // candidate drops pay the cost of looking at the opponent's legal replies.
     // A tactic survives only when every legal reply leaves an immediate legal
     // material capture (or a non-losing recapture on the drop square).
-    static std::vector<std::string> order(const rules::Position& position,
+    static std::vector<std::string> order(rules::Position& position,
                                           const std::vector<std::string>& moves,
                                           bool hand_drop_tactics,
                                           bool response_check,
@@ -65,22 +65,25 @@ public:
         std::vector<OrderedMove> scored;
         scored.reserve(moves.size());
         for (std::size_t i = 0; i < moves.size(); ++i) {
-            const int ordinary = score_move(snapshot, moves[i], before_attacks, false);
             const int geometric = score_move(snapshot, moves[i], before_attacks, hand_drop_tactics);
             int score = geometric;
-            if (hand_drop_tactics && geometric > ordinary
-                && eligible_hand_drop_move(moves[i])) {
-                if (diagnostics) ++diagnostics->geometric_candidates;
-                std::uint64_t replies = 0;
-                const int gain = effective_hand_drop_gain(position, moves[i], replies);
-                if (diagnostics) diagnostics->reply_checks += replies;
-                // In response-check mode the geometric bonus is replaced, not
-                // stacked. Failed apparent forks/skewers fall back to the
-                // ordinary ordering signals (check, first target, etc.).
-                score = ordinary;
-                if (gain > 0) {
-                    if (diagnostics) ++diagnostics->effective_candidates;
-                    score += 2000000 + 1000 * gain;
+            // Ordinary non-drop moves are scored only once. The second score
+            // pass and legal-response work are paid only by eligible hand drops.
+            if (hand_drop_tactics && eligible_hand_drop_move(moves[i])) {
+                const int ordinary = score_move(snapshot, moves[i], before_attacks, false);
+                if (geometric > ordinary) {
+                    if (diagnostics) ++diagnostics->geometric_candidates;
+                    std::uint64_t replies = 0;
+                    const int gain = effective_hand_drop_gain(position, moves[i], replies);
+                    if (diagnostics) diagnostics->reply_checks += replies;
+                    // In response-check mode the geometric bonus is replaced,
+                    // not stacked. Refuted apparent forks/skewers fall back to
+                    // ordinary check/pressure ordering.
+                    score = ordinary;
+                    if (gain > 0) {
+                        if (diagnostics) ++diagnostics->effective_candidates;
+                        score += 2000000 + 1000 * gain;
+                    }
                 }
             }
             scored.push_back({moves[i], score, i});
@@ -224,7 +227,7 @@ private:
         return kind >= 2 && kind <= 7;
     }
 
-    static int effective_hand_drop_gain(const rules::Position& position,
+    static int effective_hand_drop_gain(rules::Position& position,
                                         const std::string& move,
                                         std::uint64_t& reply_checks) {
         if (!eligible_hand_drop_move(move)) return 0;
@@ -234,28 +237,33 @@ private:
         const auto mover = position.turn();
         const auto enemy = other(mover);
 
-        auto child = position.clone();
         std::string error;
-        if (!child.play_generated_legal(move, error)) return 0;
-        const auto replies = child.legal_moves();
-        // Checkmate/check terminality is already handled by the much stronger
-        // ordinary check ordering signal; no extra material bonus is needed.
-        if (replies.empty()) return 0;
+        if (!position.play_generated_legal(move, error)) return 0;
+        const auto replies = position.legal_moves();
+        // Checkmate is already dominated by the ordinary check signal.
+        if (replies.empty()) {
+            position.undo();
+            return 0;
+        }
 
         int guaranteed_gain = -1;
         for (const auto& reply : replies) {
             ++reply_checks;
-            if (!child.play_generated_legal(reply, error)) return 0;
+            if (!position.play_generated_legal(reply, error)) {
+                guaranteed_gain = 0;
+                break;
+            }
+
             int best_gain = 0;
-            if (child.repetition_status().result == rules::Result::Ongoing) {
-                const auto after_reply = child.snapshot();
+            if (position.repetition_status().result == rules::Result::Ongoing) {
+                const auto after_reply = position.snapshot();
                 const auto& occupant = after_reply.board[destination];
-                const auto followups = child.legal_moves();
+                const auto followups = position.legal_moves();
 
                 if (occupant.kind == dropped_kind && occupant.color == mover) {
-                    // The dropped piece survived. Count only its immediate legal
-                    // captures, so pins and forcing counter-checks are respected
-                    // automatically by the rule layer.
+                    // The dropped piece survived. Because followups are legal,
+                    // pins and forcing counter-checks are handled by the rule
+                    // layer instead of approximated geometrically.
                     for (const auto& follow : followups) {
                         if (follow.size() < 4 || follow[1] == '*') continue;
                         if (square_index(follow[0], follow[1]) != destination) continue;
@@ -266,9 +274,8 @@ private:
                             best_gain = std::max(best_gain, capture_gain(target));
                     }
                 } else if (occupant.kind != 0 && occupant.color == enemy) {
-                    // The reply captured the dropped piece. Preserve the old
-                    // exchange-safety idea: a legal immediate recapture counts
-                    // only when the three-ply same-square exchange is non-losing.
+                    // If the drop itself was captured, allow the old
+                    // non-losing same-square recapture logic to rescue it.
                     const int exchange = capture_gain(occupant)
                         - 2 * piece_value(dropped_kind, false);
                     if (exchange > 0) {
@@ -282,14 +289,13 @@ private:
                     }
                 }
             }
-            child.undo();
+            position.undo(); // opponent reply
 
             if (guaranteed_gain < 0 || best_gain < guaranteed_gain)
                 guaranteed_gain = best_gain;
-            // One refutation is enough: this geometric tactic is not a forced
-            // immediate material threat after the opponent's best reply.
             if (guaranteed_gain == 0) break;
         }
+        position.undo(); // candidate drop
         return std::max(0, guaranteed_gain);
     }
 

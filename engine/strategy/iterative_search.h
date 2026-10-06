@@ -369,7 +369,7 @@ private:
         }
         return best;
     }
-    std::vector<std::string> ordered(const rules::Position& p,
+    std::vector<std::string> ordered(rules::Position& p,
                                     const std::vector<std::string>& moves,
                                     const std::string& tt_move = {},
                                     const std::string& previous_root = {}) {
