@@ -160,17 +160,17 @@ int main() {
                       << "option name AdaptiveLongThink type check default true\n"
                       << "option name RandomSeed type spin default 5489 min 0 max 2147483647\n"
                       << "option name EvalProfile type combo default features var features var material\n"
-                      << "option name EvalSafety type spin default 50 min 0 max 400\n"
-                      << "option name EvalPressure type spin default 150 min 0 max 400\n"
-                      << "option name EvalActivity type spin default 150 min 0 max 400\n"
-                      << "option name EvalDanger type spin default 200 min 0 max 400\n"
+                      << "option name EvalSafety type spin default 50 min 0 max 2000\n"
+                      << "option name EvalPressure type spin default 150 min 0 max 2000\n"
+                      << "option name EvalActivity type spin default 150 min 0 max 2000\n"
+                      << "option name EvalDanger type spin default 200 min 0 max 2000\n"
                       << "option name EvalV2 type check default false\n"
-                      << "option name EvalMaterialWeight type spin default 100 min 0 max 400\n"
-                      << "option name EvalInfluence type spin default 0 min 0 max 400\n"
-                      << "option name EvalPotential type spin default 0 min 0 max 400\n"
-                      << "option name EvalCoordination type spin default 0 min 0 max 400\n"
-                      << "option name EvalHandPotential type spin default 0 min 0 max 400\n"
-                      << "option name EvalThreat type spin default 0 min 0 max 400\n"
+                      << "option name EvalMaterialWeight type spin default 100 min 0 max 2000\n"
+                      << "option name EvalInfluence type spin default 0 min 0 max 2000\n"
+                      << "option name EvalPotential type spin default 0 min 0 max 2000\n"
+                      << "option name EvalCoordination type spin default 0 min 0 max 2000\n"
+                      << "option name EvalHandPotential type spin default 0 min 0 max 2000\n"
+                      << "option name EvalThreat type spin default 0 min 0 max 2000\n"
                       << "option name EvalPositionalCap type spin default 300 min 0 max 5000\n"
                       << "option name ExperienceCache type check default true\n"
                       << "option name ExperienceFile type string default shogi-ai-experience.bin\n"
@@ -581,7 +581,7 @@ int main() {
                     try {
                         std::size_t used = 0;
                         const int weight = std::stoi(value, &used);
-                        const int max_value = name == "EvalPositionalCap" ? 5000 : 400;
+                        const int max_value = name == "EvalPositionalCap" ? 5000 : 2000;
                         if (used == value.size() && weight >= 0 && weight <= max_value) {
                             persist_experience();
                             if (name == "EvalSafety") evaluation_parameters.weights[0] = weight;
