@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import shogi
-from benchmarks.arena import (Adjudicator, can_declare_win,
+from benchmarks.arena import (Adjudicator, can_declare_win, play_game,
                               parse_info_line, compact_search_telemetry)
 
 
@@ -74,5 +74,39 @@ assert black_view["experience_probes"] == 30
 
 mate = parse_info_line("info depth 5 score mate -3 nodes 99 pv 5a5b")
 assert compact_search_telemetry(mate, shogi.WHITE)["score_black_mate"] == 3
+
+
+class FakeEngine:
+    def __init__(self, label):
+        self.label = label
+        self.last_search = {}
+
+    def configure_game(self, seed):
+        pass
+
+    def bestmove(self, moves):
+        sequence = ["7g7f", "3c3d", "2g2f", "8c8d"]
+        token = sequence[len(moves)]
+        self.last_search = {
+            "depth": 3,
+            "seldepth": 4,
+            "score_cp": 10 * (len(moves) + 1),
+            "nodes": 100 + len(moves),
+            "pv": [token],
+            "elapsed_ms": 1.5,
+        }
+        return token
+
+
+game = play_game(FakeEngine("A"), FakeEngine("B"), 0, 4, 1234)
+assert game["reason"] == "move_limit"
+assert len(game["move_records"]) == 4
+assert game["move_records"][0]["move"] == "7g7f"
+assert game["move_records"][0]["side_to_move"] == "black"
+assert game["move_records"][0]["search"]["score_black_cp"] == 10
+assert game["move_records"][1]["side_to_move"] == "white"
+assert game["move_records"][1]["search"]["score_black_cp"] == -20
+assert game["move_records"][0]["legal_moves_before"] > 0
+assert "gave_check" in game["move_records"][0]
 
 print("PASS arena: judge, declarations and per-move telemetry parsing")
