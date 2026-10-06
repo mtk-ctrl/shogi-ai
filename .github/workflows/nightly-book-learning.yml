@@ -1,6 +1,8 @@
 name: Nightly Book Learning
 
 on:
+  schedule:
+    - cron: "5 15 * * *" # 00:05 Asia/Tokyo
   push:
     branches:
       - main
@@ -15,45 +17,41 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 concurrency:
   group: nightly-book-learning
   cancel-in-progress: false
 
 jobs:
-  learn:
-    name: nightly-book-learning
+  selfplay:
+    name: nightly-book-selfplay-${{ matrix.runner }}
     runs-on: ubuntu-latest
-    timeout-minutes: 330
+    timeout-minutes: 325
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        runner: [0, 1, 2, 3]
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-
-      - name: Record starting book revision
-        id: start
-        shell: bash
-        run: |
-          echo "book_blob=$(git rev-parse HEAD:shogi-ai-book.tsv)" >> "$GITHUB_OUTPUT"
-          echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Install dependency
         run: python3 -m pip install python-shogi==1.1.1
 
-      - name: Build engine and validator
-        run: |
-          python3 scripts/build.py --output build/shogi-ai
-          python3 scripts/build.py --kifu-validator --output build/kifu-validator
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
 
-      - name: Run Book-vs-Core lanes within nightly budget
+      - name: Run four local lanes until nightly cutoff
         shell: bash
         env:
           EVENT_NAME: ${{ github.event_name }}
           MANUAL_DURATION_MINUTES: ${{ inputs.duration_minutes || '30' }}
+          RUNNER_INDEX: ${{ matrix.runner }}
         run: |
           set -euo pipefail
-          mkdir -p build/nightly-book build/nightly-summary
+          mkdir -p build/nightly-book
 
           CUTOFF_EPOCH="$(python3 - <<'PY'
           import os
@@ -61,7 +59,7 @@ jobs:
           from zoneinfo import ZoneInfo
           now = datetime.now(ZoneInfo('Asia/Tokyo'))
           event = os.environ.get('EVENT_NAME')
-          if event == 'push':
+          if event in ('push', 'schedule'):
               cutoff = now.replace(hour=5, minute=20, second=0, microsecond=0)
               if now >= cutoff:
                   cutoff = now
@@ -82,7 +80,8 @@ jobs:
           )"
 
           run_lane() {
-            lane="$1"
+            local_lane="$1"
+            global_lane=$(( RUNNER_INDEX * 4 + local_lane ))
             batch=0
             while true; do
               now_epoch="$(date +%s)"
@@ -90,23 +89,24 @@ jobs:
                 break
               fi
               run_mod=$(( GITHUB_RUN_ID % 100000 ))
-              arena_seed=$(( 1300000000 + lane * 1000000 + run_mod * 100 + batch * 1000 ))
-              out="build/nightly-book/lane-${lane}-batch-${batch}.json"
-              echo "lane=${lane} batch=${batch} seed=${arena_seed}"
+              arena_seed=$(( 1200000000 + global_lane * 1000000 + run_mod * 100 + batch * 1000 ))
+              out="build/nightly-book/runner-${RUNNER_INDEX}-lane-${global_lane}-batch-${batch}.json"
+              echo "runner=${RUNNER_INDEX} lane=${global_lane} batch=${batch} seed=${arena_seed}"
               if ! python3 benchmarks/book_feedback_arena.py \
                 --engine build/shogi-ai \
                 --book shogi-ai-book.tsv \
                 --games 5 --max-plies 200 --seed "$arena_seed" \
                 --go-command 'go movetime 200' \
                 --output "$out"; then
-                echo "::warning::Book-vs-Core arena failed on lane=${lane} batch=${batch}; stopping lane"
+                echo "::warning::Book-vs-Core failed runner=${RUNNER_INDEX} lane=${global_lane}; stopping lane"
                 break
               fi
               batch=$((batch + 1))
             done
-            echo "lane=${lane} completed_batches=${batch}"
+            echo "runner=${RUNNER_INDEX} lane=${global_lane} completed_batches=${batch}"
           }
 
+          echo "logical_cpus=$(nproc)"
           pids=()
           for lane in 0 1 2 3; do
             run_lane "$lane" &
@@ -116,10 +116,55 @@ jobs:
             wait "$pid"
           done
 
+      - name: Upload runner raw games
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-book-raw-${{ github.run_id }}-${{ matrix.runner }}
+          path: build/nightly-book/*.json
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 6
+
+  learn:
+    name: nightly-book-aggregate-and-learn
+    needs: selfplay
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout exact run revision
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Record starting book revision
+        id: start
+        shell: bash
+        run: |
+          echo "book_blob=$(git rev-parse HEAD:shogi-ai-book.tsv)" >> "$GITHUB_OUTPUT"
+          echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build engine and validator
+        run: |
+          python3 scripts/build.py --output build/shogi-ai
+          python3 scripts/build.py --kifu-validator --output build/kifu-validator
+
+      - name: Download all runner games
+        uses: actions/download-artifact@v4
+        with:
+          pattern: nightly-book-raw-${{ github.run_id }}-*
+          path: build/nightly-book
+          merge-multiple: true
+
       - name: Aggregate and learn exact book hits
         shell: bash
         run: |
           set -euo pipefail
+          mkdir -p build/nightly-summary
           python3 - <<'PY'
           import json
           from datetime import datetime
@@ -145,11 +190,11 @@ jobs:
               'average_plies': plies/games if games else 0,
               'go_command': 'go movetime 200', 'max_plies': 200,
               'adaptive_long_think': {'enabled': True, 'max_total_ms': 1000, 'max_uses_per_game': 10},
-              'runner_jobs': 1, 'lanes_per_runner': 4,
-              'job_timeout_minutes': 330,
+              'runner_jobs': 4, 'lanes_per_runner': 4, 'total_lanes': 16,
+              'job_timeout_minutes': 325,
               'scheduled_start_jst': '00:05', 'selfplay_cutoff_jst': '05:20',
               'target_finish_jst': '05:30',
-              'trigger': 'ChatGPT task -> nightly-trigger push',
+              'trigger': 'GitHub schedule / manual / legacy trigger push',
               'training_match': 'Book ON vs same engine Book OFF',
           }
           Path('build/nightly-summary/summary.json').write_text(
@@ -186,7 +231,6 @@ jobs:
         run: python3 tests/test_opening_book_usi.py build/shogi-ai build/nightly-summary/learned-book.tsv
 
       - name: Promote learned book when evidence is sufficient
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         shell: bash
         env:
           START_BOOK_BLOB: ${{ steps.start.outputs.book_blob }}
@@ -233,16 +277,6 @@ jobs:
           git commit -m "book: learn nightly Book-vs-Core outcomes"
           git push origin HEAD:main
 
-      - name: Upload raw nightly games
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: nightly-book-raw-${{ github.run_id }}
-          path: build/nightly-book/*.json
-          if-no-files-found: warn
-          retention-days: 14
-          compression-level: 6
-
       - name: Upload compact learning result
         if: always()
         uses: actions/upload-artifact@v4
@@ -266,6 +300,7 @@ jobs:
           print('# Nightly Book learning')
           print()
           print(f"- Games: **{s['games']}**")
+          print(f"- Runner jobs / lanes: **{s['runner_jobs']} / {s['total_lanes']}**")
           print(f"- Book vs Core: **{s['book_wins']}-{s['draws']}-{s['core_wins']}**; score **{s['book_score']:.1%}**")
           print(f"- Exact Book hits: **{s['book_hits']}**; matched feedback: **{r['matched_hits']}**")
           print(f"- Book entries changed: **{r['entries_changed']}**")
