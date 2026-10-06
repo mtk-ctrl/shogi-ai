@@ -105,9 +105,9 @@ jobs:
     timeout-minutes: 180
     strategy:
       fail-fast: false
-      max-parallel: 20
+      max-parallel: 40
       matrix:
-        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39]
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -139,8 +139,8 @@ jobs:
             --engine "$KUMOJI" \
             --bank "$BANK" \
             --output-dir "build/cross-self-${{ matrix.shard }}" \
-            --shards 25 --shard "${{ matrix.shard }}" \
-            --parallel 2 --movetime 100
+            --shards 40 --shard "${{ matrix.shard }}" \
+            --parallel "$(nproc)" --movetime 100
 
       - name: Run YaneuraOu external evidence
         run: |
@@ -148,8 +148,8 @@ jobs:
             --engine "$KUMOJI" \
             --opponent "$YANE" \
             --output-dir "build/cross-external-${{ matrix.shard }}" \
-            --shards 25 --shard "${{ matrix.shard }}" \
-            --parallel 2 --movetime 100 \
+            --shards 40 --shard "${{ matrix.shard }}" \
+            --parallel "$(nproc)" --movetime 100 \
             --opponent-level "$YANEURAOU_LEVEL" \
             --opponent-nodes "$YANEURAOU_NODES"
 
