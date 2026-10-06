@@ -1,4 +1,4 @@
-"""100 paired cold games; fixed binary, ON/OFF, same seed per color in each pair."""
+"""Paired cold games; fixed binary, configurable options, same seeds per color."""
 import argparse,concurrent.futures,hashlib,json,os,platform,sys,time
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
@@ -8,7 +8,7 @@ def atomic(path,data):
     tmp=path.with_suffix(path.suffix+'.tmp');tmp.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n');tmp.replace(path)
 
 def pair_task(job):
-    pair,engine,out,seed,max_plies=job;rows=[]
+    pair,engine,out,seed,max_plies,oa,ob,go=job;rows=[]
     for flip in (0,1):
         index=pair*2+flip;path=Path(out)/f'game-{index:03d}.json'
         if path.exists():
@@ -16,9 +16,7 @@ def pair_task(job):
             rows.append(row);continue
         engines=[]
         try:
-            common={'ExperienceCache':False,'OpeningBook':True,'MateAssist':True}
-            engines=[Engine(engine,'A',{**common,'EvalInfluence':True,'EvalInfluenceWeight':150},'go movetime 50'),
-                     Engine(engine,'B',{**common,'EvalInfluence':False},'go movetime 50')]
+            engines=[Engine(engine,'A',oa,go),Engine(engine,'B',ob,go)]
             # arena attaches seeds to Black/White. Keep each color seed equal
             # across the two games, while swapping which engine owns that color.
             row=play_game(*engines,index,max_plies,seed+pair*2-index*2)
@@ -36,24 +34,36 @@ def pair_task(job):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--engine',required=True);p.add_argument('--pairs',type=int,default=50)
     p.add_argument('--lanes',type=int,default=4);p.add_argument('--seed',type=int,default=2026100612)
-    p.add_argument('--max-plies',type=int,default=200);p.add_argument('--output-dir',required=True);args=p.parse_args()
+    p.add_argument('--max-plies',type=int,default=200);p.add_argument('--output-dir',required=True)
+    p.add_argument('--options-a',default='{"EvalInfluence":true,"EvalInfluenceWeight":150}')
+    p.add_argument('--options-b',default='{"EvalInfluence":false}')
+    p.add_argument('--go-command',default='go movetime 50');args=p.parse_args()
+    if args.pairs<1 or args.lanes<1 or args.max_plies<1 or not 0<=args.seed<=2147483647-args.pairs*2:
+        raise SystemExit('Invalid match limits')
+    if not args.go_command.startswith('go ') or '\n' in args.go_command or '\r' in args.go_command:
+        raise SystemExit('Invalid go command')
+    common={'ExperienceCache':False,'OpeningBook':True,'MateAssist':True}
+    oa=json.loads(args.options_a);ob=json.loads(args.options_b)
+    if not isinstance(oa,dict) or not isinstance(ob,dict):raise SystemExit('Options must be JSON objects')
+    if any('\n' in str(k)+str(v) or '\r' in str(k)+str(v) for opts in (oa,ob) for k,v in opts.items()):
+        raise SystemExit('Invalid options')
+    oa={**common,**oa};ob={**common,**ob}
     engine=str(Path(args.engine).resolve());out=Path(args.output_dir);out.mkdir(parents=True,exist_ok=True)
     config={'engine_sha256':hashlib.sha256(Path(engine).read_bytes()).hexdigest(),
             'book_sha256':hashlib.sha256(Path('shogi-ai-book.tsv').read_bytes()).hexdigest(),
-            'pairs':args.pairs,'seed':args.seed,'max_plies':args.max_plies,'movetime_ms':50,
-            'options_a':{'EvalInfluence':True,'EvalInfluenceWeight':150,'ExperienceCache':False,'OpeningBook':True,'MateAssist':True},
-            'options_b':{'EvalInfluence':False,'ExperienceCache':False,'OpeningBook':True,'MateAssist':True},
+            'pairs':args.pairs,'seed':args.seed,'max_plies':args.max_plies,'go_command':args.go_command,
+            'options_a':oa,'options_b':ob,
             'paired_seed_policy':'same Black seed and White seed within each swapped pair',
             'lanes':args.lanes,'host':platform.platform(),'logical_cpus':os.cpu_count()}
     cp=out/'identity.json'
     if cp.exists() and json.loads(cp.read_text())!=config:raise SystemExit('checkpoint identity mismatch')
     atomic(cp,config);started=time.monotonic();games=[]
-    jobs=[(pair,engine,str(out),args.seed,args.max_plies) for pair in range(args.pairs)]
+    jobs=[(pair,engine,str(out),args.seed,args.max_plies,oa,ob,args.go_command) for pair in range(args.pairs)]
     with concurrent.futures.ProcessPoolExecutor(max_workers=args.lanes) as pool:
         for rows in pool.map(pair_task,jobs):
             games.extend(rows)
             wa=sum(g['winner']=='A' for g in games);wb=sum(g['winner']=='B' for g in games)
-            print(f'{len(games)}/{args.pairs*2}: ON {wa}W {len(games)-wa-wb}D {wb}L',flush=True)
+            print(f'{len(games)}/{args.pairs*2}: A {wa}W {len(games)-wa-wb}D {wb}L',flush=True)
     games.sort(key=lambda g:g['game_index'])
     wa=sum(g['winner']=='A' for g in games);wb=sum(g['winner']=='B' for g in games);n=len(games)
     reasons={};timing={};search={}

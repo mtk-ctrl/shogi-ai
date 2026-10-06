@@ -1,0 +1,25 @@
+{
+  "command": [
+    "g++",
+    "-std=c++17",
+    "-O2",
+    "-g",
+    "-pthread",
+    "-DSHOGI_RULES_ONLY",
+    "-DUSER_ENGINE",
+    "-DNO_SSE",
+    "-DASSERT_LV=3",
+    "-I/workspace/scratch/5b50c68d0e7e/shogi-ai/build/generated",
+    "-I/workspace/scratch/5b50c68d0e7e/shogi-ai/engine",
+    "-I/workspace/scratch/5b50c68d0e7e/shogi-ai/build/yaneuraou-rules/source",
+    "/workspace/scratch/5b50c68d0e7e/shogi-ai/build/yaneuraou-rules/source/bitboard.cpp",
+    "/workspace/scratch/5b50c68d0e7e/shogi-ai/build/yaneuraou-rules/source/position.cpp",
+    "/workspace/scratch/5b50c68d0e7e/shogi-ai/build/yaneuraou-rules/source/movegen.cpp",
+    "/workspace/scratch/5b50c68d0e7e/shogi-ai/build/yaneuraou-rules/source/types.cpp",
+    "/workspace/scratch/5b50c68d0e7e/shogi-ai/engine/rules/upstream_support.cpp",
+    "/workspace/scratch/5b50c68d0e7e/shogi-ai/engine/rules/position.cpp",
+    "/workspace/scratch/5b50c68d0e7e/shogi-ai/engine/main.cpp",
+    "-o",
+    "/workspace/scratch/5b50c68d0e7e/shogi-ai/build/influence-tuning"
+  ]
+}

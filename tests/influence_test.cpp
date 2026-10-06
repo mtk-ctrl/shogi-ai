@@ -66,5 +66,13 @@ int main(){try{
     }
     p.influence_enabled=false;
     require(evaluate(overloaded,p).total==evaluate(overloaded).total,"disabled influence restores original evaluation");
+    p.influence_enabled=true;p.influence.legacy_mix=100;
+    require(evaluate(overloaded,p).total==evaluate(overloaded).total,"100 percent legacy mix preserves old score while computing new features");
+    p.influence.legacy_mix=50;p.influence.guard_weight=75;p.influence.pressure_weight=200;
+    auto blended=evaluate(overloaded,p),reverse=evaluate(rotate(overloaded),p);
+    require(blended.total==-reverse.total,"independent weights and convex blend preserve color symmetry");
+    p.influence.legacy_mix=101;bool rejected=false;
+    try{FeatureEvaluator bad(p);}catch(const std::invalid_argument&){rejected=true;}
+    require(rejected,"invalid legacy mix rejected");
     std::cout<<"PASS influence redundancy/pins/overload/drop constraints/unknown/symmetry/bounds/OFF\n";
 }catch(const std::exception& ex){std::cerr<<"FAIL "<<ex.what()<<'\n';return 1;}}

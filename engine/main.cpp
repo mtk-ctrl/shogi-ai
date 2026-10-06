@@ -45,6 +45,8 @@ std::uint64_t experience_signature(const shogi::strategy::EvaluationParameters& 
     mix(p.influence.outer_guard_percent);mix(p.influence.guard_cap);
     mix(p.influence.pressure_per_surplus);mix(p.influence.surplus_cap);
     mix(p.influence.site_cap);mix(p.influence.pressure_cap);mix(p.influence.weight);
+    mix(p.influence.guard_weight);mix(p.influence.pressure_weight);mix(p.influence.legacy_mix);
+    mix(p.influence.reinforcement_bonus);mix(p.influence.tempo_bonus);
     return h;
 }
 } // namespace
@@ -159,6 +161,11 @@ int main() {
                       << "option name EvalDanger type spin default 200 min 0 max 400\n"
                       << "option name EvalInfluence type check default false\n"
                       << "option name EvalInfluenceWeight type spin default 150 min 0 max 400\n"
+                      << "option name EvalInfluenceGuardWeight type spin default 150 min 0 max 400\n"
+                      << "option name EvalInfluencePressureWeight type spin default 150 min 0 max 400\n"
+                      << "option name EvalInfluenceLegacyMix type spin default 0 min 0 max 100\n"
+                      << "option name EvalInfluenceReinforcementBonus type spin default 50 min 0 max 100\n"
+                      << "option name EvalInfluenceTempoBonus type spin default 50 min 0 max 100\n"
                       << "option name ExperienceCache type check default true\n"
                       << "option name ExperienceFile type string default shogi-ai-experience.bin\n"
                       << "usiok\n" << std::flush;
@@ -495,13 +502,25 @@ int main() {
                         experience_loaded = false;
                         experience_dirty = false;
                     }
-                } else if(name=="EvalInfluence"||name=="EvalInfluenceWeight") {
+                } else if(name=="EvalInfluence"||name=="EvalInfluenceWeight"||name=="EvalInfluenceGuardWeight"||
+                          name=="EvalInfluencePressureWeight"||name=="EvalInfluenceLegacyMix"||
+                          name=="EvalInfluenceReinforcementBonus"||name=="EvalInfluenceTempoBonus") {
                     auto next=evaluation_parameters;bool accepted=false;
                     if(name=="EvalInfluence"&&(value=="true"||value=="false")) {
                         next.influence_enabled=value=="true";accepted=true;
-                    } else if(name=="EvalInfluenceWeight")try {
+                    } else if(name!="EvalInfluence")try {
                         std::size_t used=0;int weight=std::stoi(value,&used);
-                        if(used==value.size()&&weight>=0&&weight<=400){next.influence.weight=weight;accepted=true;}
+                        int limit=(name=="EvalInfluenceLegacyMix"||name=="EvalInfluenceReinforcementBonus"||name=="EvalInfluenceTempoBonus")?100:400;
+                        if(used==value.size()&&weight>=0&&weight<=limit){
+                            if(name=="EvalInfluenceWeight") {
+                                next.influence.weight=weight;next.influence.guard_weight=-1;next.influence.pressure_weight=-1;
+                            } else if(name=="EvalInfluenceGuardWeight")next.influence.guard_weight=weight;
+                            else if(name=="EvalInfluencePressureWeight")next.influence.pressure_weight=weight;
+                            else if(name=="EvalInfluenceLegacyMix")next.influence.legacy_mix=weight;
+                            else if(name=="EvalInfluenceReinforcementBonus")next.influence.reinforcement_bonus=weight;
+                            else if(name=="EvalInfluenceTempoBonus")next.influence.tempo_bonus=weight;
+                            accepted=true;
+                        }
                     }catch(const std::exception&){}
                     if(accepted) {
                         persist_experience();evaluation_parameters=next;

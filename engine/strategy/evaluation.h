@@ -98,6 +98,7 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
             int(std::int64_t(f.exposure)*p.danger_numerator/p.danger_denominator)};
         for(int i=0;i<4;++i)b.side_points[c][i]=std::min(b.side_points[c][i],p.caps[i]);
     }
+    const auto legacy_side_points=b.side_points;
     if(p.influence_enabled) {
         b.influence=influence_features(s,a,p.influence);
         for(int side=0;side<2;++side) {
@@ -107,7 +108,13 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
     }
     for(int i=0;i<4;++i) {
         int weight=p.influence_enabled&&i<2?p.influence.weight:p.weights[i];
+        if(p.influence_enabled&&i==0&&p.influence.guard_weight>=0)weight=p.influence.guard_weight;
+        if(p.influence_enabled&&i==1&&p.influence.pressure_weight>=0)weight=p.influence.pressure_weight;
         b.terms[i]=(b.side_points[0][i]-b.side_points[1][i])*weight/100;
+        if(p.influence_enabled&&i<2) {
+            int old=(legacy_side_points[0][i]-legacy_side_points[1][i])*p.weights[i]/100;
+            b.terms[i]=(b.terms[i]*(100-p.influence.legacy_mix)+old*p.influence.legacy_mix)/100;
+        }
         if(i==3)b.terms[i]=-b.terms[i];
         b.positional_unclamped+=b.terms[i];
     }

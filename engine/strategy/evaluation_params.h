@@ -29,6 +29,12 @@ struct EvaluationParameters {
     void validate() const {
         if(influence.weight<0||influence.weight>400)
             throw std::invalid_argument("invalid influence weight");
+        if(influence.guard_weight<-1||influence.guard_weight>400||
+           influence.pressure_weight<-1||influence.pressure_weight>400||
+           influence.legacy_mix<0||influence.legacy_mix>100||
+           influence.reinforcement_bonus<0||influence.reinforcement_bonus>100||
+           influence.tempo_bonus<0||influence.tempo_bonus>100)
+            throw std::invalid_argument("invalid influence tuning parameters");
         const int values[] = {guard_gold, guard_silver, guard_pawn, pressure_king,
             pressure_occupied, pressure_empty, pressure_partner, mobility_major,
             mobility_minor, mobility_piece_cap, danger_numerator, positional_cap};

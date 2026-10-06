@@ -11,6 +11,9 @@ struct InfluenceParameters {
     int outer_guard_percent=50, guard_cap=60;
     int pressure_per_surplus=12, surplus_cap=3, site_cap=60, pressure_cap=100;
     int weight=150;
+    int guard_weight=-1, pressure_weight=-1; // -1 inherits common weight.
+    int legacy_mix=0; // Convex mix of old and new weighted terms, not addition.
+    int reinforcement_bonus=50, tempo_bonus=50;
 };
 struct InfluenceSide {
     int guard=0, pressure=0, overloads=0, pinned=0;
@@ -212,7 +215,7 @@ inline InfluenceBreakdown influence_features(const rules::Snapshot& s,const Atta
             int arrival=influence_arrival(s,a,e,1-side,t.square);t.arrival=arrival;
             // An arrival in one own move is potentially timely; two moves is
             // slower. Unreachable in this approximation is unknown, not 2x.
-            int multiplier=arrival==2?150:100;
+            int multiplier=arrival==2?100+p.reinforcement_bonus:100;
             int points=std::min(p.site_cap,t.base*multiplier/100);
             if(t.base==first){sum_first+=points;++n_first;}
             else{sum_second+=points;++n_second;}
@@ -239,7 +242,7 @@ inline InfluenceBreakdown influence_features(const rules::Snapshot& s,const Atta
     }
     for(int side=0;side<2;++side) {
         int mine=out.side[side].fastest_threat,theirs=out.side[1-side].fastest_threat;
-        int tempo=mine&&theirs?(mine<theirs?150:mine>theirs?50:100):100;
+        int tempo=mine&&theirs?(mine<theirs?100+p.tempo_bonus:mine>theirs?100-p.tempo_bonus:100):100;
         out.side[side].pressure=std::min(p.pressure_cap,out.side[side].pressure*tempo/100);
     }
     return out;

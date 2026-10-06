@@ -24,4 +24,18 @@ try:
         e.configure_game(99);assert e.bestmove(moves)==old_move
         for key in ('score_cp','score_mate','nodes'):assert e.last_search.get(key)==old.get(key)
     print('PASS influence USI option validation, material isolation and repeated ON/OFF TT transitions')
+    e.send('setoption name EvalInfluence value true')
+    e.send('setoption name EvalInfluenceLegacyMix value 100');assert evaluation(e,moves)==before
+    e.send('setoption name EvalInfluenceLegacyMix value 50')
+    e.send('setoption name EvalInfluenceGuardWeight value 75')
+    e.send('setoption name EvalInfluencePressureWeight value 200')
+    e.send('setoption name EvalInfluenceReinforcementBonus value 0')
+    e.send('setoption name EvalInfluenceTempoBonus value 0')
+    tuned=evaluation(e,moves)
+    for name,limit in [('EvalInfluenceGuardWeight',400),('EvalInfluencePressureWeight',400),
+                       ('EvalInfluenceLegacyMix',100),('EvalInfluenceReinforcementBonus',100),('EvalInfluenceTempoBonus',100)]:
+        for value in ('-1',str(limit+1),'bad','12junk'):
+            e.send('setoption name '+name+' value '+value);assert evaluation(e,moves)==tuned
+    e.send('setoption name EvalInfluence value false');assert evaluation(e,moves)==before
+    print('PASS independent guard/pressure weights, convex mix and uncertainty bonus validation')
 finally:e.close()
