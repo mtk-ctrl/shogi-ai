@@ -39,7 +39,7 @@ jobs:
             "previous_reconstruction": "same current binary with MateAssist=false; v0.0.18 journal states ordinary go was unchanged, while v0.0.19 integrated MateAssist",
             "book_condition": "same current shogi-ai-book.tsv, OpeningBook=true for both",
             "experience_condition": "ExperienceCache=false for both to isolate Engine generation delta",
-            "movetime_ms": 50,
+            "movetime_ms": 200,
             "max_plies": 200,
             "games": 100,
             "seed": 2026100602
@@ -56,7 +56,7 @@ jobs:
             --games 100 \
             --max-plies 200 \
             --seed 2026100602 \
-            --go-command 'go movetime 50' \
+            --go-command 'go movetime 200' \
             --output build/generation-benchmark/result.json
 
       - name: Summarize result
