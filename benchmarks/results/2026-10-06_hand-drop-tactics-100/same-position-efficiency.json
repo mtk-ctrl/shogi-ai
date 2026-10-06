@@ -1,0 +1,22 @@
+{
+  "source": "common-prefix same-position comparison from 100-game and 300-game artifacts",
+  "paired_search_positions": 11140,
+  "elapsed_ms_mean": {"on": 45.94122298025135, "off": 45.9419210951526, "relative_change_pct": -0.0015195596628547},
+  "nodes_mean": {"on": 1289.9526032315978, "off": 1293.0618491921005, "relative_change_pct": -0.24045608974121446},
+  "qnodes_mean": {"on": 1270.5447935368043, "off": 1273.2371633752243, "relative_change_pct": -0.211458628122585},
+  "completed_depth_mean": {"on": 0.823608617594255, "off": 0.8252244165170557},
+  "completed_depth_comparison": {"same": 10954, "on_deeper": 84, "off_deeper": 102},
+  "seldepth_mean": {"on": 8.93527827648115, "off": 8.945511669658886},
+  "same_completed_depth_nodes": {
+    "depth_1": {"positions": 4938, "on_mean": 1395.3517618469016, "off_mean": 1395.330903199676, "relative_change_pct": 0.0014948889311972025},
+    "depth_2": {"positions": 1997, "on_mean": 1638.096644967451, "off_mean": 1641.7180771156736, "relative_change_pct": -0.22058794373421842},
+    "depth_3": {"positions": 18, "on_mean": 1687.611111111111, "off_mean": 1710.0555555555557, "relative_change_pct": -1.3124979695266603}
+  },
+  "interpretation": {
+    "compute_cost": "small; fixed 50ms means overhead displaces some tree work rather than increasing wall time",
+    "search_volume": "about 0.24% fewer nodes on identical positions",
+    "depth": "no meaningful systematic loss or gain",
+    "alpha_beta_pruning_efficiency": "approximately neutral; depth-2 same-depth samples show only ~0.22% fewer nodes",
+    "strategic_allocation": "feature changes which hand-drop tactics are examined early; 400-game score point estimate remains slightly positive but unproven"
+  }
+}
