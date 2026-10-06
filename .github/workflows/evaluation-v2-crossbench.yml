@@ -1,0 +1,202 @@
+name: Evaluation V2 Cross-Benchmark Broad
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/evaluation-v2-challenger
+    paths:
+      - "benchmarks/eval_v2_crossbench.py"
+      - "tools/research/build_eval_v2_stage1_bank.py"
+      - ".github/workflows/evaluation-v2-crossbench.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: evaluation-v2-crossbench-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  YANEURAOU_REF: c1b80eaa09fe13d5f12b1599d1ae4d53c224de30
+  STAGE1_RUN_ID: "37466626100"
+  YANEURAOU_LEVEL: "42"
+  YANEURAOU_NODES: "1177"
+
+jobs:
+  quick:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[eval-crossbench]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install python-shogi
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build KUMOJI
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Fetch pinned YaneuraOu
+        run: |
+          git clone --filter=blob:none https://github.com/yaneurao/YaneuraOu.git external/YaneuraOu
+          git -C external/YaneuraOu checkout "$YANEURAOU_REF"
+
+      - name: Build YaneuraOu material edition
+        run: |
+          make -C external/YaneuraOu/source clean \
+            COMPILER=g++ TARGET_CPU=SSE42 \
+            YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          make -C external/YaneuraOu/source -j2 tournament \
+            COMPILER=g++ TARGET_CPU=SSE42 \
+            YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          test -x external/YaneuraOu/source/YaneuraOu-by-gcc
+
+      - name: Validate wide OA design
+        run: |
+          python3 - <<'PY'
+          from benchmarks.eval_v2_crossbench import design_rows, FACTORS
+          rows=design_rows()
+          assert len(rows)==3125
+          maxima={f:max(r["options"][f] for r in rows) for f in FACTORS}
+          assert max(maxima.values()) <= 2000, maxima
+          print("rows",len(rows))
+          print("maxima",maxima)
+          PY
+
+      - name: Download complete stage-1 broad artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: eval-v2-broad100-*
+          path: build/stage1-broad
+          merge-multiple: false
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ env.STAGE1_RUN_ID }}
+
+      - name: Build phase-balanced benchmark position bank
+        run: |
+          python3 tools/research/build_eval_v2_stage1_bank.py \
+            --input build/stage1-broad \
+            --output build/eval-v2-stage1-bank.jsonl \
+            --source-run-id "$STAGE1_RUN_ID"
+          test "$(wc -l < build/eval-v2-stage1-bank.jsonl)" -eq 300
+
+      - name: Show runner capacity
+        run: |
+          echo "logical_cpus=$(nproc)"
+          free -h
+
+      - name: Upload engines and bank
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-crossbench-runtime
+          path: |
+            build/shogi-ai
+            external/YaneuraOu/source/YaneuraOu-by-gcc
+            build/eval-v2-stage1-bank.jsonl
+          if-no-files-found: error
+          retention-days: 14
+
+  broad:
+    needs: quick
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install python-shogi
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Download engines and bank
+        uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-crossbench-runtime
+          path: build/runtime
+
+      - name: Prepare runtime
+        run: |
+          find build/runtime -maxdepth 4 -type f -printf '%p\n'
+          KUMOJI="$(find build/runtime -type f -name shogi-ai | head -1)"
+          YANE="$(find build/runtime -type f -name YaneuraOu-by-gcc | head -1)"
+          BANK="$(find build/runtime -type f -name eval-v2-stage1-bank.jsonl | head -1)"
+          test -n "$KUMOJI" && test -n "$YANE" && test -n "$BANK"
+          chmod +x "$KUMOJI" "$YANE"
+          echo "KUMOJI=$KUMOJI" >> "$GITHUB_ENV"
+          echo "YANE=$YANE" >> "$GITHUB_ENV"
+          echo "BANK=$BANK" >> "$GITHUB_ENV"
+
+      - name: Run startpos and phase-bank evidence
+        run: |
+          python3 benchmarks/eval_v2_crossbench.py self \
+            --engine "$KUMOJI" \
+            --bank "$BANK" \
+            --output-dir "build/cross-self-${{ matrix.shard }}" \
+            --shards 25 --shard "${{ matrix.shard }}" \
+            --parallel 2 --movetime 100
+
+      - name: Run YaneuraOu external evidence
+        run: |
+          python3 benchmarks/eval_v2_crossbench.py external \
+            --engine "$KUMOJI" \
+            --opponent "$YANE" \
+            --output-dir "build/cross-external-${{ matrix.shard }}" \
+            --shards 25 --shard "${{ matrix.shard }}" \
+            --parallel 2 --movetime 100 \
+            --opponent-level "$YANEURAOU_LEVEL" \
+            --opponent-nodes "$YANEURAOU_NODES"
+
+      - name: Upload shard evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-crossbench-${{ matrix.shard }}
+          path: |
+            build/cross-self-${{ matrix.shard }}
+            build/cross-external-${{ matrix.shard }}
+          if-no-files-found: error
+          retention-days: 180
+          compression-level: 6
+
+  analyze:
+    needs: broad
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Download all cross-benchmark evidence
+        uses: actions/download-artifact@v4
+        with:
+          pattern: eval-v2-crossbench-*
+          path: build/cross-all
+          merge-multiple: false
+
+      - name: Analyze without automatic elimination
+        run: |
+          python3 benchmarks/eval_v2_crossbench.py analyze \
+            --self-root build/cross-all \
+            --external-root build/cross-all \
+            --opponent-level "$YANEURAOU_LEVEL" \
+            --opponent-nodes "$YANEURAOU_NODES" \
+            --output build/eval-v2-crossbench-analysis.json \
+            --summary build/eval-v2-crossbench-summary.md
+          cat build/eval-v2-crossbench-summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload analysis
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-crossbench-analysis
+          path: |
+            build/eval-v2-crossbench-analysis.json
+            build/eval-v2-crossbench-summary.md
+          if-no-files-found: error
+          retention-days: 365
