@@ -1,6 +1,7 @@
 #pragma once
 #include "strategy/attack_map.h"
 #include "strategy/evaluation_params.h"
+#include "strategy/king_defense.h"
 #include <cstdint>
 
 namespace shogi::strategy {
@@ -9,6 +10,7 @@ struct SideFeatures {
     int king_attacked=0, occupied_ring=0, denied_empty=0, partners=0;
     int major_mobility=0, minor_mobility=0;
     int exposure=0;
+    KingDefenseFeatures king_defense{};
 };
 struct EvaluationBreakdown {
     int material=0;
@@ -16,6 +18,8 @@ struct EvaluationBreakdown {
     std::array<std::array<int,4>,2> side_points{};
     // Signed Black-minus-White terms; danger already has its minus sign.
     std::array<int,4> terms{};
+    std::array<int,2> king_defense_points{};
+    int king_defense_term=0;
     int positional_unclamped=0, positional=0, clamp_adjustment=0, total=0;
 };
 
@@ -81,7 +85,8 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
                                      const EvaluationParameters& p=EvaluationParameters{}) {
     EvaluationBreakdown b;
     b.material=material_black(s);
-    if(std::all_of(p.weights.begin(),p.weights.end(),[](int w){return w==0;})){
+    if(std::all_of(p.weights.begin(),p.weights.end(),[](int w){return w==0;})
+       && p.king_defense_weight==0){
         b.total=b.material;return b;
     }
     AttackMap a(s);
@@ -89,6 +94,8 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
         auto& f=b.raw[c];
         king_safety_features(s,a,c,f);pressure_features(s,a,c,f);
         activity_features(s,a,c,p,f);danger_features(s,a,c,f);
+        if(p.king_defense_weight>0)
+            f.king_defense=king_defense_features(s,a,c);
         b.side_points[c]={
             f.gold_guards*p.guard_gold+f.silver_guards*p.guard_silver+f.pawn_guards*p.guard_pawn,
             f.king_attacked*p.pressure_king+f.occupied_ring*p.pressure_occupied+
@@ -96,11 +103,18 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
             f.major_mobility*p.mobility_major+f.minor_mobility*p.mobility_minor,
             int(std::int64_t(f.exposure)*p.danger_numerator/p.danger_denominator)};
         for(int i=0;i<4;++i)b.side_points[c][i]=std::min(b.side_points[c][i],p.caps[i]);
+        if(p.king_defense_weight>0)
+            b.king_defense_points[c]=std::min(f.king_defense.raw_score,p.king_defense_cap);
     }
     for(int i=0;i<4;++i) {
         b.terms[i]=(b.side_points[0][i]-b.side_points[1][i])*p.weights[i]/100;
         if(i==3)b.terms[i]=-b.terms[i];
         b.positional_unclamped+=b.terms[i];
+    }
+    if(p.king_defense_weight>0) {
+        b.king_defense_term=(b.king_defense_points[0]-b.king_defense_points[1])
+            *p.king_defense_weight/100;
+        b.positional_unclamped+=b.king_defense_term;
     }
     b.positional=std::clamp(b.positional_unclamped,-p.positional_cap,p.positional_cap);
     b.total=std::clamp(b.material+b.positional,-p.StaticLimit,p.StaticLimit);
