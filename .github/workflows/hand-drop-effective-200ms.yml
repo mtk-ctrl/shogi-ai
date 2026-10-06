@@ -17,7 +17,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: hand-drop-effective-200ms-${{ github.ref }}
+  group: hand-drop-effective-200ms-optimized-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
