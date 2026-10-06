@@ -17,7 +17,7 @@ int main(int argc,char** argv){try{
         if(mode=="--bench")continue;
         const auto b=strategy::evaluate(s);
         std::cout<<"{\"material\":"<<b.material<<",\"safety\":"<<b.terms[0]<<",\"pressure\":"<<b.terms[1]
-                 <<",\"activity\":"<<b.terms[2]<<",\"danger\":"<<b.terms[3]<<",\"clamp\":"<<b.clamp_adjustment<<",\"total\":"<<b.total;
+                 <<",\"activity\":"<<b.terms[2]<<",\"danger\":"<<b.terms[3]<<",\"potential\":"<<b.terms[4]<<",\"clamp\":"<<b.clamp_adjustment<<",\"total\":"<<b.total;
         if(mode=="--attacks"){
             strategy::AttackMap a(s);std::cout<<",\"attacks\":[";
             for(int c=0;c<2;++c){if(c)std::cout<<',';std::cout<<'[';for(int i=0;i<81;++i){if(i)std::cout<<',';std::cout<<a.count[c][i];}std::cout<<']';}std::cout<<']';

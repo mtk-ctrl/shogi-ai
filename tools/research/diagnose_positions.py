@@ -29,7 +29,7 @@ class Usi:
     def position(self,moves): self.send('position startpos'+((' moves '+' '.join(moves)) if moves else ''))
     def eval(self,moves):
         self.position(moves); self.send('eval'); line,_=self.wait('info string evaluation ',5)
-        parts=line.split(); names=('material','safety','pressure','activity','danger','clamp','total')
+        parts=line.split(); names=('material','safety','pressure','activity','danger','potential','clamp','total')
         out={}
         for n in names:
             try: out[n]=int(parts[parts.index(n)+1])

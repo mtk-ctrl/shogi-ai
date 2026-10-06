@@ -51,9 +51,15 @@ try:
         engine.send('setoption name EvalSafety value '+invalid); assert evaluate() == disabled
     engine.send('setoption name EvalProfile value material'); material = evaluate()
     assert material['total'] == material['material']
-    assert all(material[n] == 0 for n in ['safety','pressure','activity','danger','clamp'])
+    assert all(material[n] == 0 for n in ['safety','pressure','activity','danger','potential','clamp'])
     engine.send('setoption name EvalSafety value 100')
     engine.send('setoption name EvalProfile value features'); assert evaluate() == original
-    print('PASS USI independent weights, validation, profile switch and exact breakdown')
+
+    position(fixture({'1i':'K','9a':'k','8h':'B','7g':'P'}))
+    engine.send('setoption name EvalPotential value 100'); potential = evaluate()
+    assert potential['potential'] > 0
+    engine.send('setoption name EvalPotential value 0'); potential_off = evaluate()
+    assert potential_off['potential'] == 0
+    print('PASS USI independent weights, validation, profile switch, potential toggle and exact breakdown')
 finally:
     engine.close()

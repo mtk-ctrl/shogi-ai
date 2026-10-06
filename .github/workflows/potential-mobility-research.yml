@@ -1,0 +1,54 @@
+name: Potential Mobility Research
+
+on:
+  push:
+    branches: [research/potential-mobility]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fixed-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build and run evaluation tests
+        run: |
+          python3 scripts/build.py --evaluation-test --output build/evaluation-test
+          ./build/evaluation-test
+      - name: Production USI integration
+        run: |
+          python3 scripts/build.py --output build/shogi-ai
+          python3 -m pip install python-shogi==1.1.1
+          python3 tests/test_eval_usi.py build/shogi-ai
+
+  screen:
+    needs: fixed-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        potential: [50, 100, 150, 200]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
+      - name: Install arena dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: 20-game paired screen at 200ms
+        run: |
+          mkdir -p build/results
+          python3 benchmarks/arena.py \
+            --engine-a build/shogi-ai --engine-b build/shogi-ai \
+            --games 20 --max-plies 250 --seed 20261006 \
+            --go-command "go movetime 200" \
+            --options-a '{"OpeningBook":false,"ExperienceCache":false,"EvalPotential":${{ matrix.potential }}}' \
+            --options-b '{"OpeningBook":false,"ExperienceCache":false,"EvalPotential":0}' \
+            --output build/results/potential-${{ matrix.potential }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: potential-${{ matrix.potential }}
+          path: build/results/potential-${{ matrix.potential }}.json

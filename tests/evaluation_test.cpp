@@ -24,7 +24,7 @@ void play(rules::Position& p,const std::string& m){std::string e;require(p.play(
 void symmetry(const rules::Snapshot& s){
     auto a=strategy::evaluate(s),b=strategy::evaluate(rotate(s));
     require(a.total==-b.total && a.material==-b.material,"total/material color symmetry");
-    for(int i=0;i<4;++i){require(a.terms[i]==-b.terms[i],"term color symmetry");require(a.side_points[0][i]==b.side_points[1][i],"side points symmetry");}
+    for(int i=0;i<5;++i){require(a.terms[i]==-b.terms[i],"term color symmetry");require(a.side_points[0][i]==b.side_points[1][i],"side points symmetry");}
     auto turn=s;turn.turn=turn.turn==rules::Color::Black?rules::Color::White:rules::Color::Black;
     require(strategy::evaluate(turn).total==a.total,"static evaluation independent of turn");
 }
@@ -80,6 +80,27 @@ int main(){try{
     require(evaluate(bishop).raw[0].major_mobility>evaluate(boxed).raw[0].major_mobility,"bishop rays and blockers");
     std::cout<<"PASS active rook/bishop rays and idle pieces\n";
 
+    // Potential Mobility v1: a movable friendly blocker exposes a latent slider
+    // ray, but realised Activity is worth more than leaving that ray boxed.
+    EvaluationParameters potential_only;potential_only.weights={0,0,0,0,100};
+    auto latent=snap({{"1i","K"},{"9a","k"},{"8h","B"},{"7g","P"}});
+    auto latent_eval=evaluate(latent,potential_only);
+    require(latent_eval.raw[0].latent_major_mobility>=4&&latent_eval.terms[4]>0,
+            "movable pawn reveals latent bishop mobility");
+    auto sealed=latent;sealed.board[sq("7f")]={1,rules::Color::Black,false};
+    require(evaluate(sealed,potential_only).raw[0].latent_major_mobility==0,
+            "immobile blocker does not create false latent ray");
+    auto opened=latent;std::swap(opened.board[sq("7g")],opened.board[sq("7f")]);
+    require(evaluate(opened,potential_only).raw[0].latent_major_mobility==0,
+            "opened bishop ray is realised, not latent");
+    EvaluationParameters combined;combined.weights[4]=100;
+    require(evaluate(opened,combined).total>evaluate(latent,combined).total,
+            "opening ray converts discounted potential into stronger realised mobility");
+    auto rook_pawn=snap({{"1i","K"},{"9a","k"},{"5i","R"},{"5g","P"}});
+    require(evaluate(rook_pawn,potential_only).raw[0].latent_major_mobility==1,
+            "pawn advancing on rook file only exposes the vacated square");
+    std::cout<<"PASS potential mobility: unlockable rays, sealed blockers and realised conversion\n";
+
     auto hanging=snap({{"9i","K"},{"1a","k"},{"5e","R"},{"5a","r"},{"8h","G"}});
     auto guarded=hanging;std::swap(guarded.board[sq("8h")],guarded.board[sq("5f")]);
     a=evaluate(hanging);b=evaluate(guarded);
@@ -109,10 +130,10 @@ int main(){try{
     require(nm.count[0][sq("4c")]==1&&nm.count[0][sq("6c")]==1,"knight jumps blockers");
     std::cout<<"PASS every piece/promotion geometry, blockers and king-vacated xray\n";
 
-    EvaluationParameters p; p.weights={400,400,400,400};p.positional_cap=1;
+    EvaluationParameters p; p.weights={400,400,400,400,400};p.positional_cap=1;
     auto limited=evaluate(pressure,p);require(std::abs(limited.positional)<=1,"combined positional cap");
     auto inv=evaluate(rotate(pressure),p);require(limited.total==-inv.total,"clamp preserves symmetry");
-    require(limited.total==limited.material+limited.terms[0]+limited.terms[1]+limited.terms[2]+limited.terms[3]+limited.clamp_adjustment,"breakdown sums exactly");
+    require(limited.total==limited.material+limited.terms[0]+limited.terms[1]+limited.terms[2]+limited.terms[3]+limited.terms[4]+limited.clamp_adjustment,"breakdown sums exactly");
     p.danger_denominator=0;bool rejected=false;try{FeatureEvaluator bad(p);}catch(const std::invalid_argument&){rejected=true;}require(rejected,"invalid parameters rejected");
     require(std::abs(evaluate(pressure).total)<FeatureAlphaBeta3TT::WinScore&&EvaluationParameters::StaticLimit<FeatureAlphaBeta3TT::WinScore,"mate dominates static values");
 

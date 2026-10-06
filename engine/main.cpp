@@ -36,7 +36,8 @@ std::uint64_t experience_signature(const shogi::strategy::EvaluationParameters& 
     mix(p.guard_gold); mix(p.guard_silver); mix(p.guard_pawn);
     mix(p.pressure_king); mix(p.pressure_occupied); mix(p.pressure_empty);
     mix(p.pressure_partner); mix(p.mobility_major); mix(p.mobility_minor);
-    mix(p.mobility_piece_cap); mix(p.danger_numerator); mix(p.danger_denominator);
+    mix(p.mobility_piece_cap); mix(p.potential_major); mix(p.potential_lance);
+    mix(p.potential_piece_cap); mix(p.danger_numerator); mix(p.danger_denominator);
     for (int value : p.caps) mix(static_cast<std::uint64_t>(value));
     for (int value : p.weights) mix(static_cast<std::uint64_t>(value));
     mix(p.positional_cap);
@@ -152,6 +153,7 @@ int main() {
                       << "option name EvalPressure type spin default 150 min 0 max 400\n"
                       << "option name EvalActivity type spin default 150 min 0 max 400\n"
                       << "option name EvalDanger type spin default 200 min 0 max 400\n"
+                      << "option name EvalPotential type spin default 0 min 0 max 400\n"
                       << "option name ExperienceCache type check default true\n"
                       << "option name ExperienceFile type string default shogi-ai-experience.bin\n"
                       << "usiok\n" << std::flush;
@@ -161,7 +163,7 @@ int main() {
             std::cout << "info string evaluation material " << b.material
                       << " safety " << b.terms[0] << " pressure " << b.terms[1]
                       << " activity " << b.terms[2] << " danger " << b.terms[3]
-                      << " clamp " << b.clamp_adjustment << " total " << b.total << '\n' << std::flush;
+                      << " potential " << b.terms[4] << " clamp " << b.clamp_adjustment << " total " << b.total << '\n' << std::flush;
         } else if (command == "isready") {
             if (!session) {
                 ensure_experience_loaded();
@@ -476,13 +478,13 @@ int main() {
                         experience_loaded = false;
                         experience_dirty = false;
                     }
-                } else if (name == "EvalSafety" || name == "EvalPressure" || name == "EvalActivity" || name == "EvalDanger") {
+                } else if (name == "EvalSafety" || name == "EvalPressure" || name == "EvalActivity" || name == "EvalDanger" || name == "EvalPotential") {
                     try {
                         std::size_t used = 0;
                         const int weight = std::stoi(value, &used);
                         if (used == value.size() && weight >= 0 && weight <= 400) {
                             persist_experience();
-                            const int index = name == "EvalSafety" ? 0 : name == "EvalPressure" ? 1 : name == "EvalActivity" ? 2 : 3;
+                            const int index = name == "EvalSafety" ? 0 : name == "EvalPressure" ? 1 : name == "EvalActivity" ? 2 : name == "EvalDanger" ? 3 : 4;
                             evaluation_parameters.weights[index] = weight;
                             strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
                                 ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
