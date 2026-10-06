@@ -40,6 +40,12 @@ std::uint64_t experience_signature(const shogi::strategy::EvaluationParameters& 
     mix(p.mobility_piece_cap); mix(p.danger_numerator); mix(p.danger_denominator);
     for (int value : p.caps) mix(static_cast<std::uint64_t>(value));
     for (int value : p.weights) mix(static_cast<std::uint64_t>(value));
+    mix(p.v2_enabled ? 1 : 0); mix(p.material_weight);
+    for (int value : p.v2_caps) mix(static_cast<std::uint64_t>(value));
+    mix(p.influence_weight); mix(p.potential_weight); mix(p.coordination_weight);
+    mix(p.hand_potential_weight); mix(p.threat_weight);
+    mix(p.influence_cap); mix(p.potential_cap); mix(p.coordination_cap);
+    mix(p.hand_potential_cap); mix(p.threat_cap);
     mix(p.positional_cap);
     return h;
 }
@@ -158,6 +164,14 @@ int main() {
                       << "option name EvalPressure type spin default 150 min 0 max 400\n"
                       << "option name EvalActivity type spin default 150 min 0 max 400\n"
                       << "option name EvalDanger type spin default 200 min 0 max 400\n"
+                      << "option name EvalV2 type check default false\n"
+                      << "option name EvalMaterialWeight type spin default 100 min 0 max 400\n"
+                      << "option name EvalInfluence type spin default 0 min 0 max 400\n"
+                      << "option name EvalPotential type spin default 0 min 0 max 400\n"
+                      << "option name EvalCoordination type spin default 0 min 0 max 400\n"
+                      << "option name EvalHandPotential type spin default 0 min 0 max 400\n"
+                      << "option name EvalThreat type spin default 0 min 0 max 400\n"
+                      << "option name EvalPositionalCap type spin default 300 min 0 max 5000\n"
                       << "option name ExperienceCache type check default true\n"
                       << "option name ExperienceFile type string default shogi-ai-experience.bin\n"
                       << "usiok\n" << std::flush;
@@ -165,8 +179,13 @@ int main() {
             const auto b = shogi::strategy::evaluate(position.snapshot(), material_profile
                 ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters);
             std::cout << "info string evaluation material " << b.material
+                      << " material_term " << b.material_term
                       << " safety " << b.terms[0] << " pressure " << b.terms[1]
                       << " activity " << b.terms[2] << " danger " << b.terms[3]
+                      << " influence " << b.terms[4] << " potential " << b.terms[5]
+                      << " coordination " << b.terms[6] << " hand_potential " << b.terms[7]
+                      << " threat " << b.terms[8]
+                      << " positional_raw " << b.positional_unclamped
                       << " clamp " << b.clamp_adjustment << " total " << b.total << '\n' << std::flush;
         } else if (command == "isready") {
             if (!session) {
@@ -546,14 +565,36 @@ int main() {
                         experience_loaded = false;
                         experience_dirty = false;
                     }
-                } else if (name == "EvalSafety" || name == "EvalPressure" || name == "EvalActivity" || name == "EvalDanger") {
+                } else if (name == "EvalV2") {
+                    if (value == "true" || value == "false") {
+                        persist_experience();
+                        evaluation_parameters.v2_enabled = value == "true";
+                        strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
+                            ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
+                        experience_loaded = false;
+                        experience_dirty = false;
+                    }
+                } else if (name == "EvalSafety" || name == "EvalPressure" || name == "EvalActivity" || name == "EvalDanger"
+                           || name == "EvalMaterialWeight" || name == "EvalInfluence" || name == "EvalPotential"
+                           || name == "EvalCoordination" || name == "EvalHandPotential" || name == "EvalThreat"
+                           || name == "EvalPositionalCap") {
                     try {
                         std::size_t used = 0;
                         const int weight = std::stoi(value, &used);
-                        if (used == value.size() && weight >= 0 && weight <= 400) {
+                        const int max_value = name == "EvalPositionalCap" ? 5000 : 400;
+                        if (used == value.size() && weight >= 0 && weight <= max_value) {
                             persist_experience();
-                            const int index = name == "EvalSafety" ? 0 : name == "EvalPressure" ? 1 : name == "EvalActivity" ? 2 : 3;
-                            evaluation_parameters.weights[index] = weight;
+                            if (name == "EvalSafety") evaluation_parameters.weights[0] = weight;
+                            else if (name == "EvalPressure") evaluation_parameters.weights[1] = weight;
+                            else if (name == "EvalActivity") evaluation_parameters.weights[2] = weight;
+                            else if (name == "EvalDanger") evaluation_parameters.weights[3] = weight;
+                            else if (name == "EvalMaterialWeight") evaluation_parameters.material_weight = weight;
+                            else if (name == "EvalInfluence") evaluation_parameters.influence_weight = weight;
+                            else if (name == "EvalPotential") evaluation_parameters.potential_weight = weight;
+                            else if (name == "EvalCoordination") evaluation_parameters.coordination_weight = weight;
+                            else if (name == "EvalHandPotential") evaluation_parameters.hand_potential_weight = weight;
+                            else if (name == "EvalThreat") evaluation_parameters.threat_weight = weight;
+                            else evaluation_parameters.positional_cap = weight;
                             strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
                                 ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
                             experience_loaded = false;
