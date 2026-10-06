@@ -1,10 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "timezone": "Asia/Tokyo",
   "scheduled_start": "00:05",
   "new_game_cutoff": "05:20",
   "job_timeout_minutes": 330,
-  "go_command": "go movetime 50",
+  "go_command": "go movetime 200",
   "deep_go_command": "go movetime 500",
   "max_plies": 300,
   "lanes": 4,
@@ -15,10 +15,30 @@
     "diagnosis": 15
   },
   "experience_lanes": [
-    {"id": "E0", "purpose": "normal-distribution", "book": true, "source": "startpos"},
-    {"id": "E1", "purpose": "book-independent", "book": false, "source": "startpos"},
-    {"id": "E2", "purpose": "position-bank", "source": "position-bank", "capability_gate": "G2"},
-    {"id": "E3", "purpose": "controlled-diversity", "source": "near-equal-candidate-branch", "capability_gate": "G4"}
+    {
+      "id": "E0",
+      "purpose": "normal-distribution",
+      "book": true,
+      "source": "startpos"
+    },
+    {
+      "id": "E1",
+      "purpose": "book-independent",
+      "book": false,
+      "source": "startpos"
+    },
+    {
+      "id": "E2",
+      "purpose": "position-bank",
+      "source": "position-bank",
+      "capability_gate": "G2"
+    },
+    {
+      "id": "E3",
+      "purpose": "controlled-diversity",
+      "source": "near-equal-candidate-branch",
+      "capability_gate": "G4"
+    }
   ],
   "position_bank_sampling_percent": {
     "king-danger": 20,
@@ -33,7 +53,10 @@
   "screening": {
     "paired_games_per_candidate": 20,
     "max_finalists": 3,
-    "automatic_parameter_mutation_percent": [10, 20],
+    "automatic_parameter_mutation_percent": [
+      10,
+      20
+    ],
     "exploration_fraction": 0.15,
     "illegal_games_allowed": 0
   },
@@ -45,7 +68,13 @@
   "diagnosis": {
     "deep_reanalysis_ms": 500,
     "max_positions_per_category": 50,
-    "categories": ["eval-swing", "surprise", "disagreement", "blind-spot", "valuable-novelty"]
+    "categories": [
+      "eval-swing",
+      "surprise",
+      "disagreement",
+      "blind-spot",
+      "valuable-novelty"
+    ]
   },
   "retention_days": {
     "raw_games": 14,
@@ -60,5 +89,12 @@
     "automatic_weight_update": false,
     "primary_credit": "book-exit-position-quality",
     "final_result_role": "secondary-statistic"
+  },
+  "adaptive_long_think": {
+    "enabled": true,
+    "base_ms": 200,
+    "max_total_ms": 1000,
+    "max_uses_per_game": 10,
+    "mode": "continue_iterative_search"
   }
 }
