@@ -69,6 +69,55 @@ int main(){try{
     require(evaluate(near_king).terms[1]==0,"king proximity is not attacking pressure");
     std::cout<<"PASS real pressure and no king-proximity bonus\n";
 
+    // Direction-aware two-ring king defence research fixtures.
+    // Same material: a rook controlling the actually threatened flank must
+    // count more than the same rook controlling a quiet flank.
+    EvaluationParameters kd; kd.king_defense_weight=100;
+    auto flank_threat=snap({{"5e","K"},{"9a","k"},{"3a","r"},{"7i","R"}});
+    auto flank_defended=snap({{"5e","K"},{"9a","k"},{"3a","r"},{"3i","R"}});
+    auto weak_kd=evaluate(flank_threat,kd), strong_kd=evaluate(flank_defended,kd);
+    require(weak_kd.material==strong_kd.material,"king defence fixture material equality");
+    require(strong_kd.raw[0].king_defense.raw_score>weak_kd.raw[0].king_defense.raw_score,
+            "defence on attacked flank must outrank quiet-flank defence");
+    require(strong_kd.king_defense_term>weak_kd.king_defense_term,
+            "directional king defence term must reward relevant flank");
+    std::cout<<"PASS king defence relevant flank "
+             <<strong_kd.raw[0].king_defense.raw_score<<" > "
+             <<weak_kd.raw[0].king_defense.raw_score<<"\n";
+
+    // Inner-ring contact should be treated as more urgent than otherwise
+    // analogous outer-only contact.
+    auto outer_contact=snap({{"5e","K"},{"9a","k"},{"3a","r"},{"3i","R"}});
+    auto inner_contact=snap({{"5e","K"},{"9a","k"},{"4a","r"},{"4i","R"}});
+    auto outer_f=king_defense_features(outer_contact,AttackMap(outer_contact),0);
+    auto inner_f=king_defense_features(inner_contact,AttackMap(inner_contact),0);
+    require(inner_f.inner_threat_total>outer_f.inner_threat_total,
+            "inner fixture must create more inner-ring threat");
+    require(inner_f.raw_score>outer_f.raw_score,
+            "inner-ring relevant defence must receive larger coordination score");
+    std::cout<<"PASS two-ring urgency inner "<<inner_f.raw_score
+             <<" > outer "<<outer_f.raw_score<<"\n";
+
+    // Supported nearby guards should improve the threatened sector, while the
+    // same pieces parked far away should not receive a castle-name bonus.
+    auto guards_far=snap({{"5e","K"},{"9a","k"},{"3a","r"},{"8h","G"},{"8g","S"}});
+    auto guards_near=snap({{"5e","K"},{"9a","k"},{"3a","r"},{"4e","G"},{"4f","S"}});
+    auto far_f=king_defense_features(guards_far,AttackMap(guards_far),0);
+    auto near_f=king_defense_features(guards_near,AttackMap(guards_near),0);
+    require(near_f.supported_inner_pieces>far_f.supported_inner_pieces,
+            "near guard network should contain supported inner pieces");
+    require(near_f.raw_score>far_f.raw_score,
+            "supported guard network in threatened zone should score higher");
+    std::cout<<"PASS supported guard network "<<near_f.raw_score
+             <<" > scattered "<<far_f.raw_score<<"\n";
+
+    auto kd_rot=evaluate(rotate(guards_near),kd);
+    auto kd_base=evaluate(guards_near,kd);
+    require(kd_base.total==-kd_rot.total &&
+            kd_base.king_defense_term==-kd_rot.king_defense_term,
+            "king defence preserves color-rotation symmetry");
+    std::cout<<"PASS king defence color symmetry\n";
+
     auto active=snap({{"9i","K"},{"1a","k"},{"5e","R"},{"4g","P"},{"6g","P"},{"5g","P"},{"5i","G"}});
     auto idle=active;std::swap(idle.board[sq("5e")],idle.board[sq("5h")]);
     // Move the same two pawns to close lateral rays around the idle rook.
