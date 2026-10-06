@@ -1,4 +1,4 @@
-name: Evaluation V2 Challenger
+name: Evaluation V2 OA729
 
 on:
   push:
@@ -7,7 +7,8 @@ on:
       - 'engine/strategy/evaluation*.h'
       - 'engine/main.cpp'
       - 'tests/evaluation_test.cpp'
-      - 'benchmarks/eval_v2_*.py'
+      - 'benchmarks/eval_v2_oa729*.py'
+      - 'benchmarks/eval_v2_match.py'
       - '.github/workflows/evaluation-v2-challenger.yml'
   workflow_dispatch:
 
@@ -31,39 +32,24 @@ jobs:
           python3 scripts/build.py --output build/eval-v2-engine
           python3 scripts/build.py --evaluation-test --output build/evaluation-test
           build/evaluation-test
-      - name: Upload tested engine for screen
-        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[eval-screen]')
+      - name: Upload tested engine
+        if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[eval-grid]')
         uses: actions/upload-artifact@v4
         with:
           name: eval-v2-tested-engine
           path: build/eval-v2-engine
           retention-days: 7
 
-  screen:
+  oa729:
     needs: quick
-    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[eval-screen]')
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[eval-grid]')
     runs-on: ubuntu-latest
     timeout-minutes: 35
     strategy:
       fail-fast: false
+      max-parallel: 27
       matrix:
-        include:
-          - id: cap700_core
-            options: '{"EvalV2":true,"AdaptiveLongThink":false,"EvalMaterialWeight":100,"EvalSafety":50,"EvalPressure":150,"EvalActivity":150,"EvalDanger":200,"EvalInfluence":0,"EvalPotential":0,"EvalCoordination":0,"EvalHandPotential":0,"EvalThreat":0,"EvalPositionalCap":700}'
-          - id: cap900_core
-            options: '{"EvalV2":true,"AdaptiveLongThink":false,"EvalMaterialWeight":100,"EvalSafety":50,"EvalPressure":150,"EvalActivity":150,"EvalDanger":200,"EvalInfluence":0,"EvalPotential":0,"EvalCoordination":0,"EvalHandPotential":0,"EvalThreat":0,"EvalPositionalCap":900}'
-          - id: cap1200_core
-            options: '{"EvalV2":true,"AdaptiveLongThink":false,"EvalMaterialWeight":100,"EvalSafety":50,"EvalPressure":150,"EvalActivity":150,"EvalDanger":200,"EvalInfluence":0,"EvalPotential":0,"EvalCoordination":0,"EvalHandPotential":0,"EvalThreat":0,"EvalPositionalCap":1200}'
-          - id: threat20
-            options: '{"EvalV2":true,"AdaptiveLongThink":false,"EvalMaterialWeight":100,"EvalSafety":50,"EvalPressure":150,"EvalActivity":150,"EvalDanger":200,"EvalInfluence":0,"EvalPotential":0,"EvalCoordination":0,"EvalHandPotential":0,"EvalThreat":20,"EvalPositionalCap":900}'
-          - id: threat35
-            options: '{"EvalV2":true,"AdaptiveLongThink":false,"EvalMaterialWeight":100,"EvalSafety":50,"EvalPressure":150,"EvalActivity":150,"EvalDanger":200,"EvalInfluence":0,"EvalPotential":0,"EvalCoordination":0,"EvalHandPotential":0,"EvalThreat":35,"EvalPositionalCap":900}'
-          - id: broad_low
-            options: '{"EvalV2":true,"AdaptiveLongThink":false,"EvalMaterialWeight":100,"EvalSafety":50,"EvalPressure":150,"EvalActivity":150,"EvalDanger":200,"EvalInfluence":40,"EvalPotential":0,"EvalCoordination":40,"EvalHandPotential":50,"EvalThreat":20,"EvalPositionalCap":1000}'
-          - id: broad_mid
-            options: '{"EvalV2":true,"AdaptiveLongThink":false,"EvalMaterialWeight":100,"EvalSafety":50,"EvalPressure":150,"EvalActivity":150,"EvalDanger":200,"EvalInfluence":60,"EvalPotential":0,"EvalCoordination":50,"EvalHandPotential":60,"EvalThreat":25,"EvalPositionalCap":1200}'
-          - id: broad_high
-            options: '{"EvalV2":true,"AdaptiveLongThink":false,"EvalMaterialWeight":100,"EvalSafety":50,"EvalPressure":150,"EvalActivity":150,"EvalDanger":200,"EvalInfluence":80,"EvalPotential":0,"EvalCoordination":70,"EvalHandPotential":75,"EvalThreat":30,"EvalPositionalCap":1400}'
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]
     steps:
       - uses: actions/checkout@v5
         with:
@@ -74,52 +60,37 @@ jobs:
           name: eval-v2-tested-engine
           path: build/bin
       - run: chmod +x build/bin/eval-v2-engine
-      - name: Parallel parameter screen, 16 games at 200ms
+      - name: Run 27 OA configurations, one color-swapped pair each
         run: |
-          python3 benchmarks/eval_v2_match.py \
+          python3 benchmarks/eval_v2_oa729.py \
             --engine build/bin/eval-v2-engine \
-            --pairs 8 --lanes 4 --seed 2026108000 --max-plies 240 \
-            --go-command 'go movetime 200' \
-            --options-a '${{ matrix.options }}' \
-            --options-b '{"EvalV2":false,"AdaptiveLongThink":false}' \
-            --output-dir build/screen/${{ matrix.id }}
+            --output-dir build/oa729/shard-${{ matrix.shard }} \
+            --shard ${{ matrix.shard }} --shards 27 --parallel 4 \
+            --seed 2026109000
       - uses: actions/upload-artifact@v4
         with:
-          name: v2-screen-${{ matrix.id }}
-          path: build/screen/${{ matrix.id }}
-          retention-days: 30
+          name: eval-v2-oa729-${{ matrix.shard }}
+          path: build/oa729/shard-${{ matrix.shard }}
+          retention-days: 60
 
-  summary:
-    needs: screen
+  analyze:
+    needs: oa729
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
+      - uses: actions/checkout@v5
       - uses: actions/download-artifact@v4
         with:
-          pattern: v2-screen-*
-          path: build/screens
-      - name: Rank parameter regions
+          pattern: eval-v2-oa729-*
+          path: build/all
+      - name: Aggregate main effects and pair interactions
         run: |
-          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
-          import glob,json
-          rows=[]
-          for p in glob.glob('build/screens/**/summary.json',recursive=True):
-              s=json.load(open(p,encoding='utf-8'))
-              ident=p.split('/')[-2].replace('v2-screen-','')
-              rows.append({
-                  'id':ident,'score':s['score_a'],'wins':s['wins_a'],
-                  'draws':s['draws'],'losses':s['wins_b'],
-                  'mean_ms':s['timing_ms']['A']['mean'],
-                  'nodes':s['search']['A'].get('nodes_total',0),
-                  'options':s['config']['options_a']})
-          rows.sort(key=lambda r:(r['score'],r['id']),reverse=True)
-          open('v2-parameter-screen.json','w').write(json.dumps(rows,ensure_ascii=False,indent=2)+'\n')
-          print('## Evaluation-v2 parameter screen')
-          print('All candidates: 16 games vs current v1, 200ms, AdaptiveLongThink OFF.')
-          for r in rows:
-              print(f"- {r['id']}: {r['wins']}W {r['draws']}D {r['losses']}L = {r['score']:.1%}; mean {r['mean_ms']:.1f}ms")
-          PY
+          python3 benchmarks/eval_v2_oa729_analyze.py \
+            --input build/all \
+            --output build/eval-v2-oa729-analysis.json | tee build/summary.txt
+          cat build/summary.txt >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         with:
-          name: v2-parameter-screen-${{ github.run_id }}
-          path: v2-parameter-screen.json
+          name: evaluation-v2-oa729-analysis-${{ github.run_id }}
+          path: build/eval-v2-oa729-analysis.json
           retention-days: 180
