@@ -62,3 +62,10 @@ Book / Experienceの実装方針に依存するGitHub Actions workflowは、誤�
 
 旧External Engine BenchmarkのFull-engineモードも、Book / Experienceを利用する部分だけ旧版を `docs/hold/workflows/external-engine-benchmark-legacy.yml` に保存した。
 現役のExternal Engine BenchmarkはCore条件のみを扱う。
+
+## 部分決定（2026-10-07）
+オーナーは通常対局の蓄積対象を「実際に指した手と必要な評価・探索情報」に限定した。
+未着手候補手の全記録・探索木の全記録案は採用しない。
+この部分の正本は `docs/rules/R25_着手記録の保存.md`。
+活用順の提案は `docs/27_着手データ活用計画.md`。
+Book / Experienceの責任範囲、研究結果の採用、夜間研究再開、自動main反映は引き続き保留である。

@@ -198,6 +198,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - name: Checkout archive tool
+        uses: actions/checkout@v5
+        with:
+          path: harness
+
       - name: Download shards
         uses: actions/download-artifact@v4
         with:
@@ -250,6 +255,21 @@ jobs:
               f.write(f"- illegal games: **{illegal}**\n")
           print(json.dumps(out,ensure_ascii=False,indent=2))
           PY
+
+      - name: Archive played moves
+        env:
+          REF_A: ${{ inputs.ref_a }}
+          REF_B: ${{ needs.plan.outputs.ref_b }}
+        run: |
+          python3 harness/tools/records/archive_played_moves.py --input results/shard-*.json --output-dir played-archive --run-id "$GITHUB_RUN_ID" --ref-a "$REF_A" --ref-b "$REF_B"
+
+      - name: Upload played-move archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: played-move-archive-${{ github.run_id }}
+          path: played-archive/
+          retention-days: 90
+          if-no-files-found: error
 
       - name: Upload aggregate
         uses: actions/upload-artifact@v4

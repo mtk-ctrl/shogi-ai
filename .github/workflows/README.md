@@ -32,3 +32,7 @@ H10の方針確定まではGitHub Actionsから起動できない。
 一時workflowも禁止しない。研究終了後にACTIVE / HOLD / ARCHIVEを整理する。
 
 固定局数の対局を起動するときはR21に従い、先に空きrunner数を確認してrunner配分を決める。
+
+## 内部比較の着手アーカイブ
+engine-match.ymlは対局後に実際の着手だけを圧縮し、played-move-archive artifactへ保存する。探索処理は変更しない。
+正本は `docs/rules/R25_着手記録の保存.md`。評価欠損はmanifestに残す。artifactは期限付きであり、永続保存先への自動移送は未実装である。
