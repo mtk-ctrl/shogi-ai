@@ -26,7 +26,7 @@ DEFAULT_HOST = "wdoor.c.u-tokyo.ac.jp"
 DEFAULT_PORT = 4081
 DEFAULT_GAME = "floodgate-300-10F"
 DEFAULT_OPTIONS = {
-    "ExperienceCache": "false",
+    "ExperienceCache": "true",
     "OpeningBook": "true",
 }
 RESULT_RE = re.compile(r"^#(WIN|LOSE|DRAW)$")
@@ -313,7 +313,7 @@ class FloodgateClient:
                 "kind": "floodgate_external_match",
                 "learning_eligible": False,
                 "opening_book_eligible": False,
-                "experience_eligible": False,
+                "experience_eligible": True,
                 "game_id": summary.game_id,
                 "username": self.username,
                 "engine": self.engine.metadata(),

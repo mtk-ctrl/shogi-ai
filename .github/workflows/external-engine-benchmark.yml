@@ -93,7 +93,8 @@ jobs:
           BOOK="${BOOK:-false}"
           NODES="$(python3 benchmarks/external_levels.py --level "$LEVEL" --nodes-only)"
           if [[ "$BOOK" == "true" ]]; then
-            SELF_OPTIONS='{"ExperienceCache":"false","OpeningBook":"true"}'
+            EXPERIENCE_FILE="benchmarks/external-results/yaneuraou-material-full-experience.bin"
+            SELF_OPTIONS="{\"ExperienceCache\":\"true\",\"ExperienceFile\":\"${EXPERIENCE_FILE}\",\"OpeningBook\":\"true\"}"
             PROFILE="full"
           else
             SELF_OPTIONS='{"ExperienceCache":"false","OpeningBook":"false"}'
@@ -116,5 +117,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: external-yaneuraou-material
-          path: benchmarks/external-results/*.json
+          path: |
+            benchmarks/external-results/*.json
+            benchmarks/external-results/*.bin
           if-no-files-found: error
