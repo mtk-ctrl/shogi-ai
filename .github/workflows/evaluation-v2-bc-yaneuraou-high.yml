@@ -1,0 +1,148 @@
+name: Evaluation V2 B-C YaneuraOu High Levels
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/evaluation-v2-challenger
+    paths:
+      - "benchmarks/eval_v2_bc_yaneuraou_high.py"
+      - ".github/workflows/evaluation-v2-bc-yaneuraou-high.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  YANEURAOU_REF: c1b80eaa09fe13d5f12b1599d1ae4d53c224de30
+
+jobs:
+  quick:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[eval-bc-yane-high]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Validate experiment
+        run: |
+          python3 -m py_compile benchmarks/eval_v2_bc_yaneuraou_high.py
+          python3 - <<'PY'
+          import benchmarks.eval_v2_bc_yaneuraou_high as x
+          assert x.LEVEL_NODES == {60:9545,70:30539,80:97701,90:312572,100:1000000}
+          assert len(x.all_blocks()) == 100
+          assert all(len(x.shard_blocks(i)) == 5 for i in range(20))
+          assert sum(len(x.shard_blocks(i))*10 for i in range(20)) == 1000
+          print("20 shards x 50 games validated")
+          print(x.LEVEL_NODES)
+          PY
+
+      - name: Build KUMOJI
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Fetch pinned YaneuraOu
+        run: |
+          git clone --filter=blob:none https://github.com/yaneurao/YaneuraOu.git external/YaneuraOu
+          git -C external/YaneuraOu checkout "$YANEURAOU_REF"
+
+      - name: Build YaneuraOu material edition
+        run: |
+          make -C external/YaneuraOu/source clean \
+            COMPILER=g++ TARGET_CPU=SSE42 \
+            YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          make -C external/YaneuraOu/source -j2 tournament \
+            COMPILER=g++ TARGET_CPU=SSE42 \
+            YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          test -x external/YaneuraOu/source/YaneuraOu-by-gcc
+
+      - name: Upload runtime
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-bc-yane-high-runtime
+          path: |
+            build/shogi-ai
+            external/YaneuraOu/source/YaneuraOu-by-gcc
+          if-no-files-found: error
+          retention-days: 14
+
+  shard:
+    needs: quick
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Download runtime
+        uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-bc-yane-high-runtime
+          path: build/runtime
+
+      - name: Prepare runtime
+        run: |
+          ENGINE="$(find build/runtime -type f -name shogi-ai | head -1)"
+          YANE="$(find build/runtime -type f -name YaneuraOu-by-gcc | head -1)"
+          test -n "$ENGINE" && test -n "$YANE"
+          chmod +x "$ENGINE" "$YANE"
+          echo "ENGINE=$ENGINE" >> "$GITHUB_ENV"
+          echo "YANE=$YANE" >> "$GITHUB_ENV"
+          echo "logical_cpus=$(nproc)"
+
+      - name: Run balanced 50-game shard
+        run: |
+          python3 benchmarks/eval_v2_bc_yaneuraou_high.py shard \
+            --engine "$ENGINE" --opponent "$YANE" \
+            --shard "${{ matrix.shard }}" \
+            --output-dir "build/shard-${{ matrix.shard }}"
+
+      - name: Upload shard
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-bc-yane-high-shard-${{ matrix.shard }}
+          path: build/shard-${{ matrix.shard }}
+          if-no-files-found: error
+          retention-days: 180
+          compression-level: 6
+
+  analyze:
+    needs: shard
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: eval-v2-bc-yane-high-shard-*
+          path: build/all
+          merge-multiple: false
+
+      - name: Analyze
+        run: |
+          python3 benchmarks/eval_v2_bc_yaneuraou_high.py analyze \
+            --root build/all \
+            --output build/eval-v2-bc-yane-high-analysis.json \
+            --summary build/eval-v2-bc-yane-high-summary.md
+          cat build/eval-v2-bc-yane-high-summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload analysis
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-bc-yane-high-analysis
+          path: |
+            build/eval-v2-bc-yane-high-analysis.json
+            build/eval-v2-bc-yane-high-summary.md
+          if-no-files-found: error
+          retention-days: 365
