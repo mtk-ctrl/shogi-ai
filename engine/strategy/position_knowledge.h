@@ -1,9 +1,12 @@
 #pragma once
 
+#include "embedded_position_knowledge.h"
 #include "rules/position.h"
 #include <fstream>
+#include <istream>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 
 namespace shogi::strategy {
@@ -11,40 +14,22 @@ namespace shogi::strategy {
 class PositionKnowledge {
 public:
     bool load(const std::string& path) {
-        std::ifstream in(path);
-        if (!in) {
-            moves_.clear();
-            return false;
-        }
-        std::unordered_map<std::string, std::string> loaded;
-        std::string line;
-        while (std::getline(in, line)) {
-            if (line.empty() || line[0] == '#') continue;
-            const auto first = line.find('\t');
-            if (first == std::string::npos) {
-                moves_.clear();
-                return false;
-            }
-            const auto second = line.find('\t', first + 1);
-            const std::string key = line.substr(0, first);
-            const std::string move = line.substr(first + 1, second == std::string::npos
-                ? std::string::npos : second - first - 1);
-            if (key.empty() || move.empty()) {
-                moves_.clear();
-                return false;
-            }
-            const auto [it, inserted] = loaded.emplace(key, move);
-            if (!inserted && it->second != move) {
-                moves_.clear();
-                return false;
-            }
-        }
-        if (loaded.empty()) {
-            moves_.clear();
-            return false;
-        }
-        moves_.swap(loaded);
-        return true;
+        std::ifstream input(path);
+        if (input) return load_stream(input);
+
+        // Standalone/Android engines may receive only the executable.  The
+        // default adopted snapshot therefore travels inside the binary.
+        // A custom missing path is still an error and never silently replaced.
+        if (path == "position-knowledge-v1.tsv")
+            return load_text(detail::kEmbeddedPositionKnowledge);
+
+        clear();
+        return false;
+    }
+
+    bool load_text(std::string_view text) {
+        std::istringstream input{std::string(text)};
+        return load_stream(input);
     }
 
     void clear() { moves_.clear(); }
@@ -64,6 +49,38 @@ public:
     }
 
 private:
+    bool load_stream(std::istream& in) {
+        std::unordered_map<std::string, std::string> loaded;
+        std::string line;
+        while (std::getline(in, line)) {
+            if (line.empty() || line[0] == '#') continue;
+            const auto first = line.find('\t');
+            if (first == std::string::npos) {
+                clear();
+                return false;
+            }
+            const auto second = line.find('\t', first + 1);
+            const std::string key = line.substr(0, first);
+            const std::string move = line.substr(first + 1, second == std::string::npos
+                ? std::string::npos : second - first - 1);
+            if (key.empty() || move.empty()) {
+                clear();
+                return false;
+            }
+            const auto [it, inserted] = loaded.emplace(key, move);
+            if (!inserted && it->second != move) {
+                clear();
+                return false;
+            }
+        }
+        if (loaded.empty()) {
+            clear();
+            return false;
+        }
+        moves_.swap(loaded);
+        return true;
+    }
+
     std::unordered_map<std::string, std::string> moves_;
 };
 
