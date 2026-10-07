@@ -2,6 +2,8 @@
 
 このディレクトリは、雲路（KUMOJI）をAndroid上でShogiDroid2から利用するためのOEXアプリ部分である。
 
+> 現在のエンジン世代は **v2.0.0**。ただしAndroid/OEXとして通常仕上げ済みの最新完成版は **v1.0.1** である。v2.0.0の `android/VERSION`、OEX表示、versionCode、APKは通常仕上げ時にまとめて更新する。
+
 ## v1.0.1
 
 - アプリ表示名：`雲路 KUMOJI`
