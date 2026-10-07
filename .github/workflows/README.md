@@ -13,6 +13,7 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 | `.github/workflows/kifu-learning-ci.yml` | 棋譜処理変更 / PR / 手動 | 棋譜変換・ルール層validation |
 | `.github/workflows/engine-match.yml` | 手動 | 汎用の内部Engine比較。既定は200ms・AdaptiveLongThink=true。研究条件は明示入力で変更 |
 | `.github/workflows/engine-match-request.yml` | request更新 / 手動 | ChatGPT等から `.github/match-request.json` を検証して `engine-match.yml` をdispatchする薄い起動口。対局処理は持たない |
+| `.github/workflows/position-knowledge-refresh.yml` | 知識更新request / 手動 | 承認した候補assetから採用済み局面知識snapshotをmaterialize。新候補を自動昇格しない |
 | `.github/workflows/external-engine-benchmark.yml` | 関連pushでunit / 手動Benchmark | やねうら王MaterialのCore外部尺度 |
 | `.github/workflows/tsume-benchmark.yml` | 手動 | 固定詰将棋データセットのBenchmark |
 | `.github/workflows/android-apk.yml` | 明示的release変更 / 手動 | 完成版全車検・Android APK生成 |
