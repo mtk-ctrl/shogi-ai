@@ -15,13 +15,14 @@ authority: normative
 - `docs/archive/`: 旧文書。現在の指示には使わない。
 - `docs/hold/`: 結論を出してはいけない保留領域。
 
-## バージョンの意味
-- Android / OEXの `vX.Y.Z` は、R60に従って完成版化したreleaseの表示番号である。
-- `main` はrelease後も開発が進むため、最後のrelease番号だけで現在のEngine実装を表さない。
-- 現在のEngine実装を特定するときは `main` のcommit SHAを使う。
-- 棋力比較の基準commitは `benchmarks/baseline_ref.txt` で管理し、製品release番号と混同しない。
-- USI名やAndroid表示名が最後のrelease番号のままでも、その文字列だけから現在のmainがrelease当時と同一実装だと判断しない。
-- READMEでは「最新release」と「現在のmain Engine」を分けて記述する。
+## Engine世代とreleaseの意味
+- 正式採用したEngine世代には `KUMOJI vX.Y.Z` の世代番号を付けてよい。現在の正式Engine世代は **KUMOJI v2.0.0** である。
+- 正式採用されたEngine実装は `main` へ統合し、`main` を現行本体の正本とする。正式採用後の実装を研究branchだけに残さない。
+- 同じEngine世代内でも実装変更はあり得るため、正確なコード状態は `main` のcommit SHAで特定する。
+- Android / OEXの `vX.Y.Z` はR60に従って完成版化したrelease番号であり、Engine世代とは別に管理する。現在の最新完成版はv1.0.1である。
+- Android/OEX releaseがv1.0.1のままでも、main Engineがv2.0.0であることと矛盾しない。
+- 棋力比較の基準commitは `benchmarks/baseline_ref.txt` で管理し、Engine世代番号や製品release番号と混同しない。
+- READMEでは「現在のEngine世代」「mainの実装状態」「最新Android/OEX release」を分けて記述する。
 
 ## journal
 重要な実装、比較、採用・不採用、方針変更は `journal/YYYY-MM-DD_NN_テーマ.md` に残す。

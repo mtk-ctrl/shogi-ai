@@ -4,9 +4,9 @@
 
 「雲路」は、雲の中の道、空に通う道を表す古い日本語から取った。既に敷かれた道をなぞるのではなく、まだ道に見えないところから、自分で通れる筋を見つけるAIを目指す。
 
-最新のAndroid / OEX完成版（release）は **v1.0.1**（2026-10-05）である。
-ただし、その後も `main` のEngine開発は継続しており、200ms正式比較条件とAdaptiveLongThink正式採用など、v1.0.1完成版化後の採用変更が入っている。
-したがって **v1.0.1やv0.0.19を現在のmain Engine全体の版番号として扱わない**。現在のEngine状態は `main` のcommitを正本とし、正式比較の基準commitは `benchmarks/baseline_ref.txt` を参照する。
+現在の正式Engine世代は **KUMOJI v2.0.0** である。Evaluation-v2候補Bを正式採用し、採用済み実装は `main` を正本とする。
+最新のAndroid / OEX完成版（release）は引き続き **v1.0.1**（2026-10-05）であり、Engine世代とAndroid/OEX release番号は分けて管理する。
+同じv2.0.0世代内の正確な実装状態は `main` のcommit SHAで特定し、正式比較の基準commitは `benchmarks/baseline_ref.txt` を参照する。
 
 ## AI作業時の入口
 
@@ -20,7 +20,7 @@
 強化は原則として、Engine / Experience / Benchmark / Diagnosis の役割を分け、Strength / Independence / Novelty を意識して進める。
 詳しくは [雲路の羅針盤](docs/00_羅針盤.md) を参照する。
 
-## 現在のmain Engineの主な能力
+## 現在のmain Engine（KUMOJI v2.0.0）の主な能力
 
 - やねうら王から利用するのは、合法手生成・局面管理・王手判定・千日手等のルール層のみ
 - 探索・評価・move ordering・置換表・詰み探索・戦略・学習は自作
@@ -30,13 +30,13 @@
 - 自作置換表
 - 1～3手の攻守MateAssistを通常対局へ統合
 - 専用`go mate`による詰み探索
-- 駒得＋玉安全＋攻撃圧力＋活動性＋危険度の説明可能な評価
+- Evaluation-v2候補Bによる多面的静的評価（Material / Safety / Pressure / Activity / Danger / Influence / Potential / Coordination / Hand Potential。Threatは現行OFF）
 - 自前棋譜から作るOpening Book
 - Experience Cache
 - 評価値・読み筋・探索統計のUSI出力
 - ShogiDroid2向けAndroid OEX APK
 
-評価の現行重みは `Safety=50 / Pressure=150 / Activity=150 / Danger=200`。
+評価の現行既定値は `EvalV2=true / Material=100 / Safety=500 / Pressure=474 / Activity=150 / Danger=200 / Influence=19 / Potential=25 / Coordination=50 / HandPotential=60 / Threat=0 / PositionalCap=5000`。
 正式比較・スクリーニング・Diagnosis・外部Benchmarkの現行条件は [R20](docs/rules/R20_対局・比較・統計.md) を正本とする。
 
 ## Book / Experience
@@ -78,6 +78,8 @@ APK・実機確認・完成版化のRuleは [R60](docs/rules/R60_Android・APK�
 - [00_羅針盤](docs/00_羅針盤.md) — 何を目指すか
 - [Rules](docs/rules/R00_基本原則.md) — 現在どうするか
 - [04_強化ロードマップ](docs/04_強化ロードマップ.md) — 技術フェーズと到達点
+- [32_評価関数v2統合設計](docs/32_評価関数v2統合設計.md) — v2評価アーキテクチャ
+- [33_v2.0.0世代基準](docs/33_v2.0.0世代基準.md) — 現行Engine世代の設定・棋力基準
 - [24_多面的評価システム構想](docs/24_多面的評価システム構想.md) — 今後の評価システムの方向
 - [Book・Experience保留](docs/hold/H10_Book・Experience方針保留.md)
 - [v1.0.1完成版記録](journal/2026-10-05_18_雲路KUMOJI_v1.0.1完成版.md)
