@@ -1,0 +1,44 @@
+name: Research Evaluation Concepts v2
+
+on:
+  push:
+    branches:
+      - research/evaluation-concepts-v2
+    paths:
+      - "tools/research/evaluation_concept_diagnosis.py"
+      - "benchmarks/fixtures/eval-gap-30s-12.json"
+      - ".github/workflows/evaluation-concepts-v2.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: evaluation-concepts-v2-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: Run concept diagnosis
+        run: |
+          mkdir -p build/evaluation-concepts
+          python3 tools/research/evaluation_concept_diagnosis.py \
+            --input benchmarks/fixtures/eval-gap-30s-12.json \
+            --output build/evaluation-concepts/results.json \
+            --markdown-output build/evaluation-concepts/summary.md
+      - name: Show summary
+        run: cat build/evaluation-concepts/summary.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-concepts-v2-${{ github.run_id }}
+          path: |
+            build/evaluation-concepts/results.json
+            build/evaluation-concepts/summary.md
+          retention-days: 30
+          if-no-files-found: error
