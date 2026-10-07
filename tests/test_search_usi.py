@@ -88,10 +88,32 @@ try:
             assert infos[-1][infos[-1].index('depth')+1] == '0' and 'score' not in infos[-1], infos
     print('PASS real movetime/byoyomi/zero-time/node limits and legal fallback')
 
-    # Adopted time allocation: a 200ms fixed request may continue the SAME
-    # iterative search up to ~1s, at most ten times per game. Use move number 54
-    # so the first reserved coupon window reaches its fallback deterministically.
-    long_sf = '3lkl3/3p1p3/9/9/9/9/9/5R3/K8 b g 54'
+    # Instability can spend coupons on consecutive turns, without the former
+    # individual start windows. A root in check is a deterministic trigger.
+    send('setoption name MateAssist value false')
+    send('setoption name EvalProfile value material')
+    send('usinewgame')
+    send('position sfen 8k/9/9/9/9/9/9/9/K8 b - 54')
+    send('go movetime 200')
+    _, seen = until('bestmove ', 2)
+    assert not any(line.startswith('info string long_think ') for line in seen), seen
+    send('setoption name EvalProfile value features')
+    send('usinewgame')
+    for ply, used in [(24, 1), (26, 2)]:
+        checked = f'8k/9/9/9/9/9/9/4r4/4K4 b - {ply}'
+        send('position sfen ' + checked)
+        send('go movetime 200')
+        _, seen = until('bestmove ', 2)
+        long_lines = [line for line in seen if line.startswith('info string long_think ')]
+        assert len(long_lines) == 1 and f'used {used}/10' in long_lines[0], seen
+        assert 'reason in_check' in long_lines[0], long_lines
+
+    # Keep the SAME iterative search up to ~1s. With all ten coupons unused,
+    # Black needs the turns 131,133,...,149 to finish near move 150.
+    # Quiet kings with material evaluation keep move/score stable, so this
+    # checks budget consumption without an instability trigger.
+    send('setoption name EvalProfile value material')
+    long_sf = '8k/9/9/9/9/9/9/9/K8 b - 131'
     send('setoption name AdaptiveLongThink value false')
     _, _, plain_elapsed = search(long_sf, 'go movetime 200', 2)
     assert plain_elapsed < 0.55, plain_elapsed
@@ -108,14 +130,31 @@ try:
     long_lines = [line for line in long_seen if line.startswith('info string long_think ')]
     assert len(long_lines) == 1, long_seen
     assert 'used 1/10' in long_lines[0], long_lines
-    valid_reasons = {
-        'in_check', 'score_drop_150', 'iteration_score_change_150',
-        'iteration_move_change', 'unfinished_depth2', 'window_fallback',
-    }
     reason = long_lines[0].split(' reason ', 1)[1].split()[0]
-    assert reason in valid_reasons, long_lines
+    assert reason == 'budget_deadline', long_lines
     assert 0.70 < long_elapsed < 1.50, long_elapsed
+    for used in range(2, 11):
+        ply = 131 + (used - 1) * 2
+        send('position sfen ' + long_sf.rsplit(' ', 1)[0] + f' {ply}')
+        send('go movetime 200')
+        _, seen = until('bestmove ', 2)
+        long_lines = [line for line in seen if line.startswith('info string long_think ')]
+        assert len(long_lines) == 1 and f'used {used}/10' in long_lines[0], seen
+    send('position sfen ' + long_sf.rsplit(' ', 1)[0] + ' 151')
+    capped_started = time.monotonic()
+    send('go movetime 200')
+    _, seen = until('bestmove ', 2)
+    assert not any(line.startswith('info string long_think ') for line in seen), seen
+    assert time.monotonic() - capped_started < 0.55
+    send('usinewgame')
+    send('position sfen ' + long_sf)
+    send('go movetime 200')
+    _, seen = until('bestmove ', 2)
+    assert any('long_think used 1/10' in line for line in seen), seen
+    send('setoption name EvalProfile value features')
+    send('setoption name MateAssist value true')
     print('PASS adaptive long-think continues 200ms search to one-second ceiling')
+    print('PASS consecutive instability, stable-budget deadline, ten uses by ply 149, cap and new-game reset')
 
     send('position startpos'); send('go infinite')
     send('isready'); until('readyok', 1)

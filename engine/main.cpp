@@ -5,8 +5,8 @@
 #include "strategy/opening_book.h"
 #include "strategy/search_limits.h"
 #include "strategy/promotion_policy.h"
+#include "strategy/long_think_budget.h"
 #include <algorithm>
-#include <array>
 #include <chrono>
 #include <cstdint>
 #include <atomic>
@@ -149,7 +149,7 @@ int main() {
         if (command != "isready" && command != "stop" && command != "ponderhit" && command != "quit")
             finish_search(true);
         if (command == "usi") {
-            std::cout << "id name KUMOJI v2.0.0\nid author mtk-ctrl + ChatGPT\n"
+            std::cout << "id name KUMOJI v2.0.1\nid author mtk-ctrl + ChatGPT\n"
                       << "option name USI_Ponder type check default false\n"
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
@@ -345,19 +345,15 @@ int main() {
                     } catch (...) {}
                 }
             }
-            static constexpr std::array<int, 10> LongThinkStarts =
-                {24, 39, 54, 69, 84, 100, 115, 130, 145, 160};
-            static constexpr std::array<int, 10> LongThinkEnds =
-                {54, 70, 86, 102, 118, 134, 150, 166, 182, 198};
+            using LongThinkBudget = shogi::strategy::LongThinkBudget;
             const bool long_think_slot =
                 adaptive_long_think_enabled
                 && limits.requested_movetime_ms == 200
                 && !limits.ponder && !limits.infinite && limits.nodes == 0
-                && long_think_used < static_cast<int>(LongThinkStarts.size())
-                && current_ply >= LongThinkStarts[long_think_used]
+                && LongThinkBudget::available(current_ply, long_think_used)
                 && candidates.size() > 1;
             const bool long_think_fallback =
-                long_think_slot && current_ply >= LongThinkEnds[long_think_used];
+                long_think_slot && LongThinkBudget::must_spend(current_ply, long_think_used);
 
             const auto started_ns = shogi::strategy::SearchControl::now_ns();
             session = std::make_unique<Session>();

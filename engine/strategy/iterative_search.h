@@ -16,7 +16,7 @@ enum class LongThinkReason : int {
     IterationScoreChange150,
     IterationMoveChange,
     UnfinishedDepth2,
-    WindowFallback,
+    BudgetDeadline,
 };
 
 inline const char* long_think_reason_name(LongThinkReason reason) {
@@ -26,7 +26,7 @@ inline const char* long_think_reason_name(LongThinkReason reason) {
     case LongThinkReason::IterationScoreChange150: return "iteration_score_change_150";
     case LongThinkReason::IterationMoveChange: return "iteration_move_change";
     case LongThinkReason::UnfinishedDepth2: return "unfinished_depth2";
-    case LongThinkReason::WindowFallback: return "window_fallback";
+    case LongThinkReason::BudgetDeadline: return "budget_deadline";
     default: return "none";
     }
 }
@@ -194,8 +194,9 @@ private:
                 != static_cast<int>(LongThinkReason::None)
             || control_->hard_deadline_ns <= now) return false;
 
-        // Match the adopted experimental policy, but continue the current
-        // iterative-deepening search instead of restarting from the root.
+        // Prefer instability; spend a remaining coupon only when the per-game
+        // budget needs this turn to finish near the target move number.
+        // Continue the current search instead of restarting from the root.
         if (has_last_completed_ && last_completed_.has_score
             && is_mate_score(last_completed_.score)) return false;
 
@@ -218,7 +219,7 @@ private:
         } else if (!has_last_completed_ || last_completed_.depth < 2) {
             reason = LongThinkReason::UnfinishedDepth2;
         } else if (control_->force_long_think) {
-            reason = LongThinkReason::WindowFallback;
+            reason = LongThinkReason::BudgetDeadline;
         }
         if (reason == LongThinkReason::None) return false;
 

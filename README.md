@@ -4,9 +4,9 @@
 
 「雲路」は、雲の中の道、空に通う道を表す古い日本語から取った。既に敷かれた道をなぞるのではなく、まだ道に見えないところから、自分で通れる筋を見つけるAIを目指す。
 
-現在の正式Engine世代は **KUMOJI v2.0.0** である。Evaluation-v2候補Bを正式採用し、採用済み実装は `main` を正本とする。
+現在の正式Engine世代は **KUMOJI v2.0.1** である。Evaluation-v2候補Bを維持し、本人の指示により長考配分を改めた。採用済み実装は `main` を正本とする。
 最後にAndroidへ配布するために作ったAPKは **v1.0.1**（2026-10-05）である。v2以後はAndroidへダウンロードする必要がなくAPKを新たに作っていないため、オーナーのAndroidには以前のv1が入っている（2026-10-07本人確認）。APKは必要時に採用済みエンジンをAndroidへ届けるものであり、別の正式エンジン系統ではない。
-同じv2.0.0世代内の正確な実装状態は `main` のcommit SHAで特定し、正式比較の基準commitは `benchmarks/baseline_ref.txt` を参照する。
+正確な実装状態は `main` のcommit SHAでも特定し、正式比較の基準commitは `benchmarks/baseline_ref.txt` を参照する。
 
 ## AI作業時の入口
 
@@ -20,12 +20,12 @@
 強化は原則として、Engine / 局面知識 / Benchmark / Diagnosis の役割を分け、Strength / Independence / Novelty を意識して進める。
 詳しくは [雲路の羅針盤](docs/00_羅針盤.md) を参照する。
 
-## 現在のmain Engine（KUMOJI v2.0.0）の主な能力
+## 現在のmain Engine（KUMOJI v2.0.1）の主な能力
 
 - やねうら王から利用するのは、合法手生成・局面管理・王手判定・千日手等のルール層のみ
 - 探索・評価・move ordering・置換表・詰み探索・戦略・学習は自作
 - 可変深度αβ探索、反復深化、時間管理
-- AdaptiveLongThink
+- AdaptiveLongThink（不安定な局面を優先し、残り枠は150手程度までに消化）
 - 静止探索
 - 自作置換表
 - 1～3手の攻守MateAssistを通常対局へ統合
@@ -54,7 +54,7 @@
 
 ## Android / ShogiDroid2
 
-最後に作ったv1.0.1 APKは次の構成である。最新エンジンv2.0.0を含むAPKはまだ作っていない。
+最後に作ったv1.0.1 APKは次の構成である。最新エンジンv2.0.1を含むAPKはまだ作っていない。
 
 - アプリ表示名：`雲路 KUMOJI`
 - OEX表示名：`雲路 KUMOJI v1.0.1`
@@ -80,7 +80,8 @@ APK・実機確認・完成版化のRuleは [R60](docs/rules/R60_Android・APK�
 - [Rules](docs/rules/R00_基本原則.md) — 現在どうするか
 - [04_強化ロードマップ](docs/04_強化ロードマップ.md) — 技術フェーズと到達点
 - [32_評価関数v2統合設計](docs/32_評価関数v2統合設計.md) — v2評価アーキテクチャ
-- [33_v2.0.0世代基準](docs/33_v2.0.0世代基準.md) — 現行Engine世代の設定・棋力基準
+- [33_v2.0.0世代基準](docs/33_v2.0.0世代基準.md) — 評価プロファイルBとv2.0.0採用時の棋力測定
+- [36_v2.0.1長考配分](docs/36_v2.0.1長考配分.md) — 現行版の長考配分と検証
 - [24_多面的評価システム構想](docs/24_多面的評価システム構想.md) — 今後の評価システムの方向
 - [Book・Experience保留](docs/hold/H10_Book・Experience方針保留.md)
 - [v1.0.1完成版記録](journal/2026-10-05_18_雲路KUMOJI_v1.0.1完成版.md)

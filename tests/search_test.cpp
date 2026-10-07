@@ -1,5 +1,6 @@
 #include "strategy/iterative_search.h"
 #include "strategy/search_limits.h"
+#include "strategy/long_think_budget.h"
 #include <iostream>
 #include <map>
 
@@ -49,6 +50,26 @@ void validate_pv(rules::Position& root, const strategy::SearchResult& result) {
 }
 int main() {
     try {
+        using Budget = strategy::LongThinkBudget;
+        require(!Budget::available(23, 0) && Budget::available(24, 0), "long-think opening boundary");
+        require(Budget::available(26, 1), "successive unstable turns can use remaining budget");
+        require(!Budget::must_spend(54, 0) && !Budget::must_spend(70, 1), "old per-coupon deadlines removed");
+        require(!Budget::must_spend(129, 0) && Budget::must_spend(131, 0), "Black closing-budget boundary");
+        require(!Budget::must_spend(130, 0) && Budget::must_spend(132, 0), "White closing-budget boundary");
+        require(!Budget::must_spend(131, 4) && Budget::must_spend(139, 4), "remaining budget changes closing point");
+        for (int first : {25, 24}) {
+            for (int early_uses = 0; early_uses <= Budget::MaxUses; ++early_uses) {
+                int used = early_uses, last_used = 0;
+                for (int ply = first; ply <= Budget::TargetPly; ply += 2) {
+                    if (Budget::must_spend(ply, used)) { ++used; last_used = ply; }
+                }
+                require(used == Budget::MaxUses && last_used <= Budget::TargetPly,
+                        "both colors finish remaining budget by target without instability");
+                require(!Budget::available(152, used) && !Budget::must_spend(152, used), "ten-use cap");
+            }
+        }
+        require(Budget::must_spend(151, 9), "skipped eligible turns catch up after target");
+        std::cout << "PASS unstable-priority long-think budget, both colors and ten-use cap\n";
         strategy::BasicIterativeSearch<strategy::MaterialEvaluator> search;
         search.set_quiescence_enabled(false); // Fixed-horizon oracle/legacy regression.
         auto p = fixture({{"9i","K"},{"1a","k"},{"7g","P"},{"3c","p"}});

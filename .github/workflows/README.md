@@ -16,13 +16,13 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 | `.github/workflows/tsume-benchmark.yml` | 手動 | 固定詰将棋データセットのBenchmark |
 | `.github/workflows/android-apk.yml` | 明示的release変更 / 手動 | 完成版全車検・Android APK生成 |
 
-## ACTIVE — 実行中の一時比較
+## ACTIVE — 一時比較・研究
 
 | Workflow | 起動 | 用途 |
 |---|---|---|
-| `.github/workflows/v2-v1-100-no-book-exp.yml` | 手動 | 本人依頼のv2.0.0対v1.0.1、Book/Experience OFF、100局。研究終了時にR15に従い整理する |
+| `.github/workflows/v2-selfplay-position-research-300.yml` | 当該workflowへのpush / 手動 | 固定v2.0.0の自己対局300局と局面研究。Book/Experience OFF。研究終了時にR15に従い整理する |
 
-編集pushを比較対局の開始指示にしない。この一時workflowのseed範囲・先後配分を訂正したが、今回の監査から100局を起動・再実行していない。
+先行のv2対v1比較workflowは削除済み。現在の一時研究はcommit `853df9de1466780c5b326d26baeb15388f8dadf0` を固定しており、mainのEngine版更新で研究条件を自動変更しない。当該workflow自身を今回編集していないため、今回の時間配分訂正から研究対局を起動しない。
 
 ## HOLD
 Book / Experience / Nightlyの旧workflowは `docs/hold/workflows/` に退避している。
