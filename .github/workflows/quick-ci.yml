@@ -25,6 +25,8 @@ on:
       - "benchmarks/arena.py"
       - "benchmarks/position_arena.py"
       - "benchmarks/external_match.py"
+      - "tools/floodgate/**"
+      - "tests/test_floodgate_client.py"
       - "tests/test_arena.py"
       - "tests/test_external_match.py"
       - "scripts/build.py"
@@ -102,3 +104,4 @@ jobs:
         run: |
           python3 tests/test_arena.py
           python3 tests/test_external_match.py
+          python3 tests/test_floodgate_client.py
