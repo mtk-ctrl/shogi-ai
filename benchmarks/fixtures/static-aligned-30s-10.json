@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "source_run": 37596918631,
+  "source_engine": "KUMOJI v2.0.0",
+  "selection": "deep_loss_cp >= 100 and the existing static evaluation already preferred the 30s best move (10 positions)",
+  "positions": [
+    {"source_index":1,"game_index":1,"ply":80,"side_to_move":"white","sfen_before":"ln1k2g1l/2r1p4/pS1p2+Bpn/7n1/3N1R2P/P1p2PS2/1P1PP4/3SK4/L2G1G2L w GS7Pb 80","actual_move":"7b7e","deep_bestmove":"2d3f","deep_loss_cp":1118,"deep_pv":["2d3f","8c7b+","6a7b","R*5f","B*2e","5f7f","7b6a"],"static_best_minus_actual_cp":773},
+    {"source_index":2,"game_index":9,"ply":122,"side_to_move":"white","sfen_before":"1+L1gsl3/4ks+R2/2pppp+Bp1/6N2/3P1PpP1/3SP3P/+l3K4/3G1G3/8+l w RBGS2P3n5p 122","actual_move":"N*3a","deep_bestmove":"N*3f","deep_loss_cp":564,"deep_pv":["N*3f","R*9b","N*7b","9b9g+","3f4h+","3c4c","5b6b","3d4b+"],"static_best_minus_actual_cp":81},
+    {"source_index":4,"game_index":6,"ply":114,"side_to_move":"white","sfen_before":"3g1g1+L1/3s1k3/2n1pp3/p2N2+Bsp/5Nb2/G1PS1P1pP/2NP2P2/1+R2K1G2/P4R2L w S2L6Pp 114","actual_move":"P*6c","deep_bestmove":"2f2g+","deep_loss_cp":1120,"deep_pv":["2f2g+","S*3c","4b5a","P*5b","6a5b","6d5b+","4a5b","3h2g"],"static_best_minus_actual_cp":394},
+    {"source_index":6,"game_index":6,"ply":82,"side_to_move":"white","sfen_before":"3g1g1n1/3sks1bl/3ppps2/1p4ppp/3+R1N3/l1PSN2PP/1PNP1PP2/b1G1KG1+l1/P4R2L w 2Pp 82","actual_move":"2h3h","deep_bestmove":"2h1i","deep_loss_cp":1117,"deep_pv":["2h1i","9i9h","1i1h","B*2c","L*1a","4e3c+","2b3c"],"static_best_minus_actual_cp":446},
+    {"source_index":8,"game_index":17,"ply":89,"side_to_move":"black","sfen_before":"l2g3nl/5g3/p3pppp1/2k6/4b2Pp/PS1PNr1S1/1P1GP1N2/3SK2R1/L+p3G2L b Sbn6p 89","actual_move":"S*3e","deep_bestmove":"S*4g","deep_loss_cp":623,"deep_pv":["S*4g","4f2f","2h2f","5e3g+","R*3a","3g2f","3a6a+"],"static_best_minus_actual_cp":94},
+    {"source_index":10,"game_index":1,"ply":48,"side_to_move":"white","sfen_before":"ln1g1gb1l/2rsks1p1/p2pp1N2/6P2/2p4Rp/PB1N1PS1P/1PPPP4/3SK4/LN1G1G2L w 4P 48","actual_move":"4a5a","deep_bestmove":"1e1f","deep_loss_cp":449,"deep_pv":["1e1f","3c4a+","5b4a","G*2a","1f1g+","2a1a"],"static_best_minus_actual_cp":125},
+    {"source_index":15,"game_index":4,"ply":82,"side_to_move":"white","sfen_before":"lr1g5/3sk1b+R1/pp1pp1g2/5p1pp/P3N4/2pSP2P1/LP1P1P2P/2GSKS1+b+n/1N3G3 w LPnl2p 82","actual_move":"N*2a","deep_bestmove":"7f7g+","deep_loss_cp":688,"deep_pv":["7f7g+","2b3c","7g6h","5h6h","3b5d"],"static_best_minus_actual_cp":409},
+    {"source_index":16,"game_index":2,"ply":68,"side_to_move":"white","sfen_before":"1n1g5/2rskb1+B1/1ppppp3/7Lp/4S1G2/L1P2P1P1/1P1PS3P/1N2K2R1/3G4L w GS2NL6P 68","actual_move":"7b7a","deep_bestmove":"5c5d","deep_loss_cp":507,"deep_pv":["5c5d","5e5d","4b9g+","N*5e","4c4d","5e4c+","5b5a","2b4d"],"static_best_minus_actual_cp":51},
+    {"source_index":21,"game_index":2,"ply":62,"side_to_move":"white","sfen_before":"1n1g2b+B1/2rsk2s1/1ppppp1p1/8p/3nS1GL1/L1P2P1P1/1P1P4P/1N1SK2R1/3G4L w GNL5P 62","actual_move":"2c2d","deep_bestmove":"5c5d","deep_loss_cp":422,"deep_pv":["5c5d","5e5d","3a6d","G*5f","6b5c","5d4c+","5b5a","9f9a+"],"static_best_minus_actual_cp":52},
+    {"source_index":22,"game_index":6,"ply":80,"side_to_move":"white","sfen_before":"3g1g1n1/3sks1bl/3ppps2/1p4ppp/3+R1N3/l1PSN2PP/1P1P1PP2/b1G1KG1+l1/PN3R2L w P2p 80","actual_move":"P*7g","deep_bestmove":"9h8i+","deep_loss_cp":645,"deep_pv":["9h8i+","4i8i","P*9h","4e3c+","2a3c","S*8h","9h9i+","8h9i"],"static_best_minus_actual_cp":776}
+  ]
+}
