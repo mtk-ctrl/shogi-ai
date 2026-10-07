@@ -2,7 +2,6 @@
 #include "strategy/iterative_search.h"
 #include "strategy/mate_search.h"
 #include "strategy/mate_assist.h"
-#include "strategy/opening_book.h"
 #include "strategy/search_limits.h"
 #include "strategy/promotion_policy.h"
 #include "strategy/long_think_budget.h"
@@ -17,62 +16,21 @@
 #include <sstream>
 #include <string>
 
-namespace {
-std::uint64_t experience_signature(const shogi::strategy::EvaluationParameters& p,
-                                   bool material_profile, bool quiescence_enabled) {
-    // FNV-1a over every evaluation setting that can change move preference plus
-    // a search-semantics version. Disk experience from incompatible settings is
-    // ignored rather than silently influencing move ordering.
-    std::uint64_t h = 1469598103934665603ULL;
-    auto mix = [&](std::uint64_t value) {
-        for (int i = 0; i < 8; ++i) {
-            h ^= (value >> (i * 8)) & 0xffULL;
-            h *= 1099511628211ULL;
-        }
-    };
-    mix(3); // Quiescence, history-safe score keys and extended mate distance.
-    mix(quiescence_enabled ? 1 : 0);
-    mix(shogi::strategy::IterativeSearch::QuiescenceDepth);
-    mix(material_profile ? 1 : 0);
-    mix(p.guard_gold); mix(p.guard_silver); mix(p.guard_pawn);
-    mix(p.pressure_king); mix(p.pressure_occupied); mix(p.pressure_empty);
-    mix(p.pressure_partner); mix(p.mobility_major); mix(p.mobility_minor);
-    mix(p.mobility_piece_cap); mix(p.danger_numerator); mix(p.danger_denominator);
-    for (int value : p.caps) mix(static_cast<std::uint64_t>(value));
-    for (int value : p.weights) mix(static_cast<std::uint64_t>(value));
-    mix(p.v2_enabled ? 1 : 0); mix(p.material_weight);
-    for (int value : p.v2_caps) mix(static_cast<std::uint64_t>(value));
-    mix(p.influence_weight); mix(p.potential_weight); mix(p.coordination_weight);
-    mix(p.hand_potential_weight); mix(p.threat_weight);
-    mix(p.influence_cap); mix(p.potential_cap); mix(p.coordination_cap);
-    mix(p.hand_potential_cap); mix(p.threat_cap);
-    mix(p.positional_cap);
-    return h;
-}
-} // namespace
 
 int main() {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
     shogi::rules::Position position;
     shogi::strategy::IterativeSearch strategy;
-    shogi::strategy::OpeningBook opening_book;
     shogi::strategy::EvaluationParameters evaluation_parameters;
     bool material_profile = false;
     bool quiescence_enabled = true;
     bool mate_assist_enabled = true;
-    bool opening_book_enabled = true;
-    bool opening_book_loaded = false;
     bool valid_position = true;
     bool entering_king = true;
-    bool experience_enabled = true;
-    bool experience_loaded = false;
-    bool experience_dirty = false;
     bool position_knowledge_enabled = true;
     bool position_knowledge_loaded = false;
     unsigned random_seed = 5489u;
-    std::string opening_book_file = "shogi-ai-book.tsv";
-    std::string experience_file = "shogi-ai-experience.bin";
     std::string position_knowledge_file = "position-knowledge-v1.tsv";
     int default_depth = 3;
     bool adaptive_long_think_enabled = true;
@@ -103,10 +61,8 @@ int main() {
         { std::lock_guard<std::mutex> lock(session->mutex); session->release = true; }
         session->cv.notify_all();
         session->worker.join();
-        if (!session->mate_search && experience_enabled && strategy.last_stats().experience_stores > 0) experience_dirty = true;
         session.reset();
     };
-    strategy.set_experience_enabled(true);
     strategy.set_position_knowledge_enabled(true);
 
     auto ensure_position_knowledge_loaded = [&]() {
@@ -122,41 +78,6 @@ int main() {
         position_knowledge_loaded = true;
     };
 
-    auto ensure_opening_book_loaded = [&]() {
-        if (!opening_book_enabled || opening_book_loaded) return;
-        if (opening_book.load(opening_book_file)) {
-            std::ostringstream out;
-            out << "info string opening_book loaded " << opening_book.positions()
-                << " positions " << opening_book.entries() << " entries\n";
-            emit(out.str());
-        }
-        opening_book_loaded = true;
-    };
-    auto current_experience_signature = [&]() {
-        return experience_signature(evaluation_parameters, material_profile, quiescence_enabled);
-    };
-    auto ensure_experience_loaded = [&]() {
-        if (!experience_enabled || experience_loaded) return;
-        if (strategy.load_experience(experience_file, current_experience_signature())) {
-            std::cout << "info string experience cache loaded " << strategy.experience_size()
-                      << " entries\n" << std::flush;
-        }
-        // A missing, stale, corrupt or unwritable file is non-fatal. Mark the
-        // attempt complete so ordinary search proceeds without repeated I/O.
-        experience_loaded = true;
-        experience_dirty = false;
-    };
-    auto persist_experience = [&]() {
-        if (!experience_enabled || !experience_loaded || !experience_dirty) return;
-        if (strategy.save_experience(experience_file, current_experience_signature())) {
-            experience_dirty = false;
-        }
-    };
-    auto invalidate_experience = [&]() {
-        strategy.clear_experience();
-        experience_loaded = false;
-        experience_dirty = false;
-    };
     auto bestmove = [&](const std::string& move) { emit("bestmove " + move + "\n"); };
 
     while (std::getline(std::cin, line)) {
@@ -166,14 +87,12 @@ int main() {
         if (command != "isready" && command != "stop" && command != "ponderhit" && command != "quit")
             finish_search(true);
         if (command == "usi") {
-            std::cout << "id name KUMOJI v2.0.2\nid author mtk-ctrl + ChatGPT\n"
+            std::cout << "id name KUMOJI v2.0.3\nid author mtk-ctrl + ChatGPT\n"
                       << "option name USI_Ponder type check default false\n"
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
                       << "option name Quiescence type check default true\n"
                       << "option name MateAssist type check default true\n"
-                      << "option name OpeningBook type check default true\n"
-                      << "option name OpeningBookFile type string default shogi-ai-book.tsv\n"
                       << "option name AdaptiveLongThink type check default true\n"
                       << "option name RandomSeed type spin default 5489 min 0 max 2147483647\n"
                       << "option name EvalProfile type combo default features var features var material\n"
@@ -189,8 +108,6 @@ int main() {
                       << "option name EvalHandPotential type spin default " << evaluation_parameters.hand_potential_weight << " min 0 max 10000\n"
                       << "option name EvalThreat type spin default " << evaluation_parameters.threat_weight << " min 0 max 10000\n"
                       << "option name EvalPositionalCap type spin default " << evaluation_parameters.positional_cap << " min 0 max 5000\n"
-                      << "option name ExperienceCache type check default true\n"
-                      << "option name ExperienceFile type string default shogi-ai-experience.bin\n"
                       << "option name PositionKnowledge type check default true\n"
                       << "option name PositionKnowledgeFile type string default position-knowledge-v1.tsv\n"
                       << "usiok\n" << std::flush;
@@ -208,15 +125,10 @@ int main() {
                       << " clamp " << b.clamp_adjustment << " total " << b.total << '\n' << std::flush;
         } else if (command == "isready") {
             if (!session) {
-                ensure_experience_loaded();
-                ensure_opening_book_loaded();
                 ensure_position_knowledge_loaded();
             }
             emit("readyok\n");
         } else if (command == "usinewgame") {
-            persist_experience();
-            ensure_experience_loaded();
-            ensure_opening_book_loaded();
             ensure_position_knowledge_loaded();
             strategy.set_seed(random_seed);
             long_think_used = 0;
@@ -229,7 +141,6 @@ int main() {
             valid_position = position.set_usi(line, error);
             if (!valid_position) std::cout << "info string " << error << '\n' << std::flush;
         } else if (command == "go") {
-            ensure_experience_loaded();
             ensure_position_knowledge_loaded();
             std::vector<std::string> tokens, allowed;
             std::string token;
@@ -316,43 +227,6 @@ int main() {
             candidates = shogi::strategy::PromotionPolicy::force_monotonic_promotions(
                 position.snapshot(), candidates);
             if (candidates.empty()) { bestmove("resign"); continue; }
-
-            // A book hit is a complete move decision, not a search-order hint.
-            // Ponder/infinite remain search sessions so their stop semantics are unchanged.
-            ensure_opening_book_loaded();
-            if (opening_book_enabled && !contains("ponder") && !contains("infinite")) {
-                if (const auto picked = opening_book.pick(position.hash_key(), candidates, random_seed)) {
-                    std::ostringstream out;
-                    out << "info string opening_book hit move " << picked->move
-                        << " samples " << picked->samples
-                        << " score_milli " << picked->score_milli << "\n";
-                    emit(out.str());
-
-                    // Book moves bypass ordinary search, but GUIs such as ShogiDroid
-                    // still need a score sample to build a continuous evaluation graph.
-                    // Evaluate the position after the selected legal book move and
-                    // convert Black-minus-White into the root side's perspective.
-                    auto book_position = position.clone();
-                    std::string book_error;
-                    if (book_position.play_generated_legal(picked->move, book_error)) {
-                        const auto root_turn = position.turn();
-                        const auto book_eval = shogi::strategy::evaluate(
-                            book_position.snapshot(), material_profile
-                                ? shogi::strategy::EvaluationParameters::material_only()
-                                : evaluation_parameters);
-                        const int book_score = root_turn == shogi::rules::Color::Black
-                            ? book_eval.total : -book_eval.total;
-                        previous_root_score = book_score;
-                        previous_root_score_valid = true;
-                        std::ostringstream score;
-                        score << "info depth 0 seldepth 0 time 0 nodes 0 score cp " << book_score
-                              << " pv " << picked->move << "\n";
-                        emit(score.str());
-                    }
-                    bestmove(picked->move);
-                    continue;
-                }
-            }
 
             const auto limits = shogi::strategy::parse_go_limits(tokens, position.snapshot().turn, default_depth);
             int current_ply = 1;
@@ -507,10 +381,6 @@ int main() {
                         << " tt_bound_cutoffs " << stats.tt_bound_cutoffs << " tt_stores " << stats.tt_store_calls
                         << " tt_replacements " << stats.tt_replacements << " tt_move_first " << stats.tt_move_first
                         << " tt_disabled_repetition " << stats.tt_disabled_repetition
-                        << " experience_probes " << stats.experience_probes << " experience_hits " << stats.experience_hits
-                        << " experience_move_first " << stats.experience_move_first << " experience_stores " << stats.experience_stores
-                        << " experience_replacements " << stats.experience_replacements
-                        << " experience_disabled_repetition " << stats.experience_disabled_repetition
                         << " knowledge_probes " << stats.knowledge_probes
                         << " knowledge_hits " << stats.knowledge_hits
                         << " knowledge_promotions " << stats.knowledge_promotions
@@ -543,42 +413,16 @@ int main() {
                     } catch (...) {}
                 } else if (name == "Quiescence") {
                     if (value == "true" || value == "false") {
-                        persist_experience();
                         quiescence_enabled = value == "true";
                         strategy.set_quiescence_enabled(quiescence_enabled);
-                        invalidate_experience();
                     }
                 } else if (name == "MateAssist") {
                     if (value == "true" || value == "false") mate_assist_enabled = value == "true";
                 } else if (name == "AdaptiveLongThink") {
                     if (value == "true" || value == "false")
                         adaptive_long_think_enabled = value == "true";
-                } else if (name == "OpeningBook") {
-                    if (value == "true" || value == "false") {
-                        opening_book_enabled = value == "true";
-                        if (opening_book_enabled) opening_book_loaded = false;
-                    }
-                } else if (name == "OpeningBookFile") {
-                    if (!value.empty() && value.find('\n') == std::string::npos && value.find('\r') == std::string::npos) {
-                        opening_book_file = value;
-                        opening_book.clear();
-                        opening_book_loaded = false;
-                    }
                 } else if (name == "USI_EnteringKingRule") entering_king = (value == "CSARule27");
-                else if (name == "ExperienceCache") {
-                    if (value == "true" || value == "false") {
-                        if (experience_enabled && value == "false") persist_experience();
-                        experience_enabled = value == "true";
-                        strategy.set_experience_enabled(experience_enabled);
-                        if (experience_enabled) experience_loaded = false;
-                    }
-                } else if (name == "ExperienceFile") {
-                    if (!value.empty() && value.find('\n') == std::string::npos && value.find('\r') == std::string::npos) {
-                        persist_experience();
-                        experience_file = value;
-                        invalidate_experience();
-                    }
-                } else if (name == "PositionKnowledge") {
+                else if (name == "PositionKnowledge") {
                     if (value == "true" || value == "false") {
                         position_knowledge_enabled = value == "true";
                         strategy.set_position_knowledge_enabled(position_knowledge_enabled);
@@ -592,21 +436,15 @@ int main() {
                     }
                 } else if (name == "EvalProfile") {
                     if (value == "features" || value == "material") {
-                        persist_experience();
                         material_profile = value == "material";
                         strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
                             ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
-                        experience_loaded = false;
-                        experience_dirty = false;
                     }
                 } else if (name == "EvalV2") {
                     if (value == "true" || value == "false") {
-                        persist_experience();
                         evaluation_parameters.v2_enabled = value == "true";
                         strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
                             ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
-                        experience_loaded = false;
-                        experience_dirty = false;
                     }
                 } else if (name == "EvalSafety" || name == "EvalPressure" || name == "EvalActivity" || name == "EvalDanger"
                            || name == "EvalMaterialWeight" || name == "EvalInfluence" || name == "EvalPotential"
@@ -617,8 +455,7 @@ int main() {
                         const int weight = std::stoi(value, &used);
                         const int max_value = name == "EvalPositionalCap" ? 5000 : 10000;
                         if (used == value.size() && weight >= 0 && weight <= max_value) {
-                            persist_experience();
-                            if (name == "EvalSafety") evaluation_parameters.weights[0] = weight;
+                                if (name == "EvalSafety") evaluation_parameters.weights[0] = weight;
                             else if (name == "EvalPressure") evaluation_parameters.weights[1] = weight;
                             else if (name == "EvalActivity") evaluation_parameters.weights[2] = weight;
                             else if (name == "EvalDanger") evaluation_parameters.weights[3] = weight;
@@ -631,8 +468,6 @@ int main() {
                             else evaluation_parameters.positional_cap = weight;
                             strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
                                 ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
-                            experience_loaded = false;
-                            experience_dirty = false;
                         }
                     } catch (const std::exception&) {}
                 } else if (name == "RandomSeed") {
@@ -646,14 +481,10 @@ int main() {
                     }
                 }
             }
-        } else if (command == "gameover") {
-            persist_experience();
         } else if (command == "quit") {
             finish_search(true);
-            persist_experience();
             break;
         }
     }
     finish_search(true);
-    persist_experience();
 }

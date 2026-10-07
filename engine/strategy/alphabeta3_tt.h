@@ -2,7 +2,6 @@
 
 #include "strategy/alphabeta3.h"
 #include "strategy/evaluation.h"
-#include "strategy/experience_cache.h"
 #include "strategy/move_order.h"
 #include "strategy/transposition_table.h"
 #include <algorithm>
@@ -17,9 +16,7 @@
 
 namespace shogi::strategy {
 
-// Fixed 3-ply alpha-beta + move ordering + per-search TT. Optional Experience
-// Cache V1 persists move hints across choose() calls/usinewgame but never reuses
-// cached scores or bounds, so it can change search order only.
+// Fixed 3-ply alpha-beta + move ordering + per-search transposition table.
 template<class Evaluator = MaterialEvaluator>
 class BasicAlphaBeta3TT {
 public:
@@ -42,52 +39,27 @@ public:
         std::uint64_t tt_replacements = 0;
         std::uint64_t tt_move_first = 0;
         std::uint64_t tt_disabled_repetition = 0;
-        std::uint64_t experience_probes = 0;
-        std::uint64_t experience_hits = 0;
-        std::uint64_t experience_move_first = 0;
-        std::uint64_t experience_stores = 0;
-        std::uint64_t experience_replacements = 0;
-        std::uint64_t experience_disabled_repetition = 0;
+
         std::array<std::uint64_t, 4> nodes_by_ply{};
     };
 
     explicit BasicAlphaBeta3TT(unsigned seed = 5489u, Evaluator evaluator = Evaluator{})
         : rng_(seed), evaluator_(evaluator) {}
 
-    // Evaluator changes invalidate long-lived hints, because a move preferred by
-    // old weights should not silently influence a new evaluation configuration.
-    void set_evaluator(Evaluator evaluator) {
-        evaluator_ = evaluator;
-        experience_.clear();
-    }
-    void set_experience_enabled(bool enabled) { experience_enabled_ = enabled; }
-    bool experience_enabled() const { return experience_enabled_; }
-    void clear_experience() { experience_.clear(); }
-    bool load_experience(const std::string& path, std::uint64_t signature) {
-        return experience_.load(path, signature);
-    }
-    bool save_experience(const std::string& path, std::uint64_t signature) const {
-        return experience_.save(path, signature);
-    }
-    std::size_t experience_size() const { return experience_.size(); }
+    void set_evaluator(Evaluator evaluator) { evaluator_ = evaluator; }
     int last_score() const { return last_score_; }
     void set_seed(unsigned seed) { rng_.seed(seed); }
     const Stats& last_stats() const { return stats_; }
     static constexpr std::size_t tt_capacity() { return TranspositionTable::Capacity; }
     static constexpr std::size_t tt_approx_bytes() { return TranspositionTable::ApproxBytes; }
-    static constexpr std::size_t experience_capacity() { return ExperienceCache::Capacity; }
-    static constexpr std::size_t experience_approx_bytes() { return ExperienceCache::ApproxBytes; }
 
     std::string choose(rules::Position& position,
                        const std::vector<std::string>& allowed = {}) {
         stats_ = {};
         last_score_ = 0;
         tt_.new_search();
-        experience_.new_search();
         tt_enabled_ = !position.has_repeated_history();
-        experience_allowed_ = experience_enabled_ && !position.has_repeated_history();
         if (!tt_enabled_) ++stats_.tt_disabled_repetition;
-        if (experience_enabled_ && !experience_allowed_) ++stats_.experience_disabled_repetition;
 
         auto original_moves = position.legal_moves();
         if (!allowed.empty()) {
@@ -100,8 +72,7 @@ public:
 
         const rules::Color root = position.snapshot().turn;
         const std::uint64_t root_key = position.hash_key();
-        const std::string root_experience = experience_hint(root_key);
-        const auto moves = ordered(position, original_moves, {}, root_experience);
+        const auto moves = ordered(position, original_moves);
         int alpha = std::numeric_limits<int>::min();
         std::vector<std::string> tied;
 
@@ -119,13 +90,12 @@ public:
             if (score == alpha) tied.push_back(move);
         }
 
-        // Preserve seeded tie-breaking despite TT/experience ordering hints.
+        // Preserve seeded tie-breaking despite transposition-table ordering hints.
         std::stable_sort(tied.begin(), tied.end(), [&](const auto& a, const auto& b) {
             return original_index(original_moves, a) < original_index(original_moves, b);
         });
         last_score_ = alpha;
         const std::string selected = random_move(tied);
-        store_experience(root_key, 3, selected);
         return selected;
     }
 
@@ -168,8 +138,7 @@ private:
 
         int worst_reply = std::numeric_limits<int>::max();
         std::string worst_move;
-        const auto replies = ordered(position, position.legal_moves(), tt_hint,
-                                     experience_hint(position.hash_key()));
+        const auto replies = ordered(position, position.legal_moves(), tt_hint);
         if (replies.empty()) throw std::logic_error("ongoing position has no legal reply");
 
         for (const auto& reply : replies) {
@@ -192,7 +161,6 @@ private:
         }
 
         store(key, depth, worst_reply, Bound::Exact, worst_move);
-        store_experience(position.hash_key(), depth, worst_move);
         return worst_reply;
     }
 
@@ -224,8 +192,7 @@ private:
 
         int best = std::numeric_limits<int>::min();
         std::string best_move;
-        const auto continuations = ordered(position, position.legal_moves(), tt_hint,
-                                           experience_hint(position.hash_key()));
+        const auto continuations = ordered(position, position.legal_moves(), tt_hint);
         if (continuations.empty()) throw std::logic_error("ongoing position has no legal continuation");
 
         for (const auto& continuation : continuations) {
@@ -248,7 +215,6 @@ private:
         }
 
         store(key, depth, best, Bound::Exact, best_move);
-        store_experience(position.hash_key(), depth, best_move);
         return best;
     }
 
@@ -290,41 +256,22 @@ private:
         if (tt_.store(key, depth, value, bound, best_move)) ++stats_.tt_replacements;
     }
 
-    std::string experience_hint(std::uint64_t key) {
-        if (!experience_allowed_) return {};
-        ++stats_.experience_probes;
-        const auto* entry = experience_.probe(key);
-        if (!entry) return {};
-        ++stats_.experience_hits;
-        return ExperienceCache::best_move(*entry);
-    }
-
-    void store_experience(std::uint64_t key, int depth, const std::string& best_move) {
-        if (!experience_allowed_ || best_move.empty()) return;
-        ++stats_.experience_stores;
-        if (experience_.store(key, depth, best_move)) ++stats_.experience_replacements;
-    }
 
     std::vector<std::string> ordered(const rules::Position& position,
                                      const std::vector<std::string>& moves,
-                                     const std::string& tt_move = {},
-                                     const std::string& experience_move = {}) {
+                                     const std::string& tt_move = {}) {
         ++stats_.order_calls;
         stats_.ordered_moves += moves.size();
         auto result = MoveOrder::order(position.snapshot(), moves);
 
-        auto promote_hint = [&](const std::string& hint, bool experience) {
+        auto promote_hint = [&](const std::string& hint) {
             if (hint.empty()) return;
             const auto it = std::find(result.begin(), result.end(), hint);
             if (it == result.end()) return;
             std::rotate(result.begin(), it, std::next(it));
-            if (experience) ++stats_.experience_move_first;
-            else ++stats_.tt_move_first;
+            ++stats_.tt_move_first;
         };
-
-        // Experience first, then TT so the current-search TT move has final priority.
-        promote_hint(experience_move, true);
-        promote_hint(tt_move, false);
+        promote_hint(tt_move);
         return result;
     }
 
@@ -353,10 +300,7 @@ private:
     int last_score_ = 0;
     Stats stats_{};
     TranspositionTable tt_;
-    ExperienceCache experience_;
     bool tt_enabled_ = true;
-    bool experience_enabled_ = false;
-    bool experience_allowed_ = false;
 };
 
 using AlphaBeta3TT = BasicAlphaBeta3TT<MaterialEvaluator>;
