@@ -44,10 +44,6 @@ def search(sf, command, limit=10):
 
 try:
     send('usi'); until('usiok')
-    send('setoption name ExperienceCache value false')
-    # This test verifies the search protocol itself. Disable the opening book so
-    # start-position book hits cannot legitimately bypass iterative-search info.
-    send('setoption name OpeningBook value false')
     send('isready'); until('readyok')
     sf = shogi.Board().sfen()
     _, infos, _ = search(sf, 'go depth 3')
@@ -186,6 +182,6 @@ finally:
 
 # Closing stdin is another shutdown path and must join the active worker.
 eof = subprocess.Popen([binary], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
-eof.communicate('setoption name ExperienceCache value false\nsetoption name OpeningBook value false\nposition startpos\ngo infinite\n', timeout=2)
+eof.communicate('position startpos\ngo infinite\n', timeout=2)
 assert eof.returncode == 0
 print('PASS EOF during active search')

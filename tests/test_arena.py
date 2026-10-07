@@ -56,7 +56,7 @@ assert not can_declare_win(shogi.Board())
 
 info = parse_info_line(
     "info depth 7 seldepth 10 score cp -123 nodes 4567 nps 90000 "
-    "tt_probes 100 tt_hits 40 experience_probes 30 experience_hits 5 "
+    "tt_probes 100 tt_hits 40 knowledge_probes 9 knowledge_hits 3 knowledge_promotions 2 "
     "qnodes 88 pv 7g7f 3c3d 2g2f"
 )
 assert info["depth"] == 7
@@ -64,14 +64,12 @@ assert info["seldepth"] == 10
 assert info["score_cp"] == -123
 assert info["nodes"] == 4567
 assert info["tt_hits"] == 40
-assert info["experience_hits"] == 5
 assert info["pv"] == ["7g7f", "3c3d", "2g2f"]
 black_view = compact_search_telemetry(info, shogi.BLACK)
 white_view = compact_search_telemetry(info, shogi.WHITE)
 assert black_view["score_black_cp"] == -123
 assert white_view["score_black_cp"] == 123
 assert black_view["tt_probes"] == 100
-assert black_view["experience_probes"] == 30
 
 mate = parse_info_line("info depth 5 score mate -3 nodes 99 pv 5a5b")
 assert compact_search_telemetry(mate, shogi.WHITE)["score_black_mate"] == 3

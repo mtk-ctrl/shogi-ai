@@ -62,8 +62,6 @@ def run_once(enabled):
             assert any("option name PositionKnowledge type check default true" in x for x in usi)
             u.send(f"setoption name PositionKnowledgeFile value {knowledge}")
             u.send(f"setoption name PositionKnowledge value {'true' if enabled else 'false'}")
-            u.send("setoption name OpeningBook value false")
-            u.send("setoption name ExperienceCache value false")
             u.send("isready")
             _, ready = u.until("readyok")
             if enabled:
