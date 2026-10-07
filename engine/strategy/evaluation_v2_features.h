@@ -159,6 +159,55 @@ inline int v2_skewer_from(const rules::Snapshot& s, int from,
     return 0;
 }
 
+inline bool v2_promotion_zone(int side, int sq) {
+    const int rank = sq % 9;
+    return side == 0 ? rank <= 2 : rank >= 6;
+}
+
+// Opponent Threat Quality: static forcing resources that the other side must
+// respect even before material is actually won.  This deliberately measures
+// quality, not just move count: checks dominate promotion access, while attacks
+// on valuable pieces scale with the threatened swing.  The feature remains
+// symmetric and cheap enough for every leaf.
+inline int v2_forcing_resources(const rules::Snapshot& s, const AttackMap& a, int side) {
+    int score = 0;
+    const int enemy_king = a.kings[1-side];
+    if (enemy_king >= 0) {
+        // A current checking line is the strongest forcing resource.
+        if (a.nonking[side][enemy_king]) score += 240;
+        // Controlled king-ring squares are latent checking/infiltration routes.
+        for (int sq=0; sq<81; ++sq)
+            if (sq != enemy_king && AttackMap::near(sq, enemy_king)
+                && a.nonking[side][sq]) score += 10;
+    }
+
+    for (int from=0; from<81; ++from) {
+        const auto& p=s.board[from];
+        if (!p.kind || p.kind==8 || int(p.color)!=side) continue;
+        const int attacker_value=piece_value(p.kind,p.promoted);
+        for (int j=0; j<a.sizes[from]; ++j) {
+            const int to=a.targets[from][j];
+            const auto& q=s.board[to];
+
+            // High-value-piece attack prevention: count only a meaningful
+            // threatened swing and discount obviously expensive attackers.
+            if (q.kind && q.kind!=8 && int(q.color)==1-side) {
+                const int victim=piece_value(q.kind,q.promoted);
+                score += std::max(0, victim-attacker_value/2) / 8;
+            }
+
+            // Promotion prevention: an unpromoted promotable piece already
+            // reaching the zone is a concrete next-step resource. Capturing
+            // into the zone is more forcing than an empty-square route.
+            if (!p.promoted && p.kind>=1 && p.kind<=6
+                && v2_promotion_zone(side,to)) {
+                score += q.kind && int(q.color)==1-side ? 24 : 8;
+            }
+        }
+    }
+    return score;
+}
+
 inline int v2_threat_side(const rules::Snapshot& s, const AttackMap& a, int side) {
     int best = 0, second = 0;
     for (int from = 0; from < 81; ++from) {
@@ -200,7 +249,7 @@ inline int v2_threat_side(const rules::Snapshot& s, const AttackMap& a, int side
         if (candidate > best) { second = best; best = candidate; }
         else if (candidate > second) second = candidate;
     }
-    return best + second / 2;
+    return best + second / 2 + v2_forcing_resources(s,a,side);
 }
 
 inline V2SideFeatures v2_features(const rules::Snapshot& s, const AttackMap& a,
