@@ -7,7 +7,6 @@ on:
       - "engine/strategy/**"
       - "engine/main.cpp"
       - "engine/rules/**"
-      - "shogi-ai-book.tsv"
       - "position-knowledge-v1.tsv"
       - "position-knowledge-v1.manifest.json"
       - "tools/knowledge/**"
@@ -18,14 +17,12 @@ on:
       - "tests/quiescence_test.cpp"
       - "tests/mate_search_test.cpp"
       - "tests/mate_assist_test.cpp"
-      - "tests/opening_book_test.cpp"
       - "tests/rules_test.cpp"
       - "tests/generated_move_test.cpp"
       - "tests/test_search_usi.py"
       - "tests/test_position_knowledge_usi.py"
       - "tests/test_eval_usi.py"
       - "tests/test_mate_usi.py"
-      - "tests/test_embedded_book_usi.py"
       - "benchmarks/arena.py"
       - "benchmarks/position_arena.py"
       - "benchmarks/external_match.py"
@@ -91,12 +88,6 @@ jobs:
         run: |
           python3 scripts/build.py --mate-assist-test --output build/mate-assist-test
           ./build/mate-assist-test
-
-      - name: Opening book and standalone fallback tests
-        run: |
-          python3 scripts/build.py --opening-book-test --output build/opening-book-test
-          ./build/opening-book-test
-          python3 tests/test_embedded_book_usi.py build/shogi-ai
 
       - name: USI score time-control and mate tests
         run: |

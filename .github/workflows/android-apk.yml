@@ -41,10 +41,8 @@ jobs:
           python3 tests/differential.py build/rules-test
           python3 tests/check_boundary.py build/shogi-ai
 
-      - name: USI protocol and Experience Cache
-        run: |
-          python3 tests/test_usi.py build/shogi-ai
-          python3 tests/test_experience_cache.py build/shogi-ai
+      - name: USI protocol
+        run: python3 tests/test_usi.py build/shogi-ai
 
       - name: Search, quiescence and mate validation
         run: |
@@ -61,11 +59,8 @@ jobs:
           python3 tests/test_search_usi.py build/shogi-ai
           python3 tests/test_mate_usi.py build/shogi-ai
 
-      - name: Opening book, ordering and arena validation
+      - name: Ordering and arena validation
         run: |
-          python3 scripts/build.py --opening-book-test --output build/opening-book-test
-          ./build/opening-book-test
-          python3 tests/test_embedded_book_usi.py build/shogi-ai
           python3 scripts/build.py --ordering-test --output build/ordering-test
           ./build/ordering-test
           python3 scripts/build.py --contact-ordering-test --output build/contact-ordering-test

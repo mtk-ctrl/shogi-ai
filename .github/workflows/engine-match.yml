@@ -41,12 +41,12 @@ on:
       options_a:
         description: "JSON USI options for A (formal R20 default includes AdaptiveLongThink=true)"
         required: true
-        default: '{"OpeningBook":false,"ExperienceCache":false,"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}'
+        default: '{"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}'
         type: string
       options_b:
         description: "JSON USI options for B (formal R20 default includes AdaptiveLongThink=true)"
         required: true
-        default: '{"OpeningBook":false,"ExperienceCache":false,"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}'
+        default: '{"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}'
         type: string
 
 permissions:
