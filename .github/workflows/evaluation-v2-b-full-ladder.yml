@@ -1,0 +1,164 @@
+name: Evaluation V2 Full Ladder Book Experience
+
+on:
+  push:
+    branches:
+      - research/evaluation-v2-challenger
+    paths:
+      - ".github/workflows/evaluation-v2-b-full-ladder.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  YANEURAOU_REF: c1b80eaa09fe13d5f12b1599d1ae4d53c224de30
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - name: Build KUMOJI
+        run: python3 scripts/build.py --output build/kumoji
+      - name: Build pinned YaneuraOu Material
+        run: |
+          git clone --filter=blob:none https://github.com/yaneurao/YaneuraOu.git external/YaneuraOu
+          git -C external/YaneuraOu checkout "$YANEURAOU_REF"
+          make -C external/YaneuraOu/source clean COMPILER=g++ TARGET_CPU=SSE42 YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          make -C external/YaneuraOu/source -j2 tournament COMPILER=g++ TARGET_CPU=SSE42 YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: full-ladder-runtime
+          path: |
+            build/kumoji
+            external/YaneuraOu/source/YaneuraOu-by-gcc
+
+  level:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        level: [40, 45, 48, 49, 50, 55]
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: full-ladder-runtime
+          path: build/runtime
+      - name: Run 100 games at level
+        shell: bash
+        run: |
+          set -euo pipefail
+          ENGINE="$(find build/runtime -type f -name kumoji | head -1)"
+          YANE="$(find build/runtime -type f -name YaneuraOu-by-gcc | head -1)"
+          chmod +x "$ENGINE" "$YANE"
+          LEVEL="${{ matrix.level }}"
+          NODES="$(python3 benchmarks/external_levels.py --level "$LEVEL" --nodes-only)"
+          mkdir -p "build/L$LEVEL"
+          pids=()
+          for lane in 0 1 2 3; do
+            EXP="build/L$LEVEL/experience-lane$lane.bin"
+            OUT="build/L$LEVEL/lane$lane.json"
+            SEED=$((2026107000 + LEVEL * 100 + lane * 25))
+            SELF_OPTIONS="$(python3 - "$EXP" <<'PY'
+          import json,sys
+          print(json.dumps({
+            "EvalV2":True,"EvalMaterialWeight":100,"EvalSafety":500,
+            "EvalPressure":474,"EvalActivity":150,"EvalDanger":200,
+            "EvalInfluence":19,"EvalPotential":25,"EvalCoordination":50,
+            "EvalHandPotential":60,"EvalThreat":0,"EvalPositionalCap":5000,
+            "OpeningBook":True,"OpeningBookFile":"shogi-ai-book.tsv",
+            "ExperienceCache":True,"ExperienceFile":sys.argv[1],
+            "AdaptiveLongThink":True,"MateAssist":True
+          },separators=(",",":")))
+          PY
+          )"
+            python3 benchmarks/external_match.py \
+              --self-engine "$ENGINE" --opponent-engine "$YANE" \
+              --self-options "$SELF_OPTIONS" \
+              --opponent-options '{"Threads":1,"USI_Hash":16,"USI_OwnBook":false}' \
+              --self-go "go movetime 200" --opponent-go "go nodes $NODES" \
+              --games 25 --max-plies 300 --seed "$SEED" --output "$OUT" \
+              > "build/L$LEVEL/lane$lane.log" 2>&1 &
+            pids+=("$!")
+          done
+          failed=0
+          for pid in "${pids[@]}"; do wait "$pid" || failed=1; done
+          if [[ "$failed" != 0 ]]; then cat "build/L$LEVEL"/lane*.log; exit 1; fi
+      - name: Summarize level
+        run: |
+          python3 - "${{ matrix.level }}" <<'PY'
+          import json,math,sys
+          from pathlib import Path
+          lv=int(sys.argv[1]); root=Path(f"build/L{lv}")
+          ds=[json.loads(p.read_text()) for p in sorted(root.glob("lane*.json"))]
+          assert len(ds)==4
+          n=sum(d["games"] for d in ds); w=sum(d["wins_self"] for d in ds)
+          dr=sum(d["draws"] for d in ds); l=sum(d["losses_self"] for d in ds)
+          s=(w+0.5*dr)/n; se=math.sqrt(max(s*(1-s),1e-12)/n)
+          out={"level":lv,"games":n,"wins_self":w,"draws":dr,"losses_self":l,
+               "score_self":s,"score_self_ci95_normal":[max(0,s-1.96*se),min(1,s+1.96*se)],
+               "illegal_games":sum(d.get("illegal_games",0) for d in ds),
+               "options":ds[0]["self_engine"].get("options",{}),
+               "experience_files":[p.name for p in sorted(root.glob("experience-lane*.bin"))]}
+          (root/"summary.json").write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n")
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          if out["illegal_games"]: raise SystemExit("illegal game detected")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: full-ladder-L${{ matrix.level }}
+          path: build/L${{ matrix.level }}
+          if-no-files-found: error
+          retention-days: 180
+
+  analyze:
+    needs: [prepare, level]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: full-ladder-L*
+          path: build/all
+      - name: Aggregate
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          levels=[40,45,48,49,50,55]; rows={}
+          for p in Path("build/all").rglob("summary.json"):
+              d=json.loads(p.read_text()); rows[d["level"]]=d
+          missing=[x for x in levels if x not in rows]
+          if missing: raise SystemExit(f"missing levels: {missing}")
+          lines=["# KUMOJI v2 Book+Experience ladder","",
+                 "- 100 games/level","- OpeningBook ON","- ExperienceCache ON + persisted",
+                 "- go movetime 200 + AdaptiveLongThink ON","",
+                 "| Level | W-D-L | score | 95% CI |","|---:|---:|---:|---:|"]
+          payload={"levels":levels,"games_per_level":100,"results":{}}
+          for lv in levels:
+              d=rows[lv]; lo,hi=d["score_self_ci95_normal"]
+              lines.append(f"| {lv} | {d['wins_self']}-{d['draws']}-{d['losses_self']} | {d['score_self']:.1%} | {lo:.1%}–{hi:.1%} |")
+              payload["results"][str(lv)]=d
+          Path("build/full-ladder-summary.md").write_text("\n".join(lines)+"\n")
+          Path("build/full-ladder-analysis.json").write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n")
+          print("\n".join(lines))
+          PY
+          cat build/full-ladder-summary.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: full-ladder-analysis
+          path: |
+            build/full-ladder-summary.md
+            build/full-ladder-analysis.json
+          retention-days: 365
