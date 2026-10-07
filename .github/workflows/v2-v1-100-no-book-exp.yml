@@ -1,9 +1,11 @@
 name: V2.0.0 vs V1.0.1 100 No Book Experience
 
 on:
-  pull_request:
+  push:
+    branches: [main]
     paths:
       - ".github/workflows/v2-v1-100-no-book-exp.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read
