@@ -88,12 +88,16 @@ Floodgateは「教師」ではなく「物差し」として扱う。
 既定値は次のとおり。
 
 - `OpeningBook=true`
-- `ExperienceCache=false`
+- `ExperienceCache=true`
 - 外部対局ログ: `learning_eligible=false`
 - 外部対局ログ: `opening_book_eligible=false`
-- 外部対局ログ: `experience_eligible=false`
+- 外部対局ログ: `experience_eligible=true`
 
 相手の評価値、PV、指し手をOpening Bookや評価学習へ自動投入しない。
+
+Experience Cacheへ保存するのは、Floodgateで到達した局面に対して**KUMOJI自身が探索して得たbest move hintと探索深さ**である。相手の評価値・PV・推奨手は保存しない。そのため、外部対局でもExperienceはKUMOJI自身の経験として継続利用・保存する。
+
+境界は「局面の出所」ではなく「答えの出所」とする。外部対局や詰将棋等で外部から局面を与えられることは許容し、その局面への答えを外部AIから教師として与えることはしない。
 
 ## 秘密情報
 
@@ -144,7 +148,7 @@ GitHub Actions `Floodgate Generation Compatibility` は、次の2つを別checko
 - 選択したrefを実際にhost build
 - USI handshake
 - `OpeningBook=true`
-- `ExperienceCache=false`
+- `ExperienceCache=true`
 - EngineのUSI名が指定世代と一致
 - `go btime 3000 wtime 3000` によるFloodgate型時計入力
 - startposから合法な `bestmove`
@@ -176,7 +180,7 @@ GitHub Actions `Floodgate Generation Compatibility` は、次の2つを別checko
 - CSA/USIの通常手、成り、駒打ち変換を単体試験できる
 - Game_Summaryの300秒+10秒incrementを解釈できる
 - サーバ報告の消費時間から時計を更新できる
-- Experience Cacheを既定で無効化できる
+- Experience Cacheを既定で有効化し、KUMOJI自身の探索経験を保存できる
 - `--live` なしではネット接続しない
 - tripをコード・設定ファイル・GitHubへ保存しない
 - CIでFloodgate関連テストを実行する
