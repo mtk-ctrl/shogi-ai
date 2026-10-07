@@ -161,7 +161,9 @@ class UsiEngine:
 class CsaSocket:
     def __init__(self, host: str, port: int) -> None:
         self.sock = socket.create_connection((host, port), timeout=15)
-        self.sock.settimeout(120)
+        # A client may connect shortly after a pairing boundary and wait nearly
+        # 30 minutes for the next :00/:30 Floodgate pairing.
+        self.sock.settimeout(2100)
         self.reader: TextIO = self.sock.makefile("r", encoding="utf-8", errors="replace", newline="\n")
         self.writer: TextIO = self.sock.makefile("w", encoding="utf-8", newline="\n")
 
