@@ -1,0 +1,92 @@
+name: Engine Match Request Launcher
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/match-request.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Validate request and dispatch Generic Engine Match
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          path = Path(".github/match-request.json")
+          if not path.exists():
+              raise SystemExit("missing .github/match-request.json")
+
+          req = json.loads(path.read_text(encoding="utf-8"))
+          required = {
+              "ref_a", "ref_b", "games", "shards", "go_command",
+              "max_plies", "seed", "options_a", "options_b",
+          }
+          allowed = required | {"request_id"}
+          missing = sorted(required - req.keys())
+          unknown = sorted(req.keys() - allowed)
+          if missing:
+              raise SystemExit(f"missing request fields: {missing}")
+          if unknown:
+              raise SystemExit(f"unknown request fields: {unknown}")
+
+          def positive_int(name):
+              value = int(req[name])
+              if value < 1:
+                  raise SystemExit(f"{name} must be >= 1")
+              return value
+
+          games = positive_int("games")
+          shards = positive_int("shards")
+          max_plies = positive_int("max_plies")
+          seed = int(req["seed"])
+          if shards > 20:
+              raise SystemExit("shards must be <= 20")
+          shards = min(shards, games)
+
+          for name in ("ref_a", "ref_b", "go_command"):
+              if not str(req[name]).strip():
+                  raise SystemExit(f"{name} must not be empty")
+          for name in ("options_a", "options_b"):
+              value = json.loads(req[name])
+              if not isinstance(value, dict):
+                  raise SystemExit(f"{name} must decode to a JSON object")
+
+          q, r = divmod(games, shards)
+          for i in range(shards):
+              n = q + (1 if i < r else 0)
+              shard_seed = seed + i * 100000
+              if not 0 <= shard_seed <= 2147483647 - n * 2:
+                  raise SystemExit("each shard seed must fit the USI integer range")
+
+          args = [
+              "gh", "workflow", "run", "engine-match.yml",
+              "--repo", os.environ["GITHUB_REPOSITORY"],
+              "--ref", "main",
+          ]
+          for name in (
+              "ref_a", "ref_b", "games", "shards", "go_command",
+              "max_plies", "seed", "options_a", "options_b",
+          ):
+              args.extend(["-f", f"{name}={req[name]}"])
+
+          print("dispatching:", " ".join(args[:7]), "...", flush=True)
+          subprocess.run(args, check=True)
+          print("Generic Engine Match dispatched", flush=True)
+          PY
