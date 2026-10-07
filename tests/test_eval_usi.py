@@ -64,6 +64,13 @@ try:
     position(fixture({'5i':'K','1a':'k','5h':'G','4h':'S'}))
     engine.send('setoption name EvalSafety value 100')
     original = evaluate(); assert original['safety'] > 0
+    assert original['safety_black_points'] > original['safety_white_points']
+    assert original['safety_black_gold_guards'] == 1
+    assert original['safety_black_silver_guards'] == 1
+    assert original['safety_black_pawn_guards'] == 0
+    assert original['safety_white_gold_guards'] == 0
+    assert original['safety_white_silver_guards'] == 0
+    assert original['safety_white_pawn_guards'] == 0
     engine.send('setoption name EvalSafety value 0'); disabled = evaluate()
     assert disabled['safety'] == 0 and original['total']-disabled['total'] == original['safety']
     for invalid in ['-1','10001','12junk','999999999999999999999999','x']:
