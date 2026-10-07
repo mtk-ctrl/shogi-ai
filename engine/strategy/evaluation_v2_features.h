@@ -164,7 +164,7 @@ inline bool v2_promotion_zone(int side, int sq) {
     return side == 0 ? rank <= 2 : rank >= 6;
 }
 
-// Opponent Threat Quality: static forcing resources that the other side must
+// Opponent Threat Quality: static forcing resources (benchmark candidate) that the other side must
 // respect even before material is actually won.  This deliberately measures
 // quality, not just move count: checks dominate promotion access, while attacks
 // on valuable pieces scale with the threatened swing.  The feature remains
