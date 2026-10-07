@@ -1,6 +1,7 @@
 #pragma once
 #include "strategy/attack_map.h"
 #include "strategy/evaluation_params.h"
+#include "strategy/evaluation_v2_features.h"
 #include <cstdint>
 
 namespace shogi::strategy {
@@ -9,13 +10,15 @@ struct SideFeatures {
     int king_attacked=0, occupied_ring=0, denied_empty=0, partners=0;
     int major_mobility=0, minor_mobility=0;
     int exposure=0;
+    V2SideFeatures v2{};
 };
 struct EvaluationBreakdown {
-    int material=0;
+    int material=0, material_term=0;
     std::array<SideFeatures,2> raw{};
-    std::array<std::array<int,4>,2> side_points{};
-    // Signed Black-minus-White terms; danger already has its minus sign.
-    std::array<int,4> terms{};
+    // 0 safety, 1 pressure, 2 activity, 3 danger,
+    // 4 influence, 5 potential, 6 coordination, 7 hand potential, 8 threat.
+    std::array<std::array<int,9>,2> side_points{};
+    std::array<int,9> terms{};
     int positional_unclamped=0, positional=0, clamp_adjustment=0, total=0;
 };
 
@@ -71,40 +74,72 @@ inline void activity_features(const rules::Snapshot& s, const AttackMap& a,
 inline void danger_features(const rules::Snapshot& s, const AttackMap& a,
                             int side, SideFeatures& out) {
     for(int sq=0;sq<81;++sq) {
-        const auto& p=s.board[sq];
-        if(!p.kind || p.kind==8 || int(p.color)!=side || !a.count[1-side][sq])continue;
-        const int value=piece_value(p.kind,p.promoted);
+        const auto& q=s.board[sq];
+        if(!q.kind || q.kind==8 || int(q.color)!=side || !a.count[1-side][sq])continue;
+        const int value=piece_value(q.kind,q.promoted);
         out.exposure += a.count[side][sq] ? std::max(0,value-a.least[1-side][sq]) : value;
     }
 }
+
 inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
                                      const EvaluationParameters& p=EvaluationParameters{}) {
     EvaluationBreakdown b;
     b.material=material_black(s);
-    if(std::all_of(p.weights.begin(),p.weights.end(),[](int w){return w==0;})){
-        b.total=b.material;return b;
+    b.material_term = p.v2_enabled
+        ? int(std::int64_t(b.material) * p.material_weight / 100)
+        : b.material;
+
+    const bool no_legacy = std::all_of(p.weights.begin(),p.weights.end(),[](int w){return w==0;});
+    const bool no_v2 = p.influence_weight==0 && p.potential_weight==0
+        && p.coordination_weight==0 && p.hand_potential_weight==0 && p.threat_weight==0;
+    if(no_legacy && (!p.v2_enabled || no_v2)){
+        b.total=std::clamp(b.material_term,-p.StaticLimit,p.StaticLimit);
+        return b;
     }
+
     AttackMap a(s);
     for(int c=0;c<2;++c) {
         auto& f=b.raw[c];
         king_safety_features(s,a,c,f);pressure_features(s,a,c,f);
         activity_features(s,a,c,p,f);danger_features(s,a,c,f);
-        b.side_points[c]={
-            f.gold_guards*p.guard_gold+f.silver_guards*p.guard_silver+f.pawn_guards*p.guard_pawn,
+        const auto& caps = p.v2_enabled ? p.v2_caps : p.caps;
+        b.side_points[c][0]=std::min(
+            f.gold_guards*p.guard_gold+f.silver_guards*p.guard_silver+f.pawn_guards*p.guard_pawn,caps[0]);
+        b.side_points[c][1]=std::min(
             f.king_attacked*p.pressure_king+f.occupied_ring*p.pressure_occupied+
-                f.denied_empty*p.pressure_empty+f.partners*p.pressure_partner,
-            f.major_mobility*p.mobility_major+f.minor_mobility*p.mobility_minor,
-            int(std::int64_t(f.exposure)*p.danger_numerator/p.danger_denominator)};
-        for(int i=0;i<4;++i)b.side_points[c][i]=std::min(b.side_points[c][i],p.caps[i]);
+            f.denied_empty*p.pressure_empty+f.partners*p.pressure_partner,caps[1]);
+        b.side_points[c][2]=std::min(
+            f.major_mobility*p.mobility_major+f.minor_mobility*p.mobility_minor,caps[2]);
+        b.side_points[c][3]=std::min(
+            int(std::int64_t(f.exposure)*p.danger_numerator/p.danger_denominator),caps[3]);
+
+        if(p.v2_enabled) {
+            f.v2=v2_features(s,a,p,c);
+            b.side_points[c][4]=f.v2.influence;
+            b.side_points[c][5]=f.v2.potential;
+            b.side_points[c][6]=f.v2.coordination;
+            b.side_points[c][7]=f.v2.hand_potential;
+            b.side_points[c][8]=f.v2.threat;
+        }
     }
+
     for(int i=0;i<4;++i) {
         b.terms[i]=(b.side_points[0][i]-b.side_points[1][i])*p.weights[i]/100;
         if(i==3)b.terms[i]=-b.terms[i];
         b.positional_unclamped+=b.terms[i];
     }
+    if(p.v2_enabled) {
+        const int extra_weights[5]={p.influence_weight,p.potential_weight,
+            p.coordination_weight,p.hand_potential_weight,p.threat_weight};
+        for(int i=4;i<9;++i) {
+            b.terms[i]=(b.side_points[0][i]-b.side_points[1][i])*extra_weights[i-4]/100;
+            b.positional_unclamped+=b.terms[i];
+        }
+    }
+
     b.positional=std::clamp(b.positional_unclamped,-p.positional_cap,p.positional_cap);
-    b.total=std::clamp(b.material+b.positional,-p.StaticLimit,p.StaticLimit);
-    b.clamp_adjustment=b.total-b.material-b.positional_unclamped;
+    b.total=std::clamp(b.material_term+b.positional,-p.StaticLimit,p.StaticLimit);
+    b.clamp_adjustment=b.total-b.material_term-b.positional_unclamped;
     return b;
 }
 struct MaterialEvaluator {

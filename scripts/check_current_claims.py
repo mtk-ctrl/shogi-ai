@@ -16,15 +16,16 @@ def forbid(path: str, needle: str, why: str) -> None:
     if needle in read(path):
         errors.append(f"{path}: stale claim remains ({why})")
 
-require("README.md", "最新のAndroid / OEX完成版（release）は **v1.0.1**", "release/main distinction")
-require("README.md", "v1.0.1やv0.0.19を現在のmain Engine全体の版番号として扱わない", "main engine version warning")
-forbid("README.md", "現在の完成版は **v1.0.1**", "release label presented as current main")
+require("README.md", "現在の正式Engine世代は **KUMOJI v2.0.0**", "current engine generation")
+require("README.md", "最新のAndroid / OEX完成版（release）は引き続き **v1.0.1**", "engine/release distinction")
+forbid("README.md", "現在の完成版は **v1.0.1**", "release label presented as current engine")
 
 forbid("docs/hold/H10_Book・Experience方針保留.md", "現行 `.github/workflows/nightly-book-learning.yml`", "workflow already moved to HOLD")
 require("docs/33_Floodgate接続基盤.md", "正式方針ではない", "H10 boundary for legacy Floodgate Experience behavior")
 forbid("docs/33_Floodgate接続基盤.md", "既定の検証対象は `research/evaluation-v2-challenger`", "archived generation workflow default")
-forbid("docs/33_Floodgate接続基盤.md", "期待USI名は `KUMOJI v2.0.0`", "unmerged research generation presented as current")
+require("docs/33_Floodgate接続基盤.md", "現在の正式Engine世代は `KUMOJI v2.0.0`", "current Floodgate engine generation")
 
+require("docs/rules/R70_記録・Journal・バージョン.md", "現在の正式Engine世代は **KUMOJI v2.0.0**", "engine generation rule")
 forbid("docs/04_強化ロードマップ.md", "通常のpushでは短いsmoke対局", "old CI policy")
 forbid("docs/04_強化ロードマップ.md", "戦略変更の比較は原則50ms", "old general comparison condition")
 forbid("docs/DAYTIME_RESEARCH_BACKLOG.md", "50msを開発基準にしつつ", "old timing standard")
