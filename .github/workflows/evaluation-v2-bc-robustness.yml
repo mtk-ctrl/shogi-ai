@@ -1,0 +1,205 @@
+name: Evaluation V2 B-C Robustness
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/evaluation-v2-challenger
+    paths:
+      - "benchmarks/eval_v2_bc_robustness.py"
+      - ".github/workflows/evaluation-v2-bc-robustness.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: evaluation-v2-bc-robustness-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  YANEURAOU_REF: c1b80eaa09fe13d5f12b1599d1ae4d53c224de30
+
+jobs:
+  quick:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[eval-bc-robust]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Validate experiment
+        run: |
+          python3 -m py_compile benchmarks/eval_v2_bc_robustness.py
+          python3 - <<'PY'
+          import benchmarks.eval_v2_bc_robustness as x
+          assert x.PROFILES["B"]["AdaptiveLongThink"] is True
+          assert x.PROFILES["C"]["AdaptiveLongThink"] is True
+          assert x.PROFILES["B"]["OpeningBook"] is False
+          assert x.PROFILES["C"]["OpeningBook"] is False
+          assert x.LEVEL_NODES == {20:91,30:292,40:933}
+          print("B",x.LABELS["B"])
+          print("C",x.LABELS["C"])
+          print("levels",x.LEVEL_NODES)
+          PY
+
+      - name: Build KUMOJI
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Fetch pinned YaneuraOu
+        run: |
+          git clone --filter=blob:none https://github.com/yaneurao/YaneuraOu.git external/YaneuraOu
+          git -C external/YaneuraOu checkout "$YANEURAOU_REF"
+
+      - name: Build YaneuraOu material edition
+        run: |
+          make -C external/YaneuraOu/source clean \
+            COMPILER=g++ TARGET_CPU=SSE42 \
+            YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          make -C external/YaneuraOu/source -j2 tournament \
+            COMPILER=g++ TARGET_CPU=SSE42 \
+            YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          test -x external/YaneuraOu/source/YaneuraOu-by-gcc
+
+      - name: Show runner
+        run: |
+          echo "logical_cpus=$(nproc)"
+          free -h
+
+      - name: Upload runtime
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-bc-robust-runtime
+          path: |
+            build/shogi-ai
+            external/YaneuraOu/source/YaneuraOu-by-gcc
+          if-no-files-found: error
+          retention-days: 14
+
+  bc:
+    needs: quick
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        batch: [0, 1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-bc-robust-runtime
+          path: build/runtime
+      - name: Prepare runtime
+        run: |
+          ENGINE="$(find build/runtime -type f -name shogi-ai | head -1)"
+          test -n "$ENGINE"; chmod +x "$ENGINE"
+          echo "ENGINE=$ENGINE" >> "$GITHUB_ENV"
+      - name: B vs C 200 games
+        run: |
+          python3 benchmarks/eval_v2_bc_robustness.py bc \
+            --engine "$ENGINE" \
+            --batch "${{ matrix.batch }}" \
+            --output-dir "build/bc-${{ matrix.batch }}" \
+            --seed "$((2026110000 + ${{ matrix.batch }} * 100000))"
+      - name: Upload B-C batch
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-bc-robust-bc-${{ matrix.batch }}
+          path: build/bc-${{ matrix.batch }}
+          if-no-files-found: error
+          retention-days: 180
+          compression-level: 6
+
+  external:
+    needs: quick
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        include:
+          - profile: B
+            level: 20
+            seed: 2026120020
+          - profile: B
+            level: 30
+            seed: 2026120030
+          - profile: B
+            level: 40
+            seed: 2026120040
+          - profile: C
+            level: 20
+            seed: 2026130020
+          - profile: C
+            level: 30
+            seed: 2026130030
+          - profile: C
+            level: 40
+            seed: 2026130040
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-bc-robust-runtime
+          path: build/runtime
+      - name: Prepare runtime
+        run: |
+          ENGINE="$(find build/runtime -type f -name shogi-ai | head -1)"
+          YANE="$(find build/runtime -type f -name YaneuraOu-by-gcc | head -1)"
+          test -n "$ENGINE" && test -n "$YANE"
+          chmod +x "$ENGINE" "$YANE"
+          echo "ENGINE=$ENGINE" >> "$GITHUB_ENV"
+          echo "YANE=$YANE" >> "$GITHUB_ENV"
+      - name: Candidate vs YaneuraOu level
+        run: |
+          python3 benchmarks/eval_v2_bc_robustness.py external \
+            --engine "$ENGINE" --opponent "$YANE" \
+            --profile "${{ matrix.profile }}" --level "${{ matrix.level }}" \
+            --output-dir "build/ext-${{ matrix.profile }}-L${{ matrix.level }}" \
+            --seed "${{ matrix.seed }}"
+      - name: Upload external result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-bc-robust-ext-${{ matrix.profile }}-L${{ matrix.level }}
+          path: build/ext-${{ matrix.profile }}-L${{ matrix.level }}
+          if-no-files-found: error
+          retention-days: 180
+          compression-level: 6
+
+  analyze:
+    needs: [bc, external]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: eval-v2-bc-robust-*
+          path: build/all
+          merge-multiple: false
+      - name: Analyze
+        run: |
+          python3 benchmarks/eval_v2_bc_robustness.py analyze \
+            --root build/all \
+            --output build/eval-v2-bc-robust-analysis.json \
+            --summary build/eval-v2-bc-robust-summary.md
+          cat build/eval-v2-bc-robust-summary.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload analysis
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-bc-robust-analysis
+          path: |
+            build/eval-v2-bc-robust-analysis.json
+            build/eval-v2-bc-robust-summary.md
+          if-no-files-found: error
+          retention-days: 365
