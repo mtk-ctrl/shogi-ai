@@ -7,6 +7,7 @@ on:
       - research/evaluation-v2-challenger
     paths:
       - "benchmarks/eval_v2_bc_robustness.py"
+      - "benchmarks/eval_v2_bc_robustness_sharded.py"
       - ".github/workflows/evaluation-v2-bc-robustness.yml"
 
 permissions:
@@ -33,17 +34,13 @@ jobs:
 
       - name: Validate experiment
         run: |
-          python3 -m py_compile benchmarks/eval_v2_bc_robustness.py
+          python3 -m py_compile benchmarks/eval_v2_bc_robustness.py benchmarks/eval_v2_bc_robustness_sharded.py
           python3 - <<'PY'
-          import benchmarks.eval_v2_bc_robustness as x
-          assert x.PROFILES["B"]["AdaptiveLongThink"] is True
-          assert x.PROFILES["C"]["AdaptiveLongThink"] is True
-          assert x.PROFILES["B"]["OpeningBook"] is False
-          assert x.PROFILES["C"]["OpeningBook"] is False
-          assert x.LEVEL_NODES == {20:91,30:292,40:933}
-          print("B",x.LABELS["B"])
-          print("C",x.LABELS["C"])
-          print("levels",x.LEVEL_NODES)
+          import benchmarks.eval_v2_bc_robustness_sharded as s
+          assert len(s.all_blocks()) == 220
+          assert all(len(s.shard_blocks(i)) == 11 for i in range(20))
+          assert sum(10*len(s.shard_blocks(i)) for i in range(20)) == 2200
+          print("20 shards x 110 games validated")
           PY
 
       - name: Build KUMOJI
@@ -64,11 +61,6 @@ jobs:
             YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
           test -x external/YaneuraOu/source/YaneuraOu-by-gcc
 
-      - name: Show runner
-        run: |
-          echo "logical_cpus=$(nproc)"
-          free -h
-
       - name: Upload runtime
         uses: actions/upload-artifact@v4
         with:
@@ -79,71 +71,15 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-  bc:
+  shard:
     needs: quick
     runs-on: ubuntu-latest
-    timeout-minutes: 75
+    timeout-minutes: 60
     strategy:
       fail-fast: false
-      max-parallel: 5
+      max-parallel: 20
       matrix:
-        batch: [0, 1, 2, 3, 4]
-    steps:
-      - uses: actions/checkout@v5
-      - run: python3 -m pip install python-shogi==1.1.1
-      - uses: actions/download-artifact@v4
-        with:
-          name: eval-v2-bc-robust-runtime
-          path: build/runtime
-      - name: Prepare runtime
-        run: |
-          ENGINE="$(find build/runtime -type f -name shogi-ai | head -1)"
-          test -n "$ENGINE"; chmod +x "$ENGINE"
-          echo "ENGINE=$ENGINE" >> "$GITHUB_ENV"
-      - name: B vs C 200 games
-        run: |
-          python3 benchmarks/eval_v2_bc_robustness.py bc \
-            --engine "$ENGINE" \
-            --batch "${{ matrix.batch }}" \
-            --output-dir "build/bc-${{ matrix.batch }}" \
-            --seed "$((2026110000 + ${{ matrix.batch }} * 100000))"
-      - name: Upload B-C batch
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: eval-v2-bc-robust-bc-${{ matrix.batch }}
-          path: build/bc-${{ matrix.batch }}
-          if-no-files-found: error
-          retention-days: 180
-          compression-level: 6
-
-  external:
-    needs: quick
-    runs-on: ubuntu-latest
-    timeout-minutes: 75
-    strategy:
-      fail-fast: false
-      max-parallel: 6
-      matrix:
-        include:
-          - profile: B
-            level: 20
-            seed: 2026120020
-          - profile: B
-            level: 30
-            seed: 2026120030
-          - profile: B
-            level: 40
-            seed: 2026120040
-          - profile: C
-            level: 20
-            seed: 2026130020
-          - profile: C
-            level: 30
-            seed: 2026130030
-          - profile: C
-            level: 40
-            seed: 2026130040
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
     steps:
       - uses: actions/checkout@v5
       - run: python3 -m pip install python-shogi==1.1.1
@@ -159,37 +95,37 @@ jobs:
           chmod +x "$ENGINE" "$YANE"
           echo "ENGINE=$ENGINE" >> "$GITHUB_ENV"
           echo "YANE=$YANE" >> "$GITHUB_ENV"
-      - name: Candidate vs YaneuraOu level
+          echo "logical_cpus=$(nproc)"
+      - name: Run balanced 110-game shard
         run: |
-          python3 benchmarks/eval_v2_bc_robustness.py external \
+          python3 benchmarks/eval_v2_bc_robustness_sharded.py shard \
             --engine "$ENGINE" --opponent "$YANE" \
-            --profile "${{ matrix.profile }}" --level "${{ matrix.level }}" \
-            --output-dir "build/ext-${{ matrix.profile }}-L${{ matrix.level }}" \
-            --seed "${{ matrix.seed }}"
-      - name: Upload external result
+            --shard "${{ matrix.shard }}" \
+            --output-dir "build/shard-${{ matrix.shard }}"
+      - name: Upload shard
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: eval-v2-bc-robust-ext-${{ matrix.profile }}-L${{ matrix.level }}
-          path: build/ext-${{ matrix.profile }}-L${{ matrix.level }}
+          name: eval-v2-bc-robust-shard-${{ matrix.shard }}
+          path: build/shard-${{ matrix.shard }}
           if-no-files-found: error
           retention-days: 180
           compression-level: 6
 
   analyze:
-    needs: [bc, external]
+    needs: shard
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
       - uses: actions/download-artifact@v4
         with:
-          pattern: eval-v2-bc-robust-*
+          pattern: eval-v2-bc-robust-shard-*
           path: build/all
           merge-multiple: false
       - name: Analyze
         run: |
-          python3 benchmarks/eval_v2_bc_robustness.py analyze \
+          python3 benchmarks/eval_v2_bc_robustness_sharded.py analyze \
             --root build/all \
             --output build/eval-v2-bc-robust-analysis.json \
             --summary build/eval-v2-bc-robust-summary.md
