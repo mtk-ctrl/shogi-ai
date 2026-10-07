@@ -5,7 +5,7 @@
 「雲路」は、雲の中の道、空に通う道を表す古い日本語から取った。既に敷かれた道をなぞるのではなく、まだ道に見えないところから、自分で通れる筋を見つけるAIを目指す。
 
 現在の正式Engine世代は **KUMOJI v2.0.0** である。Evaluation-v2候補Bを正式採用し、採用済み実装は `main` を正本とする。
-最新のAndroid / OEX完成版（release）は引き続き **v1.0.1**（2026-10-05）であり、Engine世代とAndroid/OEX release番号は分けて管理する。
+最後にAndroidへ配布するために作ったAPKは **v1.0.1**（2026-10-05）である。v2以後はAndroidへダウンロードする必要がなくAPKを新たに作っていないため、オーナーのAndroidには以前のv1が入っている（2026-10-07本人確認）。APKは必要時に採用済みエンジンをAndroidへ届けるものであり、別の正式エンジン系統ではない。
 同じv2.0.0世代内の正確な実装状態は `main` のcommit SHAで特定し、正式比較の基準commitは `benchmarks/baseline_ref.txt` を参照する。
 
 ## AI作業時の入口
@@ -53,7 +53,7 @@ Opening BookとExperience Cacheの実装は存在する。
 
 ## Android / ShogiDroid2
 
-最後に完成版化したv1.0.1のAndroid版は次の構成である。mainの未release変更とは区別する。
+最後に作ったv1.0.1 APKは次の構成である。最新エンジンv2.0.0を含むAPKはまだ作っていない。
 
 - アプリ表示名：`雲路 KUMOJI`
 - OEX表示名：`雲路 KUMOJI v1.0.1`

@@ -17,7 +17,9 @@ def forbid(path: str, needle: str, why: str) -> None:
         errors.append(f"{path}: stale claim remains ({why})")
 
 require("README.md", "現在の正式Engine世代は **KUMOJI v2.0.0**", "current engine generation")
-require("README.md", "最新のAndroid / OEX完成版（release）は引き続き **v1.0.1**", "engine/release distinction")
+require("README.md", "最後にAndroidへ配布するために作ったAPKは **v1.0.1**", "last generated APK")
+require("README.md", "Androidへダウンロードする必要がなくAPKを新たに作っていない", "user-confirmed reason for older APK")
+forbid("README.md", "Engine世代とAndroid/OEX release番号は分けて管理する", "independent engine/release policy was not the user's intent")
 forbid("README.md", "現在の完成版は **v1.0.1**", "release label presented as current engine")
 
 forbid("docs/hold/H10_Book・Experience方針保留.md", "現行 `.github/workflows/nightly-book-learning.yml`", "workflow already moved to HOLD")
