@@ -155,7 +155,7 @@ int main(){try{
             fork_eval.clamp_adjustment,"v2 breakdown sums exactly");
     std::cout<<"PASS evaluation-v2 influence/potential/coordination/hand/threat and symmetry\n";
 
-    EvaluationParameters p; p.weights={400,400,400,400};p.positional_cap=1;
+    EvaluationParameters p=EvaluationParameters::legacy_v1(); p.weights={400,400,400,400};p.positional_cap=1;
     auto limited=evaluate(pressure,p);require(std::abs(limited.positional)<=1,"combined positional cap");
     auto inv=evaluate(rotate(pressure),p);require(limited.total==-inv.total,"clamp preserves symmetry");
     require(limited.total==limited.material+limited.terms[0]+limited.terms[1]+limited.terms[2]+limited.terms[3]+limited.clamp_adjustment,"breakdown sums exactly");

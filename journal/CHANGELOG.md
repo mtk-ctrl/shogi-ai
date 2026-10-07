@@ -339,3 +339,16 @@
 - Diagnosis専用の50ms/500ms再解析は固定分析条件として維持
 
 詳細：`journal/2026-10-06_08_継続型AdaptiveLongThink正式採用.md` / `docs/31_AdaptiveLongThink正式採用.md`
+
+
+## 2026-10-07 — v2.0.0 新世代登録：Evaluation-v2候補Bを正式採用
+
+- 旧v1系の評価からEvaluation-v2へ世代更新
+- 採用B：Material=100 / Safety=500 / Pressure=474 / Activity=150 / Danger=200 / Influence=19 / Potential=25 / Coordination=50 / HandPotential=60 / Threat=0 / PositionalCap=5000
+- 正式読み時間のB対C 1,000局は596勝22分382敗、B得点率60.7%
+- やねうら王Material版Lv48～57を各100局測定し、Lv48 54.5%、Lv49 47.0%、Lv50 43.0%。現行外部基準を「Lv49相当（互角帯Lv48～49）」とした
+- USI defaultを採用Bへ切替え、表示値もEvaluationParametersから生成して設定ドリフトを防止
+- 旧v1比較workflowは旧重みを明示固定し、現行default変更で過去比較の意味が変わらないよう修正
+- エンジン世代名を `KUMOJI v2.0.0` とした。Android/OEX完成版はv1.0.1を維持し、v2.0.0 APK化は通常仕上げの別工程とする
+
+詳細：`journal/2026-10-07_06_雲路KUMOJI_v2.0.0新世代登録.md` / `docs/33_v2.0.0世代基準.md`
