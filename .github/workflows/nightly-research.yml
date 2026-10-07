@@ -86,8 +86,10 @@ jobs:
         run: |
           set -euo pipefail
           declare -A opts
-          opts[safety-up]='{"OpeningBook":false,"ExperienceCache":false,"EvalSafety":60}'
-          opts[pressure-up]='{"OpeningBook":false,"ExperienceCache":false,"EvalPressure":180}'
+          # Production defaults are Evaluation-v2 B.  Keep these mutations
+          # genuinely "up" relative to that adopted baseline.
+          opts[safety-up]='{"OpeningBook":false,"ExperienceCache":false,"EvalSafety":600}'
+          opts[pressure-up]='{"OpeningBook":false,"ExperienceCache":false,"EvalPressure":569}'
           opts[activity-up]='{"OpeningBook":false,"ExperienceCache":false,"EvalActivity":180}'
           opts[danger-up]='{"OpeningBook":false,"ExperienceCache":false,"EvalDanger":240}'
           for id in safety-up pressure-up activity-up danger-up; do

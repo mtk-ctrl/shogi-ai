@@ -36,9 +36,9 @@ jobs:
           mkdir -p build/results
           SEED=$((20265000 + ${{ matrix.shard }} * 100))
           if [ "${{ matrix.candidate }}" = "c07" ]; then
-            OPTS='{"EvalSafety":100,"EvalPressure":150,"EvalActivity":200,"EvalDanger":200}'
+            OPTS='{"EvalV2":false,"EvalSafety":100,"EvalPressure":150,"EvalActivity":200,"EvalDanger":200}'
           else
-            OPTS='{"EvalSafety":50,"EvalPressure":150,"EvalActivity":150,"EvalDanger":200}'
+            OPTS='{"EvalV2":false,"EvalSafety":50,"EvalPressure":150,"EvalActivity":150,"EvalDanger":200}'
           fi
           python3 benchmarks/arena.py \
             --engine-a build/shogi-ai \
@@ -47,7 +47,7 @@ jobs:
             --max-plies 400 \
             --seed "$SEED" \
             --options-a "$OPTS" \
-            --options-b '{"EvalSafety":100,"EvalPressure":100,"EvalActivity":100,"EvalDanger":200}' \
+            --options-b '{"EvalV2":false,"EvalSafety":100,"EvalPressure":100,"EvalActivity":100,"EvalDanger":200}' \
             --output build/results/${{ matrix.candidate }}-${{ matrix.shard }}.json
 
       - name: Upload result

@@ -64,7 +64,20 @@ CANDIDATES={
     },
 }
 CURRENT={
+    # Pin the historical v1 baseline explicitly so future production-default
+    # changes cannot silently redefine this comparison.
     "EvalV2":False,
+    "EvalSafety":50,
+    "EvalPressure":150,
+    "EvalActivity":150,
+    "EvalDanger":200,
+    "EvalMaterialWeight":100,
+    "EvalInfluence":0,
+    "EvalPotential":0,
+    "EvalCoordination":0,
+    "EvalHandPotential":0,
+    "EvalThreat":0,
+    "EvalPositionalCap":300,
 }
 for d in list(CANDIDATES.values())+[CURRENT]:
     d.update(COMMON)

@@ -3,8 +3,9 @@
 #include <stdexcept>
 
 namespace shogi::strategy {
-// Explainable static-evaluation parameters. Defaults reproduce the adopted
-// v1.0.1 evaluator exactly; EvaluationV2 is opt-in while it is researched.
+// Explainable static-evaluation parameters. Defaults are the adopted
+// Evaluation-v2 B profile selected on 2026-10-07.  The former v1 evaluator
+// remains reproducible through explicit USI options and legacy_v1().
 struct EvaluationParameters {
     int guard_gold = 12, guard_silver = 10, guard_pawn = 4;
     int pressure_king = 12, pressure_occupied = 6, pressure_empty = 4;
@@ -12,19 +13,19 @@ struct EvaluationParameters {
     int mobility_major = 2, mobility_minor = 1, mobility_piece_cap = 12;
     int danger_numerator = 1, danger_denominator = 8;
 
-    // Adopted legacy feature caps and weights.
+    // Feature caps and adopted B-profile weights.
     std::array<int, 4> caps{80, 120, 100, 160};
-    std::array<int, 4> weights{50, 150, 150, 200};
+    std::array<int, 4> weights{500, 474, 150, 200};
 
     // Evaluation-v2 keeps Material as one axis rather than an implicit master
-    // axis. v2 is OFF by default so main remains bit-for-bit compatible.
-    bool v2_enabled = false;
+    // axis. B is the production default after direct and external validation.
+    bool v2_enabled = true;
     int material_weight = 100;
     std::array<int, 4> v2_caps{160, 240, 200, 400};
-    int influence_weight = 0;
-    int potential_weight = 0;
-    int coordination_weight = 0;
-    int hand_potential_weight = 0;
+    int influence_weight = 19;
+    int potential_weight = 25;
+    int coordination_weight = 50;
+    int hand_potential_weight = 60;
     int threat_weight = 0;
     int influence_cap = 160;
     int potential_cap = 120;
@@ -32,10 +33,24 @@ struct EvaluationParameters {
     int hand_potential_cap = 120;
     int threat_cap = 1600;
 
-    // In legacy mode this remains the adopted +/-300 cap. In v2 it is a
-    // tunable whole-position safety bound rather than a hard three-pawn dogma.
-    int positional_cap = 300;
+    // In legacy-v1 reproduction this is +/-300.  The adopted B profile uses
+    // the wider v2 bound validated in the parameter search.
+    int positional_cap = 5000;
     static constexpr int StaticLimit = 1000000; // Far below mate=100000000.
+
+    static EvaluationParameters legacy_v1() {
+        EvaluationParameters p;
+        p.weights = {50, 150, 150, 200};
+        p.v2_enabled = false;
+        p.material_weight = 100;
+        p.influence_weight = 0;
+        p.potential_weight = 0;
+        p.coordination_weight = 0;
+        p.hand_potential_weight = 0;
+        p.threat_weight = 0;
+        p.positional_cap = 300;
+        return p;
+    }
 
     static EvaluationParameters material_only() {
         EvaluationParameters p;

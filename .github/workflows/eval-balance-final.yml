@@ -40,8 +40,8 @@ jobs:
             --games 20 \
             --max-plies 400 \
             --seed "$SEED" \
-            --options-a '{"EvalSafety":100,"EvalPressure":150,"EvalActivity":200,"EvalDanger":200}' \
-            --options-b '{"EvalSafety":50,"EvalPressure":150,"EvalActivity":150,"EvalDanger":200}' \
+            --options-a '{"EvalV2":false,"EvalSafety":100,"EvalPressure":150,"EvalActivity":200,"EvalDanger":200}' \
+            --options-b '{"EvalV2":false,"EvalSafety":50,"EvalPressure":150,"EvalActivity":150,"EvalDanger":200}' \
             --output build/results/final-${{ matrix.shard }}.json
 
       - name: Upload result

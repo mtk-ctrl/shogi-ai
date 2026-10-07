@@ -55,8 +55,8 @@ jobs:
             --games 12 \
             --max-plies 400 \
             --seed 20262000 \
-            --options-a '{"EvalSafety":${{ matrix.safety }},"EvalPressure":${{ matrix.pressure }},"EvalActivity":${{ matrix.activity }},"EvalDanger":200}' \
-            --options-b '{"EvalSafety":100,"EvalPressure":100,"EvalActivity":100,"EvalDanger":200}' \
+            --options-a '{"EvalV2":false,"EvalSafety":${{ matrix.safety }},"EvalPressure":${{ matrix.pressure }},"EvalActivity":${{ matrix.activity }},"EvalDanger":200}' \
+            --options-b '{"EvalV2":false,"EvalSafety":100,"EvalPressure":100,"EvalActivity":100,"EvalDanger":200}' \
             --output build/results/${{ matrix.id }}.json
 
       - name: Upload result
