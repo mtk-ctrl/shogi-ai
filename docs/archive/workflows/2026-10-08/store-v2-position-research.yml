@@ -1,0 +1,357 @@
+name: Store V2 Position Research
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/store-v2-position-research.yml"
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: store-v2-position-research
+  cancel-in-progress: false
+
+env:
+  SOURCE_RUN: "37671846680"
+  AUDIT_RUN: "37675996741"
+  ENGINE_REF: "853df9de1466780c5b326d26baeb15388f8dadf0"
+  RELEASE_TAG: "records-2026-10-01"
+
+jobs:
+  store:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout storage code
+        uses: actions/checkout@v5
+
+      - name: Download source research, self-play and exact engine artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p source-selfplay source-research source-engine source-audit
+          gh run download "$SOURCE_RUN" --repo "$GITHUB_REPOSITORY" --pattern "v2-selfplay-$SOURCE_RUN-*" --dir source-selfplay
+          gh run download "$SOURCE_RUN" --repo "$GITHUB_REPOSITORY" --name "v2-position-knowledge-research-$SOURCE_RUN" --dir source-research
+          gh run download "$SOURCE_RUN" --repo "$GITHUB_REPOSITORY" --name "v2-position-research-engine-$SOURCE_RUN" --dir source-engine
+          gh run download "$AUDIT_RUN" --repo "$GITHUB_REPOSITORY" --name "v2-position-change-audit-aggregate-$AUDIT_RUN" --dir source-audit
+          test "$(find source-selfplay -name 'selfplay-*.json' -type f | wc -l)" -eq 20
+          test -f "$(find source-research -name research-records.jsonl -type f | head -1)"
+          test -f "$(find source-audit -name position-change-audit.json -type f | head -1)"
+
+      - name: Create rule-compliant played-move archive
+        run: |
+          set -euo pipefail
+          mkdir -p out/played
+          mapfile -t SELFPLAY < <(find source-selfplay -name 'selfplay-*.json' -type f | sort -V)
+          python3 tools/records/archive_played_moves.py             --input "${SELFPLAY[@]}"             --output-dir out/played             --run-id "$SOURCE_RUN"             --ref-a "$ENGINE_REF"             --ref-b "$ENGINE_REF"
+          mv out/played/played-games.jsonl.gz "out/played-games-$SOURCE_RUN.jsonl.gz"
+          mv out/played/manifest.json "out/played-games-manifest-$SOURCE_RUN.json"
+          rmdir out/played
+
+      - name: Create compact research records and position knowledge
+        run: |
+          set -euo pipefail
+          TGZ="$(find source-engine -name v2-engine.tgz -type f | head -1)"
+          mkdir -p engine-extract
+          tar -xzf "$TGZ" -C engine-extract
+          ENGINE_BIN="$(find engine-extract -name kumoji-v2 -type f | head -1)"
+          ENGINE_SHA="$(sha256sum "$ENGINE_BIN" | awk '{print $1}')"
+          export ENGINE_SHA
+          python3 - <<'PY'
+          import gzip, hashlib, json, os
+          from pathlib import Path
+
+          source_run=os.environ["SOURCE_RUN"]
+          audit_run=os.environ["AUDIT_RUN"]
+          engine_ref=os.environ["ENGINE_REF"]
+          engine_sha=os.environ["ENGINE_SHA"]
+
+          research_path=next(Path("source-research").rglob("research-records.jsonl"))
+          audit_path=next(Path("source-audit").rglob("position-change-audit.json"))
+          initial=[json.loads(x) for x in research_path.read_text().splitlines() if x.strip()]
+          audit=json.loads(audit_path.read_text())
+          audit_by_id={r["position_id"]:r for r in audit}
+
+          profile_primary="v2-60s-primary"
+          profile_repeat="v2-60s-repeat-audit"
+
+          def eval_from_primary(s):
+              if s.get("score_cp") is not None:
+                  return {"status":"recorded","kind":"cp","value":s["score_cp"],"bound":"unknown","perspective":"side_to_move"}
+              if s.get("score_mate") is not None:
+                  return {"status":"recorded","kind":"mate","value":s["score_mate"],"bound":"unknown","perspective":"side_to_move"}
+              return {"status":"not_recorded","kind":None,"value":None,"bound":"unknown","perspective":"side_to_move"}
+
+          def eval_from_repeat(s):
+              kind=s.get("score_type")
+              value=s.get("score")
+              if kind in ("cp","mate") and value is not None:
+                  return {"status":"recorded","kind":kind,"value":value,"bound":"unknown","perspective":"side_to_move"}
+              return {"status":"not_recorded","kind":None,"value":None,"bound":"unknown","perspective":"side_to_move"}
+
+          research_records=[]
+          knowledge=[]
+          disputed=0
+          repeated_same=0
+
+          for row in initial:
+              pid=row["position_id"]
+              src=row["source"]
+              base_ref={
+                  "source_run":int(source_run),
+                  "source_file":src["file"],
+                  "source_game_index":src["game"],
+                  "ply":src["ply"],
+                  "history_sha256":row["history_sha256"],
+              }
+              r1id=f"{source_run}:{pid}:60s-1"
+              s=row["research_search"]
+              r1={
+                  "research_id":r1id,
+                  "position_ref":base_ref,
+                  "selected_move":row["research_move"],
+                  "evaluation":eval_from_primary(s),
+                  "reading":{
+                      "depth":s.get("depth"),
+                      "seldepth":s.get("seldepth"),
+                      "nodes":s.get("nodes"),
+                      "reported_time_ms":s.get("time"),
+                      "observed_elapsed_ms":s.get("elapsed_ms"),
+                      "limit_ms":row.get("research_limit_ms",60000),
+                  },
+                  "profile_id":profile_primary,
+              }
+              research_records.append(r1)
+              evidence=[r1id]
+              state="unverified"
+              reason=None
+
+              ar=audit_by_id.get(pid)
+              if ar is not None:
+                  u=ar["unrestricted_60s"]
+                  r2id=f"{audit_run}:{pid}:60s-2"
+                  r2={
+                      "research_id":r2id,
+                      "position_ref":base_ref,
+                      "selected_move":u.get("bestmove"),
+                      "evaluation":eval_from_repeat(u),
+                      "reading":{
+                          "depth":u.get("depth"),
+                          "seldepth":u.get("seldepth"),
+                          "nodes":u.get("nodes"),
+                          "reported_time_ms":u.get("time_ms"),
+                          "observed_elapsed_ms":u.get("elapsed_ms"),
+                          "limit_ms":60000,
+                      },
+                      "profile_id":profile_repeat,
+                  }
+                  research_records.append(r2)
+                  evidence.append(r2id)
+                  if u.get("bestmove") != row["research_move"]:
+                      state="disputed"
+                      reason="second_60s_selected_different_move"
+                      disputed += 1
+                  else:
+                      repeated_same += 1
+
+              parts=row["sfen"].split()
+              position_key=" ".join(parts[:3])
+              k={
+                  "schema":"position-knowledge-v1",
+                  "position_key":position_key,
+                  "rule_id":"kumoji-rules@"+engine_ref,
+                  "history_condition":{
+                      "source_archive":"played-games-"+source_run+".jsonl.gz",
+                      "source_file":src["file"],
+                      "source_game_index":src["game"],
+                      "ply":src["ply"],
+                      "history_sha256":row["history_sha256"],
+                  },
+                  "selected_move":row["research_move"],
+                  "reading":{
+                      "depth":s.get("depth"),
+                      "seldepth":s.get("seldepth"),
+                      "nodes":s.get("nodes"),
+                      "reported_time_ms":s.get("time"),
+                      "observed_elapsed_ms":s.get("elapsed_ms"),
+                      "limit_ms":row.get("research_limit_ms",60000),
+                  },
+                  "profile_id":profile_primary,
+                  "handling":{
+                      "mode":"move_order_hint",
+                      "status":state,
+                  },
+                  "evidence":evidence,
+                  "knowledge_version":"candidate-"+source_run,
+              }
+              if reason:
+                  k["handling"]["reason"]=reason
+              knowledge.append(k)
+
+          out=Path("out")
+          out.mkdir(exist_ok=True)
+
+          def write_gz(path, rows):
+              with path.open("wb") as raw:
+                  with gzip.GzipFile(filename="",mode="wb",fileobj=raw,mtime=0) as z:
+                      for row in rows:
+                          z.write((json.dumps(row,ensure_ascii=False,separators=(",",":"))+"\n").encode())
+
+          research_out=out/f"research-records-{source_run}.jsonl.gz"
+          knowledge_out=out/f"position-knowledge-v1-candidates-{source_run}.jsonl.gz"
+          write_gz(research_out,research_records)
+          write_gz(knowledge_out,knowledge)
+
+          played=out/f"played-games-{source_run}.jsonl.gz"
+          played_manifest=out/f"played-games-manifest-{source_run}.json"
+
+          def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+          source_hashes={
+              "source_research_records_sha256":sha(research_path),
+              "source_audit_aggregate_sha256":sha(audit_path),
+          }
+          selection_text=(
+              "Use selected completed 60s research move as move_order_hint candidate; "
+              "retain only rule-defined compact fields; mark a position disputed when "
+              "the second unrestricted 60s observation selected a different move; "
+              "do not store forced-original comparison, PV, importance score, reasons, "
+              "feature vectors, or independent confidence thresholds."
+          )
+          manifest={
+              "storage_schema":"kumoji-research-storage-v1",
+              "source_run":int(source_run),
+              "audit_run":int(audit_run),
+              "source_workflow_commit":"6914d830a3d7672626a2cc8227d1417720364bf0",
+              "engine":{
+                  "commit":engine_ref,
+                  "binary_sha256":engine_sha,
+                  "binary_availability":"hash_only",
+              },
+              "profiles":{
+                  profile_primary:{
+                      "engine_commit":engine_ref,
+                      "engine_binary_sha256":engine_sha,
+                      "OpeningBook":False,
+                      "ExperienceCache":False,
+                      "AdaptiveLongThink":False,
+                      "go":"movetime 60000",
+                      "seed_rule":"202610080 + position_index * 2",
+                  },
+                  profile_repeat:{
+                      "engine_commit":engine_ref,
+                      "engine_binary_sha256":None,
+                      "OpeningBook":False,
+                      "ExperienceCache":False,
+                      "AdaptiveLongThink":False,
+                      "go":"movetime 60000",
+                      "seed":"engine default 5489",
+                      "profile_completeness":"binary hash was not recorded by the audit run",
+                  },
+              },
+              "played_move_archive":{
+                  "file":played.name,
+                  "sha256":sha(played),
+                  "manifest_file":played_manifest.name,
+                  "manifest_sha256":sha(played_manifest),
+              },
+              "research_records":{
+                  "file":research_out.name,
+                  "sha256":sha(research_out),
+                  "records":len(research_records),
+                  "primary_60s":len(initial),
+                  "repeat_unrestricted_60s":len(audit),
+              },
+              "position_knowledge":{
+                  "file":knowledge_out.name,
+                  "sha256":sha(knowledge_out),
+                  "schema":"position-knowledge-v1",
+                  "mode":"move_order_hint",
+                  "records":len(knowledge),
+                  "unverified":len(knowledge)-disputed,
+                  "disputed":disputed,
+                  "formally_adopted":False,
+                  "selection_condition_sha256":hashlib.sha256(selection_text.encode()).hexdigest(),
+              },
+              "source_hashes":source_hashes,
+              "storage_scope":(
+                  "Long-term assets follow R25/docs28/docs29/docs35. Research observations "
+                  "retain selected move, evaluation, reading amount, profile and source reference. "
+                  "Position knowledge retains only the defined compact lookup/history/move/reading/"
+                  "profile/handling/evidence/version fields."
+              ),
+              "excluded_from_long_term":{
+                  "forced_original_move_comparisons":True,
+                  "pv":True,
+                  "importance_and_extraction_reasons":True,
+                  "per_position_feature_vectors":True,
+                  "independent_confidence_thresholds":True,
+              },
+              "counts":{
+                  "repeated_same_move_in_second_60s":repeated_same,
+                  "second_60s_changed_move":disputed,
+              },
+              "generator_commit":os.environ["GITHUB_SHA"],
+          }
+          manifest_path=out/f"research-storage-manifest-{source_run}.json"
+          manifest_path.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n")
+          print(json.dumps({
+              "research_records":len(research_records),
+              "knowledge_records":len(knowledge),
+              "disputed":disputed,
+              "repeated_same":repeated_same,
+              "engine_sha256":engine_sha,
+          },ensure_ascii=False))
+          PY
+
+      - name: Upload to monthly data release and verify hashes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          cd out
+          sha256sum             "played-games-$SOURCE_RUN.jsonl.gz"             "played-games-manifest-$SOURCE_RUN.json"             "research-records-$SOURCE_RUN.jsonl.gz"             "position-knowledge-v1-candidates-$SOURCE_RUN.jsonl.gz"             "research-storage-manifest-$SOURCE_RUN.json" > "SHA256SUMS-$SOURCE_RUN.txt"
+
+          if ! gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create "$RELEASE_TAG"               --repo "$GITHUB_REPOSITORY"               --target "$GITHUB_SHA"               --title "KUMOJI data records 2026-10-01"               --notes "対局・研究の長期データ保存用。製品Engine releaseではない。"               --latest=false
+          fi
+
+          existing="$(gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name')"
+          for f in             "played-games-$SOURCE_RUN.jsonl.gz"             "played-games-manifest-$SOURCE_RUN.json"             "research-records-$SOURCE_RUN.jsonl.gz"             "position-knowledge-v1-candidates-$SOURCE_RUN.jsonl.gz"             "research-storage-manifest-$SOURCE_RUN.json"             "SHA256SUMS-$SOURCE_RUN.txt"; do
+            if grep -Fxq "$f" <<<"$existing"; then
+              echo "asset already exists: $f" >&2
+              exit 1
+            fi
+          done
+
+          gh release upload "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY"             "played-games-$SOURCE_RUN.jsonl.gz"             "played-games-manifest-$SOURCE_RUN.json"             "research-records-$SOURCE_RUN.jsonl.gz"             "position-knowledge-v1-candidates-$SOURCE_RUN.jsonl.gz"             "research-storage-manifest-$SOURCE_RUN.json"             "SHA256SUMS-$SOURCE_RUN.txt"
+
+          mkdir verify
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY"             --pattern "*-$SOURCE_RUN.*" --dir verify
+          cp "SHA256SUMS-$SOURCE_RUN.txt" verify/
+          cd verify
+          sha256sum -c "SHA256SUMS-$SOURCE_RUN.txt"
+
+      - name: Remove independent audit run after compliant storage succeeds
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api --method DELETE "repos/$GITHUB_REPOSITORY/actions/runs/$AUDIT_RUN"
+
+      - name: Summary
+        run: |
+          {
+            echo "# V2 position research storage"
+            echo
+            echo "- source run: $SOURCE_RUN"
+            echo "- monthly data release: $RELEASE_TAG"
+            echo "- played games: 300 source games archived with the existing played-move archiver"
+            echo "- research observations: 60 primary + 31 unrestricted repeat = 91"
+            echo "- position knowledge: 60 compact candidates"
+            echo "- direct use: not formally adopted; mode is move-order hint only"
+            echo "- independent forced-move audit data: discarded with audit run after extraction of allowed repeat research observations"
+          } >> "$GITHUB_STEP_SUMMARY"
