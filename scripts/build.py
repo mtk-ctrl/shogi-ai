@@ -52,6 +52,24 @@ if f'){delimiter}\"' in book_text:
     encoding="utf-8",
 )
 
+# Adopted position knowledge is also part of the standalone engine contract.
+# Normal host matches may provide an external snapshot for explicit identity
+# tracking, while Android/OEX and direct binary use can fall back to the
+# snapshot compiled into the same engine binary.
+knowledge_path = ROOT / "position-knowledge-v1.tsv"
+knowledge_text = knowledge_path.read_text(encoding="utf-8")
+knowledge_delimiter = "KUMOJIKNOWLEDGE"
+if f'){knowledge_delimiter}"' in knowledge_text:
+    raise SystemExit("position knowledge contains the generated raw-string delimiter")
+(generated / "embedded_position_knowledge.h").write_text(
+    "#pragma once\n"
+    "#include <string_view>\n"
+    "namespace shogi::strategy::detail {\n"
+    f'inline constexpr std::string_view kEmbeddedPositionKnowledge = R"{knowledge_delimiter}({knowledge_text}){knowledge_delimiter}";\n'
+    "} // namespace shogi::strategy::detail\n",
+    encoding="utf-8",
+)
+
 flags = ["-std=c++17", "-O1" if args.sanitize else "-O2", "-g", "-pthread",
          "-DSHOGI_RULES_ONLY", "-DUSER_ENGINE", "-DNO_SSE", "-DASSERT_LV=3",
          "-I" + str(generated), "-I" + str(ROOT / "engine"), "-I" + str(source)]
