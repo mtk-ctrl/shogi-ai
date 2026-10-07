@@ -129,6 +129,15 @@ def parse_info_line(line):
     return info
 
 
+def merge_info_line(info, line):
+    """Replace the score and its bounds together; preserve separate stats."""
+    update = parse_info_line(line)
+    if "score_cp" in update or "score_mate" in update:
+        for key in ("score_cp", "score_mate", "score_lowerbound", "score_upperbound"):
+            info.pop(key, None)
+    info.update(update)
+
+
 def compact_search_telemetry(info, side_to_move):
     """Keep enough per-move search data for later diagnosis without huge logs."""
     out = {name: info[name] for name in PER_MOVE_SEARCH_FIELDS if name in info}
@@ -233,7 +242,7 @@ class Engine:
                 raise TimeoutError(f"{self.label}: waiting for bestmove; seen={seen[-8:]}") from exc
             seen.append(line)
             if line.startswith("info "):
-                info.update(parse_info_line(line))
+                merge_info_line(info, line)
                 continue
             if line.startswith("bestmove "):
                 token = line.split(maxsplit=1)[1].strip()

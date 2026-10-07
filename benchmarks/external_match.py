@@ -20,7 +20,7 @@ from pathlib import Path
 
 import shogi
 
-from arena import Adjudicator, can_declare_win, parse_info_line, compact_search_telemetry
+from arena import Adjudicator, can_declare_win, merge_info_line, compact_search_telemetry
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -182,7 +182,7 @@ class UsiEngine:
                 # score/PV remains intentionally discarded and never becomes a
                 # teacher signal.
                 if self.capture_info:
-                    info.update(parse_info_line(line))
+                    merge_info_line(info, line)
                 continue
             if line.startswith("bestmove "):
                 elapsed_s = time.monotonic() - started

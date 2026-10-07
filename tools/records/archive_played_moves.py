@@ -34,10 +34,12 @@ GAME_FIELDS = (
 def clean_search(search):
     search = search or {}
     row = {k: search[k] for k in SEARCH_FIELDS if k in search}
-    has_score = any(k in row for k in ("score_cp_stm", "score_mate_stm"))
-    row["score_status"] = "recorded" if has_score else "not_recorded"
+    score_count = sum(row.get(k) is not None for k in ("score_cp_stm", "score_mate_stm"))
+    # Legacy readers could retain both an old cp score and a newer mate score.
+    # Keep the original values; their order cannot be inferred from this row.
+    row["score_status"] = "ambiguous" if score_count == 2 else "recorded" if score_count else "not_recorded"
     # Absence of a score is not a zero evaluation.
-    if not has_score:
+    if not score_count:
         row["score_cp_stm"] = None
         row["score_mate_stm"] = None
     return row
@@ -47,7 +49,7 @@ def archive(inputs, output_dir, run_id=None, ref_a=None, ref_b=None):
     games = []
     sources = []
     seen = set()
-    plies = scored = no_telemetry = 0
+    plies = scored = ambiguous = no_telemetry = 0
     for path in inputs:
         path = Path(path)
         raw = path.read_bytes()
@@ -89,6 +91,7 @@ def archive(inputs, output_dir, run_id=None, ref_a=None, ref_b=None):
                 selected.append(record)
                 plies += 1
                 scored += search["score_status"] == "recorded"
+                ambiguous += search["score_status"] == "ambiguous"
                 no_telemetry += not bool(original)
             row = {k: game[k] for k in GAME_FIELDS if k in game}
             row.update(
@@ -115,7 +118,8 @@ def archive(inputs, output_dir, run_id=None, ref_a=None, ref_b=None):
             "schema_version": SCHEMA, "archive": destination.name,
             "archive_sha256": archive_hash, "archive_bytes": temporary.stat().st_size,
             "games": len(games), "plies": plies, "scored_plies": scored,
-            "missing_score_plies": plies - scored, "without_telemetry_plies": no_telemetry,
+            "missing_score_plies": plies - scored - ambiguous,
+            "ambiguous_score_plies": ambiguous, "without_telemetry_plies": no_telemetry,
             "run_id": run_id, "requested_ref_a": ref_a, "requested_ref_b": ref_b,
             "scope": "Played moves only; PV, candidate moves and search trees are excluded.",
             "sources": sources,
@@ -138,7 +142,7 @@ def main():
     parser.add_argument("--ref-b")
     args = parser.parse_args()
     result = archive(args.input, args.output_dir, args.run_id, args.ref_a, args.ref_b)
-    print(json.dumps({k: result[k] for k in ("games", "plies", "scored_plies", "missing_score_plies", "archive_bytes", "archive_sha256")}, ensure_ascii=False))
+    print(json.dumps({k: result[k] for k in ("games", "plies", "scored_plies", "missing_score_plies", "ambiguous_score_plies", "archive_bytes", "archive_sha256")}, ensure_ascii=False))
 
 
 if __name__ == "__main__":

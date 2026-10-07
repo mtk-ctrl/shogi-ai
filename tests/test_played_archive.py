@@ -51,6 +51,27 @@ class PlayedArchiveTest(unittest.TestCase):
                 module.archive([source], Path(directory) / "out")
             self.assertFalse((Path(directory) / "out/played-games.jsonl.gz").exists())
 
+    def test_legacy_mixed_scores_are_preserved_and_separate_from_missing(self):
+        import gzip
+        with tempfile.TemporaryDirectory() as directory:
+            source = self.source(directory)
+            data = json.loads(source.read_text())
+            data["details"][0]["move_records"][0]["search"].update(score_mate_stm=3, score_black_mate=3)
+            data["details"][0]["move_records"][1]["search"].update(score_cp_stm=None, score_mate_stm=None)
+            source.write_text(json.dumps(data))
+            result = module.archive([source], Path(directory) / "out")
+            with gzip.open(Path(directory) / "out/played-games.jsonl.gz", "rt") as stream:
+                game = json.loads(stream.readline())
+            mixed = game["moves"][0]["search"]
+            self.assertEqual(mixed["score_status"], "ambiguous")
+            self.assertEqual(mixed["score_cp_stm"], 120)
+            self.assertEqual(mixed["score_mate_stm"], 3)
+            self.assertEqual(game["moves"][1]["search"]["score_status"], "not_recorded")
+            self.assertEqual(result["ambiguous_score_plies"], 1)
+            self.assertEqual(result["missing_score_plies"], 1)
+            self.assertEqual(result["scored_plies"], 0)
+        self.assertEqual(module.clean_search({"score_cp_stm": 0})["score_status"], "recorded")
+
 
 if __name__ == "__main__":
     unittest.main()

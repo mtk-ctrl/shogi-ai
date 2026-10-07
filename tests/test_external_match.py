@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import importlib.util
 import json
+import queue
 import sys
 import tempfile
 import unittest
@@ -22,6 +23,31 @@ levels_spec.loader.exec_module(external_levels)
 
 
 class ExternalMatchTest(unittest.TestCase):
+    def test_latest_score_and_opponent_telemetry_boundary(self):
+        for capture in (True, False):
+            reader = external_match.UsiEngine.__new__(external_match.UsiEngine)
+            reader.label = "replay"
+            reader.go_command = "go movetime 200"
+            reader.capture_info = capture
+            reader.send = lambda command: None
+            reader.elapsed = []
+            reader.lines = queue.Queue()
+            for line in (
+                "info depth 2 score cp 120 upperbound pv 7g7f",
+                "info depth 5 score mate -3 pv 7g7f",
+                "info string tt_hits 7",
+                "bestmove 7g7f",
+            ):
+                reader.lines.put(line)
+            self.assertEqual(reader.bestmove([]), "7g7f")
+            if capture:
+                self.assertEqual(reader.last_search["score_mate"], -3)
+                self.assertEqual(reader.last_search["tt_hits"], 7)
+                self.assertNotIn("score_cp", reader.last_search)
+                self.assertNotIn("score_upperbound", reader.last_search)
+            else:
+                self.assertEqual(reader.last_search, {})
+
     def test_parse_option_name(self):
         self.assertEqual(
             external_match.parse_option_name("option name USI_OwnBook type check default true"),

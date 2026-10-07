@@ -1,10 +1,11 @@
 """Regression tests for the match judge, separate from both playing engines."""
 import sys
+import queue
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import shogi
-from benchmarks.arena import (Adjudicator, can_declare_win, play_game,
-                              parse_info_line, compact_search_telemetry)
+from benchmarks.arena import (Adjudicator, Engine, can_declare_win, play_game,
+                              parse_info_line, merge_info_line, compact_search_telemetry)
 
 
 def fixture(pieces, hand="-", turn="b"):
@@ -74,6 +75,41 @@ assert black_view["experience_probes"] == 30
 
 mate = parse_info_line("info depth 5 score mate -3 nodes 99 pv 5a5b")
 assert compact_search_telemetry(mate, shogi.WHITE)["score_black_mate"] == 3
+
+# Exercise the actual multi-line reader: the final score owns its type and
+# bounds, while a separate statistics line must leave that observation intact.
+reader = Engine.__new__(Engine)
+reader.label = "replay"
+reader.go_command = "go movetime 200"
+reader.send = lambda command: None
+reader.elapsed = []
+reader.search_stats = []
+reader.lines = queue.Queue()
+for line in (
+    "info depth 2 score cp 120 upperbound pv 7g7f",
+    "info depth 5 score mate 3 pv 7g7f",
+    "info string tt_hits 7",
+    "bestmove 7g7f",
+):
+    reader.lines.put(line)
+assert reader.bestmove([]) == "7g7f"
+record = compact_search_telemetry(reader.last_search, shogi.BLACK)
+assert record["score_mate_stm"] == 3 and record["tt_hits"] == 7
+assert "score_cp_stm" not in record and "score_upperbound" not in record
+for line in (
+    "info depth 6 score mate -5 lowerbound pv 7g7f",
+    "info depth 7 score cp -20 pv 7g7f",
+    "bestmove 7g7f",
+):
+    reader.lines.put(line)
+reader.bestmove([])
+assert reader.last_search["score_cp"] == -20
+assert "score_mate" not in reader.last_search and "score_lowerbound" not in reader.last_search
+merge_info_line(reader.last_search, "info depth 8 score cp 0 lowerbound pv 7g7f")
+merge_info_line(reader.last_search, "info string nodes 99")
+assert reader.last_search["score_cp"] == 0 and reader.last_search["score_lowerbound"]
+merge_info_line(reader.last_search, "info depth 9 score cp 10 upperbound pv 7g7f")
+assert reader.last_search["score_upperbound"] and "score_lowerbound" not in reader.last_search
 
 
 class FakeEngine:

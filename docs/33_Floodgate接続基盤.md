@@ -90,7 +90,7 @@ Book / ExperienceについてはH10が優先する。
 現行 `tools/floodgate/client.py` には保留前の既存実装として `OpeningBook=true`、`ExperienceCache=true`、ログ上の `experience_eligible=true` が残っているが、これは**既存挙動の記録であって、外部対局由来Experienceを今後も保存するという正式方針ではない**。
 
 H10確定前に実参戦する場合は、使用したBook / ExperienceのON/OFF・ファイル・初期状態を明示して記録する。
-外部対局由来Experienceの保存可否、自動継続利用、世代管理は本書では決めない。
+外部AI対局の雲路自身の探索結果を局面知識の候補に含める出所判断はR50で確定した。旧Experienceへの投入、自動継続利用、世代管理はH10の未決部分に従う。上記の既存挙動全体を正式方針として追認したとはしない。
 
 ## 秘密情報
 
@@ -155,7 +155,7 @@ Engine世代ごとにFloodgateコードを複製しない。
 - CSA/USIの通常手、成り、駒打ち変換を単体試験できる
 - Game_Summaryの300秒+10秒incrementを解釈できる
 - サーバ報告の消費時間から時計を更新できる
-- Book / Experienceの実行条件を記録できる。外部対局由来Experienceの保存可否はH10の保留を維持する
+- Book / Experienceの実行条件を記録できる。外部対局の雲路自身の探索結果は知識候補の対象（R50）とし、旧Experienceへの投入・自動継続利用等はH10の未決部分に従う
 - `--live` なしではネット接続しない
 - tripをコード・設定ファイル・GitHubへ保存しない
 - CIでFloodgate関連テストを実行する
