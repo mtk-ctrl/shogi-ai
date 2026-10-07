@@ -1,0 +1,259 @@
+name: Generic Engine Match
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref_a:
+        description: "Candidate ref/branch/SHA"
+        required: true
+        default: "main"
+        type: string
+      ref_b:
+        description: "Baseline ref/branch/SHA, or BASELINE_FILE"
+        required: true
+        default: "BASELINE_FILE"
+        type: string
+      games:
+        description: "Total games"
+        required: true
+        default: "100"
+        type: string
+      shards:
+        description: "Parallel jobs; set to currently available runners per R21"
+        required: true
+        default: "1"
+        type: string
+      go_command:
+        description: "Equal USI go command"
+        required: true
+        default: "go movetime 200"
+        type: string
+      max_plies:
+        description: "Maximum plies per game"
+        required: true
+        default: "300"
+        type: string
+      seed:
+        description: "Base arena seed"
+        required: true
+        default: "2026100700"
+        type: string
+      options_a:
+        description: "JSON USI options for A"
+        required: true
+        default: '{"OpeningBook":false,"ExperienceCache":false}'
+        type: string
+      options_b:
+        description: "JSON USI options for B"
+        required: true
+        default: '{"OpeningBook":false,"ExperienceCache":false}'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      ref_b: ${{ steps.plan.outputs.ref_b }}
+    steps:
+      - name: Checkout workflow revision
+        uses: actions/checkout@v5
+
+      - name: Validate inputs and build shard plan
+        id: plan
+        env:
+          REF_B_INPUT: ${{ inputs.ref_b }}
+          GAMES_INPUT: ${{ inputs.games }}
+          SHARDS_INPUT: ${{ inputs.shards }}
+          MAX_PLIES_INPUT: ${{ inputs.max_plies }}
+          SEED_INPUT: ${{ inputs.seed }}
+          OPTIONS_A_INPUT: ${{ inputs.options_a }}
+          OPTIONS_B_INPUT: ${{ inputs.options_b }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+
+          games = int(os.environ["GAMES_INPUT"])
+          shards = int(os.environ["SHARDS_INPUT"])
+          max_plies = int(os.environ["MAX_PLIES_INPUT"])
+          seed = int(os.environ["SEED_INPUT"])
+          if games < 1:
+              raise SystemExit("games must be >= 1")
+          if shards < 1 or shards > 20:
+              raise SystemExit("shards must be between 1 and 20")
+          if max_plies < 1:
+              raise SystemExit("max_plies must be >= 1")
+          shards = min(shards, games)
+          json.loads(os.environ["OPTIONS_A_INPUT"])
+          json.loads(os.environ["OPTIONS_B_INPUT"])
+
+          ref_b = os.environ["REF_B_INPUT"].strip()
+          if ref_b == "BASELINE_FILE":
+              ref_b = Path("benchmarks/baseline_ref.txt").read_text().strip()
+          if not ref_b:
+              raise SystemExit("baseline ref is empty")
+
+          q, r = divmod(games, shards)
+          include = []
+          for i in range(shards):
+              n = q + (1 if i < r else 0)
+              include.append({"shard": i, "games": n, "seed": seed + i * 100000})
+
+          out = Path(os.environ["GITHUB_OUTPUT"])
+          with out.open("a", encoding="utf-8") as f:
+              f.write("matrix=" + json.dumps({"include": include}, separators=(",", ":")) + "\n")
+              f.write("ref_b=" + ref_b + "\n")
+
+          print(f"games={games} shards={shards} ref_b={ref_b}")
+          print("distribution:", [x["games"] for x in include])
+          PY
+
+  build:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.ref_a }}
+          path: engine-a-src
+
+      - name: Checkout baseline
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.plan.outputs.ref_b }}
+          path: engine-b-src
+
+      - name: Build both engines
+        run: |
+          mkdir -p build
+          (cd engine-a-src && python3 scripts/build.py --output "$GITHUB_WORKSPACE/build/engine-a")
+          (cd engine-b-src && python3 scripts/build.py --output "$GITHUB_WORKSPACE/build/engine-b")
+          sha256sum build/engine-a build/engine-b
+
+      - name: Package binaries
+        run: tar -czf engine-binaries.tgz build/engine-a build/engine-b
+
+      - name: Upload binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: generic-engine-binaries-${{ github.run_id }}
+          path: engine-binaries.tgz
+          if-no-files-found: error
+
+  match:
+    needs: [plan, build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - name: Checkout match harness
+        uses: actions/checkout@v5
+        with:
+          path: harness
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Download engines
+        uses: actions/download-artifact@v4
+        with:
+          name: generic-engine-binaries-${{ github.run_id }}
+
+      - name: Extract engines
+        run: |
+          tar -xzf engine-binaries.tgz
+          chmod +x build/engine-a build/engine-b
+
+      - name: Run shard
+        env:
+          OPTIONS_A: ${{ inputs.options_a }}
+          OPTIONS_B: ${{ inputs.options_b }}
+          GO_COMMAND: ${{ inputs.go_command }}
+          MAX_PLIES: ${{ inputs.max_plies }}
+          SHARD_GAMES: ${{ matrix.games }}
+          SHARD_SEED: ${{ matrix.seed }}
+        run: |
+          mkdir -p results
+          python3 harness/benchmarks/arena.py             --engine-a build/engine-a             --engine-b build/engine-b             --options-a "$OPTIONS_A"             --options-b "$OPTIONS_B"             --games "$SHARD_GAMES"             --max-plies "$MAX_PLIES"             --seed "$SHARD_SEED"             --go-command "$GO_COMMAND"             --output "results/shard-${{ matrix.shard }}.json"
+
+      - name: Upload shard
+        uses: actions/upload-artifact@v4
+        with:
+          name: generic-engine-match-${{ github.run_id }}-${{ matrix.shard }}
+          path: results/shard-${{ matrix.shard }}.json
+          if-no-files-found: error
+
+  aggregate:
+    needs: [plan, match]
+    if: always() && needs.match.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Download shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: generic-engine-match-${{ github.run_id }}-*
+          path: results
+          merge-multiple: true
+
+      - name: Aggregate
+        env:
+          REF_A: ${{ inputs.ref_a }}
+          REF_B: ${{ needs.plan.outputs.ref_b }}
+          GO_COMMAND: ${{ inputs.go_command }}
+          OPTIONS_A: ${{ inputs.options_a }}
+          OPTIONS_B: ${{ inputs.options_b }}
+        run: |
+          python3 - <<'PY'
+          import json, math, os
+          from pathlib import Path
+
+          rows=[json.loads(p.read_text()) for p in sorted(Path("results").glob("shard-*.json"))]
+          if not rows:
+              raise SystemExit("no shard results")
+          games=sum(r["games"] for r in rows)
+          wa=sum(r["wins_a"] for r in rows)
+          wb=sum(r["wins_b"] for r in rows)
+          draws=sum(r["draws"] for r in rows)
+          illegal=sum(r.get("illegal_games",0) for r in rows)
+          avg=sum(r["average_plies"]*r["games"] for r in rows)/games
+          score=(wa+0.5*draws)/games
+          se=math.sqrt(max(score*(1-score),0)/games)
+          lo=max(0.0, score-1.96*se)
+          hi=min(1.0, score+1.96*se)
+          out={
+              "ref_a":os.environ["REF_A"],"ref_b":os.environ["REF_B"],
+              "go_command":os.environ["GO_COMMAND"],
+              "options_a":json.loads(os.environ["OPTIONS_A"]),
+              "options_b":json.loads(os.environ["OPTIONS_B"]),
+              "games":games,"wins_a":wa,"draws":draws,"wins_b":wb,
+              "score_a":score,"score_a_approx_95pct":[lo,hi],
+              "average_plies":avg,"illegal_games":illegal,"shards":len(rows),
+          }
+          Path("aggregate.json").write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n")
+          with open(os.environ["GITHUB_STEP_SUMMARY"],"a",encoding="utf-8") as f:
+              f.write("# Generic Engine Match\n\n")
+              f.write(f"- A: {out['ref_a']}\n- B: {out['ref_b']}\n")
+              f.write(f"- condition: {out['go_command']}\n")
+              f.write(f"- result: **{wa}-{draws}-{wb}**, score(A) **{score:.1%}**\n")
+              f.write(f"- approximate 95% score interval: **{lo:.1%}–{hi:.1%}**\n")
+              f.write(f"- games / shards: **{games} / {len(rows)}**\n")
+              f.write(f"- illegal games: **{illegal}**\n")
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Upload aggregate
+        uses: actions/upload-artifact@v4
+        with:
+          name: generic-engine-match-summary-${{ github.run_id }}
+          path: aggregate.json
+          if-no-files-found: error

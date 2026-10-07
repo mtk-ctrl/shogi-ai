@@ -51,3 +51,14 @@ authority: non-normative
 - `docs/hold/source/22_自前棋譜小規模定跡.md`
 - `docs/archive/pre-router/NIGHTLY_RESEARCH_SYSTEM.md`
 - `docs/archive/pre-router/23_外部エンジン対局基盤.md`
+
+
+## Workflowの保留
+Book / Experienceの実装方針に依存するGitHub Actions workflowは、誤実行を防ぐため `docs/hold/workflows/` へ退避している。
+ここへ移したYAMLはGitHub Actionsから自動・手動実行されない。
+
+特に、旧 `nightly-book-learning.yml` と旧 `nightly-research.yml` のscheduleは現在停止している。
+これはBook / Experienceの結論を意味せず、未決の方針でmainや学習資産を自動更新しないための一時凍結である。
+
+旧External Engine BenchmarkのFull-engineモードも、Book / Experienceを利用する部分だけ旧版を `docs/hold/workflows/external-engine-benchmark-legacy.yml` に保存した。
+現役のExternal Engine BenchmarkはCore条件のみを扱う。
