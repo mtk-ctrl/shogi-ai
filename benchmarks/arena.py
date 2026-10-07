@@ -62,9 +62,7 @@ SEARCH_STAT_NAMES = (
     "leaves", "terminals", "ply1", "ply2", "ply3",
     "order_calls", "ordered_moves", "tt_probes", "tt_hits",
     "tt_exact_hits", "tt_bound_cutoffs", "tt_stores", "tt_replacements",
-    "tt_move_first", "tt_disabled_repetition", "experience_probes",
-    "experience_hits", "experience_move_first", "experience_stores",
-    "experience_replacements", "experience_disabled_repetition",
+    "tt_move_first", "tt_disabled_repetition",
     "knowledge_probes", "knowledge_hits", "knowledge_promotions",
     "knowledge_disabled_repetition",
     "qnodes", "qcutoffs", "qlimit_leaves",
@@ -77,7 +75,6 @@ USI_INFO_INTEGER_NAMES = (
 PER_MOVE_SEARCH_FIELDS = (
     "depth", "seldepth", "time", "nodes", "nps",
     "full_nodes", "cutoffs", "tt_probes", "tt_hits",
-    "experience_probes", "experience_hits",
     "knowledge_probes", "knowledge_hits", "knowledge_promotions",
     "qnodes", "qcutoffs",
 )
@@ -377,9 +374,6 @@ def search_summary(engine):
             summary[name + "_total"] = sum(values)
     if summary.get("tt_probes_total"):
         summary["tt_hit_rate"] = summary.get("tt_hits_total", 0) / summary["tt_probes_total"]
-    if summary.get("experience_probes_total"):
-        summary["experience_hit_rate"] = (
-            summary.get("experience_hits_total", 0) / summary["experience_probes_total"])
     if summary.get("knowledge_probes_total"):
         summary["knowledge_hit_rate"] = (
             summary.get("knowledge_hits_total", 0) / summary["knowledge_probes_total"])
@@ -425,10 +419,6 @@ def main():
     for options in (options_a, options_b):
         if not isinstance(options, dict) or any("\n" in str(k) + str(v) or "\r" in str(k) + str(v) for k, v in options.items()):
             raise SystemExit("options must be JSON objects without newlines")
-        # Production engines may enable long-lived experience by default, but
-        # controlled benchmarks must stay cold/reproducible unless a test
-        # explicitly opts into ExperienceCache.
-        options.setdefault("ExperienceCache", "false")
         options.setdefault("PositionKnowledge", "true")
         options.setdefault("PositionKnowledgeFile", "position-knowledge-v1.tsv")
     knowledge_meta = {
@@ -506,10 +496,6 @@ def main():
             if "tt_hits_total" in stats:
                 extra += (f", tt={stats['tt_hits_total']}/{stats.get('tt_probes_total', 0)}"
                           f" ({stats.get('tt_hit_rate', 0):.1%})")
-            if "experience_hits_total" in stats:
-                extra += (f", experience={stats['experience_hits_total']}/"
-                          f"{stats.get('experience_probes_total', 0)}"
-                          f" ({stats.get('experience_hit_rate', 0):.1%})")
             print(f"{engine.label} search: {stats['nodes_total']} nodes, "
                   f"cutoffs={stats.get('cutoffs_total', 0)}{extra}")
     if illegal:

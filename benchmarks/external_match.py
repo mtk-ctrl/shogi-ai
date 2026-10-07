@@ -2,7 +2,7 @@
 """Run shogi-ai against an arbitrary external USI engine.
 
 This runner is deliberately separated from benchmarks/arena.py and from the
-self-play corpus used by opening-book / learning pipelines. External games are
+self-play corpus used by learning pipelines. External games are
 benchmark evidence only: opponent scores, PVs and choices are never fed back
 into shogi-ai.
 """
@@ -315,7 +315,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--self-engine", required=True)
     parser.add_argument("--opponent-engine", required=True)
-    parser.add_argument("--self-options", default='{"ExperienceCache":"false","OpeningBook":"false"}')
+    parser.add_argument("--self-options", default="{}")
     parser.add_argument("--opponent-options", default="{}")
     parser.add_argument("--self-go", default="go movetime 50")
     parser.add_argument("--opponent-go", default="go nodes 300")
@@ -368,15 +368,11 @@ def main() -> None:
         "telemetry_schema_version": 1,
         "learning_eligible": False,
         "diagnosis_eligible": True,
-        "opening_book_eligible": False,
-        "experience_eligible": usi_value(self_options.get("ExperienceCache", False)).lower() == "true",
         "policy": {
             "purpose": "strength measurement only",
             "opponent_scores_and_pv_ignored": True,
             "self_search_telemetry_recorded": True,
             "opponent_games_must_not_feed_training": True,
-            "opponent_games_must_not_feed_opening_book": True,
-            "self_authored_experience_may_persist": usi_value(self_options.get("ExperienceCache", False)).lower() == "true",
         },
         "self_engine": self_engine.metadata(),
         "opponent_engine": opponent.metadata(),
