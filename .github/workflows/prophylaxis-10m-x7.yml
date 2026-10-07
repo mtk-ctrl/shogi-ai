@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: prophylaxis-10m-x7-\${{ github.ref }}
+  group: prophylaxis-10m-x7-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -28,7 +28,7 @@ jobs:
         run: tar -czf kumoji.tgz build/kumoji
       - uses: actions/upload-artifact@v4
         with:
-          name: prophylaxis-10m-engine-\${{ github.run_id }}
+          name: prophylaxis-10m-engine-${{ github.run_id }}
           path: kumoji.tgz
           if-no-files-found: error
 
@@ -47,7 +47,7 @@ jobs:
         run: python3 -m pip install python-shogi==1.1.1
       - uses: actions/download-artifact@v4
         with:
-          name: prophylaxis-10m-engine-\${{ github.run_id }}
+          name: prophylaxis-10m-engine-${{ github.run_id }}
       - name: Extract engine
         run: |
           tar -xzf kumoji.tgz
@@ -58,18 +58,18 @@ jobs:
           python3 tools/research/prophylaxis_10m_research.py \
             --engine build/kumoji \
             --fixture benchmarks/fixtures/eval-gap-30s-12.json \
-            --source-index "\${{ matrix.source_index }}" \
+            --source-index "${{ matrix.source_index }}" \
             --movetime-ms 600000 \
-            --output "build/prophylaxis-10m/result-\${{ matrix.source_index }}.json" \
-            --markdown-output "build/prophylaxis-10m/summary-\${{ matrix.source_index }}.md"
+            --output "build/prophylaxis-10m/result-${{ matrix.source_index }}.json" \
+            --markdown-output "build/prophylaxis-10m/summary-${{ matrix.source_index }}.md"
       - name: Show per-position summary
-        run: cat "build/prophylaxis-10m/summary-\${{ matrix.source_index }}.md" >> "$GITHUB_STEP_SUMMARY"
+        run: cat "build/prophylaxis-10m/summary-${{ matrix.source_index }}.md" >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         with:
-          name: prophylaxis-10m-\${{ github.run_id }}-\${{ matrix.source_index }}
+          name: prophylaxis-10m-${{ github.run_id }}-${{ matrix.source_index }}
           path: |
-            build/prophylaxis-10m/result-\${{ matrix.source_index }}.json
-            build/prophylaxis-10m/summary-\${{ matrix.source_index }}.md
+            build/prophylaxis-10m/result-${{ matrix.source_index }}.json
+            build/prophylaxis-10m/summary-${{ matrix.source_index }}.md
           retention-days: 30
           if-no-files-found: error
 
@@ -80,7 +80,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          pattern: prophylaxis-10m-\${{ github.run_id }}-*
+          pattern: prophylaxis-10m-${{ github.run_id }}-*
           path: build/prophylaxis-10m
           merge-multiple: true
       - name: Aggregate seven positions
@@ -138,7 +138,7 @@ jobs:
         run: cat build/prophylaxis-10m/aggregate.md >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         with:
-          name: prophylaxis-10m-aggregate-\${{ github.run_id }}
+          name: prophylaxis-10m-aggregate-${{ github.run_id }}
           path: |
             build/prophylaxis-10m/aggregate.json
             build/prophylaxis-10m/aggregate.md
