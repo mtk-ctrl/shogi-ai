@@ -1,0 +1,144 @@
+name: Research Safety Diagnosis v2
+
+on:
+  push:
+    branches:
+      - research/safety-diagnosis-v2
+    paths:
+      - "engine/main.cpp"
+      - "engine/strategy/**"
+      - "tests/test_eval_usi.py"
+      - "tools/research/safety_diagnosis_v2.py"
+      - ".github/workflows/safety-diagnosis-v2.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: Build KUMOJI v2
+        run: python3 scripts/build.py --output build/kumoji
+      - name: Verify Evaluation-v2 USI and Safety breakdown
+        run: python3 tests/test_eval_usi.py build/kumoji
+      - name: Package engine
+        run: tar -czf kumoji-v2.tgz build/kumoji
+      - uses: actions/upload-artifact@v4
+        with:
+          name: safety-diagnosis-engine-${{ github.run_id }}
+          path: kumoji-v2.tgz
+          if-no-files-found: error
+
+  selfplay:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: safety-diagnosis-engine-${{ github.run_id }}
+      - name: Extract engine
+        run: |
+          tar -xzf kumoji-v2.tgz
+          chmod +x build/kumoji
+      - name: Generate fixed-200ms self-play records
+        env:
+          SHARD: ${{ matrix.shard }}
+        run: |
+          seed=$((2026100700 + SHARD * 100000))
+          mkdir -p build/safety-diagnosis
+          python3 benchmarks/arena.py \
+            --engine-a build/kumoji \
+            --engine-b build/kumoji \
+            --options-a '{"OpeningBook":false,"ExperienceCache":false,"AdaptiveLongThink":false}' \
+            --options-b '{"OpeningBook":false,"ExperienceCache":false,"AdaptiveLongThink":false}' \
+            --games 5 \
+            --max-plies 220 \
+            --seed "$seed" \
+            --go-command "go movetime 200" \
+            --output "build/safety-diagnosis/selfplay-${SHARD}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: safety-diagnosis-selfplay-${{ github.run_id }}-${{ matrix.shard }}
+          path: build/safety-diagnosis/selfplay-${{ matrix.shard }}.json
+          if-no-files-found: error
+
+  diagnose:
+    needs: selfplay
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: safety-diagnosis-engine-${{ github.run_id }}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: safety-diagnosis-selfplay-${{ github.run_id }}-*
+          path: build/safety-diagnosis/shards
+          merge-multiple: true
+      - name: Extract engine
+        run: |
+          tar -xzf kumoji-v2.tgz
+          chmod +x build/kumoji
+      - name: Merge raw match records
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          paths=sorted(Path("build/safety-diagnosis/shards").glob("selfplay-*.json"))
+          if len(paths) != 4:
+              raise SystemExit(f"expected 4 shard records, got {len(paths)}")
+          rows=[json.loads(p.read_text(encoding="utf-8")) for p in paths]
+          base=dict(rows[0])
+          base["games"]=sum(r["games"] for r in rows)
+          base["wins_a"]=sum(r["wins_a"] for r in rows)
+          base["wins_b"]=sum(r["wins_b"] for r in rows)
+          base["draws"]=sum(r["draws"] for r in rows)
+          base["score_a"]=(base["wins_a"]+0.5*base["draws"])/base["games"]
+          base["average_plies"]=sum(r["average_plies"]*r["games"] for r in rows)/base["games"]
+          base["elapsed_seconds"]=sum(r["elapsed_seconds"] for r in rows)
+          base["illegal_games"]=sum(r["illegal_games"] for r in rows)
+          base["details"]=[g for r in rows for g in r["details"]]
+          base["merged_shards"]=len(rows)
+          Path("build/safety-diagnosis/selfplay.json").write_text(
+              json.dumps(base,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          print(f"merged {base['games']} games; details={len(base['details'])}")
+          PY
+      - name: Diagnose suspicious quiet positions
+        run: |
+          python3 tools/research/safety_diagnosis_v2.py \
+            --engine build/kumoji \
+            --input build/safety-diagnosis/selfplay.json \
+            --output build/safety-diagnosis/diagnosis.json \
+            --markdown-output build/safety-diagnosis/summary.md \
+            --deep-ms 1000 \
+            --candidates 24 \
+            --min-ply 12
+      - name: Show summary
+        run: cat build/safety-diagnosis/summary.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: safety-diagnosis-v2-${{ github.run_id }}
+          path: |
+            build/safety-diagnosis/selfplay.json
+            build/safety-diagnosis/diagnosis.json
+            build/safety-diagnosis/summary.md
+          retention-days: 30
+          if-no-files-found: error
