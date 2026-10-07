@@ -171,6 +171,27 @@ def usi_value(value):
     return str(value)
 
 
+def position_knowledge_metadata(options):
+    enabled = usi_value(options.get("PositionKnowledge", True)).lower() == "true"
+    path = Path(str(options.get("PositionKnowledgeFile", "position-knowledge-v1.tsv")))
+    meta = {"enabled": enabled, "file": str(path)}
+    if not enabled:
+        return meta
+    if not path.is_file():
+        meta["available"] = False
+        return meta
+    raw = path.read_bytes()
+    meta.update(
+        available=True,
+        sha256=hashlib.sha256(raw).hexdigest(),
+        positions=sum(
+            1 for line in raw.decode("utf-8").splitlines()
+            if line.strip() and not line.startswith("#")
+        ),
+    )
+    return meta
+
+
 class Engine:
     RESPONSE_TIMEOUT = 30
 
@@ -408,6 +429,12 @@ def main():
         # controlled benchmarks must stay cold/reproducible unless a test
         # explicitly opts into ExperienceCache.
         options.setdefault("ExperienceCache", "false")
+        options.setdefault("PositionKnowledge", "true")
+        options.setdefault("PositionKnowledgeFile", "position-knowledge-v1.tsv")
+    knowledge_meta = {
+        "A": position_knowledge_metadata(options_a),
+        "B": position_knowledge_metadata(options_b),
+    }
     a = Engine(args.engine_a, "A", options_a, args.go_command)
     b = Engine(args.engine_b, "B", options_b, args.go_command)
     started = time.monotonic()
@@ -456,6 +483,7 @@ def main():
                                "max": round(1000 * max(e.elapsed), 3) if e.elapsed else 0}
                       for e in (a, b)},
         "search": {e.label: search_summary(e) for e in (a, b)},
+        "position_knowledge": knowledge_meta,
         "details": games,
     }
     out = Path(args.output)
