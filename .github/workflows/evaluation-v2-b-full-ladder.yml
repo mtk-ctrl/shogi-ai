@@ -1,11 +1,6 @@
 name: Evaluation V2 Full Ladder Book Experience
 
 on:
-  push:
-    branches:
-      - research/evaluation-v2-challenger
-    paths:
-      - ".github/workflows/evaluation-v2-b-full-ladder.yml"
   workflow_dispatch:
 
 permissions:
@@ -43,9 +38,9 @@ jobs:
     timeout-minutes: 90
     strategy:
       fail-fast: false
-      max-parallel: 6
       matrix:
         level: [40, 45, 48, 49, 50, 55]
+        lane: [0, 1, 2, 3]
     steps:
       - uses: actions/checkout@v5
       - run: python3 -m pip install python-shogi==1.1.1
@@ -53,7 +48,7 @@ jobs:
         with:
           name: full-ladder-runtime
           path: build/runtime
-      - name: Run 100 games at level
+      - name: Run 25 games in one persistent Experience lane
         shell: bash
         run: |
           set -euo pipefail
@@ -61,14 +56,13 @@ jobs:
           YANE="$(find build/runtime -type f -name YaneuraOu-by-gcc | head -1)"
           chmod +x "$ENGINE" "$YANE"
           LEVEL="${{ matrix.level }}"
+          LANE="${{ matrix.lane }}"
           NODES="$(python3 benchmarks/external_levels.py --level "$LEVEL" --nodes-only)"
-          mkdir -p "build/L$LEVEL"
-          pids=()
-          for lane in 0 1 2 3; do
-            EXP="build/L$LEVEL/experience-lane$lane.bin"
-            OUT="build/L$LEVEL/lane$lane.json"
-            SEED=$((2026107000 + LEVEL * 100 + lane * 25))
-            SELF_OPTIONS="$(python3 - "$EXP" <<'PY'
+          mkdir -p "build/L$LEVEL/lane$LANE"
+          EXP="build/L$LEVEL/lane$LANE/experience.bin"
+          OUT="build/L$LEVEL/lane$LANE/result.json"
+          SEED=$((2026107000 + LEVEL * 100 + LANE * 25))
+          SELF_OPTIONS="$(python3 - "$EXP" <<'PY'
           import json,sys
           print(json.dumps({
             "EvalV2":True,"EvalMaterialWeight":100,"EvalSafety":500,
@@ -81,43 +75,18 @@ jobs:
           },separators=(",",":")))
           PY
           )"
-            python3 benchmarks/external_match.py \
-              --self-engine "$ENGINE" --opponent-engine "$YANE" \
-              --self-options "$SELF_OPTIONS" \
-              --opponent-options '{"Threads":1,"USI_Hash":16,"USI_OwnBook":false}' \
-              --self-go "go movetime 200" --opponent-go "go nodes $NODES" \
-              --games 25 --max-plies 300 --seed "$SEED" --output "$OUT" \
-              > "build/L$LEVEL/lane$lane.log" 2>&1 &
-            pids+=("$!")
-          done
-          failed=0
-          for pid in "${pids[@]}"; do wait "$pid" || failed=1; done
-          if [[ "$failed" != 0 ]]; then cat "build/L$LEVEL"/lane*.log; exit 1; fi
-      - name: Summarize level
-        run: |
-          python3 - "${{ matrix.level }}" <<'PY'
-          import json,math,sys
-          from pathlib import Path
-          lv=int(sys.argv[1]); root=Path(f"build/L{lv}")
-          ds=[json.loads(p.read_text()) for p in sorted(root.glob("lane*.json"))]
-          assert len(ds)==4
-          n=sum(d["games"] for d in ds); w=sum(d["wins_self"] for d in ds)
-          dr=sum(d["draws"] for d in ds); l=sum(d["losses_self"] for d in ds)
-          s=(w+0.5*dr)/n; se=math.sqrt(max(s*(1-s),1e-12)/n)
-          out={"level":lv,"games":n,"wins_self":w,"draws":dr,"losses_self":l,
-               "score_self":s,"score_self_ci95_normal":[max(0,s-1.96*se),min(1,s+1.96*se)],
-               "illegal_games":sum(d.get("illegal_games",0) for d in ds),
-               "options":ds[0]["self_engine"].get("options",{}),
-               "experience_files":[p.name for p in sorted(root.glob("experience-lane*.bin"))]}
-          (root/"summary.json").write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n")
-          print(json.dumps(out,ensure_ascii=False,indent=2))
-          if out["illegal_games"]: raise SystemExit("illegal game detected")
-          PY
+          python3 benchmarks/external_match.py \
+            --self-engine "$ENGINE" --opponent-engine "$YANE" \
+            --self-options "$SELF_OPTIONS" \
+            --opponent-options '{"Threads":1,"USI_Hash":16,"USI_OwnBook":false}' \
+            --self-go "go movetime 200" --opponent-go "go nodes $NODES" \
+            --games 25 --max-plies 300 --seed "$SEED" --output "$OUT"
+
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: full-ladder-L${{ matrix.level }}
-          path: build/L${{ matrix.level }}
+          name: full-ladder-L${{ matrix.level }}-lane${{ matrix.lane }}
+          path: build/L${{ matrix.level }}/lane${{ matrix.lane }}
           if-no-files-found: error
           retention-days: 180
 
@@ -134,22 +103,36 @@ jobs:
       - name: Aggregate
         run: |
           python3 - <<'PY'
-          import json
+          import json,math
           from pathlib import Path
-          levels=[40,45,48,49,50,55]; rows={}
-          for p in Path("build/all").rglob("summary.json"):
-              d=json.loads(p.read_text()); rows[d["level"]]=d
-          missing=[x for x in levels if x not in rows]
-          if missing: raise SystemExit(f"missing levels: {missing}")
+          levels=[40,45,48,49,50,55]
+          all_docs=[json.loads(p.read_text()) for p in Path("build/all").rglob("result.json")]
           lines=["# KUMOJI v2 Book+Experience ladder","",
-                 "- 100 games/level","- OpeningBook ON","- ExperienceCache ON + persisted",
+                 "- 100 games/level","- 4 persistent Experience lanes × 25 games/level",
+                 "- OpeningBook ON","- ExperienceCache ON + persisted",
+                 "- runner policy: one lane per Actions job; no max-parallel cap; GitHub fills all currently free runner slots",
                  "- go movetime 200 + AdaptiveLongThink ON","",
                  "| Level | W-D-L | score | 95% CI |","|---:|---:|---:|---:|"]
           payload={"levels":levels,"games_per_level":100,"results":{}}
           for lv in levels:
-              d=rows[lv]; lo,hi=d["score_self_ci95_normal"]
-              lines.append(f"| {lv} | {d['wins_self']}-{d['draws']}-{d['losses_self']} | {d['score_self']:.1%} | {lo:.1%}–{hi:.1%} |")
-              payload["results"][str(lv)]=d
+              ds=[d for d in all_docs if int(d["self_engine"]["options"].get("EvalSafety","0"))==500 and d["games"]==25 and f"level{lv:03d}" in str(d.get("output",""))]
+              if not ds:
+                  # Artifact path, not result payload, identifies level; recover via parent names.
+                  ds=[]
+                  for p in Path("build/all").rglob("result.json"):
+                      if f"L{lv}-lane" in str(p):
+                          ds.append(json.loads(p.read_text()))
+              if len(ds)!=4: raise SystemExit(f"L{lv}: expected 4 lanes, got {len(ds)}")
+              n=sum(d["games"] for d in ds); w=sum(d["wins_self"] for d in ds)
+              dr=sum(d["draws"] for d in ds); l=sum(d["losses_self"] for d in ds)
+              illegal=sum(d.get("illegal_games",0) for d in ds)
+              s=(w+0.5*dr)/n; se=math.sqrt(max(s*(1-s),1e-12)/n)
+              lo=max(0,s-1.96*se); hi=min(1,s+1.96*se)
+              r={"level":lv,"games":n,"wins_self":w,"draws":dr,"losses_self":l,
+                 "score_self":s,"score_self_ci95_normal":[lo,hi],"illegal_games":illegal}
+              payload["results"][str(lv)]=r
+              lines.append(f"| {lv} | {w}-{dr}-{l} | {s:.1%} | {lo:.1%}–{hi:.1%} |")
+              if illegal: raise SystemExit(f"L{lv}: illegal games={illegal}")
           Path("build/full-ladder-summary.md").write_text("\n".join(lines)+"\n")
           Path("build/full-ladder-analysis.json").write_text(json.dumps(payload,ensure_ascii=False,indent=2)+"\n")
           print("\n".join(lines))
