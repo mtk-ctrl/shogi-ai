@@ -18,7 +18,7 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 
 ## 一時比較・研究の整理
 
-v2対v1比較、固定v2.0.0の300局自己対局・60局面研究、その追加監査の研究workflowは終了済み（2026-10-08確認）。結果はR25・docs/28・29・35に従い、研究原記録と小さな局面知識を分離して保存する。独自の長文報告を正本にしない。現在、一時workflow `store-v2-position-research.yml` で当該研究結果を月別データReleaseへ移送・hash確認中であり、完了後に削除する。
+v2対v1比較、固定v2.0.0の300局自己対局・60局面研究、その追加監査の研究workflowは終了済み（2026-10-08確認）。当該300局・研究記録・局面知識はR25・docs/28・29・35に従って月別データRelease `records-2026-10-01` へ分離保存し、取得後のhash一致まで確認済み。独自の長文監査報告は削除し、追加監査runも正規の研究観測を移送後に削除した。保存用の一時workflowは `docs/archive/workflows/2026-10-08/store-v2-position-research.yml` へ退避済み。
 
 ## HOLD
 Book / Experience / Nightlyの旧workflowは `docs/hold/workflows/` に退避している。
