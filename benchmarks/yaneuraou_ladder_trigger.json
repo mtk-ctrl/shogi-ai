@@ -1,0 +1,19 @@
+{
+  "kppt_levels": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "material_low": 40,
+  "material_high": 60,
+  "probe_games": 20,
+  "final_games": 100,
+  "rationale": "2026-10-07 anchor estimate: KUMOJI is ~MATERIAL L48-49 and ~KPPT L1; KPPT L10 appears only moderately stronger than KUMOJI. Wide 40..60 bracket retained to absorb matchup non-transitivity."
+}
