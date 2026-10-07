@@ -1,0 +1,72 @@
+name: Position Knowledge Refresh
+
+on:
+  push:
+    branches: ["**"]
+    paths:
+      - ".github/position-knowledge-request.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout request revision
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Read request and download candidate asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' > /tmp/request.env
+          import json, shlex
+          r=json.load(open(".github/position-knowledge-request.json",encoding="utf-8"))
+          required=("release_tag","asset","accept_status","min_evidence","request_id")
+          missing=[k for k in required if k not in r]
+          if missing: raise SystemExit(f"missing request fields: {missing}")
+          if not isinstance(r["accept_status"],list) or not r["accept_status"]:
+              raise SystemExit("accept_status must be a non-empty list")
+          print("RELEASE_TAG="+shlex.quote(str(r["release_tag"])))
+          print("ASSET="+shlex.quote(str(r["asset"])))
+          print("MIN_EVIDENCE="+shlex.quote(str(int(r["min_evidence"]))))
+          print("REQUEST_ID="+shlex.quote(str(r["request_id"])))
+          print("ACCEPT_STATUS="+shlex.quote("\n".join(map(str,r["accept_status"]))))
+          PY
+          source /tmp/request.env
+          echo "RELEASE_TAG=$RELEASE_TAG" >> "$GITHUB_ENV"
+          echo "ASSET=$ASSET" >> "$GITHUB_ENV"
+          echo "MIN_EVIDENCE=$MIN_EVIDENCE" >> "$GITHUB_ENV"
+          echo "REQUEST_ID=$REQUEST_ID" >> "$GITHUB_ENV"
+          {
+            echo "ACCEPT_STATUS<<EOF"
+            printf '%s\n' "$ACCEPT_STATUS"
+            echo "EOF"
+          } >> "$GITHUB_ENV"
+          mkdir -p build/knowledge-source
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$ASSET" --dir build/knowledge-source
+
+      - name: Materialize adopted snapshot
+        run: |
+          set -euo pipefail
+          mapfile -t STATUS_ARGS < <(printf '%s\n' "$ACCEPT_STATUS" | sed '/^$/d' | sed 's/^/--accept-status=/' )
+          python3 tools/knowledge/materialize_position_knowledge.py             --input "build/knowledge-source/$ASSET"             --output position-knowledge-v1.tsv             --manifest position-knowledge-v1.manifest.json             --min-evidence "$MIN_EVIDENCE"             --source-label "$RELEASE_TAG/$ASSET"             "${STATUS_ARGS[@]}"
+
+      - name: Commit adopted snapshot to request branch
+        run: |
+          set -euo pipefail
+          git add position-knowledge-v1.tsv position-knowledge-v1.manifest.json
+          if git diff --cached --quiet; then
+            echo "snapshot unchanged"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "knowledge: refresh adopted position snapshot ($REQUEST_ID)"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
