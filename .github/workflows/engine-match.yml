@@ -255,6 +255,9 @@ jobs:
           rows=[json.loads(p.read_text()) for p in sorted(Path("results").glob("shard-*.json"))]
           if not rows:
               raise SystemExit("no shard results")
+          knowledge=rows[0].get("position_knowledge")
+          if any(r.get("position_knowledge") != knowledge for r in rows[1:]):
+              raise SystemExit("position knowledge metadata differs across shards")
           games=sum(r["games"] for r in rows)
           wa=sum(r["wins_a"] for r in rows)
           wb=sum(r["wins_b"] for r in rows)
@@ -273,6 +276,7 @@ jobs:
               "games":games,"wins_a":wa,"draws":draws,"wins_b":wb,
               "score_a":score,"score_a_approx_95pct":[lo,hi],
               "average_plies":avg,"illegal_games":illegal,"shards":len(rows),
+              "position_knowledge":knowledge,
           }
           Path("aggregate.json").write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n")
           with open(os.environ["GITHUB_STEP_SUMMARY"],"a",encoding="utf-8") as f:
@@ -283,6 +287,9 @@ jobs:
               f.write(f"- approximate 95% score interval: **{lo:.1%}–{hi:.1%}**\n")
               f.write(f"- games / shards: **{games} / {len(rows)}**\n")
               f.write(f"- illegal games: **{illegal}**\n")
+              if knowledge:
+                  ka=knowledge.get("A",{})
+                  f.write(f"- position knowledge: **{ka.get('positions','?')} positions**, sha256 `{ka.get('sha256','unavailable')}`\n")
           print(json.dumps(out,ensure_ascii=False,indent=2))
           PY
 
