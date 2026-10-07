@@ -31,9 +31,7 @@
 - 1～3手の攻守MateAssistを通常対局へ統合
 - 専用`go mate`による詰み探索
 - Evaluation-v2候補Bによる多面的静的評価（Material / Safety / Pressure / Activity / Danger / Influence / Potential / Coordination / Hand Potential。Threatは現行OFF）
-- 自前棋譜から作るOpening Book
-- Experience Cache
-- 採用済み局面知識snapshot（root `move_order_hint`、通常対局で毎回ON）
+- 採用済み局面知識（探索開始時の読み順へ反映し、通常対局で毎回利用）
 - 評価値・読み筋・探索統計のUSI出力
 - ShogiDroid2向けAndroid OEX APK
 
@@ -43,8 +41,8 @@
 ## 局面知識
 
 今後は「対局記録・研究記録・局面知識」の構成で進める（2026-10-07本人承認）。原本を出所付きで蓄積し、現在の雲路が対局で使う情報を小さな局面知識へまとめる。定跡はそのうち序盤の手順・分岐を整理した部分である。
-保存と次回対局へ過去の手を優先して読む形で渡す接続仕様は [局面知識の統合設計と即活用](docs/35_局面知識の統合設計と即活用.md) を参照する。新アーカイブからの自動生成・loaderは未実装。
-既存Opening BookとExperience Cacheの実装・互換名は残る。外部AI対局でも、雲路自身が読んだ手・評価は局面知識の候補に含める（2026-10-08本人確認、出所境界の正本はR50）。研究結論の直接利用の具体的基準、旧Experienceへの投入、正式昇格・自動更新等は [H10](docs/hold/H10_Book・Experience方針保留.md) の未決部分に従う。
+保存と次回対局へ過去の手を優先して読む形で渡す接続仕様は [局面知識の統合設計と即活用](docs/35_局面知識の統合設計と即活用.md) を参照する。新しい対局記録から知識候補を自動生成する処理は未実装。
+外部AI対局でも、雲路自身が読んだ手・評価は局面知識の候補に含める（2026-10-08本人確認、出所境界の正本はR50）。新しい局面知識の正式採用・自動更新や、研究結論を直接着手へ使う方式は、別途検証と採用判断を行う。
 
 ## 外部対局 / Floodgate
 
@@ -84,7 +82,6 @@ APK・実機確認・完成版化のRuleは [R60](docs/rules/R60_Android・APK�
 - [33_v2.0.0世代基準](docs/33_v2.0.0世代基準.md) — 評価プロファイルBとv2.0.0採用時の棋力測定
 - [36_v2.0.1長考配分](docs/36_v2.0.1長考配分.md) — 現行版の長考配分と検証
 - [24_多面的評価システム構想](docs/24_多面的評価システム構想.md) — 今後の評価システムの方向
-- [Book・Experience保留](docs/hold/H10_Book・Experience方針保留.md)
 - [v1.0.1完成版記録](journal/2026-10-05_18_雲路KUMOJI_v1.0.1完成版.md)
 - [CHANGELOG](journal/CHANGELOG.md)
 
