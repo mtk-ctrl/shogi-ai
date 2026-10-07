@@ -352,6 +352,8 @@ def main() -> None:
     parser.add_argument("--result-log", type=Path, default=Path("floodgate-results.jsonl"))
     parser.add_argument("--expect-engine-name", default="",
                         help="fail if the USI id name does not exactly match this generation label")
+    parser.add_argument("--clock-probe", action="store_true",
+                        help="in dry-run mode, verify a short btime/wtime search and legal startpos move")
     parser.add_argument("--live", action="store_true",
                         help="actually connect to Floodgate; omitted by default for safety")
     args = parser.parse_args()
@@ -372,6 +374,11 @@ def main() -> None:
         if not args.live:
             print("Floodgate bridge dry-run OK: engine handshake and safe options applied.")
             print(json.dumps(engine.metadata(), ensure_ascii=False, sort_keys=True))
+            if args.clock_probe:
+                engine.new_game()
+                token = engine.bestmove([], "go btime 3000 wtime 3000", 5.0)
+                StartposBoard().usi_to_csa(token, "+")
+                print(f"Floodgate clock probe OK: bestmove {token}")
             print("No network connection was opened. Add --live only for an intentional debut.")
             return
 
