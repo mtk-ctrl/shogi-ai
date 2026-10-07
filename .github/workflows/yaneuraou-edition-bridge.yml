@@ -1,0 +1,165 @@
+name: YaneuraOu Edition Bridge Calibration
+
+on:
+  push:
+    branches:
+      - research/evaluation-v2-challenger
+    paths:
+      - "benchmarks/yaneuraou_ladder_trigger.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  YANEURAOU_REF: c1b80eaa09fe13d5f12b1599d1ae4d53c224de30
+  APERY_WCSC26_URL: https://github.com/HiraokaTakuya/apery/releases/download/WCSC26/apery_wcsc26.zip
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      kppt_levels: ${{ steps.cfg.outputs.kppt_levels }}
+      material_low: ${{ steps.cfg.outputs.material_low }}
+      material_high: ${{ steps.cfg.outputs.material_high }}
+      probe_games: ${{ steps.cfg.outputs.probe_games }}
+      final_games: ${{ steps.cfg.outputs.final_games }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Resolve calibration config
+        id: cfg
+        shell: bash
+        run: |
+          if [ -f benchmarks/yaneuraou_ladder_trigger.json ]; then
+            python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+          p=json.loads(Path("benchmarks/yaneuraou_ladder_trigger.json").read_text())
+          levels=p.get("kppt_levels", list(range(1,11)))
+          assert levels and all(isinstance(x,int) and 1 <= x <= 100 for x in levels)
+          lo=int(p.get("material_low",1)); hi=int(p.get("material_high",100))
+          assert 1 <= lo <= hi <= 100
+          probe=int(p.get("probe_games",20)); final=int(p.get("final_games",100))
+          print("kppt_levels="+json.dumps(levels,separators=(",",":")))
+          print("material_low="+str(lo))
+          print("material_high="+str(hi))
+          print("probe_games="+str(probe))
+          print("final_games="+str(final))
+          PY
+          else
+            echo 'kppt_levels=[1,2,3,4,5,6,7,8,9,10]' >> "$GITHUB_OUTPUT"
+            echo 'material_low=1' >> "$GITHUB_OUTPUT"
+            echo 'material_high=100' >> "$GITHUB_OUTPUT"
+            echo 'probe_games=20' >> "$GITHUB_OUTPUT"
+            echo 'final_games=100' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Fetch pinned YaneuraOu
+        run: |
+          git clone --filter=blob:none https://github.com/yaneurao/YaneuraOu.git external/YaneuraOu
+          git -C external/YaneuraOu checkout "$YANEURAOU_REF"
+
+      - name: Build MATERIAL engine
+        run: |
+          make -C external/YaneuraOu/source clean \
+            COMPILER=g++ TARGET_CPU=SSE42 \
+            YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          make -C external/YaneuraOu/source -j2 tournament \
+            COMPILER=g++ TARGET_CPU=SSE42 \
+            YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          mkdir -p build/runtime
+          cp external/YaneuraOu/source/YaneuraOu-by-gcc build/runtime/yane-material
+
+      - name: Build KPPT engine
+        run: |
+          make -C external/YaneuraOu/source clean \
+            COMPILER=g++ TARGET_CPU=SSE42 \
+            YANEURAOU_EDITION=YANEURAOU_ENGINE_KPPT
+          make -C external/YaneuraOu/source -j2 tournament \
+            COMPILER=g++ TARGET_CPU=SSE42 \
+            YANEURAOU_EDITION=YANEURAOU_ENGINE_KPPT
+          cp external/YaneuraOu/source/YaneuraOu-by-gcc build/runtime/yane-kppt
+          chmod +x build/runtime/yane-material build/runtime/yane-kppt
+
+      - name: Upload engine runtime
+        uses: actions/upload-artifact@v4
+        with:
+          name: yaneuraou-edition-bridge-runtime
+          path: build/runtime
+          if-no-files-found: error
+          retention-days: 14
+
+  calibrate:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        kppt_level: ${{ fromJson(needs.prepare.outputs.kppt_levels) }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: yaneuraou-edition-bridge-runtime
+          path: build/runtime
+
+      - name: Download and install Apery WCSC26 KPPT eval
+        shell: bash
+        run: |
+          curl -L --fail --retry 3 "$APERY_WCSC26_URL" -o build/apery_wcsc26.zip
+          mkdir -p build/runtime/eval
+          python3 - <<'PY'
+          import zipfile
+          from pathlib import Path
+          z=zipfile.ZipFile("build/apery_wcsc26.zip")
+          names=z.namelist()
+          targets=["KK_synthesized.bin","KKP_synthesized.bin","KPP_synthesized.bin"]
+          out=Path("build/runtime/eval")
+          for dest in targets:
+              matches=[n for n in names if Path(n).name.lower()==dest.lower()]
+              if not matches:
+                  raise SystemExit(f"missing {dest}")
+              matches.sort(key=lambda n: ("20160307" not in n, len(n), n))
+              (out/dest).write_bytes(z.read(matches[0]))
+          PY
+          chmod +x build/runtime/yane-material build/runtime/yane-kppt
+
+      - name: Record CPU
+        run: |
+          mkdir -p "build/bridge-L${{ matrix.kppt_level }}"
+          {
+            echo "nproc=$(nproc)"
+            echo "runner_name=$RUNNER_NAME"
+            lscpu
+          } > "build/bridge-L${{ matrix.kppt_level }}/cpu.txt"
+
+      - name: Calibrate KPPT level to MATERIAL
+        run: |
+          python3 benchmarks/yaneuraou_bridge_calibration.py \
+            --material-engine build/runtime/yane-material \
+            --kppt-engine build/runtime/yane-kppt \
+            --kppt-level "${{ matrix.kppt_level }}" \
+            --material-low "${{ needs.prepare.outputs.material_low }}" \
+            --material-high "${{ needs.prepare.outputs.material_high }}" \
+            --probe-games "${{ needs.prepare.outputs.probe_games }}" \
+            --final-games "${{ needs.prepare.outputs.final_games }}" \
+            --output-dir "build/bridge-L${{ matrix.kppt_level }}" \
+            --summary "build/bridge-L${{ matrix.kppt_level }}/summary.json"
+
+      - name: Upload calibration
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: yaneuraou-bridge-kppt-L${{ matrix.kppt_level }}
+          path: "build/bridge-L${{ matrix.kppt_level }}"
+          if-no-files-found: error
+          retention-days: 365
