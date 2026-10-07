@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Floodgate CSA protocol helpers for KUMOJI.
 
-This module only translates notation and time information. It never decides
-legality; KUMOJI's rules layer and the Floodgate server remain authoritative.
+This module translates notation, time information, and just enough exact game
+state to recognize server-adjudicated fourfold repetition / max-move endings.
+It never decides legality; KUMOJI's rules layer and Floodgate remain authoritative.
 """
 from __future__ import annotations
 
@@ -15,6 +16,7 @@ NUM_TO_RANK = {v: k for k, v in RANK_TO_NUM.items()}
 USI_TO_CSA = {"P":"FU","L":"KY","N":"KE","S":"GI","G":"KI","B":"KA","R":"HI"}
 CSA_TO_USI = {v:k for k,v in USI_TO_CSA.items()}
 PROMOTE = {"FU":"TO","KY":"NY","KE":"NK","GI":"NG","KA":"UM","HI":"RY"}
+DEMOTE = {v:k for k,v in PROMOTE.items()}
 
 CSA_MOVE_RE = re.compile(r"^([+-])(\d{2})(\d{2})([A-Z]{2})(?:,T(\d+))?$")
 USI_MOVE_RE = re.compile(r"^([1-9][a-i])([1-9][a-i])(\+)?$")
@@ -36,23 +38,33 @@ def usi_square_to_csa(square: str) -> str:
 
 
 class StartposBoard:
-    """Minimal piece-type board for move conversion from standard startpos."""
+    """Exact startpos-derived state needed for conversion and repetition waiting."""
 
     def __init__(self) -> None:
         self.squares: dict[str, str] = {}
+        self.owners: dict[str, str] = {}
+        self.hands = {"+": {p: 0 for p in CSA_TO_USI}, "-": {p: 0 for p in CSA_TO_USI}}
+        self.to_move = "+"
         back = ["KY","KE","GI","KI","OU","KI","GI","KE","KY"]
         for file_, piece in zip("987654321", back):
-            self.squares[file_+"a"] = piece
-            self.squares[file_+"i"] = piece
-            self.squares[file_+"c"] = "FU"
-            self.squares[file_+"g"] = "FU"
-        self.squares.update({"8b":"HI","2b":"KA","8h":"KA","2h":"HI"})
+            for square, owner in ((file_+"a","-"), (file_+"i","+")):
+                self.squares[square] = piece
+                self.owners[square] = owner
+            for square, owner in ((file_+"c","-"), (file_+"g","+")):
+                self.squares[square] = "FU"
+                self.owners[square] = owner
+        for square, piece, owner in (
+            ("8b","HI","-"),("2b","KA","-"),("8h","KA","+"),("2h","HI","+")
+        ):
+            self.squares[square] = piece
+            self.owners[square] = owner
+        self._counts = {self.position_key(): 1}
 
     def csa_to_usi(self, line: str) -> str:
         m = CSA_MOVE_RE.match(line)
         if not m:
             raise ValueError(f"invalid CSA move: {line}")
-        _sign, src_raw, dst_raw, result_piece, _time = m.groups()
+        sign, src_raw, dst_raw, result_piece, _time = m.groups()
         dst = csa_square_to_usi(dst_raw)
         if src_raw == "00":
             base = CSA_TO_USI.get(result_piece)
@@ -62,8 +74,8 @@ class StartposBoard:
 
         src = csa_square_to_usi(src_raw)
         before = self.squares.get(src)
-        if before is None:
-            raise ValueError(f"no piece at CSA source: {src_raw}")
+        if before is None or self.owners.get(src) != sign:
+            raise ValueError(f"no own piece at CSA source: {src_raw}")
         if result_piece == before:
             suffix = ""
         elif PROMOTE.get(before) == result_piece:
@@ -85,8 +97,8 @@ class StartposBoard:
             raise ValueError(f"invalid USI move: {move}")
         src, dst, promotion = normal.groups()
         before = self.squares.get(src)
-        if before is None:
-            raise ValueError(f"no piece at USI source: {src}")
+        if before is None or self.owners.get(src) != sign:
+            raise ValueError(f"no own piece at USI source: {src}")
         result = PROMOTE.get(before) if promotion else before
         if result is None:
             raise ValueError(f"piece cannot promote: {before}")
@@ -96,13 +108,56 @@ class StartposBoard:
         m = CSA_MOVE_RE.match(line)
         if not m:
             raise ValueError(f"invalid CSA move: {line}")
-        _sign, src_raw, dst_raw, result_piece, _time = m.groups()
-        if src_raw != "00":
+        sign, src_raw, dst_raw, result_piece, _time = m.groups()
+        if sign != self.to_move:
+            raise ValueError(f"unexpected side to move: got {sign}, expected {self.to_move}")
+        dst = csa_square_to_usi(dst_raw)
+
+        captured = self.squares.get(dst)
+        captured_owner = self.owners.get(dst)
+        if captured is not None:
+            if captured_owner == sign:
+                raise ValueError(f"destination occupied by own piece: {dst_raw}")
+            raw = DEMOTE.get(captured, captured)
+            if raw == "OU":
+                raise ValueError("king capture is not a legal CSA move")
+            self.hands[sign][raw] += 1
+
+        if src_raw == "00":
+            raw = DEMOTE.get(result_piece, result_piece)
+            if raw not in self.hands[sign]:
+                raise ValueError(f"invalid drop piece: {result_piece}")
+            if self.hands[sign][raw] <= 0:
+                # Initial Floodgate games are startpos-derived.  Requiring the
+                # captured piece here prevents silently corrupting repetition state.
+                raise ValueError(f"drop without piece in hand: {result_piece}")
+            self.hands[sign][raw] -= 1
+        else:
             src = csa_square_to_usi(src_raw)
-            if src not in self.squares:
-                raise ValueError(f"no piece at CSA source: {src_raw}")
+            if src not in self.squares or self.owners.get(src) != sign:
+                raise ValueError(f"no own piece at CSA source: {src_raw}")
             del self.squares[src]
-        self.squares[csa_square_to_usi(dst_raw)] = result_piece
+            del self.owners[src]
+
+        self.squares[dst] = result_piece
+        self.owners[dst] = sign
+        self.to_move = "-" if sign == "+" else "+"
+        key = self.position_key()
+        self._counts[key] = self._counts.get(key, 0) + 1
+
+    def position_key(self) -> tuple:
+        board = tuple(sorted((sq, self.owners[sq], piece) for sq, piece in self.squares.items()))
+        hands = tuple(
+            (sign, piece, self.hands[sign][piece])
+            for sign in ("+","-") for piece in sorted(self.hands[sign])
+        )
+        return board, hands, self.to_move
+
+    def repetition_count(self) -> int:
+        return self._counts.get(self.position_key(), 0)
+
+    def server_terminal_pending(self, plies: int, max_moves: int) -> bool:
+        return self.repetition_count() >= 4 or (max_moves > 0 and plies >= max_moves)
 
 
 def parse_time_unit_ms(value: str | None) -> int:
@@ -127,6 +182,7 @@ class GameSummary:
     byoyomi: int = 0
     increment: int = 0
     least_time_per_move: int = 0
+    max_moves: int = 0
     time_unit: str = "1sec"
     position_moves: list[str] = field(default_factory=list)
 
@@ -185,6 +241,7 @@ class SummaryParser:
             byoyomi=int(fields.get("Byoyomi","0")),
             increment=int(fields.get("Increment","0")),
             least_time_per_move=int(fields.get("Least_Time_Per_Move","0")),
+            max_moves=int(fields.get("Max_Moves","0")),
             time_unit=fields.get("Time_Unit","1sec"),
             position_moves=position_moves,
         )

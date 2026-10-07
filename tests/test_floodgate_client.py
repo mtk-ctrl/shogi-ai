@@ -43,6 +43,7 @@ class FloodgateProtocolTest(unittest.TestCase):
             "Total_Time:300",
             "Byoyomi:0",
             "Increment:10",
+            "Max_Moves:512",
             "END Time",
             "BEGIN Position",
             "P1-KY-KE-GI-KI-OU-KI-GI-KE-KY",
@@ -60,7 +61,34 @@ class FloodgateProtocolTest(unittest.TestCase):
         self.assertEqual(summary.game_id, "test-001")
         self.assertEqual(summary.increment, 10)
         self.assertEqual(summary.total_time, 300)
+        self.assertEqual(summary.max_moves, 512)
         self.assertEqual(summary.unit_ms, 1000)
+
+
+    def test_fourfold_repetition_waits_for_server(self):
+        board = fg.StartposBoard()
+        cycle = ["+5958OU", "-5152OU", "+5859OU", "-5251OU"]
+        for _ in range(3):
+            for move in cycle:
+                board.csa_to_usi(move)
+                board.apply_csa(move)
+        self.assertEqual(board.repetition_count(), 4)
+        self.assertTrue(board.server_terminal_pending(12, 512))
+
+    def test_max_moves_waits_for_server(self):
+        board = fg.StartposBoard()
+        self.assertFalse(board.server_terminal_pending(511, 512))
+        self.assertTrue(board.server_terminal_pending(512, 512))
+
+    def test_capture_and_drop_keep_exact_hand_state(self):
+        board = fg.StartposBoard()
+        for move in ["+7776FU", "-3334FU", "+8822UM", "-3122GI"]:
+            board.csa_to_usi(move)
+            board.apply_csa(move)
+        self.assertEqual(board.hands["+"]["KA"], 1)
+        self.assertEqual(board.csa_to_usi("+0055KA"), "B*5e")
+        board.apply_csa("+0055KA")
+        self.assertEqual(board.hands["+"]["KA"], 0)
 
     def test_clock_folds_fischer_increment_after_server_echo(self):
         summary = fg.GameSummary(

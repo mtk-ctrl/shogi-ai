@@ -193,6 +193,7 @@ class FloodgateClient:
         validate_identity(username, trip)
         self.engine = engine
         self.username = username
+        self.game_name = game_name
         self.password = f"{game_name},{trip}"
         self.host = host
         self.port = port
@@ -243,6 +244,7 @@ class FloodgateClient:
             clock = Clock(summary)
             my_side = summary.your_turn
             to_move = summary.to_move
+            max_moves = summary.max_moves or (512 if self.game_name == DEFAULT_GAME else 0)
 
             def make_our_move() -> None:
                 go = clock.usi_go()
@@ -267,7 +269,11 @@ class FloodgateClient:
                     board.apply_csa(line)
                     moves.append(usi)
                     clock.observe(line)
-                    if line[0] != my_side:
+                    # Floodgate itself adjudicates fourfold repetition and the
+                    # 512-ply limit. If the opponent move just reached either
+                    # condition, do not race the server by sending another move;
+                    # wait for its #DRAW/#LOSE result instead.
+                    if line[0] != my_side and not board.server_terminal_pending(len(moves), max_moves):
                         make_our_move()
                     continue
                 m = RESULT_RE.match(line)
@@ -294,6 +300,7 @@ class FloodgateClient:
                     "total_time": summary.total_time,
                     "byoyomi": summary.byoyomi,
                     "increment": summary.increment,
+                    "max_moves": max_moves,
                     "time_unit": summary.time_unit,
                 },
                 "result": result or "unknown",
