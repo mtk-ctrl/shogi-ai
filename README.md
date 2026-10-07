@@ -50,6 +50,18 @@ PC等では外部TSVを優先して読み込む。Android OEXのようにエン�
 
 外部AIとの対局棋譜・推奨手・PV・評価値をBookの教師には使用しない。
 
+## 外部対局 / Floodgate
+
+外部棋力を継続的に測る目標として、**Floodgate出場用のCSA↔USI接続基盤を実装済み**。現時点では安全確認のため実参戦はまだ行っていない。
+
+- KUMOJI本体の評価・探索・ルールは変更せず、外付けbridgeで接続
+- Floodgateの300秒+10秒incrementをサーバ報告の消費時間から追跡
+- 外部対局は学習・Opening Book更新・Experience Cache更新の対象外
+- tripは環境変数だけから取得し、GitHubへ保存しない
+- `--live` を明示しない限りFloodgateへ接続しない
+
+詳細は [Floodgate接続基盤](docs/33_Floodgate接続基盤.md) を参照する。
+
 ## Android / ShogiDroid2
 
 v1.0.1のAndroid版は次の構成である。

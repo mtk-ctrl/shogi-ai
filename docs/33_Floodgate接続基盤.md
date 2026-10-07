@@ -1,0 +1,131 @@
+# Floodgate接続基盤
+
+## 目的
+
+雲路 KUMOJI の外部棋力を継続的に測る到達目標として、コンピュータ将棋対局場 Floodgate への出場を可能にする。
+
+この段階では「実際に対局へ参加すること」ではなく、現行エンジンの評価・探索を変更せず、Floodgateへ安全に接続できる外付け基盤を完成させる。
+
+## 対象
+
+- 対局場: Floodgate
+- 公式: https://wdoor.c.u-tokyo.ac.jp/shogi/
+- 接続: CSA TCP/IP protocol
+- Host: `wdoor.c.u-tokyo.ac.jp`
+- Port: `4081`
+- 標準対局名: `floodgate-300-10F`
+- 時間: 初期300秒、1手ごとに10秒加算
+
+Floodgateの仕様は変更され得るため、実参戦前に公式ページを再確認する。
+
+## 構成
+
+```
+Floodgate
+    │ CSA
+    ▼
+tools/floodgate/client.py
+    │ USI
+    ▼
+雲路 KUMOJI
+```
+
+エンジン本体にはFloodgate固有処理を入れない。
+
+接続層の責務は次のとおり。
+
+1. CSAのログイン、Game_Summary、AGREE、START、終局処理
+2. CSA指し手とUSI指し手の相互変換
+3. Floodgateが返す消費時間 `Tn` の追跡
+4. KUMOJIへ `btime/wtime` を渡す
+5. 対局結果の外部対局ログへの保存
+
+合法手判定と将棋ルールは、従来どおり雲路のルール層とサーバを正とする。
+
+## 300+10Fの時計
+
+KUMOJIはUSIの `btime/wtime/binc/winc/byoyomi` を解釈できる。
+
+ただし現在の時間配分式はincrementの一部をその着手で使用できる予算として扱うため、Floodgate接続層から未来の10秒を `binc/winc` として先に渡さない。
+
+代わりに、
+
+1. サーバが着手を `,Tn` 付きで返す
+2. 実消費時間を残り時間から引く
+3. その着手で得た10秒を残り時間へ加える
+4. 次の思考時に更新後の `btime/wtime` を渡す
+
+という順にする。
+
+これにより、まだ得ていないincrementを使って時間切れになる危険を避ける。
+
+## 外部対局と学習の分離
+
+Floodgateは「教師」ではなく「物差し」として扱う。
+
+既定値は次のとおり。
+
+- `OpeningBook=true`
+- `ExperienceCache=false`
+- 外部対局ログ: `learning_eligible=false`
+- 外部対局ログ: `opening_book_eligible=false`
+- 外部対局ログ: `experience_eligible=false`
+
+相手の評価値、PV、指し手をOpening Bookや評価学習へ自動投入しない。
+
+## 秘密情報
+
+FloodgateのCSAモードは対局名とtrip文字列をパスワード欄へ渡す。
+
+tripはGitHubへ保存しない。環境変数 `FLOODGATE_TRIP` だけから読む。
+
+また、CSA接続ではパスワード文字列の秘匿性を前提にしない。tripには他サービスで使うパスワードや個人情報を流用しない。
+
+## 安全装置
+
+`client.py` は既定でネットワークへ接続しない。
+
+```bash
+python3 tools/floodgate/client.py --engine build/shogi-ai
+```
+
+これはUSI起動、option適用、ready確認だけを行うdry-runである。
+
+実際に接続するには、環境変数を設定したうえで `--live` を明示する必要がある。
+
+```bash
+export FLOODGATE_TRIP='unique-non-sensitive-trip'
+python3 tools/floodgate/client.py \
+  --engine build/shogi-ai \
+  --username KUMOJI \
+  --games 1 \
+  --live
+```
+
+複数局を指定した場合も、CSAモードの運用に合わせて1局ごとにTCP接続を張り直す。
+
+## 実参戦時の手順
+
+実参戦を行うときだけ次を実施する。
+
+1. mainの採用版をhost向けにビルド
+2. Floodgate公式ページの接続先・対局名・時間ルールを再確認
+3. dry-run成功を確認
+4. 使い捨て可能な非機密tripを環境変数へ設定
+5. まず1局だけ `--live --games 1`
+6. 時間切れ、違法手、切断、終局処理、ログを確認
+7. 問題がなければ15局程度以上を蓄積し、初回レーティングを取得
+
+## 完了基準
+
+接続基盤の完了は次で判定する。
+
+- CSA/USIの通常手、成り、駒打ち変換を単体試験できる
+- Game_Summaryの300秒+10秒incrementを解釈できる
+- サーバ報告の消費時間から時計を更新できる
+- Experience Cacheを既定で無効化できる
+- `--live` なしではネット接続しない
+- tripをコード・設定ファイル・GitHubへ保存しない
+- CIでFloodgate関連テストを実行する
+
+実際のFloodgateサーバへのログイン・初対局・レーティング取得は、接続基盤完成後の別マイルストーンとする。

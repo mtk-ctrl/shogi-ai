@@ -25,3 +25,6 @@ __pycache__/
 # Large models / datasets (do not commit directly)
 models/
 datasets/
+
+# External live match logs
+floodgate-results*.jsonl
