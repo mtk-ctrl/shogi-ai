@@ -41,6 +41,16 @@ class MatchWorkflowGuardTest(unittest.TestCase):
         )
         self.assertTrue(any("root has no CMakeLists.txt" in e for e in errors), errors)
 
+    def test_dedicated_arena_workflow_requires_preflight_and_dispatch(self):
+        errors = guard.check_workflow_text(
+            Path(".github/workflows/research-match.yml"),
+            "run: python3 -m pip install python-shogi==1.1.1\n"
+            "run: python3 benchmarks/arena.py --engine-a a --engine-b b\n",
+            root_has_cmake=False,
+        )
+        self.assertTrue(any("must run match-workflow preflight" in e for e in errors), errors)
+        self.assertTrue(any("must expose workflow_dispatch" in e for e in errors), errors)
+
     def test_current_engine_match_contract(self):
         path = Path(".github/workflows/engine-match.yml")
         text = (ROOT / path).read_text(encoding="utf-8")
