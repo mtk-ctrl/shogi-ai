@@ -105,3 +105,6 @@ jobs:
           python3 tests/test_arena.py
           python3 tests/test_external_match.py
           python3 tests/test_floodgate_client.py
+
+      - name: Floodgate bridge dry-run
+        run: python3 tools/floodgate/client.py --engine build/shogi-ai
