@@ -1,12 +1,12 @@
 {
-  "request_id": "position-knowledge-default-smoke-20261008",
-  "ref_a": "7e5dfca0f986a3100b78c3ede9fc2d06b32e2ee4",
-  "ref_b": "7e5dfca0f986a3100b78c3ede9fc2d06b32e2ee4",
-  "games": "2",
-  "shards": "2",
+  "request_id": "position-knowledge-ablation-1000-20261008",
+  "ref_a": "ef3920c66e6ea4f0cdde5a18a11ae84a3031c260",
+  "ref_b": "ef3920c66e6ea4f0cdde5a18a11ae84a3031c260",
+  "games": "1000",
+  "shards": "20",
   "go_command": "go movetime 200",
-  "max_plies": "120",
-  "seed": "2026100810",
-  "options_a": "{\"OpeningBook\":false,\"ExperienceCache\":false,\"AdaptiveLongThink\":true}",
-  "options_b": "{\"OpeningBook\":false,\"ExperienceCache\":false,\"AdaptiveLongThink\":true}"
+  "max_plies": "300",
+  "seed": "2026100817",
+  "options_a": "{\"OpeningBook\":false,\"ExperienceCache\":false,\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+  "options_b": "{\"OpeningBook\":false,\"ExperienceCache\":false,\"AdaptiveLongThink\":true,\"PositionKnowledge\":false,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}"
 }
