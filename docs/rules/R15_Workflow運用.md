@@ -79,6 +79,17 @@ workflowの数を減らすこと自体を目的にしない。
 内部Engine比較は、まず `.github/workflows/engine-match.yml` で自然に表現できるか確認する。
 表現できるなら再利用する。新しい研究設計に専用workflowが適するなら無理に統合しない。
 
+局数、candidate / baseline ref、持ち時間、USI option、shard数だけの違いは、原則として専用workflowを新設せず `engine-match.yml` の入力で表現する。
+対局を依頼された時点で既存workflowの適否を判断し、既存基盤で足りるのにBuild・依存導入・seed・artifact処理を専用YAMLへ複製しない。
+
+専用workflowが必要なのは、独自matrix、段階的screening、Position Bank、Diagnosis、特殊dataset、長時間の局面研究等、実験構造そのものが既存workflowでは表現できない場合とする。
+専用の対局・局面研究workflowを作る場合は、重いjobを開始する前に `python3 scripts/check_match_workflows.py` を通す。少なくとも次を機械検査する。
+- GitHub Actions式を `\\${{ ... }}` のように誤ってescapeしていないこと
+- seedの数値がUSI整数範囲を明白に超えていないこと
+- `arena.py` / `position_arena.py` を実行するworkflowに `python-shogi==1.1.1` の導入があること
+- リポジトリに存在しないBuild入口（例: ルート `CMakeLists.txt` がない状態での `cmake -S .`）を使っていないこと
+- 標準 `engine-match.yml` がリポジトリ既定の `scripts/build.py` とseed事前検査を維持していること
+
 対局runnerの配分はR21に従う。起動前に空きrunner数を確認し、汎用workflowでは `shards` を実際に使えるrunner数へ設定する。
 
 ## 外部Benchmark
@@ -93,5 +104,6 @@ workflowの数を減らすこと自体を目的にしない。
 4. triggerを必要最小限にする。
 5. 対局ならR20/R21に従う。
 6. mainへ置く場合は `.github/workflows/README.md` に用途を登録する。
-7. `python3 scripts/check_workflow_inventory.py` を通す。
-8. 研究終了後にACTIVE / HOLD / ARCHIVEを見直す。
+7. `python3 scripts/check_workflow_inventory.py` と `python3 scripts/check_match_workflows.py` を通す。
+8. 対局・局面研究workflowなら、preflight検査を通過してから重い対局jobを開始する。
+9. 研究終了後にACTIVE / HOLD / ARCHIVEを見直す。
