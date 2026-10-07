@@ -1,0 +1,57 @@
+name: Research Prophylaxis 10m x7 Clean
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/evaluation-concepts-v2]
+    paths: [.github/workflows/prophylaxis-10m-clean.yml]
+permissions:
+  contents: read
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 7
+      matrix:
+        source_index: [0, 12, 14, 17, 18, 19, 23]
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - name: Build KUMOJI
+        run: python3 scripts/build.py --output build/kumoji
+      - name: Ten-minute analysis
+        run: |
+          mkdir -p build/prophylaxis-10m
+          python3 tools/research/prophylaxis_10m_research.py --engine build/kumoji --fixture benchmarks/fixtures/eval-gap-30s-12.json --source-index "${{ matrix.source_index }}" --movetime-ms 600000 --output "build/prophylaxis-10m/result-${{ matrix.source_index }}.json" --markdown-output "build/prophylaxis-10m/summary-${{ matrix.source_index }}.md"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prophylaxis-result-${{ github.run_id }}-${{ matrix.source_index }}
+          path: build/prophylaxis-10m/
+          retention-days: 30
+  aggregate:
+    needs: research
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: prophylaxis-result-${{ github.run_id }}-*
+          path: build/all
+          merge-multiple: true
+      - name: Aggregate
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          ps=sorted(Path('build/all').glob('result-*.json'))
+          assert len(ps)==7, len(ps)
+          rs=[json.loads(p.read_text()) for p in ps]
+          rs.sort(key=lambda r:r['fixture']['source_index'])
+          out={'positions':7,'same_as_30s':sum(r['stability']['same_as_30s'] for r in rs),'results':rs}
+          Path('build/all/aggregate.json').write_text(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prophylaxis-aggregate-${{ github.run_id }}
+          path: build/all/
+          retention-days: 30
