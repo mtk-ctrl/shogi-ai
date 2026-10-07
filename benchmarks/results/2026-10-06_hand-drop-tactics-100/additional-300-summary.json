@@ -1,0 +1,25 @@
+{
+  "run_id": 37427387344,
+  "artifact_id": 11396595616,
+  "commit": "5148919f054e623e19630ec90c9b0e6b018497d2",
+  "games": 300,
+  "pairs": 150,
+  "seed": 2026101600,
+  "go_command": "go movetime 50",
+  "wins_on": 115,
+  "draws": 74,
+  "wins_off": 111,
+  "score_on": 0.5066666666666667,
+  "paired_normal_approx_interval": [0.4676241043737635, 0.54570922895957],
+  "pair_outcomes": {"better_than_half": 30, "equal_half": 92, "worse_than_half": 28},
+  "on_by_color": {
+    "black": {"wins": 75, "draws": 31, "losses": 44, "score": 0.6033333333333334},
+    "white": {"wins": 40, "draws": 43, "losses": 67, "score": 0.41}
+  },
+  "mean_elapsed_ms": {"on": 40.49086594093782, "off": 40.49145755715166},
+  "nodes_total": {"on": 18620902, "off": 18833018},
+  "average_plies": 128.09666666666666,
+  "illegal_games": 0,
+  "reasons": {"checkmate": 226, "fourfold_repetition": 37, "move_limit": 37},
+  "decision": "neutral to slightly positive; initial 100-game advantage did not reproduce at the same magnitude"
+}

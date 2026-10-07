@@ -125,6 +125,34 @@ int main() {
                 "moving a valuable piece off a major-piece ray must get priority");
         std::cout << "PASS escaping a major-piece ray is searched early\n";
 
+        // Hand-drop tactics stay completely OFF unless requested. ON recognizes
+        // a second direct target, rejects an unsupported immediate loss, accepts
+        // a defended non-losing exchange, and recognizes slider skewers.
+        p = fixture({{"9i","K"},{"1a","k"},{"4d","r"},{"6d","n"}}, "S");
+        auto hand_snap = p.snapshot();
+        const int fork_off = strategy::MoveOrder::score_move(hand_snap, "S*5e");
+        const int fork_on = strategy::MoveOrder::score_move(hand_snap, "S*5e", true);
+        require(fork_on > fork_off, "silver fork must gain ordering priority only when enabled");
+
+        p = fixture({{"9i","K"},{"1a","k"},{"4d","r"},{"5d","p"},{"6d","g"}}, "S");
+        hand_snap = p.snapshot();
+        require(strategy::MoveOrder::score_move(hand_snap, "S*5e", true)
+                    == strategy::MoveOrder::score_move(hand_snap, "S*5e", false),
+                "unsupported drop lost to a pawn must not receive a fork bonus");
+
+        p = fixture({{"9i","K"},{"1a","k"},{"4d","r"},{"5d","g"},{"5f","G"}}, "S");
+        hand_snap = p.snapshot();
+        require(strategy::MoveOrder::score_move(hand_snap, "S*5e", true)
+                    > strategy::MoveOrder::score_move(hand_snap, "S*5e", false),
+                "supported non-losing exchange may retain the fork bonus");
+
+        p = fixture({{"9i","K"},{"1a","k"},{"5a","b"},{"5c","g"}}, "R");
+        hand_snap = p.snapshot();
+        require(strategy::MoveOrder::score_move(hand_snap, "R*5e", true)
+                    > strategy::MoveOrder::score_move(hand_snap, "R*5e", false),
+                "rook drop must recognize an enemy piece behind the front target as a skewer");
+        std::cout << "PASS compressed hand-drop forks/skewers and exchange safety\n";
+
         // The neutral hash follows the full position and survives undo exactly.
         p = rules::Position();
         const auto start_key = p.hash_key();

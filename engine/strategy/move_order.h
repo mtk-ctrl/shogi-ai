@@ -21,14 +21,16 @@ public:
     };
 
     static std::vector<std::string> order(const rules::Snapshot& snapshot,
-                                          const std::vector<std::string>& moves) {
+                                          const std::vector<std::string>& moves,
+                                          bool hand_drop_tactics = false) {
         // Source-square danger is the same for every candidate. Build it once
         // per position instead of rescanning the board for every move.
         const AttackMap before_attacks(snapshot);
         std::vector<OrderedMove> scored;
         scored.reserve(moves.size());
         for (std::size_t i = 0; i < moves.size(); ++i)
-            scored.push_back({moves[i], score_move(snapshot, moves[i], before_attacks), i});
+            scored.push_back({moves[i], score_move(snapshot, moves[i], before_attacks,
+                                                    hand_drop_tactics), i});
 
         std::stable_sort(scored.begin(), scored.end(), [](const auto& a, const auto& b) {
             return a.score > b.score;
@@ -42,9 +44,10 @@ public:
 
     // Public diagnostic/test entry point. The search path uses order(), which
     // reuses one AttackMap across all candidate moves.
-    static int score_move(const rules::Snapshot& snapshot, const std::string& move) {
+    static int score_move(const rules::Snapshot& snapshot, const std::string& move,
+                          bool hand_drop_tactics = false) {
         const AttackMap before_attacks(snapshot);
-        return score_move(snapshot, move, before_attacks);
+        return score_move(snapshot, move, before_attacks, hand_drop_tactics);
     }
 
 private:
@@ -61,12 +64,18 @@ private:
     struct AfterTactics {
         bool gives_check = false;
         bool destination_attacked = false;
+        bool destination_supported = false;
         int pressured_value = 0;
+        int primary_pressured_gain = 0;
+        int secondary_pressured_gain = 0;
+        int skewer_gain = 0;
+        int worst_exchange = 0;
     };
 
     static int score_move(const rules::Snapshot& snapshot,
                           const std::string& move,
-                          const AttackMap& before_attacks) {
+                          const AttackMap& before_attacks,
+                          bool hand_drop_tactics) {
         const auto mover = snapshot.turn;
         const auto enemy = other(mover);
         int score = 0;
@@ -77,9 +86,12 @@ private:
 
         const bool endangered = parsed.has_source && parsed.moving.kind != 8
             && before_attacks.count[static_cast<int>(enemy)][parsed.source_index] > 0;
+        const bool hand_drop_candidate = hand_drop_tactics && !parsed.has_source
+            && parsed.moving.kind >= 2 && parsed.moving.kind <= 7;
         const int enemy_king = before_attacks.kings[static_cast<int>(enemy)];
         const auto tactics = analyze_after(after, parsed.destination_index, mover,
-                                           enemy_king, endangered);
+                                           enemy_king, endangered || hand_drop_candidate,
+                                           hand_drop_candidate);
 
         // 1. Checks remain the strongest ordinary ordering signal.
         // TT/Experience hints are handled outside this heuristic.
@@ -103,6 +115,22 @@ private:
 
         if (tactics.pressured_value > 0)
             score += 4000000 + 2000 * tactics.pressured_value;
+
+        // Hand-piece tactics are a compressed geometric rule, not a lookup table.
+        // Reward only a second direct target (fork) or a second enemy behind the
+        // first target on a lance/bishop/rook ray (skewer). If the dropped piece
+        // can be captured immediately, require one defender and a non-losing
+        // same-square exchange under our material values.
+        if (hand_drop_candidate) {
+            const bool exchange_safe = !tactics.destination_attacked
+                || (tactics.destination_supported && tactics.worst_exchange >= 0);
+            if (exchange_safe) {
+                if (tactics.secondary_pressured_gain > 0)
+                    score += 2000000 + 1000 * tactics.secondary_pressured_gain;
+                if (tactics.skewer_gain > 0)
+                    score += 1000000 + 500 * tactics.skewer_gain;
+            }
+        }
 
         // 3. Promotion is useful but comes after immediate piece contact.
         if (parsed.promoted_now)
@@ -195,6 +223,12 @@ private:
         return true;
     }
 
+    static int capture_gain(const rules::Piece& piece) {
+        if (piece.kind == 0 || piece.kind == 8) return 0;
+        // Capturing removes the board value and adds the unpromoted piece to hand.
+        return piece_value(piece.kind, piece.promoted) + piece_value(piece.kind, false);
+    }
+
     static bool piece_attacks(const rules::Snapshot& snapshot,
                               int from, const rules::Piece& piece, int to) {
         if (piece.kind == 0 || from == to) return false;
@@ -248,14 +282,38 @@ private:
         }
     }
 
-    // One pass over the child position answers all three post-move questions:
-    // does the move give check, is the moved endangered piece still attacked,
-    // and what is the most valuable enemy piece the moved piece attacks next?
+    static int skewer_gain(const rules::Snapshot& snapshot,
+                           int destination, const rules::Piece& moved) {
+        if (moved.kind != 2 && moved.kind != 5 && moved.kind != 6) return 0;
+        const auto mover = moved.color;
+        auto scan = [&](int df, int dr) {
+            bool first_enemy = false;
+            for (int file = file_of(destination) + df, rank = rank_of(destination) + dr;
+                 file >= 1 && file <= 9 && rank >= 0 && rank <= 8;
+                 file += df, rank += dr) {
+                const auto& piece = snapshot.board[(file - 1) * 9 + rank];
+                if (piece.kind == 0) continue;
+                if (piece.color == mover || piece.kind == 8) return 0;
+                if (!first_enemy) { first_enemy = true; continue; }
+                return capture_gain(piece);
+            }
+            return 0;
+        };
+        const int forward = mover == rules::Color::Black ? -1 : 1;
+        if (moved.kind == 2) return scan(0, forward);
+        if (moved.kind == 5)
+            return std::max({scan(-1,-1), scan(-1,1), scan(1,-1), scan(1,1)});
+        return std::max({scan(-1,0), scan(1,0), scan(0,-1), scan(0,1)});
+    }
+
+    // One pass over the child position answers checks, destination safety and
+    // direct multi-target pressure. Slider skewers add at most four short rays.
     static AfterTactics analyze_after(const rules::Snapshot& snapshot,
                                       int destination,
                                       rules::Color mover,
                                       int enemy_king,
-                                      bool need_destination_attack) {
+                                      bool need_destination_attack,
+                                      bool hand_drop_tactics) {
         AfterTactics out;
         if (destination < 0 || destination >= static_cast<int>(snapshot.board.size()))
             return out;
@@ -269,18 +327,40 @@ private:
                 if (!out.gives_check && enemy_king >= 0
                     && piece_attacks(snapshot, i, piece, enemy_king))
                     out.gives_check = true;
+                if (hand_drop_tactics && i != destination && !out.destination_supported
+                    && piece_attacks(snapshot, i, piece, destination))
+                    out.destination_supported = true;
                 continue;
             }
 
-            if (need_destination_attack && !out.destination_attacked
-                && piece_attacks(snapshot, i, piece, destination))
-                out.destination_attacked = true;
+            if (need_destination_attack
+                && (!out.destination_attacked || hand_drop_tactics)
+                && piece_attacks(snapshot, i, piece, destination)) {
+                const int exchange = capture_gain(piece) - 2 * piece_value(moved.kind, false);
+                if (!out.destination_attacked) {
+                    out.destination_attacked = true;
+                    out.worst_exchange = exchange;
+                } else if (hand_drop_tactics) {
+                    out.worst_exchange = std::min(out.worst_exchange, exchange);
+                }
+            }
 
             if (piece.kind != 8 && moved.kind != 0
-                && piece_attacks(snapshot, destination, moved, i))
+                && piece_attacks(snapshot, destination, moved, i)) {
                 out.pressured_value = std::max(
                     out.pressured_value, piece_value(piece.kind, piece.promoted));
+                if (hand_drop_tactics) {
+                    const int gain = capture_gain(piece);
+                    if (gain > out.primary_pressured_gain) {
+                        out.secondary_pressured_gain = out.primary_pressured_gain;
+                        out.primary_pressured_gain = gain;
+                    } else if (gain > out.secondary_pressured_gain) {
+                        out.secondary_pressured_gain = gain;
+                    }
+                }
+            }
         }
+        if (hand_drop_tactics) out.skewer_gain = skewer_gain(snapshot, destination, moved);
         return out;
     }
 };

@@ -23,6 +23,7 @@ tests.add_argument("--contact-ordering-test", action="store_true")
 tests.add_argument("--evaluation-test", action="store_true")
 tests.add_argument("--opening-book-test", action="store_true")
 tests.add_argument("--evaluation-probe", action="store_true")
+tests.add_argument("--hand-drop-order-bench", action="store_true")
 tests.add_argument("--kifu-validator", action="store_true")
 parser.add_argument("--sanitize", action="store_true")
 parser.add_argument("--android", action="store_true")
@@ -70,6 +71,7 @@ test_source = ("tests/rules_test.cpp" if args.test else
                "tests/evaluation_test.cpp" if args.evaluation_test else
                "tests/opening_book_test.cpp" if args.opening_book_test else
                "benchmarks/evaluation_probe.cpp" if args.evaluation_probe else
+               "benchmarks/hand_drop_order_bench.cpp" if args.hand_drop_order_bench else
                "tools/kifu/validate_games.cpp" if args.kifu_validator else
                "engine/main.cpp")
 own = [ROOT / "engine/rules/upstream_support.cpp", ROOT / "engine/rules/position.cpp", ROOT / test_source]

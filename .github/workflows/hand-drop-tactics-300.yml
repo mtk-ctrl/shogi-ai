@@ -1,0 +1,68 @@
+name: Hand Drop Tactics Additional 300
+
+on:
+  push:
+    branches: [research/hand-drop-tactics-100]
+    paths:
+      - '.github/workflows/hand-drop-tactics-300.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hand-drop-tactics-300-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Build engine and tests
+        run: |
+          python3 scripts/build.py --output build/hand-drop-engine
+          python3 scripts/build.py --ordering-test --output build/ordering-test
+
+      - name: Correctness
+        run: build/ordering-test
+
+      - name: Additional paired 300 games at 50ms
+        run: |
+          mkdir -p build/hand-drop-experiment-300
+          python3 benchmarks/hand_drop_match.py             --engine build/hand-drop-engine             --pairs 150             --lanes 4             --seed 2026101600             --max-plies 240             --go-command 'go movetime 50'             --output-dir build/hand-drop-experiment-300/match
+
+      - name: Summary
+        if: always()
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          p=Path('build/hand-drop-experiment-300/match/summary.json')
+          if p.exists():
+              s=json.loads(p.read_text())
+              print('## Additional 300-game paired match')
+              print(f"- ON: {s['wins_on']}勝 {s['draws']}分 {s['wins_off']}敗")
+              print(f"- score: {s['score_on']:.1%}")
+              print(f"- paired 95% approx interval: {s['paired_normal_approx_interval'][0]:.1%}–{s['paired_normal_approx_interval'][1]:.1%}")
+              a,b=s['search']['A'],s['search']['B']
+              if b.get('nodes_total'):
+                  print(f"- nodes ON/OFF: {a.get('nodes_total',0):,} / {b.get('nodes_total',0):,} ({a.get('nodes_total',0)/b['nodes_total']-1:+.1%})")
+              print(f"- mean elapsed ms ON/OFF: {s['timing_ms']['A']['mean']:.2f} / {s['timing_ms']['B']['mean']:.2f}")
+              print(f"- illegal games: {s['illegal_games']}")
+          PY
+
+      - name: Upload records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hand-drop-tactics-additional-300-${{ github.run_id }}
+          path: build/hand-drop-experiment-300
+          retention-days: 180

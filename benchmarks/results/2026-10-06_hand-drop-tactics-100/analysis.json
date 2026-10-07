@@ -1,0 +1,17 @@
+{
+  "first_divergence_pairs": {
+    "identical_move_sequence_pairs": 14,
+    "diverged_pairs": 36,
+    "median_first_divergence_ply": 48.0,
+    "mean_first_divergence_ply": 55.583333333333336,
+    "min_first_divergence_ply": 12,
+    "max_first_divergence_ply": 127,
+    "first_divergence_on_move_was_drop": 11,
+    "first_divergence_off_move_was_drop": 13
+  },
+  "played_moves": {
+    "on": {"moves": 6975, "drops": 883, "target_piece_drops": 649},
+    "off": {"moves": 6970, "drops": 906, "target_piece_drops": 661}
+  },
+  "note": "The feature changes move ordering, not static evaluation. Therefore it can alter completed iterative depth and later non-drop choices; it is not expected simply to increase the total number of drops played."
+}

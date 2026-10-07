@@ -19,7 +19,8 @@
 
 namespace {
 std::uint64_t experience_signature(const shogi::strategy::EvaluationParameters& p,
-                                   bool material_profile, bool quiescence_enabled) {
+                                   bool material_profile, bool quiescence_enabled,
+                                   bool hand_drop_tactics_enabled) {
     // FNV-1a over every evaluation setting that can change move preference plus
     // a search-semantics version. Disk experience from incompatible settings is
     // ignored rather than silently influencing move ordering.
@@ -30,8 +31,9 @@ std::uint64_t experience_signature(const shogi::strategy::EvaluationParameters& 
             h *= 1099511628211ULL;
         }
     };
-    mix(3); // Quiescence, history-safe score keys and extended mate distance.
+    mix(4); // Quiescence/history safety plus optional hand-drop move ordering.
     mix(quiescence_enabled ? 1 : 0);
+    mix(hand_drop_tactics_enabled ? 1 : 0);
     mix(shogi::strategy::IterativeSearch::QuiescenceDepth);
     mix(material_profile ? 1 : 0);
     mix(p.guard_gold); mix(p.guard_silver); mix(p.guard_pawn);
@@ -54,6 +56,7 @@ int main() {
     shogi::strategy::EvaluationParameters evaluation_parameters;
     bool material_profile = false;
     bool quiescence_enabled = true;
+    bool hand_drop_tactics_enabled = false;
     bool mate_assist_enabled = true;
     bool opening_book_enabled = true;
     bool opening_book_loaded = false;
@@ -110,7 +113,8 @@ int main() {
         opening_book_loaded = true;
     };
     auto current_experience_signature = [&]() {
-        return experience_signature(evaluation_parameters, material_profile, quiescence_enabled);
+        return experience_signature(evaluation_parameters, material_profile, quiescence_enabled,
+                                    hand_drop_tactics_enabled);
     };
     auto ensure_experience_loaded = [&]() {
         if (!experience_enabled || experience_loaded) return;
@@ -148,6 +152,7 @@ int main() {
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
                       << "option name Quiescence type check default true\n"
+                      << "option name HandDropTactics type check default false\n"
                       << "option name MateAssist type check default true\n"
                       << "option name OpeningBook type check default true\n"
                       << "option name OpeningBookFile type string default shogi-ai-book.tsv\n"
@@ -505,6 +510,13 @@ int main() {
                         persist_experience();
                         quiescence_enabled = value == "true";
                         strategy.set_quiescence_enabled(quiescence_enabled);
+                        invalidate_experience();
+                    }
+                } else if (name == "HandDropTactics") {
+                    if (value == "true" || value == "false") {
+                        persist_experience();
+                        hand_drop_tactics_enabled = value == "true";
+                        strategy.set_hand_drop_tactics_enabled(hand_drop_tactics_enabled);
                         invalidate_experience();
                     }
                 } else if (name == "MateAssist") {
