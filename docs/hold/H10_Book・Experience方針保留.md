@@ -1,0 +1,53 @@
+---
+hold_id: H10
+status: hold
+authority: non-normative
+---
+
+# Book・Experience 方針保留
+
+## 状態
+2026-10-07現在、BookとExperienceの今後の役割分担・保存・更新方法は別チャットで検討中である。
+この文書では結論を出さない。
+
+## 現在確認できている衝突・論点
+1. **Book自動main反映**
+   - 現行 `.github/workflows/nightly-book-learning.yml` には条件付きでBookをmainへpushする実装がある。
+   - 旧 `NIGHTLY_RESEARCH_SYSTEM.md` には、新credit assignment完成までBook自動更新を止める設計記述がある。
+   - どちらを今後の正式方針にするかは保留。
+
+2. **外部対局由来Experience**
+   - READMEの旧記述は外部対局をExperience Cache更新対象外としていた。
+   - 旧 `docs/23_外部エンジン対局基盤.md` は、KUMOJI自身が探索した結果なら保存可としていた。
+   - 今後の正式方針は保留。
+
+3. **runner / lane構造**
+   - 旧Book Nightlyには4 runner × 各4 local laneの実装がある。
+   - R21は通常の固定局数比較で1 Actions job = 1 laneを原則とする。
+   - Book / Experience固有の永続状態と並列化方式は、役割分担の決定と合わせて再設計する。保留中はR21だけを理由に旧Book workflowを書き換えない。
+
+4. **役割分担**
+   - Opening Bookが「候補手を直接選ぶもの」なのか、探索優先度・局面知識の一部なのか。
+   - Experienceがmove ordering hint、探索結果再利用、局面評価データのどこまでを担うのか。
+   - 局面ごとの評価値データをBook/Experienceとは別資産として持つか。
+
+5. **保存・世代管理**
+   - Engine version、Book version、Experience version、使用条件をどの粒度で紐付けるか。
+   - 対局ごと・着手ごとのtelemetryと学習資産をどう分離するか。
+
+## 保留中にしてよいこと
+- 現在の実装・artifact・保存状況を調査する。
+- 既存Book / Experienceを使った対局を、条件を明示して行う。
+- データ欠損や永続化不具合を修正する。ただし修正が学習方針変更を含む場合は確認する。
+
+## 保留中にしてはいけないこと
+- 既存workflowがそうなっているという理由だけで、それを今後の正式方針に確定する。
+- BookとExperienceの責任範囲を新たに固定する。
+- 外部対局由来Experienceの可否を片方の旧文書だけで決める。
+- 自動main反映の是非を勝手に決める。
+
+## 旧設計
+- `docs/hold/source/16_ExperienceCache設計.md`
+- `docs/hold/source/22_自前棋譜小規模定跡.md`
+- `docs/archive/pre-router/NIGHTLY_RESEARCH_SYSTEM.md`
+- `docs/archive/pre-router/23_外部エンジン対局基盤.md`

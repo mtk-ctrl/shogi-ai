@@ -1,40 +1,17 @@
-# GitHub Actions 運用ルール
+# GitHub Actions workflow index
 
-通知ノイズを増やさず、必要な失敗だけ追えるようにするためのルール。
+この文書はworkflowの入口であり、運用Ruleの正本ではない。
+作業前に `docs/00_開発ルーター.md` を読み、必要なRuleへ進む。
 
-## 自動実行してよいもの
+## 主な読み先
+- 通常開発・CI: `docs/rules/R10_開発・採用・通常仕上げ.md`
+- 対局条件: `docs/rules/R20_対局・比較・統計.md`
+- runner配分・停止・ETA・結果確認タイマー: `docs/rules/R21_Actionsランナー運用.md`
+- Nightly: `docs/rules/R30_夜間研究.md`
+- Android / APK / release: `docs/rules/R60_Android・APK・リリース.md`
+- Book / Experience: `docs/hold/H10_Book・Experience方針保留.md`
 
-- `quick-ci.yml`: `main` の戦略・ルール・探索関連変更に対する通常CI。
-- `kifu-learning-ci.yml`: 棋譜学習パイプラインに関係する変更だけ。PR検証と必要な `main` 検証に限定する。
-- 夜間学習・自己対局: `schedule` で指定した時刻のみ。設定変更確認のための `push` スモーク実行は行わない。
-
-## 手動実行にするもの
-
-- 一時的な検証
-- パラメータ探索
-- 評価値スイープ
-- やねうら王との比較・レーティング測定
-- 定跡生成・再重み付けの単発実験
-- 1000局・2000局などの大規模自己対局実験
-- リリース仕上げ、記録更新、cleanup 用の one-shot workflow
-
-これらは原則 `workflow_dispatch` のみとし、`push` を付けない。
-
-## 新しい workflow を追加するとき
-
-1. 通常開発で毎回必要かを最初に判断する。
-2. 必要でなければ `workflow_dispatch` のみにする。
-3. 一時workflowは目的達成後に削除するか、手動専用のまま残す。
-4. 同じ目的の検証を細かいworkflowに分割して大量に作らない。
-5. GitHub Actionsの失敗メールは、本当に対応が必要な失敗を中心にする。
-
-このルールは、実験のしやすさよりも「メール通知のノイズを増やさないこと」を優先する。
-## 対局workflowのrunner設計
-
-対局を新規作成・起動する前に `docs/34_対局ランナー・終了予定・報告タイマー運用基準.md` を確認する。
-
-- 目的は全対局の最短完了。
-- 開始時の空きrunner数を確認し、原則その数と同じjob数へ全局を均等配分する。
-- 空きrunner数を超えるjobを作って2巡目待機を発生させない。
-- 別目的の有効runをrunner確保だけのために停止しない。
-- run ID確認後、終了予定時刻と結果確認タイマーを同じターンで設定する。
+## workflow追加時
+一時実験や重い比較は原則 `workflow_dispatch` とし、通常pushへ不要な重い処理や通知を追加しない。
+固定局数の対局workflowでは、起動時にその時点の空きrunner数へ再配分できる構造を優先する。
+時間枠型Nightlyでは、研究フェーズを守りながら空きrunnerを最大活用する。
