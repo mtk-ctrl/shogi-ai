@@ -4,7 +4,7 @@
 
 「雲路」は、雲の中の道、空に通う道を表す古い日本語から取った。既に敷かれた道をなぞるのではなく、まだ道に見えないところから、自分で通れる筋を見つけるAIを目指す。
 
-現在の正式Engine世代は **KUMOJI v2.0.1** である。Evaluation-v2候補Bを維持し、本人の指示により長考配分を改めた。採用済み実装は `main` を正本とする。
+現在の正式Engine世代は **KUMOJI v2.0.2** である。Evaluation-v2候補Bとv2.0.1の長考配分を維持し、採用済み局面知識をrootのmove orderingへ毎対局利用する。採用済み実装は `main` を正本とする。
 最後にAndroidへ配布するために作ったAPKは **v1.0.1**（2026-10-05）である。v2以後はAndroidへダウンロードする必要がなくAPKを新たに作っていないため、オーナーのAndroidには以前のv1が入っている（2026-10-07本人確認）。APKは必要時に採用済みエンジンをAndroidへ届けるものであり、別の正式エンジン系統ではない。
 正確な実装状態は `main` のcommit SHAでも特定し、正式比較の基準commitは `benchmarks/baseline_ref.txt` を参照する。
 
@@ -20,7 +20,7 @@
 強化は原則として、Engine / 局面知識 / Benchmark / Diagnosis の役割を分け、Strength / Independence / Novelty を意識して進める。
 詳しくは [雲路の羅針盤](docs/00_羅針盤.md) を参照する。
 
-## 現在のmain Engine（KUMOJI v2.0.1）の主な能力
+## 現在のmain Engine（KUMOJI v2.0.2）の主な能力
 
 - やねうら王から利用するのは、合法手生成・局面管理・王手判定・千日手等のルール層のみ
 - 探索・評価・move ordering・置換表・詰み探索・戦略・学習は自作
@@ -33,6 +33,7 @@
 - Evaluation-v2候補Bによる多面的静的評価（Material / Safety / Pressure / Activity / Danger / Influence / Potential / Coordination / Hand Potential。Threatは現行OFF）
 - 自前棋譜から作るOpening Book
 - Experience Cache
+- 採用済み局面知識snapshot（root `move_order_hint`、通常対局で毎回ON）
 - 評価値・読み筋・探索統計のUSI出力
 - ShogiDroid2向けAndroid OEX APK
 
