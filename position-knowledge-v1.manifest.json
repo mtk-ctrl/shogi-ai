@@ -1,0 +1,20 @@
+{
+  "schema": "position-knowledge-active-manifest-v1",
+  "source_label": "records-2026-10-01/position-knowledge-v1-candidates-37671846680.jsonl.gz",
+  "source_file": "position-knowledge-v1-candidates-37671846680.jsonl.gz",
+  "source_sha256": "9c9690e2db7a405dc8d63d87500cffe22b5481bac1be3d016b66f092f5fd8296",
+  "accept_status": [
+    "unverified"
+  ],
+  "min_evidence": 2,
+  "adopted_positions": 24,
+  "conflicting_positions_excluded": 0,
+  "duplicate_same_move_records_collapsed": 0,
+  "rejected": {
+    "evidence": 29,
+    "status:disputed": 7
+  },
+  "output_file": "position-knowledge-v1.tsv",
+  "output_sha256": "4dfc70d7fcdfc4fddb222cccd1071283d13d83098e348ad049be57563c378820",
+  "policy": "Only explicitly accepted move_order_hint candidates are materialized. Conflicting moves are excluded; this script never auto-promotes a new candidate source."
+}
