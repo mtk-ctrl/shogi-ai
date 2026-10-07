@@ -86,6 +86,7 @@ def run_once(enabled):
 
 
 def embedded_default_fallback():
+    # Derive the expected count from the adopted snapshot so every refresh is CI-checked.
     expected = sum(
         1 for line in (Path(__file__).resolve().parents[1] / "position-knowledge-v1.tsv").read_text(encoding="utf-8").splitlines()
         if line.strip() and not line.startswith("#")
