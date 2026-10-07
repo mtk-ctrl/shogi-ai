@@ -83,7 +83,7 @@ workflowの数を減らすこと自体を目的にしない。
 対局を依頼された時点で既存workflowの適否を判断し、既存基盤で足りるのにBuild・依存導入・seed・artifact処理を専用YAMLへ複製しない。
 
 専用workflowが必要なのは、独自matrix、段階的screening、Position Bank、Diagnosis、特殊dataset、長時間の局面研究等、実験構造そのものが既存workflowでは表現できない場合とする。
-専用の対局・局面研究workflowを作る場合は、重いjobを開始する前に `python3 scripts/check_match_workflows.py` を通す。少なくとも次を機械検査する。
+専用の対局・局面研究workflowを作る場合は、初回は `workflow_dispatch` を入口として残し、重いjobを開始する前に `python3 scripts/check_match_workflows.py` を通す。workflowファイル自身へのpushだけを初回実験開始の合図にしない。少なくとも次を機械検査する。
 - GitHub Actions式を `\\${{ ... }}` のように誤ってescapeしていないこと
 - seedの数値がUSI整数範囲を明白に超えていないこと
 - `arena.py` / `position_arena.py` を実行するworkflowに `python-shogi==1.1.1` の導入があること
