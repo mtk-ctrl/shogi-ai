@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stable 100-level node scale for the YaneuraOu material benchmark."""
+"""Shared 100-level node scale for cross-edition YaneuraOu strength benchmarks.\n\nThe level number means only the per-move node budget.  It is intentionally\nshared by MATERIAL, KPPT, NNUE, and future editions so edition-to-edition\nstrength differences can be calibrated separately instead of being hidden in\nthe level definition.\n"""
 
 from __future__ import annotations
 
