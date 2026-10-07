@@ -11,10 +11,10 @@ ENGINE = str(Path(sys.argv[1]).resolve())
 
 
 class Usi:
-    def __init__(self):
+    def __init__(self, cwd=None):
         self.p = subprocess.Popen(
             [ENGINE], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT, text=True, bufsize=1,
+            stderr=subprocess.STDOUT, text=True, bufsize=1, cwd=cwd,
         )
         self.q = queue.Queue()
         threading.Thread(target=self._read, daemon=True).start()
@@ -85,6 +85,26 @@ def run_once(enabled):
             u.close()
 
 
+def embedded_default_fallback():
+    expected = sum(
+        1 for line in (Path(__file__).resolve().parents[1] / "position-knowledge-v1.tsv").read_text(encoding="utf-8").splitlines()
+        if line.strip() and not line.startswith("#")
+    )
+    with tempfile.TemporaryDirectory() as td:
+        u = Usi(cwd=td)
+        try:
+            u.send("usi")
+            u.until("usiok")
+            u.send("setoption name OpeningBook value false")
+            u.send("setoption name ExperienceCache value false")
+            u.send("isready")
+            _, ready = u.until("readyok")
+            assert any(f"position_knowledge loaded {expected} positions file position-knowledge-v1.tsv" in x for x in ready), ready
+        finally:
+            u.close()
+
+
 run_once(True)
 run_once(False)
-print("PASS position knowledge USI load/probe/order telemetry")
+embedded_default_fallback()
+print("PASS position knowledge USI load/probe/order telemetry and embedded fallback")
