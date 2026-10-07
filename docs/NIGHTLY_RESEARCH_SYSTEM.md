@@ -5,11 +5,10 @@
 現行運用Ruleは `docs/rules/R30_夜間研究.md`、対局条件はR20、runner運用はR21を正本とする。
 整理前の全文は `docs/archive/pre-router/NIGHTLY_RESEARCH_SYSTEM.md` に保存した。
 
-Book / Experienceの将来方針は `docs/hold/H10_Book・Experience方針保留.md` で保留中であり、この文書では決めない。
 
 ## 現在の状態
 2026-10-07の本人確認により、変革期の優先課題へ開発を集中するため、夜間の定期対局は一時停止している。
-将来は夜間対局を行いたい意向があるが、再開時期は未決定である。停止範囲と再開判断はR30に従い、Book / Experience方針の決定だけでは再開しない。
+将来は夜間対局を行いたい意向があるが、再開時期は未決定である。停止範囲と再開判断はR30に従う。
 以下は将来の構造設計であり、現在稼働している処理の説明ではない。
 
 ## 目的
@@ -20,9 +19,8 @@ Nightlyが新しい評価概念を勝手に簡易実装して置き換えるこ�
 ### Phase 0 — Freeze / Build / Sanity
 一晩のChampion、commit、設定、利用可能capabilityを固定する。
 
-### Phase 1 — Experience generation
-自己対局・既存資産を使い、局面・棋譜・探索telemetryを増やす。
-Book / Experienceの具体的な更新方式はH10の決定後に定義する。
+### Phase 1 — 対局・研究記録の生成
+自己対局・既存の局面知識を使い、局面・棋譜・探索記録を増やす。
 
 ### Phase 2 — Challenger screening
 事前登録された仮説・候補だけを比較する。

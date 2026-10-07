@@ -84,13 +84,9 @@ KUMOJIはUSIの `btime/wtime/binc/winc/byoyomi` を解釈できる。
 ## 外部対局と学習の分離
 
 FloodgateはR50どおり「教師」ではなく「物差し」として扱う。
-相手の評価値・PV・候補手をOpening Bookや評価関数学習の教師へ自動投入しない。
+相手の評価値・PV・候補手を評価関数学習の教師へ自動投入しない。
 
-Book / ExperienceについてはH10が優先する。
-現行 `tools/floodgate/client.py` には保留前の既存実装として `OpeningBook=true`、`ExperienceCache=true`、ログ上の `experience_eligible=true` が残っているが、これは**既存挙動の記録であって、外部対局由来Experienceを今後も保存するという正式方針ではない**。
-
-H10確定前に実参戦する場合は、使用したBook / ExperienceのON/OFF・ファイル・初期状態を明示して記録する。
-外部AI対局の雲路自身の探索結果を局面知識の候補に含める出所判断はR50で確定した。旧Experienceへの投入、自動継続利用、世代管理はH10の未決部分に従う。上記の既存挙動全体を正式方針として追認したとはしない。
+外部AI対局の雲路自身の探索結果を局面知識の候補に含める出所判断はR50に従う。局面知識の新候補を正式採用・自動更新するかは別途判断する。
 
 ## 秘密情報
 
@@ -131,7 +127,7 @@ Engine世代ごとにFloodgateコードを複製しない。
 以前の `Floodgate Generation Compatibility` workflowはworkflow整理時に `docs/archive/workflows/2026-10-07/floodgate-generation-compat.yml` へ退役した。
 そのarchiveに残る `research/evaluation-v2-challenger` は旧研究refであり、現行参照先には使わない。
 
-現在の正式Engine世代は `KUMOJI v2.0.2` で、実装の正本は `main` である。評価プロファイルBを維持し、本人指定の長考配分訂正を反映した（`docs/36_v2.0.1長考配分.md`）。現在のmain bridgeはQuick CIのFloodgate dry-runで検査する。
+現在の正式Engine世代は `KUMOJI v2.0.3` で、実装の正本は `main` である。評価プロファイルBを維持し、本人指定の長考配分訂正を反映した（`docs/36_v2.0.1長考配分.md`）。現在のmain bridgeはQuick CIのFloodgate dry-runで検査する。
 別世代との互換性を改めて検証する必要が生じた場合は、R15に従い既存基盤で自然に扱えるか確認し、必要なら専用workflowを再設計する。
 
 実対局ログにはEngineの `id name`、適用option、実行バイナリSHA-256等を残し、表示versionだけでEngine世代を判定しない。
@@ -155,7 +151,7 @@ Engine世代ごとにFloodgateコードを複製しない。
 - CSA/USIの通常手、成り、駒打ち変換を単体試験できる
 - Game_Summaryの300秒+10秒incrementを解釈できる
 - サーバ報告の消費時間から時計を更新できる
-- Book / Experienceの実行条件を記録できる。外部対局の雲路自身の探索結果は知識候補の対象（R50）とし、旧Experienceへの投入・自動継続利用等はH10の未決部分に従う
+- 使用した局面知識の版・内容ハッシュ・件数を記録できる。外部対局の雲路自身の探索結果は知識候補の対象とする（R50）
 - `--live` なしではネット接続しない
 - tripをコード・設定ファイル・GitHubへ保存しない
 - CIでFloodgate関連テストを実行する
