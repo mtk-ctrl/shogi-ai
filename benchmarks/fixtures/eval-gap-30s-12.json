@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "source_run": 37596918631,
+  "source_engine": "KUMOJI v2.0.0",
+  "selection": "deep_loss_cp >= 100 and static total immediately after the 30s best move is lower than after the 200ms actual move, actor perspective",
+  "positions": [
+    {"source_index":0,"game_index":3,"ply":125,"side_to_move":"black","sfen_before":"3+P1g1n1/3Pk1s1+N/2p1p4/+r2p2ppp/3G5/1b4P1P/+p1+r1PP1P1/4KS2+b/6G2 b 2SL2Pg2n3l2p 125","actual_move":"L*8i","deep_bestmove":"6e5e","deep_loss_cp":1380,"deep_pv":["6e5e","7g7i","4g4f","8f6h+","5h4g","1h2g"],"static_best_minus_actual_cp":-4},
+    {"source_index":3,"game_index":17,"ply":116,"side_to_move":"white","sfen_before":"l2+R3nl/5g3/p1k1pppp1/9/2S3SPp/P2P2nS1/1P1GP1N2/2KS5/L+p6+r w BLb2gn6p 116","actual_move":"P*7d","deep_bestmove":"G*8h","deep_loss_cp":1099,"deep_pv":["G*8h","7h7g","G*7h","7g8f","P*7d"],"static_best_minus_actual_cp":-45},
+    {"source_index":5,"game_index":5,"ply":38,"side_to_move":"white","sfen_before":"ln1g1g1+P1/3sks1b1/2pppppp1/8L/pp7/9/PPNPPPP1N/3SKS1LR/L2G1G3 w RN2Pbp 38","actual_move":"B*4e","deep_bestmove":"P*1f","deep_loss_cp":215,"deep_pv":["P*1f","2a2b","1f1g+","1h1g","B*3e"],"static_best_minus_actual_cp":-257},
+    {"source_index":9,"game_index":3,"ply":148,"side_to_move":"white","sfen_before":"3+P1g1n1/3Pk1sS+N/2p1p4/+r5ppp/S2p5/1B4+r1P/+p3PP3/4K1g1+b/9 w N2P2gsn4l4p 148","actual_move":"9d8e","deep_bestmove":"G*6g","deep_loss_cp":325,"deep_pv":["G*6g","5h6g","3f6f","6g5h","G*4h"],"static_best_minus_actual_cp":-343},
+    {"source_index":12,"game_index":0,"ply":139,"side_to_move":"black","sfen_before":"+B3pk3/3p1g1S1/3s2nG+L/p1l5P/1p1K5/P4p3/4l1G2/2+R6/+r8 b BGSNL7Ps2n4p 139","actual_move":"7h8g","deep_bestmove":"P*7e","deep_loss_cp":843,"deep_pv":["P*7e","N*8f","7h8g"],"static_best_minus_actual_cp":-20},
+    {"source_index":13,"game_index":13,"ply":107,"side_to_move":"black","sfen_before":"3+P1g1n1/4k1s+B+N/+r1p1p4/3G2ppp/1r7/6P1P/4PP1P1/3K1S2+b/+p5G2 b 2SL2Pg2n3l4p 107","actual_move":"2b6f","deep_bestmove":"S*6c","deep_loss_cp":1015,"deep_pv":["S*6c","5b4b","1b2a","N*7f","6h5h","3b2a","2b2a","8e8h+"],"static_best_minus_actual_cp":-216},
+    {"source_index":14,"game_index":2,"ply":88,"side_to_move":"white","sfen_before":"1nk1b4/2s1+S2+B1/1ppp5/4N2Lp/6G2/L1P2P1P1/1P1PS3P/1N2K1g2/3GR3L w RGSNL7Pp 88","actual_move":"P*5f","deep_bestmove":"7c7d","deep_loss_cp":247,"deep_pv":["7c7d","5b5a","P*2g","B*5c","7a8b","5d6b+","2g2h+","6b7b"],"static_best_minus_actual_cp":-99},
+    {"source_index":17,"game_index":0,"ply":78,"side_to_move":"white","sfen_before":"lr1gkg3/4s3+L/5pn2/p1+R3pp1/1ppn3P1/P4LP1P/2P1PPN2/1B1SK4/LN1G1G3 w 2S4Pbp 78","actual_move":"B*2c","deep_bestmove":"8e8f","deep_loss_cp":711,"deep_pv":["8e8f","7g7f","B*4b"],"static_best_minus_actual_cp":-179},
+    {"source_index":18,"game_index":3,"ply":137,"side_to_move":"black","sfen_before":"3+P1g1n1/3Pk1sS+N/2p1p4/+r5ppp/3p5/6P1P/+p3PPnP1/6K1+b/4+r1G2 b B2P2g2sn4l2p 137","actual_move":"B*8f","deep_bestmove":"B*4h","deep_loss_cp":928,"deep_pv":["B*4h","G*2h","3i2h","1h2h","3h2h","5i4h","G*3h"],"static_best_minus_actual_cp":-70},
+    {"source_index":19,"game_index":18,"ply":64,"side_to_move":"white","sfen_before":"ln1gkg1+B1/1r1s5/2ppp1ppl/pp3p2p/6PN1/P1P2P1PP/1PNPP4/3SKG3/L2G3RL w BSNs 64","actual_move":"S*3b","deep_bestmove":"S*2d","deep_loss_cp":296,"deep_pv":["S*2d","B*4g","7c7d","S*2b","2d2e","N*4c","5a5b","2f2e"],"static_best_minus_actual_cp":-161},
+    {"source_index":20,"game_index":8,"ply":133,"side_to_move":"black","sfen_before":"ln3g3/2r3p2/2sk1pgp1/p2ps3l/1pP1p1+BPp/P1p6/LPSPN1P1N/1G2KS2L/2b1PG3 b Prnp 133","actual_move":"5h6i","deep_bestmove":"8h8i","deep_loss_cp":1542,"deep_pv":["8h8i","7i9g+","7g7f","9g9f","P*9g","9f9g"],"static_best_minus_actual_cp":-5},
+    {"source_index":23,"game_index":5,"ply":62,"side_to_move":"white","sfen_before":"ln1g1g3/3sks1+P1/3pppp+L1/2p5L/p4R3/2nB2Ng1/P+p1PPPP2/5S2R/L1SK1G3 w BN4Pp 62","actual_move":"P*1g","deep_bestmove":"2f2g","deep_loss_cp":195,"deep_pv":["2f2g","1h1e","P*8h","B*1f","8h8i+","1f2g","8i7i","6i7i"],"static_best_minus_actual_cp":-5}
+  ]
+}
