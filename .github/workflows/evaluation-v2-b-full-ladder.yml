@@ -39,8 +39,27 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        level: [40, 45, 48, 49, 50, 55]
-        lane: [0, 1, 2, 3]
+        include:
+          - {level: 40, lane: 0, games: 32}
+          - {level: 40, lane: 1, games: 34}
+          - {level: 40, lane: 2, games: 34}
+          - {level: 45, lane: 0, games: 32}
+          - {level: 45, lane: 1, games: 34}
+          - {level: 45, lane: 2, games: 34}
+          - {level: 48, lane: 0, games: 32}
+          - {level: 48, lane: 1, games: 34}
+          - {level: 48, lane: 2, games: 34}
+          - {level: 49, lane: 0, games: 32}
+          - {level: 49, lane: 1, games: 34}
+          - {level: 49, lane: 2, games: 34}
+          - {level: 50, lane: 0, games: 24}
+          - {level: 50, lane: 1, games: 24}
+          - {level: 50, lane: 2, games: 26}
+          - {level: 50, lane: 3, games: 26}
+          - {level: 55, lane: 0, games: 24}
+          - {level: 55, lane: 1, games: 24}
+          - {level: 55, lane: 2, games: 26}
+          - {level: 55, lane: 3, games: 26}
     steps:
       - uses: actions/checkout@v5
       - run: python3 -m pip install python-shogi==1.1.1
@@ -48,7 +67,7 @@ jobs:
         with:
           name: full-ladder-runtime
           path: build/runtime
-      - name: Run 25 games in one persistent Experience lane
+      - name: Run one balanced persistent Experience shard
         shell: bash
         run: |
           set -euo pipefail
@@ -57,11 +76,12 @@ jobs:
           chmod +x "$ENGINE" "$YANE"
           LEVEL="${{ matrix.level }}"
           LANE="${{ matrix.lane }}"
+          GAMES="${{ matrix.games }}"
           NODES="$(python3 benchmarks/external_levels.py --level "$LEVEL" --nodes-only)"
           mkdir -p "build/L$LEVEL/lane$LANE"
           EXP="build/L$LEVEL/lane$LANE/experience.bin"
           OUT="build/L$LEVEL/lane$LANE/result.json"
-          SEED=$((2026107000 + LEVEL * 100 + LANE * 25))
+          SEED=$((2026107000 + LEVEL * 100 + LANE * 40))
           SELF_OPTIONS="$(python3 - "$EXP" <<'PY'
           import json,sys
           print(json.dumps({
@@ -80,7 +100,7 @@ jobs:
             --self-options "$SELF_OPTIONS" \
             --opponent-options '{"Threads":1,"USI_Hash":16,"USI_OwnBook":false}' \
             --self-go "go movetime 200" --opponent-go "go nodes $NODES" \
-            --games 25 --max-plies 300 --seed "$SEED" --output "$OUT"
+            --games "$GAMES" --max-plies 300 --seed "$SEED" --output "$OUT"
 
       - uses: actions/upload-artifact@v4
         if: always()
@@ -108,21 +128,18 @@ jobs:
           levels=[40,45,48,49,50,55]
           all_docs=[json.loads(p.read_text()) for p in Path("build/all").rglob("result.json")]
           lines=["# KUMOJI v2 Book+Experience ladder","",
-                 "- 100 games/level","- 4 persistent Experience lanes × 25 games/level",
+                 "- 100 games/level","- 20 Actions jobs total; one persistent Experience file per job",
                  "- OpeningBook ON","- ExperienceCache ON + persisted",
-                 "- runner policy: one lane per Actions job; no max-parallel cap; GitHub fills all currently free runner slots",
+                 "- runner policy: when 20 slots are free, all 600 games are balanced across exactly 20 jobs so no second wave is intentionally queued",
                  "- go movetime 200 + AdaptiveLongThink ON","",
                  "| Level | W-D-L | score | 95% CI |","|---:|---:|---:|---:|"]
           payload={"levels":levels,"games_per_level":100,"results":{}}
           for lv in levels:
-              ds=[d for d in all_docs if int(d["self_engine"]["options"].get("EvalSafety","0"))==500 and d["games"]==25 and f"level{lv:03d}" in str(d.get("output",""))]
-              if not ds:
-                  # Artifact path, not result payload, identifies level; recover via parent names.
-                  ds=[]
-                  for p in Path("build/all").rglob("result.json"):
-                      if f"L{lv}-lane" in str(p):
-                          ds.append(json.loads(p.read_text()))
-              if len(ds)!=4: raise SystemExit(f"L{lv}: expected 4 lanes, got {len(ds)}")
+              ds=[]
+              for p in Path("build/all").rglob("result.json"):
+                  if f"L{lv}-lane" in str(p):
+                      ds.append(json.loads(p.read_text()))
+              if not ds: raise SystemExit(f"L{lv}: no shard results")
               n=sum(d["games"] for d in ds); w=sum(d["wins_self"] for d in ds)
               dr=sum(d["draws"] for d in ds); l=sum(d["losses_self"] for d in ds)
               illegal=sum(d.get("illegal_games",0) for d in ds)
