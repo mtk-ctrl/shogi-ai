@@ -49,6 +49,7 @@ Opening BookとExperience Cacheの実装は存在する。
 
 外部棋力を継続的に測るため、やねうら王Material BenchmarkとFloodgate接続基盤を持つ。
 外部AIは教師ではなく物差しとして扱い、相手の評価値・PV・候補手を雲路の学習教師にはしない。
+人間との対局を学習に使う対象はオーナー本人との対局だけとする（2026-10-07本人確認）。他の人の棋譜を学習へ取り込まない。
 詳細な現行Ruleは [R50](docs/rules/R50_外部AI・梯子・Floodgate.md) を参照する。
 
 ## Android / ShogiDroid2
