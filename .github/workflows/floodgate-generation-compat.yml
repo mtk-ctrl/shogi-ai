@@ -1,0 +1,85 @@
+name: Floodgate Generation Compatibility
+
+on:
+  workflow_dispatch:
+    inputs:
+      engine_ref:
+        description: "KUMOJI branch, tag, or commit to verify"
+        required: true
+        default: "research/evaluation-v2-challenger"
+      expected_usi_name:
+        description: "Expected USI id name for the selected generation"
+        required: true
+        default: "KUMOJI v2.0.0"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/floodgate-generation-compat.yml"
+      - "tools/floodgate/**"
+      - "tests/test_floodgate_client.py"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: floodgate-generation-compat-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      ENGINE_REF: ${{ github.event_name == 'workflow_dispatch' && inputs.engine_ref || 'research/evaluation-v2-challenger' }}
+      EXPECTED_USI_NAME: ${{ github.event_name == 'workflow_dispatch' && inputs.expected_usi_name || 'KUMOJI v2.0.0' }}
+    steps:
+      - name: Checkout current Floodgate infrastructure
+        uses: actions/checkout@v5
+        with:
+          path: infra
+          fetch-depth: 1
+
+      - name: Checkout selected engine generation
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ env.ENGINE_REF }}
+          path: generation
+          fetch-depth: 1
+
+      - name: Record selected generation
+        shell: bash
+        run: |
+          mkdir -p build/floodgate-generation
+          {
+            echo "{"
+            echo "  \"engine_ref\": \"$ENGINE_REF\","
+            echo "  \"engine_sha\": \"$(git -C generation rev-parse HEAD)\","
+            echo "  \"infra_sha\": \"$(git -C infra rev-parse HEAD)\","
+            echo "  \"expected_usi_name\": \"$EXPECTED_USI_NAME\""
+            echo "}"
+          } > build/floodgate-generation/identity.json
+          cat build/floodgate-generation/identity.json
+
+      - name: Build selected generation
+        working-directory: generation
+        run: python3 scripts/build.py --output build/kumoji
+
+      - name: Floodgate protocol unit tests
+        run: python3 infra/tests/test_floodgate_client.py
+
+      - name: Verify selected generation against Floodgate bridge
+        shell: bash
+        run: |
+          python3 infra/tools/floodgate/client.py \
+            --engine generation/build/kumoji \
+            --expect-engine-name "$EXPECTED_USI_NAME" \
+            --clock-probe \
+            | tee build/floodgate-generation/dry-run.txt
+
+      - name: Upload compatibility evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: floodgate-generation-compat-${{ github.run_id }}
+          path: build/floodgate-generation
+          retention-days: 180
