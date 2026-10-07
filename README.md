@@ -17,7 +17,7 @@
 
 このプロジェクトでは、やねうら王その他の外部AIを**先生ではなく物差し**として扱う。
 
-強化は原則として、Engine / Experience / Benchmark / Diagnosis の役割を分け、Strength / Independence / Novelty を意識して進める。
+強化は原則として、Engine / 局面知識 / Benchmark / Diagnosis の役割を分け、Strength / Independence / Novelty を意識して進める。
 詳しくは [雲路の羅針盤](docs/00_羅針盤.md) を参照する。
 
 ## 現在のmain Engine（KUMOJI v2.0.0）の主な能力
@@ -39,11 +39,11 @@
 評価の現行既定値は `EvalV2=true / Material=100 / Safety=500 / Pressure=474 / Activity=150 / Danger=200 / Influence=19 / Potential=25 / Coordination=50 / HandPotential=60 / Threat=0 / PositionalCap=5000`。
 正式比較・スクリーニング・Diagnosis・外部Benchmarkの現行条件は [R20](docs/rules/R20_対局・比較・統計.md) を正本とする。
 
-## Book / Experience
+## 局面知識
 
-Opening BookとExperience Cacheの実装は存在する。
-ただし、今後の役割分担、永続化、外部対局由来Experience、自動更新・自動昇格等は現在検討中である。
-結論が出るまでは [H10 Book・Experience方針保留](docs/hold/H10_Book・Experience方針保留.md) を参照し、既存実装だけから今後の方針を推定しない。
+今後は「対局記録・研究記録・局面知識」の構成で進める（2026-10-07本人承認）。原本を出所付きで蓄積し、現在の雲路が対局で使う情報を小さな局面知識へまとめる。定跡はそのうち序盤の手順・分岐を整理した部分である。
+保存と次回対局へ過去の手を優先して読む形で渡す接続仕様は [局面知識の統合設計と即活用](docs/35_局面知識の統合設計と即活用.md) を参照する。新アーカイブからの自動生成・loaderは未実装。
+既存Opening BookとExperience Cacheの実装・互換名は残る。研究結論の直接利用の具体的基準、正式昇格・自動更新、外部対局由来の利用等は [H10](docs/hold/H10_Book・Experience方針保留.md) の未決部分に従う。
 
 ## 外部対局 / Floodgate
 
