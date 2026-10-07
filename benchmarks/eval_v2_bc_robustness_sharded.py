@@ -20,6 +20,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from benchmarks.eval_v2_bc_robustness import (
     PROFILES, LABELS, LEVEL_NODES, OPPONENT_OPTIONS
 )
