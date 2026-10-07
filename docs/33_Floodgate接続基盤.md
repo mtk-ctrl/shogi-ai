@@ -126,6 +126,35 @@ python3 tools/floodgate/client.py \
 
 複数局を指定した場合も、CSAモードの運用に合わせて1局ごとにTCP接続を張り直す。
 
+## GitHubのEngine世代との接続
+
+Floodgate接続基盤そのものはmain側のインフラとして維持し、対局に使うKUMOJIエンジンはbranch / tag / commitで選べるものとする。
+
+この分離により、Engine世代ごとにFloodgateコードを複製しない。
+
+GitHub Actions `Floodgate Generation Compatibility` は、次の2つを別checkoutして検証する。
+
+1. 現在mainの最新Floodgate bridge
+2. 指定したEngine世代ref
+
+既定の検証対象は `research/evaluation-v2-challenger` で、期待USI名は `KUMOJI v2.0.0` とする。
+
+検証では、
+
+- 選択したrefを実際にhost build
+- USI handshake
+- `OpeningBook=true`
+- `ExperienceCache=false`
+- EngineのUSI名が指定世代と一致
+- `go btime 3000 wtime 3000` によるFloodgate型時計入力
+- startposから合法な `bestmove`
+
+までをネットワーク接続なしで確認する。
+
+結果artifactにはEngine ref、Engine SHA、FloodgateインフラSHA、dry-run出力を保存する。したがって「どの世代を、どの接続基盤で確認したか」を後から追跡できる。
+
+実対局ログにもEngineの `id name`、author、適用optionを保存し、レーティング結果とEngine世代を混同しない。
+
 ## 実参戦時の手順
 
 実参戦を行うときだけ次を実施する。
