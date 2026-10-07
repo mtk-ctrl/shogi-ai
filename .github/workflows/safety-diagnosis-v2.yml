@@ -79,7 +79,7 @@ jobs:
   diagnose:
     needs: selfplay
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v5
       - name: Install dependency
@@ -128,7 +128,7 @@ jobs:
             --input build/safety-diagnosis/selfplay.json \
             --output build/safety-diagnosis/diagnosis.json \
             --markdown-output build/safety-diagnosis/summary.md \
-            --deep-ms 1000 \
+            --deep-ms 30000 \
             --candidates 24 \
             --min-ply 12
       - name: Show summary
