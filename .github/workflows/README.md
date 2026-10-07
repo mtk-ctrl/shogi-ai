@@ -33,7 +33,7 @@ H10の方針確定まではGitHub Actionsから起動できない。夜間定期
 局数・ref・持ち時間・USI option・shard数の違いだけなら `engine-match.yml` が使いやすい。
 
 一方、新しい研究手法、独自matrix、段階的screening、専用artifact、Position BankやDiagnosisなどが必要なら専用workflowを作ってよい。
-一時workflowも禁止しない。研究終了後にACTIVE / HOLD / ARCHIVEを整理する。
+一時workflowも禁止しない。ただし初回は `workflow_dispatch` を残し、重い対局jobより先に `python3 scripts/check_match_workflows.py` を通す。Build・依存導入・seed・artifact処理を汎用workflowから安易に複製しない。研究終了後にACTIVE / HOLD / ARCHIVEを整理する。
 
 固定局数の対局を起動するときはR21に従い、先に空きrunner数を確認してrunner配分を決める。内部・外部runnerはgame_offsetを受け取り、奇数局のshardでも全体の先後交互を継続する。shards=1という入力既定を、そのまま最適なrunner配分とみなさない。
 
