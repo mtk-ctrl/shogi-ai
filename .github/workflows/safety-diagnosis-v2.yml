@@ -12,6 +12,10 @@ on:
       - ".github/workflows/safety-diagnosis-v2.yml"
   workflow_dispatch:
 
+concurrency:
+  group: safety-diagnosis-v2-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
