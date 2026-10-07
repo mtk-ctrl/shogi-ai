@@ -1,0 +1,12 @@
+{
+  "request_id": "current-vs-current-200-20261008",
+  "ref_a": "63e577a90d98bf23b74bd34140df1a36b97f101d",
+  "ref_b": "63e577a90d98bf23b74bd34140df1a36b97f101d",
+  "games": "200",
+  "shards": "20",
+  "go_command": "go movetime 200",
+  "max_plies": "300",
+  "seed": "2026100800",
+  "options_a": "{\"OpeningBook\":false,\"ExperienceCache\":false,\"AdaptiveLongThink\":true}",
+  "options_b": "{\"OpeningBook\":false,\"ExperienceCache\":false,\"AdaptiveLongThink\":true}"
+}
