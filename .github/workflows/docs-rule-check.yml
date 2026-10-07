@@ -2,7 +2,7 @@ name: Document Rule Consistency
 
 on:
   push:
-    branches: [main]
+    branches: ["**"]
     paths:
       - "AGENTS.md"
       - "README.md"
@@ -10,6 +10,8 @@ on:
       - ".github/workflows/**"
       - "scripts/check_doc_router.py"
       - "scripts/check_workflow_inventory.py"
+      - "scripts/check_match_workflows.py"
+      - "tests/test_match_workflow_guard.py"
       - "scripts/check_current_claims.py"
   pull_request:
     paths:
@@ -19,6 +21,8 @@ on:
       - ".github/workflows/**"
       - "scripts/check_doc_router.py"
       - "scripts/check_workflow_inventory.py"
+      - "scripts/check_match_workflows.py"
+      - "tests/test_match_workflow_guard.py"
       - "scripts/check_current_claims.py"
   workflow_dispatch:
 
@@ -38,6 +42,12 @@ jobs:
 
       - name: Check active workflow inventory
         run: python3 scripts/check_workflow_inventory.py
+
+      - name: Test match workflow guard
+        run: python3 tests/test_match_workflow_guard.py
+
+      - name: Preflight match and research workflows
+        run: python3 scripts/check_match_workflows.py
 
       - name: Check current-state claims
         run: python3 scripts/check_current_claims.py
