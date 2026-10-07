@@ -52,6 +52,8 @@ def check_workflow_text(path: Path, text: str, *, root_has_cmake: bool | None = 
             "python-shogi==1.1.1": "must install the arena dependency",
             "2147483647": "must validate shard seeds before build",
             "game_offset": "must preserve global color alternation across shards",
+            '"PositionKnowledge":true': "must default to adopted position knowledge for A/B",
+            "position-knowledge-v1.tsv": "must package the adopted knowledge snapshot",
         }
         for needle, why in required.items():
             if needle not in text:
