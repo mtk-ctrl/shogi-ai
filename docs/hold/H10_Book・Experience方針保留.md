@@ -59,7 +59,9 @@ Book / Experienceの実装方針に依存するGitHub Actions workflowは、誤�
 ここへ移したYAMLはGitHub Actionsから自動・手動実行されない。
 
 特に、旧 `nightly-book-learning.yml` と旧 `nightly-research.yml` のscheduleは現在停止している。
-これはBook / Experienceの結論を意味せず、未決の方針でmainや学習資産を自動更新しないための一時凍結である。
+退避時には、未決の方針でmainや学習資産を自動更新しないための一時凍結としていた。
+2026-10-07の問6本人回答により、現在の夜間定期対局の停止理由は、変革期の優先課題へ開発を集中するためと確定した。将来の夜間対局を望まないという判断ではない。
+H10の解消だけで夜間対局を再開しない。停止範囲と再開判断の正本はR30とする。
 
 旧External Engine BenchmarkのFull-engineモードも、Book / Experienceを利用する部分だけ旧版を `docs/hold/workflows/external-engine-benchmark-legacy.yml` に保存した。
 現役のExternal Engine BenchmarkはCore条件のみを扱う。
@@ -69,4 +71,4 @@ Book / Experienceの実装方針に依存するGitHub Actions workflowは、誤�
 未着手候補手の全記録・探索木の全記録案は採用しない。
 この部分の正本は `docs/rules/R25_着手記録の保存.md`。
 活用順の提案は `docs/27_着手データ活用計画.md`。
-Book / Experienceの責任範囲、研究結果の採用、夜間研究再開、自動main反映は引き続き保留である。
+Book / Experienceの責任範囲、研究結果の採用、自動main反映は引き続き保留である。夜間定期対局の一時停止と未決定の再開時期はR30に従う。
