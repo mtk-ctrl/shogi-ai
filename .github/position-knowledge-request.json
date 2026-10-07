@@ -1,0 +1,9 @@
+{
+  "request_id": "adopt-stable-v2-60s-knowledge-20261008",
+  "release_tag": "records-2026-10-01",
+  "asset": "position-knowledge-v1-candidates-37671846680.jsonl.gz",
+  "accept_status": [
+    "unverified"
+  ],
+  "min_evidence": 2
+}
