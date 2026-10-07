@@ -22,6 +22,7 @@ SEARCH_FIELDS = (
 META_FIELDS = (
     "telemetry_schema_version", "engine_a", "engine_b", "sha256_a", "sha256_b",
     "options_a", "options_b", "seed", "max_plies", "go_command",
+    "position_knowledge",
     "response_watchdog_seconds", "timing_note", "start_sfen",
 )
 MOVE_FIELDS = (
