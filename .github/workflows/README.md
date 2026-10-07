@@ -9,7 +9,12 @@
 - runner配分・停止・ETA・結果確認タイマー: `docs/rules/R21_Actionsランナー運用.md`
 - Nightly: `docs/rules/R30_夜間研究.md`
 - Android / APK / release: `docs/rules/R60_Android・APK・リリース.md`
+- Rule同期: `docs/rules/R90_ルール変更・同期手順.md`
 - Book / Experience: `docs/hold/H10_Book・Experience方針保留.md`
+
+## 軽量チェック
+`Document Rule Consistency` は、docs・Rule・ルーター変更時だけ起動する。
+active Ruleがルーターに登録されていること、ルーターの参照先が存在することを確認し、エンジンの重いビルドは行わない。
 
 ## workflow追加時
 一時実験や重い比較は原則 `workflow_dispatch` とし、通常pushへ不要な重い処理や通知を追加しない。
