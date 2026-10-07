@@ -7,6 +7,8 @@ authority: normative
 # Android・APK・リリース
 
 ## 通常開発との分離
+APKは、採用済みエンジンをAndroidへダウンロード・インストールするために作る配布物である。Android専用の別エンジンを独立して開発するものではない。
+エンジン更新だけでは端末内のエンジンは更新されない。Androidで新しい版を使う必要があるときに、対象main commitからAPKを作る。
 Android版表示更新、APK生成、Pixel/ShogiDroid2実機確認は通常仕上げに含めない。
 ユーザーがAPK・実機確認・完成版化を明示した場合に行う。
 
