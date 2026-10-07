@@ -7,6 +7,25 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from benchmarks.arena import Engine
 import shogi
 
+probe = subprocess.run(
+    [sys.argv[1]], input='usi\nquit\n', text=True, capture_output=True, check=True
+).stdout
+for expected in [
+    'option name EvalSafety type spin default 500 ',
+    'option name EvalPressure type spin default 474 ',
+    'option name EvalActivity type spin default 150 ',
+    'option name EvalDanger type spin default 200 ',
+    'option name EvalV2 type check default true',
+    'option name EvalMaterialWeight type spin default 100 ',
+    'option name EvalInfluence type spin default 19 ',
+    'option name EvalPotential type spin default 25 ',
+    'option name EvalCoordination type spin default 50 ',
+    'option name EvalHandPotential type spin default 60 ',
+    'option name EvalThreat type spin default 0 ',
+    'option name EvalPositionalCap type spin default 5000 ',
+]:
+    assert expected in probe, expected
+
 engine = Engine(sys.argv[1], 'test')
 def fixture(pieces, turn='b'):
     b = shogi.Board(); b.clear()
@@ -47,7 +66,7 @@ try:
     original = evaluate(); assert original['safety'] > 0
     engine.send('setoption name EvalSafety value 0'); disabled = evaluate()
     assert disabled['safety'] == 0 and original['total']-disabled['total'] == original['safety']
-    for invalid in ['-1','401','12junk','999999999999999999999999','x']:
+    for invalid in ['-1','10001','12junk','999999999999999999999999','x']:
         engine.send('setoption name EvalSafety value '+invalid); assert evaluate() == disabled
     engine.send('setoption name EvalProfile value material'); material = evaluate()
     assert material['total'] == material['material']

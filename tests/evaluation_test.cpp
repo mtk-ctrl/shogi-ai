@@ -109,7 +109,53 @@ int main(){try{
     require(nm.count[0][sq("4c")]==1&&nm.count[0][sq("6c")]==1,"knight jumps blockers");
     std::cout<<"PASS every piece/promotion geometry, blockers and king-vacated xray\n";
 
-    EvaluationParameters p; p.weights={400,400,400,400};p.positional_cap=1;
+    // Evaluation-v2: multiple non-material ideas remain visible in the leaf
+    // score instead of competing only for move-ordering priority.
+    EvaluationParameters v2;
+    v2.v2_enabled=true;
+    v2.material_weight=90;
+    v2.weights={100,175,175,180};
+    v2.influence_weight=100;
+    v2.potential_weight=100;
+    v2.coordination_weight=75;
+    v2.hand_potential_weight=100;
+    v2.threat_weight=25;
+    v2.positional_cap=1200;
+
+    auto fork=snap({{"9i","K"},{"1a","k"},{"5e","S"},{"4d","r"},{"6d","n"}});
+    auto fork_eval=evaluate(fork,v2);
+    require(fork_eval.raw[0].v2.threat>0&&fork_eval.terms[8]>0,
+            "unresolved fork has static Threat value before material is won");
+    auto refuted=fork;refuted.board[sq("5d")]={1,rules::Color::White,false};
+    require(evaluate(refuted,v2).raw[0].v2.threat==0,
+            "undefended forking piece capturable by pawn loses speculative Threat");
+
+    auto latent=snap({{"9i","K"},{"1a","k"},{"5e","R"},{"5d","S"}});
+    require(evaluate(latent,v2).raw[0].v2.potential>0,
+            "blocked rook gets potential mobility when blocker can leave its ray");
+    auto hand=snap({{"9i","K"},{"1a","k"}});
+    hand.hands[0][3]=1;
+    require(evaluate(hand,v2).raw[0].v2.hand_potential>0,
+            "piece in hand carries small reusable-option value");
+
+    auto network=snap({{"9i","K"},{"1a","k"},{"5e","S"},{"4f","G"}});
+    require(evaluate(network,v2).raw[0].v2.coordination>0,
+            "mutually useful defended pieces create coordination value");
+
+    auto control=snap({{"9i","K"},{"1a","k"},{"5e","R"}});
+    require(evaluate(control,v2).raw[0].v2.influence>0,
+            "board-wide non-king control creates influence value");
+
+    auto rotated_fork=evaluate(rotate(fork),v2);
+    require(fork_eval.total==-rotated_fork.total&&fork_eval.material_term==-rotated_fork.material_term,
+            "v2 total/material symmetry");
+    for(int i=0;i<9;++i)require(fork_eval.terms[i]==-rotated_fork.terms[i],
+            "v2 term color symmetry");
+    require(fork_eval.total==fork_eval.material_term+fork_eval.positional_unclamped+
+            fork_eval.clamp_adjustment,"v2 breakdown sums exactly");
+    std::cout<<"PASS evaluation-v2 influence/potential/coordination/hand/threat and symmetry\n";
+
+    EvaluationParameters p=EvaluationParameters::legacy_v1(); p.weights={400,400,400,400};p.positional_cap=1;
     auto limited=evaluate(pressure,p);require(std::abs(limited.positional)<=1,"combined positional cap");
     auto inv=evaluate(rotate(pressure),p);require(limited.total==-inv.total,"clamp preserves symmetry");
     require(limited.total==limited.material+limited.terms[0]+limited.terms[1]+limited.terms[2]+limited.terms[3]+limited.clamp_adjustment,"breakdown sums exactly");
