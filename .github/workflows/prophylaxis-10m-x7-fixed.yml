@@ -1,0 +1,56 @@
+name: Research Prophylaxis 10m x7 Fixed
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/evaluation-concepts-v2]
+    paths: [.github/workflows/prophylaxis-10m-x7-fixed.yml]
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 scripts/build.py --output build/kumoji
+      - run: tar -czf kumoji.tgz build/kumoji
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prophylaxis-engine-${{{ github.run_id }}
+          path: kumoji.tgz
+  research:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 7
+      matrix:
+        source_index: [0, 12, 14, 17, 18, 19, 23]
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: prophylaxis-engine-${{{ github.run_id }}
+      - run: tar -xzf kumoji.tgz && chmod +x build/kumoji
+      - name: Ten-minute analysis
+        run: |
+          mkdir -p build/prophylaxis-10m
+          python3 tools/research/prophylaxis_10m_research.py --engine build/kumoji --fixture benchmarks/fixtures/eval-gap-30s-12.json --source-index "${{{ matrix.source_index }}" --movetime-ms 600000 --output "build/prophylaxis-10m/result-${{{ matrix.source_index }}.json" --markdown-output "build/prophylaxis-10m/summary-${{{ matrix.source_index }}.md"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prophylaxis-result-${{{ github.run_id }}-${{{ matrix.source_index }}
+          path: build/prophylaxis-10m/
+  aggregate:
+    needs: research
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: prophylaxis-result-${{{ github.run_id }}-*
+          path: build/all
+          merge-multiple: true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prophylaxis-all-${{{ github.run_id }}
+          path: build/all/
