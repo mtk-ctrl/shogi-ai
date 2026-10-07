@@ -74,6 +74,9 @@ class UsiEngine:
         self._reader = threading.Thread(target=self._read_stdout, daemon=True)
         self._reader.start()
         self.options: set[str] = set()
+        self.id_name = ""
+        self.id_author = ""
+        self.applied_options: dict[str, str] = {}
         self._handshake(options)
 
     def _read_stdout(self) -> None:
@@ -104,7 +107,11 @@ class UsiEngine:
         deadline = time.monotonic() + 10
         while True:
             line = self._next(deadline, "waiting for usiok")
-            if line.startswith("option name "):
+            if line.startswith("id name "):
+                self.id_name = line[len("id name "):].strip()
+            elif line.startswith("id author "):
+                self.id_author = line[len("id author "):].strip()
+            elif line.startswith("option name "):
                 body = line[len("option name "):]
                 name = body.split(" type ", 1)[0].strip()
                 self.options.add(name)
@@ -115,6 +122,7 @@ class UsiEngine:
             raise ValueError(f"unsupported USI options: {', '.join(missing)}")
         for name, value in requested.items():
             self.send(f"setoption name {name} value {value}")
+            self.applied_options[name] = value
         self.send("isready")
         deadline = time.monotonic() + 15
         while self._next(deadline, "waiting for readyok") != "readyok":
@@ -146,6 +154,15 @@ class UsiEngine:
                 line = self._next(grace, "waiting for bestmove after stop")
                 if line.startswith("bestmove "):
                     return line.split()[1]
+
+    def metadata(self) -> dict:
+        return {
+            "path": self.path,
+            "usi_name": self.id_name,
+            "usi_author": self.id_author,
+            "supported_options": sorted(self.options),
+            "applied_options": dict(self.applied_options),
+        }
 
     def close(self) -> None:
         if self.proc.poll() is not None:
@@ -293,6 +310,7 @@ class FloodgateClient:
                 "experience_eligible": False,
                 "game_id": summary.game_id,
                 "username": self.username,
+                "engine": self.engine.metadata(),
                 "your_turn": summary.your_turn,
                 "name_black": summary.name_black,
                 "name_white": summary.name_white,
@@ -332,6 +350,8 @@ def main() -> None:
     parser.add_argument("--reconnect-delay", type=float, default=3.0)
     parser.add_argument("--setoption", action="append", default=[], metavar="NAME=VALUE")
     parser.add_argument("--result-log", type=Path, default=Path("floodgate-results.jsonl"))
+    parser.add_argument("--expect-engine-name", default="",
+                        help="fail if the USI id name does not exactly match this generation label")
     parser.add_argument("--live", action="store_true",
                         help="actually connect to Floodgate; omitted by default for safety")
     args = parser.parse_args()
@@ -340,12 +360,18 @@ def main() -> None:
     try:
         options = parse_setoptions(args.setoption)
         engine = UsiEngine(args.engine, options)
+        if args.expect_engine_name and engine.id_name != args.expect_engine_name:
+            engine.close()
+            raise ValueError(
+                f"engine identity mismatch: expected {args.expect_engine_name!r}, got {engine.id_name!r}"
+            )
     except (ValueError, OSError, RuntimeError, TimeoutError) as exc:
         raise SystemExit(str(exc)) from exc
 
     try:
         if not args.live:
             print("Floodgate bridge dry-run OK: engine handshake and safe options applied.")
+            print(json.dumps(engine.metadata(), ensure_ascii=False, sort_keys=True))
             print("No network connection was opened. Add --live only for an intentional debut.")
             return
 
