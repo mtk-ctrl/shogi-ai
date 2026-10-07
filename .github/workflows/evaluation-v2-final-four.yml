@@ -1,0 +1,207 @@
+name: Evaluation V2 Final Four 200
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/evaluation-v2-challenger
+    paths:
+      - "benchmarks/eval_v2_final_four.py"
+      - ".github/workflows/evaluation-v2-final-four.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: evaluation-v2-final-four-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quick:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[eval-final4]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Validate driver
+        run: |
+          python3 -m py_compile benchmarks/eval_v2_final_four.py
+          python3 - <<'PY'
+          import benchmarks.eval_v2_final_four as f
+          assert set(f.CANDIDATES)==set("ABCD")
+          assert f.CANDIDATES["A"]["EvalMaterialWeight"]==100
+          assert f.CANDIDATES["A"]["EvalSafety"]==500
+          assert f.CANDIDATES["B"]["EvalInfluence"]==19
+          assert f.CANDIDATES["C"]["EvalMaterialWeight"]==1000
+          assert f.CANDIDATES["C"]["EvalSafety"]==1581
+          assert f.CANDIDATES["D"]["EvalMaterialWeight"]==3162
+          print(f.LABELS)
+          PY
+
+      - name: Build KUMOJI
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Upload runtime
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-final4-runtime
+          path: build/shogi-ai
+          if-no-files-found: error
+          retention-days: 14
+
+  round_robin:
+    needs: quick
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        include:
+          - a: A
+            b: B
+            seed: 2026107100
+          - a: A
+            b: C
+            seed: 2026107200
+          - a: A
+            b: D
+            seed: 2026107300
+          - a: B
+            b: C
+            seed: 2026107400
+          - a: B
+            b: D
+            seed: 2026107500
+          - a: C
+            b: D
+            seed: 2026107600
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Download runtime
+        uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-final4-runtime
+          path: build/runtime
+
+      - name: Prepare runtime
+        run: |
+          ENGINE="$(find build/runtime -type f -name shogi-ai | head -1)"
+          test -n "$ENGINE"
+          chmod +x "$ENGINE"
+          echo "ENGINE=$ENGINE" >> "$GITHUB_ENV"
+          echo "logical_cpus=$(nproc)"
+
+      - name: Run 200-game round-robin pairing
+        run: |
+          python3 benchmarks/eval_v2_final_four.py match \
+            --engine "$ENGINE" \
+            --a "${{ matrix.a }}" --b "${{ matrix.b }}" \
+            --output-dir "build/final4-rr-${{ matrix.a }}-${{ matrix.b }}" \
+            --movetime 200 --max-plies 300 --seed "${{ matrix.seed }}"
+
+      - name: Upload pairing
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-final4-rr-${{ matrix.a }}-${{ matrix.b }}
+          path: build/final4-rr-${{ matrix.a }}-${{ matrix.b }}
+          if-no-files-found: error
+          retention-days: 180
+          compression-level: 6
+
+  vs_current:
+    needs: round_robin
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        include:
+          - a: A
+            seed: 2026108100
+          - a: B
+            seed: 2026108200
+          - a: C
+            seed: 2026108300
+          - a: D
+            seed: 2026108400
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Download runtime
+        uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-final4-runtime
+          path: build/runtime
+
+      - name: Prepare runtime
+        run: |
+          ENGINE="$(find build/runtime -type f -name shogi-ai | head -1)"
+          test -n "$ENGINE"
+          chmod +x "$ENGINE"
+          echo "ENGINE=$ENGINE" >> "$GITHUB_ENV"
+          echo "logical_cpus=$(nproc)"
+
+      - name: Run 200 games versus current
+        run: |
+          python3 benchmarks/eval_v2_final_four.py match \
+            --engine "$ENGINE" \
+            --a "${{ matrix.a }}" --b current \
+            --output-dir "build/final4-current-${{ matrix.a }}" \
+            --movetime 200 --max-plies 300 --seed "${{ matrix.seed }}"
+
+      - name: Upload current comparison
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-final4-current-${{ matrix.a }}
+          path: build/final4-current-${{ matrix.a }}
+          if-no-files-found: error
+          retention-days: 180
+          compression-level: 6
+
+  analyze:
+    needs: vs_current
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Download all match evidence
+        uses: actions/download-artifact@v4
+        with:
+          pattern: eval-v2-final4-*
+          path: build/final4-all
+          merge-multiple: false
+
+      - name: Analyze final four
+        run: |
+          python3 benchmarks/eval_v2_final_four.py analyze \
+            --root build/final4-all \
+            --output build/eval-v2-final4-analysis.json \
+            --summary build/eval-v2-final4-summary.md
+          cat build/eval-v2-final4-summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload analysis
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-final4-analysis
+          path: |
+            build/eval-v2-final4-analysis.json
+            build/eval-v2-final4-summary.md
+          if-no-files-found: error
+          retention-days: 365
