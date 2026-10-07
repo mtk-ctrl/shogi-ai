@@ -2,9 +2,7 @@ name: External Engine Benchmark
 
 on:
   push:
-    branches:
-      - main
-      - feature/external-engine-benchmark
+    branches: [main]
     paths:
       - "benchmarks/external_match.py"
       - "benchmarks/external_levels.py"
@@ -13,27 +11,23 @@ on:
   workflow_dispatch:
     inputs:
       games:
-        description: "Number of games"
+        description: "Total games"
         required: true
         default: "20"
+        type: string
+      shards:
+        description: "Parallel jobs; set to currently available runners per R21"
+        required: true
+        default: "1"
         type: string
       opponent_level:
         description: "YaneuraOu Material benchmark level (1-100)"
         required: true
         default: "21"
         type: string
-      self_opening_book:
-        description: "Enable shogi-ai OpeningBook (false = core benchmark)"
-        required: true
-        default: false
-        type: boolean
 
 permissions:
   contents: read
-
-concurrency:
-  group: external-engine-benchmark-${{ github.ref }}
-  cancel-in-progress: true
 
 env:
   YANEURAOU_REF: c1b80eaa09fe13d5f12b1599d1ae4d53c224de30
@@ -52,19 +46,46 @@ jobs:
       - name: External benchmark unit tests
         run: python3 tests/test_external_match.py
 
-  yaneuraou-material:
-    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/feature/external-engine-benchmark'
+  plan:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - name: Build shard plan
+        id: plan
+        env:
+          GAMES_INPUT: ${{ inputs.games }}
+          SHARDS_INPUT: ${{ inputs.shards }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          games=int(os.environ["GAMES_INPUT"])
+          shards=int(os.environ["SHARDS_INPUT"])
+          if games < 1:
+              raise SystemExit("games must be >= 1")
+          if shards < 1 or shards > 20:
+              raise SystemExit("shards must be between 1 and 20")
+          shards=min(shards,games)
+          q,r=divmod(games,shards)
+          include=[{"shard":i,"games":q+(1 if i<r else 0),"seed":2026100500+i*100000} for i in range(shards)]
+          with Path(os.environ["GITHUB_OUTPUT"]).open("a",encoding="utf-8") as f:
+              f.write("matrix="+json.dumps({"include":include},separators=(",",":"))+"\n")
+          print("distribution:",[x["games"] for x in include])
+          PY
+
+  build-engines:
+    if: github.event_name == 'workflow_dispatch'
     needs: unit
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
     steps:
-      - name: Checkout shogi-ai
+      - name: Checkout KUMOJI
         uses: actions/checkout@v5
 
-      - name: Install python-shogi
-        run: python3 -m pip install python-shogi==1.1.1
-
-      - name: Build shogi-ai
+      - name: Build KUMOJI
         run: python3 scripts/build.py --output build/shogi-ai
 
       - name: Fetch pinned YaneuraOu
@@ -74,50 +95,109 @@ jobs:
 
       - name: Build YaneuraOu material edition
         run: |
-          make -C external/YaneuraOu/source clean \
-            COMPILER=g++ TARGET_CPU=SSE42 \
-            YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
-          make -C external/YaneuraOu/source -j2 tournament \
-            COMPILER=g++ TARGET_CPU=SSE42 \
-            YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          make -C external/YaneuraOu/source clean             COMPILER=g++ TARGET_CPU=SSE42             YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          make -C external/YaneuraOu/source -j2 tournament             COMPILER=g++ TARGET_CPU=SSE42             YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
           test -x external/YaneuraOu/source/YaneuraOu-by-gcc
 
-      - name: Run external benchmark
-        shell: bash
-        run: |
-          GAMES="${{ inputs.games }}"
-          LEVEL="${{ inputs.opponent_level }}"
-          BOOK="${{ inputs.self_opening_book }}"
-          GAMES="${GAMES:-4}"
-          LEVEL="${LEVEL:-21}"
-          BOOK="${BOOK:-false}"
-          NODES="$(python3 benchmarks/external_levels.py --level "$LEVEL" --nodes-only)"
-          if [[ "$BOOK" == "true" ]]; then
-            EXPERIENCE_FILE="benchmarks/external-results/yaneuraou-material-full-experience.bin"
-            SELF_OPTIONS="{\"ExperienceCache\":\"true\",\"ExperienceFile\":\"${EXPERIENCE_FILE}\",\"OpeningBook\":\"true\"}"
-            PROFILE="full"
-          else
-            SELF_OPTIONS='{"ExperienceCache":"false","OpeningBook":"false"}'
-            PROFILE="core"
-          fi
-          OUT="benchmarks/external-results/yaneuraou-material-${PROFILE}-level$(printf '%03d' "$LEVEL")-nodes${NODES}.json"
-          echo "YaneuraOu Material benchmark: level=$LEVEL nodes=$NODES"
-          python3 benchmarks/external_match.py \
-            --self-engine build/shogi-ai \
-            --opponent-engine external/YaneuraOu/source/YaneuraOu-by-gcc \
-            --self-options "$SELF_OPTIONS" \
-            --opponent-options '{"Threads":1,"USI_Hash":16,"USI_OwnBook":false}' \
-            --self-go "go movetime 50" \
-            --opponent-go "go nodes ${NODES}" \
-            --games "$GAMES" \
-            --seed 20261005 \
-            --output "$OUT"
+      - name: Package engines
+        run: tar -czf external-engines.tgz build/shogi-ai external/YaneuraOu/source/YaneuraOu-by-gcc
 
-      - name: Upload benchmark result
+      - name: Upload engines
         uses: actions/upload-artifact@v4
         with:
-          name: external-yaneuraou-material
-          path: |
-            benchmarks/external-results/*.json
-            benchmarks/external-results/*.bin
+          name: external-engine-binaries-${{ github.run_id }}
+          path: external-engines.tgz
+          if-no-files-found: error
+
+  match:
+    if: github.event_name == 'workflow_dispatch'
+    needs: [plan, build-engines]
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - name: Checkout benchmark harness
+        uses: actions/checkout@v5
+        with:
+          path: harness
+
+      - name: Install python-shogi
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Download engines
+        uses: actions/download-artifact@v4
+        with:
+          name: external-engine-binaries-${{ github.run_id }}
+
+      - name: Extract engines
+        run: |
+          tar -xzf external-engines.tgz
+          chmod +x build/shogi-ai external/YaneuraOu/source/YaneuraOu-by-gcc
+
+      - name: Run core benchmark shard
+        env:
+          LEVEL: ${{ inputs.opponent_level }}
+          SHARD_GAMES: ${{ matrix.games }}
+          SHARD_SEED: ${{ matrix.seed }}
+        run: |
+          mkdir -p results
+          NODES="$(python3 harness/benchmarks/external_levels.py --level "$LEVEL" --nodes-only)"
+          python3 harness/benchmarks/external_match.py             --self-engine build/shogi-ai             --opponent-engine external/YaneuraOu/source/YaneuraOu-by-gcc             --self-options '{"ExperienceCache":"false","OpeningBook":"false"}'             --opponent-options '{"Threads":1,"USI_Hash":16,"USI_OwnBook":false}'             --self-go "go movetime 50"             --opponent-go "go nodes $NODES"             --games "$SHARD_GAMES"             --seed "$SHARD_SEED"             --output "results/shard-${{ matrix.shard }}.json"
+
+      - name: Upload shard
+        uses: actions/upload-artifact@v4
+        with:
+          name: external-engine-benchmark-${{ github.run_id }}-${{ matrix.shard }}
+          path: results/shard-${{ matrix.shard }}.json
+          if-no-files-found: error
+
+  aggregate:
+    if: always() && needs.match.result == 'success'
+    needs: match
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Download shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: external-engine-benchmark-${{ github.run_id }}-*
+          path: results
+          merge-multiple: true
+
+      - name: Aggregate
+        env:
+          LEVEL: ${{ inputs.opponent_level }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          rows=[json.loads(p.read_text()) for p in sorted(Path("results").glob("shard-*.json"))]
+          if not rows:
+              raise SystemExit("no shard results")
+          games=sum(r["games"] for r in rows)
+          wins=sum(r["wins_self"] for r in rows)
+          draws=sum(r["draws"] for r in rows)
+          losses=sum(r["losses_self"] for r in rows)
+          illegal=sum(r.get("illegal_games",0) for r in rows)
+          score=(wins+0.5*draws)/games
+          out={"profile":"core","opponent_level":int(os.environ["LEVEL"]),"games":games,
+               "wins_self":wins,"draws":draws,"losses_self":losses,"score_self":score,
+               "illegal_games":illegal,"shards":len(rows),"self_go":"go movetime 50"}
+          Path("aggregate.json").write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n")
+          with open(os.environ["GITHUB_STEP_SUMMARY"],"a",encoding="utf-8") as f:
+              f.write("# External Engine Benchmark — Core\n\n")
+              f.write(f"- YaneuraOu Material level: **{out['opponent_level']}**\n")
+              f.write(f"- result: **{wins}-{draws}-{losses}**, score **{score:.1%}**\n")
+              f.write(f"- games / shards: **{games} / {len(rows)}**\n")
+              f.write(f"- illegal games: **{illegal}**\n")
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Upload aggregate
+        uses: actions/upload-artifact@v4
+        with:
+          name: external-engine-benchmark-summary-${{ github.run_id }}
+          path: aggregate.json
           if-no-files-found: error

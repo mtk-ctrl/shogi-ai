@@ -7,15 +7,17 @@ on:
       - "AGENTS.md"
       - "README.md"
       - "docs/**"
+      - ".github/workflows/**"
       - "scripts/check_doc_router.py"
-      - ".github/workflows/docs-rule-check.yml"
+      - "scripts/check_workflow_inventory.py"
   pull_request:
     paths:
       - "AGENTS.md"
       - "README.md"
       - "docs/**"
+      - ".github/workflows/**"
       - "scripts/check_doc_router.py"
-      - ".github/workflows/docs-rule-check.yml"
+      - "scripts/check_workflow_inventory.py"
   workflow_dispatch:
 
 permissions:
@@ -31,3 +33,6 @@ jobs:
 
       - name: Check router and active rules
         run: python3 scripts/check_doc_router.py
+
+      - name: Check active workflow inventory
+        run: python3 scripts/check_workflow_inventory.py
