@@ -1,0 +1,74 @@
+name: Opponent Threat Quality 200
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/opponent-threat-quality]
+    paths:
+      - 'engine/strategy/evaluation_v2_features.h'
+      - '.github/workflows/opponent-threat-quality-200.yml'
+
+jobs:
+  match:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: |
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build -j 4
+      - name: Run 50 paired-isolated games
+        run: |
+          mkdir -p build/results
+          python3 benchmarks/arena.py \
+            --engine-a build/shogi-ai --engine-b build/shogi-ai \
+            --options-a '{"OpeningBook":false,"ExperienceCache":false,"EvalThreat":25}' \
+            --options-b '{"OpeningBook":false,"ExperienceCache":false,"EvalThreat":0}' \
+            --games 50 --max-plies 300 --seed $((2026100800 + ${{ matrix.shard }})) \
+            --go-command 'go movetime 200' \
+            --output build/results/threat-${{ matrix.shard }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: threat-quality-${{ matrix.shard }}
+          path: build/results/threat-${{ matrix.shard }}.json
+
+  aggregate:
+    needs: match
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: threat-quality-*
+          path: results
+          merge-multiple: true
+      - name: Aggregate
+        run: |
+          python3 - <<'PY'
+          import json,glob,math
+          files=glob.glob('results/*.json')
+          W=D=L=illegal=0
+          rows=[]
+          for f in files:
+              x=json.load(open(f))
+              s=x.get('summary',x)
+              w=s.get('a_wins',s.get('wins_a',0)); d=s.get('draws',0); l=s.get('b_wins',s.get('wins_b',0))
+              W+=w;D+=d;L+=l;illegal+=s.get('illegal_moves',0)
+              rows.append({'file':f,'W':w,'D':d,'L':l})
+          n=W+D+L
+          score=(W+0.5*D)/n if n else 0
+          se=math.sqrt(max(score*(1-score)/n,0)) if n else 0
+          out={'candidate':'EvalThreat=25 forcing-resource implementation','baseline':'EvalThreat=0','games':n,
+               'wins':W,'draws':D,'losses':L,'score_rate':score,
+               'score_95ci':[max(0,score-1.96*se),min(1,score+1.96*se)],
+               'illegal_moves':illegal,'shards':rows}
+          open('aggregate.json','w').write(json.dumps(out,ensure_ascii=False,indent=2))
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: opponent-threat-quality-200-aggregate
+          path: aggregate.json
