@@ -16,9 +16,17 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 | `.github/workflows/tsume-benchmark.yml` | 手動 | 固定詰将棋データセットのBenchmark |
 | `.github/workflows/android-apk.yml` | 明示的release変更 / 手動 | 完成版全車検・Android APK生成 |
 
+## ACTIVE — 実行中の一時比較
+
+| Workflow | 起動 | 用途 |
+|---|---|---|
+| `.github/workflows/v2-v1-100-no-book-exp.yml` | 手動 | 本人依頼のv2.0.0対v1.0.1、Book/Experience OFF、100局。研究終了時にR15に従い整理する |
+
+編集pushを比較対局の開始指示にしない。この一時workflowのseed範囲・先後配分を訂正したが、今回の監査から100局を起動・再実行していない。
+
 ## HOLD
 Book / Experience / Nightlyの旧workflowは `docs/hold/workflows/` に退避している。
-H10の方針確定まではGitHub Actionsから起動できない。
+H10の方針確定まではGitHub Actionsから起動できない。夜間定期対局は、現在の変革期に優先する開発があるという本人判断でも一時停止中である。H10が解決しただけで自動再開せず、R30に従う。
 
 ## ARCHIVE
 終了済みの評価weight sweep、特定世代比較、特定artifact診断等は `docs/archive/workflows/2026-10-07/` に原文保存した。
@@ -31,7 +39,7 @@ H10の方針確定まではGitHub Actionsから起動できない。
 一方、新しい研究手法、独自matrix、段階的screening、専用artifact、Position BankやDiagnosisなどが必要なら専用workflowを作ってよい。
 一時workflowも禁止しない。研究終了後にACTIVE / HOLD / ARCHIVEを整理する。
 
-固定局数の対局を起動するときはR21に従い、先に空きrunner数を確認してrunner配分を決める。
+固定局数の対局を起動するときはR21に従い、先に空きrunner数を確認してrunner配分を決める。内部・外部runnerはgame_offsetを受け取り、奇数局のshardでも全体の先後交互を継続する。shards=1という入力既定を、そのまま最適なrunner配分とみなさない。
 
 ## 内部比較の着手アーカイブ
 engine-match.ymlは対局後に実際の着手だけを圧縮し、played-move-archive artifactへ保存する。探索処理は変更しない。

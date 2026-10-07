@@ -7,6 +7,7 @@ on:
       - "benchmarks/external_match.py"
       - "benchmarks/external_levels.py"
       - "tests/test_external_match.py"
+      - "tests/test_match_sharding.py"
       - ".github/workflows/external-engine-benchmark.yml"
   workflow_dispatch:
     inputs:
@@ -44,7 +45,9 @@ jobs:
         run: python3 -m pip install python-shogi==1.1.1
 
       - name: External benchmark unit tests
-        run: python3 tests/test_external_match.py
+        run: |
+          python3 tests/test_external_match.py
+          python3 tests/test_match_sharding.py
 
   plan:
     if: github.event_name == 'workflow_dispatch'
@@ -70,7 +73,13 @@ jobs:
               raise SystemExit("shards must be between 1 and 20")
           shards=min(shards,games)
           q,r=divmod(games,shards)
-          include=[{"shard":i,"games":q+(1 if i<r else 0),"seed":2026100500+i*100000} for i in range(shards)]
+          include=[]
+          game_offset=0
+          for i in range(shards):
+              n=q+(1 if i<r else 0)
+              include.append({"shard":i,"games":n,"seed":2026100500+i*100000,
+                              "game_offset":game_offset})
+              game_offset+=n
           with Path(os.environ["GITHUB_OUTPUT"]).open("a",encoding="utf-8") as f:
               f.write("matrix="+json.dumps({"include":include},separators=(",",":"))+"\n")
           print("distribution:",[x["games"] for x in include])
@@ -141,10 +150,11 @@ jobs:
           LEVEL: ${{ inputs.opponent_level }}
           SHARD_GAMES: ${{ matrix.games }}
           SHARD_SEED: ${{ matrix.seed }}
+          GAME_OFFSET: ${{ matrix.game_offset }}
         run: |
           mkdir -p results
           NODES="$(python3 harness/benchmarks/external_levels.py --level "$LEVEL" --nodes-only)"
-          python3 harness/benchmarks/external_match.py             --self-engine build/shogi-ai             --opponent-engine external/YaneuraOu/source/YaneuraOu-by-gcc             --self-options '{"ExperienceCache":"false","OpeningBook":"false"}'             --opponent-options '{"Threads":1,"USI_Hash":16,"USI_OwnBook":false}'             --self-go "go movetime 50"             --opponent-go "go nodes $NODES"             --games "$SHARD_GAMES"             --seed "$SHARD_SEED"             --output "results/shard-${{ matrix.shard }}.json"
+          python3 harness/benchmarks/external_match.py             --self-engine build/shogi-ai             --opponent-engine external/YaneuraOu/source/YaneuraOu-by-gcc             --self-options '{"ExperienceCache":"false","OpeningBook":"false"}'             --opponent-options '{"Threads":1,"USI_Hash":16,"USI_OwnBook":false}'             --self-go "go movetime 50"             --opponent-go "go nodes $NODES"             --games "$SHARD_GAMES"             --game-offset "$GAME_OFFSET"             --seed "$SHARD_SEED"             --output "results/shard-${{ matrix.shard }}.json"
 
       - name: Upload shard
         uses: actions/upload-artifact@v4

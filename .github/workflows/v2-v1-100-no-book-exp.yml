@@ -1,10 +1,6 @@
 name: V2.0.0 vs V1.0.1 100 No Book Experience
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/v2-v1-100-no-book-exp.yml"
   workflow_dispatch:
 
 permissions:
@@ -80,8 +76,9 @@ jobs:
           SHARD_ID: ${{ matrix.shard }}
         run: |
           mkdir -p results
-          SHARD_SEED=$((202610072235 + SHARD_ID * 100000))
-          python3 harness/benchmarks/arena.py             --engine-a build/engine-a             --engine-b build/engine-b             --options-a "$OPTIONS_A"             --options-b "$OPTIONS_B"             --games 5             --max-plies "$MAX_PLIES"             --seed "$SHARD_SEED"             --go-command "$GO_COMMAND"             --output "results/shard-${{ matrix.shard }}.json"
+          SHARD_SEED=$((2026100700 + SHARD_ID * 100000))
+          GAME_OFFSET=$((SHARD_ID * 5))
+          python3 harness/benchmarks/arena.py             --engine-a build/engine-a             --engine-b build/engine-b             --options-a "$OPTIONS_A"             --options-b "$OPTIONS_B"             --games 5             --game-offset "$GAME_OFFSET"             --max-plies "$MAX_PLIES"             --seed "$SHARD_SEED"             --go-command "$GO_COMMAND"             --output "results/shard-${{ matrix.shard }}.json"
       - name: Upload shard
         uses: actions/upload-artifact@v4
         with:

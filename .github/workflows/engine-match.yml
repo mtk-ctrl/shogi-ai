@@ -100,9 +100,14 @@ jobs:
 
           q, r = divmod(games, shards)
           include = []
+          game_offset = 0
           for i in range(shards):
               n = q + (1 if i < r else 0)
-              include.append({"shard": i, "games": n, "seed": seed + i * 100000})
+              include.append({"shard": i, "games": n, "seed": seed + i * 100000,
+                              "game_offset": game_offset})
+              game_offset += n
+              if not 0 <= include[-1]["seed"] <= 2147483647 - n * 2:
+                  raise SystemExit("each shard seed must fit the USI integer range")
 
           out = Path(os.environ["GITHUB_OUTPUT"])
           with out.open("a", encoding="utf-8") as f:
@@ -181,9 +186,10 @@ jobs:
           MAX_PLIES: ${{ inputs.max_plies }}
           SHARD_GAMES: ${{ matrix.games }}
           SHARD_SEED: ${{ matrix.seed }}
+          GAME_OFFSET: ${{ matrix.game_offset }}
         run: |
           mkdir -p results
-          python3 harness/benchmarks/arena.py             --engine-a build/engine-a             --engine-b build/engine-b             --options-a "$OPTIONS_A"             --options-b "$OPTIONS_B"             --games "$SHARD_GAMES"             --max-plies "$MAX_PLIES"             --seed "$SHARD_SEED"             --go-command "$GO_COMMAND"             --output "results/shard-${{ matrix.shard }}.json"
+          python3 harness/benchmarks/arena.py             --engine-a build/engine-a             --engine-b build/engine-b             --options-a "$OPTIONS_A"             --options-b "$OPTIONS_B"             --games "$SHARD_GAMES"             --game-offset "$GAME_OFFSET"             --max-plies "$MAX_PLIES"             --seed "$SHARD_SEED"             --go-command "$GO_COMMAND"             --output "results/shard-${{ matrix.shard }}.json"
 
       - name: Upload shard
         uses: actions/upload-artifact@v4

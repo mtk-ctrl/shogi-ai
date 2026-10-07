@@ -28,6 +28,7 @@ on:
       - "tools/floodgate/**"
       - "tests/test_floodgate_client.py"
       - "tests/test_arena.py"
+      - "tests/test_match_sharding.py"
       - "tests/test_external_match.py"
       - "scripts/build.py"
       - ".github/workflows/quick-ci.yml"
@@ -103,6 +104,7 @@ jobs:
       - name: Arena telemetry and adjudication tests
         run: |
           python3 tests/test_arena.py
+          python3 tests/test_match_sharding.py
           python3 tests/test_external_match.py
           python3 tests/test_floodgate_client.py
 

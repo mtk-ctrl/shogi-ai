@@ -257,8 +257,10 @@ class Engine:
                 self.proc.kill()
 
 
-def play_game(a, b, game_index, max_plies, seed_base):
-    a_black = (game_index % 2 == 0)
+def play_game(a, b, game_index, max_plies, seed_base, game_offset=0):
+    # Alternate across the whole match, including boundaries between shards.
+    # Keep the local index for seed generation so existing seed series survive.
+    a_black = ((game_offset + game_index) % 2 == 0)
     black = a if a_black else b
     white = b if a_black else a
     black.configure_game(seed_base + game_index * 2)
@@ -370,6 +372,8 @@ def main():
     parser.add_argument("--options-a", default="{}", help="JSON USI options for engine A")
     parser.add_argument("--options-b", default="{}", help="JSON USI options for engine B")
     parser.add_argument("--games", type=int, default=20)
+    parser.add_argument("--game-offset", type=int, default=0,
+                        help="Number of games in preceding shards; controls color alternation")
     parser.add_argument("--max-plies", type=int, default=400)
     parser.add_argument("--seed", type=int, default=20261003)
     parser.add_argument("--go-command", default="go depth 3", help="Explicit equal search limit for both engines")
@@ -377,8 +381,8 @@ def main():
     args = parser.parse_args()
     if not args.go_command.startswith("go ") or "\n" in args.go_command or "\r" in args.go_command:
         raise SystemExit("go-command must be one USI go command")
-    if args.games < 1 or args.max_plies < 1 or not 0 <= args.seed <= 2147483647 - args.games * 2:
-        raise SystemExit("positive games/max-plies and seeds within the USI range are required")
+    if args.games < 1 or args.max_plies < 1 or args.game_offset < 0 or not 0 <= args.seed <= 2147483647 - args.games * 2:
+        raise SystemExit("positive games/max-plies, nonnegative game-offset and seeds within the USI range are required")
 
     options_a, options_b = json.loads(args.options_a), json.loads(args.options_b)
     for options in (options_a, options_b):
@@ -394,7 +398,7 @@ def main():
     games = []
     try:
         for i in range(args.games):
-            result = play_game(a, b, i, args.max_plies, args.seed)
+            result = play_game(a, b, i, args.max_plies, args.seed, args.game_offset)
             games.append(result)
             print(f"game {i+1:03d}/{args.games}: {result['winner'] or 'draw'} "
                   f"{result['reason']} {result['plies']} plies")
@@ -418,6 +422,7 @@ def main():
         "options_a": options_a,
         "options_b": options_b,
         "seed": args.seed,
+        "game_offset": args.game_offset,
         "max_plies": args.max_plies,
         "go_command": args.go_command,
         "response_watchdog_seconds": Engine.RESPONSE_TIMEOUT,

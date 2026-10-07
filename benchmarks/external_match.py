@@ -217,8 +217,8 @@ class UsiEngine:
 
 
 def play_game(self_engine: UsiEngine, opponent: UsiEngine, game_index: int,
-              max_plies: int, seed_base: int) -> dict:
-    self_black = game_index % 2 == 0
+              max_plies: int, seed_base: int, game_offset: int = 0) -> dict:
+    self_black = (game_offset + game_index) % 2 == 0
     black = self_engine if self_black else opponent
     white = opponent if self_black else self_engine
     self_engine.new_game(seed_base + game_index * 2)
@@ -320,13 +320,15 @@ def main() -> None:
     parser.add_argument("--self-go", default="go movetime 50")
     parser.add_argument("--opponent-go", default="go nodes 300")
     parser.add_argument("--games", type=int, default=20)
+    parser.add_argument("--game-offset", type=int, default=0,
+                        help="Number of games in preceding shards; controls color alternation")
     parser.add_argument("--max-plies", type=int, default=400)
     parser.add_argument("--seed", type=int, default=20261005)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     args = parser.parse_args()
 
-    if args.games < 1 or args.max_plies < 1:
-        raise SystemExit("games and max-plies must be positive")
+    if args.games < 1 or args.max_plies < 1 or args.game_offset < 0:
+        raise SystemExit("games/max-plies must be positive and game-offset nonnegative")
     if not 0 <= args.seed <= 2147483647 - args.games * 2:
         raise SystemExit("seed is outside the supported USI integer range")
 
@@ -347,7 +349,7 @@ def main() -> None:
     started = time.monotonic()
     try:
         for index in range(args.games):
-            game = play_game(self_engine, opponent, index, args.max_plies, args.seed)
+            game = play_game(self_engine, opponent, index, args.max_plies, args.seed, args.game_offset)
             games.append(game)
             print(
                 f"game {index + 1:03d}/{args.games}: {game['winner'] or 'draw'} "
@@ -379,6 +381,7 @@ def main() -> None:
         "self_engine": self_engine.metadata(),
         "opponent_engine": opponent.metadata(),
         "seed": args.seed,
+        "game_offset": args.game_offset,
         "games": args.games,
         "max_plies": args.max_plies,
         "wins_self": wins,
