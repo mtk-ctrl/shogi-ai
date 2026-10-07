@@ -328,19 +328,62 @@ def promotion_detail(board: shogi.Board, color: int, legal: dict | None = None) 
     }
 
 
+def initiative_detail(board: shogi.Board, actor: int) -> dict:
+    enemy = other(actor)
+    enemy_king = board.king_squares[enemy]
+    current_check = int(
+        enemy_king is not None and board.is_attacked_by(actor, enemy_king)
+    )
+    ring_control = sum(
+        board.is_attacked_by(actor, sq)
+        for sq in ring_squares(enemy_king)
+    )
+    attacked_pieces = 0
+    attacked_value = 0
+    loose_target_value = 0
+    for sq in shogi.SQUARES:
+        p = board.piece_at(sq)
+        if p is None or p.color != enemy or p.piece_type == shogi.KING:
+            continue
+        if not board.is_attacked_by(actor, sq):
+            continue
+        attacked_pieces += 1
+        value = piece_value(p)
+        attacked_value += value
+        if not board.is_attacked_by(enemy, sq):
+            loose_target_value += value
+
+    # If the move gives check, fewer legal replies means greater forcing power.
+    reply_count = sum(1 for _ in board.legal_moves)
+    reply_restriction = max(0, 12 - reply_count) if current_check else 0
+    score = (
+        1000 * current_check
+        + 60 * ring_control
+        + attacked_value
+        + loose_target_value
+        + 120 * reply_restriction
+    )
+    return {
+        "current_check": current_check,
+        "enemy_king_ring_control": ring_control,
+        "attacked_enemy_pieces": attacked_pieces,
+        "attacked_enemy_value": attacked_value,
+        "loose_target_value": loose_target_value,
+        "opponent_reply_count": reply_count,
+        "score": score,
+    }
+
+
 def state_concepts(board: shogi.Board, actor: int) -> dict:
     enemy = other(actor)
     own_legal = legal_facts(board, actor)
     opp_legal = legal_facts(board, enemy)
 
-    # Higher is always better for actor.
+    # Higher is always better for actor. Prophylaxis is interpreted only for
+    # non-checking moves; a checking move restricts replies through initiative,
+    # not through preventive defence.
     prophylaxis = -opp_legal["forcing_score"]
-
-    actor_just_gave_check = int(clone_for_turn(board, enemy).is_check())
-    initiative = (
-        800 * actor_just_gave_check
-        + own_legal["forcing_score"]
-    )
+    initiative = initiative_detail(board, actor)
 
     # Quiet choices are the closest cheap proxy for "what can I prepare next?"
     enablement = (
@@ -354,7 +397,7 @@ def state_concepts(board: shogi.Board, actor: int) -> dict:
 
     return {
         "prophylaxis": prophylaxis,
-        "initiative": initiative,
+        "initiative": initiative["score"],
         "enablement": enablement,
         "king_safety_quality": safety["score"],
         "piece_placement": placement["score"],
@@ -362,10 +405,11 @@ def state_concepts(board: shogi.Board, actor: int) -> dict:
         "detail": {
             "own_legal": own_legal,
             "opponent_legal": opp_legal,
+            "initiative": initiative,
             "king_safety": safety,
             "piece_placement": placement,
             "promotion_potential": promotion,
-            "actor_just_gave_check": actor_just_gave_check,
+            "actor_just_gave_check": initiative["current_check"],
         },
     }
 
@@ -386,8 +430,12 @@ def compare_position(row: dict) -> dict:
     actual = state_concepts(actual_board, actor)
     best = state_concepts(best_board, actor)
     delta = {name: best[name] - actual[name] for name in FEATURES}
-    support = [name for name in FEATURES if delta[name] > 0]
-    oppose = [name for name in FEATURES if delta[name] < 0]
+    # A checking move shrinks the opponent reply set by force. Do not call that
+    # prophylaxis; classify it under Initiative / Forcing Power instead.
+    if actual["detail"]["actor_just_gave_check"] or best["detail"]["actor_just_gave_check"]:
+        delta["prophylaxis"] = None
+    support = [name for name in FEATURES if delta[name] is not None and delta[name] > 0]
+    oppose = [name for name in FEATURES if delta[name] is not None and delta[name] < 0]
     return {
         **row,
         "actual_concepts": actual,
@@ -427,13 +475,13 @@ def render_markdown(result: dict) -> str:
         "",
         "## 12局面での説明力",
         "",
-        "|候補|30秒最善手を支持|同値|実戦手側を支持|",
-        "|---|---:|---:|---:|",
+        "|候補|30秒最善手を支持|同値|実戦手側を支持|対象外|",
+        "|---|---:|---:|---:|---:|",
     ]
     for name in FEATURES:
         a = agg[name]
         lines.append(
-            f"|{labels[name]}|{a['positive']}|{a['zero']}|{a['negative']}|"
+            f"|{labels[name]}|{a['positive']}|{a['zero']}|{a['negative']}|{a.get('not_applicable',0)}|"
         )
     lines += [
         "",
@@ -475,10 +523,12 @@ def main() -> int:
     aggregate = {}
     for name in FEATURES:
         vals = [row["delta_best_minus_actual"][name] for row in rows]
+        observed = [v for v in vals if v is not None]
         aggregate[name] = {
-            "positive": sum(v > 0 for v in vals),
-            "zero": sum(v == 0 for v in vals),
-            "negative": sum(v < 0 for v in vals),
+            "positive": sum(v > 0 for v in observed),
+            "zero": sum(v == 0 for v in observed),
+            "negative": sum(v < 0 for v in observed),
+            "not_applicable": len(vals) - len(observed),
             "deltas": vals,
         }
     aggregate["coverage"] = {
