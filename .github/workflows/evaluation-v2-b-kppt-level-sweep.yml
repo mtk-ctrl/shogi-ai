@@ -83,21 +83,6 @@ jobs:
           git clone --filter=blob:none https://github.com/yaneurao/YaneuraOu.git external/YaneuraOu
           git -C external/YaneuraOu checkout "$YANEURAOU_REF"
 
-      - name: Patch KPPT loader for Apery 16-bit format
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          p=Path("external/YaneuraOu/source/eval/kppt/evaluate_kppt.cpp")
-          s=p.read_text()
-          old="auto input = EvalIO::EvalInfo::build_kppt32("
-          new="auto input = EvalIO::EvalInfo::build_kppt16("
-          if old not in s:
-              raise SystemExit("KPPT loader pattern not found")
-          p.write_text(s.replace(old,new,1))
-          print("patched KPPT input loader: kppt32 -> kppt16")
-          PY
-
       - name: Build YaneuraOu KPPT
         run: |
           make -C external/YaneuraOu/source clean \
