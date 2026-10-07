@@ -8,6 +8,7 @@ variable so it never needs to be stored in this repository.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -58,9 +59,12 @@ def validate_identity(username: str, trip: str) -> None:
 
 class UsiEngine:
     def __init__(self, path: str, options: dict[str, str]) -> None:
-        self.path = str(Path(path))
+        binary = Path(path).resolve()
+        self.path = str(binary)
+        self.working_directory = str(binary.parent)
         self.proc = subprocess.Popen(
             [self.path],
+            cwd=self.working_directory,
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
@@ -158,6 +162,8 @@ class UsiEngine:
     def metadata(self) -> dict:
         return {
             "path": self.path,
+            "working_directory": self.working_directory,
+            "sha256": hashlib.sha256(Path(self.path).read_bytes()).hexdigest(),
             "usi_name": self.id_name,
             "usi_author": self.id_author,
             "supported_options": sorted(self.options),
