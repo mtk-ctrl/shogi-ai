@@ -20,11 +20,10 @@ runner使用率ではなく、依頼された目的を最短・最大効率で�
 
 ## 時間枠型Nightly
 終了時刻を定めた時間枠型は、固定局数と目的が異なる。具体的な夜間対局の期限はR30を参照する。
-空きrunnerは原則最大限使うが、総局数だけを最大化せず、Nightlyで定めたExperience generation / Challenger / Validation / Diagnosis等の役割と状態継続性を守った上で、一晩の有効研究量を最大化する。
+空きrunnerは原則最大限使うが、総局数だけを最大化せず、Nightlyで定めた研究生成・候補比較・検証・原因診断等の役割と状態継続性を守った上で、一晩の有効研究量を最大化する。
 
 未実装フェーズを、runnerを埋める目的だけで別用途に勝手に置換しない。capability gapとして残す。
 
-Book / Experience固有のlane構造はH10で保留中であり、既存workflowをこのRuleだけを理由に変更しない。
 
 ## 他workflowを止めてよい場合
 runner確保だけを理由に別目的の有効runを停止しない。
@@ -40,7 +39,7 @@ run IDを確認したら、同じターンで少なくとも次を報告する�
 - 他の有効runが使用中のrunner数
 - 今回使うrunner数
 - job/shard数と局数配分
-- Book / Experience条件
+- 局面知識の利用条件
 - run ID
 - 終了予定時刻
 
