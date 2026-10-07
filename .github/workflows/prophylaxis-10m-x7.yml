@@ -1,0 +1,146 @@
+name: Research Prophylaxis 10m x7
+
+on:
+  push:
+    branches:
+      - research/evaluation-concepts-v2
+    paths:
+      - "tools/research/prophylaxis_10m_research.py"
+      - ".github/workflows/prophylaxis-10m-x7.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: prophylaxis-10m-x7-\${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build KUMOJI
+        run: python3 scripts/build.py --output build/kumoji
+      - name: Package engine
+        run: tar -czf kumoji.tgz build/kumoji
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prophylaxis-10m-engine-\${{ github.run_id }}
+          path: kumoji.tgz
+          if-no-files-found: error
+
+  research:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 7
+      matrix:
+        source_index: [0, 12, 14, 17, 18, 19, 23]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: prophylaxis-10m-engine-\${{ github.run_id }}
+      - name: Extract engine
+        run: |
+          tar -xzf kumoji.tgz
+          chmod +x build/kumoji
+      - name: Ten-minute analysis
+        run: |
+          mkdir -p build/prophylaxis-10m
+          python3 tools/research/prophylaxis_10m_research.py \
+            --engine build/kumoji \
+            --fixture benchmarks/fixtures/eval-gap-30s-12.json \
+            --source-index "\${{ matrix.source_index }}" \
+            --movetime-ms 600000 \
+            --output "build/prophylaxis-10m/result-\${{ matrix.source_index }}.json" \
+            --markdown-output "build/prophylaxis-10m/summary-\${{ matrix.source_index }}.md"
+      - name: Show per-position summary
+        run: cat "build/prophylaxis-10m/summary-\${{ matrix.source_index }}.md" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prophylaxis-10m-\${{ github.run_id }}-\${{ matrix.source_index }}
+          path: |
+            build/prophylaxis-10m/result-\${{ matrix.source_index }}.json
+            build/prophylaxis-10m/summary-\${{ matrix.source_index }}.md
+          retention-days: 30
+          if-no-files-found: error
+
+  aggregate:
+    needs: research
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: prophylaxis-10m-\${{ github.run_id }}-*
+          path: build/prophylaxis-10m
+          merge-multiple: true
+      - name: Aggregate seven positions
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          paths = sorted(Path("build/prophylaxis-10m").glob("result-*.json"))
+          if len(paths) != 7:
+              raise SystemExit(f"expected 7 position results, got {len(paths)}")
+          rows = [json.loads(p.read_text(encoding="utf-8")) for p in paths]
+          rows.sort(key=lambda r: r["fixture"]["source_index"])
+
+          same30 = sum(r["stability"]["same_as_30s"] for r in rows)
+          reductions = [r["prophylaxis_comparison_10m_vs_actual"]["forcing_score_reduction"] for r in rows]
+          summary = {
+              "schema_version": 1,
+              "positions": 7,
+              "same_as_30s": same30,
+              "different_from_30s": 7 - same30,
+              "positive_forcing_reduction": sum(v > 0 for v in reductions),
+              "zero_forcing_reduction": sum(v == 0 for v in reductions),
+              "negative_forcing_reduction": sum(v < 0 for v in reductions),
+              "results": rows,
+          }
+          Path("build/prophylaxis-10m/aggregate.json").write_text(
+              json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+          )
+
+          lines = [
+              "# Prophylaxis 7局面 × 10分研究",
+              "",
+              f"- 30秒最善手と10分最善手が一致: **{same30}/7**",
+              f"- 10分最善手で相手forcing scoreが実戦手より減少: **{summary['positive_forcing_reduction']}/7**",
+              "",
+              "|index|手数|200ms|30秒|10分|30秒一致|forcing score削減|depth|nodes|",
+              "|---:|---:|---|---|---|---|---:|---:|---:|",
+          ]
+          for r in rows:
+              f = r["fixture"]
+              s = r["search_10m"]
+              c = r["prophylaxis_comparison_10m_vs_actual"]
+              lines.append(
+                  f"|{f['source_index']}|{f['ply']}|{f['actual_move']}|{f['deep_bestmove']}|"
+                  f"{s['bestmove']}|{'○' if r['stability']['same_as_30s'] else '×'}|"
+                  f"{c['forcing_score_reduction']}|{s.get('depth','')}|{s.get('nodes','')}|"
+              )
+          Path("build/prophylaxis-10m/aggregate.md").write_text(
+              "\n".join(lines) + "\n", encoding="utf-8"
+          )
+          print("\n".join(lines))
+          PY
+      - name: Show aggregate summary
+        run: cat build/prophylaxis-10m/aggregate.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prophylaxis-10m-aggregate-\${{ github.run_id }}
+          path: |
+            build/prophylaxis-10m/aggregate.json
+            build/prophylaxis-10m/aggregate.md
+          retention-days: 30
+          if-no-files-found: error
