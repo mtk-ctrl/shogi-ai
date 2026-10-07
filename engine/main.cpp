@@ -185,6 +185,14 @@ int main() {
                       << " influence " << b.terms[4] << " potential " << b.terms[5]
                       << " coordination " << b.terms[6] << " hand_potential " << b.terms[7]
                       << " threat " << b.terms[8]
+                      << " safety_black_points " << b.side_points[0][0]
+                      << " safety_white_points " << b.side_points[1][0]
+                      << " safety_black_gold_guards " << b.raw[0].gold_guards
+                      << " safety_black_silver_guards " << b.raw[0].silver_guards
+                      << " safety_black_pawn_guards " << b.raw[0].pawn_guards
+                      << " safety_white_gold_guards " << b.raw[1].gold_guards
+                      << " safety_white_silver_guards " << b.raw[1].silver_guards
+                      << " safety_white_pawn_guards " << b.raw[1].pawn_guards
                       << " positional_raw " << b.positional_unclamped
                       << " clamp " << b.clamp_adjustment << " total " << b.total << '\n' << std::flush;
         } else if (command == "isready") {
