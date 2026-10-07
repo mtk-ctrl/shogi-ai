@@ -1,0 +1,4311 @@
+{
+  "complete": true,
+  "source": "benchmarks/results/2026-10-05_v019-mate-assist-50ms-100games-run2.json",
+  "source_sha256": "a230391a0b389b9a5247139de8fb4ac518ac046669e360a36f2e92b69bf3edc3",
+  "source_commit": "8a750d9f90395b6f9a1cee49547b125c52a6f60b",
+  "engine_sha256": "6607ee2b004a5bb90364a2e301a679e3ea49644c6e2b1a0032221cf61b4a00a8",
+  "screened_position_occurrences": 215,
+  "limit": 12,
+  "conditions": {
+    "book": false,
+    "experience": false,
+    "history": "fresh SFEN for tactical isolation; original history retained",
+    "selection": "first qualifying positions in source order; not a random or exhaustive sample",
+    "candidates": "geometric forks not immediately attacked; not certified optimal"
+  },
+  "rows": [
+    {
+      "game_index": 0,
+      "ply": 39,
+      "sfen": "ln1gkg1n1/1r1s1s2l/pppppp1p1/6p2/4P4/P6BL/1P1P2PP1/1S1GK2S1/LN3G1N1 w BPr3p 40",
+      "history": [
+        "9g9f",
+        "3c3d",
+        "7g7f",
+        "2b8h+",
+        "7i8h",
+        "B*6e",
+        "B*5f",
+        "6e5f",
+        "5g5f",
+        "B*6e",
+        "B*1e",
+        "3a4b",
+        "2h5h",
+        "1c1d",
+        "1e2f",
+        "6e5d",
+        "3i2h",
+        "5d7f",
+        "6i6h",
+        "7f5d",
+        "1g1f",
+        "7a6b",
+        "1f1e",
+        "1d1e",
+        "1i1e",
+        "1a1e",
+        "2f1e",
+        "L*1a",
+        "5f5e",
+        "5d6e",
+        "P*1b",
+        "1a1b",
+        "1e2f",
+        "6e4g+",
+        "L*1g",
+        "P*1f",
+        "1g1f",
+        "4g5h",
+        "5i5h"
+      ],
+      "played": "1b1f",
+      "target": "R*5f",
+      "attacked_squares": [
+        "2f",
+        "5h"
+      ],
+      "royal_fork": true,
+      "production": {
+        "50": {
+          "depth": 2,
+          "score": [
+            "cp",
+            "1337"
+          ],
+          "pv": [
+            "1b1f",
+            "P*1g"
+          ],
+          "bestmove": "1b1f",
+          "raw": [
+            "info string mate_assist budget 4 time 0 offense_nodes 12 defense_nodes 180 examined 80 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 7 time 3 nodes 175 score cp 1415 pv 1b1f",
+            "info depth 2 seldepth 11 time 30 nodes 1397 score cp 1337 pv 1b1f P*1g",
+            "info nodes 2187 string cutoffs 85 min_cutoffs 82 max_cutoffs 3 leaves 1910 terminals 0 qnodes 2089 qcutoffs 1386 qlimit_leaves 104 ply1 166 ply2 218 ply3 645 order_calls 279 ordered_moves 9662 tt_probes 97 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 95 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove 1b1f"
+          ]
+        },
+        "500": {
+          "depth": 3,
+          "score": [
+            "cp",
+            "1461"
+          ],
+          "pv": [
+            "1b1f",
+            "P*1g",
+            "L*2d"
+          ],
+          "bestmove": "1b1f",
+          "raw": [
+            "info string mate_assist budget 5 time 0 offense_nodes 12 defense_nodes 180 examined 80 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 7 time 3 nodes 175 score cp 1415 pv 1b1f",
+            "info depth 2 seldepth 11 time 34 nodes 1397 score cp 1337 pv 1b1f P*1g",
+            "info depth 3 seldepth 11 time 344 nodes 16312 score cp 1461 pv 1b1f P*1g L*2d",
+            "info nodes 22029 string cutoffs 443 min_cutoffs 273 max_cutoffs 170 leaves 19721 terminals 0 qnodes 21421 qcutoffs 15654 qlimit_leaves 329 ply1 241 ply2 465 ply3 5295 order_calls 2311 ordered_moves 59226 tt_probes 607 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 604 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove 1b1f"
+          ]
+        }
+      },
+      "core": {
+        "50ms": {
+          "target_legal": true,
+          "legal_count": 80,
+          "drop_count": 53,
+          "target_order_rank": 1,
+          "target_order_score": 105600000,
+          "bestmove": "1b1f",
+          "depth": 2,
+          "score": 1337,
+          "has_score": true,
+          "nodes": 2270,
+          "qnodes": 2173,
+          "elapsed_ms": 45.0887,
+          "pv": [
+            "1b1f",
+            "P*1g"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 80,
+              "finished": 80,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1014
+            },
+            {
+              "depth": 2,
+              "started": 80,
+              "finished": 80,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1014
+            },
+            {
+              "depth": 3,
+              "started": 6,
+              "finished": 5,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1014
+            }
+          ]
+        },
+        "500ms": {
+          "target_legal": true,
+          "legal_count": 80,
+          "drop_count": 53,
+          "target_order_rank": 1,
+          "target_order_score": 105600000,
+          "bestmove": "1b1f",
+          "depth": 3,
+          "score": 1461,
+          "has_score": true,
+          "nodes": 24108,
+          "qnodes": 23213,
+          "elapsed_ms": 490.094,
+          "pv": [
+            "1b1f",
+            "P*1g",
+            "L*2d"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 80,
+              "finished": 80,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1014
+            },
+            {
+              "depth": 2,
+              "started": 80,
+              "finished": 80,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1014
+            },
+            {
+              "depth": 3,
+              "started": 80,
+              "finished": 80,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1014
+            },
+            {
+              "depth": 4,
+              "started": 7,
+              "finished": 6,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1261
+            }
+          ]
+        },
+        "target_depth3": {
+          "target_legal": true,
+          "legal_count": 80,
+          "drop_count": 53,
+          "target_order_rank": 1,
+          "target_order_score": 105600000,
+          "bestmove": "R*5f",
+          "depth": 3,
+          "score": 1014,
+          "has_score": true,
+          "nodes": 451,
+          "qnodes": 444,
+          "elapsed_ms": 8.4008,
+          "pv": [
+            "R*5f",
+            "6h5g",
+            "5f2f",
+            "2g2f",
+            "1b1f"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1014
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1014
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1014
+            }
+          ]
+        }
+      },
+      "selected_depth3": {
+        "1b1f": {
+          "target_legal": true,
+          "legal_count": 80,
+          "drop_count": 53,
+          "target_order_rank": 6,
+          "target_order_score": 17400000,
+          "bestmove": "1b1f",
+          "depth": 3,
+          "score": 1461,
+          "has_score": true,
+          "nodes": 10563,
+          "qnodes": 10459,
+          "elapsed_ms": 224.72,
+          "pv": [
+            "1b1f",
+            "P*1g",
+            "L*2d"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1415
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1337
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1461
+            }
+          ]
+        }
+      }
+    },
+    {
+      "game_index": 0,
+      "ply": 41,
+      "sfen": "ln1gkg1n1/1r1s1s3/pppppp1p1/6p2/4P4/P6Bl/1P1P2PPP/1S1GK2S1/LN3G1N1 w Brl3p 42",
+      "history": [
+        "9g9f",
+        "3c3d",
+        "7g7f",
+        "2b8h+",
+        "7i8h",
+        "B*6e",
+        "B*5f",
+        "6e5f",
+        "5g5f",
+        "B*6e",
+        "B*1e",
+        "3a4b",
+        "2h5h",
+        "1c1d",
+        "1e2f",
+        "6e5d",
+        "3i2h",
+        "5d7f",
+        "6i6h",
+        "7f5d",
+        "1g1f",
+        "7a6b",
+        "1f1e",
+        "1d1e",
+        "1i1e",
+        "1a1e",
+        "2f1e",
+        "L*1a",
+        "5f5e",
+        "5d6e",
+        "P*1b",
+        "1a1b",
+        "1e2f",
+        "6e4g+",
+        "L*1g",
+        "P*1f",
+        "1g1f",
+        "4g5h",
+        "5i5h",
+        "1b1f",
+        "P*1g"
+      ],
+      "played": "L*2e",
+      "target": "R*5f",
+      "attacked_squares": [
+        "2f",
+        "5h"
+      ],
+      "royal_fork": true,
+      "production": {
+        "50": {
+          "depth": 1,
+          "score": [
+            "cp",
+            "1461"
+          ],
+          "pv": [
+            "L*2e"
+          ],
+          "bestmove": "L*2e",
+          "raw": [
+            "info string mate_assist budget 4 time 0 offense_nodes 16 defense_nodes 260 examined 120 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 7 time 6 nodes 300 score cp 1461 pv L*2e",
+            "info nodes 2106 string cutoffs 24 min_cutoffs 24 max_cutoffs 0 leaves 1849 terminals 0 qnodes 2076 qcutoffs 1374 qlimit_leaves 36 ply1 150 ply2 319 ply3 269 order_calls 259 ordered_moves 2942 tt_probes 30 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 29 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove L*2e"
+          ]
+        },
+        "500": {
+          "depth": 2,
+          "score": [
+            "cp",
+            "1359"
+          ],
+          "pv": [
+            "L*4e",
+            "4i5i"
+          ],
+          "bestmove": "L*4e",
+          "raw": [
+            "info string mate_assist budget 5 time 0 offense_nodes 16 defense_nodes 260 examined 120 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 7 time 6 nodes 300 score cp 1461 pv L*2e",
+            "info depth 2 seldepth 10 time 97 nodes 3809 score cp 1359 pv L*4e 4i5i",
+            "info nodes 21169 string cutoffs 229 min_cutoffs 137 max_cutoffs 92 leaves 19017 terminals 0 qnodes 20895 qcutoffs 15107 qlimit_leaves 581 ply1 266 ply2 582 ply3 3649 order_calls 2155 ordered_moves 28790 tt_probes 274 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 272 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove L*4e"
+          ]
+        }
+      },
+      "core": {
+        "50ms": {
+          "target_legal": true,
+          "legal_count": 120,
+          "drop_count": 95,
+          "target_order_rank": 1,
+          "target_order_score": 105600000,
+          "bestmove": "L*2e",
+          "depth": 1,
+          "score": 1461,
+          "has_score": true,
+          "nodes": 2224,
+          "qnodes": 2191,
+          "elapsed_ms": 45.084,
+          "pv": [
+            "L*2e"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 120,
+              "finished": 120,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1127
+            },
+            {
+              "depth": 2,
+              "started": 32,
+              "finished": 31,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1127
+            }
+          ]
+        },
+        "500ms": {
+          "target_legal": true,
+          "legal_count": 120,
+          "drop_count": 95,
+          "target_order_rank": 1,
+          "target_order_score": 105600000,
+          "bestmove": "L*4e",
+          "depth": 2,
+          "score": 1359,
+          "has_score": true,
+          "nodes": 28533,
+          "qnodes": 28159,
+          "elapsed_ms": 490.044,
+          "pv": [
+            "L*4e",
+            "4i5i"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 120,
+              "finished": 120,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1127
+            },
+            {
+              "depth": 2,
+              "started": 120,
+              "finished": 120,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1127
+            },
+            {
+              "depth": 3,
+              "started": 63,
+              "finished": 62,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1053
+            }
+          ]
+        },
+        "target_depth3": {
+          "target_legal": true,
+          "legal_count": 120,
+          "drop_count": 95,
+          "target_order_rank": 1,
+          "target_order_score": 105600000,
+          "bestmove": "R*5f",
+          "depth": 3,
+          "score": 1053,
+          "has_score": true,
+          "nodes": 802,
+          "qnodes": 795,
+          "elapsed_ms": 13.6438,
+          "pv": [
+            "R*5f",
+            "5h4g",
+            "5f5e",
+            "1g1f"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1127
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1127
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1053
+            }
+          ]
+        }
+      },
+      "selected_depth3": {
+        "L*2e": {
+          "target_legal": true,
+          "legal_count": 120,
+          "drop_count": 95,
+          "target_order_rank": 13,
+          "target_order_score": 5600000,
+          "bestmove": "L*2e",
+          "depth": 3,
+          "score": 1453,
+          "has_score": true,
+          "nodes": 8830,
+          "qnodes": 8749,
+          "elapsed_ms": 163.403,
+          "pv": [
+            "L*2e",
+            "2f1e",
+            "R*1h"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1461
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1329
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1453
+            }
+          ]
+        },
+        "L*4e": {
+          "target_legal": true,
+          "legal_count": 120,
+          "drop_count": 95,
+          "target_order_rank": 27,
+          "target_order_score": 5200000,
+          "bestmove": "L*4e",
+          "depth": 3,
+          "score": 1251,
+          "has_score": true,
+          "nodes": 3679,
+          "qnodes": 3600,
+          "elapsed_ms": 56.9629,
+          "pv": [
+            "L*4e",
+            "4i3i",
+            "R*1h",
+            "1g1f",
+            "1h1f+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1419
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1359
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1251
+            }
+          ]
+        }
+      }
+    },
+    {
+      "game_index": 1,
+      "ply": 32,
+      "sfen": "1n1gk2nl/3s1s1b1/2pppp1p1/l5g1p/PP5P1/9/2PPPPP1P/LB1SKS3/1N1G1G1NL b R3Pr 33",
+      "history": [
+        "9g9f",
+        "1c1d",
+        "7i6h",
+        "3c3d",
+        "3i4h",
+        "3a4b",
+        "5i5h",
+        "7a6b",
+        "2g2f",
+        "8c8d",
+        "2f2e",
+        "4a3b",
+        "2h2f",
+        "8d8e",
+        "2f3f",
+        "8b8d",
+        "9f9e",
+        "9c9d",
+        "9e9d",
+        "9a9d",
+        "P*9e",
+        "P*9h",
+        "9i9h",
+        "8e8f",
+        "8g8f",
+        "3d3e",
+        "3f3e",
+        "3b3c",
+        "8f8e",
+        "8d3d",
+        "3e3d",
+        "3c3d"
+      ],
+      "played": "9e9d",
+      "target": "R*3b",
+      "attacked_squares": [
+        "4b",
+        "2b",
+        "3d"
+      ],
+      "royal_fork": false,
+      "production": {
+        "50": {
+          "depth": 1,
+          "score": [
+            "cp",
+            "1184"
+          ],
+          "pv": [
+            "9e9d"
+          ],
+          "bestmove": "9e9d",
+          "raw": [
+            "info string mate_assist budget 4 time 0 offense_nodes 8 defense_nodes 302 examined 73 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 8 time 3 nodes 136 score cp 1184 pv 9e9d",
+            "info nodes 2234 string cutoffs 4 min_cutoffs 4 max_cutoffs 0 leaves 2031 terminals 0 qnodes 2226 qcutoffs 1243 qlimit_leaves 406 ply1 81 ply2 129 ply3 113 order_calls 205 ordered_moves 1129 tt_probes 8 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 7 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove 9e9d"
+          ]
+        },
+        "500": {
+          "depth": 2,
+          "score": [
+            "cp",
+            "1185"
+          ],
+          "pv": [
+            "R*3b",
+            "R*8f",
+            "3b2b+",
+            "8f8h+",
+            "2b2a",
+            "B*4a",
+            "2a1a",
+            "8h9h"
+          ],
+          "bestmove": "R*3b",
+          "raw": [
+            "info string mate_assist budget 5 time 0 offense_nodes 8 defense_nodes 302 examined 73 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 8 time 3 nodes 136 score cp 1184 pv 9e9d",
+            "info depth 2 seldepth 11 time 183 nodes 10190 score cp 1185 pv R*3b R*8f 3b2b+ 8f8h+ 2b2a B*4a 2a1a 8h9h",
+            "info nodes 25541 string cutoffs 138 min_cutoffs 70 max_cutoffs 68 leaves 23691 terminals 0 qnodes 25388 qcutoffs 16751 qlimit_leaves 1789 ply1 150 ply2 409 ply3 1502 order_calls 1853 ordered_moves 19034 tt_probes 153 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 151 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove R*3b"
+          ]
+        }
+      },
+      "core": {
+        "50ms": {
+          "target_legal": true,
+          "legal_count": 73,
+          "drop_count": 46,
+          "target_order_rank": 8,
+          "target_order_score": 5600000,
+          "bestmove": "9e9d",
+          "depth": 1,
+          "score": 1184,
+          "has_score": true,
+          "nodes": 2647,
+          "qnodes": 2639,
+          "elapsed_ms": 45.0882,
+          "pv": [
+            "9e9d"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 73,
+              "finished": 73,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 900
+            },
+            {
+              "depth": 2,
+              "started": 8,
+              "finished": 7,
+              "target_started": true,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        "500ms": {
+          "target_legal": true,
+          "legal_count": 73,
+          "drop_count": 46,
+          "target_order_rank": 8,
+          "target_order_score": 5600000,
+          "bestmove": "R*3b",
+          "depth": 2,
+          "score": 1185,
+          "has_score": true,
+          "nodes": 26824,
+          "qnodes": 26660,
+          "elapsed_ms": 490.043,
+          "pv": [
+            "R*3b",
+            "R*8f",
+            "3b2b+",
+            "8f8h+",
+            "2b2a",
+            "B*4a",
+            "2a1a",
+            "8h9h"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 73,
+              "finished": 73,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 900
+            },
+            {
+              "depth": 2,
+              "started": 73,
+              "finished": 73,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1185
+            },
+            {
+              "depth": 3,
+              "started": 4,
+              "finished": 3,
+              "target_started": false,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        "target_depth3": {
+          "target_legal": true,
+          "legal_count": 73,
+          "drop_count": 46,
+          "target_order_rank": 8,
+          "target_order_score": 5600000,
+          "bestmove": "R*3b",
+          "depth": 3,
+          "score": 1200,
+          "has_score": true,
+          "nodes": 8085,
+          "qnodes": 8004,
+          "elapsed_ms": 135.897,
+          "pv": [
+            "R*3b",
+            "2b3c",
+            "9e9d"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 900
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1185
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1200
+            }
+          ]
+        }
+      },
+      "selected_depth3": {
+        "9e9d": {
+          "target_legal": true,
+          "legal_count": 73,
+          "drop_count": 46,
+          "target_order_rank": 4,
+          "target_order_score": 16800000,
+          "bestmove": "9e9d",
+          "depth": 3,
+          "score": 1182,
+          "has_score": true,
+          "nodes": 16843,
+          "qnodes": 16761,
+          "elapsed_ms": 315.985,
+          "pv": [
+            "9e9d",
+            "R*8f",
+            "R*3b",
+            "8f8h+",
+            "3b2b+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1184
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 952
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1182
+            }
+          ]
+        },
+        "R*3b": {
+          "target_legal": true,
+          "legal_count": 73,
+          "drop_count": 46,
+          "target_order_rank": 8,
+          "target_order_score": 5600000,
+          "bestmove": "R*3b",
+          "depth": 3,
+          "score": 1200,
+          "has_score": true,
+          "nodes": 8085,
+          "qnodes": 8004,
+          "elapsed_ms": 132.792,
+          "pv": [
+            "R*3b",
+            "2b3c",
+            "9e9d"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 900
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1185
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1200
+            }
+          ]
+        }
+      }
+    },
+    {
+      "game_index": 1,
+      "ply": 34,
+      "sfen": "1n1gk2nl/3s1s1b1/2pppp1p1/P5g1p/1P5P1/1r7/2PPPPP1P/LB1SKS3/1N1G1G1NL b RL3P 35",
+      "history": [
+        "9g9f",
+        "1c1d",
+        "7i6h",
+        "3c3d",
+        "3i4h",
+        "3a4b",
+        "5i5h",
+        "7a6b",
+        "2g2f",
+        "8c8d",
+        "2f2e",
+        "4a3b",
+        "2h2f",
+        "8d8e",
+        "2f3f",
+        "8b8d",
+        "9f9e",
+        "9c9d",
+        "9e9d",
+        "9a9d",
+        "P*9e",
+        "P*9h",
+        "9i9h",
+        "8e8f",
+        "8g8f",
+        "3d3e",
+        "3f3e",
+        "3b3c",
+        "8f8e",
+        "8d3d",
+        "3e3d",
+        "3c3d",
+        "9e9d",
+        "R*8f"
+      ],
+      "played": "R*3b",
+      "target": "R*3b",
+      "attacked_squares": [
+        "4b",
+        "2b",
+        "3d"
+      ],
+      "royal_fork": false,
+      "production": {
+        "50": {
+          "depth": 1,
+          "score": [
+            "cp",
+            "1182"
+          ],
+          "pv": [
+            "R*3b",
+            "8f8h+",
+            "3b2b+"
+          ],
+          "bestmove": "R*3b",
+          "raw": [
+            "info string mate_assist budget 4 time 0 offense_nodes 10 defense_nodes 242 examined 116 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 10 time 24 nodes 1336 score cp 1182 pv R*3b 8f8h+ 3b2b+",
+            "info nodes 2185 string cutoffs 15 min_cutoffs 15 max_cutoffs 0 leaves 1901 terminals 0 qnodes 2165 qcutoffs 1465 qlimit_leaves 230 ply1 136 ply2 113 ply3 111 order_calls 286 ordered_moves 1958 tt_probes 20 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 19 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove R*3b"
+          ]
+        },
+        "500": {
+          "depth": 2,
+          "score": [
+            "cp",
+            "1093"
+          ],
+          "pv": [
+            "6i7h",
+            "8f2f"
+          ],
+          "bestmove": "6i7h",
+          "raw": [
+            "info string mate_assist budget 5 time 0 offense_nodes 10 defense_nodes 242 examined 116 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 10 time 32 nodes 1336 score cp 1182 pv R*3b 8f8h+ 3b2b+",
+            "info depth 2 seldepth 11 time 124 nodes 5535 score cp 1093 pv 6i7h 8f2f",
+            "info nodes 23174 string cutoffs 229 min_cutoffs 124 max_cutoffs 105 leaves 20327 terminals 0 qnodes 22909 qcutoffs 15951 qlimit_leaves 2185 ply1 252 ply2 445 ply3 2713 order_calls 2849 ordered_moves 27801 tt_probes 264 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 262 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove 6i7h"
+          ]
+        }
+      },
+      "core": {
+        "50ms": {
+          "target_legal": true,
+          "legal_count": 117,
+          "drop_count": 88,
+          "target_order_rank": 20,
+          "target_order_score": 5600000,
+          "bestmove": "R*3b",
+          "depth": 1,
+          "score": 1182,
+          "has_score": true,
+          "nodes": 2137,
+          "qnodes": 2116,
+          "elapsed_ms": 45.1394,
+          "pv": [
+            "R*3b",
+            "8f8h+",
+            "3b2b+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 116,
+              "finished": 116,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1182
+            },
+            {
+              "depth": 2,
+              "started": 20,
+              "finished": 19,
+              "target_started": true,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        "500ms": {
+          "target_legal": true,
+          "legal_count": 117,
+          "drop_count": 88,
+          "target_order_rank": 20,
+          "target_order_score": 5600000,
+          "bestmove": "6i7h",
+          "depth": 2,
+          "score": 1093,
+          "has_score": true,
+          "nodes": 24345,
+          "qnodes": 24080,
+          "elapsed_ms": 490.039,
+          "pv": [
+            "6i7h",
+            "8f2f"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 116,
+              "finished": 116,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1182
+            },
+            {
+              "depth": 2,
+              "started": 116,
+              "finished": 116,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 968
+            },
+            {
+              "depth": 3,
+              "started": 20,
+              "finished": 19,
+              "target_started": true,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        "target_depth3": {
+          "target_legal": true,
+          "legal_count": 117,
+          "drop_count": 88,
+          "target_order_rank": 20,
+          "target_order_score": 5600000,
+          "bestmove": "R*3b",
+          "depth": 3,
+          "score": 1064,
+          "has_score": true,
+          "nodes": 28727,
+          "qnodes": 28679,
+          "elapsed_ms": 506.407,
+          "pv": [
+            "R*3b",
+            "4b3a",
+            "8h9g",
+            "8f8i+",
+            "3b3d+",
+            "8i9h"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1182
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 968
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1064
+            }
+          ]
+        }
+      },
+      "selected_depth3": {
+        "6i7h": {
+          "target_legal": true,
+          "legal_count": 117,
+          "drop_count": 88,
+          "target_order_rank": 86,
+          "target_order_score": 0,
+          "bestmove": "6i7h",
+          "depth": 3,
+          "score": 1222,
+          "has_score": true,
+          "nodes": 24873,
+          "qnodes": 24825,
+          "elapsed_ms": 482.285,
+          "pv": [
+            "6i7h",
+            "3d2e",
+            "L*8g"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1120
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1093
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1222
+            }
+          ]
+        },
+        "R*3b": {
+          "target_legal": true,
+          "legal_count": 117,
+          "drop_count": 88,
+          "target_order_rank": 20,
+          "target_order_score": 5600000,
+          "bestmove": "R*3b",
+          "depth": 3,
+          "score": 1064,
+          "has_score": true,
+          "nodes": 28727,
+          "qnodes": 28679,
+          "elapsed_ms": 498.098,
+          "pv": [
+            "R*3b",
+            "4b3a",
+            "8h9g",
+            "8f8i+",
+            "3b3d+",
+            "8i9h"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1182
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 968
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 1064
+            }
+          ]
+        }
+      }
+    },
+    {
+      "game_index": 1,
+      "ply": 53,
+      "sfen": "1n2sk2+L/2+B2s3/2ppppn2/P5gp1/1P5P1/9/1LPPPPP2/LBGSKS3/1N3G1+r1 w GL4Prnp 54",
+      "history": [
+        "9g9f",
+        "1c1d",
+        "7i6h",
+        "3c3d",
+        "3i4h",
+        "3a4b",
+        "5i5h",
+        "7a6b",
+        "2g2f",
+        "8c8d",
+        "2f2e",
+        "4a3b",
+        "2h2f",
+        "8d8e",
+        "2f3f",
+        "8b8d",
+        "9f9e",
+        "9c9d",
+        "9e9d",
+        "9a9d",
+        "P*9e",
+        "P*9h",
+        "9i9h",
+        "8e8f",
+        "8g8f",
+        "3d3e",
+        "3f3e",
+        "3b3c",
+        "8f8e",
+        "8d3d",
+        "3e3d",
+        "3c3d",
+        "9e9d",
+        "R*8f",
+        "R*3b",
+        "2b3c",
+        "6i7h",
+        "5a4a",
+        "L*8g",
+        "8f2f",
+        "3b3c+",
+        "2a3c",
+        "B*8c",
+        "1d1e",
+        "8c6a+",
+        "6b5a",
+        "1g1f",
+        "2f2i+",
+        "6a7b",
+        "1e1f",
+        "1i1f",
+        "2c2d",
+        "1f1a+"
+      ],
+      "played": "2d2e",
+      "target": "R*1h",
+      "attacked_squares": [
+        "1a",
+        "4h"
+      ],
+      "royal_fork": false,
+      "production": {
+        "50": {
+          "bestmove": "2d2e",
+          "raw": [
+            "info string mate_assist budget 4 time 1 offense_nodes 10 defense_nodes 1356 examined 140 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 0 seldepth 10 time 45 nodes 1634 pv 2d2e",
+            "info nodes 1634 string cutoffs 0 min_cutoffs 0 max_cutoffs 0 leaves 1375 terminals 0 qnodes 1634 qcutoffs 1008 qlimit_leaves 108 ply1 23 ply2 53 ply3 133 order_calls 260 ordered_moves 872 tt_probes 0 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 0 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove 2d2e"
+          ]
+        },
+        "500": {
+          "depth": 2,
+          "score": [
+            "cp",
+            "-2313"
+          ],
+          "pv": [
+            "R*1g",
+            "G*3i",
+            "2i2e",
+            "7b6c",
+            "5a5b",
+            "6c8a",
+            "1g1a+",
+            "9d9c+"
+          ],
+          "bestmove": "R*1g",
+          "raw": [
+            "info string mate_assist budget 5 time 2 offense_nodes 10 defense_nodes 1356 examined 140 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 10 time 71 nodes 2999 score cp -2285 pv R*1i 7b6c 5a5b",
+            "info depth 2 seldepth 11 time 359 nodes 17395 score cp -2313 pv R*1g G*3i 2i2e 7b6c 5a5b 6c8a 1g1a+ 9d9c+",
+            "info nodes 22853 string cutoffs 132 min_cutoffs 130 max_cutoffs 2 leaves 19760 terminals 91 qnodes 22703 qcutoffs 15540 qlimit_leaves 2717 ply1 284 ply2 1549 ply3 1619 order_calls 3005 ordered_moves 28917 tt_probes 150 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 148 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove R*1g"
+          ]
+        }
+      },
+      "core": {
+        "50ms": {
+          "target_legal": true,
+          "legal_count": 140,
+          "drop_count": 113,
+          "target_order_rank": 27,
+          "target_order_score": 5200000,
+          "bestmove": "2d2e",
+          "depth": 0,
+          "score": 0,
+          "has_score": false,
+          "nodes": 1860,
+          "qnodes": 1860,
+          "elapsed_ms": 45.1435,
+          "pv": [
+            "2d2e"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 23,
+              "finished": 22,
+              "target_started": false,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        "500ms": {
+          "target_legal": true,
+          "legal_count": 140,
+          "drop_count": 113,
+          "target_order_rank": 27,
+          "target_order_score": 5200000,
+          "bestmove": "R*1g",
+          "depth": 2,
+          "score": -2313,
+          "has_score": true,
+          "nodes": 25087,
+          "qnodes": 24922,
+          "elapsed_ms": 490.042,
+          "pv": [
+            "R*1g",
+            "G*3i",
+            "2i2e",
+            "7b6c",
+            "5a5b",
+            "6c8a",
+            "1g1a+",
+            "9d9c+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 140,
+              "finished": 140,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -2392
+            },
+            {
+              "depth": 2,
+              "started": 140,
+              "finished": 140,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -2392
+            },
+            {
+              "depth": 3,
+              "started": 9,
+              "finished": 8,
+              "target_started": false,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        "target_depth3": {
+          "target_legal": true,
+          "legal_count": 140,
+          "drop_count": 113,
+          "target_order_rank": 27,
+          "target_order_score": 5200000,
+          "bestmove": "R*1h",
+          "depth": 3,
+          "score": -2532,
+          "has_score": true,
+          "nodes": 203332,
+          "qnodes": 203195,
+          "elapsed_ms": 4096.86,
+          "pv": [
+            "R*1h",
+            "G*3i",
+            "2i1i",
+            "7b6c",
+            "N*5b",
+            "6c1h",
+            "1i1h"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -2525
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -2525
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -2532
+            }
+          ]
+        }
+      },
+      "selected_depth3": {
+        "2d2e": {
+          "target_legal": true,
+          "legal_count": 140,
+          "drop_count": 113,
+          "target_order_rank": 5,
+          "target_order_score": 15800000,
+          "bestmove": "2d2e",
+          "depth": 3,
+          "score": -2938,
+          "has_score": true,
+          "nodes": 2885,
+          "qnodes": 2736,
+          "elapsed_ms": 84.982,
+          "pv": [
+            "2d2e",
+            "7b6c",
+            "R*5b",
+            "6c5b",
+            "4a5b",
+            "9d9c+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -2938
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -2938
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -2938
+            }
+          ]
+        },
+        "R*1g": {
+          "target_legal": true,
+          "legal_count": 140,
+          "drop_count": 113,
+          "target_order_rank": 33,
+          "target_order_score": 5200000,
+          "bestmove": "R*1g",
+          "depth": 3,
+          "score": -2313,
+          "has_score": true,
+          "nodes": 250092,
+          "qnodes": 249953,
+          "elapsed_ms": 4527.77,
+          "pv": [
+            "R*1g",
+            "G*3i",
+            "2i2e",
+            "7b6c",
+            "5a5b",
+            "6c8a",
+            "1g1a+",
+            "9d9c+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -2306
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -2313
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -2313
+            }
+          ]
+        }
+      },
+      "repeat_50ms_core": [
+        {
+          "target_legal": true,
+          "legal_count": 140,
+          "drop_count": 113,
+          "target_order_rank": 27,
+          "target_order_score": 5200000,
+          "bestmove": "2d2e",
+          "depth": 0,
+          "score": 0,
+          "has_score": false,
+          "nodes": 2007,
+          "qnodes": 2006,
+          "elapsed_ms": 45.0993,
+          "pv": [
+            "2d2e"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 29,
+              "finished": 28,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -2392
+            }
+          ]
+        },
+        {
+          "target_legal": true,
+          "legal_count": 140,
+          "drop_count": 113,
+          "target_order_rank": 27,
+          "target_order_score": 5200000,
+          "bestmove": "2d2e",
+          "depth": 0,
+          "score": 0,
+          "has_score": false,
+          "nodes": 1953,
+          "qnodes": 1953,
+          "elapsed_ms": 45.0396,
+          "pv": [
+            "2d2e"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 29,
+              "finished": 28,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -2392
+            }
+          ]
+        },
+        {
+          "target_legal": true,
+          "legal_count": 140,
+          "drop_count": 113,
+          "target_order_rank": 27,
+          "target_order_score": 5200000,
+          "bestmove": "2d2e",
+          "depth": 0,
+          "score": 0,
+          "has_score": false,
+          "nodes": 1862,
+          "qnodes": 1861,
+          "elapsed_ms": 45.0312,
+          "pv": [
+            "2d2e"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 23,
+              "finished": 22,
+              "target_started": false,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        {
+          "target_legal": true,
+          "legal_count": 140,
+          "drop_count": 113,
+          "target_order_rank": 27,
+          "target_order_score": 5200000,
+          "bestmove": "2d2e",
+          "depth": 0,
+          "score": 0,
+          "has_score": false,
+          "nodes": 1819,
+          "qnodes": 1818,
+          "elapsed_ms": 45.0279,
+          "pv": [
+            "2d2e"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 23,
+              "finished": 22,
+              "target_started": false,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        {
+          "target_legal": true,
+          "legal_count": 140,
+          "drop_count": 113,
+          "target_order_rank": 27,
+          "target_order_score": 5200000,
+          "bestmove": "2d2e",
+          "depth": 0,
+          "score": 0,
+          "has_score": false,
+          "nodes": 2026,
+          "qnodes": 2025,
+          "elapsed_ms": 45.0567,
+          "pv": [
+            "2d2e"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 29,
+              "finished": 28,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -2392
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "game_index": 1,
+      "ply": 60,
+      "sfen": "1nRb1k2+L/4ss3/2p1ppn2/P5g2/1P5p1/9/1LPPPPP2/LBGSKS3/1N3G1+r1 b GL5Pn2p 61",
+      "history": [
+        "9g9f",
+        "1c1d",
+        "7i6h",
+        "3c3d",
+        "3i4h",
+        "3a4b",
+        "5i5h",
+        "7a6b",
+        "2g2f",
+        "8c8d",
+        "2f2e",
+        "4a3b",
+        "2h2f",
+        "8d8e",
+        "2f3f",
+        "8b8d",
+        "9f9e",
+        "9c9d",
+        "9e9d",
+        "9a9d",
+        "P*9e",
+        "P*9h",
+        "9i9h",
+        "8e8f",
+        "8g8f",
+        "3d3e",
+        "3f3e",
+        "3b3c",
+        "8f8e",
+        "8d3d",
+        "3e3d",
+        "3c3d",
+        "9e9d",
+        "R*8f",
+        "R*3b",
+        "2b3c",
+        "6i7h",
+        "5a4a",
+        "L*8g",
+        "8f2f",
+        "3b3c+",
+        "2a3c",
+        "B*8c",
+        "1d1e",
+        "8c6a+",
+        "6b5a",
+        "1g1f",
+        "2f2i+",
+        "6a7b",
+        "1e1f",
+        "1i1f",
+        "2c2d",
+        "1f1a+",
+        "2d2e",
+        "7b6c",
+        "R*5b",
+        "6c5b",
+        "5a5b",
+        "R*7a",
+        "B*6a"
+      ],
+      "played": "7a8a+",
+      "target": "G*6b",
+      "attacked_squares": [
+        "6a",
+        "5b"
+      ],
+      "royal_fork": false,
+      "production": {
+        "50": {
+          "depth": 1,
+          "score": [
+            "cp",
+            "3319"
+          ],
+          "pv": [
+            "7a8a+"
+          ],
+          "bestmove": "7a8a+",
+          "raw": [
+            "info string mate_assist budget 4 time 1 offense_nodes 11 defense_nodes 1110 examined 143 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 7 time 6 nodes 196 score cp 3319 pv 7a8a+",
+            "info nodes 2308 string cutoffs 9 min_cutoffs 9 max_cutoffs 0 leaves 1985 terminals 0 qnodes 2295 qcutoffs 1650 qlimit_leaves 97 ply1 156 ply2 232 ply3 274 order_calls 325 ordered_moves 1895 tt_probes 13 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 12 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove 7a8a+"
+          ]
+        },
+        "500": {
+          "depth": 3,
+          "score": [
+            "cp",
+            "3529"
+          ],
+          "pv": [
+            "7a6a+",
+            "5b6a",
+            "B*2c",
+            "N*3b",
+            "2c3d+"
+          ],
+          "bestmove": "7a6a+",
+          "raw": [
+            "info string mate_assist budget 5 time 1 offense_nodes 11 defense_nodes 1110 examined 143 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 7 time 7 nodes 196 score cp 3319 pv 7a8a+",
+            "info depth 2 seldepth 11 time 163 nodes 7160 score cp 3233 pv L*6f P*9g 6f6a+ 9g9h+",
+            "info depth 3 seldepth 11 time 229 nodes 9828 score cp 3529 pv 7a6a+ 5b6a B*2c N*3b 2c3d+",
+            "info nodes 19919 string cutoffs 1169 min_cutoffs 1155 max_cutoffs 14 leaves 15200 terminals 2 qnodes 18462 qcutoffs 12777 qlimit_leaves 368 ply1 434 ply2 932 ply3 3763 order_calls 4720 ordered_moves 136089 tt_probes 1455 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 1452 tt_replacements 2 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove 7a6a+"
+          ]
+        }
+      },
+      "core": {
+        "50ms": {
+          "target_legal": true,
+          "legal_count": 148,
+          "drop_count": 112,
+          "target_order_rank": 13,
+          "target_order_score": 5600000,
+          "bestmove": "7a8a+",
+          "depth": 1,
+          "score": 3319,
+          "has_score": true,
+          "nodes": 2505,
+          "qnodes": 2490,
+          "elapsed_ms": 45.095,
+          "pv": [
+            "7a8a+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 143,
+              "finished": 143,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2648
+            },
+            {
+              "depth": 2,
+              "started": 14,
+              "finished": 13,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3167
+            }
+          ]
+        },
+        "500ms": {
+          "target_legal": true,
+          "legal_count": 148,
+          "drop_count": 112,
+          "target_order_rank": 13,
+          "target_order_score": 5600000,
+          "bestmove": "7a6a+",
+          "depth": 3,
+          "score": 3529,
+          "has_score": true,
+          "nodes": 16446,
+          "qnodes": 15224,
+          "elapsed_ms": 490.05,
+          "pv": [
+            "7a6a+",
+            "5b6a",
+            "B*2c",
+            "N*3b",
+            "2c3d+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 143,
+              "finished": 143,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2648
+            },
+            {
+              "depth": 2,
+              "started": 143,
+              "finished": 143,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3167
+            },
+            {
+              "depth": 3,
+              "started": 143,
+              "finished": 143,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3246
+            },
+            {
+              "depth": 4,
+              "started": 5,
+              "finished": 4,
+              "target_started": false,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        "target_depth3": {
+          "target_legal": true,
+          "legal_count": 148,
+          "drop_count": 112,
+          "target_order_rank": 13,
+          "target_order_score": 5600000,
+          "bestmove": "G*6b",
+          "depth": 3,
+          "score": 2933,
+          "has_score": true,
+          "nodes": 7006,
+          "qnodes": 6914,
+          "elapsed_ms": 260.493,
+          "pv": [
+            "G*6b",
+            "P*9g",
+            "6b6a",
+            "9g9h+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2648
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2933
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2933
+            }
+          ]
+        }
+      },
+      "selected_depth3": {
+        "7a6a+": {
+          "target_legal": true,
+          "legal_count": 148,
+          "drop_count": 112,
+          "target_order_rank": 1,
+          "target_order_score": 117020000,
+          "bestmove": "7a6a+",
+          "depth": 3,
+          "score": 3529,
+          "has_score": true,
+          "nodes": 392,
+          "qnodes": 386,
+          "elapsed_ms": 11.8606,
+          "pv": [
+            "7a6a+",
+            "5b6a",
+            "B*2c",
+            "N*3b",
+            "2c3d+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2546
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2546
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3529
+            }
+          ]
+        },
+        "7a8a+": {
+          "target_legal": true,
+          "legal_count": 148,
+          "drop_count": 112,
+          "target_order_rank": 5,
+          "target_order_score": 15120000,
+          "bestmove": "7a8a+",
+          "depth": 3,
+          "score": 3333,
+          "has_score": true,
+          "nodes": 4190,
+          "qnodes": 4095,
+          "elapsed_ms": 114.167,
+          "pv": [
+            "7a8a+",
+            "2i1h",
+            "8a8d"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3319
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3157
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3333
+            }
+          ]
+        }
+      }
+    },
+    {
+      "game_index": 1,
+      "ply": 62,
+      "sfen": "1+R1b1k2+L/4ss3/2p1ppn2/P5g2/1P5p1/9/1LPPPPP2/LBGSKS2+r/1N3G3 b GNL5Pn2p 63",
+      "history": [
+        "9g9f",
+        "1c1d",
+        "7i6h",
+        "3c3d",
+        "3i4h",
+        "3a4b",
+        "5i5h",
+        "7a6b",
+        "2g2f",
+        "8c8d",
+        "2f2e",
+        "4a3b",
+        "2h2f",
+        "8d8e",
+        "2f3f",
+        "8b8d",
+        "9f9e",
+        "9c9d",
+        "9e9d",
+        "9a9d",
+        "P*9e",
+        "P*9h",
+        "9i9h",
+        "8e8f",
+        "8g8f",
+        "3d3e",
+        "3f3e",
+        "3b3c",
+        "8f8e",
+        "8d3d",
+        "3e3d",
+        "3c3d",
+        "9e9d",
+        "R*8f",
+        "R*3b",
+        "2b3c",
+        "6i7h",
+        "5a4a",
+        "L*8g",
+        "8f2f",
+        "3b3c+",
+        "2a3c",
+        "B*8c",
+        "1d1e",
+        "8c6a+",
+        "6b5a",
+        "1g1f",
+        "2f2i+",
+        "6a7b",
+        "1e1f",
+        "1i1f",
+        "2c2d",
+        "1f1a+",
+        "2d2e",
+        "7b6c",
+        "R*5b",
+        "6c5b",
+        "5a5b",
+        "R*7a",
+        "B*6a",
+        "7a8a+",
+        "2i1h"
+      ],
+      "played": "8a8d",
+      "target": "G*6b",
+      "attacked_squares": [
+        "6a",
+        "5b"
+      ],
+      "royal_fork": false,
+      "production": {
+        "50": {
+          "depth": 1,
+          "score": [
+            "cp",
+            "3333"
+          ],
+          "pv": [
+            "8a8d"
+          ],
+          "bestmove": "8a8d",
+          "raw": [
+            "info string mate_assist budget 4 time 1 offense_nodes 11 defense_nodes 1423 examined 186 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 5 time 8 nodes 257 score cp 3333 pv 8a8d",
+            "info nodes 2104 string cutoffs 13 min_cutoffs 13 max_cutoffs 0 leaves 1772 terminals 0 qnodes 2087 qcutoffs 1479 qlimit_leaves 20 ply1 203 ply2 280 ply3 275 order_calls 334 ordered_moves 2728 tt_probes 17 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 16 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove 8a8d"
+          ]
+        },
+        "500": {
+          "depth": 3,
+          "score": [
+            "cp",
+            "4934"
+          ],
+          "pv": [
+            "8a6a",
+            "4b5a",
+            "6a6d"
+          ],
+          "bestmove": "8a6a",
+          "raw": [
+            "info string mate_assist budget 5 time 1 offense_nodes 11 defense_nodes 1423 examined 186 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 5 time 9 nodes 257 score cp 3333 pv 8a8d",
+            "info depth 2 seldepth 10 time 161 nodes 6260 score cp 3816 pv L*6b P*9g 6b6a+ 9g9h+",
+            "info depth 3 seldepth 11 time 229 nodes 8881 score cp 4934 pv 8a6a 4b5a 6a6d",
+            "info nodes 17861 string cutoffs 1173 min_cutoffs 1169 max_cutoffs 4 leaves 14056 terminals 2 qnodes 16480 qcutoffs 11773 qlimit_leaves 44 ply1 562 ply2 1031 ply3 4058 order_calls 3807 ordered_moves 128374 tt_probes 1380 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 1377 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove 8a6a"
+          ]
+        }
+      },
+      "core": {
+        "50ms": {
+          "target_legal": true,
+          "legal_count": 187,
+          "drop_count": 153,
+          "target_order_rank": 18,
+          "target_order_score": 5600000,
+          "bestmove": "8a8d",
+          "depth": 1,
+          "score": 3333,
+          "has_score": true,
+          "nodes": 2277,
+          "qnodes": 2260,
+          "elapsed_ms": 45.0937,
+          "pv": [
+            "8a8d"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 186,
+              "finished": 186,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3228
+            },
+            {
+              "depth": 2,
+              "started": 17,
+              "finished": 16,
+              "target_started": false,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        "500ms": {
+          "target_legal": true,
+          "legal_count": 187,
+          "drop_count": 153,
+          "target_order_rank": 18,
+          "target_order_score": 5600000,
+          "bestmove": "8a6a",
+          "depth": 3,
+          "score": 4934,
+          "has_score": true,
+          "nodes": 19609,
+          "qnodes": 18085,
+          "elapsed_ms": 490.052,
+          "pv": [
+            "8a6a",
+            "4b5a",
+            "6a6d"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 186,
+              "finished": 186,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3228
+            },
+            {
+              "depth": 2,
+              "started": 186,
+              "finished": 186,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3539
+            },
+            {
+              "depth": 3,
+              "started": 186,
+              "finished": 186,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4606
+            },
+            {
+              "depth": 4,
+              "started": 16,
+              "finished": 15,
+              "target_started": false,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        "target_depth3": {
+          "target_legal": true,
+          "legal_count": 187,
+          "drop_count": 153,
+          "target_order_rank": 18,
+          "target_order_score": 5600000,
+          "bestmove": "G*6b",
+          "depth": 3,
+          "score": 3516,
+          "has_score": true,
+          "nodes": 5916,
+          "qnodes": 5820,
+          "elapsed_ms": 148.149,
+          "pv": [
+            "G*6b",
+            "P*9g",
+            "6b6a",
+            "9g9h+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3228
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3516
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3516
+            }
+          ]
+        }
+      },
+      "selected_depth3": {
+        "8a6a": {
+          "target_legal": true,
+          "legal_count": 187,
+          "drop_count": 153,
+          "target_order_rank": 1,
+          "target_order_score": 117000000,
+          "bestmove": "8a6a",
+          "depth": 3,
+          "score": 4934,
+          "has_score": true,
+          "nodes": 1072,
+          "qnodes": 1066,
+          "elapsed_ms": 29.491,
+          "pv": [
+            "8a6a",
+            "4b5a",
+            "6a6d"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2552
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2552
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4934
+            }
+          ]
+        },
+        "8a8d": {
+          "target_legal": true,
+          "legal_count": 187,
+          "drop_count": 153,
+          "target_order_rank": 24,
+          "target_order_score": 5200000,
+          "bestmove": "8a8d",
+          "depth": 3,
+          "score": 3348,
+          "has_score": true,
+          "nodes": 11729,
+          "qnodes": 11627,
+          "elapsed_ms": 288.937,
+          "pv": [
+            "8a8d",
+            "4c4d",
+            "G*2b"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3333
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3181
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3348
+            }
+          ]
+        }
+      }
+    },
+    {
+      "game_index": 1,
+      "ply": 64,
+      "sfen": "3b1k2+L/4ss1n1/2p1ppn2/P+R4g2/1P5p1/9/1LPPPPP2/LBGSKS2+r/1N3G3 b GNL5P2p 65",
+      "history": [
+        "9g9f",
+        "1c1d",
+        "7i6h",
+        "3c3d",
+        "3i4h",
+        "3a4b",
+        "5i5h",
+        "7a6b",
+        "2g2f",
+        "8c8d",
+        "2f2e",
+        "4a3b",
+        "2h2f",
+        "8d8e",
+        "2f3f",
+        "8b8d",
+        "9f9e",
+        "9c9d",
+        "9e9d",
+        "9a9d",
+        "P*9e",
+        "P*9h",
+        "9i9h",
+        "8e8f",
+        "8g8f",
+        "3d3e",
+        "3f3e",
+        "3b3c",
+        "8f8e",
+        "8d3d",
+        "3e3d",
+        "3c3d",
+        "9e9d",
+        "R*8f",
+        "R*3b",
+        "2b3c",
+        "6i7h",
+        "5a4a",
+        "L*8g",
+        "8f2f",
+        "3b3c+",
+        "2a3c",
+        "B*8c",
+        "1d1e",
+        "8c6a+",
+        "6b5a",
+        "1g1f",
+        "2f2i+",
+        "6a7b",
+        "1e1f",
+        "1i1f",
+        "2c2d",
+        "1f1a+",
+        "2d2e",
+        "7b6c",
+        "R*5b",
+        "6c5b",
+        "5a5b",
+        "R*7a",
+        "B*6a",
+        "7a8a+",
+        "2i1h",
+        "8a8d",
+        "N*2b"
+      ],
+      "played": "G*1b",
+      "target": "G*6b",
+      "attacked_squares": [
+        "6a",
+        "5b"
+      ],
+      "royal_fork": false,
+      "production": {
+        "50": {
+          "depth": 1,
+          "score": [
+            "cp",
+            "3412"
+          ],
+          "pv": [
+            "G*1b"
+          ],
+          "bestmove": "G*1b",
+          "raw": [
+            "info string mate_assist budget 4 time 0 offense_nodes 8 defense_nodes 712 examined 184 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 6 time 8 nodes 290 score cp 3412 pv G*1b",
+            "info nodes 1966 string cutoffs 20 min_cutoffs 20 max_cutoffs 0 leaves 1778 terminals 0 qnodes 1941 qcutoffs 1333 qlimit_leaves 40 ply1 209 ply2 193 ply3 333 order_calls 190 ordered_moves 2106 tt_probes 25 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 24 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove G*1b"
+          ]
+        },
+        "500": {
+          "depth": 2,
+          "score": [
+            "cp",
+            "3593"
+          ],
+          "pv": [
+            "G*1b",
+            "P*8c",
+            "8d7c"
+          ],
+          "bestmove": "G*1b",
+          "raw": [
+            "info string mate_assist budget 5 time 0 offense_nodes 8 defense_nodes 712 examined 184 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 6 time 8 nodes 290 score cp 3412 pv G*1b",
+            "info depth 2 seldepth 11 time 219 nodes 8679 score cp 3593 pv G*1b P*8c 8d7c",
+            "info nodes 19012 string cutoffs 250 min_cutoffs 191 max_cutoffs 59 leaves 16952 terminals 0 qnodes 18716 qcutoffs 13168 qlimit_leaves 254 ply1 385 ply2 819 ply3 5759 order_calls 2062 ordered_moves 31501 tt_probes 295 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 293 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove G*1b"
+          ]
+        }
+      },
+      "core": {
+        "50ms": {
+          "target_legal": true,
+          "legal_count": 185,
+          "drop_count": 148,
+          "target_order_rank": 19,
+          "target_order_score": 5600000,
+          "bestmove": "G*1b",
+          "depth": 1,
+          "score": 3412,
+          "has_score": true,
+          "nodes": 1555,
+          "qnodes": 1533,
+          "elapsed_ms": 45.4101,
+          "pv": [
+            "G*1b"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 184,
+              "finished": 184,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3252
+            },
+            {
+              "depth": 2,
+              "started": 21,
+              "finished": 20,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3392
+            }
+          ]
+        },
+        "500ms": {
+          "target_legal": true,
+          "legal_count": 185,
+          "drop_count": 148,
+          "target_order_rank": 19,
+          "target_order_score": 5600000,
+          "bestmove": "G*1b",
+          "depth": 2,
+          "score": 3593,
+          "has_score": true,
+          "nodes": 20538,
+          "qnodes": 20228,
+          "elapsed_ms": 490.029,
+          "pv": [
+            "G*1b",
+            "P*8c",
+            "8d7c"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 184,
+              "finished": 184,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3252
+            },
+            {
+              "depth": 2,
+              "started": 184,
+              "finished": 184,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3392
+            },
+            {
+              "depth": 3,
+              "started": 21,
+              "finished": 20,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3392
+            }
+          ]
+        },
+        "target_depth3": {
+          "target_legal": true,
+          "legal_count": 185,
+          "drop_count": 148,
+          "target_order_rank": 19,
+          "target_order_score": 5600000,
+          "bestmove": "G*6b",
+          "depth": 3,
+          "score": 3356,
+          "has_score": true,
+          "nodes": 4477,
+          "qnodes": 4419,
+          "elapsed_ms": 116.392,
+          "pv": [
+            "G*6b",
+            "1h1a",
+            "6b6a",
+            "5b6a",
+            "9d9c+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3252
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3356
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3356
+            }
+          ]
+        }
+      },
+      "selected_depth3": {
+        "G*1b": {
+          "target_legal": true,
+          "legal_count": 185,
+          "drop_count": 148,
+          "target_order_rank": 43,
+          "target_order_score": 4600000,
+          "bestmove": "G*1b",
+          "depth": 3,
+          "score": 3593,
+          "has_score": true,
+          "nodes": 3355,
+          "qnodes": 3297,
+          "elapsed_ms": 76.0323,
+          "pv": [
+            "G*1b",
+            "P*8c",
+            "8d7c"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3412
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3593
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3593
+            }
+          ]
+        }
+      }
+    },
+    {
+      "game_index": 1,
+      "ply": 82,
+      "sfen": "3b1k3/2s1ss1G+L/+P1+R1pp3/6g2/1P5p1/9/1LPPPP+r2/LBGSK4/1N3G2P b 3NL7Pp 83",
+      "history": [
+        "9g9f",
+        "1c1d",
+        "7i6h",
+        "3c3d",
+        "3i4h",
+        "3a4b",
+        "5i5h",
+        "7a6b",
+        "2g2f",
+        "8c8d",
+        "2f2e",
+        "4a3b",
+        "2h2f",
+        "8d8e",
+        "2f3f",
+        "8b8d",
+        "9f9e",
+        "9c9d",
+        "9e9d",
+        "9a9d",
+        "P*9e",
+        "P*9h",
+        "9i9h",
+        "8e8f",
+        "8g8f",
+        "3d3e",
+        "3f3e",
+        "3b3c",
+        "8f8e",
+        "8d3d",
+        "3e3d",
+        "3c3d",
+        "9e9d",
+        "R*8f",
+        "R*3b",
+        "2b3c",
+        "6i7h",
+        "5a4a",
+        "L*8g",
+        "8f2f",
+        "3b3c+",
+        "2a3c",
+        "B*8c",
+        "1d1e",
+        "8c6a+",
+        "6b5a",
+        "1g1f",
+        "2f2i+",
+        "6a7b",
+        "1e1f",
+        "1i1f",
+        "2c2d",
+        "1f1a+",
+        "2d2e",
+        "7b6c",
+        "R*5b",
+        "6c5b",
+        "5a5b",
+        "R*7a",
+        "B*6a",
+        "7a8a+",
+        "2i1h",
+        "8a8d",
+        "N*2b",
+        "G*1b",
+        "P*8c",
+        "8d7c",
+        "P*7b",
+        "7c8c",
+        "7b7c",
+        "8c7c",
+        "3c4e",
+        "1b2b",
+        "4e3g",
+        "P*1i",
+        "1h1c",
+        "1a1b",
+        "1c1g",
+        "4h3g",
+        "1g3g",
+        "9d9c+",
+        "S*7b"
+      ],
+      "played": "7c6b",
+      "target": "N*6d",
+      "attacked_squares": [
+        "7b",
+        "5b"
+      ],
+      "royal_fork": false,
+      "production": {
+        "50": {
+          "depth": 1,
+          "score": [
+            "cp",
+            "4450"
+          ],
+          "pv": [
+            "7c6b"
+          ],
+          "bestmove": "7c6b",
+          "raw": [
+            "info string mate_assist budget 4 time 1 offense_nodes 8 defense_nodes 1475 examined 153 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 4 time 5 nodes 175 score cp 4450 pv 7c6b",
+            "info nodes 1831 string cutoffs 39 min_cutoffs 39 max_cutoffs 0 leaves 1563 terminals 0 qnodes 1785 qcutoffs 1245 qlimit_leaves 4 ply1 199 ply2 376 ply3 507 order_calls 270 ordered_moves 3875 tt_probes 46 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 45 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove 7c6b"
+          ]
+        },
+        "500": {
+          "depth": 3,
+          "score": [
+            "cp",
+            "4591"
+          ],
+          "pv": [
+            "7c7f",
+            "3g2h",
+            "L*3h"
+          ],
+          "bestmove": "7c7f",
+          "raw": [
+            "info string mate_assist budget 5 time 1 offense_nodes 8 defense_nodes 1475 examined 153 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 4 time 6 nodes 175 score cp 4450 pv 7c6b",
+            "info depth 2 seldepth 10 time 75 nodes 3404 score cp 4419 pv 7c7f 3g1g",
+            "info depth 3 seldepth 11 time 341 nodes 14333 score cp 4591 pv 7c7f 3g2h L*3h",
+            "info nodes 21282 string cutoffs 755 min_cutoffs 454 max_cutoffs 301 leaves 17326 terminals 0 qnodes 20245 qcutoffs 14254 qlimit_leaves 118 ply1 460 ply2 1074 ply3 5157 order_calls 3960 ordered_moves 75344 tt_probes 1037 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 1034 tt_replacements 1 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove 7c7f"
+          ]
+        }
+      },
+      "core": {
+        "50ms": {
+          "target_legal": true,
+          "legal_count": 153,
+          "drop_count": 106,
+          "target_order_rank": 35,
+          "target_order_score": 5000000,
+          "bestmove": "7c6b",
+          "depth": 1,
+          "score": 4450,
+          "has_score": true,
+          "nodes": 2163,
+          "qnodes": 2080,
+          "elapsed_ms": 45.0802,
+          "pv": [
+            "7c6b"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 153,
+              "finished": 153,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4252
+            },
+            {
+              "depth": 2,
+              "started": 83,
+              "finished": 82,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4407
+            }
+          ]
+        },
+        "500ms": {
+          "target_legal": true,
+          "legal_count": 153,
+          "drop_count": 106,
+          "target_order_rank": 35,
+          "target_order_score": 5000000,
+          "bestmove": "7c7f",
+          "depth": 3,
+          "score": 4591,
+          "has_score": true,
+          "nodes": 20144,
+          "qnodes": 19168,
+          "elapsed_ms": 490.235,
+          "pv": [
+            "7c7f",
+            "3g2h",
+            "L*3h"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 153,
+              "finished": 153,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4252
+            },
+            {
+              "depth": 2,
+              "started": 153,
+              "finished": 153,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4407
+            },
+            {
+              "depth": 3,
+              "started": 153,
+              "finished": 153,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4471
+            },
+            {
+              "depth": 4,
+              "started": 1,
+              "finished": 0,
+              "target_started": false,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        "target_depth3": {
+          "target_legal": true,
+          "legal_count": 153,
+          "drop_count": 106,
+          "target_order_rank": 35,
+          "target_order_score": 5000000,
+          "bestmove": "N*6d",
+          "depth": 3,
+          "score": 2600,
+          "has_score": true,
+          "nodes": 684,
+          "qnodes": 622,
+          "elapsed_ms": 26.0126,
+          "pv": [
+            "N*6d",
+            "7b7c",
+            "6d5b+",
+            "4a5b"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2600
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2600
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2600
+            }
+          ]
+        }
+      },
+      "selected_depth3": {
+        "7c6b": {
+          "target_legal": true,
+          "legal_count": 153,
+          "drop_count": 106,
+          "target_order_rank": 6,
+          "target_order_score": 16200000,
+          "bestmove": "7c6b",
+          "depth": 3,
+          "score": 4443,
+          "has_score": true,
+          "nodes": 3754,
+          "qnodes": 3692,
+          "elapsed_ms": 93.7141,
+          "pv": [
+            "7c6b",
+            "4b5a",
+            "6b6f"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4450
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4143
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4443
+            }
+          ]
+        },
+        "7c7f": {
+          "target_legal": true,
+          "legal_count": 153,
+          "drop_count": 106,
+          "target_order_rank": 11,
+          "target_order_score": 15600000,
+          "bestmove": "7c7f",
+          "depth": 3,
+          "score": 4591,
+          "has_score": true,
+          "nodes": 2459,
+          "qnodes": 2396,
+          "elapsed_ms": 68.8015,
+          "pv": [
+            "7c7f",
+            "3g2h",
+            "L*3h"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4440
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4419
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4591
+            }
+          ]
+        }
+      }
+    },
+    {
+      "game_index": 1,
+      "ply": 84,
+      "sfen": "3bsk3/2s+Rs2G+L/+P3pp3/6g2/1P5p1/9/1LPPPP+r2/LBGSK4/1N3G2P b 3NL7Pp 85",
+      "history": [
+        "9g9f",
+        "1c1d",
+        "7i6h",
+        "3c3d",
+        "3i4h",
+        "3a4b",
+        "5i5h",
+        "7a6b",
+        "2g2f",
+        "8c8d",
+        "2f2e",
+        "4a3b",
+        "2h2f",
+        "8d8e",
+        "2f3f",
+        "8b8d",
+        "9f9e",
+        "9c9d",
+        "9e9d",
+        "9a9d",
+        "P*9e",
+        "P*9h",
+        "9i9h",
+        "8e8f",
+        "8g8f",
+        "3d3e",
+        "3f3e",
+        "3b3c",
+        "8f8e",
+        "8d3d",
+        "3e3d",
+        "3c3d",
+        "9e9d",
+        "R*8f",
+        "R*3b",
+        "2b3c",
+        "6i7h",
+        "5a4a",
+        "L*8g",
+        "8f2f",
+        "3b3c+",
+        "2a3c",
+        "B*8c",
+        "1d1e",
+        "8c6a+",
+        "6b5a",
+        "1g1f",
+        "2f2i+",
+        "6a7b",
+        "1e1f",
+        "1i1f",
+        "2c2d",
+        "1f1a+",
+        "2d2e",
+        "7b6c",
+        "R*5b",
+        "6c5b",
+        "5a5b",
+        "R*7a",
+        "B*6a",
+        "7a8a+",
+        "2i1h",
+        "8a8d",
+        "N*2b",
+        "G*1b",
+        "P*8c",
+        "8d7c",
+        "P*7b",
+        "7c8c",
+        "7b7c",
+        "8c7c",
+        "3c4e",
+        "1b2b",
+        "4e3g",
+        "P*1i",
+        "1h1c",
+        "1a1b",
+        "1c1g",
+        "4h3g",
+        "1g3g",
+        "9d9c+",
+        "S*7b",
+        "7c6b",
+        "4b5a"
+      ],
+      "played": "L*3i",
+      "target": "N*6d",
+      "attacked_squares": [
+        "7b",
+        "5b"
+      ],
+      "royal_fork": false,
+      "production": {
+        "50": {
+          "depth": 1,
+          "score": [
+            "cp",
+            "4443"
+          ],
+          "pv": [
+            "L*3i"
+          ],
+          "bestmove": "L*3i",
+          "raw": [
+            "info string mate_assist budget 4 time 1 offense_nodes 14 defense_nodes 1471 examined 155 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 6 time 31 nodes 240 score cp 4443 pv L*3i",
+            "info nodes 313 string cutoffs 3 min_cutoffs 3 max_cutoffs 0 leaves 273 terminals 0 qnodes 306 qcutoffs 221 qlimit_leaves 0 ply1 162 ply2 29 ply3 56 order_calls 42 ordered_moves 484 tt_probes 7 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 6 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove L*3i"
+          ]
+        },
+        "500": {
+          "depth": 3,
+          "score": [
+            "cp",
+            "4594"
+          ],
+          "pv": [
+            "6b6f",
+            "3g2h",
+            "L*3h"
+          ],
+          "bestmove": "6b6f",
+          "raw": [
+            "info string mate_assist budget 5 time 2 offense_nodes 14 defense_nodes 1471 examined 155 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 6 time 8 nodes 240 score cp 4443 pv L*3i",
+            "info depth 2 seldepth 11 time 72 nodes 3209 score cp 4422 pv 6b6f 3g1g",
+            "info depth 3 seldepth 11 time 337 nodes 13106 score cp 4594 pv 6b6f 3g2h L*3h",
+            "info nodes 20441 string cutoffs 786 min_cutoffs 504 max_cutoffs 282 leaves 16553 terminals 2 qnodes 19374 qcutoffs 13398 qlimit_leaves 29 ply1 466 ply2 924 ply3 4615 order_calls 3890 ordered_moves 73278 tt_probes 1067 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 1064 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove 6b6f"
+          ]
+        }
+      },
+      "core": {
+        "50ms": {
+          "target_legal": true,
+          "legal_count": 155,
+          "drop_count": 108,
+          "target_order_rank": 32,
+          "target_order_score": 5000000,
+          "bestmove": "L*3i",
+          "depth": 1,
+          "score": 4443,
+          "has_score": true,
+          "nodes": 1928,
+          "qnodes": 1844,
+          "elapsed_ms": 45.09,
+          "pv": [
+            "L*3i"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 155,
+              "finished": 155,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4246
+            },
+            {
+              "depth": 2,
+              "started": 84,
+              "finished": 83,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4401
+            }
+          ]
+        },
+        "500ms": {
+          "target_legal": true,
+          "legal_count": 155,
+          "drop_count": 108,
+          "target_order_rank": 32,
+          "target_order_score": 5000000,
+          "bestmove": "6b6f",
+          "depth": 3,
+          "score": 4594,
+          "has_score": true,
+          "nodes": 21735,
+          "qnodes": 20602,
+          "elapsed_ms": 490.042,
+          "pv": [
+            "6b6f",
+            "3g2h",
+            "L*3h"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 155,
+              "finished": 155,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4246
+            },
+            {
+              "depth": 2,
+              "started": 155,
+              "finished": 155,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4401
+            },
+            {
+              "depth": 3,
+              "started": 155,
+              "finished": 155,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4465
+            },
+            {
+              "depth": 4,
+              "started": 2,
+              "finished": 1,
+              "target_started": false,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        "target_depth3": {
+          "target_legal": true,
+          "legal_count": 155,
+          "drop_count": 108,
+          "target_order_rank": 32,
+          "target_order_score": 5000000,
+          "bestmove": "N*6d",
+          "depth": 3,
+          "score": 2605,
+          "has_score": true,
+          "nodes": 645,
+          "qnodes": 584,
+          "elapsed_ms": 17.532,
+          "pv": [
+            "N*6d",
+            "5a6b",
+            "6d5b+",
+            "4a5b"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2605
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2605
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2605
+            }
+          ]
+        }
+      },
+      "selected_depth3": {
+        "6b6f": {
+          "target_legal": true,
+          "legal_count": 155,
+          "drop_count": 108,
+          "target_order_rank": 12,
+          "target_order_score": 16200000,
+          "bestmove": "6b6f",
+          "depth": 3,
+          "score": 4594,
+          "has_score": true,
+          "nodes": 2693,
+          "qnodes": 2631,
+          "elapsed_ms": 66.957,
+          "pv": [
+            "6b6f",
+            "3g2h",
+            "L*3h"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4443
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4422
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4594
+            }
+          ]
+        },
+        "L*3i": {
+          "target_legal": true,
+          "legal_count": 155,
+          "drop_count": 108,
+          "target_order_rank": 21,
+          "target_order_score": 6400000,
+          "bestmove": "L*3i",
+          "depth": 3,
+          "score": 3952,
+          "has_score": true,
+          "nodes": 596,
+          "qnodes": 534,
+          "elapsed_ms": 26.4643,
+          "pv": [
+            "L*3i",
+            "3g2h",
+            "4i3h",
+            "2h1i"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4443
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3952
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3952
+            }
+          ]
+        }
+      }
+    },
+    {
+      "game_index": 1,
+      "ply": 88,
+      "sfen": "3bsk3/2s+Rs2G+L/+P3pp3/6g2/1P5p1/9/1LPPPP3/LBGSK1G2/1N4L1+r b 3N7P2p 89",
+      "history": [
+        "9g9f",
+        "1c1d",
+        "7i6h",
+        "3c3d",
+        "3i4h",
+        "3a4b",
+        "5i5h",
+        "7a6b",
+        "2g2f",
+        "8c8d",
+        "2f2e",
+        "4a3b",
+        "2h2f",
+        "8d8e",
+        "2f3f",
+        "8b8d",
+        "9f9e",
+        "9c9d",
+        "9e9d",
+        "9a9d",
+        "P*9e",
+        "P*9h",
+        "9i9h",
+        "8e8f",
+        "8g8f",
+        "3d3e",
+        "3f3e",
+        "3b3c",
+        "8f8e",
+        "8d3d",
+        "3e3d",
+        "3c3d",
+        "9e9d",
+        "R*8f",
+        "R*3b",
+        "2b3c",
+        "6i7h",
+        "5a4a",
+        "L*8g",
+        "8f2f",
+        "3b3c+",
+        "2a3c",
+        "B*8c",
+        "1d1e",
+        "8c6a+",
+        "6b5a",
+        "1g1f",
+        "2f2i+",
+        "6a7b",
+        "1e1f",
+        "1i1f",
+        "2c2d",
+        "1f1a+",
+        "2d2e",
+        "7b6c",
+        "R*5b",
+        "6c5b",
+        "5a5b",
+        "R*7a",
+        "B*6a",
+        "7a8a+",
+        "2i1h",
+        "8a8d",
+        "N*2b",
+        "G*1b",
+        "P*8c",
+        "8d7c",
+        "P*7b",
+        "7c8c",
+        "7b7c",
+        "8c7c",
+        "3c4e",
+        "1b2b",
+        "4e3g",
+        "P*1i",
+        "1h1c",
+        "1a1b",
+        "1c1g",
+        "4h3g",
+        "1g3g",
+        "9d9c+",
+        "S*7b",
+        "7c6b",
+        "4b5a",
+        "L*3i",
+        "3g2h",
+        "4i3h",
+        "2h1i"
+      ],
+      "played": "6b6d",
+      "target": "N*6d",
+      "attacked_squares": [
+        "7b",
+        "5b"
+      ],
+      "royal_fork": false,
+      "production": {
+        "50": {
+          "depth": 2,
+          "score": [
+            "cp",
+            "4240"
+          ],
+          "pv": [
+            "6b6d",
+            "3d4d"
+          ],
+          "bestmove": "6b6d",
+          "raw": [
+            "info string mate_assist budget 4 time 0 offense_nodes 12 defense_nodes 248 examined 114 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 6 time 10 nodes 166 score cp 4391 pv 6b6d",
+            "info depth 2 seldepth 7 time 42 nodes 735 score cp 4240 pv 6b6d 3d4d",
+            "info nodes 828 string cutoffs 111 min_cutoffs 111 max_cutoffs 0 leaves 673 terminals 0 qnodes 712 qcutoffs 463 qlimit_leaves 0 ply1 229 ply2 205 ply3 253 order_calls 158 ordered_moves 7007 tt_probes 116 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 114 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove 6b6d"
+          ]
+        },
+        "500": {
+          "depth": 2,
+          "score": [
+            "cp",
+            "4240"
+          ],
+          "pv": [
+            "6b6d",
+            "3d4d"
+          ],
+          "bestmove": "6b6d",
+          "raw": [
+            "info string mate_assist budget 5 time 0 offense_nodes 12 defense_nodes 248 examined 114 unsafe 0 offense_timeout 0 defense_timeout 0 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 6 time 16 nodes 166 score cp 4391 pv 6b6d",
+            "info depth 2 seldepth 7 time 57 nodes 735 score cp 4240 pv 6b6d 3d4d",
+            "info nodes 12198 string cutoffs 265 min_cutoffs 198 max_cutoffs 67 leaves 11178 terminals 1 qnodes 11828 qcutoffs 10605 qlimit_leaves 2 ply1 320 ply2 367 ply3 9756 order_calls 1021 ordered_moves 33730 tt_probes 369 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 367 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove 6b6d"
+          ]
+        }
+      },
+      "core": {
+        "50ms": {
+          "target_legal": true,
+          "legal_count": 114,
+          "drop_count": 66,
+          "target_order_rank": 24,
+          "target_order_score": 5000000,
+          "bestmove": "6b6d",
+          "depth": 2,
+          "score": 4240,
+          "has_score": true,
+          "nodes": 1092,
+          "qnodes": 974,
+          "elapsed_ms": 45.7476,
+          "pv": [
+            "6b6d",
+            "3d4d"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 114,
+              "finished": 114,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4055
+            },
+            {
+              "depth": 2,
+              "started": 114,
+              "finished": 114,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3357
+            },
+            {
+              "depth": 3,
+              "started": 2,
+              "finished": 1,
+              "target_started": false,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        "500ms": {
+          "target_legal": true,
+          "legal_count": 114,
+          "drop_count": 66,
+          "target_order_rank": 24,
+          "target_order_score": 5000000,
+          "bestmove": "6b6a",
+          "depth": 3,
+          "score": 5070,
+          "has_score": true,
+          "nodes": 19291,
+          "qnodes": 18659,
+          "elapsed_ms": 490.165,
+          "pv": [
+            "6b6a",
+            "5b6a",
+            "B*2c",
+            "4a5b",
+            "2c3d+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 114,
+              "finished": 114,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4055
+            },
+            {
+              "depth": 2,
+              "started": 114,
+              "finished": 114,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3357
+            },
+            {
+              "depth": 3,
+              "started": 114,
+              "finished": 114,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 3357
+            },
+            {
+              "depth": 4,
+              "started": 1,
+              "finished": 0,
+              "target_started": false,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        "target_depth3": {
+          "target_legal": true,
+          "legal_count": 114,
+          "drop_count": 66,
+          "target_order_rank": 24,
+          "target_order_score": 5000000,
+          "bestmove": "N*6d",
+          "depth": 3,
+          "score": 2414,
+          "has_score": true,
+          "nodes": 368,
+          "qnodes": 308,
+          "elapsed_ms": 9.21058,
+          "pv": [
+            "N*6d",
+            "5a6b",
+            "6d5b+",
+            "4a5b"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2414
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2414
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 2414
+            }
+          ]
+        }
+      },
+      "selected_depth3": {
+        "6b6d": {
+          "target_legal": true,
+          "legal_count": 114,
+          "drop_count": 66,
+          "target_order_rank": 9,
+          "target_order_score": 16200000,
+          "bestmove": "6b6d",
+          "depth": 3,
+          "score": 4371,
+          "has_score": true,
+          "nodes": 4877,
+          "qnodes": 4816,
+          "elapsed_ms": 128.748,
+          "pv": [
+            "6b6d",
+            "P*3c",
+            "N*7c"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4391
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4240
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": 4371
+            }
+          ]
+        }
+      }
+    },
+    {
+      "game_index": 1,
+      "ply": 119,
+      "sfen": "3bss1+N1/2sk2+NG+L/+P3p+L3/4g4/1P+R1P4/5n1p1/1LPP1K3/L+r1S5/9 w N9Pb2g2p 120",
+      "history": [
+        "9g9f",
+        "1c1d",
+        "7i6h",
+        "3c3d",
+        "3i4h",
+        "3a4b",
+        "5i5h",
+        "7a6b",
+        "2g2f",
+        "8c8d",
+        "2f2e",
+        "4a3b",
+        "2h2f",
+        "8d8e",
+        "2f3f",
+        "8b8d",
+        "9f9e",
+        "9c9d",
+        "9e9d",
+        "9a9d",
+        "P*9e",
+        "P*9h",
+        "9i9h",
+        "8e8f",
+        "8g8f",
+        "3d3e",
+        "3f3e",
+        "3b3c",
+        "8f8e",
+        "8d3d",
+        "3e3d",
+        "3c3d",
+        "9e9d",
+        "R*8f",
+        "R*3b",
+        "2b3c",
+        "6i7h",
+        "5a4a",
+        "L*8g",
+        "8f2f",
+        "3b3c+",
+        "2a3c",
+        "B*8c",
+        "1d1e",
+        "8c6a+",
+        "6b5a",
+        "1g1f",
+        "2f2i+",
+        "6a7b",
+        "1e1f",
+        "1i1f",
+        "2c2d",
+        "1f1a+",
+        "2d2e",
+        "7b6c",
+        "R*5b",
+        "6c5b",
+        "5a5b",
+        "R*7a",
+        "B*6a",
+        "7a8a+",
+        "2i1h",
+        "8a8d",
+        "N*2b",
+        "G*1b",
+        "P*8c",
+        "8d7c",
+        "P*7b",
+        "7c8c",
+        "7b7c",
+        "8c7c",
+        "3c4e",
+        "1b2b",
+        "4e3g",
+        "P*1i",
+        "1h1c",
+        "1a1b",
+        "1c1g",
+        "4h3g",
+        "1g3g",
+        "9d9c+",
+        "S*7b",
+        "7c6b",
+        "4b5a",
+        "L*3i",
+        "3g2h",
+        "4i3h",
+        "2h1i",
+        "6b6d",
+        "3d4d",
+        "N*3c",
+        "4a4b",
+        "3c2a+",
+        "4d5d",
+        "6d7e",
+        "P*3g",
+        "N*2d",
+        "5b4a",
+        "4g4f",
+        "3g3h+",
+        "3i3h",
+        "1i8i",
+        "2d3b+",
+        "4b5b",
+        "4f4e",
+        "8i7h",
+        "4e4d",
+        "N*4f",
+        "5h4g",
+        "2e2f",
+        "4d4c+",
+        "5b4c",
+        "3h3c+",
+        "4c5b",
+        "5g5f",
+        "7h8h",
+        "3c4c",
+        "5b6b",
+        "5f5e"
+      ],
+      "played": "2f2g+",
+      "target": "B*1d",
+      "attacked_squares": [
+        "3b",
+        "4g"
+      ],
+      "royal_fork": true,
+      "production": {
+        "50": {
+          "bestmove": "2f2g+",
+          "raw": [
+            "info string mate_assist budget 4 time 4 offense_nodes 36 defense_nodes 1857 examined 111 unsafe 0 offense_timeout 0 defense_timeout 1 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 0 seldepth 10 time 45 nodes 1673 pv 2f2g+",
+            "info nodes 1673 string cutoffs 0 min_cutoffs 0 max_cutoffs 0 leaves 1413 terminals 0 qnodes 1673 qcutoffs 905 qlimit_leaves 518 ply1 1 ply2 5 ply3 16 order_calls 261 ordered_moves 1033 tt_probes 0 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 0 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove 2f2g+"
+          ]
+        },
+        "500": {
+          "depth": 1,
+          "score": [
+            "cp",
+            "-284"
+          ],
+          "pv": [
+            "4a3b",
+            "4c3b",
+            "8h6h",
+            "5e5d",
+            "6h9h",
+            "4g4f",
+            "2f2g+",
+            "5d5c+",
+            "6b5c"
+          ],
+          "bestmove": "4a3b",
+          "raw": [
+            "info string mate_assist budget 5 time 5 offense_nodes 36 defense_nodes 2246 examined 138 unsafe 0 offense_timeout 0 defense_timeout 1 forced 0 forced_plies 0 all_unsafe 0",
+            "info depth 1 seldepth 10 time 304 nodes 11621 score cp -284 pv 4a3b 4c3b 8h6h 5e5d 6h9h 4g4f 2f2g+ 5d5c+ 6b5c",
+            "info nodes 18729 string cutoffs 3 min_cutoffs 3 max_cutoffs 0 leaves 16494 terminals 3 qnodes 18724 qcutoffs 11175 qlimit_leaves 5103 ply1 185 ply2 55 ply3 381 order_calls 2234 ordered_moves 8318 tt_probes 5 tt_hits 0 tt_exact_hits 0 tt_bound_cutoffs 0 tt_stores 4 tt_replacements 0 tt_move_first 0 tt_disabled_repetition 0 experience_probes 0 experience_hits 0 experience_move_first 0 experience_stores 0 experience_replacements 0 experience_disabled_repetition 0",
+            "bestmove 4a3b"
+          ]
+        }
+      },
+      "core": {
+        "50ms": {
+          "target_legal": true,
+          "legal_count": 181,
+          "drop_count": 150,
+          "target_order_rank": 1,
+          "target_order_score": 105200000,
+          "bestmove": "2f2g+",
+          "depth": 0,
+          "score": 0,
+          "has_score": false,
+          "nodes": 2311,
+          "qnodes": 2311,
+          "elapsed_ms": 45.1388,
+          "pv": [
+            "2f2g+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 0,
+              "target_started": true,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        "500ms": {
+          "target_legal": true,
+          "legal_count": 181,
+          "drop_count": 150,
+          "target_order_rank": 1,
+          "target_order_score": 105200000,
+          "bestmove": "4a3b",
+          "depth": 1,
+          "score": -284,
+          "has_score": true,
+          "nodes": 23633,
+          "qnodes": 23627,
+          "elapsed_ms": 490.036,
+          "pv": [
+            "4a3b",
+            "4c3b",
+            "8h6h",
+            "5e5d",
+            "6h9h",
+            "4g4f",
+            "2f2g+",
+            "5d5c+",
+            "6b5c"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 180,
+              "finished": 180,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -632
+            },
+            {
+              "depth": 2,
+              "started": 6,
+              "finished": 5,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -1158
+            }
+          ]
+        },
+        "target_depth3": {
+          "target_legal": true,
+          "legal_count": 181,
+          "drop_count": 150,
+          "target_order_rank": 1,
+          "target_order_score": 105200000,
+          "bestmove": "B*1d",
+          "depth": 3,
+          "score": -748,
+          "has_score": true,
+          "nodes": 33734,
+          "qnodes": 33723,
+          "elapsed_ms": 687.283,
+          "pv": [
+            "B*1d",
+            "4g4f",
+            "G*4g",
+            "4f5f",
+            "4a3b",
+            "4c3b",
+            "8h6h",
+            "5e5d",
+            "6h9h",
+            "5d5c+",
+            "6b5c"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -632
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -1158
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -748
+            }
+          ]
+        }
+      },
+      "selected_depth3": {
+        "2f2g+": {
+          "target_legal": true,
+          "legal_count": 181,
+          "drop_count": 150,
+          "target_order_rank": 114,
+          "target_order_score": 50000,
+          "bestmove": "2f2g+",
+          "depth": 3,
+          "score": -1020,
+          "has_score": true,
+          "nodes": 37755,
+          "qnodes": 37629,
+          "elapsed_ms": 955.131,
+          "pv": [
+            "2f2g+",
+            "3b4a",
+            "6a4c",
+            "5e5d",
+            "8h6h",
+            "5d5c+",
+            "6b5c",
+            "4a5a",
+            "4c8g+",
+            "7e7b",
+            "6h9h"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -775
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -1349
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -1020
+            }
+          ]
+        },
+        "4a3b": {
+          "target_legal": true,
+          "legal_count": 181,
+          "drop_count": 150,
+          "target_order_rank": 18,
+          "target_order_score": 20700000,
+          "bestmove": "4a3b",
+          "depth": 3,
+          "score": -300,
+          "has_score": true,
+          "nodes": 80885,
+          "qnodes": 80760,
+          "elapsed_ms": 1860.84,
+          "pv": [
+            "4a3b",
+            "N*7d",
+            "6b6c",
+            "4c3b",
+            "8h6h",
+            "5e5d",
+            "6h9h",
+            "4g4f",
+            "2f2g+",
+            "5d5c+",
+            "6c5c"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -284
+            },
+            {
+              "depth": 2,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -771
+            },
+            {
+              "depth": 3,
+              "started": 1,
+              "finished": 1,
+              "target_started": true,
+              "target_finished": true,
+              "target_returned_bound": -300
+            }
+          ]
+        }
+      },
+      "repeat_50ms_core": [
+        {
+          "target_legal": true,
+          "legal_count": 181,
+          "drop_count": 150,
+          "target_order_rank": 1,
+          "target_order_score": 105200000,
+          "bestmove": "2f2g+",
+          "depth": 0,
+          "score": 0,
+          "has_score": false,
+          "nodes": 2249,
+          "qnodes": 2249,
+          "elapsed_ms": 45.097,
+          "pv": [
+            "2f2g+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 0,
+              "target_started": true,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        {
+          "target_legal": true,
+          "legal_count": 181,
+          "drop_count": 150,
+          "target_order_rank": 1,
+          "target_order_score": 105200000,
+          "bestmove": "2f2g+",
+          "depth": 0,
+          "score": 0,
+          "has_score": false,
+          "nodes": 2363,
+          "qnodes": 2363,
+          "elapsed_ms": 45.035,
+          "pv": [
+            "2f2g+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 0,
+              "target_started": true,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        {
+          "target_legal": true,
+          "legal_count": 181,
+          "drop_count": 150,
+          "target_order_rank": 1,
+          "target_order_score": 105200000,
+          "bestmove": "2f2g+",
+          "depth": 0,
+          "score": 0,
+          "has_score": false,
+          "nodes": 2195,
+          "qnodes": 2195,
+          "elapsed_ms": 45.0629,
+          "pv": [
+            "2f2g+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 0,
+              "target_started": true,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        {
+          "target_legal": true,
+          "legal_count": 181,
+          "drop_count": 150,
+          "target_order_rank": 1,
+          "target_order_score": 105200000,
+          "bestmove": "2f2g+",
+          "depth": 0,
+          "score": 0,
+          "has_score": false,
+          "nodes": 2325,
+          "qnodes": 2325,
+          "elapsed_ms": 45.0626,
+          "pv": [
+            "2f2g+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 0,
+              "target_started": true,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        },
+        {
+          "target_legal": true,
+          "legal_count": 181,
+          "drop_count": 150,
+          "target_order_rank": 1,
+          "target_order_score": 105200000,
+          "bestmove": "2f2g+",
+          "depth": 0,
+          "score": 0,
+          "has_score": false,
+          "nodes": 2231,
+          "qnodes": 2231,
+          "elapsed_ms": 45.0609,
+          "pv": [
+            "2f2g+"
+          ],
+          "root_iterations": [
+            {
+              "depth": 1,
+              "started": 1,
+              "finished": 0,
+              "target_started": true,
+              "target_finished": false,
+              "target_returned_bound": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
