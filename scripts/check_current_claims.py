@@ -44,6 +44,10 @@ require("docs/26_対局データ収集・分析・学習設計.md", "Book / Expe
 wf = read(".github/workflows/engine-match.yml")
 if wf.count('"AdaptiveLongThink":true') < 2:
     errors.append(".github/workflows/engine-match.yml: formal default must explicitly enable AdaptiveLongThink for A/B")
+if wf.count('"PositionKnowledge":true') < 2:
+    errors.append(".github/workflows/engine-match.yml: normal A/B defaults must use adopted position knowledge")
+require("README.md", "通常対局で毎回ON", "adopted position knowledge default-use summary")
+require("docs/rules/R20_対局・比較・統計.md", "雲路が対局する場合は採用済みの局面知識snapshotを毎回使用する", "position knowledge every-match rule")
 
 if errors:
     print("Current-claim consistency FAILED")
