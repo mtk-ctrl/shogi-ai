@@ -262,6 +262,9 @@ def main() -> int:
         "AdaptiveLongThink": False,
     }
     engine = Engine(args.engine, "SafetyAnalyzer", options, f"go movetime {args.deep_ms}")
+    # The generic arena watchdog is tuned for ordinary match play. Deep diagnosis
+    # intentionally allows much longer searches, so leave enough I/O margin.
+    engine.RESPONSE_TIMEOUT = max(30, args.deep_ms / 1000 + 15)
     diagnoses: list[dict] = []
     try:
         for i, row in enumerate(selected, 1):
