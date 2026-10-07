@@ -15,6 +15,14 @@ authority: normative
 - `docs/archive/`: 旧文書。現在の指示には使わない。
 - `docs/hold/`: 結論を出してはいけない保留領域。
 
+## バージョンの意味
+- Android / OEXの `vX.Y.Z` は、R60に従って完成版化したreleaseの表示番号である。
+- `main` はrelease後も開発が進むため、最後のrelease番号だけで現在のEngine実装を表さない。
+- 現在のEngine実装を特定するときは `main` のcommit SHAを使う。
+- 棋力比較の基準commitは `benchmarks/baseline_ref.txt` で管理し、製品release番号と混同しない。
+- USI名やAndroid表示名が最後のrelease番号のままでも、その文字列だけから現在のmainがrelease当時と同一実装だと判断しない。
+- READMEでは「最新release」と「現在のmain Engine」を分けて記述する。
+
 ## journal
 重要な実装、比較、採用・不採用、方針変更は `journal/YYYY-MM-DD_NN_テーマ.md` に残す。
 同日のNNはmainへ統合された順で確定し、一度確定した番号を後から振り直さない。

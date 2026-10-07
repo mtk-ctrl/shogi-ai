@@ -12,13 +12,14 @@ authority: non-normative
 
 ## 現在確認できている衝突・論点
 1. **Book自動main反映**
-   - 現行 `.github/workflows/nightly-book-learning.yml` には条件付きでBookをmainへpushする実装がある。
+   - 整理前の旧 `nightly-book-learning.yml` には条件付きでBookをmainへpushする実装があった。現在は `docs/hold/workflows/nightly-book-learning.yml` へ退避され、実行されない。
    - 旧 `NIGHTLY_RESEARCH_SYSTEM.md` には、新credit assignment完成までBook自動更新を止める設計記述がある。
    - どちらを今後の正式方針にするかは保留。
 
 2. **外部対局由来Experience**
    - READMEの旧記述は外部対局をExperience Cache更新対象外としていた。
    - 旧 `docs/23_外部エンジン対局基盤.md` は、KUMOJI自身が探索した結果なら保存可としていた。
+   - `tools/floodgate/client.py` には保留前の既存実装として `ExperienceCache=true` と `experience_eligible=true` が残っている。これは実装事実であり、今後の正式方針を確定する根拠にはしない。
    - 今後の正式方針は保留。
 
 3. **runner / lane構造**

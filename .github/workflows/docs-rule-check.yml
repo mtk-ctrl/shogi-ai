@@ -10,6 +10,7 @@ on:
       - ".github/workflows/**"
       - "scripts/check_doc_router.py"
       - "scripts/check_workflow_inventory.py"
+      - "scripts/check_current_claims.py"
   pull_request:
     paths:
       - "AGENTS.md"
@@ -18,6 +19,7 @@ on:
       - ".github/workflows/**"
       - "scripts/check_doc_router.py"
       - "scripts/check_workflow_inventory.py"
+      - "scripts/check_current_claims.py"
   workflow_dispatch:
 
 permissions:
@@ -36,3 +38,6 @@ jobs:
 
       - name: Check active workflow inventory
         run: python3 scripts/check_workflow_inventory.py
+
+      - name: Check current-state claims
+        run: python3 scripts/check_current_claims.py

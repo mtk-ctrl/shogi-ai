@@ -4,7 +4,9 @@
 
 「雲路」は、雲の中の道、空に通う道を表す古い日本語から取った。既に敷かれた道をなぞるのではなく、まだ道に見えないところから、自分で通れる筋を見つけるAIを目指す。
 
-現在の完成版は **v1.0.1**。戦略・評価・探索の棋力基準は正式採用版v0.0.19であり、直前に検証したv0.0.20探索効率化候補（Killer / History / PVS / Aspiration window）は不採用のため含めていない。
+最新のAndroid / OEX完成版（release）は **v1.0.1**（2026-10-05）である。
+ただし、その後も `main` のEngine開発は継続しており、200ms正式比較条件とAdaptiveLongThink正式採用など、v1.0.1完成版化後の採用変更が入っている。
+したがって **v1.0.1やv0.0.19を現在のmain Engine全体の版番号として扱わない**。現在のEngine状態は `main` のcommitを正本とし、正式比較の基準commitは `benchmarks/baseline_ref.txt` を参照する。
 
 ## AI作業時の入口
 
@@ -18,7 +20,7 @@
 強化は原則として、Engine / Experience / Benchmark / Diagnosis の役割を分け、Strength / Independence / Novelty を意識して進める。
 詳しくは [雲路の羅針盤](docs/00_羅針盤.md) を参照する。
 
-## v1.0.1の主な能力
+## 現在のmain Engineの主な能力
 
 - やねうら王から利用するのは、合法手生成・局面管理・王手判定・千日手等のルール層のみ
 - 探索・評価・move ordering・置換表・詰み探索・戦略・学習は自作
@@ -51,7 +53,7 @@ Opening BookとExperience Cacheの実装は存在する。
 
 ## Android / ShogiDroid2
 
-v1.0.1のAndroid版は次の構成である。
+最後に完成版化したv1.0.1のAndroid版は次の構成である。mainの未release変更とは区別する。
 
 - アプリ表示名：`雲路 KUMOJI`
 - OEX表示名：`雲路 KUMOJI v1.0.1`

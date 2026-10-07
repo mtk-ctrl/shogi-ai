@@ -83,21 +83,14 @@ KUMOJIはUSIの `btime/wtime/binc/winc/byoyomi` を解釈できる。
 
 ## 外部対局と学習の分離
 
-Floodgateは「教師」ではなく「物差し」として扱う。
+FloodgateはR50どおり「教師」ではなく「物差し」として扱う。
+相手の評価値・PV・候補手をOpening Bookや評価関数学習の教師へ自動投入しない。
 
-既定値は次のとおり。
+Book / ExperienceについてはH10が優先する。
+現行 `tools/floodgate/client.py` には保留前の既存実装として `OpeningBook=true`、`ExperienceCache=true`、ログ上の `experience_eligible=true` が残っているが、これは**既存挙動の記録であって、外部対局由来Experienceを今後も保存するという正式方針ではない**。
 
-- `OpeningBook=true`
-- `ExperienceCache=true`
-- 外部対局ログ: `learning_eligible=false`
-- 外部対局ログ: `opening_book_eligible=false`
-- 外部対局ログ: `experience_eligible=true`
-
-相手の評価値、PV、指し手をOpening Bookや評価学習へ自動投入しない。
-
-Experience Cacheへ保存するのは、Floodgateで到達した局面に対して**KUMOJI自身が探索して得たbest move hintと探索深さ**である。相手の評価値・PV・推奨手は保存しない。そのため、外部対局でもExperienceはKUMOJI自身の経験として継続利用・保存する。
-
-境界は「局面の出所」ではなく「答えの出所」とする。外部対局や詰将棋等で外部から局面を与えられることは許容し、その局面への答えを外部AIから教師として与えることはしない。
+H10確定前に実参戦する場合は、使用したBook / ExperienceのON/OFF・ファイル・初期状態を明示して記録する。
+外部対局由来Experienceの保存可否、自動継続利用、世代管理は本書では決めない。
 
 ## 秘密情報
 
@@ -132,34 +125,16 @@ python3 tools/floodgate/client.py \
 
 ## GitHubのEngine世代との接続
 
-Floodgate接続基盤そのものはmain側のインフラとして維持し、対局に使うKUMOJIエンジンはbranch / tag / commitで選べるものとする。
+Floodgate接続基盤そのものはmain側のインフラとして維持し、対局に使うKUMOJIエンジンは必要に応じbranch / tag / commitで識別できるようにする。
+Engine世代ごとにFloodgateコードを複製しない。
 
-この分離により、Engine世代ごとにFloodgateコードを複製しない。
+以前の `Floodgate Generation Compatibility` workflowはworkflow整理時に `docs/archive/workflows/2026-10-07/floodgate-generation-compat.yml` へ退役した。
+したがって、`research/evaluation-v2-challenger` や `KUMOJI v2.0.0` を現行の既定対象として扱わない。
 
-GitHub Actions `Floodgate Generation Compatibility` は、次の2つを別checkoutして検証する。
+現在のmain bridgeはQuick CIのFloodgate dry-runで検査する。
+別世代との互換性を改めて検証する必要が生じた場合は、R15に従い既存基盤で自然に扱えるか確認し、必要なら専用workflowを再設計する。
 
-1. 現在mainの最新Floodgate bridge
-2. 指定したEngine世代ref
-
-既定の検証対象は `research/evaluation-v2-challenger` で、期待USI名は `KUMOJI v2.0.0` とする。
-
-検証では、
-
-- 選択したrefを実際にhost build
-- USI handshake
-- `OpeningBook=true`
-- `ExperienceCache=true`
-- EngineのUSI名が指定世代と一致
-- `go btime 3000 wtime 3000` によるFloodgate型時計入力
-- startposから合法な `bestmove`
-
-までをネットワーク接続なしで確認する。
-
-結果artifactにはEngine ref、Engine SHA、FloodgateインフラSHA、dry-run出力を保存する。したがって「どの世代を、どの接続基盤で確認したか」を後から追跡できる。
-
-実対局ログにもEngineの `id name`、author、適用option、実行バイナリSHA-256を保存し、レーティング結果とEngine世代を混同しない。
-
-別世代のバイナリをmain側bridgeから起動する場合、bridgeの作業ディレクトリにある別世代の `shogi-ai-book.tsv` を誤って読むことを避けるため、Engineプロセスは実行バイナリのディレクトリをworking directoryとして起動する。通常はビルド時にその世代のBookがバイナリへ埋め込まれているため、外部Bookを明示指定しない限り世代内蔵Bookへフォールバックする。
+実対局ログにはEngineの `id name`、適用option、実行バイナリSHA-256等を残し、表示versionだけでEngine世代を判定しない。
 
 ## 実参戦時の手順
 
@@ -180,7 +155,7 @@ GitHub Actions `Floodgate Generation Compatibility` は、次の2つを別checko
 - CSA/USIの通常手、成り、駒打ち変換を単体試験できる
 - Game_Summaryの300秒+10秒incrementを解釈できる
 - サーバ報告の消費時間から時計を更新できる
-- Experience Cacheを既定で有効化し、KUMOJI自身の探索経験を保存できる
+- Book / Experienceの実行条件を記録できる。外部対局由来Experienceの保存可否はH10の保留を維持する
 - `--live` なしではネット接続しない
 - tripをコード・設定ファイル・GitHubへ保存しない
 - CIでFloodgate関連テストを実行する
