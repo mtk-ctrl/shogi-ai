@@ -153,7 +153,9 @@ GitHub Actions `Floodgate Generation Compatibility` は、次の2つを別checko
 
 結果artifactにはEngine ref、Engine SHA、FloodgateインフラSHA、dry-run出力を保存する。したがって「どの世代を、どの接続基盤で確認したか」を後から追跡できる。
 
-実対局ログにもEngineの `id name`、author、適用optionを保存し、レーティング結果とEngine世代を混同しない。
+実対局ログにもEngineの `id name`、author、適用option、実行バイナリSHA-256を保存し、レーティング結果とEngine世代を混同しない。
+
+別世代のバイナリをmain側bridgeから起動する場合、bridgeの作業ディレクトリにある別世代の `shogi-ai-book.tsv` を誤って読むことを避けるため、Engineプロセスは実行バイナリのディレクトリをworking directoryとして起動する。通常はビルド時にその世代のBookがバイナリへ埋め込まれているため、外部Bookを明示指定しない限り世代内蔵Bookへフォールバックする。
 
 ## 実参戦時の手順
 
