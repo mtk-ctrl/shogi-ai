@@ -55,8 +55,17 @@ FEATURES = (
     "promotion_potential",
 )
 
+def square_file(square: int) -> int:
+    # python-shogi 1.1.1 exposes SQUARE_NAMES but no square_file helper.
+    return 9 - int(shogi.SQUARE_NAMES[square][0])
+
+
+def square_rank(square: int) -> int:
+    return ord(shogi.SQUARE_NAMES[square][1]) - ord("a")
+
+
 SQUARE_AT = {
-    (shogi.square_file(sq), shogi.square_rank(sq)): sq
+    (square_file(sq), square_rank(sq)): sq
     for sq in shogi.SQUARES
 }
 
@@ -139,7 +148,7 @@ def legal_facts(board: shogi.Board, color: int) -> dict:
 def ring_squares(king: int) -> list[int]:
     if king is None:
         return []
-    f0, r0 = shogi.square_file(king), shogi.square_rank(king)
+    f0, r0 = square_file(king), square_rank(king)
     out = []
     for df in (-1, 0, 1):
         for dr in (-1, 0, 1):
@@ -156,7 +165,7 @@ def open_line_risk(board: shogi.Board, color: int) -> int:
     if king is None:
         return 0
     enemy = other(color)
-    kf, kr = shogi.square_file(king), shogi.square_rank(king)
+    kf, kr = square_file(king), square_rank(king)
     risk = 0
     for df, dr in (
         (-1, 0), (1, 0), (0, -1), (0, 1),
@@ -235,8 +244,8 @@ def chebyshev(a: int, b: int) -> int:
     if a is None or b is None:
         return 9
     return max(
-        abs(shogi.square_file(a) - shogi.square_file(b)),
-        abs(shogi.square_rank(a) - shogi.square_rank(b)),
+        abs(square_file(a) - square_file(b)),
+        abs(square_rank(a) - square_rank(b)),
     )
 
 
@@ -261,8 +270,8 @@ def piece_placement_detail(board: shogi.Board, color: int) -> dict:
         if progress >= 5:
             advanced += 1
 
-        f = shogi.square_file(sq)
-        if 2 <= f <= 6 and 2 <= shogi.square_rank(sq) <= 6:
+        f = square_file(sq)
+        if 2 <= f <= 6 and 2 <= square_rank(sq) <= 6:
             central += 1
 
         d = chebyshev(sq, enemy_king)
