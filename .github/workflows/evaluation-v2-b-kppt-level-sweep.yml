@@ -1,0 +1,281 @@
+name: Evaluation V2 B KPPT Level Sweep
+
+on:
+  workflow_dispatch:
+    inputs:
+      level_start:
+        description: "First YaneuraOu KPPT level"
+        required: true
+        default: "1"
+        type: string
+      level_end:
+        description: "Last YaneuraOu KPPT level"
+        required: true
+        default: "10"
+        type: string
+      games_per_level:
+        description: "Games per level (multiple of 10)"
+        required: true
+        default: "100"
+        type: string
+  push:
+    branches:
+      - research/evaluation-v2-challenger
+    paths:
+      - "benchmarks/eval_v2_b_kppt_level_sweep.py"
+      - ".github/workflows/evaluation-v2-b-kppt-level-sweep.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  YANEURAOU_REF: c1b80eaa09fe13d5f12b1599d1ae4d53c224de30
+  APERY_WCSC26_URL: https://github.com/HiraokaTakuya/apery/releases/download/WCSC26/apery_wcsc26.zip
+
+jobs:
+  quick:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[eval-b-kppt-levels]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    outputs:
+      level_start: ${{ steps.params.outputs.level_start }}
+      level_end: ${{ steps.params.outputs.level_end }}
+      games_per_level: ${{ steps.params.outputs.games_per_level }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Resolve parameters
+        id: params
+        shell: bash
+        run: |
+          LEVEL_START="${{ inputs.level_start }}"
+          LEVEL_END="${{ inputs.level_end }}"
+          GAMES="${{ inputs.games_per_level }}"
+          echo "level_start=${LEVEL_START:-1}" >> "$GITHUB_OUTPUT"
+          echo "level_end=${LEVEL_END:-10}" >> "$GITHUB_OUTPUT"
+          echo "games_per_level=${GAMES:-100}" >> "$GITHUB_OUTPUT"
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Validate sweep and 20-runner allocation
+        shell: bash
+        run: |
+          python3 -m py_compile benchmarks/eval_v2_b_kppt_level_sweep.py
+          python3 - <<'PY'
+          import benchmarks.eval_v2_b_kppt_level_sweep as x
+          blocks=x.build_blocks(1,10,100)
+          shards=x.assign_blocks(1,10,100)
+          assert len(blocks)==100
+          assert len(shards)==20
+          assert sum(len(s["blocks"]) for s in shards)==100
+          assert all(len(s["blocks"])==5 for s in shards)
+          assert sum(len(s["blocks"])*10 for s in shards)==1000
+          print("validated: 20 runners x 50 games = 1000")
+          PY
+
+      - name: Build KUMOJI
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Fetch pinned YaneuraOu
+        run: |
+          git clone --filter=blob:none https://github.com/yaneurao/YaneuraOu.git external/YaneuraOu
+          git -C external/YaneuraOu checkout "$YANEURAOU_REF"
+
+      - name: Patch KPPT loader for Apery 16-bit format
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path("external/YaneuraOu/source/eval/kppt/evaluate_kppt.cpp")
+          s=p.read_text()
+          old="auto input = EvalIO::EvalInfo::build_kppt32("
+          new="auto input = EvalIO::EvalInfo::build_kppt16("
+          if old not in s:
+              raise SystemExit("KPPT loader pattern not found")
+          p.write_text(s.replace(old,new,1))
+          print("patched KPPT input loader: kppt32 -> kppt16")
+          PY
+
+      - name: Build YaneuraOu KPPT
+        run: |
+          make -C external/YaneuraOu/source clean \
+            COMPILER=g++ TARGET_CPU=SSE42 \
+            YANEURAOU_EDITION=YANEURAOU_ENGINE_KPPT
+          make -C external/YaneuraOu/source -j2 tournament \
+            COMPILER=g++ TARGET_CPU=SSE42 \
+            YANEURAOU_EDITION=YANEURAOU_ENGINE_KPPT
+          test -x external/YaneuraOu/source/YaneuraOu-by-gcc
+
+      - name: Download canonical KPPT evaluation (Apery WCSC26)
+        shell: bash
+        run: |
+          curl -L --fail --retry 3 "$APERY_WCSC26_URL" -o build/apery_wcsc26.zip
+          test -s build/apery_wcsc26.zip
+          mkdir -p external/YaneuraOu/source/eval
+          python3 - <<'PY'
+          import zipfile
+          from pathlib import Path
+          z=zipfile.ZipFile("build/apery_wcsc26.zip")
+          names=z.namelist()
+          targets={
+            "KK_synthesized.bin": ["KK_synthesized.bin","kk.bin","kks.kk.bin"],
+            "KKP_synthesized.bin": ["KKP_synthesized.bin","kkp.bin","kkps.kkp.bin"],
+            "KPP_synthesized.bin": ["KPP_synthesized.bin","kpp.bin","kpps.kpp.bin"],
+          }
+          out=Path("external/YaneuraOu/source/eval")
+          for dest,cands in targets.items():
+              matches=[n for n in names if Path(n).name.lower() in {c.lower() for c in cands}]
+              if not matches:
+                  raise SystemExit(f"missing {dest}; archive candidates not found")
+              # Prefer WCSC26's documented 20160307 directory if present.
+              matches.sort(key=lambda n: ("20160307" not in n, len(n), n))
+              chosen=matches[0]
+              data=z.read(chosen)
+              (out/dest).write_bytes(data)
+              print(dest, "<-", chosen, len(data))
+          PY
+
+      - name: Smoke-test KPPT evaluation loading
+        shell: bash
+        run: |
+          cd external/YaneuraOu/source
+          {
+            echo usi
+            echo "setoption name Threads value 1"
+            echo "setoption name USI_Hash value 16"
+            echo "setoption name EvalDir value eval"
+            echo isready
+            echo quit
+          } | ./YaneuraOu-by-gcc | tee /tmp/kppt-smoke.txt
+          grep -q "readyok" /tmp/kppt-smoke.txt
+
+      - name: Upload runtime
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-b-kppt-level-sweep-runtime
+          path: |
+            build/shogi-ai
+            build/apery_wcsc26.zip
+            external/YaneuraOu/source/YaneuraOu-by-gcc
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
+
+  shard:
+    needs: quick
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Download runtime
+        uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-b-kppt-level-sweep-runtime
+          path: build/runtime
+
+      - name: Prepare runtime, KPPT eval, and record CPU
+        shell: bash
+        run: |
+          ENGINE="$(find build/runtime -type f -name shogi-ai | head -1)"
+          YANE="$(find build/runtime -type f -name YaneuraOu-by-gcc | head -1)"
+          ZIP="$(find build/runtime -type f -name apery_wcsc26.zip | head -1)"
+          test -n "$ENGINE" && test -n "$YANE" && test -n "$ZIP"
+          chmod +x "$ENGINE" "$YANE"
+          EVAL_DIR="$(dirname "$YANE")/eval"
+          mkdir -p "$EVAL_DIR"
+          python3 - "$ZIP" "$EVAL_DIR" <<'PY'
+          import sys, zipfile
+          from pathlib import Path
+          zp,od=sys.argv[1],Path(sys.argv[2])
+          z=zipfile.ZipFile(zp)
+          names=z.namelist()
+          targets={
+            "KK_synthesized.bin": ["KK_synthesized.bin","kk.bin","kks.kk.bin"],
+            "KKP_synthesized.bin": ["KKP_synthesized.bin","kkp.bin","kkps.kkp.bin"],
+            "KPP_synthesized.bin": ["KPP_synthesized.bin","kpp.bin","kpps.kpp.bin"],
+          }
+          for dest,cands in targets.items():
+              matches=[n for n in names if Path(n).name.lower() in {c.lower() for c in cands}]
+              if not matches: raise SystemExit(f"missing {dest}")
+              matches.sort(key=lambda n: ("20160307" not in n, len(n), n))
+              (od/dest).write_bytes(z.read(matches[0]))
+          PY
+          echo "ENGINE=$ENGINE" >> "$GITHUB_ENV"
+          echo "YANE=$YANE" >> "$GITHUB_ENV"
+          mkdir -p "build/shard-${{ matrix.shard }}"
+          {
+            echo "nproc=$(nproc)"
+            echo "runner_name=$RUNNER_NAME"
+            lscpu
+          } > "build/shard-${{ matrix.shard }}/cpu.txt"
+
+      - name: Run 50-game balanced shard
+        run: |
+          python3 benchmarks/eval_v2_b_kppt_level_sweep.py shard \
+            --engine "$ENGINE" --opponent "$YANE" \
+            --shard "${{ matrix.shard }}" \
+            --level-start "${{ needs.quick.outputs.level_start }}" \
+            --level-end "${{ needs.quick.outputs.level_end }}" \
+            --games-per-level "${{ needs.quick.outputs.games_per_level }}" \
+            --output-dir "build/shard-${{ matrix.shard }}"
+
+      - name: Upload shard
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-b-kppt-level-sweep-shard-${{ matrix.shard }}
+          path: build/shard-${{ matrix.shard }}
+          if-no-files-found: error
+          retention-days: 180
+          compression-level: 6
+
+  analyze:
+    needs: [quick, shard]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: eval-v2-b-kppt-level-sweep-shard-*
+          path: build/all
+          merge-multiple: false
+
+      - name: Analyze
+        run: |
+          python3 benchmarks/eval_v2_b_kppt_level_sweep.py analyze \
+            --root build/all \
+            --level-start "${{ needs.quick.outputs.level_start }}" \
+            --level-end "${{ needs.quick.outputs.level_end }}" \
+            --games-per-level "${{ needs.quick.outputs.games_per_level }}" \
+            --output build/eval-v2-b-kppt-level-sweep-analysis.json \
+            --summary build/eval-v2-b-kppt-level-sweep-summary.md
+          cat build/eval-v2-b-kppt-level-sweep-summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Collect CPU models
+        run: |
+          find build/all -name cpu.txt -print -exec grep -E 'Model name:|Vendor ID:|CPU family:|Model:|nproc=' {} \; \
+            > build/eval-v2-b-kppt-level-sweep-cpus.txt || true
+
+      - name: Upload analysis
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-b-kppt-level-sweep-analysis
+          path: |
+            build/eval-v2-b-kppt-level-sweep-analysis.json
+            build/eval-v2-b-kppt-level-sweep-summary.md
+            build/eval-v2-b-kppt-level-sweep-cpus.txt
+          if-no-files-found: error
+          retention-days: 365
