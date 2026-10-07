@@ -142,18 +142,28 @@ jobs:
           ref: ${{ needs.plan.outputs.ref_b }}
           path: engine-b-src
 
+      - name: Checkout adopted knowledge snapshot
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+          path: knowledge-src
+          sparse-checkout: |
+            position-knowledge-v1.tsv
+            position-knowledge-v1.manifest.json
+          sparse-checkout-cone-mode: false
+
       - name: Build both engines
         run: |
           mkdir -p build
           (cd engine-a-src && python3 scripts/build.py --output "$GITHUB_WORKSPACE/build/engine-a")
           (cd engine-b-src && python3 scripts/build.py --output "$GITHUB_WORKSPACE/build/engine-b")
           sha256sum build/engine-a build/engine-b
-          if [ ! -s engine-a-src/position-knowledge-v1.tsv ]; then
+          if [ ! -s knowledge-src/position-knowledge-v1.tsv ]; then
             echo "PositionKnowledge is required by R20 but candidate ref has no adopted snapshot" >&2
             exit 1
           fi
-          cp engine-a-src/position-knowledge-v1.tsv build/position-knowledge-v1.tsv
-          cp engine-a-src/position-knowledge-v1.manifest.json build/position-knowledge-v1.manifest.json
+          cp knowledge-src/position-knowledge-v1.tsv build/position-knowledge-v1.tsv
+          cp knowledge-src/position-knowledge-v1.manifest.json build/position-knowledge-v1.manifest.json
           sha256sum build/position-knowledge-v1.tsv build/position-knowledge-v1.manifest.json
 
       - name: Package binaries
