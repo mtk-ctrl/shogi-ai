@@ -6,15 +6,14 @@
   "accept_status": [
     "unverified"
   ],
-  "min_evidence": 2,
-  "adopted_positions": 24,
+  "min_evidence": 1,
+  "adopted_positions": 53,
   "conflicting_positions_excluded": 0,
   "duplicate_same_move_records_collapsed": 0,
   "rejected": {
-    "evidence": 29,
     "status:disputed": 7
   },
   "output_file": "position-knowledge-v1.tsv",
-  "output_sha256": "4dfc70d7fcdfc4fddb222cccd1071283d13d83098e348ad049be57563c378820",
+  "output_sha256": "9a96f99cc5f5dac185a68f5b055f54fd4c158d33a60208d1449b020269fd67cf",
   "policy": "Only explicitly accepted move_order_hint candidates are materialized. Conflicting moves are excluded; this script never auto-promotes a new candidate source."
 }
