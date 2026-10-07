@@ -30,15 +30,25 @@ jobs:
           mkdir -p build/evaluation-concepts
           python3 tools/research/evaluation_concept_diagnosis.py \
             --input benchmarks/fixtures/eval-gap-30s-12.json \
-            --output build/evaluation-concepts/results.json \
-            --markdown-output build/evaluation-concepts/summary.md
+            --output build/evaluation-concepts/evaluation-gap-results.json \
+            --markdown-output build/evaluation-concepts/evaluation-gap-summary.md
+          python3 tools/research/evaluation_concept_diagnosis.py \
+            --input benchmarks/fixtures/static-aligned-30s-10.json \
+            --output build/evaluation-concepts/static-aligned-results.json \
+            --markdown-output build/evaluation-concepts/static-aligned-summary.md
       - name: Show summary
-        run: cat build/evaluation-concepts/summary.md >> "$GITHUB_STEP_SUMMARY"
+        run: |
+          echo "## Cohort A — existing static evaluation missed the deep-best move" >> "$GITHUB_STEP_SUMMARY"
+          cat build/evaluation-concepts/evaluation-gap-summary.md >> "$GITHUB_STEP_SUMMARY"
+          echo "## Cohort B — existing static evaluation already preferred the deep-best move" >> "$GITHUB_STEP_SUMMARY"
+          cat build/evaluation-concepts/static-aligned-summary.md >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         with:
           name: evaluation-concepts-v2-${{ github.run_id }}
           path: |
-            build/evaluation-concepts/results.json
-            build/evaluation-concepts/summary.md
+            build/evaluation-concepts/evaluation-gap-results.json
+            build/evaluation-concepts/evaluation-gap-summary.md
+            build/evaluation-concepts/static-aligned-results.json
+            build/evaluation-concepts/static-aligned-summary.md
           retention-days: 30
           if-no-files-found: error
