@@ -13,7 +13,7 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 | `.github/workflows/kifu-learning-ci.yml` | 棋譜処理変更 / PR / 手動 | 棋譜変換・ルール層validation |
 | `.github/workflows/engine-match.yml` | 手動 | 汎用の内部Engine比較。既定は200ms・AdaptiveLongThink=true。研究条件は明示入力で変更 |
 | `.github/workflows/engine-match-request.yml` | request更新 / 手動 | ChatGPT等から `.github/match-request.json` を検証して `engine-match.yml` をdispatchする薄い起動口。対局処理は持たない |
-| `.github/workflows/position-knowledge-refresh.yml` | 知識更新request / 手動 | 承認した候補assetから採用済み局面知識snapshotをmaterialize。新候補を自動昇格しない |
+| `.github/workflows/position-knowledge-refresh.yml` | 知識更新request / 手動 | 承認した候補データから採用済み局面知識を生成する。新候補を自動採用しない |
 | `.github/workflows/external-engine-benchmark.yml` | 関連pushでunit / 手動Benchmark | やねうら王MaterialのCore外部尺度 |
 | `.github/workflows/tsume-benchmark.yml` | 手動 | 固定詰将棋データセットのBenchmark |
 | `.github/workflows/android-apk.yml` | 明示的release変更 / 手動 | 完成版全車検・Android APK生成 |
@@ -23,8 +23,7 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 v2対v1比較、固定v2.0.0の300局自己対局・60局面研究、その追加監査の研究workflowは終了済み（2026-10-08確認）。当該300局・研究記録・局面知識はR25・docs/28・29・35に従って月別データRelease `records-2026-10-01` へ分離保存し、取得後のhash一致まで確認済み。独自の長文監査報告は削除し、追加監査runも正規の研究観測を移送後に削除した。保存用の一時workflowは `docs/archive/workflows/2026-10-08/store-v2-position-research.yml` へ退避済み。
 
 ## HOLD
-Book / Experience / Nightlyの旧workflowは `docs/hold/workflows/` に退避している。
-H10の方針確定まではGitHub Actionsから起動できない。夜間定期対局は、現在の変革期に優先する開発があるという本人判断でも一時停止中である。H10が解決しただけで自動再開せず、R30に従う。
+旧Book / Experience関連workflowは履歴保管として `docs/hold/workflows/` に退避しており、現行運用では起動しない。夜間定期対局は、現在の変革期に優先する開発があるという本人判断で一時停止中であり、再開はR30に従う。
 
 ## ARCHIVE
 終了済みの評価weight sweep、特定世代比較、特定artifact診断等は `docs/archive/workflows/2026-10-07/` に原文保存した。
