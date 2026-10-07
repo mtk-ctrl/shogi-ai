@@ -77,9 +77,10 @@ jobs:
           chmod +x build/engine-a build/engine-b
       - name: Run 5 games
         env:
-          SHARD_SEED: ${{ 202610072235 + matrix.shard * 100000 }}
+          SHARD_ID: ${{ matrix.shard }}
         run: |
           mkdir -p results
+          SHARD_SEED=$((202610072235 + SHARD_ID * 100000))
           python3 harness/benchmarks/arena.py             --engine-a build/engine-a             --engine-b build/engine-b             --options-a "$OPTIONS_A"             --options-b "$OPTIONS_B"             --games 5             --max-plies "$MAX_PLIES"             --seed "$SHARD_SEED"             --go-command "$GO_COMMAND"             --output "results/shard-${{ matrix.shard }}.json"
       - name: Upload shard
         uses: actions/upload-artifact@v4
