@@ -1,0 +1,33 @@
+name: Document Rule Consistency
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "AGENTS.md"
+      - "README.md"
+      - "docs/**"
+      - "scripts/check_doc_router.py"
+      - ".github/workflows/docs-rule-check.yml"
+  pull_request:
+    paths:
+      - "AGENTS.md"
+      - "README.md"
+      - "docs/**"
+      - "scripts/check_doc_router.py"
+      - ".github/workflows/docs-rule-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Check router and active rules
+        run: python3 scripts/check_doc_router.py
