@@ -14,7 +14,9 @@ SEARCH_FIELDS = (
     "score_cp_stm", "score_black_cp", "score_mate_stm", "score_black_mate",
     "score_lowerbound", "score_upperbound",
     "full_nodes", "cutoffs", "tt_probes", "tt_hits",
-    "experience_probes", "experience_hits", "qnodes", "qcutoffs",
+    "experience_probes", "experience_hits",
+    "knowledge_probes", "knowledge_hits", "knowledge_promotions",
+    "knowledge_disabled_repetition", "qnodes", "qcutoffs",
     "long_think_used", "long_think_reason", "long_think_base_ms", "long_think_max_ms",
 )
 META_FIELDS = (

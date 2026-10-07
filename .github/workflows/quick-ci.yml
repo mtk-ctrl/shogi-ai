@@ -2,7 +2,7 @@ name: Quick Strategy CI
 
 on:
   push:
-    branches: [main]
+    branches: ["**"]
     paths:
       - "engine/strategy/**"
       - "engine/main.cpp"
@@ -19,6 +19,7 @@ on:
       - "tests/rules_test.cpp"
       - "tests/generated_move_test.cpp"
       - "tests/test_search_usi.py"
+      - "tests/test_position_knowledge_usi.py"
       - "tests/test_eval_usi.py"
       - "tests/test_mate_usi.py"
       - "tests/test_embedded_book_usi.py"
@@ -98,6 +99,7 @@ jobs:
         run: |
           python3 -m pip install python-shogi==1.1.1
           python3 tests/test_search_usi.py build/shogi-ai
+          python3 tests/test_position_knowledge_usi.py build/shogi-ai
           python3 tests/test_eval_usi.py build/shogi-ai
           python3 tests/test_mate_usi.py build/shogi-ai
 

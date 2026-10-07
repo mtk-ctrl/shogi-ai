@@ -68,9 +68,12 @@ int main() {
     bool experience_enabled = true;
     bool experience_loaded = false;
     bool experience_dirty = false;
+    bool position_knowledge_enabled = true;
+    bool position_knowledge_loaded = false;
     unsigned random_seed = 5489u;
     std::string opening_book_file = "shogi-ai-book.tsv";
     std::string experience_file = "shogi-ai-experience.bin";
+    std::string position_knowledge_file = "position-knowledge-v1.tsv";
     int default_depth = 3;
     bool adaptive_long_think_enabled = true;
     int long_think_used = 0;
@@ -104,6 +107,20 @@ int main() {
         session.reset();
     };
     strategy.set_experience_enabled(true);
+    strategy.set_position_knowledge_enabled(true);
+
+    auto ensure_position_knowledge_loaded = [&]() {
+        if (!position_knowledge_enabled || position_knowledge_loaded) return;
+        if (strategy.load_position_knowledge(position_knowledge_file)) {
+            std::ostringstream out;
+            out << "info string position_knowledge loaded " << strategy.position_knowledge_size()
+                << " positions file " << position_knowledge_file << "\n";
+            emit(out.str());
+        } else {
+            emit("info string position_knowledge unavailable file " + position_knowledge_file + "\n");
+        }
+        position_knowledge_loaded = true;
+    };
 
     auto ensure_opening_book_loaded = [&]() {
         if (!opening_book_enabled || opening_book_loaded) return;
@@ -149,7 +166,7 @@ int main() {
         if (command != "isready" && command != "stop" && command != "ponderhit" && command != "quit")
             finish_search(true);
         if (command == "usi") {
-            std::cout << "id name KUMOJI v2.0.1\nid author mtk-ctrl + ChatGPT\n"
+            std::cout << "id name KUMOJI v2.0.2\nid author mtk-ctrl + ChatGPT\n"
                       << "option name USI_Ponder type check default false\n"
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
@@ -174,6 +191,8 @@ int main() {
                       << "option name EvalPositionalCap type spin default " << evaluation_parameters.positional_cap << " min 0 max 5000\n"
                       << "option name ExperienceCache type check default true\n"
                       << "option name ExperienceFile type string default shogi-ai-experience.bin\n"
+                      << "option name PositionKnowledge type check default true\n"
+                      << "option name PositionKnowledgeFile type string default position-knowledge-v1.tsv\n"
                       << "usiok\n" << std::flush;
         } else if (command == "eval") {
             const auto b = shogi::strategy::evaluate(position.snapshot(), material_profile
@@ -191,12 +210,14 @@ int main() {
             if (!session) {
                 ensure_experience_loaded();
                 ensure_opening_book_loaded();
+                ensure_position_knowledge_loaded();
             }
             emit("readyok\n");
         } else if (command == "usinewgame") {
             persist_experience();
             ensure_experience_loaded();
             ensure_opening_book_loaded();
+            ensure_position_knowledge_loaded();
             strategy.set_seed(random_seed);
             long_think_used = 0;
             previous_root_score_valid = false;
@@ -209,6 +230,7 @@ int main() {
             if (!valid_position) std::cout << "info string " << error << '\n' << std::flush;
         } else if (command == "go") {
             ensure_experience_loaded();
+            ensure_position_knowledge_loaded();
             std::vector<std::string> tokens, allowed;
             std::string token;
             while (input >> token) tokens.push_back(token);
@@ -488,7 +510,11 @@ int main() {
                         << " experience_probes " << stats.experience_probes << " experience_hits " << stats.experience_hits
                         << " experience_move_first " << stats.experience_move_first << " experience_stores " << stats.experience_stores
                         << " experience_replacements " << stats.experience_replacements
-                        << " experience_disabled_repetition " << stats.experience_disabled_repetition << '\n';
+                        << " experience_disabled_repetition " << stats.experience_disabled_repetition
+                        << " knowledge_probes " << stats.knowledge_probes
+                        << " knowledge_hits " << stats.knowledge_hits
+                        << " knowledge_promotions " << stats.knowledge_promotions
+                        << " knowledge_disabled_repetition " << stats.knowledge_disabled_repetition << '\n';
                     emit(out.str());
                 }
                 { std::unique_lock<std::mutex> lock(active->mutex);
@@ -551,6 +577,18 @@ int main() {
                         persist_experience();
                         experience_file = value;
                         invalidate_experience();
+                    }
+                } else if (name == "PositionKnowledge") {
+                    if (value == "true" || value == "false") {
+                        position_knowledge_enabled = value == "true";
+                        strategy.set_position_knowledge_enabled(position_knowledge_enabled);
+                        if (position_knowledge_enabled) position_knowledge_loaded = false;
+                    }
+                } else if (name == "PositionKnowledgeFile") {
+                    if (!value.empty() && value.find('\n') == std::string::npos && value.find('\r') == std::string::npos) {
+                        position_knowledge_file = value;
+                        strategy.clear_position_knowledge();
+                        position_knowledge_loaded = false;
                     }
                 } else if (name == "EvalProfile") {
                     if (value == "features" || value == "material") {

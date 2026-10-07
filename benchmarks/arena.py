@@ -65,6 +65,8 @@ SEARCH_STAT_NAMES = (
     "tt_move_first", "tt_disabled_repetition", "experience_probes",
     "experience_hits", "experience_move_first", "experience_stores",
     "experience_replacements", "experience_disabled_repetition",
+    "knowledge_probes", "knowledge_hits", "knowledge_promotions",
+    "knowledge_disabled_repetition",
     "qnodes", "qcutoffs", "qlimit_leaves",
 )
 
@@ -75,7 +77,9 @@ USI_INFO_INTEGER_NAMES = (
 PER_MOVE_SEARCH_FIELDS = (
     "depth", "seldepth", "time", "nodes", "nps",
     "full_nodes", "cutoffs", "tt_probes", "tt_hits",
-    "experience_probes", "experience_hits", "qnodes", "qcutoffs",
+    "experience_probes", "experience_hits",
+    "knowledge_probes", "knowledge_hits", "knowledge_promotions",
+    "qnodes", "qcutoffs",
 )
 
 
@@ -355,6 +359,9 @@ def search_summary(engine):
     if summary.get("experience_probes_total"):
         summary["experience_hit_rate"] = (
             summary.get("experience_hits_total", 0) / summary["experience_probes_total"])
+    if summary.get("knowledge_probes_total"):
+        summary["knowledge_hit_rate"] = (
+            summary.get("knowledge_hits_total", 0) / summary["knowledge_probes_total"])
     long_rows = [row for row in rows if "long_think_used" in row]
     if long_rows:
         summary["long_think_moves"] = len(long_rows)

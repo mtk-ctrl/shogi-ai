@@ -41,12 +41,12 @@ on:
       options_a:
         description: "JSON USI options for A (formal R20 default includes AdaptiveLongThink=true)"
         required: true
-        default: '{"OpeningBook":false,"ExperienceCache":false,"AdaptiveLongThink":true}'
+        default: '{"OpeningBook":false,"ExperienceCache":false,"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}'
         type: string
       options_b:
         description: "JSON USI options for B (formal R20 default includes AdaptiveLongThink=true)"
         required: true
-        default: '{"OpeningBook":false,"ExperienceCache":false,"AdaptiveLongThink":true}'
+        default: '{"OpeningBook":false,"ExperienceCache":false,"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}'
         type: string
 
 permissions:
@@ -59,6 +59,8 @@ jobs:
     outputs:
       matrix: ${{ steps.plan.outputs.matrix }}
       ref_b: ${{ steps.plan.outputs.ref_b }}
+      options_a: ${{ steps.plan.outputs.options_a }}
+      options_b: ${{ steps.plan.outputs.options_b }}
     steps:
       - name: Checkout workflow revision
         uses: actions/checkout@v5
@@ -89,8 +91,11 @@ jobs:
           if max_plies < 1:
               raise SystemExit("max_plies must be >= 1")
           shards = min(shards, games)
-          json.loads(os.environ["OPTIONS_A_INPUT"])
-          json.loads(os.environ["OPTIONS_B_INPUT"])
+          options_a = json.loads(os.environ["OPTIONS_A_INPUT"])
+          options_b = json.loads(os.environ["OPTIONS_B_INPUT"])
+          for options in (options_a, options_b):
+              options.setdefault("PositionKnowledge", True)
+              options.setdefault("PositionKnowledgeFile", "build/position-knowledge-v1.tsv")
 
           ref_b = os.environ["REF_B_INPUT"].strip()
           if ref_b == "BASELINE_FILE":
@@ -113,6 +118,8 @@ jobs:
           with out.open("a", encoding="utf-8") as f:
               f.write("matrix=" + json.dumps({"include": include}, separators=(",", ":")) + "\n")
               f.write("ref_b=" + ref_b + "\n")
+              f.write("options_a=" + json.dumps(options_a, separators=(",", ":")) + "\n")
+              f.write("options_b=" + json.dumps(options_b, separators=(",", ":")) + "\n")
 
           print(f"games={games} shards={shards} ref_b={ref_b}")
           print("distribution:", [x["games"] for x in include])
@@ -141,9 +148,16 @@ jobs:
           (cd engine-a-src && python3 scripts/build.py --output "$GITHUB_WORKSPACE/build/engine-a")
           (cd engine-b-src && python3 scripts/build.py --output "$GITHUB_WORKSPACE/build/engine-b")
           sha256sum build/engine-a build/engine-b
+          if [ ! -s engine-a-src/position-knowledge-v1.tsv ]; then
+            echo "PositionKnowledge is required by R20 but candidate ref has no adopted snapshot" >&2
+            exit 1
+          fi
+          cp engine-a-src/position-knowledge-v1.tsv build/position-knowledge-v1.tsv
+          cp engine-a-src/position-knowledge-v1.manifest.json build/position-knowledge-v1.manifest.json
+          sha256sum build/position-knowledge-v1.tsv build/position-knowledge-v1.manifest.json
 
       - name: Package binaries
-        run: tar -czf engine-binaries.tgz build/engine-a build/engine-b
+        run: tar -czf engine-binaries.tgz build/engine-a build/engine-b build/position-knowledge-v1.tsv build/position-knowledge-v1.manifest.json
 
       - name: Upload binaries
         uses: actions/upload-artifact@v4
@@ -180,8 +194,8 @@ jobs:
 
       - name: Run shard
         env:
-          OPTIONS_A: ${{ inputs.options_a }}
-          OPTIONS_B: ${{ inputs.options_b }}
+          OPTIONS_A: ${{ needs.plan.outputs.options_a }}
+          OPTIONS_B: ${{ needs.plan.outputs.options_b }}
           GO_COMMAND: ${{ inputs.go_command }}
           MAX_PLIES: ${{ inputs.max_plies }}
           SHARD_GAMES: ${{ matrix.games }}
@@ -221,8 +235,8 @@ jobs:
           REF_A: ${{ inputs.ref_a }}
           REF_B: ${{ needs.plan.outputs.ref_b }}
           GO_COMMAND: ${{ inputs.go_command }}
-          OPTIONS_A: ${{ inputs.options_a }}
-          OPTIONS_B: ${{ inputs.options_b }}
+          OPTIONS_A: ${{ needs.plan.outputs.options_a }}
+          OPTIONS_B: ${{ needs.plan.outputs.options_b }}
         run: |
           python3 - <<'PY'
           import json, math, os

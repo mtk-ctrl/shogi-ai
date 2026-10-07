@@ -1,6 +1,7 @@
 #pragma once
 
 #include "strategy/alphabeta3_tt.h"
+#include "strategy/position_knowledge.h"
 #include <atomic>
 #include <chrono>
 #include <cstdlib>
@@ -60,6 +61,8 @@ class BasicIterativeSearch {
 public:
     struct Stats : BasicAlphaBeta3TT<Evaluator>::Stats {
         std::uint64_t qnodes = 0, qcutoffs = 0, qlimit_leaves = 0;
+        std::uint64_t knowledge_probes = 0, knowledge_hits = 0, knowledge_promotions = 0;
+        std::uint64_t knowledge_disabled_repetition = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -74,6 +77,10 @@ public:
     void set_seed(unsigned seed) { rng_.seed(seed); }
     void set_evaluator(Evaluator e) { evaluator_ = e; experience_.clear(); }
     void set_experience_enabled(bool enabled) { experience_enabled_ = enabled; }
+    void set_position_knowledge_enabled(bool enabled) { position_knowledge_enabled_ = enabled; }
+    bool load_position_knowledge(const std::string& path) { return position_knowledge_.load(path); }
+    void clear_position_knowledge() { position_knowledge_.clear(); }
+    std::size_t position_knowledge_size() const { return position_knowledge_.size(); }
     void set_quiescence_enabled(bool enabled) {
         if (quiescence_enabled_ != enabled) experience_.clear();
         quiescence_enabled_ = enabled;
@@ -115,6 +122,20 @@ public:
             return result;
         }
         if (original.empty()) return result;
+        std::string root_knowledge_move;
+        if (position_knowledge_enabled_) {
+            if (position.has_repeated_history()) {
+                ++stats_.knowledge_disabled_repetition;
+            } else {
+                ++stats_.knowledge_probes;
+                if (const auto* hint = position_knowledge_.probe(position)) {
+                    if (std::find(original.begin(), original.end(), *hint) != original.end()) {
+                        root_knowledge_move = *hint;
+                        ++stats_.knowledge_hits;
+                    }
+                }
+            }
+        }
         // A deadline/stop may arrive before depth one finishes. Never return an
         // unsearched partial best score or an illegal move in that case.
         result.move = original.front();
@@ -134,7 +155,8 @@ public:
             iteration_hints_.new_search();
             try {
                 check_stop();
-                auto moves = ordered(position, original, {}, depth >= 4 && result.depth ? result.move : "");
+                auto moves = ordered(position, original, {}, depth >= 4 && result.depth ? result.move : "",
+                                     root_knowledge_move);
                 int best = -Infinity;
                 std::vector<SearchResult> tied;
                 for (const auto& move : moves) {
@@ -439,7 +461,8 @@ private:
     std::vector<std::string> ordered(const rules::Position& p,
                                     const std::vector<std::string>& moves,
                                     const std::string& tt_move = {},
-                                    const std::string& previous_root = {}) {
+                                    const std::string& previous_root = {},
+                                    const std::string& knowledge_move = {}) {
         ++stats_.order_calls;
         stats_.ordered_moves += moves.size();
         auto result = MoveOrder::order(p.snapshot(), moves);
@@ -455,6 +478,7 @@ private:
                 if (promote(ExperienceCache::best_move(*e))) ++stats_.experience_move_first;
             }
         }
+        if (promote(knowledge_move)) ++stats_.knowledge_promotions;
         // At introductory depths, horizon changes made previous-iteration
         // ordering worse on contact positions. Preserve the accepted ordering
         // through depth three; use iterative hints when going deeper.
@@ -475,7 +499,9 @@ private:
     Stats stats_{};
     TranspositionTable tt_;
     ExperienceCache experience_, iteration_hints_;
+    PositionKnowledge position_knowledge_;
     bool experience_enabled_ = false;
+    bool position_knowledge_enabled_ = true;
     bool quiescence_enabled_ = true;
     bool experience_allowed_ = false;
     bool board_scores_ = false;
