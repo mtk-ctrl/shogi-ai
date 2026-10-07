@@ -1,0 +1,200 @@
+name: Evaluation V2 B YaneuraOu Level Sweep
+
+on:
+  workflow_dispatch:
+    inputs:
+      level_start:
+        description: "First YaneuraOu Material level"
+        required: true
+        default: "48"
+        type: string
+      level_end:
+        description: "Last YaneuraOu Material level"
+        required: true
+        default: "57"
+        type: string
+      games_per_level:
+        description: "Games per level (multiple of 10)"
+        required: true
+        default: "100"
+        type: string
+  push:
+    branches:
+      - research/evaluation-v2-challenger
+    paths:
+      - "benchmarks/eval_v2_b_level_sweep.py"
+      - ".github/workflows/evaluation-v2-b-level-sweep.yml"
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  YANEURAOU_REF: c1b80eaa09fe13d5f12b1599d1ae4d53c224de30
+
+jobs:
+  quick:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[eval-b-levels]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      level_start: ${{ steps.params.outputs.level_start }}
+      level_end: ${{ steps.params.outputs.level_end }}
+      games_per_level: ${{ steps.params.outputs.games_per_level }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Resolve parameters
+        id: params
+        shell: bash
+        run: |
+          LEVEL_START="${{ inputs.level_start }}"
+          LEVEL_END="${{ inputs.level_end }}"
+          GAMES="${{ inputs.games_per_level }}"
+          echo "level_start=${LEVEL_START:-48}" >> "$GITHUB_OUTPUT"
+          echo "level_end=${LEVEL_END:-57}" >> "$GITHUB_OUTPUT"
+          echo "games_per_level=${GAMES:-100}" >> "$GITHUB_OUTPUT"
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Validate sweep and 20-runner allocation
+        shell: bash
+        run: |
+          python3 -m py_compile benchmarks/eval_v2_b_level_sweep.py
+          python3 - <<'PY'
+          import benchmarks.eval_v2_b_level_sweep as x
+          blocks=x.build_blocks(48,57,100)
+          shards=x.assign_blocks(48,57,100)
+          assert len(blocks)==100
+          assert len(shards)==20
+          assert sum(len(s["blocks"]) for s in shards)==100
+          assert all(len(s["blocks"])==5 for s in shards)
+          assert sum(len(s["blocks"])*10 for s in shards)==1000
+          print("validated: 20 runners x 50 games = 1000")
+          PY
+
+      - name: Build KUMOJI
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Fetch pinned YaneuraOu
+        run: |
+          git clone --filter=blob:none https://github.com/yaneurao/YaneuraOu.git external/YaneuraOu
+          git -C external/YaneuraOu checkout "$YANEURAOU_REF"
+
+      - name: Build YaneuraOu Material
+        run: |
+          make -C external/YaneuraOu/source clean \
+            COMPILER=g++ TARGET_CPU=SSE42 \
+            YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          make -C external/YaneuraOu/source -j2 tournament \
+            COMPILER=g++ TARGET_CPU=SSE42 \
+            YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          test -x external/YaneuraOu/source/YaneuraOu-by-gcc
+
+      - name: Upload runtime
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-b-level-sweep-runtime
+          path: |
+            build/shogi-ai
+            external/YaneuraOu/source/YaneuraOu-by-gcc
+          if-no-files-found: error
+          retention-days: 14
+
+  shard:
+    needs: quick
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Download runtime
+        uses: actions/download-artifact@v4
+        with:
+          name: eval-v2-b-level-sweep-runtime
+          path: build/runtime
+
+      - name: Prepare runtime and record CPU
+        shell: bash
+        run: |
+          ENGINE="$(find build/runtime -type f -name shogi-ai | head -1)"
+          YANE="$(find build/runtime -type f -name YaneuraOu-by-gcc | head -1)"
+          test -n "$ENGINE" && test -n "$YANE"
+          chmod +x "$ENGINE" "$YANE"
+          echo "ENGINE=$ENGINE" >> "$GITHUB_ENV"
+          echo "YANE=$YANE" >> "$GITHUB_ENV"
+          mkdir -p "build/shard-${{ matrix.shard }}"
+          {
+            echo "nproc=$(nproc)"
+            echo "runner_name=$RUNNER_NAME"
+            lscpu
+          } > "build/shard-${{ matrix.shard }}/cpu.txt"
+
+      - name: Run 50-game balanced shard
+        run: |
+          python3 benchmarks/eval_v2_b_level_sweep.py shard \
+            --engine "$ENGINE" --opponent "$YANE" \
+            --shard "${{ matrix.shard }}" \
+            --level-start "${{ needs.quick.outputs.level_start }}" \
+            --level-end "${{ needs.quick.outputs.level_end }}" \
+            --games-per-level "${{ needs.quick.outputs.games_per_level }}" \
+            --output-dir "build/shard-${{ matrix.shard }}"
+
+      - name: Upload shard
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-b-level-sweep-shard-${{ matrix.shard }}
+          path: build/shard-${{ matrix.shard }}
+          if-no-files-found: error
+          retention-days: 180
+          compression-level: 6
+
+  analyze:
+    needs: [quick, shard]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: eval-v2-b-level-sweep-shard-*
+          path: build/all
+          merge-multiple: false
+
+      - name: Analyze
+        run: |
+          python3 benchmarks/eval_v2_b_level_sweep.py analyze \
+            --root build/all \
+            --level-start "${{ needs.quick.outputs.level_start }}" \
+            --level-end "${{ needs.quick.outputs.level_end }}" \
+            --games-per-level "${{ needs.quick.outputs.games_per_level }}" \
+            --output build/eval-v2-b-level-sweep-analysis.json \
+            --summary build/eval-v2-b-level-sweep-summary.md
+          cat build/eval-v2-b-level-sweep-summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Collect CPU models
+        run: |
+          find build/all -name cpu.txt -print -exec grep -E 'Model name:|Vendor ID:|CPU family:|Model:|nproc=' {} \; \
+            > build/eval-v2-b-level-sweep-cpus.txt || true
+
+      - name: Upload analysis
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-v2-b-level-sweep-analysis
+          path: |
+            build/eval-v2-b-level-sweep-analysis.json
+            build/eval-v2-b-level-sweep-summary.md
+            build/eval-v2-b-level-sweep-cpus.txt
+          if-no-files-found: error
+          retention-days: 365
