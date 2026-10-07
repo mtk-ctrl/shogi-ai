@@ -25,6 +25,11 @@ def check_workflow_text(path: Path, text: str, *, root_has_cmake: bool | None = 
     has_arena_command = bool(ARENA_COMMAND.search(text))
     if has_arena_command and "python-shogi==1.1.1" not in text:
         errors.append(f"{label}: arena execution requires python-shogi==1.1.1 installation")
+    if has_arena_command and path.name != "engine-match.yml":
+        if "scripts/check_match_workflows.py" not in text:
+            errors.append(f"{label}: dedicated arena workflow must run match-workflow preflight")
+        if "workflow_dispatch" not in text:
+            errors.append(f"{label}: dedicated arena workflow must expose workflow_dispatch")
 
     if root_has_cmake is None:
         root_has_cmake = (ROOT / "CMakeLists.txt").exists()
