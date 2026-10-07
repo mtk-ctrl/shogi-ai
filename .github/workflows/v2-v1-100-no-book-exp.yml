@@ -1,0 +1,158 @@
+name: V2.0.0 vs V1.0.1 100 No Book Experience
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/v2-v1-100-no-book-exp.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: v2-v1-100-no-book-exp
+  cancel-in-progress: true
+
+env:
+  REF_A: 853df9de1466780c5b326d26baeb15388f8dadf0
+  REF_B: 580ec903285d8e996c411f3d46223da6c8ce192f
+  GO_COMMAND: "go movetime 200"
+  MAX_PLIES: "300"
+  OPTIONS_A: '{"OpeningBook":false,"ExperienceCache":false,"AdaptiveLongThink":true}'
+  OPTIONS_B: '{"OpeningBook":false,"ExperienceCache":false}'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout v2.0.0
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ env.REF_A }}
+          path: engine-a-src
+      - name: Checkout v1.0.1
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ env.REF_B }}
+          path: engine-b-src
+      - name: Build both engines
+        run: |
+          mkdir -p build
+          (cd engine-a-src && python3 scripts/build.py --output "$GITHUB_WORKSPACE/build/engine-a")
+          (cd engine-b-src && python3 scripts/build.py --output "$GITHUB_WORKSPACE/build/engine-b")
+          sha256sum build/engine-a build/engine-b
+      - name: Package binaries
+        run: tar -czf engine-binaries.tgz build/engine-a build/engine-b
+      - name: Upload binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: v2-v1-engine-binaries-${{ github.run_id }}
+          path: engine-binaries.tgz
+          if-no-files-found: error
+
+  match:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+    steps:
+      - name: Checkout current harness
+        uses: actions/checkout@v5
+        with:
+          path: harness
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: Download engines
+        uses: actions/download-artifact@v4
+        with:
+          name: v2-v1-engine-binaries-${{ github.run_id }}
+      - name: Extract engines
+        run: |
+          tar -xzf engine-binaries.tgz
+          chmod +x build/engine-a build/engine-b
+      - name: Run 5 games
+        env:
+          SHARD_SEED: ${{ 202610072235 + matrix.shard * 100000 }}
+        run: |
+          mkdir -p results
+          python3 harness/benchmarks/arena.py             --engine-a build/engine-a             --engine-b build/engine-b             --options-a "$OPTIONS_A"             --options-b "$OPTIONS_B"             --games 5             --max-plies "$MAX_PLIES"             --seed "$SHARD_SEED"             --go-command "$GO_COMMAND"             --output "results/shard-${{ matrix.shard }}.json"
+      - name: Upload shard
+        uses: actions/upload-artifact@v4
+        with:
+          name: v2-v1-match-${{ github.run_id }}-${{ matrix.shard }}
+          path: results/shard-${{ matrix.shard }}.json
+          if-no-files-found: error
+
+  aggregate:
+    needs: match
+    if: always() && needs.match.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout current harness
+        uses: actions/checkout@v5
+        with:
+          path: harness
+      - name: Download shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: v2-v1-match-${{ github.run_id }}-*
+          path: results
+          merge-multiple: true
+      - name: Aggregate
+        run: |
+          python3 - <<'PY'
+          import json, math, os
+          from pathlib import Path
+          rows=[json.loads(p.read_text()) for p in sorted(Path('results').glob('shard-*.json'))]
+          if len(rows) != 20:
+              raise SystemExit(f'expected 20 shards, got {len(rows)}')
+          games=sum(r['games'] for r in rows)
+          wa=sum(r['wins_a'] for r in rows)
+          wb=sum(r['wins_b'] for r in rows)
+          draws=sum(r['draws'] for r in rows)
+          illegal=sum(r.get('illegal_games',0) for r in rows)
+          avg=sum(r['average_plies']*r['games'] for r in rows)/games
+          score=(wa+0.5*draws)/games
+          se=math.sqrt(max(score*(1-score),0)/games)
+          lo=max(0.0,score-1.96*se); hi=min(1.0,score+1.96*se)
+          out={
+            'a':'KUMOJI v2.0.0','ref_a':'853df9de1466780c5b326d26baeb15388f8dadf0',
+            'b':'KUMOJI v1.0.1','ref_b':'580ec903285d8e996c411f3d46223da6c8ce192f',
+            'go_command':'go movetime 200',
+            'options_a':{'OpeningBook':False,'ExperienceCache':False,'AdaptiveLongThink':True},
+            'options_b':{'OpeningBook':False,'ExperienceCache':False},
+            'games':games,'wins_a':wa,'draws':draws,'wins_b':wb,
+            'score_a':score,'score_a_approx_95pct':[lo,hi],
+            'average_plies':avg,'illegal_games':illegal,'shards':len(rows),
+          }
+          Path('aggregate.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
+          with open(os.environ['GITHUB_STEP_SUMMARY'],'a',encoding='utf-8') as f:
+              f.write('# v2.0.0 vs v1.0.1 — 100 games\n\n')
+              f.write('- Book: OFF / OFF\n- Experience: OFF / OFF\n')
+              f.write('- v2 AdaptiveLongThink: ON (formal v2 behavior)\n')
+              f.write('- v1 AdaptiveLongThink: not present in v1.0.1\n')
+              f.write(f'- result v2-v1: **{wa}-{draws}-{wb}**\n')
+              f.write(f'- v2 score: **{score:.1%}** (approx 95% {lo:.1%}–{hi:.1%})\n')
+              f.write(f'- illegal games: **{illegal}**\n')
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+      - name: Archive played moves
+        run: |
+          python3 harness/tools/records/archive_played_moves.py             --input results/shard-*.json             --output-dir played-archive             --run-id "$GITHUB_RUN_ID"             --ref-a "$REF_A"             --ref-b "$REF_B"
+      - name: Upload summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: v2-v1-100-summary-${{ github.run_id }}
+          path: aggregate.json
+          if-no-files-found: error
+      - name: Upload played moves
+        uses: actions/upload-artifact@v4
+        with:
+          name: v2-v1-100-played-moves-${{ github.run_id }}
+          path: played-archive/
+          retention-days: 90
+          if-no-files-found: error
