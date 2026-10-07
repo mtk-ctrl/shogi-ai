@@ -39,14 +39,14 @@ on:
         default: "2026100700"
         type: string
       options_a:
-        description: "JSON USI options for A"
+        description: "JSON USI options for A (formal R20 default includes AdaptiveLongThink=true)"
         required: true
-        default: '{"OpeningBook":false,"ExperienceCache":false}'
+        default: '{"OpeningBook":false,"ExperienceCache":false,"AdaptiveLongThink":true}'
         type: string
       options_b:
-        description: "JSON USI options for B"
+        description: "JSON USI options for B (formal R20 default includes AdaptiveLongThink=true)"
         required: true
-        default: '{"OpeningBook":false,"ExperienceCache":false}'
+        default: '{"OpeningBook":false,"ExperienceCache":false,"AdaptiveLongThink":true}'
         type: string
 
 permissions:

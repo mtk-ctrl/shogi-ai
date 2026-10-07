@@ -23,3 +23,8 @@
 - `self-play-2000-book-refresh.yml`
 - `verify-nightly-book-effect.yml`
 - `external-engine-benchmark-legacy.yml` — 旧Full-engineモードを含む版。現役版はCoreのみ。
+
+
+## 旧triggerファイル
+旧Nightly起動に使っていた `nightly-trigger.txt` と `verify-nightly-book-effect-trigger.txt` も `docs/hold/workflows/triggers/` へ退避する。
+ACTIVE workflowはこれらを監視しない。
