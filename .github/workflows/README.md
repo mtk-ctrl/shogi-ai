@@ -3,6 +3,7 @@
 GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局・成果物生成などを再現可能に実行するための仕組みである。
 **既存workflowで自然に対応できる場合は再利用し、新しい研究に専用workflowが適する場合は新設してよい。**
 詳細な基準は `docs/rules/R15_Workflow運用.md` を読む。
+新規追加時はこの一覧も同じcommitで更新する。未登録は通常CIで警告（他の検査は継続）、出荷前の厳密確認は `python3 scripts/check_workflow_inventory.py --strict` を使う。
 
 ## ACTIVE — 現在利用可能な恒久基盤
 
