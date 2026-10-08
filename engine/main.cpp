@@ -97,13 +97,13 @@ int main() {
     auto ensure_research_lines_loaded = [&]() {
         if (research_lines_loaded || !position_knowledge_enabled) return;
         if (research_lines.load(research_lines_file)) {
-            emit("info string research_lines loaded " + std::to_string(research_lines.size()) + " positions\\n");
+            emit("info string research_lines loaded " + std::to_string(research_lines.size()) + " positions\n");
         } else {
-            emit("info string research_lines unavailable file " + research_lines_file + "\\n");
+            emit("info string research_lines unavailable file " + research_lines_file + "\n");
         }
         research_lines_loaded = true;
     };
-    auto bestmove = [&](const std::string& move) { emit("bestmove " + move + "\\n"); };
+    auto bestmove = [&](const std::string& move) { emit("bestmove " + move + "\n"); };
 
     while (std::getline(std::cin, line)) {
         std::istringstream input(line);
@@ -442,7 +442,7 @@ int main() {
                             if (!active->suppress.load()) {
                                 emit("info string research_decision source " + research_id
                                     + " step " + std::to_string(step_index+1)
-                                    + " research_ms " + std::to_string(prior_ms) + "\\n");
+                                    + " research_ms " + std::to_string(prior_ms) + "\n");
                             }
                         } else if (!proposed.empty()) {
                             active_research_line.reset();
