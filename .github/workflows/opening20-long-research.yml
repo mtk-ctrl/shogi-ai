@@ -1,0 +1,103 @@
+name: KUMOJI Opening 20 Long Research
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/research-opening-20-positions.tsv"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validate workflow and 20 position histories
+        run: |
+          set -euo pipefail
+          python3 scripts/check_match_workflows.py
+          python3 scripts/check_workflow_inventory.py
+          python3 -m pip install python-shogi==1.1.1
+          python3 tools/research/run_opening20.py validate
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build current main engine and freeze adopted knowledge
+        run: |
+          set -euo pipefail
+          python3 scripts/build.py --output build/kumoji
+          test -s position-knowledge-v1.tsv
+          cp position-knowledge-v1.tsv build/position-knowledge-v1.tsv
+          sha256sum build/kumoji build/position-knowledge-v1.tsv
+          tar czf engine.tgz build/kumoji build/position-knowledge-v1.tsv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: opening20-engine-${{ github.run_id }}
+          path: engine.tgz
+          if-no-files-found: error
+          retention-days: 90
+  research:
+    needs: [preflight, build]
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        lane: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: opening20-engine-${{ github.run_id }}
+      - name: Restore engine
+        run: tar xzf engine.tgz
+      - name: One opening position, 50 minute search
+        env:
+          LANE: ${{ matrix.lane }}
+        run: |
+          python3 -m pip install python-shogi==1.1.1
+          python3 tools/research/run_opening20.py research --engine build/kumoji --knowledge build/position-knowledge-v1.tsv --lane "$LANE" --ms 3000000 --output result.json
+      - name: Save research or partial checkpoint
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opening20-result-${{ github.run_id }}-${{ matrix.lane }}
+          path: result.json
+          if-no-files-found: warn
+          retention-days: 90
+  aggregate:
+    needs: [preflight, build, research]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@v4
+        if: needs.build.result == 'success'
+        with:
+          pattern: opening20-result-${{ github.run_id }}-*
+          path: research-results
+          merge-multiple: false
+      - name: Report completed positions and preserve unadopted research records
+        run: |
+          python3 - <<'PY'
+          import glob,json,os
+          rows=[]
+          for name in sorted(glob.glob("research-results/**/result.json",recursive=True)):
+              with open(name,encoding="utf-8") as f: rows.append(json.load(f))
+          completed=sum(r.get("completed") is True for r in rows)
+          out={"run_id":os.environ["GITHUB_RUN_ID"],"received":len(rows),"completed":completed,"expected":20,"research_records":rows,"knowledge_adopted":False}
+          with open("opening20-summary.json","w",encoding="utf-8") as f: json.dump(out,f,ensure_ascii=False,indent=2)
+          print("research summary:",completed,"/",20,"complete; no automatic knowledge adoption",flush=True)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: opening20-summary-${{ github.run_id }}
+          path: opening20-summary.json
+          if-no-files-found: error
+          retention-days: 90
