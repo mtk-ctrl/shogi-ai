@@ -163,6 +163,7 @@ def adopted_real_snapshot():
     key, studied = adopted[0][0], adopted[0][1]
     pv = adopted[0][12].split()
     history = adopted[0][13].split() if adopted[0][13] != "-" else []
+    assert history, "real research test must cover a nontrivial original arrival history"
     command = "position startpos" + (" moves " + " ".join(history) if history else "")
     assert pv[0] == studied and len(pv) >= 3
     u = Usi()
