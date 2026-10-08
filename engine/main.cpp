@@ -110,6 +110,7 @@ int main() {
                       << "option name EvalPositionalCap type spin default " << evaluation_parameters.positional_cap << " min 0 max 5000\n"
                       << "option name PositionKnowledge type check default true\n"
                       << "option name PositionKnowledgeFile type string default position-knowledge-v1.tsv\n"
+                      << "option name ResearchDecisionMinMinutes type spin default 0 min 0 max 10000\n"
                       << "usiok\n" << std::flush;
         } else if (command == "eval") {
             const auto b = shogi::strategy::evaluate(position.snapshot(), material_profile
@@ -384,6 +385,7 @@ int main() {
                         << " knowledge_probes " << stats.knowledge_probes
                         << " knowledge_hits " << stats.knowledge_hits
                         << " knowledge_promotions " << stats.knowledge_promotions
+                        << " knowledge_direct_choices " << stats.knowledge_direct_choices
                         << " knowledge_disabled_repetition " << stats.knowledge_disabled_repetition
                         << " knowledge_research_ms " << stats.knowledge_research_ms
                         << " knowledge_research_depth " << stats.knowledge_research_depth
@@ -440,6 +442,13 @@ int main() {
                         strategy.clear_position_knowledge();
                         position_knowledge_loaded = false;
                     }
+                } else if (name == "ResearchDecisionMinMinutes") {
+                    try {
+                        std::size_t used = 0;
+                        const int minutes = std::stoi(value, &used);
+                        if (used == value.size() && minutes >= 0 && minutes <= 10000)
+                            strategy.set_research_decision_min_minutes(minutes);
+                    } catch (...) {}
                 } else if (name == "EvalProfile") {
                     if (value == "features" || value == "material") {
                         material_profile = value == "material";
