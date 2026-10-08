@@ -22,6 +22,7 @@ on:
       - "tests/test_search_usi.py"
       - "tests/test_position_knowledge_usi.py"
       - "tests/test_eval_usi.py"
+      - "tests/test_game_stage_usi.py"
       - "tests/test_mate_usi.py"
       - "benchmarks/arena.py"
       - "benchmarks/position_arena.py"
@@ -95,6 +96,7 @@ jobs:
           python3 tests/test_search_usi.py build/shogi-ai
           python3 tests/test_position_knowledge_usi.py build/shogi-ai
           python3 tests/test_eval_usi.py build/shogi-ai
+          python3 tests/test_game_stage_usi.py build/shogi-ai
           python3 tests/test_mate_usi.py build/shogi-ai
 
       - name: Arena telemetry and adjudication tests
