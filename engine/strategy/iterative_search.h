@@ -2,6 +2,7 @@
 
 #include "strategy/alphabeta3_tt.h"
 #include "strategy/position_knowledge.h"
+#include <optional>
 #include "strategy/move_hint_cache.h"
 #include <atomic>
 #include <chrono>
@@ -80,9 +81,79 @@ public:
         : rng_(seed), evaluator_(evaluator) {}
     void set_seed(unsigned seed) { rng_.seed(seed); }
     void set_evaluator(Evaluator e) { evaluator_ = e; }
-    void set_position_knowledge_enabled(bool enabled) { position_knowledge_enabled_ = enabled; }
-    bool load_position_knowledge(const std::string& path) { return position_knowledge_.load(path); }
-    void clear_position_knowledge() { position_knowledge_.clear(); }
+    struct DirectResearch {
+        std::string move, research_id;
+        std::size_t ply_index = 0, pv_length = 0;
+    };
+    void clear_research_continuation() { research_continuation_ = {}; }
+    void set_position_knowledge_enabled(bool enabled) {
+        position_knowledge_enabled_ = enabled;
+        if (!enabled) clear_research_continuation();
+    }
+    bool load_position_knowledge(const std::string& path) {
+        clear_research_continuation();
+        return position_knowledge_.load(path);
+    }
+    void clear_position_knowledge() {
+        clear_research_continuation();
+        position_knowledge_.clear();
+    }
+    // An adopted long-search move overrides short search; continuation is
+    // permitted only after the exact expected opponent reply AND history.
+    std::optional<DirectResearch> select_research_move(
+        const rules::Position& position, const std::vector<std::string>& restricted = {}) {
+        if (!position_knowledge_enabled_ || position.has_repeated_history()) {
+            clear_research_continuation();
+            return std::nullopt;
+        }
+        std::vector<std::string> pv;
+        std::string id;
+        std::size_t index = 0;
+        if (!research_continuation_.pv.empty()
+            && PositionKnowledge::canonical_key(position) == research_continuation_.expected_key
+            && position.history_key() == research_continuation_.expected_history
+            && research_continuation_.next < research_continuation_.pv.size()) {
+            pv = research_continuation_.pv;
+            id = research_continuation_.research_id;
+            index = research_continuation_.next;
+        } else {
+            clear_research_continuation();
+            const auto* entry = position_knowledge_.probe(position);
+            if (!entry || entry->mode != "research_decision"
+                || entry->research_pv.empty()) return std::nullopt;
+            pv = entry->research_pv;
+            id = entry->research_id;
+        }
+        const auto& move = pv[index];
+        if (!restricted.empty()
+            && std::find(restricted.begin(), restricted.end(), move) == restricted.end()) {
+            clear_research_continuation();
+            return std::nullopt;
+        }
+        const auto legal = position.legal_moves();
+        if (std::find(legal.begin(), legal.end(), move) == legal.end()) {
+            clear_research_continuation();
+            return std::nullopt;
+        }
+        auto next = position.clone();
+        std::string error;
+        if (!next.play_generated_legal(move, error)) {
+            clear_research_continuation();
+            return std::nullopt;
+        }
+        ResearchContinuation future;
+        // Index 1 is an opponent reply, index 2 our next studied move.
+        if (index + 2 < pv.size() && next.play(pv[index + 1], error)
+            && !next.has_repeated_history()) {
+            future.pv = pv;
+            future.research_id = id;
+            future.next = index + 2;
+            future.expected_key = PositionKnowledge::canonical_key(next);
+            future.expected_history = next.history_key();
+        }
+        research_continuation_ = std::move(future);
+        return DirectResearch{move, id, index, pv.size()};
+    }
     std::size_t position_knowledge_size() const { return position_knowledge_.size(); }
     void set_quiescence_enabled(bool enabled) { quiescence_enabled_ = enabled; }
     const Stats& last_stats() const { return stats_; }
@@ -481,6 +552,13 @@ private:
     TranspositionTable tt_;
     MoveHintCache iteration_hints_;
     PositionKnowledge position_knowledge_;
+    struct ResearchContinuation {
+        std::vector<std::string> pv;
+        std::string research_id, expected_key;
+        std::uint64_t expected_history = 0;
+        std::size_t next = 0;
+    };
+    ResearchContinuation research_continuation_{};
     bool position_knowledge_enabled_ = true;
     bool quiescence_enabled_ = true;
     bool board_scores_ = false;

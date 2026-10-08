@@ -25,6 +25,9 @@ public:
         std::string score_kind;
         int score_value = 0;
         std::uint64_t stable_ms = 0;
+        std::string mode = "move_order_hint";
+        std::string research_id;
+        std::vector<std::string> research_pv;
     };
     bool load(const std::string& path) {
         std::ifstream input(path);
@@ -102,6 +105,17 @@ private:
             if (fields.size() > 7) entry.score_kind = fields[7];
             entry.score_value = i32(8);
             entry.stable_ms = u64(9);
+            if (fields.size() > 10 && !fields[10].empty()) entry.mode = fields[10];
+            if (entry.mode == "research_decision") {
+                if (fields.size() < 13 || fields[11].empty()) { clear(); return false; }
+                entry.research_id = fields[11];
+                std::istringstream pv(fields[12]);
+                std::string move;
+                while (pv >> move) entry.research_pv.push_back(move);
+                if (entry.research_pv.empty() || entry.research_pv.front() != entry.move) {
+                    clear(); return false;
+                }
+            } else if (entry.mode != "move_order_hint") { clear(); return false; }
             const auto [it, inserted] = loaded.emplace(fields[0], entry);
             if (!inserted && it->second.move != entry.move) {
                 clear();

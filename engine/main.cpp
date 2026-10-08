@@ -87,7 +87,7 @@ int main() {
         if (command != "isready" && command != "stop" && command != "ponderhit" && command != "quit")
             finish_search(true);
         if (command == "usi") {
-            std::cout << "id name KUMOJI v2.0.3\nid author mtk-ctrl + ChatGPT\n"
+            std::cout << "id name KUMOJI v2.0.4\nid author mtk-ctrl + ChatGPT\n"
                       << "option name USI_Ponder type check default false\n"
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
@@ -132,6 +132,7 @@ int main() {
             ensure_position_knowledge_loaded();
             strategy.set_seed(random_seed);
             long_think_used = 0;
+            strategy.clear_research_continuation();
             previous_root_score_valid = false;
             previous_root_score = 0;
             std::string error;
@@ -270,6 +271,7 @@ int main() {
             }
             auto search_position = position.clone();
             active->worker = std::thread([&, active, started_ns, limits,
+                                          allowed = std::move(allowed),
                                           candidates = std::move(candidates),
                                           p = std::move(search_position)]() mutable {
                 auto info = [&](const shogi::strategy::SearchResult& result) {
@@ -294,11 +296,30 @@ int main() {
                 shogi::strategy::SearchResult result;
                 result.move = candidates.front(); result.pv = {result.move};
                 bool mate_assist_forced = false;
+                bool research_forced = false;
                 try {
+                    // Adopted research overrides 200ms search and MateAssist.
+                    // No old research score is presented as a fresh evaluation.
+                    if (const auto research = strategy.select_research_move(p, allowed)) {
+                        research_forced = true;
+                        result.move = research->move;
+                        result.pv = {result.move};
+                        result.depth = 0;
+                        result.has_score = false;
+                        previous_root_score_valid = false;
+                        if (!active->suppress.load()) {
+                            std::ostringstream out;
+                            out << "info string research_decision id " << research->research_id
+                                << " step " << (research->ply_index + 1)
+                                << " total " << research->pv_length
+                                << " move " << research->move << "\n";
+                            emit(out.str());
+                        }
+                    }
                     // Keep ordinary fixed-depth/node/ponder semantics unchanged.
                     // Timed play gets a small shared attack+defence mate budget
                     // inside the original absolute move deadline.
-                    if (mate_assist_enabled && limits.budget_ms >= 10 && !limits.ponder
+                    if (!research_forced && mate_assist_enabled && limits.budget_ms >= 10 && !limits.ponder
                         && !limits.infinite && limits.nodes == 0) {
                         const auto assist_started = shogi::strategy::SearchControl::now_ns();
                         const auto assist_budget_ms = std::clamp<std::int64_t>(limits.budget_ms / 10, 1, 5);
@@ -339,7 +360,7 @@ int main() {
                             }
                         }
                     }
-                    if (!mate_assist_forced) {
+                    if (!mate_assist_forced && !research_forced) {
                         result = strategy.choose(p, limits.max_depth, active->control, candidates, info);
                         const auto reason = static_cast<shogi::strategy::LongThinkReason>(
                             active->control.long_think_reason.load(std::memory_order_relaxed));
@@ -366,7 +387,7 @@ int main() {
                     if (!active->suppress.load()) emit("info string search error " + std::string(error.what()) + "\n");
                 }
                 if (!result.has_score) info(result);
-                if (!mate_assist_forced && !active->suppress.load()) {
+                if (!mate_assist_forced && !research_forced && !active->suppress.load()) {
                     const auto& stats = strategy.last_stats();
                     std::ostringstream out;
                     out << "info nodes " << stats.nodes << " string cutoffs " << stats.cutoffs
