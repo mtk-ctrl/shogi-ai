@@ -17,6 +17,7 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 | `.github/workflows/external-engine-benchmark.yml` | 関連pushでunit / 手動Benchmark | やねうら王MaterialのCore外部尺度 |
 | `.github/workflows/tsume-benchmark.yml` | 手動 | 固定詰将棋データセットのBenchmark |
 | `.github/workflows/android-apk.yml` | 明示的release変更 / 手動 | 完成版全車検・Android APK生成 |
+| `.github/workflows/ab1000-blunder-long-research.yml` | 手動 | 1000局A/B実戦から評価急落候補を抽出し、長時間再解析する一時研究。完了後ARCHIVEへ整理 |
 
 ## 一時比較・研究の整理
 
