@@ -14,6 +14,13 @@
     "status:disputed": 7
   },
   "output_file": "position-knowledge-v1.tsv",
-  "output_sha256": "9a96f99cc5f5dac185a68f5b055f54fd4c158d33a60208d1449b020269fd67cf",
-  "policy": "Only explicitly accepted move_order_hint candidates are materialized. Conflicting moves are excluded; this script never auto-promotes a new candidate source."
+  "output_sha256": "682ff18eefc24a841d8501c9d7a388b70e0006eece760f6fe38e3f9e600a8d1e",
+  "policy": "Only explicitly accepted move_order_hint candidates are materialized. Conflicting moves are excluded; this script never auto-promotes a new candidate source.",
+  "research_lines": {
+    "source": "actions/37671846680/v2-position-knowledge-research-37671846680",
+    "source_sha256": "54bb80c93902537d25c585aa9fe564a1ddd08220b6b10003d0e44fdb4661eb88",
+    "adopted": 53,
+    "minimum_pv_plies": 4,
+    "policy": "Only previously adopted, non-disputed studies; legal completed research PV."
+  }
 }
