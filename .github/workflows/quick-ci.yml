@@ -107,6 +107,13 @@ jobs:
             --input benchmarks/results/2026-10-05_v019-mate-assist-50ms-100games.json \
             --engine build/phase-probe --output build/phase-report.json
 
+      - name: Relative terminal-stage correlation research
+        run: |
+          python3 tools/phase/correlate_terminal_ply.py \
+            --input benchmarks/results/2026-10-05_v019-mate-assist-50ms-100games.json \
+            --input benchmarks/results/2026-10-05_v019-mate-assist-50ms-100games-run2.json \
+            --probe build/phase-probe --output build/relative-stage-report.json
+
       - name: Arena telemetry and adjudication tests
         run: |
           python3 tests/test_arena.py
