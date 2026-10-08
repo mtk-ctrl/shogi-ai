@@ -63,6 +63,9 @@ public:
     struct Stats : BasicAlphaBeta3TT<Evaluator>::Stats {
         std::uint64_t qnodes = 0, qcutoffs = 0, qlimit_leaves = 0;
         std::uint64_t knowledge_probes = 0, knowledge_hits = 0, knowledge_promotions = 0;
+        std::uint64_t knowledge_research_ms = 0, knowledge_research_nodes = 0, knowledge_stable_ms = 0;
+        int knowledge_research_depth = 0, knowledge_score_value = 0;
+        std::string knowledge_score_kind;
         std::uint64_t knowledge_disabled_repetition = 0;
         int seldepth = 0;
     };
@@ -115,9 +118,15 @@ public:
             } else {
                 ++stats_.knowledge_probes;
                 if (const auto* hint = position_knowledge_.probe(position)) {
-                    if (std::find(original.begin(), original.end(), *hint) != original.end()) {
-                        root_knowledge_move = *hint;
+                    if (std::find(original.begin(), original.end(), hint->move) != original.end()) {
+                        root_knowledge_move = hint->move;
                         ++stats_.knowledge_hits;
+                        stats_.knowledge_research_ms = hint->research_ms;
+                        stats_.knowledge_research_depth = hint->research_depth;
+                        stats_.knowledge_research_nodes = hint->research_nodes;
+                        stats_.knowledge_score_kind = hint->score_kind;
+                        stats_.knowledge_score_value = hint->score_value;
+                        stats_.knowledge_stable_ms = hint->stable_ms;
                     }
                 }
             }
