@@ -31,7 +31,7 @@
 - 1～3手の攻守MateAssistを通常対局へ統合
 - 専用`go mate`による詰み探索
 - Evaluation-v2候補Bによる多面的静的評価（Material / Safety / Pressure / Activity / Danger / Influence / Potential / Coordination / Hand Potential。Threatは現行OFF）
-- 採用済み局面知識（研究手の直接採用と一致する研究読み筋の継続、通常の探索順ヒントを併用）
+- 採用済み局面知識（研究手の直接採用と一致する研究読み筋の継続、通常の探索順ヒントを併用し、通常対局で毎回利用）
 - 評価値・読み筋・探索統計のUSI出力
 - ShogiDroid2向けAndroid OEX APK
 
