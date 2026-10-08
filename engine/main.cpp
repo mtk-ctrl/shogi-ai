@@ -1,5 +1,6 @@
 #include "rules/position.h"
 #include "strategy/iterative_search.h"
+#include "strategy/game_stage.h"
 #include "strategy/mate_search.h"
 #include "strategy/mate_assist.h"
 #include "strategy/search_limits.h"
@@ -26,6 +27,7 @@ int main() {
     bool material_profile = false;
     bool quiescence_enabled = true;
     bool mate_assist_enabled = true;
+    bool stage_aware_mate_assist = false; // experimental; default keeps established behavior
     bool valid_position = true;
     bool entering_king = true;
     bool position_knowledge_enabled = true;
@@ -93,6 +95,7 @@ int main() {
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
                       << "option name Quiescence type check default true\n"
                       << "option name MateAssist type check default true\n"
+                      << "option name StageAwareMateAssist type check default false\n"
                       << "option name AdaptiveLongThink type check default true\n"
                       << "option name RandomSeed type spin default 5489 min 0 max 2147483647\n"
                       << "option name EvalProfile type combo default features var features var material\n"
@@ -227,6 +230,17 @@ int main() {
             candidates = shogi::strategy::PromotionPolicy::force_monotonic_promotions(
                 position.snapshot(), candidates);
             if (candidates.empty()) { bestmove("resign"); continue; }
+            const auto game_stage = shogi::strategy::estimate_game_stage(
+                position.snapshot(), candidates, position.in_check());
+            {
+                std::ostringstream stage_info;
+                stage_info << "info string game_stage progress " << game_stage.progress
+                    << " urgency " << game_stage.urgency
+                    << " complexity " << game_stage.complexity
+                    << " phase " << game_stage.phase_name() << "\n";
+                emit(stage_info.str());
+            }
+            const bool skip_opening_mate = stage_aware_mate_assist && game_stage.quiet_opening();
 
             const auto limits = shogi::strategy::parse_go_limits(tokens, position.snapshot().turn, default_depth);
             int current_ply = 1;
@@ -269,7 +283,7 @@ int main() {
                 active->control.hard_deadline_ns = started_ns + 990LL * 1000000;
             }
             auto search_position = position.clone();
-            active->worker = std::thread([&, active, started_ns, limits,
+            active->worker = std::thread([&, active, started_ns, limits, skip_opening_mate,
                                           candidates = std::move(candidates),
                                           p = std::move(search_position)]() mutable {
                 auto info = [&](const shogi::strategy::SearchResult& result) {
@@ -298,7 +312,8 @@ int main() {
                     // Keep ordinary fixed-depth/node/ponder semantics unchanged.
                     // Timed play gets a small shared attack+defence mate budget
                     // inside the original absolute move deadline.
-                    if (mate_assist_enabled && limits.budget_ms >= 10 && !limits.ponder
+                    if (mate_assist_enabled && !skip_opening_mate
+                        && limits.budget_ms >= 10 && !limits.ponder
                         && !limits.infinite && limits.nodes == 0) {
                         const auto assist_started = shogi::strategy::SearchControl::now_ns();
                         const auto assist_budget_ms = std::clamp<std::int64_t>(limits.budget_ms / 10, 1, 5);
@@ -424,6 +439,8 @@ int main() {
                     }
                 } else if (name == "MateAssist") {
                     if (value == "true" || value == "false") mate_assist_enabled = value == "true";
+                } else if (name == "StageAwareMateAssist") {
+                    if (value == "true" || value == "false") stage_aware_mate_assist = value == "true";
                 } else if (name == "AdaptiveLongThink") {
                     if (value == "true" || value == "false")
                         adaptive_long_think_enabled = value == "true";
