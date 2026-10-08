@@ -1,0 +1,29 @@
+# 28 unique, root SFEN without move counter <TAB> alternating researched PV <TAB> research ID
++L4gn2/1+bg2s3/3kppl2/pp7/2p3p+R1/PN1K2P2/1PP1PP1P1/5S3/2S3GN1 w BNL3Prgsl2p	L*6e 6f6e S*7f 7g7f G*5e 6e7e R*8e	ab1000-drop-40
++N+P6+P/2g2k3/3sppp2/p2p4p/9/P1P5P/1SNPPPP+b1/+p1G1KS3/1R3G2+p w RS2NLbg3lp	9h8i R*2b G*3b 2b2g+ B*1h 2g2a R*3a 2a1b 1h4e+ 1b1d	ab1000-drop-03
++P+L1g1krR+B/3s5/nppppp1p1/1s4G1p/p5SP1/5l1KP/NPPPP4/3S2P2/3G2+n+n+b w Lgl2p	3a2a 1a2a G*3a 2a4c 6a5b 4c6e R*9i L*4e P*4c	ab1000-drop-27
++R1b3g2/2k5+S/4pp1p1/pp1p2N2/9/P1p1SPP2/1PNPS2N1/4KS1+r1/L2G3g1 w GNL2Pb2l4p	B*8b 9a9b L*9a G*8c 7b6b 9b8a 8b9c 8a9a 7f7g+ 8c9c 2h2g	ab1000-drop-20
++R2g1g3/3sks3/2np1ppp1/p1p1p4/4n2P1/P3SP3/L1NPP4/1G1+b5/5K3 b BSN2LPrgl5p	B*8c R*5i 4i3h L*3d 3h2h G*3h 2h1h 5i2i+ 1h1g	ab1000-drop-15
+1+B1g1g3/3sks2+P/p2ppp3/1+RLs2p2/P2l4p/5P3/1N+r+bPKP2/5S3/+p4G3 b 2N2L2Pgn4p	4i5i P*8f N*6i N*3e 4g3f 7g8g N*7i	ab1000-drop-39
+1+L2g2n1/1+R1sks3/l2ppppp1/p6P1/1n1n5/P7p/1PpPP+r+B2/1B5G1/L1GKS2L1 w SN4Pgp	6e5g 6i6h G*6i 7i6i 5g6i+ 6h6i G*7h	ab1000-drop-09
+1+L2sg1n1/1+R1sk4/l2ppppp1/p6P1/1n1n5/P7p/1PpPP+r+B2/1B5G1/L1GKS2L1 w SN4Pgp	6e5g 6i6h G*6i 7i6i 5g6i+ 6h6i G*7h	ab1000-drop-11
+1+N2gg1nl/+P2sksg2/+L+Ppppp1r1/6p1p/1pP+b5/4N1P1P/2+bPPPNP1/4KS1R1/8L b SLPgp	S*6h 7g8f 8c7b G*7h 7b6b 5a6b S*6i 7h6i 5h6i 6e7e	ab1000-drop-16
+1+P1k1g2l/+P2s1s3/+L1p1p4/5gp1p/1p2PS3/3p+B2PP/2+b2P1R1/1+n4G2/5K2L b GSNLPr2n5p	5f8c N*7b G*7a 6b7a 8a7a 6a5b 4e4d R*9i 4i4h 9i1i+ 7a7b 6f6g+ 8c7c 1i1f	ab1000-drop-14
+1n3gs1l/3k5/1pgpp+B3/2p2b3/5p1np/4L3P/1PPPPPP1L/+l+p1SKS3/3G2GN+n w RS2Pr2p	R*4b R*6a 6b7b 4c4b 7b6a 4b4c 6a7b 4c4d 1e1f	ab1000-drop-29
+3g1g1n1/R+N3k3/5ppp1/pp1p5/2r2S3/PP3SP2/1K1P+pPG2/2+l5P/L+s7 b 2BSg2n2l5p	8b7a 6a5b S*5c 4b5c B*1g L*4d B*5e G*8h 8g9g	ab1000-drop-21
+3gg1+S2/+R2skg3/2npppp2/2p6/8P/1PP3P1b/2BPPPK2/5S2+l/+l+p1g5 b R3NL5Psl	P*2g 7c6e 7g5e S*2h 3g3h L*2b N*3i 2h1g+	ab1000-drop-28
+4rk1+Pl/+R2g1s3/2p1ppnp1/p2p2pbp/2N6/P1P1P3P/1PNP1P3/3SKG3/L+p1G3N+s w BGLPsl	6b5b B*2b 2d1c 2b1a+ 1i2i 1a1b 1c3e	ab1000-drop-26
+4sk3/+N2s2b+B1/p1p1p2p1/2r5p/Lp4pGP/2P6/1P1PPPPP1/3SKS3/3G1G1+n1 w R2Pg2n3lp	3b7f 9e9c+ 7f8g+ R*3a 4a5b P*8h 8g7f 3a3e+	ab1000-drop-24
+Sn4g2/3+R1sg2/2p1pppp1/8p/9/3P1G2P/1+l1KP+nN2/1k7/1+l1+b4L b RB2SNLPg8p	4f3f 6i7h 6g7f 4g3g L*7i N*8d 7f6e G*7d 6e5e	ab1000-drop-13
+l1lg1g1nl/3sLk3/p2pPp1p1/1p3sp2/P2N1n2p/3G2P2/+rPSP1PnP1/2K6/5R1GB b BS4p	S*8h 7a7g+ 7h7g S*6h 7g7h 9g9h 4i3i P*7g 7h6h 9h8h 6h5i 3g2i+ 3i2i 7g7h+ 1i9a+ 6a5b	ab1000-drop-34
+l2g4+P/3ks4/n2pp3+L/prps2l+R1/1p2n4/3n5/2P1PPP2/2GS1S3/+n2GGK3 b B3Pbl5p	7h7i L*6g B*1d 6g6h+ 7i6h B*4c	ab1000-drop-17
+l4Sbnl/3g1sG2/2pp1k1+S1/p4s1p1/6p2/P1P2P1PP/1K1PP1P2/4+p4/LRG4+rL w BN4Pg2n	2i1i 3b4b 3a4b B*3b 4c5c S*5d 5c6d 5d6e 6d5e 3b5d+ 5e4f 5d4d	ab1000-drop-12
+l8/2+R2s3/4pkp+Pn/p1pp1p2p/1N2P4/PPP6/3P1P2P/3GKS1+n1/L+l3G2L w 2GS2Pr2bsnp	N*4f 5h5i S*5h 6h5h 4f5h+ 5i5h R*8h G*6h 2h1i 2c1c 8i9i 8e7c+ 8h8f+ 7c7d	ab1000-drop-23
+lR3g2+N/2gsks3/2nppp3/pp5s1/2L2L1+R1/P4P2p/3P1SP2/3G1K3/L2G5 w B2N7Pbp	7b7a 8a7a 2d2e B*6a 5b5a 7a9a+ R*1h G*3h	ab1000-drop-18
+ln1g1g2l/3sks3/3ppp+Pp1/ppr5p/6R2/PS6P/BP1+nSP1P1/L1+b1K3L/3G2GN1 b NP4p	5h4i 7h6i 5g4h 7d7h+ 3c4b 4a4b S*8b 7h9h 8b9a+ L*3b	ab1000-drop-25
+ln1g1k2+S/1r7/ppppspp2/8p/1n4Pg1/P4P1R1/1PPPP2N1/3SKG3/LN1G4L b L3P2bsp	2f2e B*3f L*4g 3f2e G*2f R*2b 2f2e 2b2e	ab1000-drop-05
+ln1g1kg1l/5p1p1/2pN5/p2p+B1+P1p/6P2/2P3ssP/1+r1PPPG2/1N1SK4/3G4L b S4Prbnlp	5d3f 2f3g+ 3f3g R*3i S*2h B*4i 5h4h 3i2i+	ab1000-drop-32
+ln1g3+P1/5+N3/2+P2+L+P+Pl/3k5/7G1/p8/1+p1+p+l2r1/6K2/+s2G5 w RBGSN5Pb2sn6p	B*4i 3h4i 2g2i+ R*3i S*4h	ab1000-drop-36
+ln1gk1g1+R/3s1s1s1/1p1ppppp1/2BN5/p1p4P1/P5P+r1/BPPPPP2+l/3G1G3/LN1K5 b SLPnp	1a1b 6c6d 9g7e N*7a S*3g 2f2g 9f9e P*1a	ab1000-drop-07
+lnk6/2rg1+S3/pp1p3+S1/4pp2p/2p6/PB1R3gP/1PPPSP3/6+l2/LN1GK3+p b 2NLPbgs3p	N*9e B*3g 5i6h S*7d L*8e 6b7c 9e8c 7c8c 8e8c+ 7b4b	ab1000-drop-01
+lr1g1g1nl/3k1s3/3Npp1p1/3N2p1p/p1g5P/2S3sP1/PPB1PP3/5S3/+p3KG1NL b B2Prl3p	7g1a+ 7e7f 1a2a R*8i B*6i S*3b 2a2b 6b6c	ab1000-drop-19
