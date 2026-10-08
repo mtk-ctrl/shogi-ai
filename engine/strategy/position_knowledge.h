@@ -28,6 +28,7 @@ public:
         std::string mode = "move_order_hint";
         std::string research_id;
         std::vector<std::string> research_pv;
+        std::uint64_t initial_history_key = 0;
     };
     bool load(const std::string& path) {
         std::ifstream input(path);
@@ -112,9 +113,22 @@ private:
                 std::istringstream pv(fields[12]);
                 std::string move;
                 while (pv >> move) entry.research_pv.push_back(move);
-                if (entry.research_pv.empty() || entry.research_pv.front() != entry.move) {
+                if (entry.research_pv.empty() || entry.research_pv.front() != entry.move
+                    || fields.size() < 14 || fields[13].empty()) {
                     clear(); return false;
                 }
+                std::vector<std::string> history;
+                if (fields[13] != "-") {
+                    std::istringstream historical_moves(fields[13]);
+                    while (historical_moves >> move) history.push_back(move);
+                }
+                rules::Position original;
+                std::string error;
+                if (!original.set(rules::Position::start_sfen(), history, error)
+                    || canonical_key(original) != fields[0]) {
+                    clear(); return false;
+                }
+                entry.initial_history_key = original.history_key();
             } else if (entry.mode != "move_order_hint") { clear(); return false; }
             const auto [it, inserted] = loaded.emplace(fields[0], entry);
             if (!inserted && it->second.move != entry.move) {

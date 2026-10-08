@@ -36,7 +36,7 @@ def main():
             lines.append("# mode=research_decision (adopted long-search results)")
             continue
         if line.startswith("# columns:"):
-            lines.append("# columns: position_key<TAB>selected_move<TAB>knowledge_version<TAB>evidence_count<TAB>research_ms<TAB>research_depth<TAB>research_nodes<TAB>score_kind<TAB>score_value<TAB>stable_ms<TAB>mode<TAB>research_id<TAB>research_pv")
+            lines.append("# columns: position_key<TAB>selected_move<TAB>knowledge_version<TAB>evidence_count<TAB>research_ms<TAB>research_depth<TAB>research_nodes<TAB>score_kind<TAB>score_value<TAB>stable_ms<TAB>mode<TAB>research_id<TAB>research_pv<TAB>source_moves")
             continue
         if not line or line.startswith("#"):
             lines.append(line)
@@ -58,6 +58,20 @@ def main():
                 and info["elapsed_ms"] >= 59000):
             raise SystemExit(f"not a complete sixty-second study: {key}")
         board = shogi.Board(key + " 1")
+        original = shogi.Board()
+        source_moves = r.get("moves")
+        if not isinstance(source_moves, list):
+            raise SystemExit(f"missing original move history: {key}")
+        for i, m in enumerate(source_moves):
+            try:
+                history_move = shogi.Move.from_usi(m)
+                if history_move not in original.legal_moves:
+                    raise ValueError("illegal original move")
+                original.push(history_move)
+            except (ValueError, TypeError, IndexError) as e:
+                raise SystemExit(f"invalid original history {key} move {i+1}: {e}") from e
+        if " ".join(original.sfen().split()[:3]) != key:
+            raise SystemExit(f"original history differs from study position: {key}")
         if " ".join(board.sfen().split()[:3]) != key:
             raise SystemExit(f"research key mismatch: {key}")
         for i, m in enumerate(pv):
@@ -74,7 +88,8 @@ def main():
         fields = [key, move, version, evidence, str(int(info["elapsed_ms"])),
                   str(info["depth"]), str(info["nodes"]), kind,
                   "" if score is None else str(score), "",
-                  "research_decision", str(r["position_id"]), " ".join(pv)]
+                  "research_decision", str(r["position_id"]), " ".join(pv),
+                  " ".join(source_moves) or "-"]
         lines.append("\t".join(fields))
         count += 1
         minimum = min(minimum, len(pv))

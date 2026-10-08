@@ -120,7 +120,8 @@ public:
             clear_research_continuation();
             const auto* entry = position_knowledge_.probe(position);
             if (!entry || entry->mode != "research_decision"
-                || entry->research_pv.empty()) return std::nullopt;
+                || entry->research_pv.empty()
+                || entry->initial_history_key != position.history_key()) return std::nullopt;
             pv = entry->research_pv;
             id = entry->research_id;
         }
