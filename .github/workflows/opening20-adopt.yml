@@ -1,0 +1,82 @@
+name: Adopt Approved Opening20 Knowledge
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/opening20-adoption-request.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  adopt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: true
+      - name: Validate rules and get frozen 50-minute research
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 scripts/check_match_workflows.py
+          python3 scripts/check_workflow_inventory.py
+          python3 -m pip install python-shogi==1.1.1
+          mkdir -p build/original
+          gh run download 37833560865 --name opening20-summary-37833560865 --dir build/original
+          python3 tools/knowledge/adopt_opening20.py --summary build/original/opening20-summary.json
+      - name: Build updated embedded knowledge and verify direct adoption
+        run: |
+          set -euo pipefail
+          python3 scripts/build.py --output build/shogi-ai
+          python3 tests/test_position_knowledge_usi.py build/shogi-ai
+          python3 - <<'PY'
+          import json,hashlib
+          m=json.load(open("position-knowledge-v1.manifest.json"))
+          b=open("position-knowledge-v1.tsv","rb").read()
+          rows=[x for x in b.decode().splitlines() if x and not x.startswith("#")]
+          assert m["adopted_positions"]==len(rows)==73
+          assert len(set(x.split("\t",1)[0] for x in rows))==73
+          assert m["output_sha256"]==hashlib.sha256(b).hexdigest()
+          print("ADOPTION_TEST_OK: 73 validated, embedded test passed")
+          PY
+      - name: Preserve original full study in monthly GitHub Release and verify retrieval
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import gzip,pathlib,hashlib
+          raw=pathlib.Path("build/original/opening20-summary.json").read_bytes()
+          with gzip.open("build/research-opening20-37833560865.json.gz","wb",mtime=None) as f:f.write(raw)
+          print("original research sha256:",hashlib.sha256(raw).hexdigest())
+          PY
+          gh release view records-2026-10-01 --repo "$GITHUB_REPOSITORY" >/dev/null
+          gh release upload records-2026-10-01 build/research-opening20-37833560865.json.gz --repo "$GITHUB_REPOSITORY"
+          mkdir -p build/release-verify
+          gh release download records-2026-10-01 --pattern research-opening20-37833560865.json.gz --dir build/release-verify --repo "$GITHUB_REPOSITORY"
+          cmp build/research-opening20-37833560865.json.gz build/release-verify/research-opening20-37833560865.json.gz
+          echo "RELEASE_ARCHIVE_VERIFIED"
+      - name: Commit approved snapshot and its checked manifest
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add position-knowledge-v1.tsv position-knowledge-v1.manifest.json
+          git diff --cached --exit-code --quiet && { echo "ERROR: no changes to knowledge"; exit 1; } || true
+          git commit -m "knowledge: adopt 20 owner-approved 50-minute opening studies"
+          git push origin HEAD:main
+      - name: Archive adoption evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opening20-adoption-audit-${{ github.run_id }}
+          path: |
+            build/opening20-adoption-audit.json
+            position-knowledge-v1.manifest.json
+          if-no-files-found: warn
+          retention-days: 90
