@@ -103,7 +103,42 @@ def embedded_default_fallback():
             u.close()
 
 
+
+def research_direct_choice(research_ms, min_minutes, expected_direct, include_research=True):
+    start_key = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b -"
+    with tempfile.TemporaryDirectory() as td:
+        knowledge = Path(td) / "research.tsv"
+        extra = f"\\t{research_ms}\\t8\\t120000\\tcp\\t100\\t30000" if include_research else ""
+        knowledge.write_text(start_key + "\\t7g7f\\ttrial\\t1" + extra + "\\n", encoding="utf-8")
+        u = Usi()
+        try:
+            u.send("usi")
+            _, lines = u.until("usiok")
+            assert any("option name ResearchDecisionMinMinutes type spin default 0" in x for x in lines)
+            u.send(f"setoption name PositionKnowledgeFile value {knowledge}")
+            u.send(f"setoption name ResearchDecisionMinMinutes value {min_minutes}")
+            u.send("isready")
+            u.until("readyok")
+            u.send("usinewgame")
+            u.send("position startpos")
+            u.send("go depth 1")
+            best, lines = u.until("bestmove")
+            stat = next((x for x in reversed(lines) if "knowledge_direct_choices" in x), "")
+            assert stat, lines
+            assert f"knowledge_direct_choices {1 if expected_direct else 0}" in stat, stat
+            if expected_direct:
+                assert best == "bestmove 7g7f", best
+                assert "knowledge_hits 1" in stat
+        finally:
+            u.close()
+
+
+research_direct_choice(30 * 60 * 1000 + 1, 30, True)
+research_direct_choice(30 * 60 * 1000 + 1, 60, False)
+research_direct_choice(30 * 60 * 1000 + 1, 0, False)
+research_direct_choice(0, 1, False, include_research=False)
+
 run_once(True)
 run_once(False)
 embedded_default_fallback()
-print("PASS position knowledge USI load/probe/order telemetry and embedded fallback")
+print("PASS position knowledge hint/order, embedded fallback, experimental direct-choice threshold")
