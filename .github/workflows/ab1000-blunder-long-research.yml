@@ -41,6 +41,7 @@ jobs:
           LANES: ${{ inputs.lanes }}
         run: |
           set -euo pipefail
+          python3 scripts/check_match_workflows.py
           python3 - <<'PY'
           import os
           c=int(os.environ["CANDIDATES"]); l=int(os.environ["LANES"])
