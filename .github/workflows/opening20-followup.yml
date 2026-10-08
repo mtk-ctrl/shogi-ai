@@ -1,0 +1,127 @@
+name: Opening 20 Late-Change Followup (30m x3)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/opening20-followup-request.json"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validate frozen original research inputs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 scripts/check_match_workflows.py
+          python3 scripts/check_workflow_inventory.py
+          python3 -m pip install python-shogi==1.1.1
+          gh run download 37833560865 --name opening20-engine-37833560865 --dir frozen
+          tar xzf frozen/engine.tgz
+          python3 tools/research/run_opening20.py validate --knowledge build/position-knowledge-v1.tsv
+          gh run download 37833560865 --name opening20-summary-37833560865 --dir original
+          python3 - <<'PY'
+          import json
+          r=json.load(open('original/opening20-summary.json'))
+          assert r['run_id']=='37833560865' and r['completed']==20
+          by={x['id']:x for x in r['research_records']}
+          for n in (6,12,19):
+              x=by[f'kumoji-160-{n:03d}']
+              assert x['completed'] and x['elapsed_seconds'] >= 2990
+              assert x['bestmove']==x['final']['pv'][0]
+              assert x['move_changes'][-1]['seconds'] > 1200
+          print('FOLLOWUP_PREFLIGHT_OK target=006,012,019 original-engine-and-knowledge=frozen',flush=True)
+          PY
+  research:
+    needs: preflight
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        lane: [5,11,18]
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+      - name: Retrieve original engine and 53-position frozen knowledge
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh run download 37833560865 --name opening20-engine-37833560865 --dir frozen
+          tar xzf frozen/engine.tgz
+          python3 -m pip install python-shogi==1.1.1
+      - name: 30-minute additional search on one of three late-changing positions
+        env:
+          LANE: ${{ matrix.lane }}
+        run: |
+          python3 tools/research/run_opening20.py research --engine build/kumoji --knowledge build/position-knowledge-v1.tsv --lane "$LANE" --ms 1800000 --output followup.json
+      - name: Preserve result, including partial progress after failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opening20-followup-result-${{ github.run_id }}-${{ matrix.lane }}
+          path: followup.json
+          if-no-files-found: warn
+          retention-days: 90
+  aggregate:
+    needs: [preflight,research]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Download new followup results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: opening20-followup-result-${{ github.run_id }}-*
+          path: followup-results
+          merge-multiple: false
+      - name: Retrieve 50-minute baseline and compare
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh run download 37833560865 --name opening20-summary-37833560865 --dir original
+          python3 - <<'PY'
+          import glob,json,os
+          base=json.load(open('original/opening20-summary.json'))
+          by={x['id']:x for x in base['research_records']}
+          rows=[]
+          for p in glob.glob('followup-results/**/followup.json',recursive=True):
+              x=json.load(open(p))
+              old=by[x['id']]
+              rows.append({
+                  'id':x['id'],'completed':x.get('completed',False),
+                  'additional_ms':x.get('research_ms_requested'),
+                  'additional_bestmove':x.get('bestmove'),
+                  'initial_50m_bestmove':old['bestmove'],
+                  'same_move_as_initial_50m':x.get('bestmove')==old['bestmove'],
+                  'previous_50m_final':old['final'],
+                  'additional_30m_final':x.get('final'),
+                  'additional_30m_research':x
+              })
+          rows.sort(key=lambda x:x['id'])
+          out={'schema':'opening20-followup-v1','run_id':os.environ['GITHUB_RUN_ID'],
+               'reference_run':37833560865,'requested_positions':['kumoji-160-006','kumoji-160-012','kumoji-160-019'],
+               'completed':sum(x['completed'] for x in rows),'results':rows,
+               'knowledge_auto_updated':False,
+               'note':'Fresh independent 30m search from the same position with frozen original binary and knowledge, not continuation from the 50m tree.'}
+          with open('followup-summary.json','w') as f:json.dump(out,f,ensure_ascii=False,indent=2)
+          print('FOLLOWUP_SUMMARY completed',out['completed'],'/3')
+          if len(rows)!=3 or out['completed']!=3:raise SystemExit('incomplete follow-up studies')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: opening20-followup-summary-${{ github.run_id }}
+          path: followup-summary.json
+          if-no-files-found: warn
+          retention-days: 90
