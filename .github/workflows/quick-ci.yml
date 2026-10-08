@@ -22,6 +22,8 @@ on:
       - "tests/test_search_usi.py"
       - "tests/test_position_knowledge_usi.py"
       - "tests/test_eval_usi.py"
+      - "tests/test_phase_diagnostics.py"
+      - "tools/phase/**"
       - "tests/test_mate_usi.py"
       - "benchmarks/arena.py"
       - "benchmarks/position_arena.py"
@@ -96,6 +98,14 @@ jobs:
           python3 tests/test_position_knowledge_usi.py build/shogi-ai
           python3 tests/test_eval_usi.py build/shogi-ai
           python3 tests/test_mate_usi.py build/shogi-ai
+
+      - name: Phase diagnostics and historical game filter
+        run: |
+          python3 scripts/build.py --phase-probe --output build/phase-probe
+          python3 tests/test_phase_diagnostics.py build/phase-probe
+          python3 tools/phase/analyze_games.py \
+            --input benchmarks/results/2026-10-05_v019-mate-assist-50ms-100games.json \
+            --engine build/phase-probe --output build/phase-report.json
 
       - name: Arena telemetry and adjudication tests
         run: |
