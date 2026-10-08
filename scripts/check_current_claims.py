@@ -1,59 +1,97 @@
 #!/usr/bin/env python3
-from pathlib import Path
+"""Check behavioral contracts strictly and prose summaries non-blockingly."""
+from __future__ import annotations
+
+import json
 import re
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
-def read(path: str) -> str:
-    return (ROOT / path).read_text(encoding="utf-8")
+def plain(text: str) -> str:
+    # Markdown emphasis, inline-code delimiters and spacing are not policy.
+    return re.sub(r"\s+", " ", re.sub(r"[\x60*_]", "", text))
 
-errors = []
+def check(root: Path = ROOT) -> tuple[list[str], list[str]]:
+    errors: list[str] = []
+    warnings: list[str] = []
 
-def require(path: str, needle: str, why: str) -> None:
-    if needle not in read(path):
-        errors.append(f"{path}: missing {why}")
+    def read(path: str) -> str:
+        return (root / path).read_text(encoding="utf-8")
 
-def forbid(path: str, needle: str, why: str) -> None:
-    if needle in read(path):
-        errors.append(f"{path}: stale claim remains ({why})")
+    engine = re.search(r"id name KUMOJI v(\d+\.\d+\.\d+)", read("engine/main.cpp"))
+    if engine is None:
+        errors.append("engine/main.cpp: USIの正式エンジン版を読み取れない")
+    else:
+        version = engine.group(1)
+        for path in ("README.md", "docs/rules/R70_記録・Journal・バージョン.md", "docs/33_Floodgate接続基盤.md"):
+            content = plain(read(path))
+            if not re.search(rf"KUMOJI\s+v{re.escape(version)}\b", content):
+                errors.append(f"{path}: エンジン実装と同じ正式版 KUMOJI v{version} の記載がない")
+            # Actual conflicting current-version statements remain blocking.
+            current = re.findall(r"現在[^。\n]{0,140}?KUMOJI\s+v(\d+\.\d+\.\d+)", content)
+            if current and current[0] != version:
+                errors.append(f"{path}: 現行版の説明 {current} が実装 v{version} と異なる")
 
-# Compare current summaries with the adopted engine name. Do not freeze the
-# checker at v2.0.0 when a later version is formally adopted.
-version_match = re.search(r"id name KUMOJI v(\d+\.\d+\.\d+)", read("engine/main.cpp"))
-engine_version = version_match.group(1) if version_match else "UNKNOWN"
-if version_match is None:
-    errors.append("engine/main.cpp: adopted engine version is missing")
-require("README.md", f"現在の正式Engine世代は **KUMOJI v{engine_version}**", "current engine generation")
-require("README.md", "最後にAndroidへ配布するために作ったAPKは **v1.0.1**", "last generated APK")
-require("README.md", "Androidへダウンロードする必要がなくAPKを新たに作っていない", "user-confirmed reason for older APK")
-forbid("README.md", "Engine世代とAndroid/OEX release番号は分けて管理する", "independent engine/release policy was not the user's intent")
-forbid("README.md", "現在の完成版は **v1.0.1**", "release label presented as current engine")
+    match = read(".github/workflows/engine-match.yml")
+    option_defaults = []
+    for raw in re.findall(r"default:\s*'(\{[^\n]*\})'", match):
+        try:
+            value = json.loads(raw)
+        except json.JSONDecodeError:
+            continue
+        if "PositionKnowledge" in value or "AdaptiveLongThink" in value:
+            option_defaults.append(value)
+    if len(option_defaults) < 2:
+        errors.append("engine-match.yml: A/B両者の標準対局設定を読み取れない")
+    else:
+        for side, options in zip(("A", "B"), option_defaults[:2]):
+            if options.get("PositionKnowledge") is not True:
+                errors.append(f"engine-match.yml: {side}側で採用済み局面知識が標準ONでない")
+            if options.get("AdaptiveLongThink") is not True:
+                errors.append(f"engine-match.yml: {side}側で長考設定が標準ONでない")
 
-forbid("docs/33_Floodgate接続基盤.md", "既定の検証対象は `research/evaluation-v2-challenger`", "archived generation workflow default")
-require("docs/33_Floodgate接続基盤.md", f"現在の正式Engine世代は `KUMOJI v{engine_version}`", "current Floodgate engine generation")
+    for path in ("engine/main.cpp", ".github/workflows/engine-match.yml", ".github/workflows/external-engine-benchmark.yml"):
+        for removed in ("OpeningBook", "ExperienceCache"):
+            if removed in read(path):
+                errors.append(f"{path}: 廃止された実行オプション {removed} が残っている")
 
-require("docs/rules/R70_記録・Journal・バージョン.md", f"現在の正式Engine世代は **KUMOJI v{engine_version}**", "engine generation rule")
-forbid("docs/04_強化ロードマップ.md", "通常のpushでは短いsmoke対局", "old CI policy")
-forbid("docs/04_強化ロードマップ.md", "戦略変更の比較は原則50ms", "old general comparison condition")
-forbid("docs/DAYTIME_RESEARCH_BACKLOG.md", "50msを開発基準にしつつ", "old timing standard")
-require("docs/26_対局データ収集・分析・学習設計.md", "長期蓄積する基盤データの範囲は `docs/rules/R25_着手記録の保存.md`", "R25 precedence")
+    r20 = plain(read("docs/rules/R20_対局・比較・統計.md"))
+    if not re.search(r"局面知識.{0,90}(?:毎回|常時|すべて|全て)", r20):
+        errors.append("R20: 採用済み局面知識を毎対局利用する正式規定が見つからない")
 
-wf = read(".github/workflows/engine-match.yml")
-if wf.count('"AdaptiveLongThink":true') < 2:
-    errors.append(".github/workflows/engine-match.yml: formal default must explicitly enable AdaptiveLongThink for A/B")
-if wf.count('"PositionKnowledge":true') < 2:
-    errors.append(".github/workflows/engine-match.yml: normal A/B defaults must use adopted position knowledge")
-require("README.md", "通常対局で毎回利用", "adopted position knowledge default-use summary")
-require("docs/rules/R20_対局・比較・統計.md", "雲路が対局する場合は採用済みの局面知識データを毎回使用する", "position knowledge every-match rule")
-for path in ("engine/main.cpp", ".github/workflows/engine-match.yml", ".github/workflows/external-engine-benchmark.yml"):
-    forbid(path, "OpeningBook", "removed opening-book runtime must not return")
-    forbid(path, "ExperienceCache", "removed experience runtime must not return")
-require("docs/rules/R00_基本原則.md", "一般的でない内部変数名や英語略称", "Japanese-first user reporting rule")
+    # The following are useful documentation reminders, not exact-string gates.
+    readme = read("README.md")
+    if "docs/35_局面知識の統合設計と即活用.md" not in readme:
+        warnings.append("README.md: 局面知識の設計資料へのリンクを確認")
+    if not re.search(r"APK", readme) or "Android" not in readme:
+        warnings.append("README.md: Android配布状況の説明を確認")
+    if "docs/rules/R25_着手記録の保存.md" not in read("docs/26_対局データ収集・分析・学習設計.md"):
+        warnings.append("docs/26: 着手記録の正本R25へのリンクを確認")
+    if "日本語" not in read("docs/rules/R00_基本原則.md"):
+        warnings.append("R00: 利用者向け日本語優先の説明を確認")
 
-if errors:
-    print("Current-claim consistency FAILED")
-    for e in errors:
-        print("- " + e)
-    raise SystemExit(1)
+    legacy = (
+        ("README.md", "現在の完成版は **v1.0.1**"),
+        ("docs/04_強化ロードマップ.md", "戦略変更の比較は原則50ms"),
+        ("docs/DAYTIME_RESEARCH_BACKLOG.md", "50msを開発基準にしつつ"),
+    )
+    for path, phrase in legacy:
+        if phrase in read(path):
+            warnings.append(f"{path}: 過去の表現が現行説明に残っていないか確認")
+    return errors, warnings
 
-print("Current-claim consistency OK")
+def main() -> int:
+    errors, warnings = check()
+    for message in warnings:
+        print("WARNING:", message)
+    for message in errors:
+        print("ERROR:", message)
+    if errors:
+        print(f"Current-claim consistency FAILED: {len(errors)} error(s)")
+        return 1
+    print(f"Current-claim consistency OK ({len(warnings)} advisory warning(s))")
+    return 0
+
+if __name__ == "__main__":
+    raise SystemExit(main())

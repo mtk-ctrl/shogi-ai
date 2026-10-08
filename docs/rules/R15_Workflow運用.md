@@ -107,3 +107,10 @@ workflowの数を減らすこと自体を目的にしない。
 7. `python3 scripts/check_workflow_inventory.py` と `python3 scripts/check_match_workflows.py` を通す。
 8. 対局・局面研究workflowなら、preflight検査を通過してから重い対局jobを開始する。
 9. 研究終了後にACTIVE / HOLD / ARCHIVEを見直す。
+
+## 整合性チェックの扱い（2026-10-09）
+- workflowの新設・改名・退役時は、実行用YAMLと `.github/workflows/README.md` のACTIVE一覧を**同一変更・同一commit**で同期する。AIが一覧修正と検査まで実施し、人へ手作業を戻さない。
+- pushでの文書チェックはmainを対象とし、研究branchはPR時または明示起動で検査する。同じ変更に対するpushとPRの二重通知を避ける。
+- `python3 scripts/check_workflow_inventory.py` は未登録を警告として出し、他の検査まで継続する。`--strict` は一覧を完全に整理するときの手動確認用であり、未登録もエラーにする。
+- 存在しない参照先、必須の動作設定違反などの実害はエラーとし、日本語の言い換え・説明文の未登録は警告として扱う。警告も放置せず、作業区切りで同じ修正に含める。
+- エラーになった場合は先に該当検査・修正箇所・同一原因の既存runを確認する。理由なく同じ失敗を繰り返さず、通知設定だけで原因を隠さない。
