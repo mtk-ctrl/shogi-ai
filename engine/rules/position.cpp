@@ -132,6 +132,12 @@ bool Position::set_usi(const std::string& command, std::string& error) {
 }
 
 std::string Position::sfen() const { return impl_->pos.sfen(); }
+std::vector<std::string> Position::played_moves() const {
+    std::vector<std::string> out;
+    out.reserve(impl_->moves.size());
+    for (const auto& m:impl_->moves) out.push_back(yo::to_usi_string(m));
+    return out;
+}
 bool Position::in_check() const { return bool(impl_->pos.checkers()); }
 Color Position::turn() const { return impl_->pos.side_to_move() == yo::BLACK ? Color::Black : Color::White; }
 std::vector<std::string> Position::legal_moves() const {
