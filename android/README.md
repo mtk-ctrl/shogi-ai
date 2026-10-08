@@ -25,21 +25,15 @@ Application IDとnativeファイル名は、旧`shogi-ai` Android版からの更
 
 `enginelist.xml` と `ShogiEngineProvider` により、ShogiDroid2へOEXエンジンを公開する。
 
-## Opening Book
+## 局面知識
 
-標準の自前Bookはリポジトリ直下 `shogi-ai-book.tsv` で管理する。
-
-OEXホストからエンジンだけが起動されても同じBookを利用できるよう、ビルド時に標準Bookをエンジンへ内蔵する。実行場所に外部 `shogi-ai-book.tsv` が存在する場合は外部版を優先し、存在しない場合だけ内蔵版へフォールバックする。
-
-## Experience Cache
-
-Experience Cacheは標準ONである。Android上の実際の保存場所・永続性はShogiDroid2側の起動方法に依存する。書き込みできない場合でも探索を停止せず、通常探索へ戻るfail-open方式である。
+採用済みの局面知識はビルド時にエンジンへ内蔵される。OEXホストで外部ファイルを渡せない場合も、同じ採用済み知識を利用できる。
 
 ## APK生成
 
 `android/VERSION` の変更を完成版APK生成の明示的な合図とする。
 
-GitHub Actions `Build Android OEX APK` は、ホスト側のルール・探索・評価・詰み・Opening Book・Sanitizer検証後、ARM64エンジンとAPKを生成し、固定開発証明書で署名する。
+GitHub Actions `Build Android OEX APK` は、ホスト側のルール・探索・評価・詰み・局面知識・Sanitizer検証後、ARM64エンジンとAPKを生成し、固定開発証明書で署名する。
 
 v1.0.1のartifact名：
 

@@ -4,7 +4,7 @@
 
 「雲路」は、雲の中の道、空に通う道を表す古い日本語から取った。既に敷かれた道をなぞるのではなく、まだ道に見えないところから、自分で通れる筋を見つけるAIを目指す。
 
-現在の正式Engine世代は **KUMOJI v2.0.2** である。Evaluation-v2候補Bとv2.0.1の長考配分を維持し、採用済み局面知識をrootのmove orderingへ毎対局利用する。採用済み実装は `main` を正本とする。
+現在の正式Engine世代は **KUMOJI v2.0.3** である。Evaluation-v2候補Bとv2.0.1の長考配分、採用済み局面知識の毎対局利用を維持し、旧Book / Experienceの実行機能とUSI設定を現行エンジンから除去した。採用済み実装は `main` を正本とする。
 最後にAndroidへ配布するために作ったAPKは **v1.0.1**（2026-10-05）である。v2以後はAndroidへダウンロードする必要がなくAPKを新たに作っていないため、オーナーのAndroidには以前のv1が入っている（2026-10-07本人確認）。APKは必要時に採用済みエンジンをAndroidへ届けるものであり、別の正式エンジン系統ではない。
 正確な実装状態は `main` のcommit SHAでも特定し、正式比較の基準commitは `benchmarks/baseline_ref.txt` を参照する。
 
@@ -20,7 +20,7 @@
 強化は原則として、Engine / 局面知識 / Benchmark / Diagnosis の役割を分け、Strength / Independence / Novelty を意識して進める。
 詳しくは [雲路の羅針盤](docs/00_羅針盤.md) を参照する。
 
-## 現在のmain Engine（KUMOJI v2.0.2）の主な能力
+## 現在のmain Engine（KUMOJI v2.0.3）の主な能力
 
 - やねうら王から利用するのは、合法手生成・局面管理・王手判定・千日手等のルール層のみ
 - 探索・評価・move ordering・置換表・詰み探索・戦略・学習は自作
@@ -31,9 +31,7 @@
 - 1～3手の攻守MateAssistを通常対局へ統合
 - 専用`go mate`による詰み探索
 - Evaluation-v2候補Bによる多面的静的評価（Material / Safety / Pressure / Activity / Danger / Influence / Potential / Coordination / Hand Potential。Threatは現行OFF）
-- 自前棋譜から作るOpening Book
-- Experience Cache
-- 採用済み局面知識snapshot（root `move_order_hint`、通常対局で毎回ON）
+- 採用済み局面知識（探索開始時の読み順へ反映し、通常対局で毎回利用）
 - 評価値・読み筋・探索統計のUSI出力
 - ShogiDroid2向けAndroid OEX APK
 
@@ -43,8 +41,8 @@
 ## 局面知識
 
 今後は「対局記録・研究記録・局面知識」の構成で進める（2026-10-07本人承認）。原本を出所付きで蓄積し、現在の雲路が対局で使う情報を小さな局面知識へまとめる。定跡はそのうち序盤の手順・分岐を整理した部分である。
-保存と次回対局へ過去の手を優先して読む形で渡す接続仕様は [局面知識の統合設計と即活用](docs/35_局面知識の統合設計と即活用.md) を参照する。新アーカイブからの自動生成・loaderは未実装。
-既存Opening BookとExperience Cacheの実装・互換名は残る。外部AI対局でも、雲路自身が読んだ手・評価は局面知識の候補に含める（2026-10-08本人確認、出所境界の正本はR50）。研究結論の直接利用の具体的基準、旧Experienceへの投入、正式昇格・自動更新等は [H10](docs/hold/H10_Book・Experience方針保留.md) の未決部分に従う。
+保存と次回対局へ過去の手を優先して読む形で渡す接続仕様は [局面知識の統合設計と即活用](docs/35_局面知識の統合設計と即活用.md) を参照する。新しい対局記録から知識候補を自動生成する処理は未実装。
+外部AI対局でも、雲路自身が読んだ手・評価は局面知識の候補に含める（2026-10-08本人確認、出所境界の正本はR50）。新しい局面知識の正式採用・自動更新や、研究結論を直接着手へ使う方式は、別途検証と採用判断を行う。
 
 ## 外部対局 / Floodgate
 
@@ -55,7 +53,7 @@
 
 ## Android / ShogiDroid2
 
-最後に作ったv1.0.1 APKは次の構成である。最新エンジンv2.0.1を含むAPKはまだ作っていない。
+最後に作ったv1.0.1 APKは次の構成である。最新エンジンv2.0.3を含むAPKはまだ作っていない。
 
 - アプリ表示名：`雲路 KUMOJI`
 - OEX表示名：`雲路 KUMOJI v1.0.1`
@@ -84,7 +82,6 @@ APK・実機確認・完成版化のRuleは [R60](docs/rules/R60_Android・APK�
 - [33_v2.0.0世代基準](docs/33_v2.0.0世代基準.md) — 評価プロファイルBとv2.0.0採用時の棋力測定
 - [36_v2.0.1長考配分](docs/36_v2.0.1長考配分.md) — 現行版の長考配分と検証
 - [24_多面的評価システム構想](docs/24_多面的評価システム構想.md) — 今後の評価システムの方向
-- [Book・Experience保留](docs/hold/H10_Book・Experience方針保留.md)
 - [v1.0.1完成版記録](journal/2026-10-05_18_雲路KUMOJI_v1.0.1完成版.md)
 - [CHANGELOG](journal/CHANGELOG.md)
 

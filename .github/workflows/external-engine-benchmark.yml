@@ -154,7 +154,7 @@ jobs:
         run: |
           mkdir -p results
           NODES="$(python3 harness/benchmarks/external_levels.py --level "$LEVEL" --nodes-only)"
-          python3 harness/benchmarks/external_match.py             --self-engine build/shogi-ai             --opponent-engine external/YaneuraOu/source/YaneuraOu-by-gcc             --self-options '{"ExperienceCache":"false","OpeningBook":"false"}'             --opponent-options '{"Threads":1,"USI_Hash":16,"USI_OwnBook":false}'             --self-go "go movetime 50"             --opponent-go "go nodes $NODES"             --games "$SHARD_GAMES"             --game-offset "$GAME_OFFSET"             --seed "$SHARD_SEED"             --output "results/shard-${{ matrix.shard }}.json"
+          python3 harness/benchmarks/external_match.py             --self-engine build/shogi-ai             --opponent-engine external/YaneuraOu/source/YaneuraOu-by-gcc             --self-options '{}'             --opponent-options '{"Threads":1,"USI_Hash":16,"USI_OwnBook":false}'             --self-go "go movetime 50"             --opponent-go "go nodes $NODES"             --games "$SHARD_GAMES"             --game-offset "$GAME_OFFSET"             --seed "$SHARD_SEED"             --output "results/shard-${{ matrix.shard }}.json"
 
       - name: Upload shard
         uses: actions/upload-artifact@v4

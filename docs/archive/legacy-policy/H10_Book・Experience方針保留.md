@@ -1,12 +1,15 @@
 ---
 hold_id: H10
-status: hold
+status: archive
 authority: non-normative
 ---
 
-# Book・Experience 方針保留
+# Book・Experience 方針保留（履歴）
 
-## 状態
+## アーカイブ理由
+2026-10-08、オーナーがBook / Experienceの概念を廃止し、現行エンジンから外すことを決定した。本書は判断経緯の保存専用であり、現行ルール・保留事項として参照しない。現行の正本はR25とdocs/35である。
+
+## 当時の状態
 2026-10-07、オーナーは「対局記録・研究記録・局面知識」の構成を承認した。今後はBook / Experienceの二分法を必須としない。正本はR25、接続する保存・即活用仕様はdocs/35。
 本書は残る未決事項を保留する。既存コード・USIのBook / Experienceという名称は当面互換性のため残る。
 

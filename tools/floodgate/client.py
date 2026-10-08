@@ -25,10 +25,7 @@ from protocol import Clock, CSA_MOVE_RE, StartposBoard, SummaryParser
 DEFAULT_HOST = "wdoor.c.u-tokyo.ac.jp"
 DEFAULT_PORT = 4081
 DEFAULT_GAME = "floodgate-300-10F"
-DEFAULT_OPTIONS = {
-    "ExperienceCache": "true",
-    "OpeningBook": "true",
-}
+DEFAULT_OPTIONS = {}
 RESULT_RE = re.compile(r"^#(WIN|LOSE|DRAW)$")
 CAUSE_RE = re.compile(r"^#")
 
@@ -312,8 +309,6 @@ class FloodgateClient:
             return {
                 "kind": "floodgate_external_match",
                 "learning_eligible": False,
-                "opening_book_eligible": False,
-                "experience_eligible": True,
                 "game_id": summary.game_id,
                 "username": self.username,
                 "engine": self.engine.metadata(),

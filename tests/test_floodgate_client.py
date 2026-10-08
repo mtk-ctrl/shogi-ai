@@ -108,12 +108,6 @@ class FloodgateProtocolTest(unittest.TestCase):
         self.assertEqual(fg.parse_time_unit_ms("100msec"), 100)
         self.assertEqual(fg.parse_time_unit_ms("2min"), 120000)
 
-    def test_external_options_keep_self_experience_by_default(self):
-        options = fc.parse_setoptions([])
-        self.assertEqual(options["ExperienceCache"], "true")
-        self.assertEqual(options["OpeningBook"], "true")
-        changed = fc.parse_setoptions(["OpeningBook=false"])
-        self.assertEqual(changed["OpeningBook"], "false")
         with self.assertRaises(ValueError):
             fc.parse_setoptions(["broken"])
 

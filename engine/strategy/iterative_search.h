@@ -2,6 +2,7 @@
 
 #include "strategy/alphabeta3_tt.h"
 #include "strategy/position_knowledge.h"
+#include "strategy/move_hint_cache.h"
 #include <atomic>
 #include <chrono>
 #include <cstdlib>
@@ -75,24 +76,12 @@ public:
     explicit BasicIterativeSearch(unsigned seed = 5489u, Evaluator evaluator = Evaluator{})
         : rng_(seed), evaluator_(evaluator) {}
     void set_seed(unsigned seed) { rng_.seed(seed); }
-    void set_evaluator(Evaluator e) { evaluator_ = e; experience_.clear(); }
-    void set_experience_enabled(bool enabled) { experience_enabled_ = enabled; }
+    void set_evaluator(Evaluator e) { evaluator_ = e; }
     void set_position_knowledge_enabled(bool enabled) { position_knowledge_enabled_ = enabled; }
     bool load_position_knowledge(const std::string& path) { return position_knowledge_.load(path); }
     void clear_position_knowledge() { position_knowledge_.clear(); }
     std::size_t position_knowledge_size() const { return position_knowledge_.size(); }
-    void set_quiescence_enabled(bool enabled) {
-        if (quiescence_enabled_ != enabled) experience_.clear();
-        quiescence_enabled_ = enabled;
-    }
-    void clear_experience() { experience_.clear(); }
-    bool load_experience(const std::string& path, std::uint64_t signature) {
-        return experience_.load(path, signature);
-    }
-    bool save_experience(const std::string& path, std::uint64_t signature) const {
-        return experience_.save(path, signature);
-    }
-    std::size_t experience_size() const { return experience_.size(); }
+    void set_quiescence_enabled(bool enabled) { quiescence_enabled_ = enabled; }
     const Stats& last_stats() const { return stats_; }
 
     SearchResult choose(rules::Position& position, int max_depth, SearchControl& control,
@@ -101,9 +90,6 @@ public:
         stats_ = {};
         control_ = &control;
         tt_.new_search();
-        experience_.new_search();
-        experience_allowed_ = experience_enabled_ && !position.has_repeated_history();
-        if (experience_enabled_ && !experience_allowed_) ++stats_.experience_disabled_repetition;
         iteration_hints_.clear();
         root_in_check_ = position.in_check();
         has_previous_completed_ = false;
@@ -191,7 +177,6 @@ public:
                 has_previous_completed_ = has_last_completed_;
                 last_completed_ = result;
                 has_last_completed_ = true;
-                store_experience(position, depth, result.move);
                 if (completed) completed(result);
             } catch (const Interrupted&) {
                 break; // RAII has already restored every speculative move
@@ -355,7 +340,6 @@ private:
         if (tt_.store(score_key, depth, to_table(best.value, ply), bound, best.pv.front()))
             ++stats_.tt_replacements;
         iteration_hints_.store(p.hash_key(), depth, best.pv.front());
-        store_experience(p, depth, best.pv.front());
         return best;
     }
     Node quiescence(rules::Position& p, int ply, int qply, int alpha, int beta) {
@@ -471,39 +455,25 @@ private:
             if (it == result.end()) return false;
             std::rotate(result.begin(), it, std::next(it)); return true;
         };
-        if (experience_allowed_) {
-            ++stats_.experience_probes;
-            if (const auto* e = experience_.probe(p.hash_key())) {
-                ++stats_.experience_hits;
-                if (promote(ExperienceCache::best_move(*e))) ++stats_.experience_move_first;
-            }
-        }
         if (promote(knowledge_move)) ++stats_.knowledge_promotions;
         // At introductory depths, horizon changes made previous-iteration
         // ordering worse on contact positions. Preserve the accepted ordering
         // through depth three; use iterative hints when going deeper.
         if (iteration_depth_ >= 4)
-            if (const auto* e = iteration_hints_.probe(p.hash_key())) promote(ExperienceCache::best_move(*e));
+            if (const auto* e = iteration_hints_.probe(p.hash_key())) promote(MoveHintCache::best_move(*e));
         if (promote(tt_move)) ++stats_.tt_move_first;
         promote(previous_root);
         return result;
-    }
-    void store_experience(const rules::Position& p, int depth, const std::string& move) {
-        if (!experience_allowed_) return;
-        ++stats_.experience_stores;
-        if (experience_.store(p.hash_key(), depth, move)) ++stats_.experience_replacements;
     }
 
     std::mt19937 rng_;
     Evaluator evaluator_;
     Stats stats_{};
     TranspositionTable tt_;
-    ExperienceCache experience_, iteration_hints_;
+    MoveHintCache iteration_hints_;
     PositionKnowledge position_knowledge_;
-    bool experience_enabled_ = false;
     bool position_knowledge_enabled_ = true;
     bool quiescence_enabled_ = true;
-    bool experience_allowed_ = false;
     bool board_scores_ = false;
     rules::Color root_ = rules::Color::Black;
     int iteration_depth_ = 0;
