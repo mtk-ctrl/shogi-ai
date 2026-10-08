@@ -111,7 +111,7 @@ def direct_research_line():
         knowledge.write_text(
             "# position-knowledge-v1-active\n" +
             sf + "\t2g2f\tresearch-test\t1\t60000\t6\t10000\tcp\t100\t"
-            "\tresearch_decision\ttest-study\t2g2f 8c8d 7g7f 3c3d\n", encoding="utf-8")
+            "\tresearch_decision\ttest-study\t2g2f 8c8d 7g7f 3c3d\t-\n", encoding="utf-8")
         u = Usi()
         try:
             u.send("setoption name PositionKnowledgeFile value " + str(knowledge))
@@ -158,10 +158,12 @@ def adopted_real_snapshot():
     source = Path(__file__).resolve().parents[1] / "position-knowledge-v1.tsv"
     rows = [line.split("\t") for line in source.read_text(encoding="utf-8").splitlines()
             if line and not line.startswith("#")]
-    adopted = [row for row in rows if len(row) == 13 and row[10] == "research_decision"]
+    adopted = [row for row in rows if len(row) == 14 and row[10] == "research_decision"]
     assert adopted and len(adopted) == len(rows), (len(adopted), len(rows))
     key, studied = adopted[0][0], adopted[0][1]
     pv = adopted[0][12].split()
+    history = adopted[0][13].split() if adopted[0][13] != "-" else []
+    command = "position startpos" + (" moves " + " ".join(history) if history else "")
     assert pv[0] == studied and len(pv) >= 3
     u = Usi()
     try:
@@ -169,16 +171,21 @@ def adopted_real_snapshot():
         _, ready = u.until("readyok")
         assert any(f"loaded {len(rows)} positions" in x for x in ready), ready
         u.send("usinewgame")
-        u.send("position sfen " + key + " 1")
+        u.send(command)
         u.send("go depth 1")
         best, lines = u.until("bestmove ")
         assert best == "bestmove " + studied, (best, lines)
         assert any("research_decision" in x for x in lines), lines
-        u.send("position sfen " + key + " 1 moves " + " ".join(pv[:2]))
+        u.send("position startpos moves " + " ".join(history + pv[:2]))
         u.send("go depth 1")
         best, lines = u.until("bestmove ")
         assert best == "bestmove " + pv[2], (best, lines)
         assert any("research_decision" in x and "step 3 " in x for x in lines), lines
+        # Matching board without its original arrival history cannot force a study.
+        u.send("position sfen " + key + " 1")
+        u.send("go depth 1")
+        _, lines = u.until("bestmove ")
+        assert not any("research_decision" in x for x in lines), lines
     finally:
         u.close()
 
