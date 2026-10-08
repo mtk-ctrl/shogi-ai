@@ -1,0 +1,142 @@
+name: A/B 1000 Blunder Long Research
+on:
+  workflow_dispatch:
+    inputs:
+      source_run:
+        description: "Source engine-match run"
+        required: true
+        default: "37695622423"
+        type: string
+      candidates:
+        description: "Number of candidate positions"
+        required: true
+        default: "40"
+        type: string
+      research_ms:
+        description: "Long search per position (ms)"
+        required: true
+        default: "3000000"
+        type: string
+      lanes:
+        description: "Parallel research lanes"
+        required: true
+        default: "20"
+        type: string
+permissions:
+  contents: read
+  actions: read
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validate and download source played-move archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_RUN: ${{ inputs.source_run }}
+          CANDIDATES: ${{ inputs.candidates }}
+          LANES: ${{ inputs.lanes }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os
+          c=int(os.environ["CANDIDATES"]); l=int(os.environ["LANES"])
+          assert 2 <= c <= 100 and c % 2 == 0
+          assert 1 <= l <= 20 and l <= c
+          PY
+          mkdir source
+          gh run download "$SOURCE_RUN" -n "played-move-archive-$SOURCE_RUN" -D source
+          python3 tools/research/research_ab1000_blunders.py extract --input source --output candidates.jsonl --limit "$CANDIDATES"
+      - id: plan
+        env:
+          LANES: ${{ inputs.lanes }}
+        run: |
+          python3 - <<'PY'
+          import json,os
+          n=int(os.environ["LANES"])
+          with open(os.environ["GITHUB_OUTPUT"],"a") as f:
+              f.write("matrix="+json.dumps({"lane":list(range(n))},separators=(",",":"))+"\n")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ab1000-long-research-candidates-${{ github.run_id }}
+          path: candidates.jsonl
+          if-no-files-found: error
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          mkdir -p build
+          python3 scripts/build.py --output build/kumoji
+          test -s position-knowledge-v1.tsv
+          cp position-knowledge-v1.tsv build/position-knowledge-v1.tsv
+          sha256sum build/kumoji build/position-knowledge-v1.tsv
+      - run: tar -czf engine.tgz build/kumoji build/position-knowledge-v1.tsv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ab1000-long-research-engine-${{ github.run_id }}
+          path: engine.tgz
+          if-no-files-found: error
+  research:
+    needs: [plan, build]
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 115
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: ab1000-long-research-candidates-${{ github.run_id }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: ab1000-long-research-engine-${{ github.run_id }}
+      - run: tar -xzf engine.tgz
+      - name: Long research
+        env:
+          LANE: ${{ matrix.lane }}
+          LANES: ${{ inputs.lanes }}
+          RESEARCH_MS: ${{ inputs.research_ms }}
+        run: |
+          python3 tools/research/research_ab1000_blunders.py research --engine build/kumoji --knowledge build/position-knowledge-v1.tsv --candidates candidates.jsonl --lane "$LANE" --lanes "$LANES" --ms "$RESEARCH_MS" --output "result-$LANE.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ab1000-long-research-result-${{ github.run_id }}-${{ matrix.lane }}
+          path: result-${{ matrix.lane }}.json
+          if-no-files-found: error
+  aggregate:
+    needs: research
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: ab1000-long-research-result-${{ github.run_id }}-*
+          path: results
+          merge-multiple: true
+      - name: Aggregate
+        run: |
+          python3 - <<'PY'
+          import glob,json
+          rows=[]
+          for p in glob.glob("results/result-*.json"): rows += json.load(open(p))["results"]
+          changed=[x for x in rows if not x["same_as_original"]]
+          by={"A":0,"B":0}
+          for x in changed: by[x["engine"]]+=1
+          out={"positions":len(rows),"long_bestmove_changed":len(changed),"unchanged":len(rows)-len(changed),"changed_by_source_engine":by,"results":rows}
+          json.dump(out,open("aggregate.json","w"),ensure_ascii=False,indent=2)
+          print(json.dumps({k:v for k,v in out.items() if k!="results"},ensure_ascii=False))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ab1000-long-research-summary-${{ github.run_id }}
+          path: aggregate.json
+          if-no-files-found: error
