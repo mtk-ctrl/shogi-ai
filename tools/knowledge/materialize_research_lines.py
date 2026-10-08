@@ -51,7 +51,7 @@ def main():
                 and isinstance(info.get("elapsed_ms"), (int, float))
                 and info["elapsed_ms"] >= 59000):
             raise SystemExit(f"not a complete sixty-second study: {key}")
-        board = shogi.Board(r["sfen"])
+        board = shogi.Board(key + " 1")
         if " ".join(board.sfen().split()[:3]) != key:
             raise SystemExit(f"research key mismatch: {key}")
         for i, m in enumerate(pv):
