@@ -57,6 +57,7 @@ public:
     bool set_usi(const std::string& command, std::string& error);
     static std::string start_sfen();
     std::string sfen() const;
+    std::vector<std::string> played_moves() const; // ordered USI moves owned by the rules layer
     Snapshot snapshot() const;
     Color turn() const;
     std::vector<std::string> legal_moves() const;
