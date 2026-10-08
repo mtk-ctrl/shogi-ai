@@ -32,6 +32,12 @@ def main():
     count = 0
     minimum = 999
     for line in a.snapshot.read_text(encoding="utf-8").splitlines():
+        if line.startswith("# mode=move_order_hint"):
+            lines.append("# mode=research_decision (adopted long-search results)")
+            continue
+        if line.startswith("# columns:"):
+            lines.append("# columns: position_key<TAB>selected_move<TAB>knowledge_version<TAB>evidence_count<TAB>research_ms<TAB>research_depth<TAB>research_nodes<TAB>score_kind<TAB>score_value<TAB>stable_ms<TAB>mode<TAB>research_id<TAB>research_pv")
+            continue
         if not line or line.startswith("#"):
             lines.append(line)
             continue
@@ -83,6 +89,7 @@ def main():
         "adopted": count, "minimum_pv_plies": minimum,
         "policy": "Only previously adopted, non-disputed studies; legal completed research PV.",
     }
+    manifest["policy"] = "Adopted long-search positions are direct decisions with validated saved PV; new candidates are never auto-promoted."
     manifest["output_sha256"] = sha(a.snapshot)
     a.manifest.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(manifest["research_lines"], ensure_ascii=False))
