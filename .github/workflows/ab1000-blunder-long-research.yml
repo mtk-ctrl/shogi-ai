@@ -1,5 +1,9 @@
 name: A/B 1000 Blunder Long Research
 on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/ab1000-long-research-request.json"
   workflow_dispatch:
     inputs:
       source_run:
@@ -36,9 +40,9 @@ jobs:
       - name: Validate and download source played-move archive
         env:
           GH_TOKEN: ${{ github.token }}
-          SOURCE_RUN: ${{ inputs.source_run }}
-          CANDIDATES: ${{ inputs.candidates }}
-          LANES: ${{ inputs.lanes }}
+          SOURCE_RUN: ${{ inputs.source_run || '37695622423' }}
+          CANDIDATES: ${{ inputs.candidates || '40' }}
+          LANES: ${{ inputs.lanes || '20' }}
         run: |
           set -euo pipefail
           python3 scripts/check_match_workflows.py
@@ -53,7 +57,7 @@ jobs:
           python3 tools/research/research_ab1000_blunders.py extract --input source --output candidates.jsonl --limit "$CANDIDATES"
       - id: plan
         env:
-          LANES: ${{ inputs.lanes }}
+          LANES: ${{ inputs.lanes || '20' }}
         run: |
           python3 - <<'PY'
           import json,os
@@ -103,8 +107,8 @@ jobs:
       - name: Long research
         env:
           LANE: ${{ matrix.lane }}
-          LANES: ${{ inputs.lanes }}
-          RESEARCH_MS: ${{ inputs.research_ms }}
+          LANES: ${{ inputs.lanes || '20' }}
+          RESEARCH_MS: ${{ inputs.research_ms || '3000000' }}
         run: |
           python3 tools/research/research_ab1000_blunders.py research --engine build/kumoji --knowledge build/position-knowledge-v1.tsv --candidates candidates.jsonl --lane "$LANE" --lanes "$LANES" --ms "$RESEARCH_MS" --output "result-$LANE.json"
       - uses: actions/upload-artifact@v4
