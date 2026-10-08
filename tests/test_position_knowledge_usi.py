@@ -151,8 +151,40 @@ def direct_research_line():
         finally:
             u.close()
 
+
+def adopted_real_snapshot():
+    # Exercise a real adopted 60-second research position, not only the
+    # hand-crafted start-position fixture above.
+    source = Path(__file__).resolve().parents[1] / "position-knowledge-v1.tsv"
+    rows = [line.split("\t") for line in source.read_text(encoding="utf-8").splitlines()
+            if line and not line.startswith("#")]
+    adopted = [row for row in rows if len(row) == 13 and row[10] == "research_decision"]
+    assert adopted and len(adopted) == len(rows), (len(adopted), len(rows))
+    key, studied = adopted[0][0], adopted[0][1]
+    pv = adopted[0][12].split()
+    assert pv[0] == studied and len(pv) >= 3
+    u = Usi()
+    try:
+        u.send("isready")
+        _, ready = u.until("readyok")
+        assert any(f"loaded {len(rows)} positions" in x for x in ready), ready
+        u.send("usinewgame")
+        u.send("position sfen " + key + " 1")
+        u.send("go depth 1")
+        best, lines = u.until("bestmove ")
+        assert best == "bestmove " + studied, (best, lines)
+        assert any("research_decision" in x for x in lines), lines
+        u.send("position sfen " + key + " 1 moves " + " ".join(pv[:2]))
+        u.send("go depth 1")
+        best, lines = u.until("bestmove ")
+        assert best == "bestmove " + pv[2], (best, lines)
+        assert any("research_decision" in x and "step 3 " in x for x in lines), lines
+    finally:
+        u.close()
+
 run_once(True)
 run_once(False)
 embedded_default_fallback()
 direct_research_line()
-print("PASS position knowledge USI load/probe/order telemetry and embedded fallback")
+adopted_real_snapshot()
+print("PASS position knowledge USI load/probe/order, real PV adoption and fallback")
