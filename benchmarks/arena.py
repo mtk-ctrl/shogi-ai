@@ -64,19 +64,21 @@ SEARCH_STAT_NAMES = (
     "tt_exact_hits", "tt_bound_cutoffs", "tt_stores", "tt_replacements",
     "tt_move_first", "tt_disabled_repetition",
     "knowledge_probes", "knowledge_hits", "knowledge_promotions",
-    "knowledge_disabled_repetition",
+    "knowledge_direct_choices", "knowledge_disabled_repetition",
     "qnodes", "qcutoffs", "qlimit_leaves",
 )
 
 USI_INFO_INTEGER_NAMES = (
     "depth", "seldepth", "time", "nodes", "nps", "hashfull", "multipv",
+    "knowledge_research_ms", "knowledge_research_depth", "knowledge_research_nodes",
 )
 
 PER_MOVE_SEARCH_FIELDS = (
     "depth", "seldepth", "time", "nodes", "nps",
     "full_nodes", "cutoffs", "tt_probes", "tt_hits",
     "knowledge_probes", "knowledge_hits", "knowledge_promotions",
-    "qnodes", "qcutoffs",
+    "knowledge_direct_choices", "knowledge_research_ms", "knowledge_research_depth",
+    "knowledge_research_nodes", "qnodes", "qcutoffs",
 )
 
 
