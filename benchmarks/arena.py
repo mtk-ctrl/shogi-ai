@@ -127,6 +127,14 @@ def parse_info_line(line):
                 info["long_think_reason"] = parts[parts.index("reason") + 1]
             except IndexError:
                 pass
+    if len(parts) >= 3 and parts[1:3] == ["string", "research_decision"]:
+        if "source" in parts:
+            try: info["research_decision_source"] = parts[parts.index("source") + 1]
+            except IndexError: pass
+        for name in ("step", "research_ms"):
+            if name in parts:
+                try: info["research_decision_" + name] = int(parts[parts.index(name) + 1])
+                except (IndexError, ValueError): pass
     return info
 
 
@@ -157,6 +165,9 @@ def compact_search_telemetry(info, side_to_move):
     if info.get("score_upperbound"):
         out["score_upperbound"] = True
     for name in ("long_think_used", "long_think_reason", "long_think_base_ms", "long_think_max_ms"):
+        if name in info:
+            out[name] = info[name]
+    for name in ("research_decision_source", "research_decision_step", "research_decision_research_ms"):
         if name in info:
             out[name] = info[name]
     return out
@@ -377,6 +388,7 @@ def search_summary(engine):
     if summary.get("knowledge_probes_total"):
         summary["knowledge_hit_rate"] = (
             summary.get("knowledge_hits_total", 0) / summary["knowledge_probes_total"])
+    summary["research_direct_choices"] = sum(1 for row in engine.search_stats if "research_decision_source" in row)
     long_rows = [row for row in rows if "long_think_used" in row]
     if long_rows:
         summary["long_think_moves"] = len(long_rows)
