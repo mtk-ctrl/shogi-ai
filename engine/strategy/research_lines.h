@@ -28,7 +28,7 @@ public:
             if(t2==std::string::npos || line.find('\t',t2+1)!=std::string::npos) {lines_.clear();return false;}
             const std::string key=line.substr(0,t1);
             const std::string source=line.substr(t2+1);
-            std::istringstream is(line.substr(t1+1));
+            std::istringstream is(line.substr(t1+1,t2-t1-1));
             ResearchLine entry{source,{}};
             std::string move;
             while (is>>move) entry.pv.push_back(move);
