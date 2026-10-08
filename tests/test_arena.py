@@ -71,6 +71,11 @@ assert black_view["score_black_cp"] == -123
 assert white_view["score_black_cp"] == 123
 assert black_view["tt_probes"] == 100
 
+origin = parse_info_line("info string research_decision source ab1000-drop-01 step 3 research_ms 2999991")
+assert compact_search_telemetry(origin, shogi.BLACK)["research_decision_source"] == "ab1000-drop-01"
+assert compact_search_telemetry(origin, shogi.BLACK)["research_decision_step"] == 3
+assert compact_search_telemetry(origin, shogi.BLACK)["research_decision_research_ms"] == 2999991
+
 mate = parse_info_line("info depth 5 score mate -3 nodes 99 pv 5a5b")
 assert compact_search_telemetry(mate, shogi.WHITE)["score_black_mate"] == 3
 
