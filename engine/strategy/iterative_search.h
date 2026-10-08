@@ -84,6 +84,10 @@ public:
     bool load_position_knowledge(const std::string& path) { return position_knowledge_.load(path); }
     void clear_position_knowledge() { position_knowledge_.clear(); }
     std::size_t position_knowledge_size() const { return position_knowledge_.size(); }
+    const PositionKnowledge::Entry* research_knowledge(const rules::Position& position) const {
+        if (!position_knowledge_enabled_ || position.has_repeated_history()) return nullptr;
+        return position_knowledge_.probe(position);
+    }
     void set_quiescence_enabled(bool enabled) { quiescence_enabled_ = enabled; }
     const Stats& last_stats() const { return stats_; }
 
