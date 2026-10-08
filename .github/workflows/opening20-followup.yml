@@ -78,6 +78,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      # gh needs a checked-out repository to resolve the default context.
+      - uses: actions/checkout@v5
       - name: Download new followup results
         uses: actions/download-artifact@v4
         with:
