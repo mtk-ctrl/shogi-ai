@@ -109,7 +109,10 @@ inline PhaseDiagnostics diagnose_phase(const rules::Snapshot& s) {
         }
         if (attacks.nonking[0][sq] && attacks.nonking[1][sq]) ++contested;
     }
-    out.battle=bound100(11*hand_pressure+7*occupied_under_attack+2*contested);
+    // The first 96-game sample saturated battle by move 40 (median 100).
+    // Reduced coefficients keep bishop trades from overwhelming this scale;
+    // these are still unadopted diagnostic hypotheses.
+    out.battle=bound100(4*hand_pressure+3*occupied_under_attack+contested);
     out.invasion=bound100(16*promoted+9*enemy_camp+2*deep_advance);
 
     int king_risk=0;
