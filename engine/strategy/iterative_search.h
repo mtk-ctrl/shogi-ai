@@ -63,6 +63,7 @@ public:
     struct Stats : BasicAlphaBeta3TT<Evaluator>::Stats {
         std::uint64_t qnodes = 0, qcutoffs = 0, qlimit_leaves = 0;
         std::uint64_t knowledge_probes = 0, knowledge_hits = 0, knowledge_promotions = 0;
+        std::uint64_t knowledge_direct_choices = 0;
         std::uint64_t knowledge_research_ms = 0, knowledge_research_nodes = 0, knowledge_stable_ms = 0;
         int knowledge_research_depth = 0, knowledge_score_value = 0;
         std::string knowledge_score_kind;
@@ -81,6 +82,10 @@ public:
     void set_seed(unsigned seed) { rng_.seed(seed); }
     void set_evaluator(Evaluator e) { evaluator_ = e; }
     void set_position_knowledge_enabled(bool enabled) { position_knowledge_enabled_ = enabled; }
+    // Experimental only: 0 keeps the adopted hint-only behavior.
+    void set_research_decision_min_minutes(int minutes) {
+        research_decision_min_minutes_ = std::clamp(minutes, 0, 10000);
+    }
     bool load_position_knowledge(const std::string& path) { return position_knowledge_.load(path); }
     void clear_position_knowledge() { position_knowledge_.clear(); }
     std::size_t position_knowledge_size() const { return position_knowledge_.size(); }
@@ -130,6 +135,20 @@ public:
                     }
                 }
             }
+        }
+        // Experimental research decision. The hint is already checked for legality
+        // and excluded for repeated history. Do not import the old score.
+        // This prototype has no full arrival-history identity in its snapshot,
+        // so it is NOT eligible for production adoption without that check.
+        if (!root_knowledge_move.empty() && research_decision_min_minutes_ > 0
+            && stats_.knowledge_research_depth > 0
+            && stats_.knowledge_research_nodes > 0
+            && stats_.knowledge_research_ms >=
+                static_cast<std::uint64_t>(research_decision_min_minutes_) * 60000ULL) {
+            result.move = root_knowledge_move;
+            result.pv = {root_knowledge_move};
+            ++stats_.knowledge_direct_choices;
+            return result;
         }
         // A deadline/stop may arrive before depth one finishes. Never return an
         // unsearched partial best score or an illegal move in that case.
@@ -482,6 +501,7 @@ private:
     MoveHintCache iteration_hints_;
     PositionKnowledge position_knowledge_;
     bool position_knowledge_enabled_ = true;
+    int research_decision_min_minutes_ = 0;
     bool quiescence_enabled_ = true;
     bool board_scores_ = false;
     rules::Color root_ = rules::Color::Black;
