@@ -1,0 +1,135 @@
+{
+  "schema": "relative-game-stage-v1",
+  "generated_date": "2026-10-08",
+  "source_run": "https://github.com/mtk-ctrl/shogi-ai/actions/runs/37773416519",
+  "target": "100 * current ply / actual final ply",
+  "validation": "five-fold group split by entire game; equal weight per game; future final ply not a feature",
+  "input": {
+    "sources": [
+      "benchmarks/results/2026-10-05_v019-mate-assist-50ms-100games.json",
+      "benchmarks/results/2026-10-05_v019-mate-assist-50ms-100games-run2.json"
+    ],
+    "raw_games": 200,
+    "excluded_before_dedup": {
+      "draw": 6,
+      "entering_king": 8
+    },
+    "duplicate_eligible_games_removed": 20,
+    "unique_eligible_games": 166,
+    "positions": 2358,
+    "game_lengths": {
+      "min": 57,
+      "median": 120,
+      "max": 271
+    }
+  },
+  "models": {
+    "ply_only": {
+      "cv_game_mae": 12.947,
+      "mae_at_move_40": 9.242
+    },
+    "old_progress_calibrated": {
+      "cv_game_mae": 11.111,
+      "mae_at_move_40": 12.232
+    },
+    "development": {
+      "cv_game_mae": 14.409,
+      "mae_at_move_40": 13.108
+    },
+    "battle": {
+      "cv_game_mae": 13.96,
+      "mae_at_move_40": 18.527
+    },
+    "invasion": {
+      "cv_game_mae": 14.064,
+      "mae_at_move_40": 13.094
+    },
+    "king_threat": {
+      "cv_game_mae": 17.985,
+      "mae_at_move_40": 9.359
+    },
+    "hand_count": {
+      "cv_game_mae": 17.03,
+      "mae_at_move_40": 13.966
+    },
+    "hand_value": {
+      "cv_game_mae": 19.192,
+      "mae_at_move_40": 16.573
+    },
+    "cumulative_captures": {
+      "cv_game_mae": 14.668,
+      "mae_at_move_40": 10.703
+    },
+    "dev_and_hand": {
+      "cv_game_mae": 11.386,
+      "mae_at_move_40": 11.114
+    },
+    "four_phase": {
+      "cv_game_mae": 9.857,
+      "mae_at_move_40": 10.624
+    },
+    "four_plus_captures": {
+      "cv_game_mae": 9.74,
+      "mae_at_move_40": 10.167
+    },
+    "board_only_extended": {
+      "cv_game_mae": 9.769,
+      "mae_at_move_40": 10.393
+    },
+    "history_extended": {
+      "cv_game_mae": 9.716,
+      "mae_at_move_40": 10.065
+    },
+    "ply_plus_board": {
+      "cv_game_mae": 9.412,
+      "mae_at_move_40": 9.675
+    },
+    "old_progress_unfitted": {
+      "cv_game_mae": 10.251,
+      "mae_at_move_40": 12.969
+    }
+  },
+  "correlations_pooled": {
+    "ply": 0.8546,
+    "development": 0.8204,
+    "battle": 0.8324,
+    "invasion": 0.8397,
+    "king_threat": 0.7174,
+    "progress": 0.898,
+    "hand_count": 0.7465,
+    "hand_weight": 0.6771,
+    "hand_major": 0.2919,
+    "promoted": 0.7555,
+    "enemy_camp": 0.7665,
+    "frontline": 0.8213,
+    "board_nonking": -0.7465,
+    "cumulative_captures": 0.8235,
+    "cumulative_promotions": 0.807,
+    "cumulative_checks": 0.7284
+  },
+  "correlations_at_move40": {
+    "ply": 0,
+    "development": 0.1611,
+    "battle": -0.1091,
+    "invasion": 0.0898,
+    "king_threat": 0.1714,
+    "progress": 0.0289,
+    "hand_count": -0.076,
+    "hand_weight": -0.1037,
+    "hand_major": -0.1943,
+    "promoted": 0.0506,
+    "enemy_camp": 0.0969,
+    "frontline": 0.2226,
+    "board_nonking": 0.076,
+    "cumulative_captures": -0.086,
+    "cumulative_promotions": 0.076,
+    "cumulative_checks": 0.0218
+  },
+  "notes": [
+    "Draws and entering-king matches excluded wholly; exact duplicate games removed",
+    "Historical v0.0.19 matches only, not current v2.0.4; diverse engines or time controls not tested",
+    "Pooled correlations may mainly reflect move-number progression; same-40th-move correlation of current phase progress is 0.0289",
+    "Models tested on held-out entire games, but no independent engine-era holdout or statistical significance test",
+    "No adoption into production evaluation or search"
+  ]
+}
