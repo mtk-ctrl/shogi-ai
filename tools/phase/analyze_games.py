@@ -49,7 +49,7 @@ def select_games(details):
             excluded["entering_king"] += 1
             continue
         kept.append({"winner":game["winner"],"reason":game["reason"],
-                     "sfens":sfen_list})
+                     "sfens":sfen_list, "moves":moves})
     return kept, dict(excluded)
 
 def run_probe(binary, sfens):
