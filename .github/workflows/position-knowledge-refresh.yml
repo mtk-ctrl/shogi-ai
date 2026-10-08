@@ -58,6 +58,33 @@ jobs:
           mapfile -t STATUS_ARGS < <(printf '%s\n' "$ACCEPT_STATUS" | sed '/^$/d' | sed 's/^/--accept-status=/' )
           python3 tools/knowledge/materialize_position_knowledge.py             --input "build/knowledge-source/$ASSET"             --output position-knowledge-v1.tsv             --manifest position-knowledge-v1.manifest.json             --min-evidence "$MIN_EVIDENCE"             --source-label "$RELEASE_TAG/$ASSET"             "${STATUS_ARGS[@]}"
 
+      - name: Attach saved long-research lines to the adopted snapshot
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' > /tmp/research.env
+          import json,shlex
+          r=json.load(open(".github/position-knowledge-request.json",encoding="utf-8"))
+          print("RESEARCH_RUN="+shlex.quote(str(r.get("research_source_run",""))))
+          print("RESEARCH_ARTIFACT="+shlex.quote(str(r.get("research_source_artifact",""))))
+          print("RESEARCH_EXPECT="+shlex.quote(str(int(r.get("expected_research_lines",0)))))
+          PY
+          source /tmp/research.env
+          if [ -n "$RESEARCH_RUN" ]; then
+            test -n "$RESEARCH_ARTIFACT"
+            python3 -m pip install python-shogi==1.1.1
+            mkdir -p build/knowledge-research
+            gh run download "$RESEARCH_RUN" --repo "$GITHUB_REPOSITORY" \
+              --name "$RESEARCH_ARTIFACT" --dir build/knowledge-research
+            python3 tools/knowledge/materialize_research_lines.py \
+              --research build/knowledge-research/position-knowledge-candidates.jsonl \
+              --snapshot position-knowledge-v1.tsv \
+              --manifest position-knowledge-v1.manifest.json \
+              --source-label "actions/$RESEARCH_RUN/$RESEARCH_ARTIFACT" \
+              --expect "$RESEARCH_EXPECT"
+          fi
+
       - name: Commit adopted snapshot to request branch
         run: |
           set -euo pipefail

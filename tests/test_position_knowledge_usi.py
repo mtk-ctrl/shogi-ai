@@ -103,7 +103,56 @@ def embedded_default_fallback():
             u.close()
 
 
+
+def direct_research_line():
+    sf = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b -"
+    with tempfile.TemporaryDirectory() as td:
+        knowledge = Path(td) / "studied.tsv"
+        knowledge.write_text(
+            "# position-knowledge-v1-active\n" +
+            sf + "\t2g2f\tresearch-test\t1\t60000\t6\t10000\tcp\t100\t"
+            "\tresearch_decision\ttest-study\t2g2f 8c8d 7g7f 3c3d\n", encoding="utf-8")
+        u = Usi()
+        try:
+            u.send("setoption name PositionKnowledgeFile value " + str(knowledge))
+            u.send("isready")
+            _, ready = u.until("readyok")
+            assert any("loaded 1 positions" in x for x in ready), ready
+            u.send("usinewgame")
+            u.send("position startpos")
+            u.send("go depth 1")
+            best, logs = u.until("bestmove ")
+            assert best == "bestmove 2g2f", logs
+            assert any("research_decision id test-study step 1 total 4" in x for x in logs), logs
+            u.send("position startpos moves 2g2f 8c8d")
+            u.send("go depth 1")
+            best, logs = u.until("bestmove ")
+            assert best == "bestmove 7g7f", logs
+            assert any("research_decision id test-study step 3 total 4" in x for x in logs), logs
+            u.send("position startpos moves 2g2f 3c3d")
+            u.send("go depth 1")
+            _, logs = u.until("bestmove ")
+            assert not any("research_decision" in x for x in logs), logs
+            u.send("position startpos")
+            u.send("go searchmoves 7g7f depth 1")
+            best, logs = u.until("bestmove ")
+            assert best == "bestmove 7g7f", logs
+            assert not any("research_decision" in x for x in logs), logs
+            u.send("setoption name PositionKnowledge value false")
+            u.send("position startpos")
+            u.send("go depth 1")
+            _, logs = u.until("bestmove ")
+            assert not any("research_decision" in x for x in logs), logs
+            u.send("setoption name PositionKnowledge value true")
+            u.send("position startpos")
+            u.send("go depth 1")
+            _, logs = u.until("bestmove ")
+            assert any("research_decision" in x for x in logs), logs
+        finally:
+            u.close()
+
 run_once(True)
 run_once(False)
 embedded_default_fallback()
+direct_research_line()
 print("PASS position knowledge USI load/probe/order telemetry and embedded fallback")

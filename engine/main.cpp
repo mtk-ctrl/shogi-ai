@@ -386,7 +386,7 @@ int main() {
                 } catch (const std::exception& error) {
                     if (!active->suppress.load()) emit("info string search error " + std::string(error.what()) + "\n");
                 }
-                if (!result.has_score) info(result);
+                if (!result.has_score && !research_forced) info(result);
                 if (!mate_assist_forced && !research_forced && !active->suppress.load()) {
                     const auto& stats = strategy.last_stats();
                     std::ostringstream out;
