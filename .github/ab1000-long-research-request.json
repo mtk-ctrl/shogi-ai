@@ -1,0 +1,7 @@
+{
+  "request_id": "2026-10-08-ab1000-eval-drop-long-research",
+  "source_run": 37695622423,
+  "candidates": 40,
+  "research_ms": 3000000,
+  "lanes": 20
+}
