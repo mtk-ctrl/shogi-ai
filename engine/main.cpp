@@ -42,6 +42,7 @@ int main() {
     struct ActiveResearchLine {
         std::vector<std::string> source_moves;
         std::vector<std::string> variation;
+        std::vector<std::string> expected_positions;
         std::string research_id;
         std::uint64_t research_ms = 0;
     };
@@ -407,6 +408,9 @@ int main() {
                                 && std::equal(start.begin(),start.end(),played_path.begin())) {
                                 const auto step=played_path.size()-start.size();
                                 if (step%2==0 && step<active.variation.size()
+                                    && step<active.expected_positions.size()
+                                    && active.expected_positions[step]
+                                        == shogi::strategy::PositionKnowledge::canonical_key(p)
                                     && std::equal(played_path.begin()+start.size(),played_path.end(),
                                                   active.variation.begin())) {
                                     proposed=active.variation[step];
@@ -429,8 +433,21 @@ int main() {
                                 research_id=line->research_id;
                                 prior_ms=entry->research_ms;
                                 step_index=0;
-                                active_research_line=ActiveResearchLine{played_path,line->pv,
-                                                                       research_id,prior_ms};
+                                // Validate all subsequent positions once at the root,
+                                // then require both exact moves AND exact position key.
+                                auto validation=p.clone();
+                                std::vector<std::string> keys{
+                                    shogi::strategy::PositionKnowledge::canonical_key(validation)};
+                                bool fully_legal=true;
+                                for (const auto& move:line->pv) {
+                                    std::string error;
+                                    if (!validation.play(move,error)) {fully_legal=false;break;}
+                                    keys.push_back(shogi::strategy::PositionKnowledge::canonical_key(validation));
+                                }
+                                if (fully_legal) {
+                                    active_research_line=ActiveResearchLine{
+                                        played_path,line->pv,std::move(keys),research_id,prior_ms};
+                                } else proposed.clear();
                             }
                         }
                         if (!proposed.empty() && is_candidate(proposed)) {
