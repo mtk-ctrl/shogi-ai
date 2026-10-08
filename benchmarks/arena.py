@@ -114,6 +114,23 @@ def parse_info_line(line):
     if "pv" in parts:
         i = parts.index("pv")
         info["pv"] = parts[i + 1:i + 9]
+    if len(parts) >= 3 and parts[1:3] == ["string", "research_decision"]:
+        try:
+            i = parts.index("id")
+            research_id = parts[i + 1]
+            step = int(parts[parts.index("step") + 1])
+            total = int(parts[parts.index("total") + 1])
+            chosen = parts[parts.index("move") + 1]
+            if research_id and 1 <= step <= total and chosen:
+                info.update({
+                    "decision_source": "research",
+                    "research_id": research_id,
+                    "research_step": step,
+                    "research_total": total,
+                    "research_move": chosen,
+                })
+        except (ValueError, IndexError):
+            pass
     if len(parts) >= 3 and parts[1:3] == ["string", "long_think"]:
         for name in ("used", "base_ms", "max_ms"):
             if name in parts:
@@ -156,6 +173,9 @@ def compact_search_telemetry(info, side_to_move):
         out["score_lowerbound"] = True
     if info.get("score_upperbound"):
         out["score_upperbound"] = True
+    for name in ("decision_source", "research_id", "research_step", "research_total", "research_move"):
+        if name in info:
+            out[name] = info[name]
     for name in ("long_think_used", "long_think_reason", "long_think_base_ms", "long_think_max_ms"):
         if name in info:
             out[name] = info[name]

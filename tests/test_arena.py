@@ -71,6 +71,16 @@ assert black_view["score_black_cp"] == -123
 assert white_view["score_black_cp"] == 123
 assert black_view["tt_probes"] == 100
 
+research_info = parse_info_line(
+    "info string research_decision id pk-001-test step 3 total 8 move 7g7f"
+)
+research_record = compact_search_telemetry(research_info, shogi.BLACK)
+assert research_record == {
+    "decision_source": "research", "research_id": "pk-001-test",
+    "research_step": 3, "research_total": 8, "research_move": "7g7f",
+}, research_record
+assert "score_cp_stm" not in research_record and "score_mate_stm" not in research_record
+
 mate = parse_info_line("info depth 5 score mate -3 nodes 99 pv 5a5b")
 assert compact_search_telemetry(mate, shogi.WHITE)["score_black_mate"] == 3
 

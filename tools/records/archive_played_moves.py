@@ -18,6 +18,7 @@ SEARCH_FIELDS = (
     "knowledge_probes", "knowledge_hits", "knowledge_promotions",
     "knowledge_disabled_repetition", "qnodes", "qcutoffs",
     "long_think_used", "long_think_reason", "long_think_base_ms", "long_think_max_ms",
+    "decision_source", "research_id", "research_step", "research_total", "research_move",
 )
 META_FIELDS = (
     "telemetry_schema_version", "engine_a", "engine_b", "sha256_a", "sha256_b",
