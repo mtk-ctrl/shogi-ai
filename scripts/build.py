@@ -29,6 +29,8 @@ args = parser.parse_args()
 source = prepare(args.source)
 out = (ROOT / args.output).resolve()
 out.parent.mkdir(parents=True, exist_ok=True)
+generated = ROOT / "build/generated"
+generated.mkdir(parents=True, exist_ok=True)
 
 # Adopted position knowledge is also part of the standalone engine contract.
 # Normal host matches may provide an external snapshot for explicit identity
