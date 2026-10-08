@@ -1,6 +1,7 @@
 #include "rules/position.h"
 #include "strategy/iterative_search.h"
 #include "strategy/game_stage.h"
+#include "strategy/research_lines.h"
 #include "strategy/mate_search.h"
 #include "strategy/mate_assist.h"
 #include "strategy/search_limits.h"
@@ -15,6 +16,7 @@
 #include <thread>
 #include <iostream>
 #include <sstream>
+#include <optional>
 #include <string>
 
 
@@ -32,6 +34,18 @@ int main() {
     bool entering_king = true;
     bool position_knowledge_enabled = true;
     bool position_knowledge_loaded = false;
+    shogi::strategy::ResearchLines research_lines;
+    bool research_lines_loaded = false;
+    bool research_profile_clean = true;
+    int research_decision_min_minutes = 30; // trial setting, not yet formally adopted
+    std::string research_lines_file = "research/longthink-28-principal-variations.tsv";
+    struct ActiveResearchLine {
+        std::vector<std::string> source_moves;
+        std::vector<std::string> variation;
+        std::string research_id;
+        std::uint64_t research_ms = 0;
+    };
+    std::optional<ActiveResearchLine> active_research_line;
     unsigned random_seed = 5489u;
     std::string position_knowledge_file = "position-knowledge-v1.tsv";
     int default_depth = 3;
@@ -80,7 +94,16 @@ int main() {
         position_knowledge_loaded = true;
     };
 
-    auto bestmove = [&](const std::string& move) { emit("bestmove " + move + "\n"); };
+    auto ensure_research_lines_loaded = [&]() {
+        if (research_lines_loaded || !position_knowledge_enabled) return;
+        if (research_lines.load(research_lines_file)) {
+            emit("info string research_lines loaded " + std::to_string(research_lines.size()) + " positions\\n");
+        } else {
+            emit("info string research_lines unavailable file " + research_lines_file + "\\n");
+        }
+        research_lines_loaded = true;
+    };
+    auto bestmove = [&](const std::string& move) { emit("bestmove " + move + "\\n"); };
 
     while (std::getline(std::cin, line)) {
         std::istringstream input(line);
@@ -96,6 +119,8 @@ int main() {
                       << "option name Quiescence type check default true\n"
                       << "option name MateAssist type check default true\n"
                       << "option name StageAwareMateAssist type check default false\n"
+                      << "option name ResearchDecisionMinMinutes type spin default 30 min 0 max 10000\n"
+                      << "option name ResearchLinesFile type string default research/longthink-28-principal-variations.tsv\n"
                       << "option name AdaptiveLongThink type check default true\n"
                       << "option name RandomSeed type spin default 5489 min 0 max 2147483647\n"
                       << "option name EvalProfile type combo default features var features var material\n"
@@ -129,10 +154,13 @@ int main() {
         } else if (command == "isready") {
             if (!session) {
                 ensure_position_knowledge_loaded();
+                ensure_research_lines_loaded();
             }
             emit("readyok\n");
         } else if (command == "usinewgame") {
             ensure_position_knowledge_loaded();
+            ensure_research_lines_loaded();
+            active_research_line.reset();
             strategy.set_seed(random_seed);
             long_think_used = 0;
             previous_root_score_valid = false;
@@ -142,9 +170,13 @@ int main() {
         } else if (command == "position") {
             std::string error;
             valid_position = position.set_usi(line, error);
-            if (!valid_position) std::cout << "info string " << error << '\n' << std::flush;
+            if (!valid_position) {
+                active_research_line.reset();
+                std::cout << "info string " << error << '\n' << std::flush;
+            }
         } else if (command == "go") {
             ensure_position_knowledge_loaded();
+            ensure_research_lines_loaded();
             std::vector<std::string> tokens, allowed;
             std::string token;
             while (input >> token) tokens.push_back(token);
@@ -282,8 +314,11 @@ int main() {
                 // "go movetime 1000" ceiling while continuing the same search.
                 active->control.hard_deadline_ns = started_ns + 990LL * 1000000;
             }
+            const auto played_path = position.played_moves();
             auto search_position = position.clone();
             active->worker = std::thread([&, active, started_ns, limits, skip_opening_mate,
+                                          played_path = std::move(played_path),
+                                          unrestricted = !restrict,
                                           candidates = std::move(candidates),
                                           p = std::move(search_position)]() mutable {
                 auto info = [&](const shogi::strategy::SearchResult& result) {
@@ -308,6 +343,7 @@ int main() {
                 shogi::strategy::SearchResult result;
                 result.move = candidates.front(); result.pv = {result.move};
                 bool mate_assist_forced = false;
+                bool research_direct = false;
                 try {
                     // Keep ordinary fixed-depth/node/ponder semantics unchanged.
                     // Timed play gets a small shared attack+defence mate budget
@@ -354,7 +390,67 @@ int main() {
                             }
                         }
                     }
-                    if (!mate_assist_forced) {
+                    if (!mate_assist_forced && unrestricted && !limits.ponder && !limits.infinite
+                        && position_knowledge_enabled && research_profile_clean
+                        && research_decision_min_minutes > 0 && research_lines_loaded
+                        && !p.has_repeated_history()) {
+                        const auto is_candidate = [&](const std::string& move) {
+                            return std::find(candidates.begin(),candidates.end(),move)!=candidates.end();
+                        };
+                        std::string proposed, research_id;
+                        std::uint64_t prior_ms=0;
+                        int step_index=0;
+                        if (active_research_line) {
+                            const auto& active=*active_research_line;
+                            const auto& start=active.source_moves;
+                            if (played_path.size()>=start.size()
+                                && std::equal(start.begin(),start.end(),played_path.begin())) {
+                                const auto step=played_path.size()-start.size();
+                                if (step%2==0 && step<active.variation.size()
+                                    && std::equal(played_path.begin()+start.size(),played_path.end(),
+                                                  active.variation.begin())) {
+                                    proposed=active.variation[step];
+                                    research_id=active.research_id;
+                                    prior_ms=active.research_ms;
+                                    step_index=static_cast<int>(step);
+                                }
+                            }
+                            if (proposed.empty()) active_research_line.reset();
+                        }
+                        if (proposed.empty()) {
+                            const auto* entry=strategy.research_knowledge(p);
+                            const auto* line=research_lines.probe(p);
+                            if (entry && line && !line->pv.empty()
+                                && entry->research_depth>0 && entry->research_nodes>0
+                                && entry->research_ms >=
+                                    static_cast<std::uint64_t>(research_decision_min_minutes)*60000ULL
+                                && line->pv[0]==entry->move) {
+                                proposed=line->pv[0];
+                                research_id=line->research_id;
+                                prior_ms=entry->research_ms;
+                                step_index=0;
+                                active_research_line=ActiveResearchLine{played_path,line->pv,
+                                                                       research_id,prior_ms};
+                            }
+                        }
+                        if (!proposed.empty() && is_candidate(proposed)) {
+                            result.move=proposed;
+                            result.pv={proposed};
+                            result.depth=0;
+                            result.has_score=false; // old research score is NOT a new search score
+                            research_direct=true;
+                            if (!active->suppress.load()) {
+                                emit("info string research_decision source " + research_id
+                                    + " step " + std::to_string(step_index+1)
+                                    + " research_ms " + std::to_string(prior_ms) + "\\n");
+                            }
+                        } else if (!proposed.empty()) {
+                            active_research_line.reset();
+                        }
+                    } else if (mate_assist_forced) {
+                        active_research_line.reset();
+                    }
+                    if (!mate_assist_forced && !research_direct) {
                         result = strategy.choose(p, limits.max_depth, active->control, candidates, info);
                         const auto reason = static_cast<shogi::strategy::LongThinkReason>(
                             active->control.long_think_reason.load(std::memory_order_relaxed));
@@ -381,7 +477,7 @@ int main() {
                     if (!active->suppress.load()) emit("info string search error " + std::string(error.what()) + "\n");
                 }
                 if (!result.has_score) info(result);
-                if (!mate_assist_forced && !active->suppress.load()) {
+                if (!mate_assist_forced && !research_direct && !active->suppress.load()) {
                     const auto& stats = strategy.last_stats();
                     std::ostringstream out;
                     out << "info nodes " << stats.nodes << " string cutoffs " << stats.cutoffs
@@ -433,6 +529,8 @@ int main() {
                         if (used == value.size() && depth >= 1 && depth <= 64) default_depth = depth;
                     } catch (...) {}
                 } else if (name == "Quiescence") {
+                    research_profile_clean=false;
+                    active_research_line.reset();
                     if (value == "true" || value == "false") {
                         quiescence_enabled = value == "true";
                         strategy.set_quiescence_enabled(quiescence_enabled);
@@ -441,6 +539,20 @@ int main() {
                     if (value == "true" || value == "false") mate_assist_enabled = value == "true";
                 } else if (name == "StageAwareMateAssist") {
                     if (value == "true" || value == "false") stage_aware_mate_assist = value == "true";
+                } else if (name == "ResearchDecisionMinMinutes") {
+                    try {
+                        size_t count=0;
+                        int v=std::stoi(value,&count);
+                        if(count==value.size() && v>=0 && v<=10000) research_decision_min_minutes=v;
+                        active_research_line.reset();
+                    } catch (...) {}
+                } else if (name == "ResearchLinesFile") {
+                    if (!value.empty() && value.find('\n')==std::string::npos
+                        && value.find('\r')==std::string::npos) {
+                        research_lines_file=value;
+                        research_lines_loaded=false;
+                        active_research_line.reset();
+                    }
                 } else if (name == "AdaptiveLongThink") {
                     if (value == "true" || value == "false")
                         adaptive_long_think_enabled = value == "true";
@@ -450,20 +562,26 @@ int main() {
                         position_knowledge_enabled = value == "true";
                         strategy.set_position_knowledge_enabled(position_knowledge_enabled);
                         if (position_knowledge_enabled) position_knowledge_loaded = false;
+                        active_research_line.reset();
                     }
                 } else if (name == "PositionKnowledgeFile") {
                     if (!value.empty() && value.find('\n') == std::string::npos && value.find('\r') == std::string::npos) {
                         position_knowledge_file = value;
                         strategy.clear_position_knowledge();
                         position_knowledge_loaded = false;
+                        active_research_line.reset();
                     }
                 } else if (name == "EvalProfile") {
+                    research_profile_clean=false;
+                    active_research_line.reset();
                     if (value == "features" || value == "material") {
                         material_profile = value == "material";
                         strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
                             ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
                     }
                 } else if (name == "EvalV2") {
+                    research_profile_clean=false;
+                    active_research_line.reset();
                     if (value == "true" || value == "false") {
                         evaluation_parameters.v2_enabled = value == "true";
                         strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
@@ -473,6 +591,8 @@ int main() {
                            || name == "EvalMaterialWeight" || name == "EvalInfluence" || name == "EvalPotential"
                            || name == "EvalCoordination" || name == "EvalHandPotential" || name == "EvalThreat"
                            || name == "EvalPositionalCap") {
+                    research_profile_clean=false;
+                    active_research_line.reset();
                     try {
                         std::size_t used = 0;
                         const int weight = std::stoi(value, &used);
