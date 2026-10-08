@@ -1,0 +1,12 @@
+{
+  "request_id": "opening20-followup-20261009-3",
+  "source_run": 37833560865,
+  "positions": [
+    "kumoji-160-006",
+    "kumoji-160-012",
+    "kumoji-160-019"
+  ],
+  "additional_minutes_per_position": 30,
+  "lanes": 3,
+  "conditions": "fixed original engine+knowledge; independent 30m search; no automatic knowledge adoption"
+}
