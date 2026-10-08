@@ -384,7 +384,13 @@ int main() {
                         << " knowledge_probes " << stats.knowledge_probes
                         << " knowledge_hits " << stats.knowledge_hits
                         << " knowledge_promotions " << stats.knowledge_promotions
-                        << " knowledge_disabled_repetition " << stats.knowledge_disabled_repetition << '\n';
+                        << " knowledge_disabled_repetition " << stats.knowledge_disabled_repetition
+                        << " knowledge_research_ms " << stats.knowledge_research_ms
+                        << " knowledge_research_depth " << stats.knowledge_research_depth
+                        << " knowledge_research_nodes " << stats.knowledge_research_nodes
+                        << " knowledge_stable_ms " << stats.knowledge_stable_ms
+                        << " knowledge_score_kind " << (stats.knowledge_score_kind.empty() ? "none" : stats.knowledge_score_kind)
+                        << " knowledge_score_value " << stats.knowledge_score_value << '\n';
                     emit(out.str());
                 }
                 { std::unique_lock<std::mutex> lock(active->mutex);
