@@ -14,7 +14,7 @@
     "status:disputed": 7
   },
   "output_file": "position-knowledge-v1.tsv",
-  "output_sha256": "18b461083e85060eb54b61d84ddee6aea1aaa6c014844df1644c5ccd53b96bcf",
+  "output_sha256": "9bc7a56dd95774142644aa5f772932c4cb4767aa697a8d75792c73c0695c6a3f",
   "policy": "Adopted long-search positions are direct decisions with validated saved PV; new candidates are never auto-promoted.",
   "research_lines": {
     "source": "actions/37671846680/v2-position-knowledge-research-37671846680",
