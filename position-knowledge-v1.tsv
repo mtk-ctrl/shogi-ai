@@ -1,6 +1,6 @@
 # position-knowledge-v1-active
-# mode=move_order_hint
-# columns: position_key<TAB>selected_move<TAB>knowledge_version<TAB>evidence_count
+# mode=research_decision (adopted long-search results)
+# columns: position_key<TAB>selected_move<TAB>knowledge_version<TAB>evidence_count<TAB>research_ms<TAB>research_depth<TAB>research_nodes<TAB>score_kind<TAB>score_value<TAB>stable_ms<TAB>mode<TAB>research_id<TAB>research_pv
 +B2g1g1+P+B/3s1s3/p1nkppn+L+L/3r5/Pp4p2/3P5/1P1KPPP2/2PS1S3/3+r2GNL w 3Pgnl2p	N*5e	candidate-37671846680	1	59991	5	3132380	cp	1246		research_decision	pk-034-6b0a183bcdff	N*5e 6g7g 6d7d 7g8h 7d7h 8h9g 6i6h
 +B2g1g1+P1/3s1s1+B1/p1nkppn+L+L/3r5/Pp4p2/3P5/1P1KPPP2/2PS1S3/3+r2GNL w 3Pgnl2p	N*5e	candidate-37671846680	1	59990	6	5609232	cp	1247		research_decision	pk-035-ec5ef1a66a47	N*5e 6g7g 6d7d 7g8h 7d7h 8h9g 6i6h
 +B2g1g1nl/3sks3/p2ppp1p1/2p3p1p/1n1r5/PS3L1PP/3PPPP2/1+b2KS1R1/L2G1G1NL b Pn2p	9a9b	candidate-37671846680	2	59991	5	3009619	cp	-724		research_decision	pk-004-3275cbaa97b2	9a9b 8e7g+ 8f7g 8h7g N*6f
