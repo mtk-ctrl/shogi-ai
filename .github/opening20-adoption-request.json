@@ -1,0 +1,10 @@
+{
+  "request_id": "owner-adopt-opening20-20261009",
+  "approved_positions": 20,
+  "source_run": 37833560865,
+  "expected_total_knowledge": 73,
+  "mode": "research_decision",
+  "source": "50-minute completed research",
+  "followup_3_positions": "independent additional research not yet substituted",
+  "explicit_owner_instruction": "2026-10-09 今回のを局面知識に保存しておいてください"
+}
