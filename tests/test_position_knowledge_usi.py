@@ -108,8 +108,8 @@ def research_direct_choice(research_ms, min_minutes, expected_direct, include_re
     start_key = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b -"
     with tempfile.TemporaryDirectory() as td:
         knowledge = Path(td) / "research.tsv"
-        extra = f"\\t{research_ms}\\t8\\t120000\\tcp\\t100\\t30000" if include_research else ""
-        knowledge.write_text(start_key + "\\t7g7f\\ttrial\\t1" + extra + "\\n", encoding="utf-8")
+        extra = f"\t{research_ms}\t8\t120000\tcp\t100\t30000" if include_research else ""
+        knowledge.write_text(start_key + "\t7g7f\ttrial\t1" + extra + "\n", encoding="utf-8")
         u = Usi()
         try:
             u.send("usi")
