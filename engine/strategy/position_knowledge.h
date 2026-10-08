@@ -8,11 +8,24 @@
 #include <string>
 #include <string_view>
 #include <unordered_map>
+#include <vector>
+#include <cstdint>
 
 namespace shogi::strategy {
 
 class PositionKnowledge {
 public:
+    struct Entry {
+        std::string move;
+        std::string knowledge_version;
+        std::uint64_t evidence_count = 0;
+        std::uint64_t research_ms = 0;
+        int research_depth = 0;
+        std::uint64_t research_nodes = 0;
+        std::string score_kind;
+        int score_value = 0;
+        std::uint64_t stable_ms = 0;
+    };
     bool load(const std::string& path) {
         std::ifstream input(path);
         if (input) return load_stream(input);
@@ -35,7 +48,7 @@ public:
     void clear() { moves_.clear(); }
     std::size_t size() const { return moves_.size(); }
 
-    const std::string* probe(const rules::Position& position) const {
+    const Entry* probe(const rules::Position& position) const {
         const auto key = canonical_key(position);
         const auto it = moves_.find(key);
         return it == moves_.end() ? nullptr : &it->second;
@@ -50,7 +63,7 @@ public:
 
 private:
     bool load_stream(std::istream& in) {
-        std::unordered_map<std::string, std::string> loaded;
+        std::unordered_map<std::string, Entry> loaded;
         std::string line;
         while (std::getline(in, line)) {
             if (line.empty() || line[0] == '#') continue;
@@ -59,19 +72,43 @@ private:
                 clear();
                 return false;
             }
-            const auto second = line.find('\t', first + 1);
-            const std::string key = line.substr(0, first);
-            const std::string move = line.substr(first + 1, second == std::string::npos
-                ? std::string::npos : second - first - 1);
-            if (key.empty() || move.empty()) {
+            std::vector<std::string> fields;
+            std::size_t start = 0;
+            while (true) {
+                const auto tab = line.find('\t', start);
+                fields.push_back(line.substr(start, tab == std::string::npos ? std::string::npos : tab - start));
+                if (tab == std::string::npos) break;
+                start = tab + 1;
+            }
+            if (fields.size() < 2 || fields[0].empty() || fields[1].empty()) {
                 clear();
                 return false;
             }
-            const auto [it, inserted] = loaded.emplace(key, move);
-            if (!inserted && it->second != move) {
+            Entry entry;
+            entry.move = fields[1];
+            if (fields.size() > 2) entry.knowledge_version = fields[2];
+            auto u64 = [&](std::size_t i) -> std::uint64_t {
+                if (i >= fields.size() || fields[i].empty()) return 0;
+                try { return std::stoull(fields[i]); } catch (...) { return 0; }
+            };
+            auto i32 = [&](std::size_t i) -> int {
+                if (i >= fields.size() || fields[i].empty()) return 0;
+                try { return std::stoi(fields[i]); } catch (...) { return 0; }
+            };
+            entry.evidence_count = u64(3);
+            entry.research_ms = u64(4);
+            entry.research_depth = i32(5);
+            entry.research_nodes = u64(6);
+            if (fields.size() > 7) entry.score_kind = fields[7];
+            entry.score_value = i32(8);
+            entry.stable_ms = u64(9);
+            const auto [it, inserted] = loaded.emplace(fields[0], entry);
+            if (!inserted && it->second.move != entry.move) {
                 clear();
                 return false;
             }
+            if (!inserted && entry.research_ms > it->second.research_ms)
+                it->second = entry;
         }
         if (loaded.empty()) {
             clear();
@@ -81,7 +118,7 @@ private:
         return true;
     }
 
-    std::unordered_map<std::string, std::string> moves_;
+    std::unordered_map<std::string, Entry> moves_;
 };
 
 } // namespace shogi::strategy
