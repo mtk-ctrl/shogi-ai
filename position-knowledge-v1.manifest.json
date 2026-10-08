@@ -7,20 +7,33 @@
     "unverified"
   ],
   "min_evidence": 1,
-  "adopted_positions": 53,
+  "adopted_positions": 73,
   "conflicting_positions_excluded": 0,
   "duplicate_same_move_records_collapsed": 0,
   "rejected": {
     "status:disputed": 7
   },
   "output_file": "position-knowledge-v1.tsv",
-  "output_sha256": "9bc7a56dd95774142644aa5f772932c4cb4767aa697a8d75792c73c0695c6a3f",
-  "policy": "Adopted long-search positions are direct decisions with validated saved PV; new candidates are never auto-promoted.",
+  "output_sha256": "e0a0eda8fef542a9984e3de91a508dcf8eeddf3b8e3070dacc625b15f1575fb5",
+  "policy": "Original 53 preserved. Owner expressly approved the additional 20 completed 50-minute opening studies as direct research decisions; future research is never auto-promoted.",
   "research_lines": {
     "source": "actions/37671846680/v2-position-knowledge-research-37671846680",
     "source_sha256": "54bb80c93902537d25c585aa9fe564a1ddd08220b6b10003d0e44fdb4661eb88",
     "adopted": 53,
     "minimum_pv_plies": 4,
     "policy": "Only previously adopted, non-disputed studies; legal completed research PV."
-  }
+  },
+  "owner_approved_research_additions": [
+    {
+      "request": "User 2026-10-09: adopt completed 50-minute opening20 positions",
+      "research_run": "37833560865",
+      "research_asset": "opening20-summary-37833560865",
+      "research_source_sha256": "98a8703ef3a6fc009ddd518d4c8fb278764351dc685f1a59bc525ac663d5e6a9",
+      "positions": 20,
+      "mode": "research_decision",
+      "source_engine": "KUMOJI v2.0.4 frozen at run 37833560865",
+      "approval_state": "explicit-owner-approval",
+      "followup_006_012_019": "Additional 30m independent research is tracked separately; not yet used to replace these adopted 50m moves."
+    }
+  ]
 }
