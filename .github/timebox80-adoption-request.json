@@ -1,0 +1,15 @@
+{
+  "request_id": "owner-20261010-adopt-timebox80",
+  "old_positions": 73,
+  "add_positions": 80,
+  "sources": [
+    {
+      "run": "37862974704",
+      "sha256": "d2838cab178474c39c1da2879bfeecb0c015b6aaef6d64f49575332bdc633182"
+    },
+    {
+      "run": "37907909827",
+      "sha256": "1cc846891cafb3247486af6a322a56c21f12e1019a7940380ae09c61255bde29"
+    }
+  ]
+}
