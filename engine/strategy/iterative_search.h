@@ -98,8 +98,9 @@ public:
         clear_research_continuation();
         position_knowledge_.clear();
     }
-    // An adopted long-search move overrides short search; continuation is
-    // permitted only after the exact expected opponent reply AND history.
+    // Adopted research is keyed by board/hands/side, independent of arrival route.
+    // Avoid repetition-sensitive history; continuation requires the precise
+    // reply and ACTUAL history after the researched move.
     std::optional<DirectResearch> select_research_move(
         const rules::Position& position, const std::vector<std::string>& restricted = {}) {
         if (!position_knowledge_enabled_ || position.has_repeated_history()) {
@@ -119,9 +120,10 @@ public:
         } else {
             clear_research_continuation();
             const auto* entry = position_knowledge_.probe(position);
+            // Original arrival history is research provenance, not an application
+            // precondition. The repetition guard above prevents unsafe reuse.
             if (!entry || entry->mode != "research_decision"
-                || entry->research_pv.empty()
-                || entry->initial_history_key != position.history_key()) return std::nullopt;
+                || entry->research_pv.empty()) return std::nullopt;
             pv = entry->research_pv;
             id = entry->research_id;
         }

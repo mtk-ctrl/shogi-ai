@@ -182,17 +182,76 @@ def adopted_real_snapshot():
         best, lines = u.until("bestmove ")
         assert best == "bestmove " + pv[2], (best, lines)
         assert any("research_decision" in x and "step 3 " in x for x in lines), lines
-        # Matching board without its original arrival history cannot force a study.
+        # Same board reached without original history must force the study.
         u.send("position sfen " + key + " 1")
+        u.send("go movetime 200")
+        best, lines = u.until("bestmove ")
+        assert best == "bestmove " + studied, (best, lines)
+        assert any("research_decision" in x for x in lines), lines
+        # Once we adopt, continuation uses actual history, not the study's route.
+        u.send("position sfen " + key + " 1 moves " + " ".join(pv[:2]))
         u.send("go depth 1")
-        _, lines = u.until("bestmove ")
-        assert not any("research_decision" in x for x in lines), lines
+        best, lines = u.until("bestmove ")
+        assert best == "bestmove " + pv[2], (best, lines)
+        assert any("research_decision" in x and "step 3 " in x for x in lines), lines
     finally:
         u.close()
+
+
+
+def all_adopted_research_positions():
+    """Regress all approved studies, WITHOUT the source game's arrival history."""
+    source = Path(__file__).resolve().parents[1] / "position-knowledge-v1.tsv"
+    entries = [line.split("\t") for line in source.read_text(encoding="utf-8").splitlines()
+               if line and not line.startswith("#")]
+    assert len(entries) == 153, len(entries)
+    u = Usi()
+    try:
+        u.send("isready")
+        _, ready = u.until("readyok")
+        assert any("loaded 153 positions" in x for x in ready), ready
+        for i, row in enumerate(entries, 1):
+            assert len(row) == 14 and row[10] == "research_decision"
+            key, move = row[0], row[1]
+            u.send("position sfen " + key + " 1")
+            u.send("go movetime 200")
+            actual, logs = u.until("bestmove ", timeout=10)
+            assert actual == "bestmove " + move, (i, row[11], actual, move, logs)
+            assert any(x.startswith("info string research_decision id " + row[11])
+                       for x in logs), (i, row[11], logs)
+    finally:
+        u.close()
+
+
+def no_forced_research_in_repeated_history():
+    """Do not force a stored research move on repetition-sensitive boards."""
+    key = "4k4/9/9/9/9/9/9/9/4K4 b -"
+    with tempfile.TemporaryDirectory() as td:
+        knowledge = Path(td) / "repeat.tsv"
+        knowledge.write_text(
+            "# position-knowledge-v1-active\n"
+            + key + "\t5i6i\ttest\t1\t60000\t3\t1000\tcp\t1\t"
+            "\tresearch_decision\trepeated-test\t5i6i 5a6a 6i5i\t-\n",
+            encoding="utf-8",
+        )
+        u = Usi()
+        try:
+            u.send("setoption name PositionKnowledgeFile value " + str(knowledge))
+            u.send("isready")
+            u.until("readyok")
+            cycle = ["5i6i", "5a6a", "6i5i", "6a5a"]
+            u.send("position sfen " + key + " 1 moves " + " ".join(cycle))
+            u.send("go depth 1")
+            _, logs = u.until("bestmove ")
+            assert not any(x.startswith("info string research_decision ") for x in logs), logs
+        finally:
+            u.close()
 
 run_once(True)
 run_once(False)
 embedded_default_fallback()
 direct_research_line()
 adopted_real_snapshot()
-print("PASS position knowledge USI load/probe/order, real PV adoption and fallback")
+all_adopted_research_positions()
+no_forced_research_in_repeated_history()
+print("PASS position knowledge: 153 direct decisions by matching SFEN, PV continuation, repetition safety and fallback")
