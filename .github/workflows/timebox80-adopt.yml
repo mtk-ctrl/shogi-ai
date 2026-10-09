@@ -1,0 +1,94 @@
+name: Adopt Approved Timebox80 Knowledge
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/timebox80-adoption-request.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  adopt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: true
+
+      - name: Verify workflows and download original archived research
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 scripts/check_match_workflows.py
+          python3 scripts/check_workflow_inventory.py --strict
+          python3 -m pip install python-shogi==1.1.1
+          mkdir -p build/timebox80-source
+          for id in 37862974704 37907909827; do
+            gh release download records-2026-10-01 --repo "$GITHUB_REPOSITORY" \
+              --pattern "timebox40-records-$id.json.gz" --dir build/timebox80-source
+          done
+          python3 tools/knowledge/adopt_timebox80.py
+
+      - name: Test all 153 adopted positions and engine fallback
+        run: |
+          set -euo pipefail
+          python3 scripts/build.py --output build/shogi-ai
+          python3 tests/test_position_knowledge_usi.py build/shogi-ai
+          python3 - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          m=json.loads(Path("position-knowledge-v1.manifest.json").read_text())
+          content=Path("position-knowledge-v1.tsv").read_bytes()
+          rows=[x for x in content.decode().splitlines() if x and not x.startswith("#")]
+          assert len(rows)==len({x.split("\t",1)[0] for x in rows})==153
+          assert m["adopted_positions"]==153
+          assert m["output_sha256"]==hashlib.sha256(content).hexdigest()
+          assert all(len(x.split("\t"))==14 and x.split("\t")[10]=="research_decision" for x in rows)
+          print("ADOPTED_KNOWLEDGE_OK 153",m["output_sha256"],flush=True)
+          PY
+
+      - name: Commit owner-approved knowledge and save final SHA
+        id: commit
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add position-knowledge-v1.tsv position-knowledge-v1.manifest.json
+          if git diff --cached --quiet; then echo "ERROR: snapshot not changed"; exit 1; fi
+          git commit -m "knowledge: adopt 80 owner-approved 50-minute studies (153 total)"
+          git push origin HEAD:main
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Dispatch existing 100-game knowledge on-off comparison
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ENGINE_SHA: ${{ steps.commit.outputs.sha }}
+        run: |
+          set -euo pipefail
+          test -n "$ENGINE_SHA"
+          gh workflow run engine-match.yml --repo "$GITHUB_REPOSITORY" --ref main \
+            -f "ref_a=$ENGINE_SHA" -f "ref_b=$ENGINE_SHA" \
+            -f "games=100" -f "shards=20" \
+            -f "go_command=go movetime 200" -f "max_plies=300" \
+            -f "seed=2026101020" \
+            -f 'options_a={"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}' \
+            -f 'options_b={"AdaptiveLongThink":true,"PositionKnowledge":false,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}'
+          echo "MATCH_DISPATCHED: A=153 adopted positions, B=no knowledge, 100 games / 20 shards."
+          gh run list --repo "$GITHUB_REPOSITORY" --workflow engine-match.yml --limit 5
+
+      - name: Archive adoption validation and manifest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: timebox80-adoption-audit-${{ github.run_id }}
+          path: |
+            build/timebox80-adoption-audit.json
+            position-knowledge-v1.manifest.json
+          if-no-files-found: warn
+          retention-days: 90
