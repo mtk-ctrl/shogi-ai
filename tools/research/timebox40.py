@@ -23,6 +23,17 @@ def prior(knowledge,opening,older):
                     elif isinstance(x,list):
                         for v in x:rec(v)
                 rec(x)
+    for p in Path(older).glob("*.json.gz"):
+        with gzip.open(p,"rt",encoding="utf8") as f:
+            obj=json.load(f)
+        def rec(x):
+            if isinstance(x,dict):
+                for k,v in x.items():
+                    if k in ("sfen","position_sfen","start_sfen","board_sfen") and isinstance(v,str) and "/" in v: known.add(norm(v))
+                    elif isinstance(v,(dict,list)): rec(v)
+            elif isinstance(x,list):
+                for v in x: rec(v)
+        rec(obj)
     return known
 
 def kind(m):
@@ -59,7 +70,11 @@ def validate(path,knowledge,opening):
 def choose(a):
     import shogi
     known=prior(a.knowledge,a.opening,a.older)
-    pool={"middle":[],"end":[]}; seen=set()
+    request=json.loads(Path(a.request).read_text(encoding="utf8"))
+    targets=request["stages"]
+    if set(targets)!=set(("opening","middle","end")) or sum(targets.values())!=40:
+        raise ValueError("Expected 40 positions divided across opening/middle/end")
+    pool={stage:[] for stage in targets}; seen=set()
     with gzip.open(a.games,"rt",encoding="utf8") as f:
         for ln in f:
             g=json.loads(ln); n=len(g["moves"])
@@ -67,7 +82,8 @@ def choose(a):
             b=shogi.Board(); hist=[]
             for m in g["moves"]:
                 ply=len(hist)
-                stage=("middle" if 60<=ply<=95 and n-ply>=20 else
+                stage=("opening" if 16<=ply<=50 and n-ply>=40 else
+                       "middle" if 60<=ply<=95 and n-ply>=20 else
                        "end" if n>=110 and 100<=ply<=220 and 10<=n-ply<=40 else None)
                 if stage:
                     k=norm(b.sfen())
@@ -79,28 +95,30 @@ def choose(a):
                         seen.add(k)
                 b.push_usi(m["move"]);hist.append(m["move"])
     selected=[]; games=set()
-    for stage in ("middle","end"):
+    for stage in ("opening","middle","end"):
         side={"black":0,"white":0}
         sorted_pool=sorted(pool[stage],key=lambda x:hashlib.sha256((str(a.seed)+x["game_id"]+str(x["ply"])).encode()).hexdigest())
         for typ in ("quiet","capture","drop","check","*"):
             candidates=[x for x in sorted_pool if typ=="*" or x["type"]==typ]
-            quota=5 if typ!="*" else 20
+            quota=(targets[stage]+3)//4 if typ!="*" else targets[stage]
             count=0
             for x in candidates:
-                if sum(y["stage"]==stage for y in selected)==20 or count==quota:break
-                if x["game_id"] in games or side[x["side"]]>=10:continue
+                if sum(y["stage"]==stage for y in selected)==targets[stage] or count==quota:break
+                if x["game_id"] in games or side[x["side"]]>=((targets[stage]+1)//2):continue
                 selected.append(x);games.add(x["game_id"]);side[x["side"]]+=1;count+=1
-        if sum(x["stage"]==stage for x in selected)!=20:raise ValueError("insufficient diverse "+stage)
+        if sum(x["stage"]==stage for x in selected)!=targets[stage]:raise ValueError("insufficient diverse "+stage)
     out=[]
-    for stage,code in (("middle","M"),("end","E")):
+    code_map={"opening":"O","middle":"M","end":"E"}
+    run_label=request["request_id"].replace("-","")
+    for stage,code in ((x,code_map[x]) for x in ("opening","middle","end")):
         for i,x in enumerate((x for x in selected if x["stage"]==stage),1):
-            x["id"]=f"kumoji-20261009-{code}{i:02d}";out.append(x)
+            x["id"]=f"kumoji-{run_label}-{code}{i:02d}";out.append(x)
     Path(a.output).write_text("#id\tSFEN\tUSI move history\n"+"".join(
        x["id"]+"\t"+x["sfen"]+"\t"+" ".join(x["history_moves"])+"\n" for x in out),encoding="utf8")
-    Path(a.metadata).write_text(json.dumps(dict(source_run="37695622423",total=40,middle=20,end=20,
+    Path(a.metadata).write_text(json.dumps(dict(source_run=request["source_run"],total=40,stages=targets,
         prior_exclusion_count=len(known),unique_games=len(games),seed=a.seed,positions=out),ensure_ascii=False,indent=2)+"\n",encoding="utf8")
     validate(a.output,a.knowledge,a.opening)
-    print("Selected 40: middle 20 + end 20 from 40 separate games",flush=True)
+    print("Selected 40:",targets,"from 40 separate games",flush=True)
 
 def study(a):
     from run_opening20 import Usi
@@ -130,6 +148,7 @@ if __name__=="__main__":
     p.add_argument("--output",default="positions.tsv")
     p.add_argument("--metadata",default="selection.json")
     p.add_argument("--positions",default="positions.tsv")
+    p.add_argument("--request",default=".github/research-timebox40-request.json")
     p.add_argument("--seed",type=int,default=20261009)
     p.add_argument("--lane",type=int,default=0)
     p.add_argument("--engine",default="build/kumoji")
