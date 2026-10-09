@@ -7,15 +7,15 @@
     "unverified"
   ],
   "min_evidence": 1,
-  "adopted_positions": 73,
+  "adopted_positions": 153,
   "conflicting_positions_excluded": 0,
   "duplicate_same_move_records_collapsed": 0,
   "rejected": {
     "status:disputed": 7
   },
   "output_file": "position-knowledge-v1.tsv",
-  "output_sha256": "e0a0eda8fef542a9984e3de91a508dcf8eeddf3b8e3070dacc625b15f1575fb5",
-  "policy": "Original 53 preserved. Owner expressly approved the additional 20 completed 50-minute opening studies as direct research decisions; future research is never auto-promoted.",
+  "output_sha256": "234173daefd3d0f8ccb205776b5c71ed8e875b5446b3620196cf91a3067b4b1c",
+  "policy": "Original 73 preserved. 80 completed 50-minute research positions explicitly approved 2026-10-10, with validated original histories and legal final PV. New future candidates are never auto-promoted.",
   "research_lines": {
     "source": "actions/37671846680/v2-position-knowledge-research-37671846680",
     "source_sha256": "54bb80c93902537d25c585aa9fe564a1ddd08220b6b10003d0e44fdb4661eb88",
@@ -34,6 +34,24 @@
       "source_engine": "KUMOJI v2.0.4 frozen at run 37833560865",
       "approval_state": "explicit-owner-approval",
       "followup_006_012_019": "Additional 30m independent research is tracked separately; not yet used to replace these adopted 50m moves."
+    },
+    {
+      "request": "User 2026-10-10: adopt 80 completed 50-minute studies",
+      "research_run": "37862974704",
+      "research_asset": "timebox40-records-37862974704.json.gz",
+      "research_source_sha256": "d2838cab178474c39c1da2879bfeecb0c015b6aaef6d64f49575332bdc633182",
+      "positions": 40,
+      "mode": "research_decision",
+      "approval_state": "explicit-owner-approval"
+    },
+    {
+      "request": "User 2026-10-10: adopt 80 completed 50-minute studies",
+      "research_run": "37907909827",
+      "research_asset": "timebox40-records-37907909827.json.gz",
+      "research_source_sha256": "1cc846891cafb3247486af6a322a56c21f12e1019a7940380ae09c61255bde29",
+      "positions": 40,
+      "mode": "research_decision",
+      "approval_state": "explicit-owner-approval"
     }
   ]
 }
