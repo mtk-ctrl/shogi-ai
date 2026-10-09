@@ -4,6 +4,7 @@ import queue
 import subprocess
 import sys
 import tempfile
+import shogi
 import threading
 import time
 
@@ -223,6 +224,56 @@ def all_adopted_research_positions():
         u.close()
 
 
+
+
+def newer_direct_study_overrides_previous_continuation():
+    """A separately adopted study of the reached position wins over old PV."""
+    source = Path(__file__).resolve().parents[1] / "position-knowledge-v1.tsv"
+    row = next(line.split("\t") for line in source.read_text(encoding="utf-8").splitlines()
+               if line and not line.startswith("#"))
+    original_pv = row[12].split()
+    original_history = row[13].split()
+    board = shogi.Board(row[0] + " 1")
+    for move in original_pv[:2]:
+        board.push_usi(move)
+    next_key = " ".join(board.sfen().split()[:3])
+    alternate = next((m.usi() for m in board.legal_moves
+                      if m.usi() != original_pv[2]), None)
+    assert alternate, "need another legal move to distinguish direct study"
+    alternate_pv = [alternate]
+    for _ in range(2):
+        board.push_usi(alternate_pv[-1])
+        alternate_pv.append(next(iter(board.legal_moves)).usi())
+    next_row = [
+        next_key, alternate, "second-research", "1", "3000000", "7", "1234",
+        "cp", "100", "", "research_decision", "new-direct-study",
+        " ".join(alternate_pv), " ".join(original_history + original_pv[:2]),
+    ]
+    assert len(next_row) == 14
+    with tempfile.TemporaryDirectory() as td:
+        knowledge = Path(td) / "overlap.tsv"
+        knowledge.write_text("# position-knowledge-v1-active\n"
+                             + "\t".join(row) + "\n"
+                             + "\t".join(next_row) + "\n", encoding="utf-8")
+        u = Usi()
+        try:
+            u.send("setoption name PositionKnowledgeFile value " + str(knowledge))
+            u.send("isready")
+            _, ready = u.until("readyok")
+            assert any("loaded 2 positions" in line for line in ready), ready
+            u.send("position startpos moves " + " ".join(original_history))
+            u.send("go depth 1")
+            first, lines = u.until("bestmove ")
+            assert first == "bestmove " + original_pv[0], (first, lines)
+            u.send("position startpos moves " + " ".join(original_history + original_pv[:2]))
+            u.send("go depth 1")
+            second, lines = u.until("bestmove ")
+            assert second == "bestmove " + alternate, (second, lines)
+            assert any("research_decision id new-direct-study" in line
+                       for line in lines), lines
+        finally:
+            u.close()
+
 def no_forced_research_in_repeated_history():
     """Do not force a stored research move on repetition-sensitive boards."""
     key = "4k4/9/9/9/9/9/9/9/4K4 b -"
@@ -253,5 +304,6 @@ embedded_default_fallback()
 direct_research_line()
 adopted_real_snapshot()
 all_adopted_research_positions()
+newer_direct_study_overrides_previous_continuation()
 no_forced_research_in_repeated_history()
 print("PASS position knowledge: 153 direct decisions by matching SFEN, PV continuation, repetition safety and fallback")
