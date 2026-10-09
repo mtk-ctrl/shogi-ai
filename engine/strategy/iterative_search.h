@@ -110,22 +110,24 @@ public:
         std::vector<std::string> pv;
         std::string id;
         std::size_t index = 0;
-        if (!research_continuation_.pv.empty()
-            && PositionKnowledge::canonical_key(position) == research_continuation_.expected_key
-            && position.history_key() == research_continuation_.expected_history
-            && research_continuation_.next < research_continuation_.pv.size()) {
+        // A full study of THIS exact position outranks a continuation copied
+        // from an earlier study, which may propose a different move here.
+        // Original arrival history remains provenance, not an applicability gate.
+        const auto* entry = position_knowledge_.probe(position);
+        if (entry && entry->mode == "research_decision" && !entry->research_pv.empty()) {
+            clear_research_continuation();
+            pv = entry->research_pv;
+            id = entry->research_id;
+        } else if (!research_continuation_.pv.empty()
+                   && PositionKnowledge::canonical_key(position) == research_continuation_.expected_key
+                   && position.history_key() == research_continuation_.expected_history
+                   && research_continuation_.next < research_continuation_.pv.size()) {
             pv = research_continuation_.pv;
             id = research_continuation_.research_id;
             index = research_continuation_.next;
         } else {
             clear_research_continuation();
-            const auto* entry = position_knowledge_.probe(position);
-            // Original arrival history is research provenance, not an application
-            // precondition. The repetition guard above prevents unsafe reuse.
-            if (!entry || entry->mode != "research_decision"
-                || entry->research_pv.empty()) return std::nullopt;
-            pv = entry->research_pv;
-            id = entry->research_id;
+            return std::nullopt;
         }
         const auto& move = pv[index];
         if (!restricted.empty()
