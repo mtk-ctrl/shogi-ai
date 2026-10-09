@@ -276,25 +276,27 @@ def newer_direct_study_overrides_previous_continuation():
 
 def no_forced_research_in_repeated_history():
     """Do not force a stored research move on repetition-sensitive boards."""
-    key = "4k4/9/9/9/9/9/9/9/4K4 b -"
+    key = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b -"
     with tempfile.TemporaryDirectory() as td:
         knowledge = Path(td) / "repeat.tsv"
         knowledge.write_text(
             "# position-knowledge-v1-active\n"
-            + key + "\t5i6i\ttest\t1\t60000\t3\t1000\tcp\t1\t"
-            "\tresearch_decision\trepeated-test\t5i6i 5a6a 6i5i\t-\n",
+            + key + "\t7g7f\ttest\t1\t60000\t3\t1000\tcp\t1\t"
+            "\tresearch_decision\trepeated-test\t7g7f 3c3d 2g2f\t-\n",
             encoding="utf-8",
         )
         u = Usi()
         try:
             u.send("setoption name PositionKnowledgeFile value " + str(knowledge))
             u.send("isready")
-            u.until("readyok")
-            cycle = ["5i6i", "5a6a", "6i5i", "6a5a"]
+            _, ready = u.until("readyok")
+            assert any("loaded 1 positions" in line for line in ready), ready
+            cycle = ["7i6h", "3a4b", "6h7i", "4b3a"]
             u.send("position sfen " + key + " 1 moves " + " ".join(cycle))
             u.send("go depth 1")
             _, logs = u.until("bestmove ")
             assert not any(x.startswith("info string research_decision ") for x in logs), logs
+            assert any("knowledge_disabled_repetition 1" in x for x in logs), logs
         finally:
             u.close()
 
