@@ -1,0 +1,16 @@
+{
+  "request_id": "2026-10-09-0930-1130-40",
+  "requested_by": "owner",
+  "source_run": "37695622423",
+  "expected_positions": 40,
+  "stages": {
+    "middle": 20,
+    "end": 20
+  },
+  "research_minutes_per_position": 50,
+  "parallel_runners": 20,
+  "start_jst": "2026-10-09T09:30:00+09:00",
+  "deadline_jst": "2026-10-09T11:30:00+09:00",
+  "adopt_to_knowledge": false,
+  "exclusions": "all adopted and past recorded studies"
+}
