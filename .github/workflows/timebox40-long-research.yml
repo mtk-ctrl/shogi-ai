@@ -1,0 +1,119 @@
+name: KUMOJI Timebox 40 Research
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/research-timebox40-request.json"]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check workflow validity and retrieve recorded self-play
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 scripts/check_match_workflows.py
+          python3 scripts/check_workflow_inventory.py
+          mkdir -p source-archive older
+          gh run download 37695622423 --repo "$GITHUB_REPOSITORY" -n played-move-archive-37695622423 -D source-archive
+          gh release download records-2026-10-01 --repo "$GITHUB_REPOSITORY" -p 'research-records-*.jsonl.gz' -p 'position-knowledge-v1-candidates-*.jsonl.gz' -D older
+          python3 -m pip install python-shogi==1.1.1
+          python3 tools/research/timebox40.py choose
+          sha256sum positions.tsv selection.json
+      - name: Build frozen main engine with adopted knowledge
+        run: |
+          set -euo pipefail
+          python3 scripts/build.py --output build/kumoji
+          cp position-knowledge-v1.tsv build/position-knowledge-v1.tsv
+          sha256sum build/kumoji build/position-knowledge-v1.tsv
+          tar czf timebox40-inputs.tgz build/kumoji build/position-knowledge-v1.tsv positions.tsv selection.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: timebox40-inputs-${{ github.run_id }}
+          path: timebox40-inputs.tgz
+          retention-days: 90
+          if-no-files-found: error
+  research:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        lane: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: timebox40-inputs-${{ github.run_id }}
+      - name: Restore unchanged engine and study positions
+        run: tar xzf timebox40-inputs.tgz
+      - name: Study assigned position for 50 minutes within 9:30-11:30 JST
+        env:
+          LANE: ${{ matrix.lane }}
+        run: |
+          set -euo pipefail
+          python3 -m pip install python-shogi==1.1.1
+          python3 tools/research/timebox40.py study --lane "$LANE" --engine build/kumoji --knowledge build/position-knowledge-v1.tsv --positions positions.tsv --output result.json
+      - name: Save study result or most recent checkpoint
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: timebox40-result-${{ github.run_id }}-${{ matrix.lane }}
+          path: result.json
+          retention-days: 90
+          if-no-files-found: warn
+  aggregate:
+    needs: [prepare, research]
+    if: always() && needs.prepare.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: timebox40-inputs-${{ github.run_id }}
+      - run: tar xzf timebox40-inputs.tgz
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: timebox40-result-${{ github.run_id }}-*
+          path: research-results
+      - name: Audit and preserve all research observations to monthly data release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import glob,gzip,hashlib,json,os
+          from pathlib import Path
+          selected=json.loads(Path("selection.json").read_text(encoding="utf8"))
+          rows=[json.loads(Path(p).read_text(encoding="utf8")) for p in sorted(glob.glob("research-results/**/result.json",recursive=True))]
+          count=sum(r.get("completed") is True for r in rows)
+          obj={"schema":"timebox40-v1","run":os.environ["GITHUB_RUN_ID"],"selected":selected,"results":rows,"completed":count,"received":len(rows),"knowledge_adopted":False}
+          target="timebox40-records-"+os.environ["GITHUB_RUN_ID"]+".json.gz"
+          with gzip.open(target,"wt",encoding="utf8") as f:json.dump(obj,f,ensure_ascii=False)
+          report={"run":os.environ["GITHUB_RUN_ID"],"expected":40,"received":len(rows),"completed":count,
+            "missing":sorted({r["id"] for r in selected["positions"]}-{r.get("id") for r in rows}),"knowledge_adopted":False,
+            "sha256":hashlib.sha256(Path(target).read_bytes()).hexdigest()}
+          Path("timebox40-summary.json").write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf8")
+          print("Finished",count,"/40 with",len(rows),"result files",flush=True)
+          PY
+          gh release upload records-2026-10-01 "timebox40-records-$GITHUB_RUN_ID.json.gz" --repo "$GITHUB_REPOSITORY"
+          sha256sum "timebox40-records-$GITHUB_RUN_ID.json.gz"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: timebox40-summary-${{ github.run_id }}
+          path: timebox40-summary.json
+          retention-days: 90
+          if-no-files-found: warn
