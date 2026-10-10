@@ -430,23 +430,16 @@ private:
     Node quiescence(rules::Position& p, int ply, int qply, int alpha, int beta) {
         check_stop();
         ++stats_.qnodes; // The normal leaf was already counted by visit().
-        // Preserve the original repetition / terminal adjudication,
-        // but generate LEGAL_ALL only once per node.
-        const auto repetition = p.repetition_status();
-        if (repetition.result != rules::Result::Ongoing) {
+        // Checking only terminal status is cheap when stand-pat returns
+        // immediately: the rules layer does not allocate USI move strings.
+        // Defer ALL string generation until a real tactical search is needed.
+        const auto status = p.status();
+        if (status.result != rules::Result::Ongoing) {
             ++stats_.terminal_nodes;
-            return {terminal(p, repetition, ply), {}};
+            return {terminal(p, status, ply), {}};
         }
-        const bool checked = p.in_check();
-        auto moves = p.legal_moves();
-        if (moves.empty()) {
-            const auto loss = p.turn() == rules::Color::Black
-                ? rules::Result::WhiteWin : rules::Result::BlackWin;
-            ++stats_.terminal_nodes;
-            return {terminal(p, {loss, checked ? "checkmate" : "no legal moves"}, ply), {}};
-        }
-        // Keep terminal decisions before the safety ceiling as before.
         if (ply >= MaxPly) throw Interrupted{};
+        const bool checked = p.in_check();
         const auto snapshot = p.snapshot();
         const bool maximizing = snapshot.turn == root_;
         const int original_alpha = alpha, original_beta = beta;
@@ -466,62 +459,70 @@ private:
             if (maximizing) alpha = std::max(alpha, best.value);
             else beta = std::min(beta, best.value);
         }
-        if (!checked) {
-            moves.erase(std::remove_if(moves.begin(), moves.end(), [&](const auto& move) {
+        // Opaque rule-layer move tokens remove repeated legal-move lookup
+        // for each child. Convert to USI only after stand-pat / depth cutoff.
+        struct QMove {
+            rules::GeneratedMove token;
+            std::string move;
+            int score = 0;
+        };
+        auto generated = p.legal_generated_moves();
+        std::vector<QMove> moves;
+        moves.reserve(generated.size());
+        for (const auto& token : generated) {
+            std::string move = p.generated_move_usi(token);
+            if (!checked) {
                 const int dst = (move[2] - '1') * 9 + move[3] - 'a';
                 const bool capture = snapshot.board[dst].kind != 0;
                 const bool promotion = move.size() == 5 && move[4] == '+';
-                return !capture && !promotion;
-            }), moves.end());
+                if (!capture && !promotion) continue;
+            }
+            int score = 0;
+            if (!checked) {
+                const int dst = (move[2] - '1') * 9 + move[3] - 'a';
+                const int src = (move[0] - '1') * 9 + move[1] - 'a';
+                const auto& captured = snapshot.board[dst];
+                const auto& moving = snapshot.board[src];
+                if (captured.kind != 0 && captured.kind != 8) {
+                    score += 1000000 + 1000 * piece_value(captured.kind, captured.promoted)
+                          - piece_value(moving.kind, moving.promoted);
+                }
+                if (move.size() == 5 && move[4] == '+') {
+                    score += 100 * std::max(0,
+                        piece_value(moving.kind, true) - piece_value(moving.kind, moving.promoted));
+                }
+            }
+            moves.push_back({token, std::move(move), score});
         }
-        // In check, include ALL legal evasions, even quiet moves and drops.
-        // Non-check qsearch already contains only captures/promotions. Avoid the
-        // full AttackMap-based ordering there and use a cheap MVV-LVA-like order.
         if (!moves.empty()) {
             if (checked) {
-                moves = ordered(p, moves);
-            } else {
-                struct TacticalMove {
-                    std::string move;
-                    int score = 0;
-                    std::size_t original_index = 0;
-                };
-                std::vector<TacticalMove> scored;
-                scored.reserve(moves.size());
-                for (std::size_t i = 0; i < moves.size(); ++i) {
-                    const auto& move = moves[i];
-                    const int dst = (move[2] - '1') * 9 + move[3] - 'a';
-                    const int src = (move[0] - '1') * 9 + move[1] - 'a';
-                    const auto& captured = snapshot.board[dst];
-                    const auto& moving = snapshot.board[src];
-                    int score = 0;
-                    if (captured.kind != 0 && captured.kind != 8) {
-                        score += 1000000
-                              + 1000 * piece_value(captured.kind, captured.promoted)
-                              - piece_value(moving.kind, moving.promoted);
-                    }
-                    if (move.size() == 5 && move[4] == '+') {
-                        score += 100 * std::max(0,
-                            piece_value(moving.kind, true)
-                            - piece_value(moving.kind, moving.promoted));
-                    }
-                    scored.push_back({move, score, i});
+                std::vector<std::string> names;
+                names.reserve(moves.size());
+                for (const auto& candidate : moves) names.push_back(candidate.move);
+                names = ordered(p, names);
+                std::vector<QMove> ordered_moves;
+                ordered_moves.reserve(moves.size());
+                for (const auto& name : names) {
+                    const auto it = std::find_if(moves.begin(), moves.end(),
+                        [&](const QMove& item) { return item.move == name; });
+                    if (it == moves.end()) throw std::logic_error("missing generated qmove");
+                    ordered_moves.push_back(*it);
                 }
-                std::stable_sort(scored.begin(), scored.end(), [](const auto& a, const auto& b) {
+                moves = std::move(ordered_moves);
+            } else {
+                // Stable tactical sorting matches the original quiescence path.
+                std::stable_sort(moves.begin(), moves.end(), [](const QMove& a, const QMove& b) {
                     return a.score > b.score;
                 });
-                for (std::size_t i = 0; i < scored.size(); ++i)
-                    moves[i] = std::move(scored[i].move);
             }
         }
-        for (const auto& move : moves) {
+        for (const auto& candidate : moves) {
+            const auto& move = candidate.move;
             check_stop();
             Node child;
             {
-                // This move is from legal_moves() for this exact position.
-                // play_generated_legal skips the redundant status() probe.
                 std::string error;
-                if (!p.play_generated_legal(move, error)) throw std::logic_error(error);
+                if (!p.play_generated_move(candidate.token, error)) throw std::logic_error(error);
                 Undo undo{p};
                 visit(ply + 1);
                 child = quiescence(p, ply + 1, qply + 1, alpha, beta);
