@@ -149,17 +149,35 @@ jobs:
             --input benchmarks/results/2026-10-05_v019-mate-assist-50ms-100games.json \
             --input benchmarks/results/2026-10-05_v019-mate-assist-50ms-100games-run2.json \
             --probe build/phase-probe --output build/maturity-report.json
-      - name: Tune added indicators with separate train validation and test games
+      - name: Inspect archived played-game data from prior engine generations
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          python3 tools/phase/fit_maturity.py \
-            --input benchmarks/results/2026-10-05_v019-mate-assist-50ms-100games.json \
-            --input benchmarks/results/2026-10-05_v019-mate-assist-50ms-100games-run2.json \
-            --probe build/phase-probe --output build/maturity-tuned.json
+          mkdir -p build/release-sample
+          gh release download records-2026-10-01 \
+            --pattern 'played-games-37671846680.jsonl.gz' \
+            --pattern 'played-games-manifest-37671846680.json' \
+            --dir build/release-sample --clobber
+          python3 - <<'PY'
+          import gzip,json
+          from pathlib import Path
+          p=Path('build/release-sample')
+          m=json.loads(next(p.glob('*manifest*.json')).read_text())
+          print('ARCHIVE_MANIFEST_KEYS',sorted(m))
+          print('ARCHIVE_MANIFEST_SUMMARY',str(m)[:2400])
+          with gzip.open(next(p.glob('*.jsonl.gz')),'rt') as f:
+              for i in range(3):
+                  line=f.readline()
+                  if not line:break
+                  d=json.loads(line)
+                  print('ARCHIVE_ROW',i,'keys',sorted(d),'types',{k:type(v).__name__ for k,v in d.items()})
+                  print('ARCHIVE_ROW_FIELDS',i,{k:(len(v) if isinstance(v,(list,dict)) else str(v)[:100])
+                        for k,v in d.items() if k not in ('moves','sfen','sfens','position','pv')})
+          PY
       - name: Save reproducible result
         uses: actions/upload-artifact@v4
         with:
           name: phase-maturity-research
           path: |
             build/maturity-report.json
-            build/maturity-tuned.json
           retention-days: 30
