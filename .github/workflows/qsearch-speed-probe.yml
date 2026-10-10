@@ -1,0 +1,49 @@
+name: Experimental Quiescence Speed Probe
+on:
+  push:
+    branches: [research/qsearch-speed-20261011]
+    paths:
+      - engine/strategy/iterative_search.h
+      - benchmarks/qsearch_speed_probe.py
+      - .github/workflows/qsearch-speed-probe.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/checkout@v5
+        with:
+          ref: 2c0b2ccf2a7207672e913167cf49709940fd8686
+          path: baseline-src
+      - name: Build both baseline and research candidate
+        run: |
+          set -euo pipefail
+          python3 scripts/check_match_workflows.py
+          python3 scripts/check_workflow_inventory.py --strict
+          python3 scripts/build.py --output build/candidate
+          (cd baseline-src && python3 scripts/build.py --output "$GITHUB_WORKSPACE/build/baseline")
+          sha256sum build/candidate build/baseline position-knowledge-v1.tsv
+      - name: Verify candidate safety and search invariants
+        run: |
+          set -euo pipefail
+          python3 scripts/build.py --quiescence-test --output build/quiescence-test
+          ./build/quiescence-test
+          python3 scripts/build.py --search-test --output build/search-test
+          ./build/search-test
+          python3 -m pip install python-shogi==1.1.1
+          python3 tests/test_search_usi.py build/candidate
+      - name: Compare ten hard positions at 200ms and exact depth
+        run: |
+          set -euo pipefail
+          python3 benchmarks/qsearch_speed_probe.py --baseline build/baseline --candidate build/candidate --out qsearch-speed-results.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qsearch-speed-results-${{ github.run_id }}
+          path: qsearch-speed-results.json
+          if-no-files-found: warn
+          retention-days: 90

@@ -430,15 +430,23 @@ private:
     Node quiescence(rules::Position& p, int ply, int qply, int alpha, int beta) {
         check_stop();
         ++stats_.qnodes; // The normal leaf was already counted by visit().
-        const auto status = p.status();
-        if (status.result != rules::Result::Ongoing) {
+        // Preserve the original repetition / terminal adjudication,
+        // but generate LEGAL_ALL only once per node.
+        const auto repetition = p.repetition_status();
+        if (repetition.result != rules::Result::Ongoing) {
             ++stats_.terminal_nodes;
-            return {terminal(p, status, ply), {}};
+            return {terminal(p, repetition, ply), {}};
         }
-        // Never publish a static score while in check at a safety ceiling.
-        // Discard this incomplete iteration just as with stop/time exhaustion.
-        if (ply >= MaxPly) throw Interrupted{};
         const bool checked = p.in_check();
+        auto moves = p.legal_moves();
+        if (moves.empty()) {
+            const auto loss = p.turn() == rules::Color::Black
+                ? rules::Result::WhiteWin : rules::Result::BlackWin;
+            ++stats_.terminal_nodes;
+            return {terminal(p, {loss, checked ? "checkmate" : "no legal moves"}, ply), {}};
+        }
+        // Keep terminal decisions before the safety ceiling as before.
+        if (ply >= MaxPly) throw Interrupted{};
         const auto snapshot = p.snapshot();
         const bool maximizing = snapshot.turn == root_;
         const int original_alpha = alpha, original_beta = beta;
@@ -458,7 +466,6 @@ private:
             if (maximizing) alpha = std::max(alpha, best.value);
             else beta = std::min(beta, best.value);
         }
-        auto moves = p.legal_moves();
         if (!checked) {
             moves.erase(std::remove_if(moves.begin(), moves.end(), [&](const auto& move) {
                 const int dst = (move[2] - '1') * 9 + move[3] - 'a';
@@ -511,7 +518,10 @@ private:
             check_stop();
             Node child;
             {
-                make(p, move);
+                // This move is from legal_moves() for this exact position.
+                // play_generated_legal skips the redundant status() probe.
+                std::string error;
+                if (!p.play_generated_legal(move, error)) throw std::logic_error(error);
                 Undo undo{p};
                 visit(ply + 1);
                 child = quiescence(p, ply + 1, qply + 1, alpha, beta);
