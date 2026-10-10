@@ -98,6 +98,18 @@ def run(input_path: Path, output_dir: Path, *, hidden=32, epochs=15, seed=202610
     parts = partition(rows, seed)
     by_split = {s: [r for r in rows if parts[r["game_id"]] == s]
                 for s in ("train", "val", "test")}
+    # Holdout games must not leak identical positions seen in training.
+    # This is common in self-play starting from the standard initial position.
+    seen = {r["sfen"].rsplit(" ", 1)[0] for r in by_split["train"]}
+    dropped = {}
+    for split in ("val", "test"):
+        original = by_split[split]
+        by_split[split] = [r for r in original
+                           if r["sfen"].rsplit(" ", 1)[0] not in seen]
+        dropped[split] = len(original) - len(by_split[split])
+        seen.update(r["sfen"].rsplit(" ", 1)[0] for r in by_split[split])
+        if not by_split[split]:
+            raise ValueError("holdout set empty after duplicate-position removal")
     train = by_split["train"]
     x = np.stack([encode_sfen(r["sfen"]) for r in train])
     y = np.array([r["target_black"] for r in train], dtype=np.float32)
@@ -122,6 +134,7 @@ def run(input_path: Path, output_dir: Path, *, hidden=32, epochs=15, seed=202610
         "static_cp_temperature_fit_on_training_only": temperature,
         "split_results": results,
         "identical_position_overlap_across_splits": overlaps,
+        "holdout_positions_removed_as_duplicates": dropped,
         "caution": "Adjacent positions correlate; identical positions across different games may overlap. Small samples cannot establish strength.",
     }
     (output_dir / "report.json").write_text(
