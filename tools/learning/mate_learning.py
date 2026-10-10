@@ -109,20 +109,38 @@ def collect(args):
     engine = Engine(args.engine)
     rows, seen = [], set()
     skipped = {}
+    examined_by_ply = {str(p): 0 for p in PLIES}
+    positions_by_ply = {
+        ply: (args.dataset_dir / f"mate{ply}_{args.source_count_per_ply}.sfen")
+             .read_text(encoding="ascii").splitlines()[
+                 args.start_per_ply:args.start_per_ply + args.limit_per_ply]
+        for ply in PLIES
+    }
+    if any(len(v) != args.limit_per_ply for v in positions_by_ply.values()):
+        raise ValueError("Dataset shard incomplete")
+    started = time.monotonic()
+    reached_time_limit = False
     try:
-        for ply in PLIES:
-            path = args.dataset_dir / f"mate{ply}_1000.sfen"
-            for sfen in path.read_text(encoding="ascii").splitlines()[args.start_per_ply:args.start_per_ply + args.limit_per_ply]:
-                sfen = normalize_sfen(sfen)
+        # Interleave puzzle lengths, so a time-limited shard does not end up
+        # containing only easy 3-ply positions.
+        for i in range(args.limit_per_ply):
+            for ply in PLIES:
+                if args.wall_seconds and time.monotonic() - started >= args.wall_seconds:
+                    reached_time_limit = True
+                    break
+                sfen = normalize_sfen(positions_by_ply[ply][i])
                 if not sfen or sfen in seen:
                     continue
                 seen.add(sfen)
+                examined_by_ply[str(ply)] += 1
                 values, label, status = engine.observe(sfen, args.time_ms)
                 if label is None:
                     skipped[status] = skipped.get(status, 0) + 1
                     continue
                 rows.append({"schema": SCHEMA, "sfen": sfen, "source_ply": ply,
                              "horizon": 7, "features": values, "label": label})
+            if reached_time_limit:
+                break
     finally:
         engine.close()
     args.out.parent.mkdir(parents=True, exist_ok=True)
@@ -131,7 +149,9 @@ def collect(args):
             output.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
     print(json.dumps({"records": len(rows), "positive": sum(x["label"] for x in rows),
                       "negative": sum(1 - x["label"] for x in rows),
-                      "excluded_unproven_or_interrupted": skipped, "output": str(args.out)},
+                      "excluded_unproven_or_interrupted": skipped, "output": str(args.out),
+                      "examined_by_ply": examined_by_ply, "time_limited": reached_time_limit,
+                      "elapsed_seconds": round(time.monotonic() - started, 3)},
                      ensure_ascii=False))
 
 
@@ -266,6 +286,8 @@ def main():
     a.add_argument("--dataset-dir", type=Path, default=Path("benchmarks/tsume_dataset"))
     a.add_argument("--limit-per-ply", type=int, default=30)
     a.add_argument("--start-per-ply", type=int, default=0)
+    a.add_argument("--source-count-per-ply", type=int, default=1000)
+    a.add_argument("--wall-seconds", type=int, default=0)
     a.add_argument("--time-ms", type=int, default=2000)
     a.add_argument("--out", type=Path, default=Path("research/mate-learning-samples.jsonl"))
     b = cmd.add_parser("train")
@@ -276,7 +298,7 @@ def main():
     b.add_argument("--threshold", type=float, default=0.8)
     args = parser.parse_args()
     if args.command == "collect":
-        if args.limit_per_ply < 1 or args.limit_per_ply > 1000 or args.start_per_ply < 0 or args.start_per_ply + args.limit_per_ply > 1000 or args.time_ms < 1:
+        if args.limit_per_ply < 1 or args.source_count_per_ply < 1 or args.start_per_ply < 0 or args.start_per_ply + args.limit_per_ply > args.source_count_per_ply or args.time_ms < 1 or not 0 <= args.wall_seconds <= 3600:
             parser.error("invalid limits")
         collect(args)
     else:
