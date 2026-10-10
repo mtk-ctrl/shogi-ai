@@ -2,6 +2,7 @@
 #include "strategy/iterative_search.h"
 #include "strategy/mate_search.h"
 #include "strategy/mate_assist.h"
+#include "strategy/mate_learning.h"
 #include "strategy/search_limits.h"
 #include "strategy/promotion_policy.h"
 #include "strategy/long_think_budget.h"
@@ -28,6 +29,9 @@ int main() {
     bool material_profile = false;
     bool quiescence_enabled = true;
     bool mate_assist_enabled = true;
+    bool mate_learning_enabled = false; // experimental, OFF by default
+    shogi::strategy::MateLearning mate_learning_model;
+    std::string mate_learning_file = "research/mate-learning-model.txt";
     bool opening_random_non_lance = true;
     bool valid_position = true;
     bool entering_king = true;
@@ -97,6 +101,8 @@ int main() {
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
                       << "option name Quiescence type check default true\n"
                       << "option name MateAssist type check default true\n"
+                       << "option name MateLearning type check default false\n"
+                       << "option name MateLearningFile type string default research/mate-learning-model.txt\n"
                       << "option name AdaptiveLongThink type check default true\n"
                       << "option name RandomSeed type spin default 5489 min 0 max 2147483647\n"
                       << "option name OpeningRandomNonLance type check default true\n"
@@ -116,6 +122,14 @@ int main() {
                       << "option name PositionKnowledge type check default true\n"
                       << "option name PositionKnowledgeFile type string default position-knowledge-v1.tsv\n"
                       << "usiok\n" << std::flush;
+        } else if (command == "learning_features") {
+            if (!valid_position) { emit("info string learning_features invalid_position\n"); continue; }
+            const auto v = shogi::strategy::MateLearning::features(position);
+            std::ostringstream out;
+            out << "info string learning_features v1";
+            for (auto x : v) out << " " << x;
+            out << "\n";
+            emit(out.str());
         } else if (command == "eval") {
             const auto b = shogi::strategy::evaluate(position.snapshot(), material_profile
                 ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters);
@@ -196,6 +210,10 @@ int main() {
                     info << "info string mate maxply " << shogi::strategy::MateSearch::MaxMatePly
                          << " nodes " << result.nodes << " time " << ms << "\n";
                     emit(info.str());
+                    emit(std::string("info string mate bounded_status ") +
+                         (result.found() ? "proven_mate" :
+                          result.outcome == shogi::strategy::MateSearchResult::Outcome::NoMate
+                            ? "no_mate_within_7" : "interrupted") + "\n");
                     if (result.found()) {
                         std::ostringstream out;
                         out << "checkmate";
@@ -204,7 +222,7 @@ int main() {
                         emit(out.str());
                     } else {
                         if (result.outcome == shogi::strategy::MateSearchResult::Outcome::NoMate)
-                            emit("info string no mate proven within five plies\n");
+                            emit("info string no mate proven within seven plies\n");
                         emit("checkmate timeout\n");
                     }
                 });
@@ -370,10 +388,57 @@ int main() {
                             emit(out.str());
                         }
                     }
+                    // Experimental gate: prediction only decides whether to run
+                    // a bounded 7-ply search. It never substitutes for proof.
+                    if (!opening_forced && !research_forced && mate_learning_enabled
+                        && mate_learning_model.valid() && mate_assist_enabled
+                        && limits.budget_ms >= 50 && !limits.ponder && !limits.infinite
+                        && limits.nodes == 0) {
+                        const double probability = mate_learning_model.probability(
+                            shogi::strategy::MateLearning::features(p));
+                        if (!active->suppress.load()) {
+                            std::ostringstream out;
+                            out << "info string mate_learning probability " << probability
+                                << " threshold " << mate_learning_model.threshold() << "\n";
+                            emit(out.str());
+                        }
+                        if (probability >= mate_learning_model.threshold()) {
+                            struct DeadlineRestore {
+                                shogi::strategy::SearchControl& control;
+                                std::int64_t original;
+                                ~DeadlineRestore() { control.deadline_ns.store(original); }
+                            };
+                            const auto original = active->control.deadline_ns.load();
+                            const auto started = shogi::strategy::SearchControl::now_ns();
+                            auto deadline = started + std::min<std::int64_t>(8, limits.budget_ms / 20) * 1000000;
+                            if (original && original < deadline) deadline = original;
+                            DeadlineRestore restore{active->control, original};
+                            active->control.deadline_ns.store(deadline);
+                            shogi::strategy::MateSearch solver;
+                            auto probe = p.clone();
+                            const auto found = solver.solve(probe,
+                                shogi::strategy::MateSearch::MaxMatePly, active->control, candidates);
+                            if (!active->suppress.load()) {
+                                std::ostringstream out;
+                                out << "info string mate_learning_probe nodes " << found.nodes
+                                    << " proven " << (found.found() ? 1 : 0) << "\n";
+                                emit(out.str());
+                            }
+                            if (found.found() && !found.pv.empty()) {
+                                result.move = found.pv.front();
+                                result.pv = {result.move};
+                                result.depth = 0;
+                                result.has_score = true;
+                                result.score = shogi::strategy::IterativeSearch::MateScore - found.mate_plies();
+                                mate_assist_forced = true;
+                                active->mate_search = true;
+                            }
+                        }
+                    }
                     // Keep ordinary fixed-depth/node/ponder semantics unchanged.
                     // Timed play gets a small shared attack+defence mate budget
                     // inside the original absolute move deadline.
-                    if (!opening_forced && !research_forced && mate_assist_enabled && limits.budget_ms >= 10 && !limits.ponder
+                    if (!opening_forced && !research_forced && !mate_assist_forced && mate_assist_enabled && limits.budget_ms >= 10 && !limits.ponder
                         && !limits.infinite && limits.nodes == 0) {
                         const auto assist_started = shogi::strategy::SearchControl::now_ns();
                         const auto assist_budget_ms = std::clamp<std::int64_t>(limits.budget_ms / 10, 1, 5);
@@ -499,6 +564,20 @@ int main() {
                     }
                 } else if (name == "MateAssist") {
                     if (value == "true" || value == "false") mate_assist_enabled = value == "true";
+                } else if (name == "MateLearning") {
+                    if (value == "true" || value == "false") {
+                        mate_learning_enabled = value == "true";
+                        if (mate_learning_enabled && !mate_learning_model.valid()) {
+                            if (!mate_learning_model.load(mate_learning_file))
+                                emit("info string mate_learning model_unavailable\n");
+                        }
+                    }
+                } else if (name == "MateLearningFile") {
+                    if (!value.empty() && value.find('\n') == std::string::npos && value.find('\r') == std::string::npos) {
+                        mate_learning_file = value;
+                        if (!mate_learning_model.load(mate_learning_file))
+                            emit("info string mate_learning model_unavailable\n");
+                    }
                 } else if (name == "OpeningRandomNonLance") {
                     if (value == "true" || value == "false") opening_random_non_lance = value == "true";
                 } else if (name == "AdaptiveLongThink") {
