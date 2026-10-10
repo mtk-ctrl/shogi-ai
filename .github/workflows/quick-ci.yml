@@ -10,6 +10,8 @@ on:
       - "position-knowledge-v1.tsv"
       - "position-knowledge-v1.manifest.json"
       - "tools/knowledge/**"
+      - "tools/learning/**"
+      - "tests/test_mate_learning.py"
       - "tests/strategy_test.cpp"
       - "tests/ordering_test.cpp"
       - "tests/contact_ordering_test.cpp"
@@ -102,6 +104,9 @@ jobs:
           python3 tests/test_position_knowledge_usi.py build/shogi-ai
           python3 tests/test_eval_usi.py build/shogi-ai
           python3 tests/test_mate_usi.py build/shogi-ai
+
+      - name: Mate learning research regression
+        run: python3 tests/test_mate_learning.py build/shogi-ai
 
       - name: Phase diagnostics and historical game filter
         run: |
