@@ -1,0 +1,12 @@
+{
+  "request_id": "20261010-current-vs-153-adopted-pv",
+  "mode": "read_only_pv_comparison",
+  "positions": 153,
+  "duration_policy": "match_previous_study",
+  "no_auto_adoption": true,
+  "purpose": "Independently compare KUMOJI v2.0.7 latest evaluation/search decisions against all 153 previously adopted research PVs; retain old knowledge unmodified",
+  "expected_buckets": {
+    "60s": 53,
+    "3000s": 100
+  }
+}
