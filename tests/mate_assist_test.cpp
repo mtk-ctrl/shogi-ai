@@ -1,4 +1,5 @@
 #include "strategy/mate_assist.h"
+#include "strategy/mate_time_policy.h"
 #include <algorithm>
 #include <iostream>
 
@@ -27,6 +28,31 @@ bool contains(const std::vector<std::string>& moves, const std::string& move) {
 int main() {
     try {
         strategy::MateAssist assist;
+        using Budget = strategy::MateTimePolicy;
+        for (int phase=0; phase<=33; ++phase) {
+            for (auto profile : {Budget::Profile::Cautious,
+                                 Budget::Profile::Standard, Budget::Profile::Aggressive}) {
+                auto a = Budget::choose(phase, 100, true, 190, profile);
+                require(a.total_ms == 0 && a.short_ms == 0 && a.extended_ms == 0,
+                        "Opening phase MUST allocate zero dedicated mate time");
+            }
+        }
+        auto opening_boundary = Budget::choose(34, 0, false, 190);
+        require(opening_boundary.total_ms == 10 && opening_boundary.short_ms == 5,
+                "first middle maturity must start from ten ms");
+        auto late = Budget::choose(100, 20, false, 190);
+        require(late.total_ms == 40 && late.extended_ms == 0,
+                "late nonurgent candidate keeps remaining time for ordinary search");
+        auto late_urgent = Budget::choose(100, 75, false, 190);
+        require(late_urgent.total_ms == 100 && late_urgent.extended_ms == 95,
+                "late danger can reserve up to 100ms including 3-ply helper");
+        auto learned = Budget::choose(67, 0, true, 190);
+        require(learned.total_ms == 60 && learned.extended_ms == 55,
+                "learned trigger can increase budget even when king risk is low");
+        auto short_time = Budget::choose(100, 100, true, 30);
+        require(short_time.total_ms == 30 && short_time.extended_ms == 25,
+                "budget must be bounded by actual time available");
+        std::cout << "PASS opening-zero and stage/risk time budgets\n";
 
         // Derived exact mate-in-three from the existing real-game fixture.
         auto attack = from_sfen(
