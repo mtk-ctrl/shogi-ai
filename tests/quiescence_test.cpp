@@ -112,10 +112,10 @@ int main() {
         std::cout << "PASS quiet evasions and blocking drops with no stand pat in check\n";
         auto promotion = fixture({{"9i","K"},{"1a","k"},{"5g","p"}});
         auto promoted = compare(search,promotion,1,{"9i9h"});
-        require(promoted.score == -760 && promoted.pv.size() == 2 && promoted.pv[1] == "5g5h+",
+        require(promoted.score == -strategy::piece_value(1, true) && promoted.pv.size() == 2 && promoted.pv[1] == "5g5h+",
                 "quiet promotion included at horizon");
         auto quiet = fixture({{"9i","K"},{"1a","k"},{"5e","P"}});
-        require(compare(search,quiet,1,{"9i9h"}).score == 120, "quiet leaf remains static");
+        require(compare(search,quiet,1,{"9i9h"}).score == strategy::piece_value(1), "quiet leaf remains static");
         std::cout << "PASS non-capture promotion and quiet leaf\n";
         // Cancellation inside qsearch, including at several evasion/capture nodes.
         const auto sf = block.sfen(); const auto history = block.history_key();
