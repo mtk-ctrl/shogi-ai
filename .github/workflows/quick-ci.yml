@@ -123,18 +123,6 @@ jobs:
           cat build/mate-learning-report.json
           cat build/mate-learning-model.txt
 
-      - name: Very small actual-game integration check (research only)
-        if: github.ref == 'refs/heads/research/mate-learning-gate-v1-20261011'
-        run: |
-          python3 benchmarks/arena.py \
-            --engine-a build/shogi-ai --engine-b build/shogi-ai \
-            --options-a '{"MateStageBudget":true,"MateLearning":true,"MateLearningFile":"build/mate-learning-model.txt","AdaptiveLongThink":true,"PositionKnowledge":true}' \
-            --options-b '{"MateStageBudget":false,"MateLearning":false,"AdaptiveLongThink":true,"PositionKnowledge":true}' \
-            --games 4 --max-plies 100 --seed 20261011 \
-            --go-command 'go movetime 200' \
-            --output build/mate-learning-mini-match.json
-          python3 -c 'import json; x=json.load(open("build/mate-learning-mini-match.json")); print("mate_training_game_smoke:", {k:x[k] for k in ("wins_a","wins_b","draws","score_a","illegal_games","elapsed_seconds","timing_ms")})'
-
       - name: Attach experimental model and diagnosis
         if: github.ref == 'refs/heads/research/mate-learning-gate-v1-20261011'
         uses: actions/upload-artifact@v4
@@ -144,7 +132,6 @@ jobs:
             build/mate-learning-samples.jsonl
             build/mate-learning-model.txt
             build/mate-learning-report.json
-            build/mate-learning-mini-match.json
           retention-days: 14
 
       - name: Phase diagnostics and historical game filter
