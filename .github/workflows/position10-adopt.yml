@@ -1,0 +1,81 @@
+name: Adopt Owner-Approved Position 10 Studies
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/position10-adoption-request.json"
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  adopt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: true
+      - name: Validate entry and restore exact studied positions
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 scripts/check_match_workflows.py
+          python3 scripts/check_workflow_inventory.py --strict
+          python3 -m pip install python-shogi==1.1.1
+          mkdir -p build/position10-source
+          gh run download 38091143128 --repo "$GITHUB_REPOSITORY" --pattern "position10-result-38091143128-*" --dir build/position10-source
+          gh run download 38091143128 --repo "$GITHUB_REPOSITORY" --name position10-inputs-38091143128 --dir build
+          tar xzf build/position10-inputs.tgz selection10.json
+          python3 tools/knowledge/adopt_position10.py
+      - name: Test knowledge snapshot and embedded fallback
+        run: |
+          set -euo pipefail
+          python3 scripts/build.py --output build/shogi-ai
+          python3 tests/test_position_knowledge_usi.py build/shogi-ai
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          m=json.loads(Path("position-knowledge-v1.manifest.json").read_text())
+          b=Path("position-knowledge-v1.tsv").read_bytes()
+          lines=[x for x in b.decode().splitlines() if x and not x.startswith("#")]
+          assert len(lines)==len({x.split("\t",1)[0] for x in lines})==163
+          assert m["adopted_positions"]==163
+          assert hashlib.sha256(b).hexdigest()==m["output_sha256"]
+          assert all(len(x.split("\t"))==14 and x.split("\t")[10]=="research_decision" for x in lines)
+          print("POSITION10_ADOPTION_TEST_OK 163",m["output_sha256"])
+          PY
+      - name: Save original 10 completed study records in monthly Release with hash verification
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          asset=research10-38091143128.json.gz
+          mkdir -p build/release-check
+          if gh release download records-2026-10-01 --repo "$GITHUB_REPOSITORY" --pattern "$asset" --dir build/release-check; then
+            cmp "build/$asset" "build/release-check/$asset" || { echo "RELEASE_ASSET_HASH_CONFLICT"; exit 1; }
+          else
+            gh release upload records-2026-10-01 "build/$asset" --repo "$GITHUB_REPOSITORY"
+            gh release download records-2026-10-01 --repo "$GITHUB_REPOSITORY" --pattern "$asset" --dir build/release-check
+            cmp "build/$asset" "build/release-check/$asset"
+          fi
+          sha256sum "build/$asset" "build/release-check/$asset"
+      - name: Commit approved knowledge to main
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add position-knowledge-v1.tsv position-knowledge-v1.manifest.json
+          git diff --cached --quiet && { echo "ERROR: no adopted knowledge change"; exit 1; }
+          git commit -m "knowledge: adopt ten owner-approved 50-minute studies (163 total)"
+          git push origin HEAD:main
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: position10-adoption-audit-${{ github.run_id }}
+          path: |
+            build/research10-adoption-audit-38091143128.json
+            position-knowledge-v1.manifest.json
+          retention-days: 90
+          if-no-files-found: warn

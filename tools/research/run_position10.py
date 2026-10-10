@@ -110,7 +110,7 @@ def aggregate(args):
     received=[x.get("id") for x in results]
     if len(received)!=len(set(received)) or any(x not in expected for x in received):
         raise ValueError("duplicate or foreign result IDs")
-    complete=sum(x.get("completed") is True and x.get("bestmove") for x in results)
+    complete=sum(1 for x in results if x.get("completed") is True and bool(x.get("bestmove")) )
     record=dict(schema="position10-results-v1",run_id=os.getenv("GITHUB_RUN_ID"),
         selection=meta,results=results,received=len(results),completed=complete,
         missing=sorted(expected-set(received)),knowledge_adopted=False)
