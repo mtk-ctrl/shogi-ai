@@ -32,6 +32,47 @@ inline void king_safety_features(const rules::Snapshot& s, const AttackMap& a,
         else if(p.kind==1) ++out.pawn_guards;
     }
 }
+// Evaluation-v2 shelter: distinguish WHERE the pieces defend, rather than
+// awarding the same safety to every nearby gold/silver/pawn arrangement.
+// Ring 1 covers the eight squares adjacent to the king; ring 2 the next 16.
+// Pressure already assesses attacks on the enemy king, while this term
+// measures our own king's coverage, contested entrances and safe escapes.
+inline int v2_king_shelter(const rules::Snapshot& s, const AttackMap& a,
+                          int side, const SideFeatures& f,
+                          const EvaluationParameters& p) {
+    const int king = a.kings[side];
+    if (king < 0) return 0;
+    int score = f.gold_guards * (p.guard_gold / 2)
+              + f.silver_guards * (p.guard_silver / 2)
+              + f.pawn_guards * (p.guard_pawn / 2);
+    for (int sq=0; sq<81; ++sq) {
+        const int dist = std::max(std::abs(sq/9-king/9), std::abs(sq%9-king%9));
+        if (dist == 0 || dist > 2) continue;
+        const int ours = std::min(a.nonking[side][sq], 3);
+        const int theirs = std::min(a.nonking[1-side][sq], 3);
+        if (dist == 1) {
+            // Multiple defenders are useful, but do not grow without bound.
+            if (ours) score += 4 + 2*(ours-1);
+            // A contested entrance defended by us is preferable to a hole.
+            if (theirs) {
+                if (!ours) score -= 9;
+                else if (ours < theirs) score -= 4;
+                else score += 2;
+            }
+            // A genuinely available escape matters independently of guards.
+            if (!s.board[sq].kind && !theirs) score += 3;
+            if (s.board[sq].kind && int(s.board[sq].color) != side)
+                score -= 6;
+        } else {
+            // The outer ring is a buffer, not another copy of the inner ring.
+            if (ours) score += 1 + (theirs ? 2 : 0)
+                              + (theirs && ours >= theirs ? 2 : 0);
+            if (theirs && !ours) score -= 2;
+        }
+    }
+    if (a.nonking[1-side][king]) score -= 12;
+    return std::clamp(score, -p.v2_caps[0], p.v2_caps[0]);
+}
 inline void pressure_features(const rules::Snapshot& s, const AttackMap& a,
                                int side, SideFeatures& out) {
     const int king=a.kings[1-side];
@@ -103,8 +144,10 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
         king_safety_features(s,a,c,f);pressure_features(s,a,c,f);
         activity_features(s,a,c,p,f);danger_features(s,a,c,f);
         const auto& caps = p.v2_enabled ? p.v2_caps : p.caps;
-        b.side_points[c][0]=std::min(
-            f.gold_guards*p.guard_gold+f.silver_guards*p.guard_silver+f.pawn_guards*p.guard_pawn,caps[0]);
+        b.side_points[c][0]=p.v2_enabled
+            ? v2_king_shelter(s,a,c,f,p)
+            : std::min(f.gold_guards*p.guard_gold+f.silver_guards*p.guard_silver
+                       +f.pawn_guards*p.guard_pawn,caps[0]);
         b.side_points[c][1]=std::min(
             f.king_attacked*p.pressure_king+f.occupied_ring*p.pressure_occupied+
             f.denied_empty*p.pressure_empty+f.partners*p.pressure_partner,caps[1]);
