@@ -1,0 +1,14 @@
+{
+  "schema": "mate-learning-cycle-v1",
+  "requested_at_jst": "2026-10-11",
+  "research_only": true,
+  "model": "mate-learning-v2-16features",
+  "mate_proof_horizon": 7,
+  "training_positions": 5000,
+  "sample_collection_shards": 10,
+  "game_comparison_shards": 10,
+  "games_per_shard": 10,
+  "maximum_parallel_runners": 10,
+  "main_auto_adoption": false,
+  "trigger_note": "Initial sustained improvement research: train then compare and report"
+}
