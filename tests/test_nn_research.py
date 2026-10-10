@@ -95,7 +95,7 @@ class NeuralResearchTests(unittest.TestCase):
             corrupted.write_text(json.dumps(candidate))
             with self.assertRaises(ValueError):
                 convert([corrupted], base / "unsafe.jsonl")
-            with self.assertRaises(ValueError):
+            with self.assertRaises(FileNotFoundError):
                 mark(raw, base / "missing_binary", tagged)
 
     def test_same_position_prediction_after_serialization(self):
