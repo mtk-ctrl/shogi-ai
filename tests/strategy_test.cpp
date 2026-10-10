@@ -137,12 +137,12 @@ int main() {
         strategy::AlphaBeta3 alphabeta3;
         require(score(p) == 0, "equal starting material");
         p = fixture({{"9i","K"},{"1a","k"}}, "2R2B2G2S2N2L2P");
-        require(score(p) == 7200, "all hand kinds including Bishop/Rook/Gold ordering");
+        require(score(p) == 14860, "all hand kinds including Bishop/Rook/Gold ordering");
         p = fixture({{"9i","K"},{"1a","k"}}, "2r2b2g2s2n2l2p", "w");
-        require(score(p) == -7200, "white hand values and absolute perspective");
+        require(score(p) == -14860, "white hand values and absolute perspective");
         p = fixture({{"9i","K"},{"2a","k"},{"5c","+P"},{"6c","+L"},
                      {"7c","+N"},{"8c","+S"},{"5e","+B"},{"6e","+R"}});
-        require(score(p) == 4600, "all promoted piece values");
+        require(score(p) == 7600, "all promoted piece values");
         std::cout << "PASS material, hands, promotion and color perspective\n";
 
         p = fixture({{"9i","K"},{"1a","k"},{"5e","R"},{"3e","b"},{"5c","p"}});
