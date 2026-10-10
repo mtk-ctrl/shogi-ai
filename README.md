@@ -4,7 +4,7 @@
 
 「雲路」は、雲の中の道、空に通う道を表す古い日本語から取った。既に敷かれた道をなぞるのではなく、まだ道に見えないところから、自分で通れる筋を見つけるAIを目指す。
 
-現在の正式Engine世代は **KUMOJI v2.0.5** である。Evaluation-v2候補Bとv2.0.1の長考配分、採用済み局面知識の毎対局利用を維持し、旧Book / Experienceの実行機能とUSI設定を現行エンジンから除去した。v2.0.5では研究開始局面に別手順で到達しても研究手を直接採用する不具合修正を行った（反復履歴などの安全策は維持）。採用済み実装は `main` を正本とする。
+現在の正式Engine世代は **KUMOJI v2.0.6** である。Evaluation-v2 M型（機動・協調）とv2.0.1の長考配分、採用済み局面知識の毎対局利用を維持し、旧Book / Experienceの実行機能とUSI設定を現行エンジンから除去した。v2.0.6では研究開始局面に別手順で到達しても研究手を直接採用する不具合修正を行った（反復履歴などの安全策は維持）。2026-10-10にM型を正式採用した（600局で349勝12分239敗）。採用済み実装は `main` を正本とする。
 最後にAndroidへ配布するために作ったAPKは **v1.0.1**（2026-10-05）である。v2以後はAndroidへダウンロードする必要がなくAPKを新たに作っていないため、オーナーのAndroidには以前のv1が入っている（2026-10-07本人確認）。APKは必要時に採用済みエンジンをAndroidへ届けるものであり、別の正式エンジン系統ではない。
 正確な実装状態は `main` のcommit SHAでも特定し、正式比較の基準commitは `benchmarks/baseline_ref.txt` を参照する。
 
@@ -20,7 +20,7 @@
 強化は原則として、Engine / 局面知識 / Benchmark / Diagnosis の役割を分け、Strength / Independence / Novelty を意識して進める。
 詳しくは [雲路の羅針盤](docs/00_羅針盤.md) を参照する。
 
-## 現在のmain Engine（KUMOJI v2.0.5）の主な能力
+## 現在のmain Engine（KUMOJI v2.0.6）の主な能力
 
 - やねうら王から利用するのは、合法手生成・局面管理・王手判定・千日手等のルール層のみ
 - 探索・評価・move ordering・置換表・詰み探索・戦略・学習は自作
@@ -30,12 +30,12 @@
 - 自作置換表
 - 1～3手の攻守MateAssistを通常対局へ統合
 - 専用`go mate`による詰み探索
-- Evaluation-v2候補Bによる多面的静的評価（Material / Safety / Pressure / Activity / Danger / Influence / Potential / Coordination / Hand Potential。Threatは現行OFF）
+- Evaluation-v2 M型による多面的静的評価（Material / Safety / Pressure / Activity / Danger / Influence / Potential / Coordination / Hand Potential。Threatは現行OFF）
 - 採用済み局面知識（研究手の直接採用と一致する研究読み筋の継続、通常の探索順ヒントを併用し、通常対局で毎回利用）
 - 評価値・読み筋・探索統計のUSI出力
 - ShogiDroid2向けAndroid OEX APK
 
-評価の現行既定値は `EvalV2=true / Material=100 / Safety=500 / Pressure=474 / Activity=150 / Danger=200 / Influence=19 / Potential=25 / Coordination=50 / HandPotential=60 / Threat=0 / PositionalCap=5000`。
+評価の現行既定値は `EvalV2=true / Material=100 / Safety=480 / Pressure=380 / Activity=410 / Danger=150 / Influence=140 / Potential=210 / Coordination=340 / HandPotential=60 / Threat=20 / PositionalCap=5000`。
 正式比較・スクリーニング・Diagnosis・外部Benchmarkの現行条件は [R20](docs/rules/R20_対局・比較・統計.md) を正本とする。
 
 ## 局面知識
@@ -53,7 +53,7 @@
 
 ## Android / ShogiDroid2
 
-最後に作ったv1.0.1 APKは次の構成である。最新エンジンv2.0.5を含むAPKはまだ作っていない。
+最後に作ったv1.0.1 APKは次の構成である。最新エンジンv2.0.6を含むAPKはまだ作っていない。
 
 - アプリ表示名：`雲路 KUMOJI`
 - OEX表示名：`雲路 KUMOJI v1.0.1`
