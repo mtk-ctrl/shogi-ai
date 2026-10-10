@@ -1,18 +1,24 @@
 #pragma once
 #include "rules/position.h"
 #include <algorithm>
+#include <array>
 #include <limits>
 #include <random>
 #include <stdexcept>
 
 namespace shogi::strategy {
+// Experimental piece values are selected per evaluation session.
+struct PieceValues {
+    std::array<int,9> board{0,100,300,300,500,800,1000,600,0};
+    std::array<int,9> promoted{0,600,600,600,600,1000,1200,600,0};
+    std::array<int,9> hand{0,100,300,300,500,800,1000,600,0};
+};
+inline thread_local PieceValues active_piece_values{};
+inline void set_piece_values(const PieceValues& values) { active_piece_values=values; }
 // Our values, independent of the upstream engine. One pawn = 100.
 inline int piece_value(int kind, bool promoted = false) {
-    constexpr int base[] = {0, 100, 300, 300, 500, 800, 1000, 600, 0};
     if (kind < 0 || kind > 8) throw std::logic_error("unknown piece kind");
-    if (promoted && kind >= 1 && kind <= 4) return 600;
-    if (promoted && (kind == 5 || kind == 6)) return base[kind] + 200;
-    return base[kind];
+    return promoted ? active_piece_values.promoted[kind] : active_piece_values.board[kind];
 }
 
 // Always Black minus White; independent of whose turn the snapshot has.
@@ -24,7 +30,7 @@ inline int material_black(const rules::Snapshot& snapshot) {
     for (int color = 0; color < 2; ++color)
         for (int kind = 1; kind <= 7; ++kind)
             score += (color == 0 ? 1 : -1) * snapshot.hands[color][kind - 1]
-                     * piece_value(kind);
+                     * active_piece_values.hand[kind];
     return score;
 }
 
