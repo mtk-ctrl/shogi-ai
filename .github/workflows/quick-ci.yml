@@ -108,6 +108,32 @@ jobs:
       - name: Mate learning research regression
         run: python3 tests/test_mate_learning.py build/shogi-ai
 
+      # Limited smoke run; not adopted as the trained model or as evidence
+      # of stronger full games. The experiment uses the engine's OWN proof.
+      - name: Learn from real mate problems (research branch only)
+        if: github.ref == 'refs/heads/research/mate-learning-gate-v1-20261011'
+        run: |
+          python3 tools/learning/mate_learning.py collect \
+            --engine build/shogi-ai --limit-per-ply 15 --time-ms 1800 \
+            --out build/mate-learning-samples.jsonl
+          python3 tools/learning/mate_learning.py train \
+            --samples build/mate-learning-samples.jsonl \
+            --model build/mate-learning-model.txt \
+            --report build/mate-learning-report.json
+          cat build/mate-learning-report.json
+          cat build/mate-learning-model.txt
+
+      - name: Attach experimental model and diagnosis
+        if: github.ref == 'refs/heads/research/mate-learning-gate-v1-20261011'
+        uses: actions/upload-artifact@v4
+        with:
+          name: mate-learning-research
+          path: |
+            build/mate-learning-samples.jsonl
+            build/mate-learning-model.txt
+            build/mate-learning-report.json
+          retention-days: 14
+
       - name: Phase diagnostics and historical game filter
         run: |
           python3 scripts/build.py --phase-probe --output build/phase-probe
