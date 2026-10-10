@@ -5,6 +5,7 @@ on:
     paths:
       - "research/nn/**"
       - "tests/test_nn_archive.py"
+      - "tests/test_nn_tuning.py"
       - ".github/workflows/nn-real-study.yml"
   workflow_dispatch:
   push:
@@ -31,6 +32,7 @@ jobs:
         run: |
           python3 tests/test_nn_research.py
           python3 tests/test_nn_archive.py
+          python3 tests/test_nn_tuning.py
       - name: Verify Actions workflow rules
         run: |
           python3 scripts/check_match_workflows.py
@@ -84,6 +86,12 @@ jobs:
           echo 'Historical self-play, held-out games and overlap filtering; no playing-engine modification.' >> "$GITHUB_STEP_SUMMARY"
           echo '>>>json' >> "$GITHUB_STEP_SUMMARY"
           cat build/nn-report/report.json >> "$GITHUB_STEP_SUMMARY"
+      - name: Select smaller models by validation only
+        run: |
+          python3 research/nn/tune.py \
+            --input build/nn-positions-scored.jsonl \
+            --output-dir build/nn-tuned
+          cat build/nn-tuned/tuning-report.json
       - name: Store model and diagnostic report (research-only)
         uses: actions/upload-artifact@v4
         with:
@@ -93,5 +101,7 @@ jobs:
             build/nn-report/report.json
             build/nn-report/disagreements.csv
             build/nn-learning-log.json
+            build/nn-tuned/position-net-v1.npz
+            build/nn-tuned/tuning-report.json
           retention-days: 90
           if-no-files-found: error
