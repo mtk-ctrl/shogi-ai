@@ -4,8 +4,10 @@ on:
   pull_request:
     paths:
       - "tools/kifu/**"
+      - "research/nn/**"
       - "tests/test_kifu_pipeline.py"
       - "tests/test_kifu_validation.py"
+      - "tests/test_nn_research.py"
       - "scripts/build.py"
       - ".github/workflows/kifu-learning-ci.yml"
   push:
@@ -14,6 +16,7 @@ on:
       - "tools/kifu/**"
       - "tests/test_kifu_pipeline.py"
       - "tests/test_kifu_validation.py"
+      - "tests/test_nn_research.py"
       - "scripts/build.py"
       - ".github/workflows/kifu-learning-ci.yml"
   workflow_dispatch:
@@ -41,6 +44,11 @@ jobs:
 
       - name: Rule-layer validation and sample export
         run: python3 tests/test_kifu_validation.py build/kifu-validator
+
+      - name: Neural research unit and synthetic training tests
+        run: |
+          python3 -m pip install --disable-pip-version-check numpy==2.3.3 python-shogi==1.1.1
+          python3 tests/test_nn_research.py
 
       - name: Rules-only boundary check
         run: python3 tests/check_boundary.py build/kifu-validator
