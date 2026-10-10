@@ -19,6 +19,9 @@ class Usi:
         )
         self.q = queue.Queue()
         threading.Thread(target=self._read, daemon=True).start()
+        # Knowledge tests exercise root search, not the adopted random opening.
+        # It is disabled explicitly so root knowledge telemetry is observable.
+        self.send("setoption name OpeningRandomNonLance value false")
 
     def _read(self):
         for line in self.p.stdout:

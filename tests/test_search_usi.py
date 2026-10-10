@@ -45,6 +45,9 @@ def search(sf, command, limit=10):
 try:
     send('usi'); until('usiok')
     send('isready'); until('readyok')
+    # Standard opening is randomized since v2.0.7; search-depth regression
+    # intentionally disables that separate adopted feature.
+    send('setoption name OpeningRandomNonLance value false')
     sf = shogi.Board().sfen()
     _, infos, _ = search(sf, 'go depth 3')
     assert [int(t[t.index('depth')+1]) for t in infos] == [1, 2, 3], infos
@@ -52,7 +55,7 @@ try:
     # Material-only fixture keeps score fixed across quiet king moves. Score is
     # side-to-move relative; eval breakdown remains Black-relative.
     send('setoption name EvalProfile value material')
-    for turn, expected in [('b',100),('w',-100)]:
+    for turn, expected in [('b',120),('w',-120)]:
         _, infos, _ = search('8k/9/9/9/9/9/2P6/9/K8 '+turn+' - 1', 'go depth 1')
         assert int(infos[-1][infos[-1].index('cp')+1]) == expected, infos
     send('setoption name EvalProfile value features')

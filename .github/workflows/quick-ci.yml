@@ -20,12 +20,15 @@ on:
       - "tests/rules_test.cpp"
       - "tests/generated_move_test.cpp"
       - "tests/test_search_usi.py"
+      - "tests/test_turn_phase_usi.py"
       - "tests/test_position_knowledge_usi.py"
       - "tests/test_eval_usi.py"
       - "tests/test_phase_diagnostics.py"
       - "tools/phase/**"
       - "tests/test_mate_usi.py"
       - "benchmarks/arena.py"
+      - "tools/records/archive_played_moves.py"
+      - "tests/test_played_archive.py"
       - "benchmarks/position_arena.py"
       - "benchmarks/external_match.py"
       - "tools/floodgate/**"
@@ -95,6 +98,7 @@ jobs:
         run: |
           python3 -m pip install python-shogi==1.1.1
           python3 tests/test_search_usi.py build/shogi-ai
+          python3 tests/test_turn_phase_usi.py build/shogi-ai
           python3 tests/test_position_knowledge_usi.py build/shogi-ai
           python3 tests/test_eval_usi.py build/shogi-ai
           python3 tests/test_mate_usi.py build/shogi-ai
@@ -117,6 +121,7 @@ jobs:
       - name: Arena telemetry and adjudication tests
         run: |
           python3 tests/test_arena.py
+          python3 tests/test_played_archive.py
           python3 tests/test_match_sharding.py
           python3 tests/test_external_match.py
           python3 tests/test_floodgate_client.py
