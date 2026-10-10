@@ -19,19 +19,90 @@ def check(root: Path = ROOT) -> tuple[list[str], list[str]]:
     def read(path: str) -> str:
         return (root / path).read_text(encoding="utf-8")
 
+    # Version-independent current specification: verify facts, not phrasing.
+    spec_path = "docs/現行エンジン仕様.md"
+    spec = plain(read(spec_path))
     engine = re.search(r"id name KUMOJI v(\d+\.\d+\.\d+)", read("engine/main.cpp"))
+    version = re.search(r"現在の正式エンジン\s*[:：]\s*KUMOJI v(\d+\.\d+\.\d+)", spec)
     if engine is None:
         errors.append("engine/main.cpp: USIの正式エンジン版を読み取れない")
+    if version is None:
+        errors.append(f"{spec_path}: 正式エンジンの版番号を読み取れない")
+    if engine and version and engine.group(1) != version.group(1):
+        errors.append(f"{spec_path}: 現行版 {version.group(1)} と実装 {engine.group(1)} が異なる")
+
+    material = read("engine/strategy/material.h")
+    piece_arrays = {}
+    for name in ("base", "promoted_values", "hand_values"):
+        match_array = re.search(rf"constexpr int {name}\[\]\s*=\s*\{{([^}}]+)\}}", material)
+        if match_array:
+            piece_arrays[name] = [int(x) for x in re.findall(r"\d+", match_array.group(1))]
+        else:
+            errors.append(f"material.h: {name} の値を読み取れない")
+    if len(piece_arrays) == 3:
+        for index, piece in enumerate(("歩", "香", "桂", "銀", "角", "飛", "金"), 1):
+            row = re.search(rf"^\|\s*{piece}\s*\|\s*(\d+)\s*\|\s*([0-9]+|—)\s*\|\s*(\d+)\s*\|", spec, re.M)
+            if row is None:
+                errors.append(f"{spec_path}: {piece} の駒価値行がない")
+                continue
+            reported = (int(row.group(1)), None if row.group(2) == "—" else int(row.group(2)), int(row.group(3)))
+            actual = (piece_arrays["base"][index],
+                      piece_arrays["promoted_values"][index] if index <= 6 else None,
+                      piece_arrays["hand_values"][index])
+            if reported != actual:
+                errors.append(f"{spec_path}: {piece} の駒価値 {reported} が実装 {actual} と異なる")
+
+    params = read("engine/strategy/evaluation_params.h")
+    weights_array = re.search(r"std::array<int, 4> weights\{([^}]+)\}", params)
+    actual_weights = {}
+    if not weights_array:
+        errors.append("evaluation_params.h: M型重みの配列を読み取れない")
     else:
-        version = engine.group(1)
-        for path in ("README.md", "docs/rules/R70_記録・Journal・バージョン.md", "docs/33_Floodgate接続基盤.md"):
-            content = plain(read(path))
-            if not re.search(rf"KUMOJI\s+v{re.escape(version)}\b", content):
-                errors.append(f"{path}: エンジン実装と同じ正式版 KUMOJI v{version} の記載がない")
-            # Actual conflicting current-version statements remain blocking.
-            current = re.findall(r"現在[^。\n]{0,140}?KUMOJI\s+v(\d+\.\d+\.\d+)", content)
-            if current and current[0] != version:
-                errors.append(f"{path}: 現行版の説明 {current} が実装 v{version} と異なる")
+        vals = [int(x) for x in re.findall(r"\d+", weights_array.group(1))]
+        if len(vals) == 4:
+            actual_weights.update(zip(("EvalSafety", "EvalPressure", "EvalActivity", "EvalDanger"), vals))
+        else:
+            errors.append("evaluation_params.h: M型重みの項目数が不正")
+    names = {
+        "EvalMaterialWeight": "material_weight",
+        "EvalInfluence": "influence_weight",
+        "EvalPotential": "potential_weight",
+        "EvalCoordination": "coordination_weight",
+        "EvalHandPotential": "hand_potential_weight",
+        "EvalThreat": "threat_weight",
+        "EvalPositionalCap": "positional_cap",
+    }
+    for option, field in names.items():
+        match_value = re.search(rf"int {field}\s*=\s*(\d+)", params)
+        if match_value:
+            actual_weights[option] = int(match_value.group(1))
+        else:
+            errors.append(f"evaluation_params.h: {field} を読み取れない")
+    reported_weights = {name: int(value) for name, value in re.findall(
+        r"^\|[^|\n]+\|\s*(Eval[A-Za-z]+)\s*\|\s*(\d+)\s*\|", spec, re.M)}
+    for option, actual in actual_weights.items():
+        if option not in reported_weights:
+            errors.append(f"{spec_path}: 評価重み {option} が未記載")
+        elif reported_weights[option] != actual:
+            errors.append(f"{spec_path}: {option} の重み {reported_weights[option]} が実装 {actual} と異なる")
+    if not re.search(r"bool v2_enabled\s*=\s*true", params) or "EvalV2=true" not in spec:
+        errors.append(f"{spec_path}: 評価関数v2の既定値が実装と一致しない")
+
+    phase = read("engine/strategy/turn_phase.h")
+    for label, field in (("配置展開", "development"), ("戦闘", "battle"), ("敵陣進出", "invasion")):
+        actual = re.search(rf"(\d+)\s*\*\s*out\.components\.{field}", phase)
+        described = re.search(rf"{label}係数\s*(\d+)", spec)
+        if not actual or not described or actual.group(1) != described.group(1):
+            errors.append(f"{spec_path}: 成熟度{label}係数と実装が一致しない")
+    offset = re.search(r"/10000\s*-\s*(\d+)", phase)
+    offset_in_doc = re.search(r"加重平均から\s*(\d+)\s*を減じ", spec)
+    if not offset or not offset_in_doc or offset.group(1) != offset_in_doc.group(1):
+        errors.append(f"{spec_path}: 成熟度の減点値と実装が一致しない")
+
+    manifest_count = int(json.loads(read("position-knowledge-v1.manifest.json"))["adopted_positions"])
+    described_count = re.search(r"採用済み局面数\s*[:：]\s*(\d+)", spec)
+    if not described_count or int(described_count.group(1)) != manifest_count:
+        errors.append(f"{spec_path}: 採用知識数とmanifest ({manifest_count}) が一致しない")
 
     match = read(".github/workflows/engine-match.yml")
     option_defaults = []
