@@ -74,6 +74,21 @@ def test_engine_protocol(exe):
         mate = "l3lk3/2g3n+P1/1p7/p2+R2P2/3p5/P1P1p4/2SPPP2L/5S3/+n+l1GKG1N1 b BGS6Prbsnp 105"
         _, label, status = eng.observe(mate, 2000)
         require(label == 1 and status == "proven_mate", "verified bounded mate")
+        # The research time allocator must allocate ZERO even when the
+        # learning model is requested: 0..33 never runs the mate helper.
+        eng.send("setoption name MateStageBudget value true")
+        eng.send("position sfen 4k4/9/9/9/9/9/9/9/4K4 b - 1")
+        eng.send("go movetime 200")
+        stage = eng.until("info string mate_stage ", 6)
+        require(" budget 0 " in stage, "opening must bypass mate exploration")
+        eng.until("bestmove ", 6)
+        # A real terminal-tactics fixture should have a non-zero budget.
+        eng.send("position sfen " + mate)
+        eng.send("go movetime 200")
+        stage = eng.until("info string mate_stage ", 6)
+        words = stage.split()
+        require(int(words[words.index("budget") + 1]) > 0, "endgame budget positive")
+        eng.until("bestmove ", 6)
     finally:
         eng.close()
 
