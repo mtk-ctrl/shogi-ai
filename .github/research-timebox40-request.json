@@ -1,17 +1,18 @@
 {
-  "request_id": "2026-10-10-opening32-mid6-end2-50m-40",
+  "request_id": "2026-10-10-v207-selfplay200-40x50m",
   "requested_by": "owner",
-  "source_run": "37695622423",
+  "source_match_request_id": "20261010-v207-selfplay200-for-knowledge",
+  "source_engine_ref": "1c983d518e4e7b52b1d8096dc13e50f9cb9c946c",
+  "source_run": "0",
   "expected_positions": 40,
   "stages": {
-    "opening": 32,
-    "middle": 6,
-    "end": 2
+    "opening": 14,
+    "middle": 16,
+    "end": 10
   },
   "research_minutes_per_position": 50,
   "parallel_runners": 20,
-  "start_jst": "2026-10-10T06:30:00+09:00",
-  "deadline_jst": "2026-10-10T12:00:00+09:00",
+  "commence": "after successful completion of the source 200-game match",
   "adopt_to_knowledge": false,
-  "exclusions": "exclude adopted knowledge and all previous archived research records including October 9 opening20, morning timebox40, evening timebox40"
+  "exclusions": "exclude all adopted knowledge and all previous archived studies"
 }
