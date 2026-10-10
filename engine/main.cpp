@@ -33,6 +33,7 @@ int main() {
     bool position_knowledge_enabled = true;
     bool position_knowledge_loaded = false;
     unsigned random_seed = 5489u;
+    bool random_seed_explicit = false;
     std::string position_knowledge_file = "position-knowledge-v1.tsv";
     int default_depth = 3;
     bool adaptive_long_think_enabled = true;
@@ -236,7 +237,7 @@ int main() {
             // Explicit searchmoves restrictions always take precedence.
             const bool opening_random_choice = opening_random_non_lance && !restrict
                 && position.sfen() == shogi::rules::Position::start_sfen();
-            const unsigned opening_seed = random_seed;
+            const unsigned opening_seed = random_seed_explicit ? random_seed : std::random_device{}();
             const auto limits = shogi::strategy::parse_go_limits(tokens, position.snapshot().turn, default_depth);
             int current_ply = 1;
             {
@@ -536,6 +537,7 @@ int main() {
                         auto parsed = std::stoul(value);
                         if (parsed <= 2147483647ul) {
                             random_seed = static_cast<unsigned>(parsed);
+                            random_seed_explicit = true;
                             strategy.set_seed(random_seed);
                         }
                     } catch (...) {
