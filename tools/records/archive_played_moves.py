@@ -19,6 +19,9 @@ SEARCH_FIELDS = (
     "knowledge_disabled_repetition", "qnodes", "qcutoffs",
     "long_think_used", "long_think_reason", "long_think_base_ms", "long_think_max_ms",
     "decision_source", "research_id", "research_step", "research_total", "research_move",
+    "phase_version", "phase_maturity", "phase_stage",
+    "phase_development", "phase_battle", "phase_invasion",
+    "phase_king_threat", "phase_static_cp_black",
 )
 META_FIELDS = (
     "telemetry_schema_version", "engine_a", "engine_b", "sha256_a", "sha256_b",
@@ -53,7 +56,7 @@ def archive(inputs, output_dir, run_id=None, ref_a=None, ref_b=None):
     games = []
     sources = []
     seen = set()
-    plies = scored = ambiguous = no_telemetry = 0
+    plies = scored = ambiguous = no_telemetry = phase_recorded = 0
     for path in inputs:
         path = Path(path)
         raw = path.read_bytes()
@@ -96,6 +99,7 @@ def archive(inputs, output_dir, run_id=None, ref_a=None, ref_b=None):
                 plies += 1
                 scored += search["score_status"] == "recorded"
                 ambiguous += search["score_status"] == "ambiguous"
+                phase_recorded += "phase_maturity" in search
                 no_telemetry += not bool(original)
             row = {k: game[k] for k in GAME_FIELDS if k in game}
             row.update(
@@ -124,6 +128,7 @@ def archive(inputs, output_dir, run_id=None, ref_a=None, ref_b=None):
             "games": len(games), "plies": plies, "scored_plies": scored,
             "missing_score_plies": plies - scored - ambiguous,
             "ambiguous_score_plies": ambiguous, "without_telemetry_plies": no_telemetry,
+            "phase_recorded_plies": phase_recorded, "phase_missing_plies": plies - phase_recorded,
             "run_id": run_id, "requested_ref_a": ref_a, "requested_ref_b": ref_b,
             "scope": "Played moves only; PV, candidate moves and search trees are excluded.",
             "sources": sources,

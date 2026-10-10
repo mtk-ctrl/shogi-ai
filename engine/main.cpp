@@ -5,6 +5,7 @@
 #include "strategy/search_limits.h"
 #include "strategy/promotion_policy.h"
 #include "strategy/long_think_budget.h"
+#include "strategy/turn_phase.h"
 #include <algorithm>
 #include <chrono>
 #include <random>
@@ -90,7 +91,7 @@ int main() {
         if (command != "isready" && command != "stop" && command != "ponderhit" && command != "quit")
             finish_search(true);
         if (command == "usi") {
-            std::cout << "id name KUMOJI v2.0.7\nid author mtk-ctrl + ChatGPT\n"
+            std::cout << "id name KUMOJI v2.0.8\nid author mtk-ctrl + ChatGPT\n"
                       << "option name USI_Ponder type check default false\n"
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
@@ -224,6 +225,26 @@ int main() {
             if (status.result != shogi::rules::Result::Ongoing) {
                 emit("info string terminal " + status.reason + "\n");
                 bestmove("resign"); continue;
+            }
+            // One observation for each legitimate turn, before choosing a
+            // move. This also runs when an opening/random or an adopted
+            // research move skips the normal search. Static evaluation is
+            // Black-relative and must never be confused with searched score.
+            {
+                const auto root = position.snapshot();
+                const auto phase = shogi::strategy::classify_turn_phase(root);
+                const auto eval = shogi::strategy::evaluate(root, material_profile
+                    ? shogi::strategy::EvaluationParameters::material_only()
+                    : evaluation_parameters);
+                std::ostringstream out;
+                out << "info string phase v 1 maturity " << phase.maturity
+                    << " stage " << phase.stage
+                    << " development " << phase.components.development
+                    << " battle " << phase.components.battle
+                    << " invasion " << phase.components.invasion
+                    << " king_threat " << phase.components.king_threat
+                    << " static_cp_black " << eval.total << '\n';
+                emit(out.str());
             }
             if (!restrict && entering_king && position.can_declare_win()) {
                 bestmove("win"); continue;
