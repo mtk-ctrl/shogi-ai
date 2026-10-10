@@ -1,0 +1,108 @@
+name: KUMOJI Position 10 Long Research
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/research10-request.json"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - name: Verify workflow, request and source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 scripts/check_match_workflows.py
+          python3 scripts/check_workflow_inventory.py
+          python3 -m pip install python-shogi==1.1.1
+          mkdir -p source-archive older
+          gh run download 38037253689 --repo "$GITHUB_REPOSITORY" -n played-move-archive-38037253689 -D source-archive
+          gh release download records-2026-10-01 --repo "$GITHUB_REPOSITORY" -p 'research-records-*.jsonl.gz' -p 'position-knowledge-v1-candidates-*.jsonl.gz' -p 'research-opening20-*.json.gz' -p 'timebox40-records-*.json.gz' -D older
+          python3 tools/research/run_position10.py select --source source-archive/played-games.jsonl.gz --output positions.tsv --metadata selection10.json
+      - name: Build current adopted engine and knowledge
+        run: |
+          set -euo pipefail
+          python3 scripts/build.py --output build/kumoji
+          test -s position-knowledge-v1.tsv
+          cp position-knowledge-v1.tsv build/position-knowledge-v1.tsv
+          sha256sum build/kumoji build/position-knowledge-v1.tsv
+          tar czf position10-inputs.tgz build/kumoji build/position-knowledge-v1.tsv positions.tsv selection10.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: position10-inputs-${{ github.run_id }}
+          path: position10-inputs.tgz
+          retention-days: 90
+          if-no-files-found: error
+  research:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        lane: [0,1,2,3,4,5,6,7,8,9]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: position10-inputs-${{ github.run_id }}
+      - name: Restore engine and positions
+        run: tar xzf position10-inputs.tgz
+      - name: Study exactly one position for 50 minutes
+        env:
+          LANE: ${{ matrix.lane }}
+        run: |
+          set -euo pipefail
+          python3 -m pip install python-shogi==1.1.1
+          python3 tools/research/run_position10.py study --positions positions.tsv --engine build/kumoji --knowledge build/position-knowledge-v1.tsv --lane "$LANE" --output result.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: position10-result-${{ github.run_id }}-${{ matrix.lane }}
+          path: result.json
+          retention-days: 90
+          if-no-files-found: warn
+  aggregate:
+    needs: [prepare, research]
+    if: always() && needs.prepare.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: position10-inputs-${{ github.run_id }}
+      - run: tar xzf position10-inputs.tgz
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: position10-result-${{ github.run_id }}-*
+          path: results
+      - name: Aggregate and audit study records
+        run: |
+          set -euo pipefail
+          python3 tools/research/run_position10.py aggregate --metadata selection10.json --results results --output "research10-$GITHUB_RUN_ID.json.gz" --summary "research10-summary.json"
+      - name: Save original unadopted records in monthly release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release upload records-2026-10-01 "research10-$GITHUB_RUN_ID.json.gz" --repo "$GITHUB_REPOSITORY"
+          sha256sum "research10-$GITHUB_RUN_ID.json.gz"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: position10-summary-${{ github.run_id }}
+          path: research10-summary.json
+          retention-days: 90
+          if-no-files-found: warn
