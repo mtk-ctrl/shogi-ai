@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
+import json
 import queue
 import subprocess
 import sys
@@ -208,12 +209,14 @@ def all_adopted_research_positions():
     source = Path(__file__).resolve().parents[1] / "position-knowledge-v1.tsv"
     entries = [line.split("\t") for line in source.read_text(encoding="utf-8").splitlines()
                if line and not line.startswith("#")]
-    assert len(entries) == 153, len(entries)
+    manifest = json.loads((source.parent / "position-knowledge-v1.manifest.json").read_text(encoding="utf-8"))
+    expected_count = manifest["adopted_positions"]
+    assert len(entries) == expected_count, (len(entries), expected_count)
     u = Usi()
     try:
         u.send("isready")
         _, ready = u.until("readyok")
-        assert any("loaded 153 positions" in x for x in ready), ready
+        assert any(f"loaded {expected_count} positions" in x for x in ready), ready
         for i, row in enumerate(entries, 1):
             assert len(row) == 14 and row[10] == "research_decision"
             key, move = row[0], row[1]
@@ -311,4 +314,4 @@ adopted_real_snapshot()
 all_adopted_research_positions()
 newer_direct_study_overrides_previous_continuation()
 no_forced_research_in_repeated_history()
-print("PASS position knowledge: 153 direct decisions by matching SFEN, PV continuation, repetition safety and fallback")
+print(f"PASS position knowledge: {json.loads((Path(__file__).resolve().parents[1] / 'position-knowledge-v1.manifest.json').read_text())['adopted_positions']} direct decisions by matching SFEN, PV continuation, repetition safety and fallback")
