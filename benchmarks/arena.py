@@ -114,6 +114,27 @@ def parse_info_line(line):
     if "pv" in parts:
         i = parts.index("pv")
         info["pv"] = parts[i + 1:i + 9]
+    if len(parts) >= 3 and parts[1:3] == ["string", "phase"]:
+        try:
+            pairs = dict(zip(parts[3::2], parts[4::2]))
+            if pairs.get("v") == "1":
+                numeric = {name: int(pairs[name]) for name in (
+                    "maturity", "development", "battle", "invasion", "king_threat")}
+                stage = pairs["stage"]
+                maturity = numeric["maturity"]
+                expected = "opening" if maturity <= 33 else "middle" if maturity <= 66 else "end"
+                if stage == expected and all(0 <= value <= 100 for value in numeric.values()):
+                    info.update({
+                        "phase_version": 1, "phase_maturity": maturity,
+                        "phase_stage": stage,
+                        "phase_development": numeric["development"],
+                        "phase_battle": numeric["battle"],
+                        "phase_invasion": numeric["invasion"],
+                        "phase_king_threat": numeric["king_threat"],
+                        "phase_static_cp_black": int(pairs["static_cp_black"]),
+                    })
+        except (KeyError, ValueError):
+            pass
     if len(parts) >= 3 and parts[1:3] == ["string", "research_decision"]:
         try:
             i = parts.index("id")
@@ -173,6 +194,11 @@ def compact_search_telemetry(info, side_to_move):
         out["score_lowerbound"] = True
     if info.get("score_upperbound"):
         out["score_upperbound"] = True
+    for name in ("phase_version", "phase_maturity", "phase_stage",
+                 "phase_development", "phase_battle", "phase_invasion",
+                 "phase_king_threat", "phase_static_cp_black"):
+        if name in info:
+            out[name] = info[name]
     for name in ("decision_source", "research_id", "research_step", "research_total", "research_move"):
         if name in info:
             out[name] = info[name]
