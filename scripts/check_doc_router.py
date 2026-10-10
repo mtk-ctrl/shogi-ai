@@ -58,6 +58,11 @@ def main() -> int:
         elif not target.is_file():
             errors.append(f"router points to missing file: {raw}")
 
+    if "docs/現行エンジン仕様.md" not in router_text:
+        errors.append("router must link the stable current-engine specification")
+    if re.search(r"v\d+\.\d+\.\d+", router_text):
+        errors.append("router must not link version-specific historical engine documents")
+
     if "この文書にはルール本文を書かない" not in router_text:
         errors.append("router must declare that rule bodies do not live in the router")
 
