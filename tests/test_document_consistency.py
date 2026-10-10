@@ -16,7 +16,9 @@ import check_workflow_inventory as inventory
 import check_match_workflows as match_workflows
 
 NEEDED = (
-    "README.md", "engine/main.cpp",
+    "README.md", "engine/main.cpp", "docs/現行エンジン仕様.md",
+    "engine/strategy/material.h", "engine/strategy/evaluation_params.h",
+    "engine/strategy/turn_phase.h", "position-knowledge-v1.manifest.json",
     "docs/rules/R00_基本原則.md", "docs/rules/R20_対局・比較・統計.md",
     "docs/rules/R70_記録・Journal・バージョン.md",
     "docs/33_Floodgate接続基盤.md",
@@ -47,7 +49,7 @@ class ClaimChecks(unittest.TestCase):
         self.assertEqual(errors, [])
 
     def test_natural_rephrasing_does_not_fail(self):
-        self.change("README.md", "通常対局で毎回利用", "すべての対局で使用する")
+        self.change("docs/現行エンジン仕様.md", "過去版の研究値と採用理由", "旧版の研究値と採用理由")
         errors, _ = claims.check(self.root)
         self.assertEqual(errors, [])
 
@@ -60,10 +62,32 @@ class ClaimChecks(unittest.TestCase):
     def test_wrong_current_engine_version_still_fails(self):
         engine = (self.root / "engine/main.cpp").read_text(encoding="utf-8")
         version = re.search(r"id name KUMOJI v(\d+\.\d+\.\d+)", engine).group(1)
-        self.change("README.md", f"現在の正式Engine世代は **KUMOJI v{version}**",
-                    "現在の正式Engine世代は **KUMOJI v0.0.0**")
+        self.change("docs/現行エンジン仕様.md", f"現在の正式エンジン：KUMOJI v{version}",
+                    "現在の正式エンジン：KUMOJI v0.0.0")
         errors, _ = claims.check(self.root)
         self.assertTrue(any("現行版" in e for e in errors), errors)
+
+    def test_wrong_g_piece_value_fails(self):
+        self.change("docs/現行エンジン仕様.md", "| 歩 | 120 | 760 | 180 |",
+                    "| 歩 | 121 | 760 | 180 |")
+        errors, _ = claims.check(self.root)
+        self.assertTrue(any("駒価値" in e for e in errors), errors)
+
+    def test_wrong_m_weight_fails(self):
+        self.change("docs/現行エンジン仕様.md", "| EvalThreat | 20 |", "| EvalThreat | 21 |")
+        errors, _ = claims.check(self.root)
+        self.assertTrue(any("EvalThreat" in e for e in errors), errors)
+
+    def test_wrong_phase_coefficient_fails(self):
+        self.change("docs/現行エンジン仕様.md", "配置展開係数 **4408**", "配置展開係数 **4407**")
+        errors, _ = claims.check(self.root)
+        self.assertTrue(any("成熟度配置展開係数" in e for e in errors), errors)
+
+    def test_wrong_knowledge_count_fails(self):
+        self.change("docs/現行エンジン仕様.md", "採用済み局面数：153", "採用済み局面数：154")
+        errors, _ = claims.check(self.root)
+        self.assertTrue(any("採用知識数" in e for e in errors), errors)
+
 
 class FormalMaterialLadderChecks(unittest.TestCase):
     def setUp(self):
