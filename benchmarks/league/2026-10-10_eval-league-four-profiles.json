@@ -1,0 +1,188 @@
+{
+  "purpose": "4種類の大胆な静的評価の総当たりリーグ（正式採用前）",
+  "version": "research-2026-10-10",
+  "game_total": 600,
+  "profiles": {
+    "S": {
+      "title": "堅守・連係",
+      "purpose": "玉の24マス安全性、連係、危険回避を最優先",
+      "options": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+        "EvalV2": true,
+        "EvalPositionalCap": 5000,
+        "EvalMaterialWeight": 100,
+        "EvalSafety": 900,
+        "EvalPressure": 320,
+        "EvalActivity": 120,
+        "EvalDanger": 320,
+        "EvalInfluence": 50,
+        "EvalPotential": 35,
+        "EvalCoordination": 250,
+        "EvalHandPotential": 30,
+        "EvalThreat": 8
+      }
+    },
+    "A": {
+      "title": "攻撃・圧力",
+      "purpose": "敵玉への攻撃、可動力、敵陣の効きに寄せる",
+      "options": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+        "EvalV2": true,
+        "EvalPositionalCap": 5000,
+        "EvalMaterialWeight": 100,
+        "EvalSafety": 260,
+        "EvalPressure": 980,
+        "EvalActivity": 300,
+        "EvalDanger": 120,
+        "EvalInfluence": 75,
+        "EvalPotential": 100,
+        "EvalCoordination": 80,
+        "EvalHandPotential": 100,
+        "EvalThreat": 45
+      }
+    },
+    "M": {
+      "title": "機動・協調",
+      "purpose": "駒の可動性、潜在活動、駒同士の連係を重視",
+      "options": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+        "EvalV2": true,
+        "EvalPositionalCap": 5000,
+        "EvalMaterialWeight": 100,
+        "EvalSafety": 480,
+        "EvalPressure": 380,
+        "EvalActivity": 410,
+        "EvalDanger": 150,
+        "EvalInfluence": 140,
+        "EvalPotential": 210,
+        "EvalCoordination": 340,
+        "EvalHandPotential": 60,
+        "EvalThreat": 20
+      }
+    },
+    "T": {
+      "title": "駒得・戦術",
+      "purpose": "駒得、安全な取り合い、両取り・串刺しを重視",
+      "options": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+        "EvalV2": true,
+        "EvalPositionalCap": 5000,
+        "EvalMaterialWeight": 175,
+        "EvalSafety": 420,
+        "EvalPressure": 540,
+        "EvalActivity": 150,
+        "EvalDanger": 420,
+        "EvalInfluence": 50,
+        "EvalPotential": 60,
+        "EvalCoordination": 110,
+        "EvalHandPotential": 90,
+        "EvalThreat": 110
+      }
+    }
+  },
+  "fixtures": [
+    {
+      "id": "20261010-eval-league-S-A",
+      "pair": [
+        "S",
+        "A"
+      ],
+      "games": 100,
+      "shards": 4,
+      "seed": 2026101110,
+      "go_command": "go movetime 200",
+      "max_plies": 300,
+      "ref_a": "64aa9036a1172aaf8f5f4b17b7e78f238f0b3b6c",
+      "ref_b": "64aa9036a1172aaf8f5f4b17b7e78f238f0b3b6c"
+    },
+    {
+      "id": "20261010-eval-league-S-M",
+      "pair": [
+        "S",
+        "M"
+      ],
+      "games": 100,
+      "shards": 3,
+      "seed": 2026101210,
+      "go_command": "go movetime 200",
+      "max_plies": 300,
+      "ref_a": "64aa9036a1172aaf8f5f4b17b7e78f238f0b3b6c",
+      "ref_b": "64aa9036a1172aaf8f5f4b17b7e78f238f0b3b6c"
+    },
+    {
+      "id": "20261010-eval-league-S-T",
+      "pair": [
+        "S",
+        "T"
+      ],
+      "games": 100,
+      "shards": 3,
+      "seed": 2026101310,
+      "go_command": "go movetime 200",
+      "max_plies": 300,
+      "ref_a": "64aa9036a1172aaf8f5f4b17b7e78f238f0b3b6c",
+      "ref_b": "64aa9036a1172aaf8f5f4b17b7e78f238f0b3b6c"
+    },
+    {
+      "id": "20261010-eval-league-A-M",
+      "pair": [
+        "A",
+        "M"
+      ],
+      "games": 100,
+      "shards": 4,
+      "seed": 2026101410,
+      "go_command": "go movetime 200",
+      "max_plies": 300,
+      "ref_a": "64aa9036a1172aaf8f5f4b17b7e78f238f0b3b6c",
+      "ref_b": "64aa9036a1172aaf8f5f4b17b7e78f238f0b3b6c"
+    },
+    {
+      "id": "20261010-eval-league-A-T",
+      "pair": [
+        "A",
+        "T"
+      ],
+      "games": 100,
+      "shards": 3,
+      "seed": 2026101510,
+      "go_command": "go movetime 200",
+      "max_plies": 300,
+      "ref_a": "64aa9036a1172aaf8f5f4b17b7e78f238f0b3b6c",
+      "ref_b": "64aa9036a1172aaf8f5f4b17b7e78f238f0b3b6c"
+    },
+    {
+      "id": "20261010-eval-league-M-T",
+      "pair": [
+        "M",
+        "T"
+      ],
+      "games": 100,
+      "shards": 3,
+      "seed": 2026101610,
+      "go_command": "go movetime 200",
+      "max_plies": 300,
+      "ref_a": "64aa9036a1172aaf8f5f4b17b7e78f238f0b3b6c",
+      "ref_b": "64aa9036a1172aaf8f5f4b17b7e78f238f0b3b6c"
+    }
+  ],
+  "common": {
+    "engine_commit": "64aa9036a1172aaf8f5f4b17b7e78f238f0b3b6c",
+    "engine_king_safety": "V2・内周8マス／外周16マス、脆弱な侵入口と逃げ道。項目上限は研究候補commitに固定",
+    "threat_raw_cap": 600,
+    "king_guard_method": "24_square_zone",
+    "knowledge": "両者ともPositionKnowledge=true、同一GitHub mainコミットのposition-knowledge-v1.tsv",
+    "time": "200ms＋条件該当時に同一探索を最大1sまで延長、1局上限10回",
+    "round_robin": "4者6カード、各100局。各カードの先後50:50",
+    "ranking": "各カードの得点=(勝+引分/2)/局数。総得点率と直接対戦を表示し、95%区間・元の採用済み版との比較前に採用判断をしない",
+    "storage": "各Generic Engine Match の aggregate+実際の着手記録、artifact保存期限を検証。未承認候補はmain評価関数へ入れない"
+  }
+}
