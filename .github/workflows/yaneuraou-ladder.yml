@@ -1,0 +1,311 @@
+name: YaneuraOu Material Ladder
+run-name: "YaneuraOu ladder Lv${{ inputs.level || 'request' } / ${{ inputs.series_id || github.run_id }"
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/yaneuraou-ladder-request.json"
+  workflow_dispatch:
+    inputs:
+      level:
+        description: "Current level, 1-100"
+        required: true
+        default: "49"
+        type: string
+      games:
+        description: "Games per level"
+        required: true
+        default: "100"
+        type: string
+      shards:
+        description: "Concurrent match runners, 1-20"
+        required: true
+        default: "20"
+        type: string
+      series_id:
+        description: "Ladder identifier"
+        required: false
+        default: ""
+        type: string
+      engine_ref:
+        description: "Pinned 40-digit engine commit SHA"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+  actions: write
+
+env:
+  YANEURAOU_REF: c1b80eaa09fe13d5f12b1599d1ae4d53c224de30
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install python-shogi
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: External benchmark unit tests
+        run: |
+          python3 tests/test_external_match.py
+          python3 tests/test_match_sharding.py
+          python3 scripts/check_match_workflows.py
+          python3 scripts/check_workflow_inventory.py
+
+  plan:
+    needs: unit
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }
+      level: ${{ steps.plan.outputs.level }
+      games: ${{ steps.plan.outputs.games }
+      series_id: ${{ steps.plan.outputs.series_id }
+      engine_ref: ${{ steps.plan.outputs.engine_ref }
+      shards: ${{ steps.plan.outputs.shards }
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validate request and plan balanced shards
+        id: plan
+        env:
+          EVENT_NAME: ${{ github.event_name }
+          INPUT_LEVEL: ${{ inputs.level }
+          INPUT_GAMES: ${{ inputs.games }
+          INPUT_SHARDS: ${{ inputs.shards }
+          INPUT_SERIES_ID: ${{ inputs.series_id }
+          INPUT_ENGINE_REF: ${{ inputs.engine_ref }
+        run: |
+          python3 - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          if os.environ["EVENT_NAME"] == "push":
+              req=json.loads(Path(".github/yaneuraou-ladder-request.json").read_text())
+              required={"level","games","shards","series_id","engine_ref"}
+              if set(req)!=required:
+                  raise SystemExit(f"request keys must be exactly {sorted(required)}")
+          else:
+              req={k:os.environ["INPUT_"+k.upper()] for k in ("level","games","shards","series_id","engine_ref")}
+          level=int(req["level"])
+          games=int(req["games"])
+          shards=int(req["shards"])
+          series_id=str(req["series_id"]).strip() or "ladder-"+os.environ["GITHUB_RUN_ID"]
+          engine_ref=str(req["engine_ref"]).strip() or os.environ["GITHUB_SHA"]
+          if not 1<=level<=100 or games<1 or not 1<=shards<=min(20,games):
+              raise SystemExit("invalid level/games/shards")
+          if not re.fullmatch(r"[a-zA-Z0-9_-]{1,80}",series_id):
+              raise SystemExit("invalid series_id")
+          if not re.fullmatch(r"[0-9a-fA-F]{40}",engine_ref):
+              raise SystemExit("engine_ref must be an immutable commit SHA")
+          q,r=divmod(games,shards)
+          include=[]
+          offset=0
+          for i in range(shards):
+              n=q+int(i<r)
+              seed=2026100500+i*100000
+              if seed+2*n>2147483647:
+                  raise SystemExit("seed overflow")
+              include.append(dict(shard=i,games=n,seed=seed,game_offset=offset))
+              offset+=n
+          out=dict(matrix=json.dumps(dict(include=include),separators=(",",":")),
+                   level=level,games=games,shards=shards,series_id=series_id,engine_ref=engine_ref)
+          with Path(os.environ["GITHUB_OUTPUT"]).open("a") as f:
+              for k,v in out.items():
+                  f.write(f"{k}={v}\n")
+          print(f"series={series_id} level={level} games={games} shards={shards} engine={engine_ref}")
+          PY
+
+  build-engines:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout frozen KUMOJI and adopted knowledge
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.plan.outputs.engine_ref }
+
+      - name: Build KUMOJI
+        run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Verify and prepare adopted knowledge
+        run: |
+          cp position-knowledge-v1.tsv build/position-knowledge-v1.tsv
+          cp position-knowledge-v1.manifest.json build/position-knowledge-v1.manifest.json
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          raw=Path("build/position-knowledge-v1.tsv").read_bytes()
+          info=json.loads(Path("build/position-knowledge-v1.manifest.json").read_text())
+          actual=hashlib.sha256(raw).hexdigest()
+          count=sum(bool(x.strip()) and not x.startswith("#") for x in raw.decode().splitlines())
+          if actual!=info["output_sha256"] or count!=info["adopted_positions"]:
+              raise SystemExit("adopted knowledge hash/count mismatch")
+          print(f"knowledge={count} sha256={actual}")
+          PY
+      - name: Fetch pinned YaneuraOu
+        run: |
+          git clone --filter=blob:none https://github.com/yaneurao/YaneuraOu.git external/YaneuraOu
+          git -C external/YaneuraOu checkout "$YANEURAOU_REF"
+
+      - name: Build YaneuraOu material edition
+        run: |
+          make -C external/YaneuraOu/source clean             COMPILER=g++ TARGET_CPU=SSE42             YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          make -C external/YaneuraOu/source -j2 tournament             COMPILER=g++ TARGET_CPU=SSE42             YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          test -x external/YaneuraOu/source/YaneuraOu-by-gcc
+
+      - name: Package engines
+        run: tar -czf external-engines.tgz build/shogi-ai build/position-knowledge-v1.tsv build/position-knowledge-v1.manifest.json external/YaneuraOu/source/YaneuraOu-by-gcc
+
+      - name: Upload engines
+        uses: actions/upload-artifact@v4
+        with:
+          name: external-engine-binaries-${{ github.run_id }}
+          path: external-engines.tgz
+          if-no-files-found: error
+
+  match:
+    needs: [plan, build-engines]
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - name: Checkout pinned benchmark harness
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.plan.outputs.engine_ref }
+          path: harness
+
+      - name: Install python-shogi
+        run: python3 -m pip install python-shogi==1.1.1
+
+      - name: Download engines
+        uses: actions/download-artifact@v4
+        with:
+          name: external-engine-binaries-${{ github.run_id }}
+
+      - name: Extract engines
+        run: |
+          tar -xzf external-engines.tgz
+          chmod +x build/shogi-ai external/YaneuraOu/source/YaneuraOu-by-gcc
+
+      - name: Run core benchmark shard
+        env:
+          LEVEL: ${{ needs.plan.outputs.level }
+          SHARD_GAMES: ${{ matrix.games }}
+          SHARD_SEED: ${{ matrix.seed }}
+          GAME_OFFSET: ${{ matrix.game_offset }}
+        run: |
+          mkdir -p results
+          NODES="$(python3 harness/benchmarks/external_levels.py --level "$LEVEL" --nodes-only)"
+          python3 harness/benchmarks/external_match.py             --self-engine build/shogi-ai             --opponent-engine external/YaneuraOu/source/YaneuraOu-by-gcc             --self-options '{"AdaptiveLongThink":false,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}'             --opponent-options '{"Threads":1,"USI_Hash":16,"USI_OwnBook":false}'             --self-go "go movetime 50"             --opponent-go "go nodes $NODES"             --games "$SHARD_GAMES"             --game-offset "$GAME_OFFSET"             --seed "$SHARD_SEED"             --output "results/shard-${{ matrix.shard }}.json"
+
+      - name: Upload shard
+        uses: actions/upload-artifact@v4
+        with:
+          name: yaneuraou-ladder-${{ github.run_id }}-${{ matrix.shard }}
+          path: results/shard-${{ matrix.shard }}.json
+          if-no-files-found: error
+
+  aggregate:
+    needs: [plan, match]
+    if: always() && needs.match.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Download this level game records
+        uses: actions/download-artifact@v4
+        with:
+          pattern: yaneuraou-ladder-${{ github.run_id }-*
+          path: results
+          merge-multiple: true
+      - name: Download knowledge snapshot for audit
+        uses: actions/download-artifact@v4
+        with:
+          name: external-engine-binaries-${{ github.run_id }
+      - name: Unpack snapshot metadata
+        run: tar -xzf external-engines.tgz build/position-knowledge-v1.tsv build/position-knowledge-v1.manifest.json
+      - name: Verify all games and determine whether to continue
+        id: decision
+        env:
+          LEVEL: ${{ needs.plan.outputs.level }
+          EXPECTED_GAMES: ${{ needs.plan.outputs.games }
+          EXPECTED_SHARDS: ${{ needs.plan.outputs.shards }
+          SERIES_ID: ${{ needs.plan.outputs.series_id }
+          ENGINE_REF: ${{ needs.plan.outputs.engine_ref }
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          rows=[json.loads(p.read_text()) for p in sorted(Path("results").glob("shard-*.json"))]
+          games=sum(int(r["games"]) for r in rows)
+          shards=int(os.environ["EXPECTED_SHARDS"])
+          if games!=int(os.environ["EXPECTED_GAMES"]) or len(rows)!=shards:
+              raise SystemExit("missing games or incomplete shards")
+          wins=sum(int(r["wins_self"]) for r in rows)
+          draws=sum(int(r["draws"]) for r in rows)
+          losses=sum(int(r["losses_self"]) for r in rows)
+          illegal=sum(int(r.get("illegal_games",0)) for r in rows)
+          if wins+draws+losses!=games:
+              raise SystemExit("game and results totals disagree")
+          if illegal:
+              raise SystemExit(f"illegal moves occurred: {illegal}; cannot advance")
+          raw=Path("build/position-knowledge-v1.tsv").read_bytes()
+          manifest=json.loads(Path("build/position-knowledge-v1.manifest.json").read_text())
+          digest=hashlib.sha256(raw).hexdigest()
+          count=sum(bool(x.strip()) and not x.startswith("#") for x in raw.decode().splitlines())
+          if digest!=manifest["output_sha256"] or count!=manifest["adopted_positions"]:
+              raise SystemExit("knowledge integrity failed")
+          level=int(os.environ["LEVEL"])
+          win_pct=100.0*wins/games
+          point_pct=100.0*(wins+draws/2)/games
+          should_continue=win_pct>=30.0 and level<100
+          status="next_level" if should_continue else ("below_30_percent" if win_pct<30 else "level_100")
+          out=dict(series_id=os.environ["SERIES_ID"],engine_ref=os.environ["ENGINE_REF"],
+                   level=level,games=games,shards=shards,wins=wins,draws=draws,losses=losses,
+                   win_pct=win_pct,point_pct=point_pct,illegal_games=illegal,
+                   knowledge_positions=count,knowledge_sha256=digest,
+                   self_go="go movetime 50",adaptive_long_think=False,
+                   decision=status)
+          Path("ladder-result.json").write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n")
+          with Path(os.environ["GITHUB_OUTPUT"]).open("a") as f:
+              f.write(f"should_continue={str(should_continue).lower()}\n")
+              f.write(f"next_level={level+1}\n")
+          with open(os.environ["GITHUB_STEP_SUMMARY"],"a") as f:
+              f.write(f"# YaneuraOu Material Lv{level}\n\n")
+              f.write(f"- Series: {out['series_id']} / pinned engine {out['engine_ref']}\n")
+              f.write(f"- Result: {wins} wins, {draws} draws, {losses} losses; win rate {win_pct:.1f}%\n")
+              f.write(f"- Point rate (half-draw): {point_pct:.1f}%\n")
+              f.write(f"- Knowledge: {count} positions, sha256 {digest}\n")
+              f.write(f"- Illegal moves: {illegal}; decision: {status}\n")
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+      - name: Upload verified level result
+        uses: actions/upload-artifact@v4
+        with:
+          name: yaneuraou-ladder-summary-${{ github.run_id }
+          path: ladder-result.json
+          retention-days: 90
+          if-no-files-found: error
+      - name: Automatically dispatch the next level
+        if: steps.decision.outputs.should_continue == 'true' && github.run_attempt == 1
+        env:
+          GH_TOKEN: ${{ github.token }
+          NEXT: ${{ steps.decision.outputs.next_level }
+          GAMES: ${{ needs.plan.outputs.games }
+          SHARDS: ${{ needs.plan.outputs.shards }
+          SERIES: ${{ needs.plan.outputs.series_id }
+          REF: ${{ needs.plan.outputs.engine_ref }
+        run: |
+          gh workflow run yaneuraou-ladder.yml --repo "$GITHUB_REPOSITORY" --ref main \
+            -f "level=$NEXT" -f "games=$GAMES" -f "shards=$SHARDS" \
+            -f "series_id=$SERIES" -f "engine_ref=$REF"
+          echo "Next level $NEXT has been dispatched for $SERIES"
