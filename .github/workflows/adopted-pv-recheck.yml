@@ -1,0 +1,159 @@
+name: KUMOJI Adopted PV Recheck (Read Only)
+on:
+  workflow_dispatch:
+  push:
+    branches: ["research/20261010-knowledge-pv-recheck"]
+    paths: [".github/research-pv-recheck-request.json"]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    outputs:
+      matrix: ${{ steps.config.outputs.matrix }}
+      engine_sha: ${{ steps.config.outputs.engine_sha }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Workflow and old PV preflight
+        run: |
+          set -euo pipefail
+          python3 scripts/check_match_workflows.py
+          python3 scripts/check_workflow_inventory.py --strict
+          python3 -m pip install python-shogi==1.1.1
+          python3 tools/research/recheck_position_knowledge.py validate
+          python3 - <<'PY'
+          import json
+          r=json.load(open(".github/research-pv-recheck-request.json"))
+          assert r["mode"]=="read_only_pv_comparison"
+          assert r["positions"]==153
+          assert r["duration_policy"]=="match_previous_study"
+          assert r["no_auto_adoption"] is True
+          PY
+      - name: Build newest engine and test independent search
+        run: |
+          set -euo pipefail
+          python3 scripts/build.py --output build/kumoji
+          python3 tools/research/recheck_position_knowledge.py study --engine build/kumoji --index 0 --ms-override 2000 --output smoke.json
+          python3 - <<'PY'
+          import json
+          s=json.load(open("smoke.json"))
+          assert s["completed"] and s["knowledge_used"] is False
+          assert s["research_ms_requested"]==2000
+          print("Independent engine smoke OK",s["new_move"])
+          PY
+          sha256sum build/kumoji position-knowledge-v1.tsv
+          tar czf frozen-pv-inputs.tgz build/kumoji position-knowledge-v1.tsv position-knowledge-v1.manifest.json
+      - name: Define 153 position jobs and engine source SHA
+        id: config
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json,subprocess
+          print("matrix="+json.dumps({"index":list(range(153))},separators=(",",":")))
+          print("engine_sha="+subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip())
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pv-recheck-frozen-inputs-${{ github.run_id }}
+          path: frozen-pv-inputs.tgz
+          if-no-files-found: error
+          retention-days: 90
+  research:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    strategy:
+      fail-fast: false
+      max-parallel: 18
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: pv-recheck-frozen-inputs-${{ github.run_id }}
+      - run: tar xzf frozen-pv-inputs.tgz
+      - name: Recalculate stored PV without forcing earlier choice
+        env:
+          INDEX: ${{ matrix.index }}
+          ENGINE_SHA: ${{ needs.prepare.outputs.engine_sha }}
+        run: |
+          set -euo pipefail
+          echo "Current engine commit=$ENGINE_SHA index=$INDEX"
+          python3 tools/research/recheck_position_knowledge.py study \
+            --index "$INDEX" --engine build/kumoji --output pv-recheck-result.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pv-recheck-position-${{ github.run_id }}-${{ matrix.index }}
+          path: pv-recheck-result.json
+          if-no-files-found: warn
+          retention-days: 90
+  aggregate:
+    needs: [prepare, research]
+    if: always() && needs.prepare.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: pv-recheck-position-${{ github.run_id }}-*
+          path: raw-pv-results
+      - name: Compare new and old PVs
+        env:
+          ENGINE_SHA: ${{ needs.prepare.outputs.engine_sha }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import glob,gzip,hashlib,json,os
+          from pathlib import Path
+          paths=sorted(glob.glob("raw-pv-results/**/pv-recheck-result.json",recursive=True))
+          rows=[json.loads(Path(p).read_text(encoding="utf8")) for p in paths]
+          ids=[r["index"] for r in rows]
+          if len(set(ids))!=len(ids):raise ValueError("duplicate result index")
+          def stats(group):
+              return {"total":len(group),
+                      "same_first_move":sum(x["same_first_move"] for x in group),
+                      "changed_first_move":sum(not x["same_first_move"] for x in group),
+                      "saved_line_prefix_preserved":sum(x["same_full_saved_line"] for x in group),
+                      "later_divergence_same_first":sum(x["same_first_move"] and not x["same_full_saved_line"] for x in group)}
+          missing=sorted(set(range(153))-set(ids))
+          obj={"schema":"pv-recheck-v1","run":os.environ["GITHUB_RUN_ID"],
+               "engine_commit":os.environ["ENGINE_SHA"],"engine_version":"KUMOJI v2.0.7",
+               "knowledge_sha256":hashlib.sha256(Path("position-knowledge-v1.tsv").read_bytes()).hexdigest(),
+               "thinking_policy":"60s for old 60s; 50min for old 50min",
+               "position_knowledge_enabled":False,"no_auto_adoption":True,
+               "stats_all":stats(rows),
+               "stats_60_seconds":stats([x for x in rows if x["original_ms"]<120000]),
+               "stats_50_minutes":stats([x for x in rows if x["original_ms"]>=120000]),
+               "missing_indices":missing,"completed":len(rows),"expected":153,"rows":rows}
+          out="pv-recheck-records-"+os.environ["GITHUB_RUN_ID"]+".json.gz"
+          with gzip.open(out,"wt",encoding="utf8") as f:json.dump(obj,f,ensure_ascii=False)
+          summary={k:v for k,v in obj.items() if k!="rows"}
+          summary["changed_moves"]=[{"id":x["id"],"old":x["old_move"],"new":x["new_move"],"old_pv":x["old_pv"],"new_pv":x["new_pv"]}
+                                    for x in rows if not x["same_first_move"]]
+          summary["changed_later_only"]=[{"id":x["id"],"old_pv":x["old_pv"],"new_pv":x["new_pv"],"prefix":x["matching_prefix_plies"]}
+                                        for x in rows if x["same_first_move"] and not x["same_full_saved_line"]]
+          Path("pv-recheck-summary.json").write_text(json.dumps(summary,ensure_ascii=False,indent=2)+"\n",encoding="utf8")
+          print("Rechecked",len(rows),"/153, missing",missing,stats(rows),flush=True)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pv-recheck-summary-${{ github.run_id }}
+          path: |
+            pv-recheck-summary.json
+            pv-recheck-records-*.json.gz
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Save unadopted research to original data release
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload records-2026-10-01 "pv-recheck-records-$GITHUB_RUN_ID.json.gz" --repo "$GITHUB_REPOSITORY"
+          sha256sum "pv-recheck-records-$GITHUB_RUN_ID.json.gz"
