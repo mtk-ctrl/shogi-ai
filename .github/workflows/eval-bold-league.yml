@@ -1,0 +1,150 @@
+name: KUMOJI Bold Eight-Profile Evaluation League
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/eval-bold-league-request.json"
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      shards: ${{ steps.plan.outputs.shards }}
+      engine_ref: ${{ steps.plan.outputs.engine_ref }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Preflight bold eight-profile plan before heavy work
+        run: |
+          python3 scripts/check_match_workflows.py --workflow .github/workflows/eval-bold-league.yml
+          python3 scripts/check_workflow_inventory.py
+          python3 -m py_compile benchmarks/eval_bold_league.py
+      - name: Check request and make shard matrix
+        id: plan
+        run: |
+          python3 - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          request = json.loads(Path(".github/eval-bold-league-request.json").read_text())
+          expected = {"request_id","shards","engine_ref"}
+          if set(request) != expected:
+              raise SystemExit(f"request fields must be exactly {expected}")
+          shards = int(request["shards"])
+          ref = request["engine_ref"]
+          if not 1 <= shards <= 20 or not re.fullmatch(r"[a-f0-9]{40}",ref):
+              raise SystemExit("invalid shard count or engine SHA")
+          if not str(request["request_id"]).strip():
+              raise SystemExit("missing request_id")
+          import subprocess
+          subprocess.run(["python3","benchmarks/eval_bold_league.py","validate","--shards",str(shards)],check=True)
+          matrix = {"include":[{"shard":i} for i in range(shards)]}
+          with open(os.environ["GITHUB_OUTPUT"],"a") as file:
+              file.write("matrix="+json.dumps(matrix,separators=(",",":"))+"\n")
+              file.write(f"shards={shards}\nengine_ref={ref}\n")
+          print(f"run={request['request_id']} engine={ref} shards={shards} games={28*2*shards}")
+          PY
+
+  build:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout pinned production M engine
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.plan.outputs.engine_ref }}
+          path: engine-src
+      - name: Checkout league revision and adopted knowledge
+        uses: actions/checkout@v5
+        with:
+          path: harness
+      - name: Build one shared binary
+        run: |
+          mkdir -p build
+          (cd engine-src && python3 scripts/build.py --output "$GITHUB_WORKSPACE/build/engine")
+          cp harness/position-knowledge-v1.tsv build/position-knowledge-v1.tsv
+          cp harness/position-knowledge-v1.manifest.json build/position-knowledge-v1.manifest.json
+          python3 - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          raw=Path("build/position-knowledge-v1.tsv").read_bytes()
+          m=json.loads(Path("build/position-knowledge-v1.manifest.json").read_text())
+          digest=hashlib.sha256(raw).hexdigest()
+          count=sum(bool(x.strip()) and not x.startswith("#") for x in raw.decode().splitlines())
+          if digest!=m["output_sha256"] or count!=m["adopted_positions"]:
+              raise SystemExit("knowledge hash or position count mismatch")
+          print(f"knowledge={count} hash={digest}")
+          PY
+          sha256sum build/engine
+          tar -czf binaries.tgz build/engine build/position-knowledge-v1.tsv build/position-knowledge-v1.manifest.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: eval-bold-league-build-${{ github.run_id }}
+          path: binaries.tgz
+          if-no-files-found: error
+
+  match:
+    needs: [plan, build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install reproducible match dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: eval-bold-league-build-${{ github.run_id }}
+      - name: Prepare shared binary and knowledge
+        run: |
+          tar -xzf binaries.tgz
+          chmod +x build/engine
+      - name: Play every pair twice, with both colors
+        run: |
+          python3 benchmarks/eval_bold_league.py run --shards ${{ needs.plan.outputs.shards }} --shard ${{ matrix.shard }} --engine build/engine --input-dir results
+      - uses: actions/upload-artifact@v4
+        with:
+          name: eval-bold-league-matches-${{ github.run_id }}-${{ matrix.shard }}
+          path: results/*.json
+          retention-days: 90
+          if-no-files-found: error
+
+  aggregate:
+    needs: [plan, match]
+    if: always() && needs.match.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: eval-bold-league-matches-${{ github.run_id }}-*
+          path: results
+          merge-multiple: true
+      - name: Verify full league and rank all eight profiles
+        run: |
+          python3 benchmarks/eval_bold_league.py aggregate --shards ${{ needs.plan.outputs.shards }} --input-dir results --output-dir report
+          cat report/league-summary.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Archive only the actually played moves
+        run: |
+          python3 tools/records/archive_played_moves.py --input results/*.json --output-dir played-archive --run-id "$GITHUB_RUN_ID" --ref-a "${{ needs.plan.outputs.engine_ref }}" --ref-b "${{ needs.plan.outputs.engine_ref }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: eval-bold-league-summary-${{ github.run_id }}
+          path: report/
+          retention-days: 90
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: eval-bold-league-played-moves-${{ github.run_id }}
+          path: played-archive/
+          retention-days: 90
+          if-no-files-found: error
