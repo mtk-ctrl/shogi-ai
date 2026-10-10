@@ -1,0 +1,177 @@
+name: KUMOJI Mate Learning Cycle (Research)
+
+# Explicit research trigger. A cycle runs on a signed research-branch request
+# change or manual dispatch; never auto-adopts its model on main.
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/mate-learning-gate-v1-20261011
+    paths:
+      - .github/mate-learning-run-request.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mate-learning-cycle-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validate workflow and research files
+        run: |
+          python3 scripts/check_match_workflows.py
+          python3 scripts/check_workflow_inventory.py
+          python3 tests/test_mate_learning.py
+          test -s position-knowledge-v1.tsv
+
+  # 10 jobs at most; disjoint slices 0:100 ... 900:1000 from each of the
+  # five fixed mate-problem groups, preserving reproducibility and provenance.
+  collect:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build standalone experimental engine
+        run: python3 scripts/build.py --output build/shogi-ai
+      - name: Collect self-proved bounded mates
+        run: |
+          mkdir -p build/learn
+          python3 tools/learning/mate_learning.py collect \
+            --engine build/shogi-ai \
+            --start-per-ply $(( ${{ matrix.shard }} * 100 )) \
+            --limit-per-ply 100 \
+            --time-ms 1800 \
+            --out build/learn/batch-${{ matrix.shard }}.jsonl
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mate-batch-${{ matrix.shard }}
+          path: build/learn/batch-${{ matrix.shard }}.jsonl
+          if-no-files-found: error
+          retention-days: 14
+
+  train:
+    needs: collect
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: mate-batch-*
+          path: build/learn
+          merge-multiple: true
+      - name: Merge and train
+        run: |
+          cat build/learn/batch-{0,1,2,3,4,5,6,7,8,9}.jsonl > build/all-samples.jsonl
+          python3 tools/learning/mate_learning.py train \
+            --samples build/all-samples.jsonl \
+            --model build/mate-learning-model.txt \
+            --report build/mate-learning-report.json \
+            --threshold 0.5 --seed 20261011
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mate-cycle-model
+          path: |
+            build/mate-learning-model.txt
+            build/mate-learning-report.json
+          if-no-files-found: error
+          retention-days: 14
+
+  # Compare candidate with main at the standard match budget, adopted
+  # knowledge enabled equally, alternating Black/White across 100 games.
+  compare:
+    needs: train
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9]
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v5
+        with:
+          path: candidate
+      - name: Checkout adopted main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          path: baseline
+      - name: Install match runner dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: mate-cycle-model
+          path: build
+      - name: Build A and B with their own revisions
+        run: |
+          (cd candidate && python3 scripts/build.py --output "$GITHUB_WORKSPACE/build/engine-a")
+          (cd baseline && python3 scripts/build.py --output "$GITHUB_WORKSPACE/build/engine-b")
+          cp baseline/position-knowledge-v1.tsv build/position-knowledge-v1.tsv
+          test -s build/position-knowledge-v1.tsv
+          sha256sum build/engine-a build/engine-b build/position-knowledge-v1.tsv
+      - name: Ten standard-time games per lane
+        run: |
+          mkdir -p build/match
+          python3 candidate/benchmarks/arena.py \
+            --engine-a build/engine-a \
+            --engine-b build/engine-b \
+            --options-a '{"MateStageBudget":true,"MateLearningFile":"build/mate-learning-model.txt","MateLearning":true,"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}' \
+            --options-b '{"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}' \
+            --games 10 \
+            --game-offset $(( ${{ matrix.shard }} * 10 )) \
+            --max-plies 250 \
+            --seed $(( 20261011 + ${{ matrix.shard }} * 100000 )) \
+            --go-command 'go movetime 200' \
+            --output build/match/match-${{ matrix.shard }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mate-cycle-match-${{ matrix.shard }}
+          path: build/match/match-${{ matrix.shard }}.json
+          if-no-files-found: error
+          retention-days: 14
+
+  summary:
+    needs: compare
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: mate-cycle-match-*
+          path: build/match
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: mate-cycle-model
+          path: build
+      - name: Validate and summarize without adoption
+        run: |
+          python3 tools/learning/aggregate_mate_cycle.py \
+            --input-dir build/match \
+            --expected-shards 10 \
+            --output build/mate-cycle-comparison.json
+          cat build/mate-cycle-comparison.json
+          cat build/mate-learning-report.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mate-cycle-comparison-report
+          path: |
+            build/mate-cycle-comparison.json
+            build/mate-learning-report.json
+          retention-days: 14
+          if-no-files-found: error
