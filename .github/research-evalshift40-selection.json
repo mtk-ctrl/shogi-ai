@@ -1,0 +1,182 @@
+{
+  "schema": "kumoji-evaluation-shift-study-selection-v1",
+  "source_run": "38037253689",
+  "source_artifact": "played-move-archive-38037253689",
+  "source_archive_sha256": "fb20e3d46b5dc260d1d2394484c1af1154be0ae030e65b32798cb30e361dd41f",
+  "engine_ref": "1c983d518e4e7b52b1d8096dc13e50f9cb9c946c",
+  "status": "40_positions_selected_not_yet_researched",
+  "research_minutes_per_position": 50,
+  "adopted_to_position_knowledge": false,
+  "exclusions": {
+    "adopted_positions": 153,
+    "previous_research_positions": 120
+  },
+  "stages": {
+    "opening": 14,
+    "middle": 16,
+    "end": 10
+  },
+  "note": "Each pair is [one-based game row in played-games.jsonl.gz, zero-based position ply before the played move]. Reconstruct from the exact SHA256-verified source archive. Selection emphasizes persistent evaluation changes, form reversal, surprising gains, balanced side/stage/game, not proof of an objective blunder.",
+  "positions": [
+    [
+      15,
+      43
+    ],
+    [
+      101,
+      50
+    ],
+    [
+      50,
+      45
+    ],
+    [
+      132,
+      24
+    ],
+    [
+      28,
+      40
+    ],
+    [
+      71,
+      43
+    ],
+    [
+      193,
+      30
+    ],
+    [
+      137,
+      49
+    ],
+    [
+      45,
+      18
+    ],
+    [
+      171,
+      16
+    ],
+    [
+      70,
+      39
+    ],
+    [
+      108,
+      31
+    ],
+    [
+      17,
+      20
+    ],
+    [
+      78,
+      23
+    ],
+    [
+      66,
+      90
+    ],
+    [
+      153,
+      67
+    ],
+    [
+      192,
+      58
+    ],
+    [
+      161,
+      82
+    ],
+    [
+      8,
+      64
+    ],
+    [
+      91,
+      68
+    ],
+    [
+      20,
+      85
+    ],
+    [
+      53,
+      62
+    ],
+    [
+      128,
+      68
+    ],
+    [
+      163,
+      51
+    ],
+    [
+      135,
+      85
+    ],
+    [
+      149,
+      80
+    ],
+    [
+      110,
+      55
+    ],
+    [
+      118,
+      63
+    ],
+    [
+      4,
+      57
+    ],
+    [
+      51,
+      81
+    ],
+    [
+      1,
+      144
+    ],
+    [
+      69,
+      101
+    ],
+    [
+      195,
+      142
+    ],
+    [
+      43,
+      104
+    ],
+    [
+      57,
+      122
+    ],
+    [
+      21,
+      107
+    ],
+    [
+      83,
+      103
+    ],
+    [
+      12,
+      209
+    ],
+    [
+      100,
+      148
+    ],
+    [
+      141,
+      197
+    ]
+  ]
+}
