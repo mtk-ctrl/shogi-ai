@@ -300,8 +300,56 @@ def no_forced_research_in_repeated_history():
         finally:
             u.close()
 
+
+def experimental_random_first_move():
+    """Verify deterministic seed, all legal non-lance candidates, and the first-ply gate."""
+    start = shogi.Board()
+    eligible = {m.usi() for m in start.legal_moves if m.usi()[:2] not in {"1i", "9i"}}
+    assert len(eligible) >= 20, eligible
+    u = Usi()
+    try:
+        u.send("usi")
+        _, options = u.until("usiok")
+        assert any("option name OpeningRandomNonLance type check default false" in s for s in options)
+        u.send("setoption name OpeningRandomNonLance value true")
+        u.send("isready")
+        u.until("readyok")
+        seen = set()
+        for seed in range(48):
+            u.send(f"setoption name RandomSeed value {20261010 + seed}")
+            u.send("usinewgame")
+            u.send("position startpos")
+            u.send("go movetime 200")
+            reply, logs = u.until("bestmove ")
+            move = reply.split()[1]
+            assert move in eligible, (seed, reply, logs)
+            assert any(f"opening_random_non_lance candidates {len(eligible)} seed " in line for line in logs), logs
+            seen.add(move)
+        assert len(seen) >= 10, (len(seen), seen)
+        repeated = []
+        for _ in range(2):
+            u.send("setoption name RandomSeed value 20261010")
+            u.send("usinewgame")
+            u.send("position startpos")
+            u.send("go depth 1")
+            reply, _logs = u.until("bestmove ")
+            repeated.append(reply.split()[1])
+        assert repeated[0] == repeated[1], repeated
+        u.send("position startpos")
+        u.send("go searchmoves 7g7f depth 1")
+        reply, logs = u.until("bestmove ")
+        assert reply == "bestmove 7g7f", (reply, logs)
+        assert not any("opening_random_non_lance candidates" in s for s in logs)
+        u.send("position startpos moves 7g7f 3c3d")
+        u.send("go depth 1")
+        _reply, logs = u.until("bestmove ")
+        assert not any("opening_random_non_lance candidates" in s for s in logs)
+    finally:
+        u.close()
+
 run_once(True)
 run_once(False)
+experimental_random_first_move()
 embedded_default_fallback()
 direct_research_line()
 adopted_real_snapshot()
