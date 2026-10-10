@@ -1,12 +1,12 @@
 {
-  "request_id": "20261010-eval-league-S-M",
+  "request_id": "20261010-eval-league-S-T",
   "ref_a": "64aa9036a1172aaf8f5f4b17b7e78f238f0b3b6c",
   "ref_b": "64aa9036a1172aaf8f5f4b17b7e78f238f0b3b6c",
   "games": "100",
   "shards": "3",
   "go_command": "go movetime 200",
   "max_plies": "300",
-  "seed": "2026101210",
+  "seed": "2026101310",
   "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"EvalV2\":true,\"EvalPositionalCap\":5000,\"EvalMaterialWeight\":100,\"EvalSafety\":900,\"EvalPressure\":320,\"EvalActivity\":120,\"EvalDanger\":320,\"EvalInfluence\":50,\"EvalPotential\":35,\"EvalCoordination\":250,\"EvalHandPotential\":30,\"EvalThreat\":8}",
-  "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"EvalV2\":true,\"EvalPositionalCap\":5000,\"EvalMaterialWeight\":100,\"EvalSafety\":480,\"EvalPressure\":380,\"EvalActivity\":410,\"EvalDanger\":150,\"EvalInfluence\":140,\"EvalPotential\":210,\"EvalCoordination\":340,\"EvalHandPotential\":60,\"EvalThreat\":20}"
+  "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"EvalV2\":true,\"EvalPositionalCap\":5000,\"EvalMaterialWeight\":175,\"EvalSafety\":420,\"EvalPressure\":540,\"EvalActivity\":150,\"EvalDanger\":420,\"EvalInfluence\":50,\"EvalPotential\":60,\"EvalCoordination\":110,\"EvalHandPotential\":90,\"EvalThreat\":110}"
 }
