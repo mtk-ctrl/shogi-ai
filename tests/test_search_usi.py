@@ -45,6 +45,9 @@ def search(sf, command, limit=10):
 try:
     send('usi'); until('usiok')
     send('isready'); until('readyok')
+    # Standard opening is randomized since v2.0.7; search-depth regression
+    # intentionally disables that separate adopted feature.
+    send('setoption name OpeningRandomNonLance value false')
     sf = shogi.Board().sfen()
     _, infos, _ = search(sf, 'go depth 3')
     assert [int(t[t.index('depth')+1]) for t in infos] == [1, 2, 3], infos
