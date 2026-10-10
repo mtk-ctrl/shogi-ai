@@ -13,7 +13,7 @@ struct PieceValues {
     std::array<int,9> promoted{0,600,600,600,600,1000,1200,600,0};
     std::array<int,9> hand{0,100,300,300,500,800,1000,600,0};
 };
-inline PieceValues active_piece_values{};
+inline thread_local PieceValues active_piece_values{};
 inline void set_piece_values(const PieceValues& values) { active_piece_values=values; }
 // Our values, independent of the upstream engine. One pawn = 100.
 inline int piece_value(int kind, bool promoted = false) {
