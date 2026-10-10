@@ -132,7 +132,7 @@ int main() {
             if (!valid_position) { emit("info string learning_features invalid_position\n"); continue; }
             const auto v = shogi::strategy::MateLearning::features(position);
             std::ostringstream out;
-            out << "info string learning_features v1";
+            out << "info string learning_features v2";
             for (auto x : v) out << " " << x;
             out << "\n";
             emit(out.str());
