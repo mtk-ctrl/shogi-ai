@@ -21,9 +21,10 @@ def check(root: Path = ROOT) -> tuple[list[str], list[str]]:
 
     # Version-independent current specification: verify facts, not phrasing.
     spec_path = "docs/現行エンジン仕様.md"
-    spec = plain(read(spec_path))
+    spec = read(spec_path)
+    spec_flat = plain(spec)
     engine = re.search(r"id name KUMOJI v(\d+\.\d+\.\d+)", read("engine/main.cpp"))
-    version = re.search(r"現在の正式エンジン\s*[:：]\s*KUMOJI v(\d+\.\d+\.\d+)", spec)
+    version = re.search(r"現在の正式エンジン\s*[:：]\s*KUMOJI v(\d+\.\d+\.\d+)", spec_flat)
     if engine is None:
         errors.append("engine/main.cpp: USIの正式エンジン版を読み取れない")
     if version is None:
@@ -91,16 +92,16 @@ def check(root: Path = ROOT) -> tuple[list[str], list[str]]:
     phase = read("engine/strategy/turn_phase.h")
     for label, field in (("配置展開", "development"), ("戦闘", "battle"), ("敵陣進出", "invasion")):
         actual = re.search(rf"(\d+)\s*\*\s*out\.components\.{field}", phase)
-        described = re.search(rf"{label}係数\s*(\d+)", spec)
+        described = re.search(rf"{label}係数\s*(\d+)", spec_flat)
         if not actual or not described or actual.group(1) != described.group(1):
             errors.append(f"{spec_path}: 成熟度{label}係数と実装が一致しない")
     offset = re.search(r"/10000\s*-\s*(\d+)", phase)
-    offset_in_doc = re.search(r"加重平均から\s*(\d+)\s*を減じ", spec)
+    offset_in_doc = re.search(r"加重平均から\s*(\d+)\s*を減じ", spec_flat)
     if not offset or not offset_in_doc or offset.group(1) != offset_in_doc.group(1):
         errors.append(f"{spec_path}: 成熟度の減点値と実装が一致しない")
 
     manifest_count = int(json.loads(read("position-knowledge-v1.manifest.json"))["adopted_positions"])
-    described_count = re.search(r"採用済み局面数\s*[:：]\s*(\d+)", spec)
+    described_count = re.search(r"採用済み局面数\s*[:：]\s*(\d+)", spec_flat)
     if not described_count or int(described_count.group(1)) != manifest_count:
         errors.append(f"{spec_path}: 採用知識数とmanifest ({manifest_count}) が一致しない")
 
