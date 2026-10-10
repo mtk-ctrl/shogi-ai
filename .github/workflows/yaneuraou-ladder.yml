@@ -197,7 +197,7 @@ jobs:
           tar -xzf external-engines.tgz
           chmod +x build/shogi-ai external/YaneuraOu/source/YaneuraOu-by-gcc
 
-      - name: Run core benchmark shard
+      - name: Run formal ladder with adopted knowledge (200ms plus conditional long think)
         env:
           LEVEL: ${{ needs.plan.outputs.level }}
           SHARD_GAMES: ${{ matrix.games }}
@@ -206,7 +206,7 @@ jobs:
         run: |
           mkdir -p results
           NODES="$(python3 harness/benchmarks/external_levels.py --level "$LEVEL" --nodes-only)"
-          python3 harness/benchmarks/external_match.py             --self-engine build/shogi-ai             --opponent-engine external/YaneuraOu/source/YaneuraOu-by-gcc             --self-options '{"AdaptiveLongThink":false,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}'             --opponent-options '{"Threads":1,"USI_Hash":16,"USI_OwnBook":false}'             --self-go "go movetime 50"             --opponent-go "go nodes $NODES"             --games "$SHARD_GAMES"             --game-offset "$GAME_OFFSET"             --seed "$SHARD_SEED"             --output "results/shard-${{ matrix.shard }}.json"
+          python3 harness/benchmarks/external_match.py             --self-engine build/shogi-ai             --opponent-engine external/YaneuraOu/source/YaneuraOu-by-gcc             --self-options '{"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}'             --opponent-options '{"Threads":1,"USI_Hash":16,"USI_OwnBook":false}'             --self-go "go movetime 200"             --opponent-go "go nodes $NODES"             --games "$SHARD_GAMES"             --game-offset "$GAME_OFFSET"             --seed "$SHARD_SEED"             --output "results/shard-${{ matrix.shard }}.json"
 
       - name: Upload shard
         uses: actions/upload-artifact@v4
@@ -250,6 +250,22 @@ jobs:
           shards=int(os.environ["EXPECTED_SHARDS"])
           if games!=int(os.environ["EXPECTED_GAMES"]) or len(rows)!=shards:
               raise SystemExit("missing games or incomplete shards")
+          # Verify ACTUAL game-run metadata, not only intended YAML settings.
+          # An accidental 50ms/long-think OFF run must fail before the next level.
+          expected_options={"AdaptiveLongThink":"true",
+                            "PositionKnowledge":"true",
+                            "PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}
+          for i, row in enumerate(rows):
+              actual=row.get("self_engine") or {}
+              if actual.get("go_command")!="go movetime 200":
+                  raise SystemExit(f"shard {i}: formal thinking time was not 200ms")
+              applied=actual.get("options") or {}
+              for key,expected in expected_options.items():
+                  if str(applied.get(key,"")).lower()!=expected.lower():
+                      raise SystemExit(f"shard {i}: {key} differs from formal setting {expected}")
+              opponent=row.get("opponent_engine") or {}
+              if not str(opponent.get("go_command","")).startswith("go nodes "):
+                  raise SystemExit(f"shard {i}: opponent's node limit was not applied")
           wins=sum(int(r["wins_self"]) for r in rows)
           draws=sum(int(r["draws"]) for r in rows)
           losses=sum(int(r["losses_self"]) for r in rows)
@@ -273,7 +289,7 @@ jobs:
                    level=level,games=games,shards=shards,wins=wins,draws=draws,losses=losses,
                    win_pct=win_pct,point_pct=point_pct,illegal_games=illegal,
                    knowledge_positions=count,knowledge_sha256=digest,
-                   self_go="go movetime 50",adaptive_long_think=False,
+                   self_go="go movetime 200",adaptive_long_think=True,
                    decision=status)
           Path("ladder-result.json").write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n")
           with Path(os.environ["GITHUB_OUTPUT"]).open("a") as f:

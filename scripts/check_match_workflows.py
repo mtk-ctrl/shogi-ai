@@ -59,6 +59,21 @@ def check_workflow_text(path: Path, text: str, *, root_has_cmake: bool | None = 
             if needle not in text:
                 errors.append(f"{label}: {why}")
 
+    if path.name == "yaneuraou-ladder.yml":
+        # Formal Material ladder must never inherit the 50ms fixed Core benchmark.
+        required_formal = {
+            '--self-go "go movetime 200"': "formal Material ladder must use 200ms",
+            '"AdaptiveLongThink":true': "formal Material ladder must enable adaptive long think",
+            '"PositionKnowledge":true': "formal Material ladder must enable position knowledge",
+            '"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"': "formal Material ladder must use adopted position knowledge",
+            'self_go="go movetime 200",adaptive_long_think=True': "aggregate must record actual formal time settings",
+            'actual.get("go_command")!="go movetime 200"': "aggregate must verify actual game command",
+            'applied=actual.get("options")': "aggregate must verify the actual USI options",
+        }
+        for needle, explanation in required_formal.items():
+            if needle not in text:
+                errors.append(f"{label}: {explanation}")
+
     return errors
 
 

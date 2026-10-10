@@ -93,7 +93,7 @@ workflowの数を減らすこと自体を目的にしない。
 対局runnerの配分はR21に従う。起動前に空きrunner数を確認し、汎用workflowでは `shards` を実際に使えるrunner数へ設定する。
 
 ## 外部Benchmark
-やねうら王Material尺度は `.github/workflows/external-engine-benchmark.yml` を標準入口とする。
+やねうら王Material版の50ms固定Core尺度は `.github/workflows/external-engine-benchmark.yml` を標準入口とする。一方、正式棋力比較のレベル別100局梯子は `.github/workflows/yaneuraou-ladder.yml` を使用し、雲路側は **200ms＋AdaptiveLongThink ON＋採用済み局面知識ON** を固定する。両者は異なる測定条件のため取り違えない。梯子Workflowは実戦の設定メタデータを集計時に検査し、誤った時間設定や局面知識OFFを検知した場合は次段階を止める。
 新しい外部研究がこの尺度と異なるなら、目的を明記した専用workflowを作ってよい。
 外部AIの利用境界はR50に従う。
 

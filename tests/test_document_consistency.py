@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 import check_current_claims as claims
 import check_workflow_inventory as inventory
+import check_match_workflows as match_workflows
 
 NEEDED = (
     "README.md", "engine/main.cpp",
@@ -63,6 +64,30 @@ class ClaimChecks(unittest.TestCase):
                     "現在の正式Engine世代は **KUMOJI v0.0.0**")
         errors, _ = claims.check(self.root)
         self.assertTrue(any("現行版" in e for e in errors), errors)
+
+class FormalMaterialLadderChecks(unittest.TestCase):
+    def setUp(self):
+        self.workflow = (ROOT / ".github/workflows/yaneuraou-ladder.yml").read_text(encoding="utf-8")
+        self.path = Path(".github/workflows/yaneuraou-ladder.yml")
+
+    def test_formal_ladder_settings_pass(self):
+        self.assertEqual(match_workflows.check_workflow_text(self.path, self.workflow), [])
+
+    def test_wrong_time_fails(self):
+        broken=self.workflow.replace('--self-go "go movetime 200"', '--self-go "go movetime 50"', 1)
+        failures=match_workflows.check_workflow_text(self.path, broken)
+        self.assertTrue(any("200ms" in x for x in failures), failures)
+
+    def test_disabled_long_think_fails(self):
+        broken=self.workflow.replace('"AdaptiveLongThink":true','"AdaptiveLongThink":false',1)
+        failures=match_workflows.check_workflow_text(self.path, broken)
+        self.assertTrue(any("long think" in x for x in failures), failures)
+
+    def test_disabled_knowledge_fails(self):
+        broken=self.workflow.replace('"PositionKnowledge":true','"PositionKnowledge":false',1)
+        failures=match_workflows.check_workflow_text(self.path, broken)
+        self.assertTrue(any("knowledge" in x for x in failures), failures)
+
 
 class WorkflowIndexChecks(unittest.TestCase):
     def setUp(self):

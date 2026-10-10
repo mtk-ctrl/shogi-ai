@@ -38,7 +38,11 @@ authority: normative
 
 ## Material梯子
 やねうら王Material Level 1〜100の換算は `benchmarks/external_levels.py` を実装上の基準とする。
-外部Benchmarkの持ち時間・nodes等は一般のR20正式比較条件とは別の固定尺度であり、目的なく200msへ統一しない。
+外部Benchmarkの持ち時間・nodes等は目的別の固定尺度を守る。単純なCore測定（`.github/workflows/external-engine-benchmark.yml`、50ms）は歴史的な独立尺度であり、正式な棋力測定用の梯子へそのまま転用しない。
+
+**雲路の正式棋力を以前の正式棋力と比較するMaterial梯子（`.github/workflows/yaneuraou-ladder.yml`）は、雲路 `go movetime 200`、`AdaptiveLongThink=true`（必要時最大1秒、1局最大10回）、採用済み局面知識 `PositionKnowledge=true` とその正本ファイルを必須とする。** やねうら王Material側はLevel 1〜100ごとの固定nodes、定跡OFF、1スレッド、ハッシュ16MBを維持する。明示された別目的の検証は例外であるが、比較対象と異なる条件を正式棋力測定と呼ばない。
+
+段階別Workflowでは原則各レベル100局・先後交互・30%以上で次レベル、**勝率30%未満で停止**する。勝率は勝利数/対局数、引き分けは勝利数に含めず、得点率（引分0.5点）は併記する。レベル間で固定エンジンcommit・局面知識・時間条件を変更しない。各分割の実際のUSI適用設定・実行コマンドを集計で照合し、違い、欠損、違法手、局面知識ハッシュ不一致があれば次レベルを起動せず失敗させる。50ms固定・追加長考OFFでの2026-10-10初回対局は正式条件と一致しないため、正式な進歩判定に用いない。
 梯子を実行するときはR20・R21・`docs/23_外部エンジン対局基盤.md`も読む。
 
 ## Floodgate
