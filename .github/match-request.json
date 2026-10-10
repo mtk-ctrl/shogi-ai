@@ -1,12 +1,12 @@
 {
-  "request_id": "20261010-v206-position-knowledge-on-off-200",
-  "ref_a": "936afa13e2517d3d7e3c3c506896e9c76cb0e40d",
-  "ref_b": "936afa13e2517d3d7e3c3c506896e9c76cb0e40d",
+  "request_id": "20261010-random-nonlance-firstmove-v206-200",
+  "ref_a": "4bd4d90282dae408057a91aeb82628aabe4c89a0",
+  "ref_b": "dafeac249674316de8b7ff4a812e5a94677c5fc0",
   "games": "200",
   "shards": "20",
   "go_command": "go movetime 200",
   "max_plies": "300",
-  "seed": "2026101020",
-  "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-  "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":false,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}"
+  "seed": "2026101014",
+  "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true}",
+  "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}"
 }
