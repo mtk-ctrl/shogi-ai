@@ -1,6 +1,7 @@
 #pragma once
-// Experimental position-stage diagnostics. This header is not called by the
-// production search or evaluator; its coefficients are NOT adopted weights.
+// Explainable board-stage base signals. v2.0.8 uses these once at turn entry
+// for diagnostics only; evaluation weights, search and time control are unchanged.
+// The historical provisional_progress is not the adopted maturity score.
 #include "rules/position.h"
 #include "strategy/attack_map.h"
 #include <algorithm>
