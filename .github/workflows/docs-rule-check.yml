@@ -17,6 +17,8 @@ on:
       - "scripts/check_workflow_inventory.py"
       - "scripts/check_match_workflows.py"
       - "tests/test_match_workflow_guard.py"
+      - "scripts/dispatch_match_request.py"
+      - "tests/test_match_request_dispatch.py"
       - "scripts/check_current_claims.py"
       - "tests/test_document_consistency.py"
   pull_request:
@@ -34,6 +36,8 @@ on:
       - "scripts/check_workflow_inventory.py"
       - "scripts/check_match_workflows.py"
       - "tests/test_match_workflow_guard.py"
+      - "scripts/dispatch_match_request.py"
+      - "tests/test_match_request_dispatch.py"
       - "scripts/check_current_claims.py"
       - "tests/test_document_consistency.py"
   workflow_dispatch:
@@ -60,6 +64,9 @@ jobs:
 
       - name: Test match workflow guard
         run: python3 tests/test_match_workflow_guard.py
+
+      - name: Test Issue and file-based match dispatch
+        run: python3 tests/test_match_request_dispatch.py
 
       - name: Preflight match and research workflows
         run: python3 scripts/check_match_workflows.py

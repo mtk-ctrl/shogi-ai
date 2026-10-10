@@ -19,7 +19,7 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 | `.github/workflows/eval-bold-league.yml` | 研究依頼ファイルの変更 / 手動 | 正式M・従来W・大胆な配点6案（P0～P5）を固定エンジンで8型総当たりし、実戦・評価の統計を記録。正式採用はしない |
 | `.github/workflows/eval-wide-league.yml` | 明示的な依頼ファイル更新 / 手動 | 評価8型（現行M型、既存S/A/T型、新規X/Y/Z/W型）を総当たり。事前検査後に空きrunner数で並列実行し、全局の棋譜・評価内訳・順位を保存。候補の自動採用はしない |
 | `.github/workflows/engine-match.yml` | 手動 | 汎用の内部Engine比較。既定は200ms・AdaptiveLongThink=true。研究条件は明示入力で変更 |
-| `.github/workflows/engine-match-request.yml` | request更新 / 手動 | ChatGPT等から `.github/match-request.json` を検証して `engine-match.yml` をdispatchする薄い起動口。対局処理は持たない |
+| `.github/workflows/engine-match-request.yml` | オーナーのIssue作成 / request更新 / 手動 | 対局条件だけを検証し `engine-match.yml` を起動する軽量入口。通常はIssue方式でコードを変更しない。対局処理は持たない |
 | `.github/workflows/position-knowledge-refresh.yml` | 知識更新request / 手動 | 承認した候補データから採用済み局面知識を生成する。新候補を自動採用しない |
 | `.github/workflows/yaneuraou-ladder.yml` | 依頼ファイル更新 / 手動 / 条件付き自動進行 | やねうら王Material版で正式棋力測定（雲路200ms・長考ON・局面知識ON）。100局ごとにレベルを1上げ、勝率30%未満で自動停止。レベル別対局記録と集計を保存し、固定エンジンcommitを引き継ぐ |
 | `.github/workflows/external-engine-benchmark.yml` | 関連pushでunit / 手動Benchmark | やねうら王MaterialのCore外部尺度 |
@@ -36,6 +36,14 @@ v2対v1比較、固定v2.0.0の300局自己対局・60局面研究、その追�
 ## ARCHIVE
 終了済みの評価weight sweep、特定世代比較、特定artifact診断等は `docs/archive/workflows/2026-10-07/` に原文保存した。
 再現用の履歴であり、現行Actionsとして起動しない。
+
+## 通常の対局起動：ファイル更新不要のIssue方式
+ChatGPTがGitHub Issueを1件作成し、タイトルを「`[KUMOJI MATCH] 対局名`」、本文を対局依頼JSON（従来の `.github/match-request.json` と同じ必須項目）とする。Issueの作成者はリポジトリ所有者本人に限る。`engine-match-request.yml` が依頼の入力検査を行ってから、既存の `engine-match.yml` を呼び出す。通常の対局ごとにYAMLや依頼JSONをcommitしない。
+
+- 指定できる基本項目は `ref_a`、`ref_b`、`games`、`shards`、`go_command`、`max_plies`、`seed`、`options_a`、`options_b`。`options_a` / `options_b` はJSON**文字列**で、後者にも同じ採用済み局面知識を指定する。
+- Issue方式は `go movetime N`、最大1万局・20並列・1000手、許可されたUSI設定のみ。`dry_run: true` なら入力検査だけ実施して対局は起動しない。
+- Issue方式が対応していない実験は、既存の `.github/match-request.json` 更新や専用Workflowで対応する。安全性チェックに拒否された操作を別経路で不当に実行してはならない。
+- この入口は起動だけを担当する。開始状況・終了結果・保存確認はR21に従って追跡する。
 
 ## 新しい研究・比較をしたいとき
 まず既存workflowで**無理なく**表現できるか確認する。
