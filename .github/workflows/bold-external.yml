@@ -1,0 +1,86 @@
+name: Bold Profiles External Material Validation
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/bold-external-request.json"]
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/checkout@v5
+        with:
+          ref: 936afa13e2517d3d7e3c3c506896e9c76cb0e40d
+          path: engine-src
+      - run: |
+          mkdir -p build
+          (cd engine-src && python3 scripts/build.py --output "$GITHUB_WORKSPACE/build/engine")
+          cp position-knowledge-v1.tsv build/position-knowledge-v1.tsv
+          cp position-knowledge-v1.manifest.json build/position-knowledge-v1.manifest.json
+          git clone --filter=blob:none https://github.com/yaneurao/YaneuraOu.git external/YaneuraOu
+          git -C external/YaneuraOu checkout c1b80eaa09fe13d5f12b1599d1ae4d53c224de30
+          make -C external/YaneuraOu/source -j2 tournament COMPILER=g++ TARGET_CPU=SSE42 YANEURAOU_EDITION=YANEURAOU_ENGINE_MATERIAL MATERIAL_LEVEL=1
+          tar -czf binaries.tgz build/engine build/position-knowledge-v1.tsv build/position-knowledge-v1.manifest.json external/YaneuraOu/source/YaneuraOu-by-gcc
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bold-external-binaries-${{ github.run_id }}
+          path: binaries.tgz
+  match:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: bold-external-binaries-${{ github.run_id }}
+      - run: |
+          tar -xzf binaries.tgz
+          chmod +x build/engine external/YaneuraOu/source/YaneuraOu-by-gcc
+          python3 benchmarks/eval_bold_external.py ${{ matrix.shard }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bold-external-results-${{ github.run_id }}-${{ matrix.shard }}
+          path: results/*.json
+          if-no-files-found: error
+  aggregate:
+    needs: match
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: bold-external-results-${{ github.run_id }}-*
+          path: results
+          merge-multiple: true
+      - run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          rows=[]
+          for level in (50,55):
+            for profile in ("M","W","P0","P4","P5","P1"):
+              files=sorted(Path("results").glob(f"{profile}-lv{level}-shard*.json"))
+              if len(files)!=20: raise SystemExit(f"missing shards {profile} {level}")
+              records=[json.loads(p.read_text()) for p in files]
+              wins=sum(r["wins_self"] for r in records)
+              draws=sum(r["draws"] for r in records)
+              losses=sum(r["losses_self"] for r in records)
+              illegal=sum(r["illegal_games"] for r in records)
+              if wins+draws+losses!=100 or illegal: raise SystemExit("invalid result")
+              rows.append(dict(profile=profile,level=level,wins=wins,draws=draws,losses=losses,illegal=illegal,score=(wins+draws/2)/100))
+          Path("external-summary.json").write_text(json.dumps(rows,indent=2))
+          print(json.dumps(rows,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bold-external-summary-${{ github.run_id }}
+          path: external-summary.json
