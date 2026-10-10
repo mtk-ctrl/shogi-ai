@@ -30,12 +30,38 @@ jobs:
           python3 tests/test_mate_learning.py
           test -s position-knowledge-v1.tsv
 
-  # 10 jobs at most; disjoint slices 0:100 ... 900:1000 from each of the
-  # five fixed mate-problem groups, preserving reproducibility and provenance.
-  collect:
+  # The published 5M-position puzzle archive is downloaded ONCE,
+  # checked against the project's archived SHA-256 and sampled with the fixed
+  # 5,000 benchmark positions excluded. No opponent move/evaluation is used.
+  prepare:
     needs: preflight
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v5
+      - name: Download official tsume archive
+        run: |
+          python3 -m pip install gdown==5.2.0
+          mkdir -p build
+          gdown 'https://drive.google.com/uc?id=1nJbFFaQeOx3gFafiVIR_oDIcG8iCOHf4' -O build/official-mates.zip
+      - name: Select 100,000 unseen problems with verified source digest
+        run: |
+          python3 tools/learning/prepare_large_tsume.py \
+            --archive build/official-mates.zip \
+            --out build/tsume-expanded --per-ply 20000 --seed 20261011
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mate-cycle-expanded-dataset
+          path: build/tsume-expanded/
+          if-no-files-found: error
+          retention-days: 14
+
+  # 10 jobs at most; disjoint slices of 2,000 unseen problems per mate
+  # length for each worker (up to 100k positions, 35 min worker deadline).
+  collect:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 43
     strategy:
       fail-fast: false
       max-parallel: 10
@@ -43,6 +69,11 @@ jobs:
         shard: [0,1,2,3,4,5,6,7,8,9]
     steps:
       - uses: actions/checkout@v5
+      - name: Download larger source sample
+        uses: actions/download-artifact@v4
+        with:
+          name: mate-cycle-expanded-dataset
+          path: build/tsume-expanded
       - name: Build standalone experimental engine
         run: python3 scripts/build.py --output build/shogi-ai
       - name: Collect self-proved bounded mates
@@ -50,9 +81,11 @@ jobs:
           mkdir -p build/learn
           python3 tools/learning/mate_learning.py collect \
             --engine build/shogi-ai \
-            --start-per-ply $(( ${{ matrix.shard }} * 100 )) \
-            --limit-per-ply 100 \
-            --time-ms 600 \
+            --dataset-dir build/tsume-expanded \
+            --source-count-per-ply 20000 \
+            --start-per-ply $(( ${{ matrix.shard }} * 2000 )) \
+            --limit-per-ply 2000 \
+            --time-ms 3000 --wall-seconds 2100 \
             --out build/learn/batch-${{ matrix.shard }}.jsonl
       - uses: actions/upload-artifact@v4
         with:
@@ -64,7 +97,7 @@ jobs:
   train:
     needs: collect
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5
       - uses: actions/download-artifact@v4
@@ -75,6 +108,17 @@ jobs:
       - name: Merge and train
         run: |
           cat build/learn/batch-{0,1,2,3,4,5,6,7,8,9}.jsonl > build/all-samples.jsonl
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from collections import Counter
+          count=Counter()
+          for line in Path('build/all-samples.jsonl').read_text().splitlines():
+              row=json.loads(line);count[str(row['source_ply'])]+=1
+          print('collected sample lengths',dict(count),'total',sum(count.values()))
+          if sum(count.values()) < 10000 or min(count.values()) < 1000:
+              raise SystemExit('Insufficient verified large-scale learning samples')
+          PY
           python3 tools/learning/mate_learning.py train \
             --samples build/all-samples.jsonl \
             --model build/mate-learning-model.txt \
@@ -89,12 +133,14 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-  # Compare candidate with main at the standard match budget, adopted
-  # knowledge enabled equally, alternating Black/White across 100 games.
+  # Compare learned against unlearned under the SAME aggressive phase-aware
+  # mate budgets. Opening 0ms, late-stage normal up to 60ms, urgent <=100ms.
+  # Both use the official 200ms game clock and adopted position knowledge.
+  # Alternating sides across 100 games controls opening/color asymmetry.
   compare:
     needs: train
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       max-parallel: 10
@@ -129,8 +175,8 @@ jobs:
           python3 candidate/benchmarks/arena.py \
             --engine-a build/engine-a \
             --engine-b build/engine-b \
-            --options-a '{"MateStageBudget":true,"MateLearningFile":"build/mate-learning-model.txt","MateLearning":true,"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}' \
-            --options-b '{"MateStageBudget":true,"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}' \
+            --options-a '{"MateStageBudget":true,"MateBudgetProfile":"aggressive","MateLearningFile":"build/mate-learning-model.txt","MateLearning":true,"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}' \
+            --options-b '{"MateStageBudget":true,"MateBudgetProfile":"aggressive","MateLearning":false,"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}' \
             --games 10 \
             --game-offset $(( ${{ matrix.shard }} * 10 )) \
             --max-plies 250 \
