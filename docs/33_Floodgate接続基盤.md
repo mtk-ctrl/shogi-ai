@@ -127,7 +127,7 @@ Engine世代ごとにFloodgateコードを複製しない。
 以前の `Floodgate Generation Compatibility` workflowはworkflow整理時に `docs/archive/workflows/2026-10-07/floodgate-generation-compat.yml` へ退役した。
 そのarchiveに残る `research/evaluation-v2-challenger` は旧研究refであり、現行参照先には使わない。
 
-現在の正式Engine世代は `KUMOJI v2.0.7` で、実装の正本は `main` である。評価プロファイルBを維持し、本人指定の長考配分訂正を反映した（`docs/36_v2.0.1長考配分.md`）。現在のmain bridgeはQuick CIのFloodgate dry-runで検査する。
+現在の正式Engine世代は `KUMOJI v2.0.9` で、実装の正本は `main` である。M型特徴量重み、G型駒価値、序中終判定の毎手記録を組み込み、本人指定の長考配分を維持した（`docs/36_v2.0.1長考配分.md`）。現在のmain bridgeはQuick CIのFloodgate dry-runで検査する。
 別世代との互換性を改めて検証する必要が生じた場合は、R15に従い既存基盤で自然に扱えるか確認し、必要なら専用workflowを再設計する。
 
 実対局ログにはEngineの `id name`、適用option、実行バイナリSHA-256等を残し、表示versionだけでEngine世代を判定しない。
