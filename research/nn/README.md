@@ -56,3 +56,12 @@ python3 research/nn/train.py --input build/nn-samples.jsonl --output-dir build/n
 4. NNを対局中に使用する案は**別の候補**として実装・検証し、正式採用はオーナー判断とする。
 
 仕様と採用の権限はR00/R10/R20/R25/R50を優先する。
+
+## 実棋譜を使った初回研究
+
+`.github/workflows/nn-real-study.yml` は、研究専用の再現可能な実行環境。
+データReleaseの固定資産 `played-games-37671846680.jsonl.gz` と同manifestを取得し、内容ハッシュ・対局エンジン実体ハッシュ・全着手の合法性を確認する。
+保存時期の古い同一エンジン自己対局を使うため、学習結果は**現行の雲路との棋力優劣ではない**。
+8手ごとに学習局面を抽出し、現行の雲路の `eval` で同じ盤面の静的評価を再計算する。局面の重複を除いた別棋譜で予測精度を比較する。
+
+初回は専用の依頼ファイル `.github/nn-research-request.json` の変更で明示的に起動し、結果は期限付きActions成果物として保存する。定期実行・モデルの自動採用はしない。
