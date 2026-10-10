@@ -1,0 +1,97 @@
+name: KUMOJI Neural Evaluation Research
+
+on:
+  pull_request:
+    paths:
+      - "research/nn/**"
+      - "tests/test_nn_archive.py"
+      - ".github/workflows/nn-real-study.yml"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/nn-research-request.json"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: kumoji-neural-study-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install bounded research dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy==2.3.3 python-shogi==1.1.1
+      - name: Verify network and archived dataset tests
+        run: |
+          python3 tests/test_nn_research.py
+          python3 tests/test_nn_archive.py
+      - name: Verify Actions workflow rules
+        run: |
+          python3 scripts/check_match_workflows.py
+          python3 scripts/check_workflow_inventory.py
+
+  study:
+    needs: validate
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      OPENBLAS_NUM_THREADS: "2"
+      OMP_NUM_THREADS: "2"
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install research dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy==2.3.3 python-shogi==1.1.1
+      - name: Fetch pinned historical KUMOJI self-play
+        run: |
+          mkdir -p build/nn-input
+          gh release download records-2026-10-01 \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern 'played-games-37671846680.jsonl.gz' \
+            --pattern 'played-games-manifest-37671846680.json' \
+            --dir build/nn-input
+      - name: Verify provenance and reconstruct real games
+        run: |
+          python3 research/nn/import_release.py \
+            --archive build/nn-input/played-games-37671846680.jsonl.gz \
+            --manifest build/nn-input/played-games-manifest-37671846680.json \
+            --output-dir build/nn-import --max-games 300
+          python3 research/nn/prepare.py \
+            --input build/nn-import/selfplay-*.json \
+            --stride 8 --output build/nn-positions.jsonl
+      - name: Build current independent static evaluator
+        run: python3 scripts/build.py --output build/kumoji
+      - name: Compare static scores on same sample positions
+        run: |
+          python3 research/nn/score_samples.py \
+            --input build/nn-positions.jsonl \
+            --output build/nn-positions-scored.jsonl --engine build/kumoji
+      - name: Train and evaluate holdout prediction
+        run: |
+          python3 research/nn/train.py \
+            --input build/nn-positions-scored.jsonl \
+            --output-dir build/nn-report --epochs 15 --hidden 32 \
+            > build/nn-learning-log.json
+          cat build/nn-report/report.json
+          echo '### Neural self-play first study' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Historical self-play, held-out games and overlap filtering; no playing-engine modification.' >> "$GITHUB_STEP_SUMMARY"
+          echo '>>>json' >> "$GITHUB_STEP_SUMMARY"
+          cat build/nn-report/report.json >> "$GITHUB_STEP_SUMMARY"
+      - name: Store model and diagnostic report (research-only)
+        uses: actions/upload-artifact@v4
+        with:
+          name: nn-first-real-study-${{ github.run_id }}
+          path: |
+            build/nn-report/position-net-v1.npz
+            build/nn-report/report.json
+            build/nn-report/disagreements.csv
+            build/nn-learning-log.json
+          retention-days: 90
+          if-no-files-found: error

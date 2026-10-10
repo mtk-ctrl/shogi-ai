@@ -9,7 +9,9 @@ from pathlib import Path
 import shogi
 
 
-def convert(inputs: list[Path], output: Path) -> dict:
+def convert(inputs: list[Path], output: Path, stride: int = 1) -> dict:
+    if stride < 1:
+        raise ValueError('stride must be positive')
     output.parent.mkdir(parents=True, exist_ok=True)
     games = samples = skipped = duplicates = 0
     seen_games = set()
@@ -70,7 +72,8 @@ def convert(inputs: list[Path], output: Path) -> dict:
                         score = (record.get("search") or {}).get("phase_static_cp_black")
                         if type(score) is int:
                             row["static_cp_black"] = score
-                    rows.append(row)
+                    if i % stride == 0:
+                        rows.append(row)
                     board.push(move)
                 for row in rows:
                     out.write(json.dumps(row, separators=(",", ":")) + "\n")
@@ -86,8 +89,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", nargs="+", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--stride", type=int, default=1,
+                        help="Sample one position every N plies (all moves still validated)")
     args = parser.parse_args()
-    result = convert(args.input, args.output)
+    result = convert(args.input, args.output, args.stride)
     print(json.dumps(result, ensure_ascii=False))
 
 
