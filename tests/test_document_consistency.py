@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+import json
 import shutil
 import sys
 import tempfile
@@ -84,7 +85,10 @@ class ClaimChecks(unittest.TestCase):
         self.assertTrue(any("成熟度配置展開係数" in e for e in errors), errors)
 
     def test_wrong_knowledge_count_fails(self):
-        self.change("docs/現行エンジン仕様.md", "採用済み局面数：153", "採用済み局面数：154")
+        manifest = json.loads((self.root / "position-knowledge-v1.manifest.json").read_text(encoding="utf-8"))
+        count = int(manifest["adopted_positions"])
+        self.change("docs/現行エンジン仕様.md",
+                    f"採用済み局面数：{count}", f"採用済み局面数：{count + 1}")
         errors, _ = claims.check(self.root)
         self.assertTrue(any("採用知識数" in e for e in errors), errors)
 
