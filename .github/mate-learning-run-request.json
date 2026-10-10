@@ -10,5 +10,6 @@
   "games_per_shard": 10,
   "maximum_parallel_runners": 10,
   "main_auto_adoption": false,
-  "trigger_note": "Initial sustained improvement research: train then compare and report"
+  "trigger_note": "Controlled follow-up: equal mate stage budget, 600ms bounded mate proof, 10 lanes; external expansion pending",
+  "request_iteration": 2
 }
