@@ -4,12 +4,26 @@
   "research_only": true,
   "model": "mate-learning-v2-16features",
   "mate_proof_horizon": 7,
-  "training_positions": 5000,
+  "training_source": "YaneuraOu 5M puzzle archive (official Drive ID 1nJbFFaQeOx3gFafiVIR_oDIcG8iCOHf4; SHA-256 verified; excludes fixed benchmark 5000)",
+  "training_positions_planned": 100000,
+  "training_position_classes": [
+    3,
+    5,
+    7,
+    9,
+    11
+  ],
+  "offline_search_budget_ms_per_position": 3000,
+  "learning_time_limit_per_runner_seconds": 2100,
+  "online_mate_budget_profile": "aggressive",
+  "online_mate_budget_opening_ms": 0,
+  "online_mate_budget_late_normal_ms": 60,
+  "online_mate_budget_late_urgent_ms": 100,
   "sample_collection_shards": 10,
   "game_comparison_shards": 10,
   "games_per_shard": 10,
   "maximum_parallel_runners": 10,
   "main_auto_adoption": false,
-  "trigger_note": "Controlled follow-up: equal mate stage budget, 600ms bounded mate proof, 10 lanes; external expansion pending",
-  "request_iteration": 2
+  "trigger_note": "2026-10-11 request: extended source-verified unseen dataset, increased 7-ply proof time, 10 runners, ~1h research then equal-profile 100-game comparison",
+  "request_iteration": 3
 }
