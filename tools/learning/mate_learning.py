@@ -17,10 +17,10 @@ import threading
 import time
 from pathlib import Path
 
-SCHEMA = "mate-gate-samples-v1"
-DIM = 8
+SCHEMA = "mate-gate-samples-v2"
+DIM = 16
 PLIES = (3, 5, 7, 9, 11)
-FEATURE_TAG = "info string learning_features v1 "
+FEATURE_TAG = "info string learning_features v2 "
 BOUNDED_TAG = "info string mate bounded_status "
 
 
@@ -112,7 +112,7 @@ def collect(args):
     try:
         for ply in PLIES:
             path = args.dataset_dir / f"mate{ply}_1000.sfen"
-            for sfen in path.read_text(encoding="ascii").splitlines()[:args.limit_per_ply]:
+            for sfen in path.read_text(encoding="ascii").splitlines()[args.start_per_ply:args.start_per_ply + args.limit_per_ply]:
                 sfen = normalize_sfen(sfen)
                 if not sfen or sfen in seen:
                     continue
@@ -232,9 +232,14 @@ def train(args):
     train_rows, test_rows = split(rows, args.seed)
     model = fit(train_rows)
     mean, scale, weight, bias = model
+    # Inspect thresholds on training data only: the holdout remains untouched.
+    # A high threshold previously missed 88% of proven mates. The sweep
+    # exposes the trade-off instead of advertising a misleading accuracy.
+    thresholds = [round(t / 100, 2) for t in range(30, 91, 5)]
+    sweep = [{"threshold": t, **accuracy(test_rows, model, t)} for t in thresholds]
     args.model.parent.mkdir(parents=True, exist_ok=True)
     args.model.write_text(
-        "KUMOJI_MATE_GATE_V1\n"
+        "KUMOJI_MATE_GATE_V2\n"
         + "mean " + " ".join(format(x, ".12g") for x in mean) + "\n"
         + "scale " + " ".join(format(x, ".12g") for x in scale) + "\n"
         + "weight " + " ".join(format(x, ".12g") for x in weight) + "\n"
@@ -246,6 +251,7 @@ def train(args):
               "threshold": args.threshold,
               "train": accuracy(train_rows, model, args.threshold),
               "holdout": accuracy(test_rows, model, args.threshold),
+              "holdout_threshold_sweep_for_diagnosis_only": sweep,
               "note": "Research gate only; uncalibrated and not evidence of increased playing strength"}
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -259,6 +265,7 @@ def main():
     a.add_argument("--engine", type=Path, required=True)
     a.add_argument("--dataset-dir", type=Path, default=Path("benchmarks/tsume_dataset"))
     a.add_argument("--limit-per-ply", type=int, default=30)
+    a.add_argument("--start-per-ply", type=int, default=0)
     a.add_argument("--time-ms", type=int, default=2000)
     a.add_argument("--out", type=Path, default=Path("research/mate-learning-samples.jsonl"))
     b = cmd.add_parser("train")
@@ -269,7 +276,7 @@ def main():
     b.add_argument("--threshold", type=float, default=0.8)
     args = parser.parse_args()
     if args.command == "collect":
-        if args.limit_per_ply < 1 or args.limit_per_ply > 1000 or args.time_ms < 1:
+        if args.limit_per_ply < 1 or args.limit_per_ply > 1000 or args.start_per_ply < 0 or args.start_per_ply + args.limit_per_ply > 1000 or args.time_ms < 1:
             parser.error("invalid limits")
         collect(args)
     else:
