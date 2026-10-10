@@ -17,7 +17,12 @@ class PlayedArchiveTest(unittest.TestCase):
                 "details": [{"plies": 2, "moves": ["7g7f", "3c3d"], "winner": "A",
                              "move_records": [
                                  {"ply": 1, "move": "7g7f", "search": {"depth": 3, "score_cp_stm": 120,
-                                  "score_black_cp": 120, "pv": ["7g7f", "8c8d"], "candidates": ["2g2f"]}},
+                                  "score_black_cp": 120, "phase_version": 1,
+                                  "phase_maturity": 14, "phase_stage": "opening",
+                                  "phase_development": 28, "phase_battle": 21,
+                                  "phase_invasion": 0, "phase_king_threat": 0,
+                                  "phase_static_cp_black": 30,
+                                  "pv": ["7g7f", "8c8d"], "candidates": ["2g2f"]}},
                                  {"ply": 2, "move": "3c3d", "search": {"depth": 0}}]}]}
         path.write_text(json.dumps(data))
         return path
@@ -35,6 +40,12 @@ class PlayedArchiveTest(unittest.TestCase):
             self.assertNotIn("candidates", game["moves"][0]["search"])
             self.assertIsNone(game["moves"][1]["search"]["score_cp_stm"])
             self.assertEqual(result["missing_score_plies"], 1)
+            self.assertEqual(result["phase_recorded_plies"], 1)
+            self.assertEqual(result["phase_missing_plies"], 1)
+            self.assertEqual(game["moves"][0]["search"]["phase_maturity"], 14)
+            self.assertEqual(game["moves"][0]["search"]["phase_static_cp_black"], 30)
+            self.assertNotIn("phase_maturity", game["moves"][1]["search"])
+
             self.assertEqual(result["sources"][0]["metadata"]["sha256_a"], "engine-hash")
             second = module.archive([source], Path(directory) / "other")
             self.assertEqual(result["archive_sha256"], second["archive_sha256"])
