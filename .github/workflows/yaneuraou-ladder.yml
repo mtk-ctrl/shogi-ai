@@ -1,5 +1,5 @@
 name: YaneuraOu Material Ladder
-run-name: "YaneuraOu ladder Lv${{ inputs.level || 'request' } / ${{ inputs.series_id || github.run_id }"
+run-name: "YaneuraOu ladder Lv${{ inputs.level || 'request' }} / ${{ inputs.series_id || github.run_id }}"
 
 on:
   push:
@@ -64,23 +64,23 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     outputs:
-      matrix: ${{ steps.plan.outputs.matrix }
-      level: ${{ steps.plan.outputs.level }
-      games: ${{ steps.plan.outputs.games }
-      series_id: ${{ steps.plan.outputs.series_id }
-      engine_ref: ${{ steps.plan.outputs.engine_ref }
-      shards: ${{ steps.plan.outputs.shards }
+      matrix: ${{ steps.plan.outputs.matrix }}
+      level: ${{ steps.plan.outputs.level }}
+      games: ${{ steps.plan.outputs.games }}
+      series_id: ${{ steps.plan.outputs.series_id }}
+      engine_ref: ${{ steps.plan.outputs.engine_ref }}
+      shards: ${{ steps.plan.outputs.shards }}
     steps:
       - uses: actions/checkout@v5
       - name: Validate request and plan balanced shards
         id: plan
         env:
-          EVENT_NAME: ${{ github.event_name }
-          INPUT_LEVEL: ${{ inputs.level }
-          INPUT_GAMES: ${{ inputs.games }
-          INPUT_SHARDS: ${{ inputs.shards }
-          INPUT_SERIES_ID: ${{ inputs.series_id }
-          INPUT_ENGINE_REF: ${{ inputs.engine_ref }
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_LEVEL: ${{ inputs.level }}
+          INPUT_GAMES: ${{ inputs.games }}
+          INPUT_SHARDS: ${{ inputs.shards }}
+          INPUT_SERIES_ID: ${{ inputs.series_id }}
+          INPUT_ENGINE_REF: ${{ inputs.engine_ref }}
         run: |
           python3 - <<'PY'
           import json, os, re
@@ -129,7 +129,7 @@ jobs:
       - name: Checkout frozen KUMOJI and adopted knowledge
         uses: actions/checkout@v5
         with:
-          ref: ${{ needs.plan.outputs.engine_ref }
+          ref: ${{ needs.plan.outputs.engine_ref }}
 
       - name: Build KUMOJI
         run: python3 scripts/build.py --output build/shogi-ai
@@ -181,7 +181,7 @@ jobs:
       - name: Checkout pinned benchmark harness
         uses: actions/checkout@v5
         with:
-          ref: ${{ needs.plan.outputs.engine_ref }
+          ref: ${{ needs.plan.outputs.engine_ref }}
           path: harness
 
       - name: Install python-shogi
@@ -199,7 +199,7 @@ jobs:
 
       - name: Run core benchmark shard
         env:
-          LEVEL: ${{ needs.plan.outputs.level }
+          LEVEL: ${{ needs.plan.outputs.level }}
           SHARD_GAMES: ${{ matrix.games }}
           SHARD_SEED: ${{ matrix.seed }}
           GAME_OFFSET: ${{ matrix.game_offset }}
@@ -224,23 +224,23 @@ jobs:
       - name: Download this level game records
         uses: actions/download-artifact@v4
         with:
-          pattern: yaneuraou-ladder-${{ github.run_id }-*
+          pattern: yaneuraou-ladder-${{ github.run_id }}-*
           path: results
           merge-multiple: true
       - name: Download knowledge snapshot for audit
         uses: actions/download-artifact@v4
         with:
-          name: external-engine-binaries-${{ github.run_id }
+          name: external-engine-binaries-${{ github.run_id }}
       - name: Unpack snapshot metadata
         run: tar -xzf external-engines.tgz build/position-knowledge-v1.tsv build/position-knowledge-v1.manifest.json
       - name: Verify all games and determine whether to continue
         id: decision
         env:
-          LEVEL: ${{ needs.plan.outputs.level }
-          EXPECTED_GAMES: ${{ needs.plan.outputs.games }
-          EXPECTED_SHARDS: ${{ needs.plan.outputs.shards }
-          SERIES_ID: ${{ needs.plan.outputs.series_id }
-          ENGINE_REF: ${{ needs.plan.outputs.engine_ref }
+          LEVEL: ${{ needs.plan.outputs.level }}
+          EXPECTED_GAMES: ${{ needs.plan.outputs.games }}
+          EXPECTED_SHARDS: ${{ needs.plan.outputs.shards }}
+          SERIES_ID: ${{ needs.plan.outputs.series_id }}
+          ENGINE_REF: ${{ needs.plan.outputs.engine_ref }}
         run: |
           python3 - <<'PY'
           import hashlib,json,os
@@ -291,19 +291,19 @@ jobs:
       - name: Upload verified level result
         uses: actions/upload-artifact@v4
         with:
-          name: yaneuraou-ladder-summary-${{ github.run_id }
+          name: yaneuraou-ladder-summary-${{ github.run_id }}
           path: ladder-result.json
           retention-days: 90
           if-no-files-found: error
       - name: Automatically dispatch the next level
         if: steps.decision.outputs.should_continue == 'true' && github.run_attempt == 1
         env:
-          GH_TOKEN: ${{ github.token }
-          NEXT: ${{ steps.decision.outputs.next_level }
-          GAMES: ${{ needs.plan.outputs.games }
-          SHARDS: ${{ needs.plan.outputs.shards }
-          SERIES: ${{ needs.plan.outputs.series_id }
-          REF: ${{ needs.plan.outputs.engine_ref }
+          GH_TOKEN: ${{ github.token }}
+          NEXT: ${{ steps.decision.outputs.next_level }}
+          GAMES: ${{ needs.plan.outputs.games }}
+          SHARDS: ${{ needs.plan.outputs.shards }}
+          SERIES: ${{ needs.plan.outputs.series_id }}
+          REF: ${{ needs.plan.outputs.engine_ref }}
         run: |
           gh workflow run yaneuraou-ladder.yml --repo "$GITHUB_REPOSITORY" --ref main \
             -f "level=$NEXT" -f "games=$GAMES" -f "shards=$SHARDS" \
