@@ -11,7 +11,7 @@
 
 namespace shogi::strategy {
 struct MateLearning {
-    static constexpr int FeatureCount = 8;
+    static constexpr int FeatureCount = 16;
     using Features = std::array<double, FeatureCount>;
 
     // Fixed schema shared with tools/learning/mate_learning.py. Features are
@@ -23,6 +23,26 @@ struct MateLearning {
         const auto& attack = b.raw[us];
         const auto& guards = b.raw[them];
         const auto phase = classify_turn_phase(s);
+        // Shape of the attack around the enemy king, defender cover, and
+        // forcing drops complement the previously aggregated evaluation terms.
+        const AttackMap a(s);
+        const int king = a.kings[them], our_king = a.kings[us];
+        int ring_control = 0, safe_escapes = 0, defenders = 0, near_attackers = 0;
+        for (int sq = 0; sq < 81; ++sq) {
+            if (king >= 0 && sq != king && AttackMap::near(sq, king)) {
+                if (a.nonking[us][sq] > 0) ++ring_control;
+                if (a.count[us][sq] == 0 && a.count[them][sq] > 0)
+                    ++safe_escapes;
+                if (a.nonking[them][sq] > 0) ++defenders;
+            }
+            const auto& piece = s.board[sq];
+            if (king >= 0 && piece.kind && piece.kind != 8
+                && int(piece.color) == us
+                && std::abs(sq / 9 - king / 9) <= 2
+                && std::abs(sq % 9 - king % 9) <= 2) ++near_attackers;
+        }
+        const auto& hand = s.hands[us];
+        const auto& defender_hand = s.hands[them];
         return {
             double(phase.maturity),
             double(attack.king_attacked),
@@ -31,7 +51,15 @@ struct MateLearning {
             double(attack.partners),
             double(guards.gold_guards * 2 + guards.silver_guards + guards.pawn_guards),
             double(attack.v2.hand_potential),
-            double(guards.v2.hand_potential)
+            double(guards.v2.hand_potential),
+            double(ring_control),
+            double(safe_escapes),
+            double(defenders),
+            double(near_attackers),
+            double(hand[3] + hand[4] + hand[5] + hand[6]),
+            double(defender_hand[3] + defender_hand[4] + defender_hand[5] + defender_hand[6]),
+            double(our_king >= 0 ? a.nonking[them][our_king] : 0),
+            double(us == 0 ? b.material : -b.material)
         };
     }
 
@@ -40,7 +68,7 @@ struct MateLearning {
         std::ifstream in(path);
         if (!in) return false;
         std::string header;
-        if (!std::getline(in, header) || header != "KUMOJI_MATE_GATE_V1") return false;
+        if (!std::getline(in, header) || header != "KUMOJI_MATE_GATE_V2") return false;
         Features mean{}, scale{}, weight{};
         if (!read_row(in, "mean", mean) || !read_row(in, "scale", scale)
             || !read_row(in, "weight", weight)) return false;
