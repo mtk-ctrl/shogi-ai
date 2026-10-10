@@ -32,7 +32,9 @@ def test_training():
                               float(8 - 3 * label), float(label * 4), float(1 - label)]
                     row = {"schema": module.SCHEMA, "sfen": f"synthetic-{label}-{i}",
                            "horizon": 7, "source_ply": 3 if label else 11,
-                           "features": values, "label": label}
+                           "features": values + [float(label), float(1-label), float(label*3),
+                                                   float(i%2), float(label*2), float(i%4),
+                                                   float(1-label), float(label*5)], "label": label}
                     out.write(json.dumps(row) + "\n")
         model = tmp / "model.txt"
         report = tmp / "report.json"
@@ -40,9 +42,9 @@ def test_training():
                         "train", "--samples", str(samples), "--model", str(model),
                         "--report", str(report)], check=True, capture_output=True, text=True)
         text = model.read_text(encoding="ascii").splitlines()
-        require(text[0] == "KUMOJI_MATE_GATE_V1", "model header")
+        require(text[0] == "KUMOJI_MATE_GATE_V2", "model header")
         require(len(text) == 6, "model row count")
-        require(all(len(text[i].split()) == 9 for i in (1, 2, 3)), "model 8 features")
+        require(all(len(text[i].split()) == 17 for i in (1, 2, 3)), "model 16 features")
         data = json.loads(report.read_text(encoding="utf-8"))
         require(data["train_samples"] == 24 and data["holdout_samples"] == 8, "split")
         require(data["holdout"]["accuracy"] >= 0.75, "model actually trains")
@@ -52,7 +54,7 @@ def test_unproven_not_negative():
     with tempfile.TemporaryDirectory() as temp:
         file = Path(temp) / "samples.jsonl"
         file.write_text(json.dumps({"schema": module.SCHEMA, "sfen": "bad",
-                       "horizon": 7, "features": [0] * 8, "label": None}) + "\n")
+                       "horizon": 7, "features": [0] * 16, "label": None}) + "\n")
         try:
             module.parse_samples(file)
             raise AssertionError("unknown label accepted")
@@ -67,7 +69,7 @@ def test_engine_protocol(exe):
         eng.send("learning_features")
         response = eng.until("info string learning_features ", 5)
         require(response.startswith(module.FEATURE_TAG), "feature protocol")
-        require(len(response[len(module.FEATURE_TAG):].split()) == 8, "feature count")
+        require(len(response[len(module.FEATURE_TAG):].split()) == 16, "feature count")
         features, label, status = eng.observe("4k4/9/9/9/9/9/9/9/4K4 b - 1", 2000)
         require(label == 0 and status == "no_mate_within_7", "verified bounded non-mate")
         # A known exactly-five-ply real-game fixture.
