@@ -1,0 +1,13 @@
+{
+  "experiment": "nn-first-real-selfplay-20261011",
+  "purpose": "offline-neural-learning-vs-kumoji-static",
+  "source_release": "records-2026-10-01",
+  "source_run_id": 37671846680,
+  "max_games": 300,
+  "position_sample_stride": 8,
+  "hidden_neurons": 32,
+  "epochs": 15,
+  "random_seed": 20261011,
+  "engine_integration": false,
+  "formal_adoption": false
+}
