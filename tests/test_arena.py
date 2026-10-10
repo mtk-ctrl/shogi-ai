@@ -81,6 +81,19 @@ assert research_record == {
 }, research_record
 assert "score_cp_stm" not in research_record and "score_mate_stm" not in research_record
 
+phase_line = ("info string phase v 1 maturity 47 stage middle development 62 "
+              "battle 44 invasion 25 king_threat 8 static_cp_black -85")
+phase_info = parse_info_line(phase_line)
+assert phase_info["phase_maturity"] == 47 and phase_info["phase_stage"] == "middle"
+assert phase_info["phase_static_cp_black"] == -85
+assert compact_search_telemetry(phase_info, shogi.WHITE)["phase_maturity"] == 47
+assert "phase_maturity" not in parse_info_line(phase_line.replace("middle", "end"))
+assert not parse_info_line(phase_line.replace("v 1", "v 9"))
+merged = {"score_cp": 140, "score_lowerbound": True}
+merge_info_line(merged, phase_line)
+assert merged["score_cp"] == 140 and merged["score_lowerbound"]
+assert merged["phase_static_cp_black"] == -85
+
 mate = parse_info_line("info depth 5 score mate -3 nodes 99 pv 5a5b")
 assert compact_search_telemetry(mate, shogi.WHITE)["score_black_mate"] == 3
 
