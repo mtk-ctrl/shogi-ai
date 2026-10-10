@@ -7,15 +7,15 @@
     "unverified"
   ],
   "min_evidence": 1,
-  "adopted_positions": 153,
+  "adopted_positions": 163,
   "conflicting_positions_excluded": 0,
   "duplicate_same_move_records_collapsed": 0,
   "rejected": {
     "status:disputed": 7
   },
   "output_file": "position-knowledge-v1.tsv",
-  "output_sha256": "234173daefd3d0f8ccb205776b5c71ed8e875b5446b3620196cf91a3067b4b1c",
-  "policy": "Original 73 preserved. 80 completed 50-minute research positions explicitly approved 2026-10-10, with validated original histories and legal final PV. New future candidates are never auto-promoted.",
+  "output_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+  "policy": "153 prior accepted positions preserved; ten completed 50-minute studies explicitly approved 2026-10-11 with validated legal history and PV. Other research is not auto-adopted.",
   "research_lines": {
     "source": "actions/37671846680/v2-position-knowledge-research-37671846680",
     "source_sha256": "54bb80c93902537d25c585aa9fe564a1ddd08220b6b10003d0e44fdb4661eb88",
@@ -51,6 +51,17 @@
       "research_source_sha256": "1cc846891cafb3247486af6a322a56c21f12e1019a7940380ae09c61255bde29",
       "positions": 40,
       "mode": "research_decision",
+      "approval_state": "explicit-owner-approval"
+    },
+    {
+      "request": "User 2026-10-11: save ten completed studies into adopted position knowledge",
+      "research_run": "38091143128",
+      "research_asset": "research10-38091143128.json.gz",
+      "research_source_sha256": "f4d587a5ea226ba537e8e757a066e97ff6123821f766cbaac2ed2ff2a55c32d1",
+      "positions": 10,
+      "mode": "research_decision",
+      "source_engine_commit": "c84ea3ff0ba3a34f06cb29d7c891365854a8ca27",
+      "source_knowledge_sha256": "234173daefd3d0f8ccb205776b5c71ed8e875b5446b3620196cf91a3067b4b1c",
       "approval_state": "explicit-owner-approval"
     }
   ]
