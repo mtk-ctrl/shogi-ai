@@ -12,7 +12,8 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 | `.github/workflows/timebox80-adopt.yml` | 承認済み80局面の採用依頼 / 手動 | 2026-10-09実施の午前40・午後40局面の長考研究を検査して既存73局面へ追記。153局面をビルド検証し、既存の汎用比較Workflowで知識あり・なし100局を起動する |
 | `.github/workflows/timebox40-long-research.yml` | 研究request更新 / 手動 | 指定した時間枠内で未研究の序盤・中盤・終盤計40局面を各50分研究。最大20runnerを2巡利用し原本はReleasesへ保存。既存研究との重複を除外し、新知識は自動正式採用しない |
 | `.github/workflows/opening20-adopt.yml` | 明示的採用依頼のrequest更新 / 手動 | 2026-10-09承認の序盤20局面50分研究を既存53局面へ追記し、合法性・研究結果・直接選択・73件・長期保存を検証して採用版を更新する |\n| `.github/workflows/opening20-followup.yml` | request更新 / 手動 | 50分研究で終了間際に研究手が変わった序盤3局面を3runner・各30分独立再探索（固定した元Engineと知識使用、旧研究との比較、結果は自動採用しない） | 
-| `.github/workflows/opening20-long-research.yml` | 選定済み局面request更新 / 手動 | 既存棋譜から抽出した未研究の序盤20局面を1台1局面・50分並列研究。研究記録だけを保存し局面知識へ自動採用しない |\n| `.github/workflows/quick-ci.yml` | 関連push / 手動 | エンジンの短時間CI。通常開発の基本検査 |
+| `.github/workflows/opening20-long-research.yml` | 選定済み局面request更新 / 手動 | 既存棋譜から抽出した未研究の序盤20局面を1台1局面・50分並列研究。研究記録だけを保存し局面知識へ自動採用しない |\n| `.github/workflows/mate-learning-cycle.yml` | 研究用依頼ファイル更新 / 手動 | 雲路自身の7手以内詰み証明を10ランナー以内で集積・機械学習し、正式mainと採用済み局面知識ON・200msで100局比較。成果物は期限付き。自動採用なし（研究版のみ） |
+| `.github/workflows/quick-ci.yml` | 関連push / 手動 | エンジンの短時間CI。通常開発の基本検査 |
 | `.github/workflows/docs-rule-check.yml` | docs/workflow変更 / PR / 手動 | Rule・ルーター・workflow一覧の整合性 |
 | `.github/workflows/kifu-learning-ci.yml` | 棋譜処理変更 / PR / 手動 | 棋譜変換・ルール層validation |
 | `.github/workflows/piece-value-league.yml` | 依頼ファイル変更 / 手動 | 現行Engineを固定した盤上・成駒・持ち駒の駒価値8型（現行＋大胆な7案）を独立ビルド、全28組を200ms＋条件付き長考・同一局面知識で総当たり。採用は別途判断 |
