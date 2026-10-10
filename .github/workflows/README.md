@@ -16,6 +16,7 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 | `.github/workflows/opening20-long-research.yml` | 選定済み局面request更新 / 手動 | 既存棋譜から抽出した未研究の序盤20局面を1台1局面・50分並列研究。研究記録だけを保存し局面知識へ自動採用しない |\n| `.github/workflows/position10-long-research.yml` | 研究依頼JSON更新 / 手動 | 採用済み局面知識と重複しない序盤3・中盤4・終盤3の計10局面を、現行エンジンで10runner各50分研究。研究原本はReleasesへ保存し、正式採用はしない |
 | `.github/workflows/quick-ci.yml` | 関連push / 手動 | エンジンの短時間CI。通常開発の基本検査 |
 | `.github/workflows/docs-rule-check.yml` | docs/workflow変更 / PR / 手動 | Rule・ルーター・workflow一覧の整合性 |
+| `.github/workflows/nn-real-study.yml` | 学習依頼ファイル更新 / 手動 / PR検査 | 保存済み自己対局の出所・容量・棋譜合法性を検証し、研究専用ニューラルネットワークを学習。現行雲路の静的評価との勝率比較、差の大きい局面、学習済み重みを90日artifactに保存。本体の指し手は変更しない |
 | `.github/workflows/kifu-learning-ci.yml` | 棋譜処理変更 / PR / 手動 | 棋譜変換・ルール層validation |
 | `.github/workflows/bold-external.yml` | 外部検証依頼 / 手動 | 複数の評価関数候補をやねうら王Material Lv50・55で比較する専用検証。候補を自動採用しない |
 | `.github/workflows/piece-value-league.yml` | 依頼ファイル変更 / 手動 | 現行Engineを固定した盤上・成駒・持ち駒の駒価値8型（現行＋大胆な7案）を独立ビルド、全28組を200ms＋条件付き長考・同一局面知識で総当たり。採用は別途判断 |
