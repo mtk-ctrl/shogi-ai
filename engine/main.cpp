@@ -7,6 +7,7 @@
 #include "strategy/long_think_budget.h"
 #include <algorithm>
 #include <chrono>
+#include <random>
 #include <cstdint>
 #include <atomic>
 #include <condition_variable>
@@ -26,6 +27,7 @@ int main() {
     bool material_profile = false;
     bool quiescence_enabled = true;
     bool mate_assist_enabled = true;
+    bool opening_random_non_lance = true;
     bool valid_position = true;
     bool entering_king = true;
     bool position_knowledge_enabled = true;
@@ -87,7 +89,7 @@ int main() {
         if (command != "isready" && command != "stop" && command != "ponderhit" && command != "quit")
             finish_search(true);
         if (command == "usi") {
-            std::cout << "id name KUMOJI v2.0.6\nid author mtk-ctrl + ChatGPT\n"
+            std::cout << "id name KUMOJI v2.0.7\nid author mtk-ctrl + ChatGPT\n"
                       << "option name USI_Ponder type check default false\n"
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
@@ -95,6 +97,7 @@ int main() {
                       << "option name MateAssist type check default true\n"
                       << "option name AdaptiveLongThink type check default true\n"
                       << "option name RandomSeed type spin default 5489 min 0 max 2147483647\n"
+                      << "option name OpeningRandomNonLance type check default true\n"
                       << "option name EvalProfile type combo default features var features var material\n"
                       << "option name EvalSafety type spin default " << evaluation_parameters.weights[0] << " min 0 max 10000\n"
                       << "option name EvalPressure type spin default " << evaluation_parameters.weights[1] << " min 0 max 10000\n"
@@ -229,6 +232,11 @@ int main() {
                 position.snapshot(), candidates);
             if (candidates.empty()) { bestmove("resign"); continue; }
 
+            // Only the first ply from the genuine standard initial position.
+            // Explicit searchmoves restrictions always take precedence.
+            const bool opening_random_choice = opening_random_non_lance && !restrict
+                && position.sfen() == shogi::rules::Position::start_sfen();
+            const unsigned opening_seed = random_seed;
             const auto limits = shogi::strategy::parse_go_limits(tokens, position.snapshot().turn, default_depth);
             int current_ply = 1;
             {
@@ -272,6 +280,7 @@ int main() {
             auto search_position = position.clone();
             active->worker = std::thread([&, active, started_ns, limits,
                                           allowed = std::move(allowed),
+                                          opening_random_choice, opening_seed,
                                           candidates = std::move(candidates),
                                           p = std::move(search_position)]() mutable {
                 auto info = [&](const shogi::strategy::SearchResult& result) {
@@ -297,10 +306,33 @@ int main() {
                 result.move = candidates.front(); result.pv = {result.move};
                 bool mate_assist_forced = false;
                 bool research_forced = false;
+                bool opening_forced = false;
                 try {
+                    if (opening_random_choice) {
+                        std::vector<std::string> eligible;
+                        eligible.reserve(candidates.size());
+                        for (const auto& move : candidates) {
+                            // The only initial lances start from 1i and 9i.
+                            if (move.compare(0, 2, "1i") != 0 && move.compare(0, 2, "9i") != 0)
+                                eligible.push_back(move);
+                        }
+                        if (!eligible.empty()) {
+                            std::mt19937 rng(opening_seed);
+                            result.move = eligible[std::uniform_int_distribution<std::size_t>(
+                                0, eligible.size() - 1)(rng)];
+                            result.pv = {result.move};
+                            opening_forced = true;
+                            previous_root_score_valid = false;
+                            if (!active->suppress.load())
+                                emit("info string opening_random_non_lance candidates "
+                                     + std::to_string(eligible.size()) + " seed "
+                                     + std::to_string(opening_seed) + " move " + result.move + "\n");
+                        }
+                    }
+
                     // Adopted research overrides 200ms search and MateAssist.
                     // No old research score is presented as a fresh evaluation.
-                    if (const auto research = strategy.select_research_move(p, allowed)) {
+                    if (!opening_forced) if (const auto research = strategy.select_research_move(p, allowed)) {
                         research_forced = true;
                         result.move = research->move;
                         result.pv = {result.move};
@@ -319,7 +351,7 @@ int main() {
                     // Keep ordinary fixed-depth/node/ponder semantics unchanged.
                     // Timed play gets a small shared attack+defence mate budget
                     // inside the original absolute move deadline.
-                    if (!research_forced && mate_assist_enabled && limits.budget_ms >= 10 && !limits.ponder
+                    if (!opening_forced && !research_forced && mate_assist_enabled && limits.budget_ms >= 10 && !limits.ponder
                         && !limits.infinite && limits.nodes == 0) {
                         const auto assist_started = shogi::strategy::SearchControl::now_ns();
                         const auto assist_budget_ms = std::clamp<std::int64_t>(limits.budget_ms / 10, 1, 5);
@@ -360,7 +392,7 @@ int main() {
                             }
                         }
                     }
-                    if (!mate_assist_forced && !research_forced) {
+                    if (!opening_forced && !mate_assist_forced && !research_forced) {
                         result = strategy.choose(p, limits.max_depth, active->control, candidates, info);
                         const auto reason = static_cast<shogi::strategy::LongThinkReason>(
                             active->control.long_think_reason.load(std::memory_order_relaxed));
@@ -386,8 +418,8 @@ int main() {
                 } catch (const std::exception& error) {
                     if (!active->suppress.load()) emit("info string search error " + std::string(error.what()) + "\n");
                 }
-                if (!result.has_score && !research_forced) info(result);
-                if (!mate_assist_forced && !research_forced && !active->suppress.load()) {
+                if (!result.has_score && !research_forced && !opening_forced) info(result);
+                if (!mate_assist_forced && !research_forced && !opening_forced && !active->suppress.load()) {
                     const auto& stats = strategy.last_stats();
                     std::ostringstream out;
                     out << "info nodes " << stats.nodes << " string cutoffs " << stats.cutoffs
@@ -445,6 +477,8 @@ int main() {
                     }
                 } else if (name == "MateAssist") {
                     if (value == "true" || value == "false") mate_assist_enabled = value == "true";
+                } else if (name == "OpeningRandomNonLance") {
+                    if (value == "true" || value == "false") opening_random_non_lance = value == "true";
                 } else if (name == "AdaptiveLongThink") {
                     if (value == "true" || value == "false")
                         adaptive_long_think_enabled = value == "true";
