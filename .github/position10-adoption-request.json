@@ -1,8 +1,9 @@
 {
-  "request_id": "owner-20261011-adopt-position10",
+  "request_id": "owner-20261011-adopt-position10-attempt2",
   "research_run": 38091143128,
   "old_positions": 153,
   "add_positions": 10,
   "new_positions": 163,
-  "approved_on": "2026-10-11"
+  "approved_on": "2026-10-11",
+  "previous_run": 38095549921
 }

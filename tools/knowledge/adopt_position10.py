@@ -55,6 +55,8 @@ def main():
     assert len(files) == 10, f"expected exactly ten independent artifacts, got {len(files)}"
     records = [json.loads(p.read_text(encoding="utf8")) for p in files]
     assert {r["id"] for r in records} == set(EXPECTED)
+    for path, row in zip(files, records):
+        assert sha(path) == EXPECTED[row["id"]], "original result SHA256 mismatch"
     selection = json.loads(Path("selection10.json").read_text(encoding="utf8"))
     positions = {p["id"]: p for p in selection["positions"]}
     assert set(positions) == set(EXPECTED)
