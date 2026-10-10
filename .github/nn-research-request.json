@@ -1,5 +1,5 @@
 {
-  "experiment": "nn-first-real-selfplay-20261011",
+  "experiment": "nn-regularization-first-followup-20261011",
   "purpose": "offline-neural-learning-vs-kumoji-static",
   "source_release": "records-2026-10-01",
   "source_run_id": 37671846680,
@@ -9,5 +9,8 @@
   "epochs": 15,
   "random_seed": 20261011,
   "engine_integration": false,
-  "formal_adoption": false
+  "formal_adoption": false,
+  "request_number": 2,
+  "model_selection": "validation-only small models",
+  "previous_run_id": 38096038616
 }
