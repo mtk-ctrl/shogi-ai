@@ -114,6 +114,13 @@ jobs:
             --input benchmarks/results/2026-10-05_v019-mate-assist-50ms-100games-run2.json \
             --probe build/phase-probe --output build/relative-stage-report.json
 
+      - name: Research maturity, king urgency and branching against historical games
+        run: |
+          python3 tools/phase/compare_maturity.py \
+            --input benchmarks/results/2026-10-05_v019-mate-assist-50ms-100games.json \
+            --input benchmarks/results/2026-10-05_v019-mate-assist-50ms-100games-run2.json \
+            --probe build/phase-probe --output build/maturity-report.json
+
       - name: Arena telemetry and adjudication tests
         run: |
           python3 tests/test_arena.py
