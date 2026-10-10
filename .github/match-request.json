@@ -1,12 +1,12 @@
 {
-  "request_id": "position-knowledge-ablation-1000-20261008-current",
-  "ref_a": "90fa8cfc78fddb9b6936e7f2801de80a0122835d",
-  "ref_b": "90fa8cfc78fddb9b6936e7f2801de80a0122835d",
-  "games": "1000",
-  "shards": "19",
+  "request_id": "20261010-guard24-550-candidate-vs-v205-200",
+  "ref_a": "64aa9036a1172aaf8f5f4b17b7e78f238f0b3b6c",
+  "ref_b": "0c4b186f7bae8416b2d00ba3623af3a44e2e5b54",
+  "games": "200",
+  "shards": "18",
   "go_command": "go movetime 200",
   "max_plies": "300",
-  "seed": "2026100819",
+  "seed": "2026101020",
   "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-  "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":false,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}"
+  "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}"
 }
