@@ -25,6 +25,16 @@ int main() {
     shogi::strategy::IterativeSearch strategy;
     shogi::strategy::EvaluationParameters evaluation_parameters;
     bool material_profile = false;
+    int experimental_piece_scheme = 0;
+    auto apply_piece_scheme = [&](int scheme) {
+        shogi::strategy::PieceValues v;
+        if (scheme == 1) { v.board={0,100,250,250,450,1200,1500,550,0}; v.promoted={0,750,680,700,650,1550,1900,550,0}; v.hand={0,110,270,280,480,1250,1550,580,0}; }
+        if (scheme == 2) { v.board={0,100,300,300,750,800,1000,850,0}; v.promoted={0,850,800,820,800,1100,1350,850,0}; v.hand={0,130,350,370,820,850,1100,930,0}; }
+        if (scheme == 3) { v.board={0,100,500,550,500,800,1000,600,0}; v.promoted={0,800,750,760,700,1100,1350,600,0}; v.hand={0,150,600,650,570,900,1150,680,0}; }
+        if (scheme == 4) { v.board={0,100,300,300,600,550,700,700,0}; v.promoted={0,900,820,840,780,850,1050,700,0}; v.hand={0,150,400,420,700,650,820,800,0}; }
+        if (scheme == 5) { v.board={0,100,300,400,550,700,800,600,0}; v.promoted={0,1000,800,850,750,1100,1400,600,0}; v.hand={0,180,400,500,650,850,1000,750,0}; }
+        shogi::strategy::set_piece_values(v);
+    };
     bool quiescence_enabled = true;
     bool mate_assist_enabled = true;
     bool opening_random_non_lance = true;
@@ -99,6 +109,7 @@ int main() {
                       << "option name AdaptiveLongThink type check default true\n"
                       << "option name RandomSeed type spin default 5489 min 0 max 2147483647\n"
                       << "option name OpeningRandomNonLance type check default true\n"
+                      << "option name EvalPieceScheme type spin default 0 min 0 max 5\n"
                       << "option name EvalProfile type combo default features var features var material\n"
                       << "option name EvalSafety type spin default " << evaluation_parameters.weights[0] << " min 0 max 10000\n"
                       << "option name EvalPressure type spin default " << evaluation_parameters.weights[1] << " min 0 max 10000\n"
@@ -467,7 +478,9 @@ int main() {
             if (part == "name") {
                 while (input >> part && part != "value") { if (!name.empty()) name += ' '; name += part; }
                 if (part == "value") std::getline(input >> std::ws, value);
-                if (name == "SearchDepth") {
+                if (name == "EvalPieceScheme") {
+                    try { const int scheme=std::stoi(value); if (scheme>=0 && scheme<=5) { experimental_piece_scheme=scheme; apply_piece_scheme(scheme); } } catch (...) {}
+                } else if (name == "SearchDepth") {
                     try { std::size_t used = 0; int depth = std::stoi(value, &used);
                         if (used == value.size() && depth >= 1 && depth <= 64) default_depth = depth;
                     } catch (...) {}
