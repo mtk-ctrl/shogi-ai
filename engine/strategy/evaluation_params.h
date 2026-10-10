@@ -4,7 +4,7 @@
 
 namespace shogi::strategy {
 // Explainable static-evaluation parameters. Defaults are the adopted
-// Evaluation-v2 B profile selected on 2026-10-07.  The former v1 evaluator
+// Evaluation-v2 M profile selected on 2026-10-10.  The former v1 evaluator
 // remains reproducible through explicit USI options and legacy_v1().
 struct EvaluationParameters {
     int guard_gold = 12, guard_silver = 10, guard_pawn = 4;
@@ -13,27 +13,27 @@ struct EvaluationParameters {
     int mobility_major = 2, mobility_minor = 1, mobility_piece_cap = 12;
     int danger_numerator = 1, danger_denominator = 8;
 
-    // Feature caps and adopted B-profile weights.
+    // Feature caps and adopted M-profile weights.
     std::array<int, 4> caps{80, 120, 100, 160};
-    std::array<int, 4> weights{500, 474, 150, 200};
+    std::array<int, 4> weights{480, 380, 410, 150};
 
     // Evaluation-v2 keeps Material as one axis rather than an implicit master
-    // axis. B is the production default after direct and external validation.
+    // axis. M is the production default after 600-game comparison.
     bool v2_enabled = true;
     int material_weight = 100;
     std::array<int, 4> v2_caps{160, 240, 200, 400};
-    int influence_weight = 19;
-    int potential_weight = 25;
-    int coordination_weight = 50;
+    int influence_weight = 140;
+    int potential_weight = 210;
+    int coordination_weight = 340;
     int hand_potential_weight = 60;
-    int threat_weight = 0;
+    int threat_weight = 20;
     int influence_cap = 160;
     int potential_cap = 120;
     int coordination_cap = 120;
     int hand_potential_cap = 120;
     int threat_cap = 1600;
 
-    // In legacy-v1 reproduction this is +/-300.  The adopted B profile uses
+    // In legacy-v1 reproduction this is +/-300.  The adopted M profile uses
     // the wider v2 bound validated in the parameter search.
     int positional_cap = 5000;
     static constexpr int StaticLimit = 1000000; // Far below mate=100000000.
