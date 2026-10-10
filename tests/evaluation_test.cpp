@@ -61,6 +61,18 @@ int main(){try{
     require(a.raw[0].gold_guards==1&&a.raw[0].silver_guards==1&&a.raw[0].pawn_guards==1,"guard accounting");
     std::cout<<"PASS same-material king shelter "<<a.total<<" > "<<b.total<<"\n";
 
+    // V2 safety distinguishes guard location, 24-square king-zone coverage
+    // and escape squares. The old evaluator's guard count remains reproducible.
+    auto outer_guard=snap({{"5i","K"},{"1a","k"},{"5g","G"}});
+    auto remote_guard=snap({{"5i","K"},{"1a","k"},{"5f","G"}});
+    require(evaluate(outer_guard).terms[0]>evaluate(remote_guard).terms[0],
+            "a gold covering the outer king ring improves V2 shelter");
+    auto vulnerable=snap({{"5i","K"},{"1a","k"},{"5a","r"}});
+    auto covered=vulnerable;covered.board[sq("4h")]={7,rules::Color::Black,false};
+    require(evaluate(covered).terms[0]>evaluate(vulnerable).terms[0],
+            "covering an exposed king entrance improves V2 shelter");
+    std::cout<<"PASS 24-square king safety and entrance coverage\\n";
+    
     auto pressure=snap({{"9i","K"},{"5a","k"},{"4d","R"},{"7d","B"}});
     auto distant=snap({{"9i","K"},{"5a","k"},{"1d","R"},{"9d","B"}});
     a=evaluate(pressure);b=evaluate(distant);

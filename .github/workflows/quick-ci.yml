@@ -60,6 +60,11 @@ jobs:
           python3 scripts/build.py --strategy-test --output build/strategy-test
           ./build/strategy-test
 
+      - name: Static evaluation and king-zone regression tests
+        run: |
+          python3 scripts/build.py --evaluation-test --output build/evaluation-test
+          ./build/evaluation-test
+
       - name: Move ordering tests
         run: |
           python3 scripts/build.py --ordering-test --output build/ordering-test

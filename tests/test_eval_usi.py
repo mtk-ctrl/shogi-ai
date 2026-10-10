@@ -11,17 +11,17 @@ probe = subprocess.run(
     [sys.argv[1]], input='usi\nquit\n', text=True, capture_output=True, check=True
 ).stdout
 for expected in [
-    'option name EvalSafety type spin default 500 ',
+    'option name EvalSafety type spin default 550 ',
     'option name EvalPressure type spin default 474 ',
     'option name EvalActivity type spin default 150 ',
     'option name EvalDanger type spin default 200 ',
     'option name EvalV2 type check default true',
     'option name EvalMaterialWeight type spin default 100 ',
-    'option name EvalInfluence type spin default 19 ',
-    'option name EvalPotential type spin default 25 ',
-    'option name EvalCoordination type spin default 50 ',
-    'option name EvalHandPotential type spin default 60 ',
-    'option name EvalThreat type spin default 0 ',
+    'option name EvalInfluence type spin default 30 ',
+    'option name EvalPotential type spin default 40 ',
+    'option name EvalCoordination type spin default 100 ',
+    'option name EvalHandPotential type spin default 40 ',
+    'option name EvalThreat type spin default 5 ',
     'option name EvalPositionalCap type spin default 5000 ',
 ]:
     assert expected in probe, expected
