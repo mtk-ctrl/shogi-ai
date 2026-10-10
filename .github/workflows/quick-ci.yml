@@ -46,6 +46,7 @@ permissions:
 
 jobs:
   quick:
+    if: ${{ github.ref != 'refs/heads/research/2026-10-10-phase-maturity-check' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -130,3 +131,27 @@ jobs:
 
       - name: Floodgate bridge dry-run
         run: python3 tools/floodgate/client.py --engine build/shogi-ai
+
+  phase-research:
+    if: ${{ github.ref == 'refs/heads/research/2026-10-10-phase-maturity-check' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v5
+      - name: Install chess-board parser
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: Build independent position diagnostic
+        run: python3 scripts/build.py --phase-probe --output build/phase-probe
+      - name: Measure stage agreement against 166 archived games
+        run: |
+          python3 tools/phase/compare_maturity.py \
+            --input benchmarks/results/2026-10-05_v019-mate-assist-50ms-100games.json \
+            --input benchmarks/results/2026-10-05_v019-mate-assist-50ms-100games-run2.json \
+            --probe build/phase-probe --output build/maturity-report.json
+      - name: Save reproducible result
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase-maturity-research
+          path: build/maturity-report.json
+          retention-days: 30
