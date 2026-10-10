@@ -15,7 +15,8 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 | `.github/workflows/opening20-long-research.yml` | 選定済み局面request更新 / 手動 | 既存棋譜から抽出した未研究の序盤20局面を1台1局面・50分並列研究。研究記録だけを保存し局面知識へ自動採用しない |\n| `.github/workflows/quick-ci.yml` | 関連push / 手動 | エンジンの短時間CI。通常開発の基本検査 |
 | `.github/workflows/docs-rule-check.yml` | docs/workflow変更 / PR / 手動 | Rule・ルーター・workflow一覧の整合性 |
 | `.github/workflows/kifu-learning-ci.yml` | 棋譜処理変更 / PR / 手動 | 棋譜変換・ルール層validation |
-| `.github/workflows/eval-wide-league.yml` | 明示的な依頼ファイル更新 / 手動 | 評価8型（現行M型、既存S/A/T型、新規X/Y/Z/W型）を総当たり。事前検査後に空きrunner数で並列実行し、全局の棋譜・評価内訳・順位を保存。候補の自動採用はしない |\n| `.github/workflows/engine-match.yml` | 手動 | 汎用の内部Engine比較。既定は200ms・AdaptiveLongThink=true。研究条件は明示入力で変更 |
+| `.github/workflows/eval-wide-league.yml` | 明示的な依頼ファイル更新 / 手動 | 評価8型（現行M型、既存S/A/T型、新規X/Y/Z/W型）を総当たり。事前検査後に空きrunner数で並列実行し、全局の棋譜・評価内訳・順位を保存。候補の自動採用はしない |
+| `.github/workflows/engine-match.yml` | 手動 | 汎用の内部Engine比較。既定は200ms・AdaptiveLongThink=true。研究条件は明示入力で変更 |
 | `.github/workflows/engine-match-request.yml` | request更新 / 手動 | ChatGPT等から `.github/match-request.json` を検証して `engine-match.yml` をdispatchする薄い起動口。対局処理は持たない |
 | `.github/workflows/position-knowledge-refresh.yml` | 知識更新request / 手動 | 承認した候補データから採用済み局面知識を生成する。新候補を自動採用しない |
 | `.github/workflows/yaneuraou-ladder.yml` | 依頼ファイル更新 / 手動 / 条件付き自動進行 | やねうら王Material版で100局ごとにレベルを1上げ、勝率30%未満で自動停止。レベル別対局記録と集計を保存し、固定エンジンcommitを引き継ぐ |
