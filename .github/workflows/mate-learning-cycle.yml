@@ -35,7 +35,7 @@ jobs:
   collect:
     needs: preflight
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 55
     strategy:
       fail-fast: false
       max-parallel: 10
@@ -52,7 +52,7 @@ jobs:
             --engine build/shogi-ai \
             --start-per-ply $(( ${{ matrix.shard }} * 100 )) \
             --limit-per-ply 100 \
-            --time-ms 1800 \
+            --time-ms 600 \
             --out build/learn/batch-${{ matrix.shard }}.jsonl
       - uses: actions/upload-artifact@v4
         with:
@@ -130,7 +130,7 @@ jobs:
             --engine-a build/engine-a \
             --engine-b build/engine-b \
             --options-a '{"MateStageBudget":true,"MateLearningFile":"build/mate-learning-model.txt","MateLearning":true,"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}' \
-            --options-b '{"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}' \
+            --options-b '{"MateStageBudget":true,"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}' \
             --games 10 \
             --game-offset $(( ${{ matrix.shard }} * 10 )) \
             --max-plies 250 \
