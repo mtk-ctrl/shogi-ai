@@ -71,6 +71,8 @@ public:
         std::string knowledge_score_kind;
         std::uint64_t knowledge_disabled_repetition = 0;
         int seldepth = 0;
+        std::uint64_t selective_reductions = 0, selective_researches = 0;
+        std::uint64_t scout_searches = 0, scout_researches = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
     static constexpr int RuleWinScore = 90000000;
@@ -415,15 +417,62 @@ private:
         auto moves = ordered(p, p.legal_moves(), tt_move);
         const bool maximizing = p.snapshot().turn == root_;
         Node best{maximizing ? -Infinity : Infinity, {}};
+
+        // Candidate experiment: reduce only late quiet moves at a non-check node.
+        // No tactical move (capture, promotion or checking move) is reduced.
+        // A move that looks promising in its reduced search is fully re-searched.
+        const bool reduction_context = depth >= 4 && !p.in_check();
+        const auto before = reduction_context
+            ? std::optional<rules::Snapshot>{p.snapshot()} : std::nullopt;
+        std::size_t move_index = 0;
         for (const auto& move : moves) {
             check_stop();
+            bool late_quiet = false;
+            if (before && move_index >= 4) {
+                const int dst = (move[2] - '1') * 9 + move[3] - 'a';
+                late_quiet = before->board[dst].kind == 0
+                    && !(move.size() == 5 && move[4] == '+');
+            }
             Node child;
             {
                 make(p, move);
                 Undo undo{p};
                 visit(ply + 1);
-                child = search(p, depth - 1, ply + 1, alpha, beta,
-                               next_history(history, p.hash_key()));
+                const auto child_history = next_history(history, p.hash_key());
+                const bool reduce = late_quiet && !p.in_check();
+                if (reduce) {
+                    ++stats_.selective_reductions;
+                    child = search(p, depth - 2, ply + 1, alpha, beta, child_history);
+                }
+                // For alpha-beta a reduced fail-low (max) / fail-high (min)
+                // cannot improve the current bound. Otherwise restore depth.
+                const bool may_improve = !reduce
+                    || (maximizing ? child.value > alpha : child.value < beta);
+                if (may_improve) {
+                    if (reduce) ++stats_.selective_researches;
+                    // Principal-variation scouting: later moves get a narrow
+                    // verification window, then a full search if they can
+                    // improve the PV without immediately causing a cutoff.
+                    const bool scout = move_index > 0 && alpha > -Infinity
+                        && beta < Infinity && alpha + 1 < beta;
+                    if (scout) {
+                        ++stats_.scout_searches;
+                        const int scout_alpha = maximizing ? alpha : beta - 1;
+                        const int scout_beta = maximizing ? alpha + 1 : beta;
+                        child = search(p, depth - 1, ply + 1,
+                                       scout_alpha, scout_beta, child_history);
+                        const bool needs_full = maximizing
+                            ? (child.value > alpha && child.value < beta)
+                            : (child.value < beta && child.value > alpha);
+                        if (needs_full) {
+                            ++stats_.scout_researches;
+                            child = search(p, depth - 1, ply + 1,
+                                           alpha, beta, child_history);
+                        }
+                    } else {
+                        child = search(p, depth - 1, ply + 1, alpha, beta, child_history);
+                    }
+                }
             }
             const int value = child.value;
             if ((maximizing && value > best.value) || (!maximizing && value < best.value)) {
@@ -440,6 +489,7 @@ private:
                 if (maximizing) ++stats_.max_cutoffs; else ++stats_.min_cutoffs;
                 break;
             }
+            ++move_index;
         }
         const auto bound = best.value <= original_alpha ? Bound::Upper
             : best.value >= original_beta ? Bound::Lower : Bound::Exact;
