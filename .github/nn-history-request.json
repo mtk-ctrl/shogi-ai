@@ -1,0 +1,23 @@
+{
+  "experiment": "nn-all-accessible-historical-archives-20261011",
+  "scope": "historical standard move archives and release; only equal binary selfplay labelled",
+  "result": "offline prediction no engine use",
+  "split": "heldout full GitHub Actions runs",
+  "source_coverage_policy": "audited missing/expired/other-format sources must not be claimed as trained",
+  "max_archives": 100,
+  "model_candidates": [
+    [
+      4,
+      2
+    ],
+    [
+      8,
+      3
+    ],
+    [
+      16,
+      4
+    ]
+  ],
+  "approved_formal_integration": false
+}
