@@ -1,0 +1,17 @@
+{
+  "schema": "mate-learning-isolated-ab-v1",
+  "request_id": "20261011-mate-100k-isolated-on-off-100",
+  "date_jst": "2026-10-11",
+  "purpose": "Test effect of frozen 99,997 usable positions learned from official 100k tsume puzzles using byte-identical research engine; only MateLearning enabled changes.",
+  "model_artifact_run": 38095959824,
+  "reference_engine": "research/mate-learning-gate-v1-20261011",
+  "adopted_knowledge_ref": "810abe0a2c567bec8af42e4805c0f1ca2cfa9650",
+  "games": 100,
+  "shards": 10,
+  "go_command": "go movetime 200",
+  "adaptive_long_think": true,
+  "position_knowledge": true,
+  "stage_aware_mate_budget": true,
+  "mate_budget_profile": "aggressive",
+  "auto_adopt": false
+}
