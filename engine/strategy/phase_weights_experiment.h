@@ -15,6 +15,7 @@ namespace shogi::strategy {
 // 4 tactical battle gate; 5 restrained transition; 6 combined response.
 inline constexpr int ExperimentalPhaseProfile = 4;
 inline constexpr int ExperimentalPhaseIntensityPct = 100;
+static_assert(ExperimentalPhaseProfile >= 1 && ExperimentalPhaseProfile <= 6, "invalid phase profile");
 using WeightVector = std::array<int,10>;
 struct ProfileAnchors {
     WeightVector opening;
@@ -45,7 +46,7 @@ inline ProfileAnchors anchors_for_profile() {
                 {105,480,395,420,160,145,220,350,70,30},
                 {112,505,460,380,195,125,185,320,90,45}};
     } else {
-        static_assert(ExperimentalPhaseProfile == 6, "unsupported experimental phase profile");
+        // profile 6, selected by the outer constant.
         return {{110,510,350,470,150,175,240,400,50,20},
                 {125,485,415,420,185,160,215,355,80,45},
                 {130,505,495,370,225,120,175,300,125,85}};
