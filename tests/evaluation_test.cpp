@@ -1,4 +1,5 @@
 #include "strategy/alphabeta3_tt.h"
+#include "strategy/phase_weights_experiment.h"
 #include "strategy/promotion_policy.h"
 #include <iostream>
 #include <map>
@@ -108,6 +109,39 @@ int main(){try{
     auto knight=snap({{"5e","N"},{"5d","P"}});AttackMap nm(knight);
     require(nm.count[0][sq("4c")]==1&&nm.count[0][sq("6c")]==1,"knight jumps blockers");
     std::cout<<"PASS every piece/promotion geometry, blockers and king-vacated xray\n";
+
+    // Research: material on the board falls with maturity while the
+    // intrinsic material value of pieces in hand rises independently.
+    const auto early = phase_turn_parameters(EvaluationParameters{},0);
+    const auto mid = phase_turn_parameters(EvaluationParameters{},50);
+    const auto late = phase_turn_parameters(EvaluationParameters{},100);
+    require(early.material_weight==140 && mid.material_weight==110 &&
+            late.material_weight==80,"board-material maturity anchors");
+    require(early.hand_material_weight==100 && mid.hand_material_weight==140 &&
+            late.hand_material_weight==185,"held-material maturity anchors");
+    require(early.weights[0]==440 && mid.weights[0]==575 &&
+            late.weights[0]==730,"king-safety rises with maturity");
+    require(early.hand_potential_weight==45 && mid.hand_potential_weight==105 &&
+            late.hand_potential_weight==190,"held-piece potential rises");
+    require(early.coordination_weight==380 && mid.coordination_weight==350 &&
+            late.coordination_weight==325,"coordination falls slightly");
+    require(early.threat_weight==25 && mid.threat_weight==23 &&
+            late.threat_weight==20,"tactical fork weight falls slightly");
+    auto board_only=snap({{"9i","K"},{"1a","k"},{"5e","P"}});
+    auto hand_only=snap({{"9i","K"},{"1a","k"}});
+    hand_only.hands[0][0]=1;
+    require(evaluate(board_only,early).material_term==120*140/100 &&
+            evaluate(board_only,late).material_term==120*80/100,
+            "board material contribution declines");
+    require(evaluate(hand_only,early).material_term==180*100/100 &&
+            evaluate(hand_only,late).material_term==180*185/100,
+            "actual held-piece contribution grows");
+    EvaluationParameters identical;
+    identical.material_weight=100;
+    identical.hand_material_weight=100;
+    require(evaluate(hand_only,identical).material_term==material_black(hand_only),
+            "unchanged 100/100 weights preserve legacy material evaluation");
+    std::cout<<"PASS independent board/held material, monotonic stage direction\\n";
 
     // Evaluation-v2: multiple non-material ideas remain visible in the leaf
     // score instead of competing only for move-ordering priority.
