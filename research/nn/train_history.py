@@ -91,8 +91,8 @@ def run(source: Path, destination: Path):
         "metrics": metrics,
         "basis": "Source-run holdout, with any exact overlapping positions removed",
         "constraints": (
-            "Old KUMOJI-only selfplay. Source runs have different engine versions and "
-            "time controls. Outcome targets are only empirical game results. "
+             "Historical KUMOJI-vs-KUMOJI matches, including pairs with distinct engine builds. Source runs have different engine versions and "
+             "time controls. Mixed-version win/loss labels are confounded by different engine strength, and are only exploratory. Outcome targets are only empirical game results. "
             "No independent recent prospective holdout has been performed. "
             "Network is research-only; not used in playing engine."
         )

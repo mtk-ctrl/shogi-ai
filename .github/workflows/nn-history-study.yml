@@ -58,7 +58,7 @@ jobs:
             --repository "$GITHUB_REPOSITORY" \
             --output build/history/history-positions.jsonl \
             --working build/history/input \
-            --max-archives 100 | tee build-history-inventory.json
+            --max-archives 100 --include-mixed-versions | tee build-history-inventory.json
       - name: Compile fixed reference evaluator
         run: python3 scripts/build.py --output build/kumoji
       - name: Score original sampled positions with current engine
@@ -73,7 +73,7 @@ jobs:
             --input build/history/scored-positions.jsonl \
             --output-dir build/history/report | tee build/history/train-log.json
           echo "### NN historical archive experiment" >> "$GITHUB_STEP_SUMMARY"
-          echo "Archive audit and source-run-isolated heldout evaluation; no playing-engine modification." >> "$GITHUB_STEP_SUMMARY"
+          echo "Exploratory mixed-version KUMOJI outcome data, stratified by source run; not equal-strength selfplay, no playing-engine modification." >> "$GITHUB_STEP_SUMMARY"
           cat build/history/history-inventory.json >> "$GITHUB_STEP_SUMMARY"
           cat build/history/report/historical-report.json >> "$GITHUB_STEP_SUMMARY"
       - name: Persist audit and trained NN (research only)

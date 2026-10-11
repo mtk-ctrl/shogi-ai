@@ -95,7 +95,7 @@ def valid_outcome(game):
     return None
 
 
-def extract_games(raw_gzip, sources, *, group, counters, seen_games, output):
+def extract_games(raw_gzip, sources, *, group, counters, seen_games, output, include_mixed=False):
     with gzip.open(io.BytesIO(raw_gzip), mode="rt", encoding="utf-8") as reader:
         for line in reader:
             if not line.strip():
@@ -111,7 +111,7 @@ def extract_games(raw_gzip, sources, *, group, counters, seen_games, output):
                     isinstance(sb, str) and re.fullmatch(r"[a-f0-9]{64}", sb)):
                 counters["excluded_missing_binary_hashes"] += 1
                 continue
-            if sa != sb:
+            if sa != sb and not include_mixed:
                 counters["excluded_different_binary_versions"] += 1
                 continue
             outcome = valid_outcome(game)
@@ -148,6 +148,8 @@ def extract_games(raw_gzip, sources, *, group, counters, seen_games, output):
                         "source": "kumoji_selfplay",
                         "source_group": str(group),
                         "engine_binary_sha256": sa,
+                        "opponent_binary_sha256": sb,
+                        "match_type": "same_binary" if sa == sb else "mixed_versions",
                         "game_id": game_id,
                         "sfen": board.sfen(),
                         "ply": index + 1,
@@ -157,6 +159,7 @@ def extract_games(raw_gzip, sources, *, group, counters, seen_games, output):
             for row in rows:
                 output.write(json.dumps(row, ensure_ascii=False, separators=(",", ":")) + "\n")
             counters["labelled_games"] += 1
+            counters["same_binary_games" if sa == sb else "mixed_version_games"] += 1
             counters["sampled_positions"] += len(rows)
 
 
@@ -179,7 +182,8 @@ def from_artifact(repository, artifact, directory):
     return (location / "played-games.jsonl.gz").read_bytes(), (location / "manifest.json").read_bytes()
 
 
-def collect(repository: str, target: Path, working: Path, artifact_limit=100):
+def collect(repository: str, target: Path, working: Path, artifact_limit=100,
+            include_mixed=False):
     if artifact_limit < 1:
         raise ValueError("artifact_limit must be positive")
     working.mkdir(parents=True, exist_ok=True)
@@ -200,7 +204,7 @@ def collect(repository: str, target: Path, working: Path, artifact_limit=100):
         raw_archive, raw_manifest = from_release(repository, working)
         sources = verify_archive_payload(raw_archive, raw_manifest, label="release")
         extract_games(raw_archive, sources, group="37671846680", counters=summary,
-                      seen_games=seen_games, output=out)
+                      seen_games=seen_games, output=out, include_mixed=include_mixed)
         retrieved.append("records-2026-10-01")
         for artifact in artifacts:
             if artifact["expired"]:
@@ -209,7 +213,8 @@ def collect(repository: str, target: Path, working: Path, artifact_limit=100):
                 raw_archive, raw_manifest = from_artifact(repository, artifact, working)
                 sources = verify_archive_payload(raw_archive, raw_manifest, label=artifact["name"])
                 extract_games(raw_archive, sources, group=artifact["run_id"],
-                              counters=summary, seen_games=seen_games, output=out)
+                              counters=summary, seen_games=seen_games, output=out,
+                              include_mixed=include_mixed)
                 retrieved.append(artifact["name"])
             except (OSError, subprocess.CalledProcessError, ValueError,
                     KeyError, zipfile.BadZipFile) as exc:
@@ -229,7 +234,9 @@ def collect(repository: str, target: Path, working: Path, artifact_limit=100):
         "download_failures": failures,
         "counts": dict(summary),
         "sampling": f"up to {MAX_SAMPLES_PER_GAME} actual positions per eligible completed game",
-        "truth": "Same-engine outcomes predict game result, not best move. No engine modifications.",
+        "truth": "All-internal match outcomes predict game result, not best move. No engine modifications.",
+        "mixed_versions_included": include_mixed,
+        "caution": "Different KUMOJI versions differ in strength. Mixed-version outcomes are confounded and MUST be reported separately from equal-binary comparisons.",
         "dataset_sha256": hashlib.sha256(target.read_bytes()).hexdigest(),
     }
     result_path = target.parent / "history-inventory.json"
@@ -244,9 +251,11 @@ def main():
     p.add_argument("--output", required=True, type=Path)
     p.add_argument("--working", required=True, type=Path)
     p.add_argument("--max-archives", type=int, default=100)
+    p.add_argument("--include-mixed-versions", action="store_true",
+                   help="Exploratory mixed-version KUMOJI outcomes; do not treat as uniform-strength self-play")
     a = p.parse_args()
     print(json.dumps(collect(a.repository, a.output, a.working,
-                             a.max_archives), ensure_ascii=False, indent=2))
+                             a.max_archives, a.include_mixed_versions), ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":
