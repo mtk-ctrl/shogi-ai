@@ -1,0 +1,16 @@
+{
+  "experiment": "nn-vs-kumoji-first-30-position-study-20261011",
+  "model_run_id": 38097788533,
+  "model_selection": "historical mixed-version exploratory network",
+  "stages": {
+    "opening": 10,
+    "middle": 10,
+    "end": 10
+  },
+  "long_research_minutes_per_position": 50,
+  "max_parallel_runners": 10,
+  "static_reference": "main build from workflow trigger commit",
+  "adopted_knowledge_required": true,
+  "research_only": true,
+  "auto_promote": false
+}
