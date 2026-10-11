@@ -8,6 +8,8 @@
 #include <chrono>
 #include <cstdlib>
 #include <functional>
+#include <cstdint>
+#include <vector>
 
 namespace shogi::strategy {
 
@@ -170,6 +172,13 @@ public:
         control_ = &control;
         tt_.new_search();
         iteration_hints_.clear();
+        // The cache contains static evaluations only. A new go must not reuse
+        // evaluations from a previous position, weight set or search session.
+        ++eval_epoch_;
+        if (!eval_epoch_) {
+            for (auto& cell : eval_cache_) cell.epoch = 0;
+            eval_epoch_ = 1;
+        }
         root_in_check_ = position.in_check();
         has_previous_completed_ = false;
         has_last_completed_ = false;
@@ -338,6 +347,19 @@ private:
         std::string error;
         if (!position.play(move, error)) throw std::logic_error(error);
     }
+    // Exact board/hands/side identity; no repetition-sensitive search scores
+    // are cached here. Terminal and repetition results remain uncached.
+    struct EvalCell { std::uint64_t key = 0; int value = 0; std::uint32_t epoch = 0; };
+    std::vector<EvalCell> eval_cache_ = std::vector<EvalCell>(1u << 15);
+    std::uint32_t eval_epoch_ = 1;
+    int eval_node(const rules::Position& p, const rules::Snapshot& snap) {
+        const auto key = p.hash_key();
+        auto& cell = eval_cache_[key & (eval_cache_.size() - 1)];
+        if (cell.epoch == eval_epoch_ && cell.key == key) return cell.value;
+        const int value = evaluator_(snap);
+        cell = {key, value, eval_epoch_};
+        return value;
+    }
     int terminal(const rules::Position& p, const rules::Status& status, int ply) const {
         if (status.result == rules::Result::Draw) return 0;
         const bool black_wins = status.result == rules::Result::BlackWin;
@@ -385,7 +407,7 @@ private:
         if (depth == 0) {
             ++stats_.leaf_evals;
             const int sign = root_ == rules::Color::Black ? 1 : -1;
-            const int value = sign * evaluator_(p.snapshot());
+            const int value = sign * eval_node(p, p.snapshot());
             ++stats_.tt_store_calls;
             if (tt_.store(score_key, depth, value, Bound::Exact)) ++stats_.tt_replacements;
             return {value, {}};
@@ -448,7 +470,7 @@ private:
         };
         if (!checked) {
             ++stats_.leaf_evals;
-            best.value = (root_ == rules::Color::Black ? 1 : -1) * evaluator_(snapshot);
+            best.value = (root_ == rules::Color::Black ? 1 : -1) * eval_node(p, snapshot);
             if (qply >= QuiescenceDepth) {
                 ++stats_.qlimit_leaves;
                 return best;
