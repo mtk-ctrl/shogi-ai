@@ -1,5 +1,5 @@
 {
-  "experiment": "nn-all-accessible-historical-archives-20261011",
+  "experiment": "nn-all-history-mixed-version-exploratory-20261011",
   "scope": "historical standard move archives and release; only equal binary selfplay labelled",
   "result": "offline prediction no engine use",
   "split": "heldout full GitHub Actions runs",
@@ -19,5 +19,10 @@
       4
     ]
   ],
-  "approved_formal_integration": false
+  "approved_formal_integration": false,
+  "request_number": 2,
+  "include_mixed_versions": true,
+  "previous_run_id": 38097552337,
+  "same_version_comparison": true,
+  "auto_adoption": false
 }
