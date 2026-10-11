@@ -1,5 +1,10 @@
 #pragma once
 
+// Research-only binary for controlled strength matches; main remains unchanged.
+#ifndef KUMOJI_OPT_EVAL
+#define KUMOJI_OPT_EVAL 1
+#endif
+
 #include "strategy/alphabeta3_tt.h"
 #include "strategy/position_knowledge.h"
 #include <optional>
