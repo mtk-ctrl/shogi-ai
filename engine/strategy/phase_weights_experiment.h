@@ -13,7 +13,7 @@ namespace shogi::strategy {
 // Independent research branches each pin a single ID for reproducibility.
 // 1 king-risk defence; 2 material preservation; 3 influence/coordination;
 // 4 tactical battle gate; 5 restrained transition; 6 combined response.
-inline constexpr int ExperimentalPhaseProfile = 1;
+inline constexpr int ExperimentalPhaseProfile = 6;
 inline constexpr int ExperimentalPhaseIntensityPct = 100;
 using WeightVector = std::array<int,10>;
 struct ProfileAnchors {
