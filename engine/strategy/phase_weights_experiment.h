@@ -8,7 +8,7 @@
 #include <cmath>
 
 namespace shogi::strategy {
-inline constexpr int ExperimentalPhaseIntensityPct = 50; // 50 gentle, 100 normal, 200 bold
+inline constexpr int ExperimentalPhaseIntensityPct = 200; // 50 gentle, 100 normal, 200 bold
 
 inline double phase_smoothstep(double t) {
     t = std::clamp(t, 0.0, 1.0);
