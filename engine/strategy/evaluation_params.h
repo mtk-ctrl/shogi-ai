@@ -21,6 +21,9 @@ struct EvaluationParameters {
     // axis. M is the production default after 600-game comparison.
     bool v2_enabled = true;
     int material_weight = 100;
+    // Research-compatible independent scale for material value in hand.
+    // Defaults at 100 preserve all adopted M/N evaluation results.
+    int hand_material_weight = 100;
     std::array<int, 4> v2_caps{160, 240, 200, 400};
     int influence_weight = 140;
     int potential_weight = 210;
@@ -65,7 +68,7 @@ struct EvaluationParameters {
         const int values[] = {guard_gold, guard_silver, guard_pawn, pressure_king,
             pressure_occupied, pressure_empty, pressure_partner, mobility_major,
             mobility_minor, mobility_piece_cap, danger_numerator, positional_cap,
-            material_weight, influence_weight, potential_weight, coordination_weight,
+            material_weight, hand_material_weight, influence_weight, potential_weight, coordination_weight,
             hand_potential_weight, threat_weight, influence_cap, potential_cap,
             coordination_cap, hand_potential_cap, threat_cap};
         for (int v : values) if (v < 0 || v > 10000)
