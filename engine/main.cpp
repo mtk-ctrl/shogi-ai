@@ -134,7 +134,8 @@ int main() {
             const auto phase = shogi::strategy::classify_turn_phase(root);
             const auto params = material_profile
                 ? shogi::strategy::EvaluationParameters::material_only()
-                : shogi::strategy::phase_turn_parameters(evaluation_parameters, phase.maturity);
+                : shogi::strategy::phase_turn_parameters(evaluation_parameters, phase.maturity,
+                    phase.components.battle, phase.components.king_threat);
             const auto b = shogi::strategy::evaluate(root, params);
             std::cout << "info string evaluation material " << b.material
                       << " material_term " << b.material_term
@@ -252,7 +253,8 @@ int main() {
                 const auto phase = shogi::strategy::classify_turn_phase(root);
                 const auto active_parameters = material_profile
                     ? shogi::strategy::EvaluationParameters::material_only()
-                    : shogi::strategy::phase_turn_parameters(evaluation_parameters, phase.maturity);
+                    : shogi::strategy::phase_turn_parameters(evaluation_parameters, phase.maturity,
+                    phase.components.battle, phase.components.king_threat);
                 strategy.set_evaluator(shogi::strategy::FeatureEvaluator(active_parameters));
                 const auto eval = shogi::strategy::evaluate(root, active_parameters);
                 std::ostringstream out;
