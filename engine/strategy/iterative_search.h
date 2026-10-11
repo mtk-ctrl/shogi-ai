@@ -460,7 +460,8 @@ private:
             }
             const int value = child.value;
             if ((maximizing && value > best.value) || (!maximizing && value < best.value)) {
-                best.value = value; #if defined(KUMOJI_OPT_PV)
+                best.value = value;
+#if defined(KUMOJI_OPT_PV)
                 best.pv.clear();
                 best.pv.reserve(child.pv.size() + 1);
                 best.pv.push_back(move);
