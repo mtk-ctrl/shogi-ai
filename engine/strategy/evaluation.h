@@ -85,8 +85,18 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
                                      const EvaluationParameters& p=EvaluationParameters{}) {
     EvaluationBreakdown b;
     b.material=material_black(s);
+    // Distinguish pieces on board from pieces in hand: their strategic
+    // values need not follow the same maturity trajectory. The two weights
+    // both default to 100 and preserve the fixed M/N evaluation exactly.
+    int hand_material=0;
+    for (int color=0; color<2; ++color)
+        for (int kind=1; kind<=7; ++kind)
+            hand_material += (color==0 ? 1 : -1) * s.hands[color][kind-1]
+                             * hand_piece_value(kind);
+    const int board_material=b.material-hand_material;
     b.material_term = p.v2_enabled
-        ? int(std::int64_t(b.material) * p.material_weight / 100)
+        ? int((std::int64_t(board_material)*p.material_weight
+             + std::int64_t(hand_material)*p.hand_material_weight)/100)
         : b.material;
 
     const bool no_legacy = std::all_of(p.weights.begin(),p.weights.end(),[](int w){return w==0;});
