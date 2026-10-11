@@ -62,9 +62,22 @@ class AllHistoryTests(unittest.TestCase):
         self.assertEqual(counters["duplicate_games"], 1)
         self.assertEqual(counters["labelled_games"], 1)
         self.assertEqual(len(result), 6)
+        self.assertTrue(all(row["match_type"] == "same_binary" for row in result))
         self.assertTrue(all(x["source_group"] == "run-1" for x in result))
         with self.assertRaises(ValueError):
             verify_archive_payload(payload + b"x", manifest, label="tamper")
+
+    def test_mixed_version_explicit_option(self):
+        payload, manifest = self.archive()
+        sources = verify_archive_payload(payload, manifest, label="fixture")
+        # The duplicate checker deliberately de-duplicates identical games
+        # even when the originating match has different engine binaries.
+        out, counts = io.StringIO(), Counter()
+        extract_games(payload, sources, group="run-1", counters=counts,
+                      seen_games=set(), output=out, include_mixed=True)
+        self.assertEqual(counts["labelled_games"], 1)
+        self.assertEqual(counts["duplicate_games"], 2)
+        self.assertEqual(counts["same_binary_games"], 1)
 
     def test_split_by_run_not_by_game(self):
         rows = [{"source_group": f"run-{i}", "game_id": f"game-{i}-{j}"}
