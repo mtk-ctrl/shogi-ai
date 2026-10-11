@@ -17,6 +17,7 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 | `.github/workflows/quick-ci.yml` | 関連push / 手動 | エンジンの短時間CI。通常開発の基本検査 |
 | `.github/workflows/docs-rule-check.yml` | docs/workflow変更 / PR / 手動 | Rule・ルーター・workflow一覧の整合性 |
 | `.github/workflows/nn-real-study.yml` | 学習依頼ファイル更新 / 手動 / PR検査 | 保存済み自己対局の出所・容量・棋譜合法性を検証し、研究専用ニューラルネットワークを学習。現行雲路の静的評価との勝率比較、差の大きい局面、学習済み重みを90日artifactに保存。本体の指し手は変更しない |
+| `.github/workflows/nn-disagreement-study.yml` | 研究依頼更新 / 手動 / PR事前検証 | 学習済みNNと雲路の評価差を採用済み序中終判定で30局面（各10）に絞り、10runnerで各50分長考。原本と評価比較を保存し、局面知識・評価関数への自動採用はしない |
 | `.github/workflows/nn-history-study.yml` | 学習依頼ファイル変更 / 手動 / PR事前検証 | 残っている標準着手記録と長期保存済み棋譜を総点検し、同一バイナリ291局と異世代雲路4,304局を区別し、明示された研究モードでは異世代の勝敗も探索的に使用。学習モデルと現行静的評価を別実行記録で比較し、成果物は期限付き保存 |
 | `.github/workflows/kifu-learning-ci.yml` | 棋譜処理変更 / PR / 手動 | 棋譜変換・ルール層validation |
 | `.github/workflows/bold-external.yml` | 外部検証依頼 / 手動 | 複数の評価関数候補をやねうら王Material Lv50・55で比較する専用検証。候補を自動採用しない |
