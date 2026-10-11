@@ -8,6 +8,9 @@
 #include <chrono>
 #include <cstdlib>
 #include <functional>
+#include <iterator>
+#include <vector>
+
 
 namespace shogi::strategy {
 
@@ -170,6 +173,13 @@ public:
         control_ = &control;
         tt_.new_search();
         iteration_hints_.clear();
+#if defined(KUMOJI_OPT_EVAL)
+        ++eval_epoch_;
+        if (!eval_epoch_) {
+            for (auto& entry : eval_cache_) entry.epoch = 0;
+            eval_epoch_ = 1;
+        }
+#endif
         root_in_check_ = position.in_check();
         has_previous_completed_ = false;
         has_last_completed_ = false;
@@ -222,8 +232,10 @@ public:
             // Deeper searches use the entire ordered history instead.
             // Quiescence can go beyond the shallow repetition-safe horizon.
             board_scores_ = !quiescence_enabled_ && depth <= 3 && !position.has_repeated_history();
+#if !defined(KUMOJI_OPT_TT)
             tt_.new_search();
             iteration_hints_.new_search();
+#endif
             try {
                 check_stop();
                 auto moves = ordered(position, original, {}, depth >= 4 && result.depth ? result.move : "",
@@ -247,7 +259,12 @@ public:
                         candidate.move = move; candidate.score = value;
                         candidate.depth = depth; candidate.has_score = true;
                         candidate.pv = {move};
+                        #if defined(KUMOJI_OPT_PV)
+                        candidate.pv.insert(candidate.pv.end(), std::make_move_iterator(child.pv.begin()),
+                                            std::make_move_iterator(child.pv.end()));
+#else
                         candidate.pv.insert(candidate.pv.end(), child.pv.begin(), child.pv.end());
+#endif
                         tied.push_back(std::move(candidate));
                     }
                 }
@@ -338,6 +355,24 @@ private:
         std::string error;
         if (!position.play(move, error)) throw std::logic_error(error);
     }
+#if defined(KUMOJI_OPT_EVAL)
+    struct EvalCell { std::uint64_t key = 0; int value = 0; std::uint32_t epoch = 0; };
+    std::vector<EvalCell> eval_cache_ = std::vector<EvalCell>(1u << 15);
+    std::uint32_t eval_epoch_ = 1;
+#endif
+    int eval_node(const rules::Position& p, const rules::Snapshot& snap) {
+#if defined(KUMOJI_OPT_EVAL)
+        const auto key = p.hash_key();
+        auto& cell = eval_cache_[key & (eval_cache_.size()-1)];
+        if (cell.epoch == eval_epoch_ && cell.key == key) return cell.value;
+        const int value = evaluator_(snap);
+        cell = {key, value, eval_epoch_};
+        return value;
+#else
+        (void)p;
+        return evaluator_(snap);
+#endif
+    }
     int terminal(const rules::Position& p, const rules::Status& status, int ply) const {
         if (status.result == rules::Result::Draw) return 0;
         const bool black_wins = status.result == rules::Result::BlackWin;
@@ -385,13 +420,18 @@ private:
         if (depth == 0) {
             ++stats_.leaf_evals;
             const int sign = root_ == rules::Color::Black ? 1 : -1;
-            const int value = sign * evaluator_(p.snapshot());
+            const int value = sign * eval_node(p, p.snapshot());
             ++stats_.tt_store_calls;
             if (tt_.store(score_key, depth, value, Bound::Exact)) ++stats_.tt_replacements;
             return {value, {}};
         }
         auto moves = ordered(p, p.legal_moves(), tt_move);
-        const bool maximizing = p.snapshot().turn == root_;
+        const auto parent_snapshot = p.snapshot();
+        const bool maximizing = parent_snapshot.turn == root_;
+#if defined(KUMOJI_OPT_LMR)
+        const bool parent_checked = p.in_check();
+        std::size_t ordinal = 0;
+#endif
         Node best{maximizing ? -Infinity : Infinity, {}};
         for (const auto& move : moves) {
             check_stop();
@@ -400,13 +440,36 @@ private:
                 make(p, move);
                 Undo undo{p};
                 visit(ply + 1);
-                child = search(p, depth - 1, ply + 1, alpha, beta,
-                               next_history(history, p.hash_key()));
+                const auto next = next_history(history, p.hash_key());
+#if defined(KUMOJI_OPT_LMR)
+                // Research-only late-move reduction: always re-search a
+                // reduced candidate that appears to improve the parent.
+                const int dst = (move[2] - '1') * 9 + move[3] - 'a';
+                const bool quiet = move.size() == 4 && move[1] != '*'
+                    && dst >= 0 && dst < 81 && !parent_snapshot.board[dst].kind;
+                const bool reduce = depth >= 4 && ply >= 1 && ordinal >= 4
+                    && !parent_checked && quiet && !p.in_check();
+                if (reduce) {
+                    child = search(p, depth - 2, ply + 1, alpha, beta, next);
+                    if ((maximizing && child.value > best.value)
+                        || (!maximizing && child.value < best.value))
+                        child = search(p, depth - 1, ply + 1, alpha, beta, next);
+                } else
+#endif
+                child = search(p, depth - 1, ply + 1, alpha, beta, next);
             }
             const int value = child.value;
             if ((maximizing && value > best.value) || (!maximizing && value < best.value)) {
-                best.value = value; best.pv = {move};
+                best.value = value; #if defined(KUMOJI_OPT_PV)
+                best.pv.clear();
+                best.pv.reserve(child.pv.size() + 1);
+                best.pv.push_back(move);
+                best.pv.insert(best.pv.end(), std::make_move_iterator(child.pv.begin()),
+                               std::make_move_iterator(child.pv.end()));
+#else
+                best.pv = {move};
                 best.pv.insert(best.pv.end(), child.pv.begin(), child.pv.end());
+#endif
             }
             if (maximizing) alpha = std::max(alpha, value);
             else beta = std::min(beta, value);
@@ -418,6 +481,9 @@ private:
                 if (maximizing) ++stats_.max_cutoffs; else ++stats_.min_cutoffs;
                 break;
             }
+#if defined(KUMOJI_OPT_LMR)
+            ++ordinal;
+#endif
         }
         const auto bound = best.value <= original_alpha ? Bound::Upper
             : best.value >= original_beta ? Bound::Lower : Bound::Exact;
@@ -448,7 +514,7 @@ private:
         };
         if (!checked) {
             ++stats_.leaf_evals;
-            best.value = (root_ == rules::Color::Black ? 1 : -1) * evaluator_(snapshot);
+            best.value = (root_ == rules::Color::Black ? 1 : -1) * eval_node(p, snapshot);
             if (qply >= QuiescenceDepth) {
                 ++stats_.qlimit_leaves;
                 return best;
@@ -507,19 +573,59 @@ private:
                     moves[i] = std::move(scored[i].move);
             }
         }
+#if defined(KUMOJI_OPT_SEE)
+        // Conservative first-recapture exchange filter prototype:
+        // Never prune checks/promotions or a direct equal-or-better capture.
+        // This is NOT a full pin-aware SEE, and is deliberately not adopted.
+        const AttackMap before_attacks(snapshot);
+        const int other_side = snapshot.turn == rules::Color::Black ? 1 : 0;
+#endif
         for (const auto& move : moves) {
             check_stop();
             Node child;
+#if defined(KUMOJI_OPT_SEE)
+            bool skip_exchange = false;
+            if (!checked && qply >= 1 && move.size() == 4 && move[1] != '*') {
+                const int dst = (move[2] - '1') * 9 + move[3] - 'a';
+                const int src = (move[0] - '1') * 9 + move[1] - 'a';
+                if (dst >= 0 && dst < 81 && src >= 0 && src < 81) {
+                    const auto& target = snapshot.board[dst];
+                    const auto& attacker = snapshot.board[src];
+                    skip_exchange = target.kind && attacker.kind
+                        && before_attacks.count[other_side][dst]
+                        && piece_value(attacker.kind, attacker.promoted)
+                            > piece_value(target.kind, target.promoted) + 300;
+                }
+            }
+#endif
             {
                 make(p, move);
                 Undo undo{p};
+#if defined(KUMOJI_OPT_SEE)
+                if (skip_exchange && p.in_check()) skip_exchange = false;
+                if (!skip_exchange) {
+#endif
                 visit(ply + 1);
                 child = quiescence(p, ply + 1, qply + 1, alpha, beta);
+#if defined(KUMOJI_OPT_SEE)
+                }
+#endif
             }
+#if defined(KUMOJI_OPT_SEE)
+            if (skip_exchange) continue;
+#endif
             if ((maximizing && child.value > best.value) || (!maximizing && child.value < best.value)) {
                 best.value = child.value;
+                #if defined(KUMOJI_OPT_PV)
+                best.pv.clear();
+                best.pv.reserve(child.pv.size() + 1);
+                best.pv.push_back(move);
+                best.pv.insert(best.pv.end(), std::make_move_iterator(child.pv.begin()),
+                               std::make_move_iterator(child.pv.end()));
+#else
                 best.pv = {move};
                 best.pv.insert(best.pv.end(), child.pv.begin(), child.pv.end());
+#endif
             }
             if (maximizing) alpha = std::max(alpha, best.value);
             else beta = std::min(beta, best.value);

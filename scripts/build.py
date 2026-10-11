@@ -8,6 +8,8 @@ from prepare_rules import prepare, ROOT
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--source", help="Existing pinned upstream checkout (optional)")
+parser.add_argument("--optimization", choices=["tt","order","pv","eval","lmr","see"],
+                    help="Research-only, one isolated search optimization (NOT an adopted engine default)")
 parser.add_argument("--cxx", default=os.environ.get("CXX", "g++"))
 parser.add_argument("--output", default="build/shogi-ai")
 tests = parser.add_mutually_exclusive_group()
@@ -54,6 +56,8 @@ if f'){knowledge_delimiter}"' in knowledge_text:
 flags = ["-std=c++17", "-O1" if args.sanitize else "-O2", "-g", "-pthread",
          "-DSHOGI_RULES_ONLY", "-DUSER_ENGINE", "-DNO_SSE", "-DASSERT_LV=3",
          "-I" + str(generated), "-I" + str(ROOT / "engine"), "-I" + str(source)]
+if args.optimization:
+    flags.append("-DKUMOJI_OPT_" + args.optimization.upper())
 if args.sanitize: flags += ["-fsanitize=address,undefined", "-fno-omit-frame-pointer", "-fno-pie", "-no-pie"]
 if args.android: flags += ["-fPIE", "-pie", "-static-libstdc++"]
 upstream = [source / n for n in ["bitboard.cpp", "position.cpp", "movegen.cpp", "types.cpp"]]

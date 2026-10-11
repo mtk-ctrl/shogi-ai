@@ -22,13 +22,35 @@ public:
 
     static std::vector<std::string> order(const rules::Snapshot& snapshot,
                                           const std::vector<std::string>& moves) {
-        // Source-square danger is the same for every candidate. Build it once
-        // per position instead of rescanning the board for every move.
-        const AttackMap before_attacks(snapshot);
         std::vector<OrderedMove> scored;
         scored.reserve(moves.size());
+#if defined(KUMOJI_OPT_ORDER)
+        // Cheap first-stage heuristic avoids O(pieces) ray scans PER move;
+        // tactical precision and any win-rate effect must be measured.
+        for (std::size_t i = 0; i < moves.size(); ++i) {
+            const auto& m = moves[i];
+            int score = 0;
+            if (m.size() >= 4 && m[1] != '*') {
+                const int dst = (m[2] - '1') * 9 + m[3] - 'a';
+                const int src = (m[0] - '1') * 9 + m[1] - 'a';
+                if (src >= 0 && src < 81 && dst >= 0 && dst < 81) {
+                    const auto& victim = snapshot.board[dst];
+                    const auto& moving = snapshot.board[src];
+                    if (victim.kind && victim.kind != 8)
+                        score += 8000000 + 5000 * piece_value(victim.kind, victim.promoted);
+                    if (m.size() == 5 && m[4] == '+')
+                        score += 100 * std::max(0,
+                            piece_value(moving.kind, true) - piece_value(moving.kind, moving.promoted));
+                }
+            }
+            scored.push_back({m, score, i});
+        }
+#else
+        // Source-square danger is the same for every candidate. Build it once.
+        const AttackMap before_attacks(snapshot);
         for (std::size_t i = 0; i < moves.size(); ++i)
             scored.push_back({moves[i], score_move(snapshot, moves[i], before_attacks), i});
+#endif
 
         std::stable_sort(scored.begin(), scored.end(), [](const auto& a, const auto& b) {
             return a.score > b.score;
