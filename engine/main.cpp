@@ -121,7 +121,7 @@ int main() {
             const auto current_phase = shogi::strategy::classify_turn_phase(position.snapshot());
             const auto p = material_profile
                 ? shogi::strategy::EvaluationParameters::material_only()
-                : shogi::strategy::phase_turn_parameters(evaluation_parameters, current_phase.maturity);
+                : shogi::strategy::phase_turn_parameters(evaluation_parameters, current_phase.maturity, current_phase.components.battle, current_phase.components.king_threat);
             const auto b = shogi::strategy::evaluate(position.snapshot(), p);
             std::cout << "info string evaluation material " << b.material
                       << " material_term " << b.material_term
@@ -239,7 +239,7 @@ int main() {
                 const auto phase = shogi::strategy::classify_turn_phase(root);
                 const auto active_parameters = material_profile
                     ? shogi::strategy::EvaluationParameters::material_only()
-                    : shogi::strategy::phase_turn_parameters(evaluation_parameters, phase.maturity);
+                    : shogi::strategy::phase_turn_parameters(evaluation_parameters, phase.maturity, phase.components.battle, phase.components.king_threat);
                 strategy.set_evaluator(shogi::strategy::FeatureEvaluator(active_parameters));
                 const auto eval = shogi::strategy::evaluate(root, active_parameters);
                 std::ostringstream out;
@@ -250,6 +250,7 @@ int main() {
                     << " invasion " << phase.components.invasion
                     << " king_threat " << phase.components.king_threat
                     << " phase_weight_percent " << shogi::strategy::ExperimentalPhaseIntensityPct
+                    << " phase_weight_profile " << shogi::strategy::ExperimentalPhaseProfile
                     << " static_cp_black " << eval.total << '\n';
                 emit(out.str());
             }
