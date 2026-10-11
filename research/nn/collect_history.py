@@ -153,6 +153,7 @@ def extract_games(raw_gzip, sources, *, group, counters, seen_games, output, inc
                         "game_id": game_id,
                         "sfen": board.sfen(),
                         "ply": index + 1,
+                        "history_moves": moves[:index],
                         "target_black": outcome
                     })
                 board.push(move)
