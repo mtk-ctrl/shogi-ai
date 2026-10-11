@@ -1,0 +1,90 @@
+name: KUMOJI Complete Archived Match Learning
+
+on:
+  pull_request:
+    paths:
+      - "research/nn/collect_history.py"
+      - "research/nn/train_history.py"
+      - "tests/test_nn_all_history.py"
+      - ".github/workflows/nn-history-study.yml"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/nn-history-request.json"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: kumoji-nn-history-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy==2.3.3 python-shogi==1.1.1
+      - name: Historical archive integrity and split tests
+        run: |
+          python3 tests/test_nn_all_history.py
+          python3 tests/test_nn_research.py
+          python3 tests/test_nn_tuning.py
+      - name: Workflow and documentation checks
+        run: |
+          python3 scripts/check_workflow_inventory.py
+          python3 scripts/check_match_workflows.py
+
+  study:
+    needs: preflight
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "2"
+      OMP_NUM_THREADS: "2"
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install research dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy==2.3.3 python-shogi==1.1.1
+      - name: Audit all accessible archived KUMOJI games
+        run: |
+          python3 research/nn/collect_history.py \
+            --repository "$GITHUB_REPOSITORY" \
+            --output build/history/history-positions.jsonl \
+            --working build/history/input \
+            --max-archives 100 | tee build-history-inventory.json
+      - name: Compile fixed reference evaluator
+        run: python3 scripts/build.py --output build/kumoji
+      - name: Score original sampled positions with current engine
+        run: |
+          python3 research/nn/score_samples.py \
+            --input build/history/history-positions.jsonl \
+            --output build/history/scored-positions.jsonl \
+            --engine build/kumoji
+      - name: Fit small neural candidates and compare by entire source run
+        run: |
+          python3 research/nn/train_history.py \
+            --input build/history/scored-positions.jsonl \
+            --output-dir build/history/report | tee build/history/train-log.json
+          echo "### NN historical archive experiment" >> "$GITHUB_STEP_SUMMARY"
+          echo "Archive audit and source-run-isolated heldout evaluation; no playing-engine modification." >> "$GITHUB_STEP_SUMMARY"
+          cat build/history/history-inventory.json >> "$GITHUB_STEP_SUMMARY"
+          cat build/history/report/historical-report.json >> "$GITHUB_STEP_SUMMARY"
+      - name: Persist audit and trained NN (research only)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nn-history-results-${{ github.run_id }}
+          path: |
+            build/history/history-inventory.json
+            build/history/report/historical-report.json
+            build/history/report/historical-position-net-v1.npz
+            build/history/train-log.json
+          retention-days: 90
+          if-no-files-found: warn
