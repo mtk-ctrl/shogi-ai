@@ -6,6 +6,7 @@
 #include "strategy/promotion_policy.h"
 #include "strategy/long_think_budget.h"
 #include "strategy/turn_phase.h"
+#include "strategy/phase_weights_experiment.h"
 #include <algorithm>
 #include <chrono>
 #include <random>
@@ -117,8 +118,11 @@ int main() {
                       << "option name PositionKnowledgeFile type string default position-knowledge-v1.tsv\n"
                       << "usiok\n" << std::flush;
         } else if (command == "eval") {
-            const auto b = shogi::strategy::evaluate(position.snapshot(), material_profile
-                ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters);
+            const auto current_phase = shogi::strategy::classify_turn_phase(position.snapshot());
+            const auto p = material_profile
+                ? shogi::strategy::EvaluationParameters::material_only()
+                : shogi::strategy::phase_turn_parameters(evaluation_parameters, current_phase.maturity);
+            const auto b = shogi::strategy::evaluate(position.snapshot(), p);
             std::cout << "info string evaluation material " << b.material
                       << " material_term " << b.material_term
                       << " safety " << b.terms[0] << " pressure " << b.terms[1]
@@ -233,9 +237,11 @@ int main() {
             {
                 const auto root = position.snapshot();
                 const auto phase = shogi::strategy::classify_turn_phase(root);
-                const auto eval = shogi::strategy::evaluate(root, material_profile
+                const auto active_parameters = material_profile
                     ? shogi::strategy::EvaluationParameters::material_only()
-                    : evaluation_parameters);
+                    : shogi::strategy::phase_turn_parameters(evaluation_parameters, phase.maturity);
+                strategy.set_evaluator(shogi::strategy::FeatureEvaluator(active_parameters));
+                const auto eval = shogi::strategy::evaluate(root, active_parameters);
                 std::ostringstream out;
                 out << "info string phase v 1 maturity " << phase.maturity
                     << " stage " << phase.stage
@@ -243,6 +249,7 @@ int main() {
                     << " battle " << phase.components.battle
                     << " invasion " << phase.components.invasion
                     << " king_threat " << phase.components.king_threat
+                    << " phase_weight_percent " << shogi::strategy::ExperimentalPhaseIntensityPct
                     << " static_cp_black " << eval.total << '\n';
                 emit(out.str());
             }
