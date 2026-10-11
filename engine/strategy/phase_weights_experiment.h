@@ -1,12 +1,12 @@
 #pragma once
-// RESEARCH ONLY P5 (穏健な変化) based on fixed KUMOJI v2.0.11.
+// RESEARCH ONLY HYBRID 12: P5 plus restrained king-risk and battle-dependent pressure, inspired by the earlier contextual P6
 #include "strategy/evaluation_params.h"
 #include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstddef>
 namespace shogi::strategy {
-inline constexpr int ExperimentalPhaseProfile=5;
+inline constexpr int ExperimentalPhaseProfile=12;
 inline constexpr std::array<int,10> StageOpening{125,485,365,440,155,165,240,355,60,22};
 inline constexpr std::array<int,10> StageMiddle{105,560,390,415,170,150,210,350,95,21};
 inline constexpr std::array<int,10> StageEnd{85,660,420,380,190,130,180,345,155,20};
@@ -19,14 +19,21 @@ inline int phase_interpolate(int maturity,int a,int b,int c) {
         ? a+(b-a)*phase_smoothstep(m/50.0)
         : b+(c-b)*phase_smoothstep((m-50)/50.0)));
 }
-inline EvaluationParameters phase_turn_parameters(EvaluationParameters p,int maturity) {
+inline EvaluationParameters phase_turn_parameters(EvaluationParameters p,int maturity,
+                                                   int battle=0,int king_threat=0) {
+    const int urgency=std::clamp(king_threat-20,0,80);
+    const int fight=std::clamp(battle-20,0,80);
     std::array<int*,10> target{{
         &p.material_weight,&p.weights[0],&p.weights[1],&p.weights[2],
         &p.weights[3],&p.influence_weight,&p.potential_weight,
         &p.coordination_weight,&p.hand_potential_weight,&p.threat_weight
     }};
     for(std::size_t i=0;i<target.size();++i){
-        const int w=phase_interpolate(maturity,StageOpening[i],StageMiddle[i],StageEnd[i]);
+        int w=phase_interpolate(maturity,StageOpening[i],StageMiddle[i],StageEnd[i]);
+        if(i==1) w+=urgency/2;
+        if(i==4) w+=urgency/3;
+        if(i==2) w+=fight;
+        if(i==9) w+=fight/3;
         *target[i]=std::clamp(static_cast<int>(std::lround(
             double(*target[i])*w/MWeights[i])),0,10000);
     }
