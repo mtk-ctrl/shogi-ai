@@ -1,16 +1,16 @@
 #pragma once
-// RESEARCH ONLY HYBRID 12: P5 plus restrained king-risk and battle-dependent pressure, inspired by the earlier contextual P6
+// RESEARCH ONLY EXPERIMENT 22: Q2 early material and coordination. Not adopted.
 #include "strategy/evaluation_params.h"
 #include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstddef>
 namespace shogi::strategy {
-inline constexpr int ExperimentalPhaseProfile=12;
-inline constexpr std::array<int,10> StageOpening{125,485,365,440,155,165,240,355,60,22};
-inline constexpr std::array<int,10> StageMiddle{105,560,390,415,170,150,210,350,95,21};
-inline constexpr std::array<int,10> StageEnd{85,660,420,380,190,130,180,345,155,20};
-inline constexpr std::array<int,3> StageHandMaterial{100,125,155};
+inline constexpr int ExperimentalPhaseProfile=22;
+inline constexpr std::array<int,10> StageOpening{200,450,390,560,135,245,300,600,45,30};
+inline constexpr std::array<int,10> StageMiddle{155,540,540,470,170,300,270,520,95,26};
+inline constexpr std::array<int,10> StageEnd{110,740,670,380,225,180,180,380,200,22};
+inline constexpr std::array<int,3> StageHandMaterial{100,145,220};
 inline constexpr std::array<int,10> MWeights{100,480,380,410,150,140,210,340,60,20};
 inline double phase_smoothstep(double x){ x=std::clamp(x,0.0,1.0); return x*x*(3.0-2.0*x); }
 inline int phase_interpolate(int maturity,int a,int b,int c) {
