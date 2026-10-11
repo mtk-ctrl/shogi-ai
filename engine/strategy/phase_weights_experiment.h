@@ -35,9 +35,11 @@ inline EvaluationParameters phase_turn_parameters(
     for (std::size_t i=0; i<targets.size(); ++i) {
         const int anchored = phase_interpolate(maturity, O[i], M[i], E[i]);
         const int deviation = anchored - M[i];
-        const int adjusted = static_cast<int>(std::lround(
-            double(deviation) * ExperimentalPhaseIntensityPct / 100.0));
-        *targets[i] = std::clamp(*targets[i] + adjusted, 0, 10000);
+        const double relative = 1.0 + double(deviation) * ExperimentalPhaseIntensityPct
+            / (100.0 * M[i]);
+        // Respect explicitly disabled USI features (weight 0 remains 0).
+        *targets[i] = std::clamp(static_cast<int>(std::lround(
+            *targets[i] * std::max(0.0, relative))), 0, 10000);
     }
     return p;
 }
