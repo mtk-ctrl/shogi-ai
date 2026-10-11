@@ -26,6 +26,8 @@ on:
       - "tests/test_phase_diagnostics.py"
       - "tools/phase/**"
       - "tests/test_mate_usi.py"
+      - "tests/test_mate_adoption_usi.py"
+      - "engine/models/**"
       - "benchmarks/arena.py"
       - "tools/records/archive_played_moves.py"
       - "tests/test_played_archive.py"
@@ -102,6 +104,7 @@ jobs:
           python3 tests/test_position_knowledge_usi.py build/shogi-ai
           python3 tests/test_eval_usi.py build/shogi-ai
           python3 tests/test_mate_usi.py build/shogi-ai
+          python3 tests/test_mate_adoption_usi.py build/shogi-ai
 
       - name: Phase diagnostics and historical game filter
         run: |
