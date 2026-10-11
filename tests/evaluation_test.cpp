@@ -149,6 +149,16 @@ int main(){try{
     require(evaluate(hand).material_term==material_black(hand),
             "unchanged v2.0.11 M baseline evaluation");
     std::cout<<"PASS phase profile directions, held material and baseline invariant\n";
+    // Risk response must be contextual rather than a constant maturity-only rescaling.
+    const auto quiet=phase_turn_parameters(EvaluationParameters{},50,0,0);
+    const auto risk=phase_turn_parameters(EvaluationParameters{},50,70,80);
+    require(risk.weights[0]>quiet.weights[0]&&risk.weights[3]>quiet.weights[3]&&
+            risk.weights[1]<quiet.weights[1]&&risk.threat_weight==quiet.threat_weight, "hybrid stage/context response");
+    require(risk.material_weight==quiet.material_weight&&
+            risk.hand_material_weight==quiet.hand_material_weight,
+            "contextual bonuses must not alter board/hand material scaling");
+    std::cout<<"PASS hybrid contextual risk and material isolation\\n";
+
 
     // Evaluation-v2: multiple non-material ideas remain visible in the leaf
     // score instead of competing only for move-ordering priority.
