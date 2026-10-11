@@ -1,0 +1,66 @@
+name: KUMOJI Six Search Optimizations (Research)
+on:
+  push:
+    branches: [research/search-six-optimizations-20261011]
+    paths:
+      - engine/strategy/iterative_search.h
+      - engine/strategy/move_order.h
+      - scripts/build.py
+      - benchmarks/six_optimizations.py
+      - .github/workflows/six-optimizations.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validate workflow settings and baseline build
+        run: |
+          set -euo pipefail
+          python3 scripts/check_match_workflows.py
+          python3 scripts/check_workflow_inventory.py --strict
+          python3 scripts/build.py --output build/unchanged
+          python3 scripts/build.py --search-test --output build/search-test
+          ./build/search-test
+  experiments:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        variant: [tt, order, pv, eval, lmr, see]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build baseline and one independent variation
+        run: |
+          set -euo pipefail
+          python3 scripts/build.py --output build/baseline
+          python3 scripts/build.py --optimization ${{ matrix.variant }} --output build/candidate
+          sha256sum build/baseline build/candidate position-knowledge-v1.tsv
+      - name: Fixed-depth rules and search checks
+        run: |
+          set -euo pipefail
+          python3 scripts/build.py --search-test --optimization ${{ matrix.variant }} --output build/test-search
+          ./build/test-search
+          if [ "${{ matrix.variant }}" != "lmr" ] && [ "${{ matrix.variant }}" != "see" ]; then
+            python3 scripts/build.py --quiescence-test --optimization ${{ matrix.variant }} --output build/test-quiescence
+            ./build/test-quiescence
+          fi
+          python3 -m pip install --disable-pip-version-check python-shogi==1.1.1
+          python3 tests/test_search_usi.py build/candidate
+      - name: Equal-time benchmark on ten hard positions
+        run: |
+          set -euo pipefail
+          python3 benchmarks/six_optimizations.py --baseline build/baseline --candidate build/candidate --variant ${{ matrix.variant }} --out result-${{ matrix.variant }}.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: six-optimizations-${{ matrix.variant }}-${{ github.run_id }}
+          path: result-*.json
+          if-no-files-found: warn
+          retention-days: 90
