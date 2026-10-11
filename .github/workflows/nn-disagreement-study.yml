@@ -1,0 +1,210 @@
+name: KUMOJI NN Disagreement Research 30
+on:
+  pull_request:
+    paths:
+      - "research/nn/**"
+      - "tests/test_nn_disagreements.py"
+      - ".github/workflows/nn-disagreement-study.yml"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/nn-disagreement-request.json"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: kumoji-nn-disagreement-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install research dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy==2.3.3 python-shogi==1.1.1
+      - name: Check candidate selection and result integrity
+        run: |
+          python3 tests/test_nn_disagreements.py
+          python3 tests/test_nn_all_history.py
+          python3 scripts/check_match_workflows.py
+          python3 scripts/check_workflow_inventory.py
+
+  prepare:
+    needs: verify
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GH_TOKEN: ${{ github.token }}
+      OPENBLAS_NUM_THREADS: "2"
+      OMP_NUM_THREADS: "2"
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install only independent research dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy==2.3.3 python-shogi==1.1.1
+      - name: Restore verified previous NN model and provenance
+        run: |
+          set -euo pipefail
+          mkdir -p build/nn-previous
+          gh run download 38097788533 --repo "$GITHUB_REPOSITORY" \
+            -n nn-history-results-38097788533 -D build/nn-previous
+          test -s build/nn-previous/report/historical-position-net-v1.npz
+          test -s build/nn-previous/report/historical-report.json
+          sha256sum build/nn-previous/report/historical-position-net-v1.npz
+      - name: Recover history from verified archive with original move history
+        run: |
+          set -euo pipefail
+          python3 research/nn/collect_history.py \
+            --repository "$GITHUB_REPOSITORY" \
+            --output build/nn/history-positions.jsonl \
+            --working build/nn/originals \
+            --max-archives 100 --include-mixed-versions
+      - name: Build static evaluator and adopted stage probe
+        run: |
+          set -euo pipefail
+          python3 scripts/build.py --output build/nn/kumoji
+          python3 scripts/build.py --phase-probe --output build/nn/phase-probe
+          cp position-knowledge-v1.tsv build/nn/position-knowledge-v1.tsv
+          sha256sum build/nn/kumoji build/nn/phase-probe build/nn/position-knowledge-v1.tsv
+      - name: Score every selected historical input with current KUMOJI
+        run: |
+          python3 research/nn/score_samples.py \
+            --input build/nn/history-positions.jsonl \
+            --output build/nn/scored-positions.jsonl \
+            --engine build/nn/kumoji
+      - name: Fetch previously studied positions for duplicate avoidance
+        run: |
+          set -euo pipefail
+          mkdir -p build/nn/older
+          gh release download records-2026-10-01 --repo "$GITHUB_REPOSITORY" \
+            --pattern 'research-records-*.jsonl.gz' \
+            --pattern 'position-knowledge-v1-candidates-*.jsonl.gz' \
+            --pattern 'research-opening20-*.json.gz' \
+            --pattern 'research10-*.json.gz' \
+            --pattern 'timebox40-records-*.json.gz' \
+            --dir build/nn/older
+      - name: Choose 10 opening, 10 middle, 10 end from score disagreement
+        run: |
+          set -euo pipefail
+          python3 research/nn/select_disagreements.py \
+            --source build/nn/scored-positions.jsonl \
+            --model build/nn-previous/report/historical-position-net-v1.npz \
+            --model-report build/nn-previous/report/historical-report.json \
+            --phase-probe build/nn/phase-probe \
+            --knowledge position-knowledge-v1.tsv \
+            --opening .github/research-opening-20-positions.tsv \
+            --older build/nn/older \
+            --output-dir build/nn/selected
+          python3 research/nn/study_disagreements.py validate \
+            --selection build/nn/selected/selection.json
+      - name: Freeze engine, selected positions and learning references
+        run: |
+          set -euo pipefail
+          tar czf nn-study-inputs.tgz \
+            -C build/nn kumoji position-knowledge-v1.tsv selected/selection.json selected/positions.tsv
+          sha256sum nn-study-inputs.tgz build/nn/selected/selection.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nn-study-inputs-${{ github.run_id }}
+          path: nn-study-inputs.tgz
+          retention-days: 90
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nn-disagreement-candidates-${{ github.run_id }}
+          path: |
+            build/nn/selected/selection.json
+            build/nn/selected/positions.tsv
+          retention-days: 90
+          if-no-files-found: error
+
+  research:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        lane: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: nn-study-inputs-${{ github.run_id }}
+      - name: Restore frozen same-engine study inputs
+        run: |
+          mkdir -p build/nn
+          tar xzf nn-study-inputs.tgz -C build/nn
+          chmod +x build/nn/kumoji
+      - name: Study exactly one NN disagreement for 50 minutes
+        env:
+          LANE: ${{ matrix.lane }}
+        run: |
+          python3 -m pip install --disable-pip-version-check python-shogi==1.1.1
+          python3 research/nn/study_disagreements.py study \
+            --selection build/nn/selected/selection.json \
+            --lane "$LANE" \
+            --engine build/nn/kumoji \
+            --knowledge build/nn/position-knowledge-v1.tsv \
+            --output result.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nn-disagreement-result-${{ github.run_id }}-${{ matrix.lane }}
+          path: result.json
+          retention-days: 90
+          if-no-files-found: warn
+
+  aggregate:
+    needs: [prepare, research]
+    if: always() && needs.prepare.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: nn-study-inputs-${{ github.run_id }}
+      - name: Restore fixed reference metadata
+        run: |
+          mkdir -p build/nn
+          tar xzf nn-study-inputs.tgz -C build/nn
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: nn-disagreement-result-${{ github.run_id }}-*
+          path: research-results
+          merge-multiple: false
+      - name: Validate all results; preserve raw research without adoption
+        run: |
+          python3 -m pip install --disable-pip-version-check python-shogi==1.1.1
+          python3 research/nn/study_disagreements.py aggregate \
+            --selection build/nn/selected/selection.json \
+            --results research-results \
+            --output-dir build/nn/final
+          cp build/nn/selected/selection.json build/nn/final/selection.json
+          cat build/nn/final/summary.json >> "$GITHUB_STEP_SUMMARY"
+      - name: Store new research record in data Release (never auto-adopt)
+        run: |
+          set -euo pipefail
+          name="nn-disagreement-research-$GITHUB_RUN_ID.json.gz"
+          cp build/nn/final/research.json.gz "$name"
+          gh release upload records-2026-10-01 "$name" --repo "$GITHUB_REPOSITORY"
+          sha256sum "$name"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nn-disagreement-summary-${{ github.run_id }}
+          path: build/nn/final/
+          retention-days: 90
+          if-no-files-found: warn
