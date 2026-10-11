@@ -13,5 +13,7 @@
   "position_knowledge": true,
   "stage_aware_mate_budget": true,
   "mate_budget_profile": "aggressive",
-  "auto_adopt": false
+  "auto_adopt": false,
+  "request_iteration": 2,
+  "retrigger_reason": "Repair strict workflow inventory preflight after prior attempt stopped before any matches."
 }
