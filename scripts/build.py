@@ -66,7 +66,7 @@ if f'){mate_delimiter}"' in mate_model:
     "#pragma once\n"
     "#include <string_view>\n"
     "namespace shogi::strategy::detail {\n"
-    f'inline constexpr std::string_view kEmbeddedMateLearning = R"{mate_delimiter}({mate_model}){mate_delimiter}";\\n'
+    f'inline constexpr std::string_view kEmbeddedMateLearning = R"{mate_delimiter}({mate_model}){mate_delimiter}";\n'
     "} // namespace shogi::strategy::detail\n",
     encoding="utf-8",
 )
