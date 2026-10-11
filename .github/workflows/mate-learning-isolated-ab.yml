@@ -1,0 +1,146 @@
+name: KUMOJI Mate Learning Isolated A/B (Research)
+
+# Reuse the already trained 99,997-position model. Only MateLearning differs.
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/mate-learning-gate-v1-20261011
+    paths:
+      - .github/mate-learning-isolated-request.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: mate-learning-isolated-ab-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check active match rules and research model support
+        run: |
+          python3 scripts/check_match_workflows.py
+          python3 scripts/check_workflow_inventory.py --strict
+          python3 tests/test_mate_learning.py
+      - name: Verify source run succeeded and model artifact is available
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh run view 38095959824 --repo "$GITHUB_REPOSITORY" --json conclusion --jq .conclusion | grep -qx success
+          mkdir -p build
+          gh run download 38095959824 --repo "$GITHUB_REPOSITORY" -n mate-cycle-model -D build
+          test -s build/mate-learning-model.txt
+          head -n 1 build/mate-learning-model.txt | grep -qx KUMOJI_MATE_GATE_V2
+          test -s build/mate-learning-report.json
+
+  compare:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9]
+    steps:
+      - name: Checkout ONE experimental engine version for both sides
+        uses: actions/checkout@v5
+      - name: Checkout fixed adopted position knowledge from official main
+        uses: actions/checkout@v5
+        with:
+          ref: 810abe0a2c567bec8af42e4805c0f1ca2cfa9650
+          path: adopted
+          sparse-checkout: |
+            position-knowledge-v1.tsv
+            position-knowledge-v1.manifest.json
+          sparse-checkout-cone-mode: false
+      - name: Install opponent game recording dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: Download frozen 100k-puzzle trained model
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p build
+          gh run download 38095959824 --repo "$GITHUB_REPOSITORY" -n mate-cycle-model -D build
+          test -s build/mate-learning-model.txt
+          test -s build/mate-learning-report.json
+      - name: Build once and make byte-identical engines
+        run: |
+          python3 scripts/build.py --output build/engine-a
+          cp build/engine-a build/engine-b
+          cp adopted/position-knowledge-v1.tsv build/position-knowledge-v1.tsv
+          test -s build/position-knowledge-v1.tsv
+          test "$(sha256sum build/engine-a | cut -d ' ' -f 1)" = "$(sha256sum build/engine-b | cut -d ' ' -f 1)"
+          sha256sum build/engine-a build/engine-b build/mate-learning-model.txt build/position-knowledge-v1.tsv
+      - name: Run 10 alternating-color games with model ON vs OFF
+        run: |
+          mkdir -p build/match
+          python3 benchmarks/arena.py \
+            --engine-a build/engine-a \
+            --engine-b build/engine-b \
+            --options-a '{"MateStageBudget":true,"MateBudgetProfile":"aggressive","MateLearningFile":"build/mate-learning-model.txt","MateLearning":true,"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}' \
+            --options-b '{"MateStageBudget":true,"MateBudgetProfile":"aggressive","MateLearning":false,"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}' \
+            --games 10 \
+            --game-offset $(( ${{ matrix.shard }} * 10 )) \
+            --max-plies 250 \
+            --seed $(( 2026101150 + ${{ matrix.shard }} * 100000 )) \
+            --go-command 'go movetime 200' \
+            --output build/match/match-${{ matrix.shard }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mate-isolated-match-${{ matrix.shard }}
+          path: build/match/match-${{ matrix.shard }}.json
+          if-no-files-found: error
+          retention-days: 90
+
+  summary:
+    needs: compare
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: mate-isolated-match-*
+          path: build/match
+          merge-multiple: true
+      - name: Re-validate identical engine and summarize actual games
+        run: |
+          mkdir -p build/report
+          python3 tools/learning/aggregate_mate_cycle.py --input-dir build/match --expected-shards 10 --output build/report/comparison.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          rows=[json.loads(p.read_text()) for p in sorted(Path("build/match").glob("match-*.json"))]
+          assert len(rows)==10
+          for r in rows:
+              assert r["sha256_a"]==r["sha256_b"], "Engines differ: invalid experiment"
+              a,b=r["options_a"],r["options_b"]
+              assert a["MateLearning"] is True and b["MateLearning"] is False
+              a={k:v for k,v in a.items() if k not in ("MateLearning","MateLearningFile")}
+              b={k:v for k,v in b.items() if k not in ("MateLearning","MateLearningFile")}
+              assert a==b, "Other options differ: invalid experiment"
+          result=json.loads(Path("build/report/comparison.json").read_text())
+          result.update({"causal_isolation":"same binary, same settings except learning model ON/OFF",
+                         "model_source_workflow_run":38095959824,
+                         "learning_sample_count":99997,"adopted_knowledge_source_sha":"810abe0a2c567bec8af42e4805c0f1ca2cfa9650"})
+          Path("build/report/comparison.json").write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n")
+          print(json.dumps(result,ensure_ascii=False,indent=2))
+          PY
+      - name: Archive actually played moves only
+        run: |
+          python3 tools/records/archive_played_moves.py \
+            --input build/match/match-*.json --output-dir build/report/played-archive \
+            --run-id "$GITHUB_RUN_ID" --ref-a "$GITHUB_SHA" --ref-b "$GITHUB_SHA"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mate-isolated-ab-result-${{ github.run_id }}
+          path: build/report/
+          if-no-files-found: error
+          retention-days: 90
