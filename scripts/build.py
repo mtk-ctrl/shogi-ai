@@ -51,6 +51,26 @@ if f'){knowledge_delimiter}"' in knowledge_text:
     encoding="utf-8",
 )
 
+# Embed the adopted 99,997-sample mate predictor into every standalone build,
+# so ordinary play and Android do not depend on a temporary Actions artifact.
+import hashlib
+mate_model_path = ROOT / "engine/models/mate-learning-v2-100k.txt"
+mate_model = mate_model_path.read_text(encoding="ascii")
+mate_sha256 = "dac182761519a1bebcf93317ebf5214d8a5ae3e65b339e93453fba023a9d0276"
+if hashlib.sha256(mate_model.encode("ascii")).hexdigest() != mate_sha256:
+    raise SystemExit("adopted mate model SHA-256 mismatch")
+mate_delimiter = "KUMOJIMATE100K"
+if f'){mate_delimiter}"' in mate_model:
+    raise SystemExit("mate model contains raw-string delimiter")
+(generated / "embedded_mate_learning.h").write_text(
+    "#pragma once\n"
+    "#include <string_view>\n"
+    "namespace shogi::strategy::detail {\n"
+    f'inline constexpr std::string_view kEmbeddedMateLearning = R"{mate_delimiter}({mate_model}){mate_delimiter}";\\n'
+    "} // namespace shogi::strategy::detail\n",
+    encoding="utf-8",
+)
+
 flags = ["-std=c++17", "-O1" if args.sanitize else "-O2", "-g", "-pthread",
          "-DSHOGI_RULES_ONLY", "-DUSER_ENGINE", "-DNO_SSE", "-DASSERT_LV=3",
          "-I" + str(generated), "-I" + str(ROOT / "engine"), "-I" + str(source)]
