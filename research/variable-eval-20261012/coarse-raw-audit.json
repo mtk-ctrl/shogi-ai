@@ -1,0 +1,1146 @@
+[
+  {
+    "request_id": "ve28-20261012-screen-amp2-m",
+    "run_id": 38244839509,
+    "a": "AMP2",
+    "b": "M",
+    "wins": 6,
+    "draws": 4,
+    "losses": 10,
+    "score": 0.4,
+    "approx_95pct": [
+      0.20400000000000004,
+      0.596
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38244839509/shard-0.json": "327be0ae9b3f88a8206bb321d45ad050ad5ac6b817fdab6094b83b54bf87f893"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-amp2-q14",
+    "run_id": 38245042338,
+    "a": "AMP2",
+    "b": "Q14",
+    "wins": 8,
+    "draws": 6,
+    "losses": 6,
+    "score": 0.55,
+    "approx_95pct": [
+      0.3632443194691891,
+      0.736755680530811
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38245042338/shard-0.json": "e40b04b341586ee7cea71727e139e18b2bdab2830a6d364cbea79baf0488f6ce"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-amp3-m",
+    "run_id": 38243516682,
+    "a": "AMP3",
+    "b": "M",
+    "wins": 3,
+    "draws": 5,
+    "losses": 12,
+    "score": 0.275,
+    "approx_95pct": [
+      0.10864290153249753,
+      0.4413570984675025
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38243516682/shard-0.json": "47fdbef538ff0366b57ca02cc62abfae727eac6754473329f9098d4c1a43e3c6"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-amp3-q14",
+    "run_id": 38243524856,
+    "a": "AMP3",
+    "b": "Q14",
+    "wins": 8,
+    "draws": 1,
+    "losses": 11,
+    "score": 0.425,
+    "approx_95pct": [
+      0.20847590385703876,
+      0.6415240961429612
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38243524856/shard-0.json": "8f7447b9f2a47c1caf14dee6cdc4c8af45d1c8d8e9bfecb78013e76b91072cf2"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-attack-m",
+    "run_id": 38245360072,
+    "a": "ATTACK",
+    "b": "M",
+    "wins": 13,
+    "draws": 4,
+    "losses": 3,
+    "score": 0.75,
+    "approx_95pct": [
+      0.5832635233922134,
+      0.9167364766077866
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38245360072/shard-0.json": "f8b4e0e814f1facc0a340bd3dc17991b0aa1a7f5c8f40ca1adad2d41b1cdeadc"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-attack-q14",
+    "run_id": 38245362014,
+    "a": "ATTACK",
+    "b": "Q14",
+    "wins": 10,
+    "draws": 3,
+    "losses": 7,
+    "score": 0.575,
+    "approx_95pct": [
+      0.37048118089422416,
+      0.7795188191057758
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38245362014/shard-0.json": "162a6a9ebe73944700818bca527a3e4200b997801422645a1b00fa33aa7e69fa"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-battle-m",
+    "run_id": 38243559349,
+    "a": "BATTLE",
+    "b": "M",
+    "wins": 5,
+    "draws": 6,
+    "losses": 9,
+    "score": 0.4,
+    "approx_95pct": [
+      0.21734934120596575,
+      0.5826506587940343
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38243559349/shard-0.json": "c0f293d0d572afe4e5c079f6e418d6e5761cc62dbe1167581d973ec4e31b4058"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-battle-q14",
+    "run_id": 38243572847,
+    "a": "BATTLE",
+    "b": "Q14",
+    "wins": 10,
+    "draws": 2,
+    "losses": 8,
+    "score": 0.55,
+    "approx_95pct": [
+      0.3378982369362838,
+      0.7621017630637164
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38243572847/shard-0.json": "306cad57a2fe6d39071e8cb69fa62cd3507b99751f9b007245781bca54348eb7"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-blend-m",
+    "run_id": 38245875846,
+    "a": "BLEND",
+    "b": "M",
+    "wins": 10,
+    "draws": 4,
+    "losses": 6,
+    "score": 0.6,
+    "approx_95pct": [
+      0.40399999999999997,
+      0.796
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38245875846/shard-0.json": "b4696a199d311946bfb8b8a241185b9b50617b9631580f64e23e7f3480386189"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-blend-q14",
+    "run_id": 38245879359,
+    "a": "BLEND",
+    "b": "Q14",
+    "wins": 9,
+    "draws": 5,
+    "losses": 6,
+    "score": 0.575,
+    "approx_95pct": [
+      0.3832365766724118,
+      0.7667634233275882
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38245879359/shard-0.json": "d3dccb09a3f01bd0c4092bbf62e9c806813307e0b5c3fe24792a77ad9ca578f4"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-board-m",
+    "run_id": 38245042367,
+    "a": "BOARD",
+    "b": "M",
+    "wins": 6,
+    "draws": 3,
+    "losses": 11,
+    "score": 0.375,
+    "approx_95pct": [
+      0.17548545759374093,
+      0.5745145424062591
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38245042367/shard-0.json": "13b97d795f7e979471c493232712d130d02fe14e075241e0d72b987173694cab"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-board-q14",
+    "run_id": 38245047037,
+    "a": "BOARD",
+    "b": "Q14",
+    "wins": 9,
+    "draws": 8,
+    "losses": 3,
+    "score": 0.65,
+    "approx_95pct": [
+      0.4894411077058115,
+      0.8105588922941885
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38245047037/shard-0.json": "e58b17a3ed61b98e25b87235d156baa9603fdc8af6cd97a26bab1781481c9d52"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-delay-m",
+    "run_id": 38244344719,
+    "a": "DELAY",
+    "b": "M",
+    "wins": 10,
+    "draws": 3,
+    "losses": 7,
+    "score": 0.575,
+    "approx_95pct": [
+      0.37048118089422416,
+      0.7795188191057758
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38244344719/shard-0.json": "81e3c7f1c8190e6c1d0a594c875d9af7ba2425770a64910be8494932ef96919a"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-delay-q14",
+    "run_id": 38244362147,
+    "a": "DELAY",
+    "b": "Q14",
+    "wins": 3,
+    "draws": 5,
+    "losses": 12,
+    "score": 0.275,
+    "approx_95pct": [
+      0.10864290153249753,
+      0.4413570984675025
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38244362147/shard-0.json": "301527788233562681ad0941b4b238b74e73a75d0d53726379bc216f3100191c"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-early-m",
+    "run_id": 38244831707,
+    "a": "EARLY",
+    "b": "M",
+    "wins": 6,
+    "draws": 4,
+    "losses": 10,
+    "score": 0.4,
+    "approx_95pct": [
+      0.20400000000000004,
+      0.596
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38244831707/shard-0.json": "a3230a8bbfa661c6d26b4a87ab1fb1b1392b8bafac0ceb4ccfaffa8588ac7d63"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-early-q14",
+    "run_id": 38245009835,
+    "a": "EARLY",
+    "b": "Q14",
+    "wins": 6,
+    "draws": 7,
+    "losses": 7,
+    "score": 0.475,
+    "approx_95pct": [
+      0.2940872556931613,
+      0.6559127443068387
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38245009835/shard-0.json": "7ba4c175ac82d63f14d421e4ac06b6b11c0455751ffabe6d641cf5fbac545c56"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-exchange-m",
+    "run_id": 38245363814,
+    "a": "EXCHANGE",
+    "b": "M",
+    "wins": 6,
+    "draws": 1,
+    "losses": 13,
+    "score": 0.325,
+    "approx_95pct": [
+      0.12048118089422424,
+      0.5295188191057758
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38245363814/shard-0.json": "4a155db18184d57f7dcbd7baa447b99640141b44dee19a51f9b305ed78e8f1d3"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-exchange-q14",
+    "run_id": 38245491240,
+    "a": "EXCHANGE",
+    "b": "Q14",
+    "wins": 5,
+    "draws": 6,
+    "losses": 9,
+    "score": 0.4,
+    "approx_95pct": [
+      0.21734934120596575,
+      0.5826506587940343
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38245491240/shard-0.json": "ff3316659e31def38a9da70e42de84de6a34d75c64bdcb1ecd8c4d375af08cb9"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-favg-m",
+    "run_id": 38244285509,
+    "a": "FAVG",
+    "b": "M",
+    "wins": 6,
+    "draws": 3,
+    "losses": 11,
+    "score": 0.375,
+    "approx_95pct": [
+      0.17548545759374093,
+      0.5745145424062591
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38244285509/shard-0.json": "d22bccfffe57409961114c57edce56cee175d88ce5648d1597d80297ef72cad2"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-favg-q14",
+    "run_id": 38244300515,
+    "a": "FAVG",
+    "b": "Q14",
+    "wins": 11,
+    "draws": 4,
+    "losses": 5,
+    "score": 0.65,
+    "approx_95pct": [
+      0.4605570492761809,
+      0.8394429507238191
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38244300515/shard-0.json": "312d302f9f71f07f76e80437ca23a66014b5fc44f3d2a761d9bb94aa8a378633"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-hmat-m",
+    "run_id": 38244254918,
+    "a": "HMAT",
+    "b": "M",
+    "wins": 4,
+    "draws": 2,
+    "losses": 14,
+    "score": 0.25,
+    "approx_95pct": [
+      0.06873833975800558,
+      0.4312616602419944
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38244254918/shard-0.json": "e7613c7918277493e27d135764213b49a2f4b9c8586a033bee13498000fa562d"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-hmat-q14",
+    "run_id": 38244271779,
+    "a": "HMAT",
+    "b": "Q14",
+    "wins": 7,
+    "draws": 4,
+    "losses": 9,
+    "score": 0.45,
+    "approx_95pct": [
+      0.25016901878679676,
+      0.6498309812132033
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38244271779/shard-0.json": "0881b64e01a8772322e173eeb0e29e59d136e8f552f7c83dfaef6a86f79e2742"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-hpot-m",
+    "run_id": 38245046400,
+    "a": "HPOT",
+    "b": "M",
+    "wins": 10,
+    "draws": 2,
+    "losses": 8,
+    "score": 0.55,
+    "approx_95pct": [
+      0.3378982369362838,
+      0.7621017630637164
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38245046400/shard-0.json": "8f5b39389fb8936d77e7cba41bc346ce398677fe34607a7440c6d2a134787f47"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-hpot-q14",
+    "run_id": 38245054967,
+    "a": "HPOT",
+    "b": "Q14",
+    "wins": 5,
+    "draws": 8,
+    "losses": 7,
+    "score": 0.45,
+    "approx_95pct": [
+      0.27730678250602586,
+      0.6226932174939741
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38245054967/shard-0.json": "1bd0477570be58a1d95151f912ead8909dcdfd67d0d1fd578023b1015f375f87"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-hybrid-m",
+    "run_id": 38245496840,
+    "a": "HYBRID",
+    "b": "M",
+    "wins": 2,
+    "draws": 4,
+    "losses": 14,
+    "score": 0.2,
+    "approx_95pct": [
+      0.05086636159047431,
+      0.3491336384095257
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38245496840/shard-0.json": "f35637740655f9e069a80598186594f9b5e3a4d9936c15e0872b67336be443b3"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-hybrid-q14",
+    "run_id": 38245498173,
+    "a": "HYBRID",
+    "b": "Q14",
+    "wins": 3,
+    "draws": 8,
+    "losses": 9,
+    "score": 0.35,
+    "approx_95pct": [
+      0.1894411077058114,
+      0.5105588922941886
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38245498173/shard-0.json": "455389922c080765e7314dcb54e99c6b272129fb0ef39c6038adac726f491cda"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-king-m",
+    "run_id": 38245493901,
+    "a": "KING",
+    "b": "M",
+    "wins": 11,
+    "draws": 4,
+    "losses": 5,
+    "score": 0.65,
+    "approx_95pct": [
+      0.4605570492761809,
+      0.8394429507238191
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38245493901/shard-0.json": "ddbe392eecaa47aa0a7552f0ae2635b50cfa238273770fc28e23d0fc7a8fd835"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-king-q14",
+    "run_id": 38245493596,
+    "a": "KING",
+    "b": "Q14",
+    "wins": 6,
+    "draws": 8,
+    "losses": 6,
+    "score": 0.5,
+    "approx_95pct": [
+      0.3258494299388268,
+      0.6741505700611732
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38245493596/shard-0.json": "c180c7510320a0b6204d8b01509b817c929dd13f308cedec3b13232d87c24832"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-late-m",
+    "run_id": 38244377456,
+    "a": "LATE",
+    "b": "M",
+    "wins": 4,
+    "draws": 4,
+    "losses": 12,
+    "score": 0.3,
+    "approx_95pct": [
+      0.12013806464547958,
+      0.4798619353545204
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38244377456/shard-0.json": "54ad10cab4fed9cb12248e94ed126a77c78528cec7ac6f4ab26405096da1aa29"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-late-q14",
+    "run_id": 38244388040,
+    "a": "LATE",
+    "b": "Q14",
+    "wins": 10,
+    "draws": 5,
+    "losses": 5,
+    "score": 0.625,
+    "approx_95pct": [
+      0.4385829519880929,
+      0.8114170480119072
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38244388040/shard-0.json": "ec7425ffc3ad5173ef42549bd4dcff6183c008cbf692af87d253f8f2f0a65b6f"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-lin-m",
+    "run_id": 38243493996,
+    "a": "LIN",
+    "b": "M",
+    "wins": 8,
+    "draws": 4,
+    "losses": 8,
+    "score": 0.5,
+    "approx_95pct": [
+      0.2989082429913098,
+      0.7010917570086902
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38243493996/shard-0.json": "0ad2170e32e4c8136f5ae5450812b6ccf72a2b5477d71dc4486860a4452ca565"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-lin-q14",
+    "run_id": 38243509101,
+    "a": "LIN",
+    "b": "Q14",
+    "wins": 7,
+    "draws": 3,
+    "losses": 10,
+    "score": 0.425,
+    "approx_95pct": [
+      0.2204811808942242,
+      0.6295188191057758
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38243509101/shard-0.json": "498ad932ddd4c236aa3cbb2068a8bac7a32bae11373a3214ef90ef27fab1a477"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-mobile-m",
+    "run_id": 38243591077,
+    "a": "MOBILE",
+    "b": "M",
+    "wins": 9,
+    "draws": 4,
+    "losses": 7,
+    "score": 0.55,
+    "approx_95pct": [
+      0.35016901878679685,
+      0.7498309812132032
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38243591077/shard-0.json": "4ae148699e5afe0efc59a6df0a5bb723c1a1a18d5156f60e6e58142740f71920"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-mobile-q14",
+    "run_id": 38243601670,
+    "a": "MOBILE",
+    "b": "Q14",
+    "wins": 8,
+    "draws": 5,
+    "losses": 7,
+    "score": 0.525,
+    "approx_95pct": [
+      0.3306185248159259,
+      0.7193814751840741
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38243601670/shard-0.json": "6a03d1e665eb54c395bb94196fda0b6e7a8c336c8591f42f409d93ba77ef6377"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-noc-m",
+    "run_id": 38244315059,
+    "a": "NOC",
+    "b": "M",
+    "wins": 9,
+    "draws": 4,
+    "losses": 7,
+    "score": 0.55,
+    "approx_95pct": [
+      0.35016901878679685,
+      0.7498309812132032
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38244315059/shard-0.json": "a79a8cfde4135bd07a4124b15e2ce57e893759781d89bcb0cae8500608c366c3"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-noc-q14",
+    "run_id": 38244329667,
+    "a": "NOC",
+    "b": "Q14",
+    "wins": 9,
+    "draws": 1,
+    "losses": 10,
+    "score": 0.475,
+    "approx_95pct": [
+      0.25615386323047107,
+      0.6938461367695289
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38244329667/shard-0.json": "51fbc58a2f7624fdf10fb74cc1d28048b69e4b149b1a6a6c720cb2d51731a074"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-positional-m",
+    "run_id": 38224843757,
+    "a": "POSITIONAL",
+    "b": "M",
+    "wins": 7,
+    "draws": 6,
+    "losses": 7,
+    "score": 0.5,
+    "approx_95pct": [
+      0.311895885492271,
+      0.688104114507729
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38224843757/shard-0.json": "a9fc0090a14ee194ef2401fbadbe16592fc6b3890c90ab3a3c281cce6927c54d"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-positional-q14",
+    "run_id": 38224858353,
+    "a": "POSITIONAL",
+    "b": "Q14",
+    "wins": 8,
+    "draws": 2,
+    "losses": 10,
+    "score": 0.45,
+    "approx_95pct": [
+      0.23789823693628376,
+      0.6621017630637163
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38224858353/shard-0.json": "3caf475c9be60cf733acd7da6cb2607055593f9a5ce73f00587bfffd933c762b"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-resource-m",
+    "run_id": 38245876880,
+    "a": "RESOURCE",
+    "b": "M",
+    "wins": 4,
+    "draws": 6,
+    "losses": 10,
+    "score": 0.35,
+    "approx_95pct": [
+      0.17440417221117663,
+      0.5255958277888233
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38245876880/shard-0.json": "3b3b445ddb47f8e64e7960b4d4f847d5cd10e3825d018bebc559759f84b8f927"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-resource-q14",
+    "run_id": 38246031610,
+    "a": "RESOURCE",
+    "b": "Q14",
+    "wins": 4,
+    "draws": 3,
+    "losses": 13,
+    "score": 0.275,
+    "approx_95pct": [
+      0.09408725569316137,
+      0.4559127443068387
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38246031610/shard-0.json": "d4552a144291b1b0316d1e46aab8d0959e9aea67d3e2e36186501412aac29978"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-resource_balance-m",
+    "run_id": 38224869910,
+    "a": "RESOURCE_BALANCE",
+    "b": "M",
+    "wins": 10,
+    "draws": 6,
+    "losses": 4,
+    "score": 0.65,
+    "approx_95pct": [
+      0.4744041722111767,
+      0.8255958277888233
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38224869910/shard-0.json": "f5828717b60e85261dc3d2394877f18cd96e25ad9d244451ade3678cfc315a56"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-resource_balance-q14",
+    "run_id": 38224890494,
+    "a": "RESOURCE_BALANCE",
+    "b": "Q14",
+    "wins": 9,
+    "draws": 4,
+    "losses": 7,
+    "score": 0.55,
+    "approx_95pct": [
+      0.35016901878679685,
+      0.7498309812132032
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38224890494/shard-0.json": "887fa5c74ddac90744842d316ca123d1fab08b2dc682a79833824250ed47753d"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-rev-m",
+    "run_id": 38243537030,
+    "a": "REV",
+    "b": "M",
+    "wins": 6,
+    "draws": 2,
+    "losses": 12,
+    "score": 0.35,
+    "approx_95pct": [
+      0.1476553227261645,
+      0.5523446772738354
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38243537030/shard-0.json": "7e794cef5d404b5fffba2b278722b9aab58ddc3eb9b8d689dd4f33056c734a62"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-rev-q14",
+    "run_id": 38243549347,
+    "a": "REV",
+    "b": "Q14",
+    "wins": 7,
+    "draws": 3,
+    "losses": 10,
+    "score": 0.425,
+    "approx_95pct": [
+      0.2204811808942242,
+      0.6295188191057758
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38243549347/shard-0.json": "86420a2c1d28b784a82ee8f954a21a21528341f5b70bd7de1c2752ee1523a653"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-risk-m",
+    "run_id": 38245629091,
+    "a": "RISK",
+    "b": "M",
+    "wins": 8,
+    "draws": 5,
+    "losses": 7,
+    "score": 0.525,
+    "approx_95pct": [
+      0.3306185248159259,
+      0.7193814751840741
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38245629091/shard-0.json": "905e970ae0ce75bb56775ba74aa9c299841aba36a17685bef68be8bc633f4762"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-risk-q14",
+    "run_id": 38245631434,
+    "a": "RISK",
+    "b": "Q14",
+    "wins": 8,
+    "draws": 7,
+    "losses": 5,
+    "score": 0.575,
+    "approx_95pct": [
+      0.39690319013466147,
+      0.7530968098653384
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38245631434/shard-0.json": "217a5394956f177216a1fa01eec4fe01d1fa777d6c3645f8956a4dde8a30dfb0"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-safe-m",
+    "run_id": 38224901457,
+    "a": "SAFE",
+    "b": "M",
+    "wins": 13,
+    "draws": 3,
+    "losses": 4,
+    "score": 0.725,
+    "approx_95pct": [
+      0.5440872556931613,
+      0.9059127443068387
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38224901457/shard-0.json": "1fb9ce37a3147d1fb99c4aa312b1230d3ffb3cd3bd3953fea70dd1c6cd3fc094"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-safe-q14",
+    "run_id": 38224919058,
+    "a": "SAFE",
+    "b": "Q14",
+    "wins": 7,
+    "draws": 5,
+    "losses": 8,
+    "score": 0.475,
+    "approx_95pct": [
+      0.28061852481592586,
+      0.6693814751840741
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38224919058/shard-0.json": "0a96cf2e5261fe2e0b6418d9f78593b5026cc2a44ad3c20553e10f64f28690cb"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-step-m",
+    "run_id": 38244832980,
+    "a": "STEP",
+    "b": "M",
+    "wins": 9,
+    "draws": 1,
+    "losses": 10,
+    "score": 0.475,
+    "approx_95pct": [
+      0.25615386323047107,
+      0.6938461367695289
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38244832980/shard-0.json": "4fba87da5ef19c964cbac1616f1ed5eae7689e955f41123feedc2cd4a2b31087"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-step-q14",
+    "run_id": 38245002151,
+    "a": "STEP",
+    "b": "Q14",
+    "wins": 9,
+    "draws": 4,
+    "losses": 7,
+    "score": 0.55,
+    "approx_95pct": [
+      0.35016901878679685,
+      0.7498309812132032
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38245002151/shard-0.json": "ffda0f4c84ea9ac430ea0c3770e4423e7b3cbbb5c46eb71c922b829fb887e297"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-unified-m",
+    "run_id": 38224820908,
+    "a": "UNIFIED",
+    "b": "M",
+    "wins": 10,
+    "draws": 4,
+    "losses": 6,
+    "score": 0.6,
+    "approx_95pct": [
+      0.40399999999999997,
+      0.796
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38224820908/shard-0.json": "6e98e1989b07989318b9e4ff96b4d488f8893950f6311a667af903d28237fbd0"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-screen-unified-q14",
+    "run_id": 38224830098,
+    "a": "UNIFIED",
+    "b": "Q14",
+    "wins": 13,
+    "draws": 3,
+    "losses": 4,
+    "score": 0.725,
+    "approx_95pct": [
+      0.5440872556931613,
+      0.9059127443068387
+    ],
+    "colors": {
+      "A": 10,
+      "B": 10
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/coarse-raw/38224830098/shard-0.json": "a33a7424e91cabec5e0c6c4bf504797dae9e2f9e961920b1c0ca4496973c238b"
+    }
+  }
+]

@@ -1,0 +1,48 @@
+[
+  {
+    "request_id": "ve28-20261012-mid-unified-m",
+    "run_id": 38246798419,
+    "a": "UNIFIED",
+    "b": "M",
+    "wins": 58,
+    "draws": 2,
+    "losses": 40,
+    "score": 0.59,
+    "approx_95pct": [
+      0.49412155001400376,
+      0.6858784499859961
+    ],
+    "colors": {
+      "A": 50,
+      "B": 50
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/mid-raw/38246798419/shard-0.json": "f0e54ae28336c3fcf3524c8b5e21fe972d1b4e7768650c0225d9fa4624b2829e",
+      "build/mid-raw/38246798419/shard-1.json": "408629c2e86e4b972708954af6b3edac7157b1222a1254eb1114c4da73696b5a"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-mid-unified-q14",
+    "run_id": 38246812966,
+    "a": "UNIFIED",
+    "b": "Q14",
+    "wins": 50,
+    "draws": 2,
+    "losses": 48,
+    "score": 0.51,
+    "approx_95pct": [
+      0.4125161064844582,
+      0.6074838935155418
+    ],
+    "colors": {
+      "A": 50,
+      "B": 50
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/mid-raw/38246812966/shard-0.json": "fa07f49452982606914d15591176c56da05aa613e30a3843ef2f7bbc84f8529d",
+      "build/mid-raw/38246812966/shard-1.json": "7cdfc8e8226014818a31f80c0d2cc9a9290354a0b34f9370de7857bbfe23e8cc"
+    }
+  }
+]

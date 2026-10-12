@@ -1,49 +1,40 @@
 [
   {
-    "index": 0,
+    "stage": "screen",
     "model": "UNIFIED",
     "baseline": "M",
-    "issue": 172,
-    "run": 38224820908,
+    "request_id": "ve28-20261012-screen-unified-m",
     "ref_a": "3fd3c37cc4b83f9645af509e1002837c09f4d5dd",
     "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 10,
-    "draws": 4,
-    "wins_b": 6,
-    "score_a": 0.6,
-    "score_a_approx_95pct": [
-      0.38529275745797487,
-      0.8147072425420251
-    ],
-    "average_plies": 152.05,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38224820908,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-unified-m",
+      "run_id": 38224820908,
+      "a": "UNIFIED",
+      "b": "M",
+      "wins": 10,
+      "draws": 4,
+      "losses": 6,
+      "score": 0.6,
+      "approx_95pct": [
+        0.40399999999999997,
+        0.796
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38224820908/shard-0.json": "6e98e1989b07989318b9e4ff96b4d488f8893950f6311a667af903d28237fbd0"
       }
     },
     "artifacts": [
@@ -79,58 +70,44 @@
         "expires_at": "2027-01-10T08:38:40Z",
         "digest": "sha256:0a0527e59b6c9224dec25f817ed01fa8c98d54e9606a9b39daf97cb91195e15a"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.40399999999999997,
-      0.796
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 1,
+    "stage": "screen",
     "model": "UNIFIED",
     "baseline": "Q14",
-    "issue": 173,
-    "run": 38224830098,
+    "request_id": "ve28-20261012-screen-unified-q14",
     "ref_a": "3fd3c37cc4b83f9645af509e1002837c09f4d5dd",
     "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 13,
-    "draws": 3,
-    "wins_b": 4,
-    "score_a": 0.725,
-    "score_a_approx_95pct": [
-      0.5293064896323846,
-      0.9206935103676154
-    ],
-    "average_plies": 135.05,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38224830098,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-unified-q14",
+      "run_id": 38224830098,
+      "a": "UNIFIED",
+      "b": "Q14",
+      "wins": 13,
+      "draws": 3,
+      "losses": 4,
+      "score": 0.725,
+      "approx_95pct": [
+        0.5440872556931613,
+        0.9059127443068387
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38224830098/shard-0.json": "a33a7424e91cabec5e0c6c4bf504797dae9e2f9e961920b1c0ca4496973c238b"
       }
     },
     "artifacts": [
@@ -166,58 +143,44 @@
         "expires_at": "2027-01-10T08:38:45Z",
         "digest": "sha256:ae414a1d2068d57b428e41b59c80001cc2027db28bf94f004d68a1474e13c8ba"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.5440872556931613,
-      0.9059127443068387
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 2,
+    "stage": "screen",
     "model": "POSITIONAL",
     "baseline": "M",
-    "issue": 174,
-    "run": 38224843757,
+    "request_id": "ve28-20261012-screen-positional-m",
     "ref_a": "981b893c71da9915cca481bc6749f56b152c34a1",
     "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 7,
-    "draws": 6,
-    "wins_b": 7,
-    "score_a": 0.5,
-    "score_a_approx_95pct": [
-      0.28086533820502063,
-      0.7191346617949794
-    ],
-    "average_plies": 152.7,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38224843757,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-positional-m",
+      "run_id": 38224843757,
+      "a": "POSITIONAL",
+      "b": "M",
+      "wins": 7,
+      "draws": 6,
+      "losses": 7,
+      "score": 0.5,
+      "approx_95pct": [
+        0.311895885492271,
+        0.688104114507729
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38224843757/shard-0.json": "a9fc0090a14ee194ef2401fbadbe16592fc6b3890c90ab3a3c281cce6927c54d"
       }
     },
     "artifacts": [
@@ -253,58 +216,44 @@
         "expires_at": "2027-01-10T08:38:53Z",
         "digest": "sha256:064843a962ef4240e3c3a3060b0c0345c8bbfe836da863f6f58b16d538618b1d"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.311895885492271,
-      0.688104114507729
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 3,
+    "stage": "screen",
     "model": "POSITIONAL",
     "baseline": "Q14",
-    "issue": 175,
-    "run": 38224858353,
+    "request_id": "ve28-20261012-screen-positional-q14",
     "ref_a": "981b893c71da9915cca481bc6749f56b152c34a1",
     "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 8,
-    "draws": 2,
-    "wins_b": 10,
-    "score_a": 0.45,
-    "score_a_approx_95pct": [
-      0.23196376447938752,
-      0.6680362355206125
-    ],
-    "average_plies": 127.35,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38224858353,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-positional-q14",
+      "run_id": 38224858353,
+      "a": "POSITIONAL",
+      "b": "Q14",
+      "wins": 8,
+      "draws": 2,
+      "losses": 10,
+      "score": 0.45,
+      "approx_95pct": [
+        0.23789823693628376,
+        0.6621017630637163
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38224858353/shard-0.json": "3caf475c9be60cf733acd7da6cb2607055593f9a5ce73f00587bfffd933c762b"
       }
     },
     "artifacts": [
@@ -340,58 +289,44 @@
         "expires_at": "2027-01-10T08:39:03Z",
         "digest": "sha256:a395fe0aa8d945e1b3363a3c278b0e3ef1034630f0ab424100ee579f2a8850e7"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.23789823693628376,
-      0.6621017630637163
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 4,
+    "stage": "screen",
     "model": "RESOURCE_BALANCE",
     "baseline": "M",
-    "issue": 176,
-    "run": 38224869910,
+    "request_id": "ve28-20261012-screen-resource_balance-m",
     "ref_a": "3101e5a444396a0b2271320459a4ae325b709b2b",
     "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 10,
-    "draws": 6,
-    "wins_b": 4,
-    "score_a": 0.65,
-    "score_a_approx_95pct": [
-      0.4409588557245249,
-      0.8590411442754751
-    ],
-    "average_plies": 125.35,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38224869910,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-resource_balance-m",
+      "run_id": 38224869910,
+      "a": "RESOURCE_BALANCE",
+      "b": "M",
+      "wins": 10,
+      "draws": 6,
+      "losses": 4,
+      "score": 0.65,
+      "approx_95pct": [
+        0.4744041722111767,
+        0.8255958277888233
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38224869910/shard-0.json": "f5828717b60e85261dc3d2394877f18cd96e25ad9d244451ade3678cfc315a56"
       }
     },
     "artifacts": [
@@ -427,58 +362,44 @@
         "expires_at": "2027-01-10T08:39:08Z",
         "digest": "sha256:a2e6b6e2f6562bcd4740b6bbdf09143efab40670e41777bb5b1158580c70b29a"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.4744041722111767,
-      0.8255958277888233
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 5,
+    "stage": "screen",
     "model": "RESOURCE_BALANCE",
     "baseline": "Q14",
-    "issue": 177,
-    "run": 38224890494,
+    "request_id": "ve28-20261012-screen-resource_balance-q14",
     "ref_a": "3101e5a444396a0b2271320459a4ae325b709b2b",
     "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 9,
-    "draws": 4,
-    "wins_b": 7,
-    "score_a": 0.55,
-    "score_a_approx_95pct": [
-      0.3319637644793876,
-      0.7680362355206125
-    ],
-    "average_plies": 136.9,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38224890494,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-resource_balance-q14",
+      "run_id": 38224890494,
+      "a": "RESOURCE_BALANCE",
+      "b": "Q14",
+      "wins": 9,
+      "draws": 4,
+      "losses": 7,
+      "score": 0.55,
+      "approx_95pct": [
+        0.35016901878679685,
+        0.7498309812132032
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38224890494/shard-0.json": "887fa5c74ddac90744842d316ca123d1fab08b2dc682a79833824250ed47753d"
       }
     },
     "artifacts": [
@@ -514,58 +435,44 @@
         "expires_at": "2027-01-10T08:39:20Z",
         "digest": "sha256:702ff022fae9925c45aecc5ef8bf9f65e42417c342a847f324b201e37a454604"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.35016901878679685,
-      0.7498309812132032
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 6,
+    "stage": "screen",
     "model": "SAFE",
     "baseline": "M",
-    "issue": 178,
-    "run": 38224901457,
+    "request_id": "ve28-20261012-screen-safe-m",
     "ref_a": "515e2a1a51f6fd0037db7f9d96a77e7dc44e051a",
     "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 13,
-    "draws": 3,
-    "wins_b": 4,
-    "score_a": 0.725,
-    "score_a_approx_95pct": [
-      0.5293064896323846,
-      0.9206935103676154
-    ],
-    "average_plies": 133.9,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38224901457,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-safe-m",
+      "run_id": 38224901457,
+      "a": "SAFE",
+      "b": "M",
+      "wins": 13,
+      "draws": 3,
+      "losses": 4,
+      "score": 0.725,
+      "approx_95pct": [
+        0.5440872556931613,
+        0.9059127443068387
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38224901457/shard-0.json": "1fb9ce37a3147d1fb99c4aa312b1230d3ffb3cd3bd3953fea70dd1c6cd3fc094"
       }
     },
     "artifacts": [
@@ -601,58 +508,44 @@
         "expires_at": "2027-01-10T08:39:26Z",
         "digest": "sha256:980ffd53800eccf87e2f99264be42176f94bad056c4fdda7c2dbc89bfd54ed59"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.5440872556931613,
-      0.9059127443068387
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 7,
+    "stage": "screen",
     "model": "SAFE",
     "baseline": "Q14",
-    "issue": 179,
-    "run": 38224919058,
+    "request_id": "ve28-20261012-screen-safe-q14",
     "ref_a": "515e2a1a51f6fd0037db7f9d96a77e7dc44e051a",
     "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 7,
-    "draws": 5,
-    "wins_b": 8,
-    "score_a": 0.475,
-    "score_a_approx_95pct": [
-      0.2561394279455525,
-      0.6938605720544475
-    ],
-    "average_plies": 168.75,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38224919058,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-safe-q14",
+      "run_id": 38224919058,
+      "a": "SAFE",
+      "b": "Q14",
+      "wins": 7,
+      "draws": 5,
+      "losses": 8,
+      "score": 0.475,
+      "approx_95pct": [
+        0.28061852481592586,
+        0.6693814751840741
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38224919058/shard-0.json": "0a96cf2e5261fe2e0b6418d9f78593b5026cc2a44ad3c20553e10f64f28690cb"
       }
     },
     "artifacts": [
@@ -688,58 +581,44 @@
         "expires_at": "2027-01-10T08:39:37Z",
         "digest": "sha256:0ea25f5faacf9320843cbf10489c35e8b7e14df661ae5097db096aa59575b2ea"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.28061852481592586,
-      0.6693814751840741
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 8,
+    "stage": "screen",
     "model": "LIN",
     "baseline": "M",
-    "issue": 180,
-    "run": 38243493996,
+    "request_id": "ve28-20261012-screen-lin-m",
     "ref_a": "0d3ea005a06d259cecacb36473558cdbd8f4c3dc",
     "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 8,
-    "draws": 4,
-    "wins_b": 8,
-    "score_a": 0.5,
-    "score_a_approx_95pct": [
-      0.28086533820502063,
-      0.7191346617949794
-    ],
-    "average_plies": 160.1,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38243493996,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-lin-m",
+      "run_id": 38243493996,
+      "a": "LIN",
+      "b": "M",
+      "wins": 8,
+      "draws": 4,
+      "losses": 8,
+      "score": 0.5,
+      "approx_95pct": [
+        0.2989082429913098,
+        0.7010917570086902
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38243493996/shard-0.json": "0ad2170e32e4c8136f5ae5450812b6ccf72a2b5477d71dc4486860a4452ca565"
       }
     },
     "artifacts": [
@@ -775,58 +654,44 @@
         "expires_at": "2027-01-10T11:34:14Z",
         "digest": "sha256:4258167082a4db4a8eaede901f18061cd731d2f523f9d3c2d6e992500a787eb7"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.2989082429913098,
-      0.7010917570086902
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 9,
+    "stage": "screen",
     "model": "LIN",
     "baseline": "Q14",
-    "issue": 181,
-    "run": 38243509101,
+    "request_id": "ve28-20261012-screen-lin-q14",
     "ref_a": "0d3ea005a06d259cecacb36473558cdbd8f4c3dc",
     "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 7,
-    "draws": 3,
-    "wins_b": 10,
-    "score_a": 0.425,
-    "score_a_approx_95pct": [
-      0.20834462849954538,
-      0.6416553715004546
-    ],
-    "average_plies": 158.9,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38243509101,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-lin-q14",
+      "run_id": 38243509101,
+      "a": "LIN",
+      "b": "Q14",
+      "wins": 7,
+      "draws": 3,
+      "losses": 10,
+      "score": 0.425,
+      "approx_95pct": [
+        0.2204811808942242,
+        0.6295188191057758
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38243509101/shard-0.json": "498ad932ddd4c236aa3cbb2068a8bac7a32bae11373a3214ef90ef27fab1a477"
       }
     },
     "artifacts": [
@@ -862,58 +727,44 @@
         "expires_at": "2027-01-10T11:34:22Z",
         "digest": "sha256:ecb958f4aaff2867f56f6d53f6fc112953d2e8603710a32e48f5136e4abfb3c8"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.2204811808942242,
-      0.6295188191057758
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 10,
+    "stage": "screen",
     "model": "AMP3",
     "baseline": "M",
-    "issue": 182,
-    "run": 38243516682,
+    "request_id": "ve28-20261012-screen-amp3-m",
     "ref_a": "ce5590fc6bf9862c9f2abb4968c4865675397957",
     "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 3,
-    "draws": 5,
-    "wins_b": 12,
-    "score_a": 0.275,
-    "score_a_approx_95pct": [
-      0.07930648963238462,
-      0.4706935103676154
-    ],
-    "average_plies": 136.15,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38243516682,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-amp3-m",
+      "run_id": 38243516682,
+      "a": "AMP3",
+      "b": "M",
+      "wins": 3,
+      "draws": 5,
+      "losses": 12,
+      "score": 0.275,
+      "approx_95pct": [
+        0.10864290153249753,
+        0.4413570984675025
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38243516682/shard-0.json": "47fdbef538ff0366b57ca02cc62abfae727eac6754473329f9098d4c1a43e3c6"
       }
     },
     "artifacts": [
@@ -949,58 +800,44 @@
         "expires_at": "2027-01-10T11:34:27Z",
         "digest": "sha256:37f8fa23fabe215c12bd021f52998d4b99b2daccbd9a55cb730f046ea16ece67"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.10864290153249753,
-      0.4413570984675025
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 11,
+    "stage": "screen",
     "model": "AMP3",
     "baseline": "Q14",
-    "issue": 183,
-    "run": 38243524856,
+    "request_id": "ve28-20261012-screen-amp3-q14",
     "ref_a": "ce5590fc6bf9862c9f2abb4968c4865675397957",
     "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 8,
-    "draws": 1,
-    "wins_b": 11,
-    "score_a": 0.425,
-    "score_a_approx_95pct": [
-      0.20834462849954538,
-      0.6416553715004546
-    ],
-    "average_plies": 137.75,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38243524856,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-amp3-q14",
+      "run_id": 38243524856,
+      "a": "AMP3",
+      "b": "Q14",
+      "wins": 8,
+      "draws": 1,
+      "losses": 11,
+      "score": 0.425,
+      "approx_95pct": [
+        0.20847590385703876,
+        0.6415240961429612
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38243524856/shard-0.json": "8f7447b9f2a47c1caf14dee6cdc4c8af45d1c8d8e9bfecb78013e76b91072cf2"
       }
     },
     "artifacts": [
@@ -1036,58 +873,44 @@
         "expires_at": "2027-01-10T11:34:32Z",
         "digest": "sha256:df885ea362d6a721061b7f6d5dd554b350c64b09cdd774fefa30d6292d5f0592"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.20847590385703876,
-      0.6415240961429612
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 12,
+    "stage": "screen",
     "model": "REV",
     "baseline": "M",
-    "issue": 184,
-    "run": 38243537030,
+    "request_id": "ve28-20261012-screen-rev-m",
     "ref_a": "b3f212bff326391e8a66468ceff823a97eb8d946",
     "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 6,
-    "draws": 2,
-    "wins_b": 12,
-    "score_a": 0.35,
-    "score_a_approx_95pct": [
-      0.14095885572452488,
-      0.559041144275475
-    ],
-    "average_plies": 127.75,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38243537030,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-rev-m",
+      "run_id": 38243537030,
+      "a": "REV",
+      "b": "M",
+      "wins": 6,
+      "draws": 2,
+      "losses": 12,
+      "score": 0.35,
+      "approx_95pct": [
+        0.1476553227261645,
+        0.5523446772738354
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38243537030/shard-0.json": "7e794cef5d404b5fffba2b278722b9aab58ddc3eb9b8d689dd4f33056c734a62"
       }
     },
     "artifacts": [
@@ -1123,58 +946,44 @@
         "expires_at": "2027-01-10T11:34:38Z",
         "digest": "sha256:c2b4c3a6eaa42fa72e57476466ab4692f8fd28857d6870f2143bbb2dc97c03f3"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.1476553227261645,
-      0.5523446772738354
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 13,
+    "stage": "screen",
     "model": "REV",
     "baseline": "Q14",
-    "issue": 185,
-    "run": 38243549347,
+    "request_id": "ve28-20261012-screen-rev-q14",
     "ref_a": "b3f212bff326391e8a66468ceff823a97eb8d946",
     "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 7,
-    "draws": 3,
-    "wins_b": 10,
-    "score_a": 0.425,
-    "score_a_approx_95pct": [
-      0.20834462849954538,
-      0.6416553715004546
-    ],
-    "average_plies": 121.15,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38243549347,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-rev-q14",
+      "run_id": 38243549347,
+      "a": "REV",
+      "b": "Q14",
+      "wins": 7,
+      "draws": 3,
+      "losses": 10,
+      "score": 0.425,
+      "approx_95pct": [
+        0.2204811808942242,
+        0.6295188191057758
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38243549347/shard-0.json": "86420a2c1d28b784a82ee8f954a21a21528341f5b70bd7de1c2752ee1523a653"
       }
     },
     "artifacts": [
@@ -1210,58 +1019,44 @@
         "expires_at": "2027-01-10T11:34:46Z",
         "digest": "sha256:eb4b3429005a871b9aebb45e21a106cf10257f6044f935d80165f8442685dcea"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.2204811808942242,
-      0.6295188191057758
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 14,
+    "stage": "screen",
     "model": "BATTLE",
     "baseline": "M",
-    "issue": 186,
-    "run": 38243559349,
+    "request_id": "ve28-20261012-screen-battle-m",
     "ref_a": "f017163105034e845689ec7287377deb84aa6682",
     "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 5,
-    "draws": 6,
-    "wins_b": 9,
-    "score_a": 0.4,
-    "score_a_approx_95pct": [
-      0.1852927574579749,
-      0.6147072425420251
-    ],
-    "average_plies": 133.3,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38243559349,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-battle-m",
+      "run_id": 38243559349,
+      "a": "BATTLE",
+      "b": "M",
+      "wins": 5,
+      "draws": 6,
+      "losses": 9,
+      "score": 0.4,
+      "approx_95pct": [
+        0.21734934120596575,
+        0.5826506587940343
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38243559349/shard-0.json": "c0f293d0d572afe4e5c079f6e418d6e5761cc62dbe1167581d973ec4e31b4058"
       }
     },
     "artifacts": [
@@ -1297,58 +1092,44 @@
         "expires_at": "2027-01-10T11:34:51Z",
         "digest": "sha256:d936d98894501a91ad6541880e33647919a901784e0a6f6d3bf7e079fcd72311"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.21734934120596575,
-      0.5826506587940343
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 15,
+    "stage": "screen",
     "model": "BATTLE",
     "baseline": "Q14",
-    "issue": 187,
-    "run": 38243572847,
+    "request_id": "ve28-20261012-screen-battle-q14",
     "ref_a": "f017163105034e845689ec7287377deb84aa6682",
     "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 10,
-    "draws": 2,
-    "wins_b": 8,
-    "score_a": 0.55,
-    "score_a_approx_95pct": [
-      0.3319637644793876,
-      0.7680362355206125
-    ],
-    "average_plies": 119.4,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38243572847,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-battle-q14",
+      "run_id": 38243572847,
+      "a": "BATTLE",
+      "b": "Q14",
+      "wins": 10,
+      "draws": 2,
+      "losses": 8,
+      "score": 0.55,
+      "approx_95pct": [
+        0.3378982369362838,
+        0.7621017630637164
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38243572847/shard-0.json": "306cad57a2fe6d39071e8cb69fa62cd3507b99751f9b007245781bca54348eb7"
       }
     },
     "artifacts": [
@@ -1384,58 +1165,44 @@
         "expires_at": "2027-01-10T11:35:01Z",
         "digest": "sha256:08758425573e4791ae63afedd9ddfd2a1a3f97db92a096184d3bd831a6cfbf29"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.3378982369362838,
-      0.7621017630637164
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 16,
+    "stage": "screen",
     "model": "MOBILE",
     "baseline": "M",
-    "issue": 188,
-    "run": 38243591077,
+    "request_id": "ve28-20261012-screen-mobile-m",
     "ref_a": "664ce96c9bbbad777a1ae9f66ef4c5380fa56136",
     "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 9,
-    "draws": 4,
-    "wins_b": 7,
-    "score_a": 0.55,
-    "score_a_approx_95pct": [
-      0.3319637644793876,
-      0.7680362355206125
-    ],
-    "average_plies": 155.35,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38243591077,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-mobile-m",
+      "run_id": 38243591077,
+      "a": "MOBILE",
+      "b": "M",
+      "wins": 9,
+      "draws": 4,
+      "losses": 7,
+      "score": 0.55,
+      "approx_95pct": [
+        0.35016901878679685,
+        0.7498309812132032
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38243591077/shard-0.json": "4ae148699e5afe0efc59a6df0a5bb723c1a1a18d5156f60e6e58142740f71920"
       }
     },
     "artifacts": [
@@ -1471,58 +1238,44 @@
         "expires_at": "2027-01-10T11:35:09Z",
         "digest": "sha256:ede60b46e52b24f8d2cc30d42ccf44ef21cc494812c4a173da68e7f67f38e086"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.35016901878679685,
-      0.7498309812132032
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 17,
+    "stage": "screen",
     "model": "MOBILE",
     "baseline": "Q14",
-    "issue": 189,
-    "run": 38243601670,
+    "request_id": "ve28-20261012-screen-mobile-q14",
     "ref_a": "664ce96c9bbbad777a1ae9f66ef4c5380fa56136",
     "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 8,
-    "draws": 5,
-    "wins_b": 7,
-    "score_a": 0.525,
-    "score_a_approx_95pct": [
-      0.30613942794555254,
-      0.7438605720544476
-    ],
-    "average_plies": 126.5,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38243601670,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-mobile-q14",
+      "run_id": 38243601670,
+      "a": "MOBILE",
+      "b": "Q14",
+      "wins": 8,
+      "draws": 5,
+      "losses": 7,
+      "score": 0.525,
+      "approx_95pct": [
+        0.3306185248159259,
+        0.7193814751840741
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38243601670/shard-0.json": "6a03d1e665eb54c395bb94196fda0b6e7a8c336c8591f42f409d93ba77ef6377"
       }
     },
     "artifacts": [
@@ -1558,58 +1311,44 @@
         "expires_at": "2027-01-10T11:35:15Z",
         "digest": "sha256:b5203b7684f32d408c5a87019793337706b822b42a6d61a075e60e974edd64b1"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.3306185248159259,
-      0.7193814751840741
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 18,
+    "stage": "screen",
     "model": "HMAT",
     "baseline": "M",
-    "issue": 190,
-    "run": 38244254918,
+    "request_id": "ve28-20261012-screen-hmat-m",
     "ref_a": "638fc1d0e0e527838ea8e1159b7001bd2cbcd9fe",
     "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 4,
-    "draws": 2,
-    "wins_b": 14,
-    "score_a": 0.25,
-    "score_a_approx_95pct": [
-      0.06022381603583657,
-      0.4397761839641634
-    ],
-    "average_plies": 155.65,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38244254918,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-hmat-m",
+      "run_id": 38244254918,
+      "a": "HMAT",
+      "b": "M",
+      "wins": 4,
+      "draws": 2,
+      "losses": 14,
+      "score": 0.25,
+      "approx_95pct": [
+        0.06873833975800558,
+        0.4312616602419944
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38244254918/shard-0.json": "e7613c7918277493e27d135764213b49a2f4b9c8586a033bee13498000fa562d"
       }
     },
     "artifacts": [
@@ -1645,58 +1384,44 @@
         "expires_at": "2027-01-10T11:41:16Z",
         "digest": "sha256:ded75aae338db1e5033346868ecc3657e5d1def152934ddbc97115f91487af42"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.06873833975800558,
-      0.4312616602419944
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 19,
+    "stage": "screen",
     "model": "HMAT",
     "baseline": "Q14",
-    "issue": 191,
-    "run": 38244271779,
+    "request_id": "ve28-20261012-screen-hmat-q14",
     "ref_a": "638fc1d0e0e527838ea8e1159b7001bd2cbcd9fe",
     "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 7,
-    "draws": 4,
-    "wins_b": 9,
-    "score_a": 0.45,
-    "score_a_approx_95pct": [
-      0.23196376447938752,
-      0.6680362355206125
-    ],
-    "average_plies": 161.7,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38244271779,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-hmat-q14",
+      "run_id": 38244271779,
+      "a": "HMAT",
+      "b": "Q14",
+      "wins": 7,
+      "draws": 4,
+      "losses": 9,
+      "score": 0.45,
+      "approx_95pct": [
+        0.25016901878679676,
+        0.6498309812132033
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38244271779/shard-0.json": "0881b64e01a8772322e173eeb0e29e59d136e8f552f7c83dfaef6a86f79e2742"
       }
     },
     "artifacts": [
@@ -1732,58 +1457,44 @@
         "expires_at": "2027-01-10T11:41:26Z",
         "digest": "sha256:3c7081470e74749551901e2139f375e7edd9b3f39e4395f6f8cd450a70a187fe"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.25016901878679676,
-      0.6498309812132033
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 20,
+    "stage": "screen",
     "model": "FAVG",
     "baseline": "M",
-    "issue": 192,
-    "run": 38244285509,
+    "request_id": "ve28-20261012-screen-favg-m",
     "ref_a": "d928846ca3e386625e532686753f3f32392c8054",
     "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 6,
-    "draws": 3,
-    "wins_b": 11,
-    "score_a": 0.375,
-    "score_a_approx_95pct": [
-      0.16282377607281254,
-      0.5871762239271875
-    ],
-    "average_plies": 117.55,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38244285509,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-favg-m",
+      "run_id": 38244285509,
+      "a": "FAVG",
+      "b": "M",
+      "wins": 6,
+      "draws": 3,
+      "losses": 11,
+      "score": 0.375,
+      "approx_95pct": [
+        0.17548545759374093,
+        0.5745145424062591
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38244285509/shard-0.json": "d22bccfffe57409961114c57edce56cee175d88ce5648d1597d80297ef72cad2"
       }
     },
     "artifacts": [
@@ -1819,58 +1530,44 @@
         "expires_at": "2027-01-10T11:41:34Z",
         "digest": "sha256:fb74b78bbd81c1049d3d9f9a564456f34603047f6444063a22524cd7afb7b26e"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.17548545759374093,
-      0.5745145424062591
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 21,
+    "stage": "screen",
     "model": "FAVG",
     "baseline": "Q14",
-    "issue": 193,
-    "run": 38244300515,
+    "request_id": "ve28-20261012-screen-favg-q14",
     "ref_a": "d928846ca3e386625e532686753f3f32392c8054",
     "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 11,
-    "draws": 4,
-    "wins_b": 5,
-    "score_a": 0.65,
-    "score_a_approx_95pct": [
-      0.4409588557245249,
-      0.8590411442754751
-    ],
-    "average_plies": 138.3,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38244300515,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-favg-q14",
+      "run_id": 38244300515,
+      "a": "FAVG",
+      "b": "Q14",
+      "wins": 11,
+      "draws": 4,
+      "losses": 5,
+      "score": 0.65,
+      "approx_95pct": [
+        0.4605570492761809,
+        0.8394429507238191
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38244300515/shard-0.json": "312d302f9f71f07f76e80437ca23a66014b5fc44f3d2a761d9bb94aa8a378633"
       }
     },
     "artifacts": [
@@ -1906,58 +1603,44 @@
         "expires_at": "2027-01-10T11:41:42Z",
         "digest": "sha256:5e4c77847b8e73eff82cd040a1f20fb855069b92dc33d9f385fb706380e8f38c"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.4605570492761809,
-      0.8394429507238191
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 22,
+    "stage": "screen",
     "model": "NOC",
     "baseline": "M",
-    "issue": 194,
-    "run": 38244315059,
+    "request_id": "ve28-20261012-screen-noc-m",
     "ref_a": "c7a851384a41b2132cd46d6ebadc3c754aad5815",
     "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 9,
-    "draws": 4,
-    "wins_b": 7,
-    "score_a": 0.55,
-    "score_a_approx_95pct": [
-      0.3319637644793876,
-      0.7680362355206125
-    ],
-    "average_plies": 153.1,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38244315059,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-noc-m",
+      "run_id": 38244315059,
+      "a": "NOC",
+      "b": "M",
+      "wins": 9,
+      "draws": 4,
+      "losses": 7,
+      "score": 0.55,
+      "approx_95pct": [
+        0.35016901878679685,
+        0.7498309812132032
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38244315059/shard-0.json": "a79a8cfde4135bd07a4124b15e2ce57e893759781d89bcb0cae8500608c366c3"
       }
     },
     "artifacts": [
@@ -1993,58 +1676,44 @@
         "expires_at": "2027-01-10T11:41:50Z",
         "digest": "sha256:daa1769a6140a7d5173d0ccf90cb1566a782640c3ddad6874f9cc893648079c6"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.35016901878679685,
-      0.7498309812132032
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 23,
+    "stage": "screen",
     "model": "NOC",
     "baseline": "Q14",
-    "issue": 195,
-    "run": 38244329667,
+    "request_id": "ve28-20261012-screen-noc-q14",
     "ref_a": "c7a851384a41b2132cd46d6ebadc3c754aad5815",
     "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 9,
-    "draws": 1,
-    "wins_b": 10,
-    "score_a": 0.475,
-    "score_a_approx_95pct": [
-      0.2561394279455525,
-      0.6938605720544475
-    ],
-    "average_plies": 152.2,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38244329667,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-noc-q14",
+      "run_id": 38244329667,
+      "a": "NOC",
+      "b": "Q14",
+      "wins": 9,
+      "draws": 1,
+      "losses": 10,
+      "score": 0.475,
+      "approx_95pct": [
+        0.25615386323047107,
+        0.6938461367695289
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38244329667/shard-0.json": "51fbc58a2f7624fdf10fb74cc1d28048b69e4b149b1a6a6c720cb2d51731a074"
       }
     },
     "artifacts": [
@@ -2080,58 +1749,44 @@
         "expires_at": "2027-01-10T11:41:59Z",
         "digest": "sha256:4ddc46f9d417ebf3d15bdd03295fbaa6c285c4deeea28794f71acb06c2f31868"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.25615386323047107,
-      0.6938461367695289
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 24,
+    "stage": "screen",
     "model": "DELAY",
     "baseline": "M",
-    "issue": 196,
-    "run": 38244344719,
+    "request_id": "ve28-20261012-screen-delay-m",
     "ref_a": "17706bbfb8ae12a25fc144b2fa48e45442fbd2b2",
     "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 10,
-    "draws": 3,
-    "wins_b": 7,
-    "score_a": 0.575,
-    "score_a_approx_95pct": [
-      0.35834462849954535,
-      0.7916553715004546
-    ],
-    "average_plies": 122.9,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38244344719,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-delay-m",
+      "run_id": 38244344719,
+      "a": "DELAY",
+      "b": "M",
+      "wins": 10,
+      "draws": 3,
+      "losses": 7,
+      "score": 0.575,
+      "approx_95pct": [
+        0.37048118089422416,
+        0.7795188191057758
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38244344719/shard-0.json": "81e3c7f1c8190e6c1d0a594c875d9af7ba2425770a64910be8494932ef96919a"
       }
     },
     "artifacts": [
@@ -2167,58 +1822,44 @@
         "expires_at": "2027-01-10T11:42:07Z",
         "digest": "sha256:1b1bb7b7b282d91ee6e14eaa78f4d718965f73d366a4060411cb910723a49f91"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.37048118089422416,
-      0.7795188191057758
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 25,
+    "stage": "screen",
     "model": "DELAY",
     "baseline": "Q14",
-    "issue": 197,
-    "run": 38244362147,
+    "request_id": "ve28-20261012-screen-delay-q14",
     "ref_a": "17706bbfb8ae12a25fc144b2fa48e45442fbd2b2",
     "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 3,
-    "draws": 5,
-    "wins_b": 12,
-    "score_a": 0.275,
-    "score_a_approx_95pct": [
-      0.07930648963238462,
-      0.4706935103676154
-    ],
-    "average_plies": 146.45,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38244362147,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-delay-q14",
+      "run_id": 38244362147,
+      "a": "DELAY",
+      "b": "Q14",
+      "wins": 3,
+      "draws": 5,
+      "losses": 12,
+      "score": 0.275,
+      "approx_95pct": [
+        0.10864290153249753,
+        0.4413570984675025
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38244362147/shard-0.json": "301527788233562681ad0941b4b238b74e73a75d0d53726379bc216f3100191c"
       }
     },
     "artifacts": [
@@ -2254,58 +1895,44 @@
         "expires_at": "2027-01-10T11:42:17Z",
         "digest": "sha256:d9d5f878ecbc093ffa71215b2a2c06e194badea56589855727f069fa5fcbaf24"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.10864290153249753,
-      0.4413570984675025
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 26,
+    "stage": "screen",
     "model": "LATE",
     "baseline": "M",
-    "issue": 198,
-    "run": 38244377456,
+    "request_id": "ve28-20261012-screen-late-m",
     "ref_a": "a3a112046079e0891a9513bf4fa0c951cf8d4979",
     "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 4,
-    "draws": 4,
-    "wins_b": 12,
-    "score_a": 0.3,
-    "score_a_approx_95pct": [
-      0.09915976498719187,
-      0.500840235012808
-    ],
-    "average_plies": 154.35,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38244377456,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-late-m",
+      "run_id": 38244377456,
+      "a": "LATE",
+      "b": "M",
+      "wins": 4,
+      "draws": 4,
+      "losses": 12,
+      "score": 0.3,
+      "approx_95pct": [
+        0.12013806464547958,
+        0.4798619353545204
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38244377456/shard-0.json": "54ad10cab4fed9cb12248e94ed126a77c78528cec7ac6f4ab26405096da1aa29"
       }
     },
     "artifacts": [
@@ -2341,58 +1968,44 @@
         "expires_at": "2027-01-10T11:42:26Z",
         "digest": "sha256:c028d3c798d07b1ab78d08253bbaf1232099bd8d8871975c23f3c7d60694d8a9"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.12013806464547958,
-      0.4798619353545204
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
   },
   {
-    "index": 27,
+    "stage": "screen",
     "model": "LATE",
     "baseline": "Q14",
-    "issue": 199,
-    "run": 38244388040,
+    "request_id": "ve28-20261012-screen-late-q14",
     "ref_a": "a3a112046079e0891a9513bf4fa0c951cf8d4979",
     "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
-    "go_command": "go movetime 50",
-    "options_a": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
-    "options_b": {
-      "AdaptiveLongThink": false,
-      "PositionKnowledge": true,
-      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
-    },
     "games": 20,
-    "wins_a": 10,
-    "draws": 5,
-    "wins_b": 5,
-    "score_a": 0.625,
-    "score_a_approx_95pct": [
-      0.4128237760728125,
-      0.8371762239271875
-    ],
-    "average_plies": 141.25,
-    "illegal_games": 0,
     "shards": 1,
-    "position_knowledge": {
-      "A": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38244388040,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-late-q14",
+      "run_id": 38244388040,
+      "a": "LATE",
+      "b": "Q14",
+      "wins": 10,
+      "draws": 5,
+      "losses": 5,
+      "score": 0.625,
+      "approx_95pct": [
+        0.4385829519880929,
+        0.8114170480119072
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
       },
-      "B": {
-        "enabled": true,
-        "file": "build/position-knowledge-v1.tsv",
-        "available": true,
-        "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
-        "positions": 163
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38244388040/shard-0.json": "ec7425ffc3ad5173ef42549bd4dcff6183c008cbf692af87d253f8f2f0a65b6f"
       }
     },
     "artifacts": [
@@ -2428,11 +2041,1758 @@
         "expires_at": "2027-01-10T11:42:32Z",
         "digest": "sha256:0836e3165be25a4afb5e7bf110ecba85ee74253c9a1fbb7f4e6b1ec5bd25cca7"
       }
-    ],
-    "score_a_sample_95pct": [
-      0.4385829519880929,
-      0.8114170480119072
-    ],
-    "ci_note": "1/0.5/0 sample variance normal approximation; not corrected for shared opening seeds or selection; screening only"
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "STEP",
+    "baseline": "M",
+    "request_id": "ve28-20261012-screen-step-m",
+    "ref_a": "5dc993b9d10e0f151c448e2971195d34be35c861",
+    "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38244832980,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-step-m",
+      "run_id": 38244832980,
+      "a": "STEP",
+      "b": "M",
+      "wins": 9,
+      "draws": 1,
+      "losses": 10,
+      "score": 0.475,
+      "approx_95pct": [
+        0.25615386323047107,
+        0.6938461367695289
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38244832980/shard-0.json": "4fba87da5ef19c964cbac1616f1ed5eae7689e955f41123feedc2cd4a2b31087"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11745660259,
+        "name": "generic-engine-binaries-38244832980",
+        "size_in_bytes": 4325959,
+        "expired": false,
+        "expires_at": "2027-01-10T11:46:38Z",
+        "digest": "sha256:5f95bffcdbc19cb771ecae315add0f11cf51926c4031d6a0016f842e0c1ef7d0"
+      },
+      {
+        "id": 11745190330,
+        "name": "generic-engine-match-summary-38244832980",
+        "size_in_bytes": 572,
+        "expired": false,
+        "expires_at": "2027-01-10T11:46:38Z",
+        "digest": "sha256:293c84f7cb9cae110b16530921bebd390911e28876fea6c6e47e7dcb99f07860"
+      },
+      {
+        "id": 11744746094,
+        "name": "played-move-archive-38244832980",
+        "size_in_bytes": 137182,
+        "expired": false,
+        "expires_at": "2027-01-10T11:46:38Z",
+        "digest": "sha256:a1a440a78f88711a616d94527d45371e5bf9396b6eff521c4b756b7c40bb4670"
+      },
+      {
+        "id": 11744506671,
+        "name": "generic-engine-match-38244832980-0",
+        "size_in_bytes": 202030,
+        "expired": false,
+        "expires_at": "2027-01-10T11:46:38Z",
+        "digest": "sha256:54556b046fa7db52d5430e061dc03cad07dca9e7a90c84ef2364fd463e83d17e"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "STEP",
+    "baseline": "Q14",
+    "request_id": "ve28-20261012-screen-step-q14",
+    "ref_a": "5dc993b9d10e0f151c448e2971195d34be35c861",
+    "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38245002151,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-step-q14",
+      "run_id": 38245002151,
+      "a": "STEP",
+      "b": "Q14",
+      "wins": 9,
+      "draws": 4,
+      "losses": 7,
+      "score": 0.55,
+      "approx_95pct": [
+        0.35016901878679685,
+        0.7498309812132032
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38245002151/shard-0.json": "ffda0f4c84ea9ac430ea0c3770e4423e7b3cbbb5c46eb71c922b829fb887e297"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11745065879,
+        "name": "generic-engine-match-38245002151-0",
+        "size_in_bytes": 208921,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:13Z",
+        "digest": "sha256:2b6ca0c435cd152bf923af947b80af4ecc0acca46dd6a205cbd10331a75f1d25"
+      },
+      {
+        "id": 11744886173,
+        "name": "played-move-archive-38245002151",
+        "size_in_bytes": 142019,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:13Z",
+        "digest": "sha256:861ad6a6cae8cb5e98825698021885fe2fb253dacb9f80992770ef27601703d4"
+      },
+      {
+        "id": 11744820774,
+        "name": "generic-engine-binaries-38245002151",
+        "size_in_bytes": 4319616,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:13Z",
+        "digest": "sha256:ae5bba2955e31bf8a8c168c3c674e147370a7b6e09f0f33c15dd57182db306d9"
+      },
+      {
+        "id": 11744681464,
+        "name": "generic-engine-match-summary-38245002151",
+        "size_in_bytes": 572,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:13Z",
+        "digest": "sha256:46bc62e4646fe782c000c65921eb831d6688719f8d9863ab87ea7ba6d4eabffe"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "EARLY",
+    "baseline": "M",
+    "request_id": "ve28-20261012-screen-early-m",
+    "ref_a": "f28d1c547182e138729f87ef51f7587e1f9452e9",
+    "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38244831707,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-early-m",
+      "run_id": 38244831707,
+      "a": "EARLY",
+      "b": "M",
+      "wins": 6,
+      "draws": 4,
+      "losses": 10,
+      "score": 0.4,
+      "approx_95pct": [
+        0.20400000000000004,
+        0.596
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38244831707/shard-0.json": "a3230a8bbfa661c6d26b4a87ab1fb1b1392b8bafac0ceb4ccfaffa8588ac7d63"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11745645650,
+        "name": "generic-engine-match-38244831707-0",
+        "size_in_bytes": 216130,
+        "expired": false,
+        "expires_at": "2027-01-10T11:46:38Z",
+        "digest": "sha256:ed1b136694280675c0a84eb7e1efc2ee6d7f6700133bf2dd7c4523436963b910"
+      },
+      {
+        "id": 11744890887,
+        "name": "generic-engine-match-summary-38244831707",
+        "size_in_bytes": 571,
+        "expired": false,
+        "expires_at": "2027-01-10T11:46:38Z",
+        "digest": "sha256:fb02050335985fba756e918fd8588156c033da57d8ce3d1369e06f115f72222c"
+      },
+      {
+        "id": 11744691155,
+        "name": "played-move-archive-38244831707",
+        "size_in_bytes": 147059,
+        "expired": false,
+        "expires_at": "2027-01-10T11:46:38Z",
+        "digest": "sha256:787fca98baacb574f1355a2f5333752df4ae73690321a66e0cad915a477ec63f"
+      },
+      {
+        "id": 11744194873,
+        "name": "generic-engine-binaries-38244831707",
+        "size_in_bytes": 4325988,
+        "expired": false,
+        "expires_at": "2027-01-10T11:46:38Z",
+        "digest": "sha256:63fbe2a05f09d0e87625f2166f4a1f62ec0af0ada7adec940c10faef214c94f1"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "EARLY",
+    "baseline": "Q14",
+    "request_id": "ve28-20261012-screen-early-q14",
+    "ref_a": "f28d1c547182e138729f87ef51f7587e1f9452e9",
+    "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38245009835,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-early-q14",
+      "run_id": 38245009835,
+      "a": "EARLY",
+      "b": "Q14",
+      "wins": 6,
+      "draws": 7,
+      "losses": 7,
+      "score": 0.475,
+      "approx_95pct": [
+        0.2940872556931613,
+        0.6559127443068387
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38245009835/shard-0.json": "7ba4c175ac82d63f14d421e4ac06b6b11c0455751ffabe6d641cf5fbac545c56"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11745495955,
+        "name": "played-move-archive-38245009835",
+        "size_in_bytes": 124353,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:17Z",
+        "digest": "sha256:baefeb902d69fea3ecba01c35d9ae8ea02d71faa37fa4b1db589761cada1617e"
+      },
+      {
+        "id": 11745380922,
+        "name": "generic-engine-match-summary-38245009835",
+        "size_in_bytes": 572,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:17Z",
+        "digest": "sha256:e9ef850227c171e8b43addd7ac6a2a4bd70b64faa1668a527ad5fd3e157e1e92"
+      },
+      {
+        "id": 11745130371,
+        "name": "generic-engine-binaries-38245009835",
+        "size_in_bytes": 4319434,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:17Z",
+        "digest": "sha256:7dd6ac7091e8912590b59a7118a5d40d348e2d734d245eeb4e1f25312830ef5f"
+      },
+      {
+        "id": 11744646407,
+        "name": "generic-engine-match-38245009835-0",
+        "size_in_bytes": 183353,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:17Z",
+        "digest": "sha256:b997258d56866b8205962240dc65215ad74d3bf9aec28c1b2f4e3fbce8ad459b"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "AMP2",
+    "baseline": "M",
+    "request_id": "ve28-20261012-screen-amp2-m",
+    "ref_a": "6885dc64a3c1c3b51f91e3a6b675ed5209b60158",
+    "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38244839509,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-amp2-m",
+      "run_id": 38244839509,
+      "a": "AMP2",
+      "b": "M",
+      "wins": 6,
+      "draws": 4,
+      "losses": 10,
+      "score": 0.4,
+      "approx_95pct": [
+        0.20400000000000004,
+        0.596
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38244839509/shard-0.json": "327be0ae9b3f88a8206bb321d45ad050ad5ac6b817fdab6094b83b54bf87f893"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11745120593,
+        "name": "generic-engine-match-38244839509-0",
+        "size_in_bytes": 222520,
+        "expired": false,
+        "expires_at": "2027-01-10T11:46:42Z",
+        "digest": "sha256:fcfdd5b3fbb5343684cecc5cb69fd4ce42507c4b0c2560fa2e6bf85e0f3df206"
+      },
+      {
+        "id": 11744820484,
+        "name": "generic-engine-binaries-38244839509",
+        "size_in_bytes": 4325514,
+        "expired": false,
+        "expires_at": "2027-01-10T11:46:42Z",
+        "digest": "sha256:177cdd8e1ab49a1e28eaa07e6cd4d13c450353393375291f31349e618ab78181"
+      },
+      {
+        "id": 11744676166,
+        "name": "played-move-archive-38244839509",
+        "size_in_bytes": 150954,
+        "expired": false,
+        "expires_at": "2027-01-10T11:46:42Z",
+        "digest": "sha256:06a3db11f4e7a8f169922b4b53456ec3da15ea0c110eccf59fda4b86ff593b59"
+      },
+      {
+        "id": 11744511712,
+        "name": "generic-engine-match-summary-38244839509",
+        "size_in_bytes": 570,
+        "expired": false,
+        "expires_at": "2027-01-10T11:46:42Z",
+        "digest": "sha256:1d6dd91e64c9398ef293e484863838a9f7b55e5aad87de299a6a7c567ecd4fd9"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "AMP2",
+    "baseline": "Q14",
+    "request_id": "ve28-20261012-screen-amp2-q14",
+    "ref_a": "6885dc64a3c1c3b51f91e3a6b675ed5209b60158",
+    "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38245042338,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-amp2-q14",
+      "run_id": 38245042338,
+      "a": "AMP2",
+      "b": "Q14",
+      "wins": 8,
+      "draws": 6,
+      "losses": 6,
+      "score": 0.55,
+      "approx_95pct": [
+        0.3632443194691891,
+        0.736755680530811
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38245042338/shard-0.json": "e40b04b341586ee7cea71727e139e18b2bdab2830a6d364cbea79baf0488f6ce"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11745826026,
+        "name": "played-move-archive-38245042338",
+        "size_in_bytes": 166752,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:35Z",
+        "digest": "sha256:6ae6338dfc6cb639eebd0321fc32cd8126e604a15d3c3db8abd8d8253829e379"
+      },
+      {
+        "id": 11745805954,
+        "name": "generic-engine-match-summary-38245042338",
+        "size_in_bytes": 571,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:35Z",
+        "digest": "sha256:a0cdbe80764bb34cf0432a16dba0603b7d47f579ba0bd3d9b03cabbf875e5cce"
+      },
+      {
+        "id": 11744516497,
+        "name": "generic-engine-binaries-38245042338",
+        "size_in_bytes": 4319389,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:35Z",
+        "digest": "sha256:d5d540ce6ed255aae12d7652f31e68525e60e61a65762e771a7addf621530b19"
+      },
+      {
+        "id": 11744489008,
+        "name": "generic-engine-match-38245042338-0",
+        "size_in_bytes": 245507,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:35Z",
+        "digest": "sha256:7967db0beddd979b9c743a10701e41dd48ada584214838359b7c5ef1375fc157"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "BOARD",
+    "baseline": "M",
+    "request_id": "ve28-20261012-screen-board-m",
+    "ref_a": "2face12b32eade0bab65f62b80d7bbf7e09b7e4a",
+    "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38245042367,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-board-m",
+      "run_id": 38245042367,
+      "a": "BOARD",
+      "b": "M",
+      "wins": 6,
+      "draws": 3,
+      "losses": 11,
+      "score": 0.375,
+      "approx_95pct": [
+        0.17548545759374093,
+        0.5745145424062591
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38245042367/shard-0.json": "13b97d795f7e979471c493232712d130d02fe14e075241e0d72b987173694cab"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11745396046,
+        "name": "generic-engine-match-38245042367-0",
+        "size_in_bytes": 196151,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:35Z",
+        "digest": "sha256:342f7246bb33b86ed886d2824e61ad3afde10ec06b5ec82f78515d7c92c93da7"
+      },
+      {
+        "id": 11744891172,
+        "name": "played-move-archive-38245042367",
+        "size_in_bytes": 133521,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:35Z",
+        "digest": "sha256:84f571dea127ecfd69b58a3bfcbc486d44177b884b3de3651fde655de004a19b"
+      },
+      {
+        "id": 11744736401,
+        "name": "generic-engine-match-summary-38245042367",
+        "size_in_bytes": 574,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:35Z",
+        "digest": "sha256:c16eb87d9a3d60460544210c23a00b73b0f2269014b568e4e4011d69473c9ac4"
+      },
+      {
+        "id": 11744551238,
+        "name": "generic-engine-binaries-38245042367",
+        "size_in_bytes": 4325761,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:35Z",
+        "digest": "sha256:2eba5ff26c380bcdb9561b2741130b308275455a99054ebbb2667f2335701d88"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "BOARD",
+    "baseline": "Q14",
+    "request_id": "ve28-20261012-screen-board-q14",
+    "ref_a": "2face12b32eade0bab65f62b80d7bbf7e09b7e4a",
+    "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38245047037,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-board-q14",
+      "run_id": 38245047037,
+      "a": "BOARD",
+      "b": "Q14",
+      "wins": 9,
+      "draws": 8,
+      "losses": 3,
+      "score": 0.65,
+      "approx_95pct": [
+        0.4894411077058115,
+        0.8105588922941885
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38245047037/shard-0.json": "e58b17a3ed61b98e25b87235d156baa9603fdc8af6cd97a26bab1781481c9d52"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11745740904,
+        "name": "generic-engine-match-summary-38245047037",
+        "size_in_bytes": 572,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:38Z",
+        "digest": "sha256:62900cb745f1cf326e3201a0defd1e74f7e7c6c39067983baf821e1eca97c5a6"
+      },
+      {
+        "id": 11745655981,
+        "name": "generic-engine-match-38245047037-0",
+        "size_in_bytes": 210065,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:38Z",
+        "digest": "sha256:a84143a11c1d006f3d4f1f22f95281416f331b525007c6385980165958fdaf01"
+      },
+      {
+        "id": 11745386094,
+        "name": "played-move-archive-38245047037",
+        "size_in_bytes": 142987,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:38Z",
+        "digest": "sha256:895d249f8655a6debdd85a34ecef6499f2babf5a867f195a6e11cc18de76a7fd"
+      },
+      {
+        "id": 11744860763,
+        "name": "generic-engine-binaries-38245047037",
+        "size_in_bytes": 4319521,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:38Z",
+        "digest": "sha256:f3b16a4a97e2ad937ff697cc523e7ab8af2d2e38c114abbb73049d93efab9d89"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "HPOT",
+    "baseline": "M",
+    "request_id": "ve28-20261012-screen-hpot-m",
+    "ref_a": "15cd08ecea9d86d7b94394e3767f2a608af8b8b3",
+    "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38245046400,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-hpot-m",
+      "run_id": 38245046400,
+      "a": "HPOT",
+      "b": "M",
+      "wins": 10,
+      "draws": 2,
+      "losses": 8,
+      "score": 0.55,
+      "approx_95pct": [
+        0.3378982369362838,
+        0.7621017630637164
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38245046400/shard-0.json": "8f5b39389fb8936d77e7cba41bc346ce398677fe34607a7440c6d2a134787f47"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11745885786,
+        "name": "generic-engine-match-summary-38245046400",
+        "size_in_bytes": 571,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:37Z",
+        "digest": "sha256:680eef956b0cfc244255a119d57cce7a8e6751c1e57aed1e3c9cb7428d217548"
+      },
+      {
+        "id": 11745570997,
+        "name": "played-move-archive-38245046400",
+        "size_in_bytes": 147517,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:37Z",
+        "digest": "sha256:645f4a843b1e7c359d5fff6934d1152bb43b9ef8539a869ac6ccd7cd6defe48c"
+      },
+      {
+        "id": 11744845762,
+        "name": "generic-engine-binaries-38245046400",
+        "size_in_bytes": 4325775,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:37Z",
+        "digest": "sha256:7f24d59888cef0b832373998168b0e30b743d0ef7bb3275460e6251c1d9db1eb"
+      },
+      {
+        "id": 11744586731,
+        "name": "generic-engine-match-38245046400-0",
+        "size_in_bytes": 217778,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:37Z",
+        "digest": "sha256:6b6836a1d452ea533967a0c5354d6ff9d53ebd659bab6802d618a4aeeab21715"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "HPOT",
+    "baseline": "Q14",
+    "request_id": "ve28-20261012-screen-hpot-q14",
+    "ref_a": "15cd08ecea9d86d7b94394e3767f2a608af8b8b3",
+    "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38245054967,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-hpot-q14",
+      "run_id": 38245054967,
+      "a": "HPOT",
+      "b": "Q14",
+      "wins": 5,
+      "draws": 8,
+      "losses": 7,
+      "score": 0.45,
+      "approx_95pct": [
+        0.27730678250602586,
+        0.6226932174939741
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38245054967/shard-0.json": "1bd0477570be58a1d95151f912ead8909dcdfd67d0d1fd578023b1015f375f87"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11745910353,
+        "name": "played-move-archive-38245054967",
+        "size_in_bytes": 143217,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:42Z",
+        "digest": "sha256:c82f87886b8b1c804919e3d629fbcf3c70735ac97f6d9bceef89cb6ce93ff5b9"
+      },
+      {
+        "id": 11745785884,
+        "name": "generic-engine-match-summary-38245054967",
+        "size_in_bytes": 572,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:42Z",
+        "digest": "sha256:91cac4ed60116e12023ee849719151273b981d93667a41c352c965454fc14986"
+      },
+      {
+        "id": 11745565578,
+        "name": "generic-engine-binaries-38245054967",
+        "size_in_bytes": 4319404,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:42Z",
+        "digest": "sha256:74e3d9c928b33942f8b6c3f94c9a2247a163116b42714a5b61675b722d925055"
+      },
+      {
+        "id": 11744946159,
+        "name": "generic-engine-match-38245054967-0",
+        "size_in_bytes": 210427,
+        "expired": false,
+        "expires_at": "2027-01-10T11:48:42Z",
+        "digest": "sha256:7daa186fff86779a5a5fd66acb4640f9405bda7ed29100aca42751b089204bcc"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "ATTACK",
+    "baseline": "M",
+    "request_id": "ve28-20261012-screen-attack-m",
+    "ref_a": "2aed7a905d09ea1d2435e87567f31bf77a0f0847",
+    "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38245360072,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-attack-m",
+      "run_id": 38245360072,
+      "a": "ATTACK",
+      "b": "M",
+      "wins": 13,
+      "draws": 4,
+      "losses": 3,
+      "score": 0.75,
+      "approx_95pct": [
+        0.5832635233922134,
+        0.9167364766077866
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38245360072/shard-0.json": "f8b4e0e814f1facc0a340bd3dc17991b0aa1a7f5c8f40ca1adad2d41b1cdeadc"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11746615019,
+        "name": "generic-engine-match-38245360072-0",
+        "size_in_bytes": 230451,
+        "expired": false,
+        "expires_at": "2027-01-10T11:51:33Z",
+        "digest": "sha256:1fff62f5e920433ccf9392d7311b1699cce04f2a4927481cd235940d32f8dc1c"
+      },
+      {
+        "id": 11746585057,
+        "name": "played-move-archive-38245360072",
+        "size_in_bytes": 156270,
+        "expired": false,
+        "expires_at": "2027-01-10T11:51:33Z",
+        "digest": "sha256:e8160ec3a426ad65f1faeaf2f36b77273e3cb5ff5f12e2feb71f0a2150fdc480"
+      },
+      {
+        "id": 11746050312,
+        "name": "generic-engine-match-summary-38245360072",
+        "size_in_bytes": 572,
+        "expired": false,
+        "expires_at": "2027-01-10T11:51:33Z",
+        "digest": "sha256:5f33e00b10451185527405dc50d8e76acedfe1ed8ea7bf5f7a472b4bcc58dfe2"
+      },
+      {
+        "id": 11744961333,
+        "name": "generic-engine-binaries-38245360072",
+        "size_in_bytes": 4325793,
+        "expired": false,
+        "expires_at": "2027-01-10T11:51:33Z",
+        "digest": "sha256:f63eab4910d2412a00f02767a141085c27d925067bb83e93323f7347adae72af"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "ATTACK",
+    "baseline": "Q14",
+    "request_id": "ve28-20261012-screen-attack-q14",
+    "ref_a": "2aed7a905d09ea1d2435e87567f31bf77a0f0847",
+    "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38245362014,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-attack-q14",
+      "run_id": 38245362014,
+      "a": "ATTACK",
+      "b": "Q14",
+      "wins": 10,
+      "draws": 3,
+      "losses": 7,
+      "score": 0.575,
+      "approx_95pct": [
+        0.37048118089422416,
+        0.7795188191057758
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38245362014/shard-0.json": "162a6a9ebe73944700818bca527a3e4200b997801422645a1b00fa33aa7e69fa"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11746475046,
+        "name": "played-move-archive-38245362014",
+        "size_in_bytes": 132915,
+        "expired": false,
+        "expires_at": "2027-01-10T11:51:34Z",
+        "digest": "sha256:9cda89241dbce3041469b665daf37b326205ebc605651c1f52fa384b91d3ac49"
+      },
+      {
+        "id": 11745691325,
+        "name": "generic-engine-match-38245362014-0",
+        "size_in_bytes": 195153,
+        "expired": false,
+        "expires_at": "2027-01-10T11:51:34Z",
+        "digest": "sha256:224c6120e5a7036b605ca9b0057d0e2fa0d06582faf75f20235bf10a0643641c"
+      },
+      {
+        "id": 11745295879,
+        "name": "generic-engine-match-summary-38245362014",
+        "size_in_bytes": 572,
+        "expired": false,
+        "expires_at": "2027-01-10T11:51:34Z",
+        "digest": "sha256:da82a30a9d8d36c9299fed26c1b34bd9694e196627e7e6416a7acf24d98efcbb"
+      },
+      {
+        "id": 11745195744,
+        "name": "generic-engine-binaries-38245362014",
+        "size_in_bytes": 4319412,
+        "expired": false,
+        "expires_at": "2027-01-10T11:51:34Z",
+        "digest": "sha256:330edede9c0f76cc8e9497d41d25b8820b936521a4d83870f5cfe83aa5c16170"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "EXCHANGE",
+    "baseline": "M",
+    "request_id": "ve28-20261012-screen-exchange-m",
+    "ref_a": "7d548e371372423f4f9ba86734218e0052832b67",
+    "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38245363814,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-exchange-m",
+      "run_id": 38245363814,
+      "a": "EXCHANGE",
+      "b": "M",
+      "wins": 6,
+      "draws": 1,
+      "losses": 13,
+      "score": 0.325,
+      "approx_95pct": [
+        0.12048118089422424,
+        0.5295188191057758
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38245363814/shard-0.json": "4a155db18184d57f7dcbd7baa447b99640141b44dee19a51f9b305ed78e8f1d3"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11746330088,
+        "name": "generic-engine-match-summary-38245363814",
+        "size_in_bytes": 573,
+        "expired": false,
+        "expires_at": "2027-01-10T11:51:35Z",
+        "digest": "sha256:e3ea1730de8992afcbdb5e6260a277ee1ee691779452c3f704f23c46c40be378"
+      },
+      {
+        "id": 11746325075,
+        "name": "played-move-archive-38245363814",
+        "size_in_bytes": 126224,
+        "expired": false,
+        "expires_at": "2027-01-10T11:51:35Z",
+        "digest": "sha256:c379e782c9216876fd43bd6b2f8d35b1e994fb201e3e25888d6ff3cb8315f213"
+      },
+      {
+        "id": 11745620951,
+        "name": "generic-engine-binaries-38245363814",
+        "size_in_bytes": 4325731,
+        "expired": false,
+        "expires_at": "2027-01-10T11:51:35Z",
+        "digest": "sha256:21c002c5ca2fce531cfc141e4d51828ba474d4e989536017d35b0545900080dc"
+      },
+      {
+        "id": 11744662069,
+        "name": "generic-engine-match-38245363814-0",
+        "size_in_bytes": 184978,
+        "expired": false,
+        "expires_at": "2027-01-10T11:51:35Z",
+        "digest": "sha256:f3fb33c7cf0f744d8e144ce1c1cbcb69ede597ad5651e07e75a393d0e462d9ba"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "EXCHANGE",
+    "baseline": "Q14",
+    "request_id": "ve28-20261012-screen-exchange-q14",
+    "ref_a": "7d548e371372423f4f9ba86734218e0052832b67",
+    "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38245491240,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-exchange-q14",
+      "run_id": 38245491240,
+      "a": "EXCHANGE",
+      "b": "Q14",
+      "wins": 5,
+      "draws": 6,
+      "losses": 9,
+      "score": 0.4,
+      "approx_95pct": [
+        0.21734934120596575,
+        0.5826506587940343
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38245491240/shard-0.json": "ff3316659e31def38a9da70e42de84de6a34d75c64bdcb1ecd8c4d375af08cb9"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11746605234,
+        "name": "generic-engine-match-summary-38245491240",
+        "size_in_bytes": 572,
+        "expired": false,
+        "expires_at": "2027-01-10T11:52:48Z",
+        "digest": "sha256:04afeed362458e9f49e4a53ebe7e0703847f9e4a6df1c12b824113308a791a3a"
+      },
+      {
+        "id": 11746595219,
+        "name": "generic-engine-match-38245491240-0",
+        "size_in_bytes": 213672,
+        "expired": false,
+        "expires_at": "2027-01-10T11:52:48Z",
+        "digest": "sha256:2da5bbeb1c6aa0f52a51aa7ea57a314268ad4265652dc6da7143e6b81a4c5430"
+      },
+      {
+        "id": 11746275424,
+        "name": "played-move-archive-38245491240",
+        "size_in_bytes": 145529,
+        "expired": false,
+        "expires_at": "2027-01-10T11:52:48Z",
+        "digest": "sha256:984a958b6794ae432acd75a11c8a71d7322d8a759fe238e1f0f03ef95c2a02c0"
+      },
+      {
+        "id": 11744601935,
+        "name": "generic-engine-binaries-38245491240",
+        "size_in_bytes": 4319407,
+        "expired": false,
+        "expires_at": "2027-01-10T11:52:48Z",
+        "digest": "sha256:af3912c4011c6e5c398268cb8280eb78f2e298b81accf515202c1722d5159ab4"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "KING",
+    "baseline": "M",
+    "request_id": "ve28-20261012-screen-king-m",
+    "ref_a": "2211b4f654bc9e0e7b25a60fd99bebf993ce4c0f",
+    "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38245493901,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-king-m",
+      "run_id": 38245493901,
+      "a": "KING",
+      "b": "M",
+      "wins": 11,
+      "draws": 4,
+      "losses": 5,
+      "score": 0.65,
+      "approx_95pct": [
+        0.4605570492761809,
+        0.8394429507238191
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38245493901/shard-0.json": "ddbe392eecaa47aa0a7552f0ae2635b50cfa238273770fc28e23d0fc7a8fd835"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11746420414,
+        "name": "generic-engine-match-summary-38245493901",
+        "size_in_bytes": 571,
+        "expired": false,
+        "expires_at": "2027-01-10T11:52:50Z",
+        "digest": "sha256:b6f4303b713b84d58117d9303d8c6ace48645980a49fad901c9cb12cd3a28535"
+      },
+      {
+        "id": 11746135538,
+        "name": "played-move-archive-38245493901",
+        "size_in_bytes": 160259,
+        "expired": false,
+        "expires_at": "2027-01-10T11:52:50Z",
+        "digest": "sha256:974ab390a4b47dcac1a8abe3f8be18b7c42d7d86acaa3d7234f52db83e62a83d"
+      },
+      {
+        "id": 11745471760,
+        "name": "generic-engine-match-38245493901-0",
+        "size_in_bytes": 236735,
+        "expired": false,
+        "expires_at": "2027-01-10T11:52:50Z",
+        "digest": "sha256:89aef2deb6e270dfd7bb2c7697bf8b580764d03207a4ca7c4631330738270b6e"
+      },
+      {
+        "id": 11745345531,
+        "name": "generic-engine-binaries-38245493901",
+        "size_in_bytes": 4325673,
+        "expired": false,
+        "expires_at": "2027-01-10T11:52:50Z",
+        "digest": "sha256:be625619730c60c202414e2e6c3f7b6cf273387e470a46e5bc764c41cb18d2c8"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "KING",
+    "baseline": "Q14",
+    "request_id": "ve28-20261012-screen-king-q14",
+    "ref_a": "2211b4f654bc9e0e7b25a60fd99bebf993ce4c0f",
+    "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38245493596,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-king-q14",
+      "run_id": 38245493596,
+      "a": "KING",
+      "b": "Q14",
+      "wins": 6,
+      "draws": 8,
+      "losses": 6,
+      "score": 0.5,
+      "approx_95pct": [
+        0.3258494299388268,
+        0.6741505700611732
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38245493596/shard-0.json": "c180c7510320a0b6204d8b01509b817c929dd13f308cedec3b13232d87c24832"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11746400323,
+        "name": "played-move-archive-38245493596",
+        "size_in_bytes": 127227,
+        "expired": false,
+        "expires_at": "2027-01-10T11:52:50Z",
+        "digest": "sha256:da1a376e1423c24f88cf01a0bbf7364d83d046862d9f6cc819a9d0bb0ea0d190"
+      },
+      {
+        "id": 11746350343,
+        "name": "generic-engine-match-summary-38245493596",
+        "size_in_bytes": 571,
+        "expired": false,
+        "expires_at": "2027-01-10T11:52:50Z",
+        "digest": "sha256:8afceeca1540978edcda55a033b10a67c5d37b1b5b369c58733fe423d00f6e41"
+      },
+      {
+        "id": 11746170472,
+        "name": "generic-engine-match-38245493596-0",
+        "size_in_bytes": 187594,
+        "expired": false,
+        "expires_at": "2027-01-10T11:52:50Z",
+        "digest": "sha256:f9ccff001d60b934c29948b105ed7f91e1b3088f9ca9711aad10058dc67e4e18"
+      },
+      {
+        "id": 11745776148,
+        "name": "generic-engine-binaries-38245493596",
+        "size_in_bytes": 4319300,
+        "expired": false,
+        "expires_at": "2027-01-10T11:52:50Z",
+        "digest": "sha256:eff8c1f9430aa7a90d16e752d86a8dfee02393f7a8ec9256ebb67153cb703db2"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "HYBRID",
+    "baseline": "M",
+    "request_id": "ve28-20261012-screen-hybrid-m",
+    "ref_a": "806e3d916bcb02e4bbd4866da82dc7b572200748",
+    "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38245496840,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-hybrid-m",
+      "run_id": 38245496840,
+      "a": "HYBRID",
+      "b": "M",
+      "wins": 2,
+      "draws": 4,
+      "losses": 14,
+      "score": 0.2,
+      "approx_95pct": [
+        0.05086636159047431,
+        0.3491336384095257
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38245496840/shard-0.json": "f35637740655f9e069a80598186594f9b5e3a4d9936c15e0872b67336be443b3"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11746405249,
+        "name": "generic-engine-match-38245496840-0",
+        "size_in_bytes": 190980,
+        "expired": false,
+        "expires_at": "2027-01-10T11:52:52Z",
+        "digest": "sha256:d3eca90ae0c47808905af0f72e8f7278cba297c1ff933823ddc7540032111956"
+      },
+      {
+        "id": 11746270361,
+        "name": "played-move-archive-38245496840",
+        "size_in_bytes": 130320,
+        "expired": false,
+        "expires_at": "2027-01-10T11:52:52Z",
+        "digest": "sha256:58d34d6bb3674b950c97bc304f66c4357c861e5a3f74eaf2a1a11036d8f20056"
+      },
+      {
+        "id": 11746175385,
+        "name": "generic-engine-match-summary-38245496840",
+        "size_in_bytes": 572,
+        "expired": false,
+        "expires_at": "2027-01-10T11:52:52Z",
+        "digest": "sha256:e1cf21fd4ecc92f127631dd7e2d2566a1f0aa4ef33ccf9c94557deab79263399"
+      },
+      {
+        "id": 11745166065,
+        "name": "generic-engine-binaries-38245496840",
+        "size_in_bytes": 4325551,
+        "expired": false,
+        "expires_at": "2027-01-10T11:52:52Z",
+        "digest": "sha256:c7a5ac5dec91fd3ecb466b09d4175d53f8432bc79fe6116d261c3dc8e8634592"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "HYBRID",
+    "baseline": "Q14",
+    "request_id": "ve28-20261012-screen-hybrid-q14",
+    "ref_a": "806e3d916bcb02e4bbd4866da82dc7b572200748",
+    "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38245498173,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-hybrid-q14",
+      "run_id": 38245498173,
+      "a": "HYBRID",
+      "b": "Q14",
+      "wins": 3,
+      "draws": 8,
+      "losses": 9,
+      "score": 0.35,
+      "approx_95pct": [
+        0.1894411077058114,
+        0.5105588922941886
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38245498173/shard-0.json": "455389922c080765e7314dcb54e99c6b272129fb0ef39c6038adac726f491cda"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11746340426,
+        "name": "generic-engine-match-summary-38245498173",
+        "size_in_bytes": 569,
+        "expired": false,
+        "expires_at": "2027-01-10T11:52:52Z",
+        "digest": "sha256:19c1352df1844b4b4f0e9a939383eaeb360493be0cf3b403e3cf299848335a28"
+      },
+      {
+        "id": 11746095005,
+        "name": "generic-engine-binaries-38245498173",
+        "size_in_bytes": 4319378,
+        "expired": false,
+        "expires_at": "2027-01-10T11:52:52Z",
+        "digest": "sha256:a5d76c59b5e5ffa5f643b840000105b02b9500e969dc799402b7a158911e0fb5"
+      },
+      {
+        "id": 11745930598,
+        "name": "played-move-archive-38245498173",
+        "size_in_bytes": 146734,
+        "expired": false,
+        "expires_at": "2027-01-10T11:52:52Z",
+        "digest": "sha256:c6c60be232c0a98cf028db75075863143989b1d21ae07fb7b441850f8723aae7"
+      },
+      {
+        "id": 11745676634,
+        "name": "generic-engine-match-38245498173-0",
+        "size_in_bytes": 215189,
+        "expired": false,
+        "expires_at": "2027-01-10T11:52:52Z",
+        "digest": "sha256:a0d1bcd0b370c91684387cb16231836828683c84800da7c5df79e2fcfab880ec"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "RISK",
+    "baseline": "M",
+    "request_id": "ve28-20261012-screen-risk-m",
+    "ref_a": "3e0a4777756d868dec70378a862923f408297289",
+    "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38245629091,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-risk-m",
+      "run_id": 38245629091,
+      "a": "RISK",
+      "b": "M",
+      "wins": 8,
+      "draws": 5,
+      "losses": 7,
+      "score": 0.525,
+      "approx_95pct": [
+        0.3306185248159259,
+        0.7193814751840741
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38245629091/shard-0.json": "905e970ae0ce75bb56775ba74aa9c299841aba36a17685bef68be8bc633f4762"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11746555426,
+        "name": "generic-engine-match-summary-38245629091",
+        "size_in_bytes": 572,
+        "expired": false,
+        "expires_at": "2027-01-10T11:54:07Z",
+        "digest": "sha256:46e34014ebf5d6e67cdcc4592b1dd88564b3d4411e38d70d3a7b0dfd19dac73a"
+      },
+      {
+        "id": 11746150618,
+        "name": "played-move-archive-38245629091",
+        "size_in_bytes": 133090,
+        "expired": false,
+        "expires_at": "2027-01-10T11:54:07Z",
+        "digest": "sha256:000f1bb0e0695d5b9ccacd10a1d569905d4201457519cdd4f4b53e3d83a661d2"
+      },
+      {
+        "id": 11745906536,
+        "name": "generic-engine-match-38245629091-0",
+        "size_in_bytes": 195959,
+        "expired": false,
+        "expires_at": "2027-01-10T11:54:07Z",
+        "digest": "sha256:4d428fc09bc2b4e201e17f6c7e571b6e0d92dee0a0a9198669ccdb12bec66b7b"
+      },
+      {
+        "id": 11745511389,
+        "name": "generic-engine-binaries-38245629091",
+        "size_in_bytes": 4325691,
+        "expired": false,
+        "expires_at": "2027-01-10T11:54:07Z",
+        "digest": "sha256:4db6a926930759b0fa426aaaf6c0c5057bb92a07b81510d66097e3ed0b8d174a"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "RISK",
+    "baseline": "Q14",
+    "request_id": "ve28-20261012-screen-risk-q14",
+    "ref_a": "3e0a4777756d868dec70378a862923f408297289",
+    "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38245631434,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-risk-q14",
+      "run_id": 38245631434,
+      "a": "RISK",
+      "b": "Q14",
+      "wins": 8,
+      "draws": 7,
+      "losses": 5,
+      "score": 0.575,
+      "approx_95pct": [
+        0.39690319013466147,
+        0.7530968098653384
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38245631434/shard-0.json": "217a5394956f177216a1fa01eec4fe01d1fa777d6c3645f8956a4dde8a30dfb0"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11746530568,
+        "name": "generic-engine-match-38245631434-0",
+        "size_in_bytes": 223262,
+        "expired": false,
+        "expires_at": "2027-01-10T11:54:08Z",
+        "digest": "sha256:8d4abef83aeb59e3224e4fab0ad7e25ad3d1f4e58893acb09ffce4ba38adda86"
+      },
+      {
+        "id": 11746260723,
+        "name": "played-move-archive-38245631434",
+        "size_in_bytes": 151748,
+        "expired": false,
+        "expires_at": "2027-01-10T11:54:08Z",
+        "digest": "sha256:7e29fe416c3d524c00f579fba3e7f43a68b8a2b3e44e2c0eb8e9007dfa189729"
+      },
+      {
+        "id": 11745960776,
+        "name": "generic-engine-match-summary-38245631434",
+        "size_in_bytes": 572,
+        "expired": false,
+        "expires_at": "2027-01-10T11:54:08Z",
+        "digest": "sha256:51feb9b8ca6e05f12d0b2fb57657088628210aa6c078fb1e424debb72949ea43"
+      },
+      {
+        "id": 11745871228,
+        "name": "generic-engine-binaries-38245631434",
+        "size_in_bytes": 4319304,
+        "expired": false,
+        "expires_at": "2027-01-10T11:54:08Z",
+        "digest": "sha256:16229dfdf61104f2aecbdfabf26056a0cc510f80272109d509fd22b8b6e6512d"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "BLEND",
+    "baseline": "M",
+    "request_id": "ve28-20261012-screen-blend-m",
+    "ref_a": "75e8b589bc44db131a3361d1f83a7150723218e2",
+    "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38245875846,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-blend-m",
+      "run_id": 38245875846,
+      "a": "BLEND",
+      "b": "M",
+      "wins": 10,
+      "draws": 4,
+      "losses": 6,
+      "score": 0.6,
+      "approx_95pct": [
+        0.40399999999999997,
+        0.796
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38245875846/shard-0.json": "b4696a199d311946bfb8b8a241185b9b50617b9631580f64e23e7f3480386189"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11746025686,
+        "name": "generic-engine-binaries-38245875846",
+        "size_in_bytes": 4325667,
+        "expired": false,
+        "expires_at": "2027-01-10T11:56:29Z",
+        "digest": "sha256:06c385ef4d39290f8fb6c4109f51d9de006d4694261b203ddb821e8efab99b80"
+      },
+      {
+        "id": 11745882005,
+        "name": "played-move-archive-38245875846",
+        "size_in_bytes": 143624,
+        "expired": false,
+        "expires_at": "2027-01-10T11:56:29Z",
+        "digest": "sha256:dac9ab43bad146cb6351029d2002feaef21f32adcae83b04c841635a90e80fae"
+      },
+      {
+        "id": 11745692177,
+        "name": "generic-engine-match-summary-38245875846",
+        "size_in_bytes": 571,
+        "expired": false,
+        "expires_at": "2027-01-10T11:56:29Z",
+        "digest": "sha256:f68d8080fe634c7a4ba953b89d7536db5b77497180dfeb8bf502e001f1624bf1"
+      },
+      {
+        "id": 11745417227,
+        "name": "generic-engine-match-38245875846-0",
+        "size_in_bytes": 211296,
+        "expired": false,
+        "expires_at": "2027-01-10T11:56:29Z",
+        "digest": "sha256:43bc3078901a4309c417ea88ad0c48225dda4c287659d1632ae579d306fc4e73"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "BLEND",
+    "baseline": "Q14",
+    "request_id": "ve28-20261012-screen-blend-q14",
+    "ref_a": "75e8b589bc44db131a3361d1f83a7150723218e2",
+    "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38245879359,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-blend-q14",
+      "run_id": 38245879359,
+      "a": "BLEND",
+      "b": "Q14",
+      "wins": 9,
+      "draws": 5,
+      "losses": 6,
+      "score": 0.575,
+      "approx_95pct": [
+        0.3832365766724118,
+        0.7667634233275882
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38245879359/shard-0.json": "d3dccb09a3f01bd0c4092bbf62e9c806813307e0b5c3fe24792a77ad9ca578f4"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11746351064,
+        "name": "generic-engine-match-summary-38245879359",
+        "size_in_bytes": 573,
+        "expired": false,
+        "expires_at": "2027-01-10T11:56:31Z",
+        "digest": "sha256:569f05fd5076ebae920991864e4c1f12192605d205a4b35f953ecee6754657d7"
+      },
+      {
+        "id": 11746111133,
+        "name": "played-move-archive-38245879359",
+        "size_in_bytes": 154841,
+        "expired": false,
+        "expires_at": "2027-01-10T11:56:31Z",
+        "digest": "sha256:2d314900604174edb308ad00adc63615c05c007634302fd81cbc7129c3e0d342"
+      },
+      {
+        "id": 11746061124,
+        "name": "generic-engine-match-38245879359-0",
+        "size_in_bytes": 227115,
+        "expired": false,
+        "expires_at": "2027-01-10T11:56:31Z",
+        "digest": "sha256:d3b02f023f3055e80c8fe11e6521e2c10ec8bb751666f0d875480b2b5577dcdd"
+      },
+      {
+        "id": 11745836587,
+        "name": "generic-engine-binaries-38245879359",
+        "size_in_bytes": 4319542,
+        "expired": false,
+        "expires_at": "2027-01-10T11:56:31Z",
+        "digest": "sha256:b370d3ca67527de27ff2facb3ed7d6708432b88e93145f3e6d654d25b01955b3"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "RESOURCE",
+    "baseline": "M",
+    "request_id": "ve28-20261012-screen-resource-m",
+    "ref_a": "430b274c906274dd8e0a20a09a6c6faa5b67b092",
+    "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012000000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38245876880,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-resource-m",
+      "run_id": 38245876880,
+      "a": "RESOURCE",
+      "b": "M",
+      "wins": 4,
+      "draws": 6,
+      "losses": 10,
+      "score": 0.35,
+      "approx_95pct": [
+        0.17440417221117663,
+        0.5255958277888233
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38245876880/shard-0.json": "3b3b445ddb47f8e64e7960b4d4f847d5cd10e3825d018bebc559759f84b8f927"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11746635400,
+        "name": "generic-engine-binaries-38245876880",
+        "size_in_bytes": 4325649,
+        "expired": false,
+        "expires_at": "2027-01-10T11:56:29Z",
+        "digest": "sha256:56af2e111db592e114f6544729529954e942a90c9e22713641ac3dce8deb0fa3"
+      },
+      {
+        "id": 11745862000,
+        "name": "generic-engine-match-38245876880-0",
+        "size_in_bytes": 243894,
+        "expired": false,
+        "expires_at": "2027-01-10T11:56:29Z",
+        "digest": "sha256:6a7a6af3a1dc033363b110a21b49deb17ad953be847c023c9e5f91e218c6b357"
+      },
+      {
+        "id": 11745857076,
+        "name": "generic-engine-match-summary-38245876880",
+        "size_in_bytes": 570,
+        "expired": false,
+        "expires_at": "2027-01-10T11:56:29Z",
+        "digest": "sha256:be164fec56dfeb6694c43b55ecc954b158845d7d5e2f8057c6d58ccd77db5049"
+      },
+      {
+        "id": 11745851966,
+        "name": "played-move-archive-38245876880",
+        "size_in_bytes": 165519,
+        "expired": false,
+        "expires_at": "2027-01-10T11:56:29Z",
+        "digest": "sha256:35d5dcd6c1bc31ce4792a89e7aecb2d2a6adeda0bb9b8cb902f6383c7db63386"
+      }
+    ]
+  },
+  {
+    "stage": "screen",
+    "model": "RESOURCE",
+    "baseline": "Q14",
+    "request_id": "ve28-20261012-screen-resource-q14",
+    "ref_a": "430b274c906274dd8e0a20a09a6c6faa5b67b092",
+    "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+    "games": 20,
+    "shards": 1,
+    "go_command": "go movetime 50",
+    "max_plies": 300,
+    "seed": 2012010000,
+    "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "run": 38246031610,
+    "raw_audit": {
+      "request_id": "ve28-20261012-screen-resource-q14",
+      "run_id": 38246031610,
+      "a": "RESOURCE",
+      "b": "Q14",
+      "wins": 4,
+      "draws": 3,
+      "losses": 13,
+      "score": 0.275,
+      "approx_95pct": [
+        0.09408725569316137,
+        0.4559127443068387
+      ],
+      "colors": {
+        "A": 10,
+        "B": 10
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/coarse-raw/38246031610/shard-0.json": "d4552a144291b1b0316d1e46aab8d0959e9aea67d3e2e36186501412aac29978"
+      }
+    },
+    "artifacts": [
+      {
+        "id": 11746546215,
+        "name": "generic-engine-match-38246031610-0",
+        "size_in_bytes": 216554,
+        "expired": false,
+        "expires_at": "2027-01-10T11:58:01Z",
+        "digest": "sha256:87964d884110839cf88cd805f24308eba42d6ce33134327e12a95ddcd85a7ed5"
+      },
+      {
+        "id": 11746246342,
+        "name": "played-move-archive-38246031610",
+        "size_in_bytes": 147565,
+        "expired": false,
+        "expires_at": "2027-01-10T11:58:01Z",
+        "digest": "sha256:5fadb76cf3eb2dda0b8049b59da19c60739624865f90a8d7fe53f1db6681e7e8"
+      },
+      {
+        "id": 11746136449,
+        "name": "generic-engine-match-summary-38246031610",
+        "size_in_bytes": 573,
+        "expired": false,
+        "expires_at": "2027-01-10T11:58:01Z",
+        "digest": "sha256:4f79e21f4af6ffdb948571625faa510d65c4b0fab4cd334bffe4fef292d96875"
+      },
+      {
+        "id": 11745831873,
+        "name": "generic-engine-binaries-38246031610",
+        "size_in_bytes": 4319371,
+        "expired": false,
+        "expires_at": "2027-01-10T11:58:01Z",
+        "digest": "sha256:7fcfa70137fb948354e7c4147f8a7d61fb7010d388316b9c9c57b1b6b005afca"
+      }
+    ]
   }
 ]

@@ -1,0 +1,681 @@
+[
+  {
+    "stage": "intermediate",
+    "model": "UNIFIED",
+    "baseline": "M",
+    "request_id": "ve28-20261012-mid-unified-m",
+    "ref_a": "3fd3c37cc4b83f9645af509e1002837c09f4d5dd",
+    "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+    "games": 100,
+    "shards": 2,
+    "go_command": "go movetime 200",
+    "max_plies": 300,
+    "seed": 2012200000,
+    "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "issue": 226,
+    "run": 38246798419,
+    "build_refs_verified": true,
+    "result": {
+      "ref_a": "3fd3c37cc4b83f9645af509e1002837c09f4d5dd",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "go_command": "go movetime 200",
+      "options_a": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+      },
+      "options_b": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+      },
+      "games": 100,
+      "wins_a": 58,
+      "draws": 2,
+      "wins_b": 40,
+      "score_a": 0.59,
+      "score_a_approx_95pct": [
+        0.4936006722015137,
+        0.6863993277984862
+      ],
+      "average_plies": 104.13,
+      "illegal_games": 0,
+      "shards": 2,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11747957513,
+          "name": "generic-engine-match-38246798419-0",
+          "size_in_bytes": 462513,
+          "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11747957513",
+          "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11747957513/zip",
+          "expired": false,
+          "created_at": "2026-10-12T12:35:26Z",
+          "expires_at": "2027-01-10T12:05:08Z",
+          "updated_at": "2026-10-12T12:35:26Z",
+          "digest": "sha256:9b59412a517ea855c0e54bbac1caaf74f60d5342e0eee9a38ae1ba9a72a70b54",
+          "workflow_run": {
+            "id": 38246798419,
+            "repository_id": 1405637901,
+            "head_repository_id": 1405637901,
+            "head_branch": "main",
+            "head_sha": "5ee92650858f4b0d980e8552d9428e391a93099e"
+          }
+        },
+        {
+          "id": 11747082594,
+          "name": "played-move-archive-38246798419",
+          "size_in_bytes": 620534,
+          "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11747082594",
+          "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11747082594/zip",
+          "expired": false,
+          "created_at": "2026-10-12T12:35:39Z",
+          "expires_at": "2027-01-10T12:05:08Z",
+          "updated_at": "2026-10-12T12:35:39Z",
+          "digest": "sha256:78fa46da464e70f468736292820bfff875f58a70b7b927e8082d277f3a105f68",
+          "workflow_run": {
+            "id": 38246798419,
+            "repository_id": 1405637901,
+            "head_repository_id": 1405637901,
+            "head_branch": "main",
+            "head_sha": "5ee92650858f4b0d980e8552d9428e391a93099e"
+          }
+        },
+        {
+          "id": 11746872737,
+          "name": "generic-engine-match-summary-38246798419",
+          "size_in_bytes": 567,
+          "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11746872737",
+          "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11746872737/zip",
+          "expired": false,
+          "created_at": "2026-10-12T12:35:40Z",
+          "expires_at": "2027-01-10T12:05:08Z",
+          "updated_at": "2026-10-12T12:35:40Z",
+          "digest": "sha256:1fa708905140def0d77c24c73c4f8f15e4adb2dad6f528910225c71a3af46b8e",
+          "workflow_run": {
+            "id": 38246798419,
+            "repository_id": 1405637901,
+            "head_repository_id": 1405637901,
+            "head_branch": "main",
+            "head_sha": "5ee92650858f4b0d980e8552d9428e391a93099e"
+          }
+        },
+        {
+          "id": 11746842588,
+          "name": "generic-engine-match-38246798419-1",
+          "size_in_bytes": 453877,
+          "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11746842588",
+          "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11746842588/zip",
+          "expired": false,
+          "created_at": "2026-10-12T12:35:02Z",
+          "expires_at": "2027-01-10T12:05:08Z",
+          "updated_at": "2026-10-12T12:35:02Z",
+          "digest": "sha256:b8974c452ce0440d76e1b20a05a089decfc04b258a106cc5a44477d963a9c001",
+          "workflow_run": {
+            "id": 38246798419,
+            "repository_id": 1405637901,
+            "head_repository_id": 1405637901,
+            "head_branch": "main",
+            "head_sha": "5ee92650858f4b0d980e8552d9428e391a93099e"
+          }
+        },
+        {
+          "id": 11746666941,
+          "name": "generic-engine-binaries-38246798419",
+          "size_in_bytes": 4325698,
+          "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11746666941",
+          "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11746666941/zip",
+          "expired": false,
+          "created_at": "2026-10-12T12:05:56Z",
+          "expires_at": "2027-01-10T12:05:08Z",
+          "updated_at": "2026-10-12T12:05:56Z",
+          "digest": "sha256:08f349c6c7c70396093386c78e40b4bdd9e1ee474a3931a81760c32d8295b316",
+          "workflow_run": {
+            "id": 38246798419,
+            "repository_id": 1405637901,
+            "head_repository_id": 1405637901,
+            "head_branch": "main",
+            "head_sha": "5ee92650858f4b0d980e8552d9428e391a93099e"
+          }
+        }
+      ]
+    },
+    "raw_audit": {
+      "request_id": "ve28-20261012-mid-unified-m",
+      "run_id": 38246798419,
+      "a": "UNIFIED",
+      "b": "M",
+      "wins": 58,
+      "draws": 2,
+      "losses": 40,
+      "score": 0.59,
+      "approx_95pct": [
+        0.49412155001400376,
+        0.6858784499859961
+      ],
+      "colors": {
+        "A": 50,
+        "B": 50
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/mid-raw/38246798419/shard-0.json": "f0e54ae28336c3fcf3524c8b5e21fe972d1b4e7768650c0225d9fa4624b2829e",
+        "build/mid-raw/38246798419/shard-1.json": "408629c2e86e4b972708954af6b3edac7157b1222a1254eb1114c4da73696b5a"
+      }
+    }
+  },
+  {
+    "stage": "intermediate",
+    "model": "UNIFIED",
+    "baseline": "Q14",
+    "request_id": "ve28-20261012-mid-unified-q14",
+    "ref_a": "3fd3c37cc4b83f9645af509e1002837c09f4d5dd",
+    "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+    "games": 100,
+    "shards": 2,
+    "go_command": "go movetime 200",
+    "max_plies": 300,
+    "seed": 2012210000,
+    "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "completed",
+    "issue": 227,
+    "run": 38246812966,
+    "build_refs_verified": true,
+    "result": {
+      "ref_a": "3fd3c37cc4b83f9645af509e1002837c09f4d5dd",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "go_command": "go movetime 200",
+      "options_a": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+      },
+      "options_b": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+      },
+      "games": 100,
+      "wins_a": 50,
+      "draws": 2,
+      "wins_b": 48,
+      "score_a": 0.51,
+      "score_a_approx_95pct": [
+        0.4120196019603921,
+        0.6079803980396079
+      ],
+      "average_plies": 119.22,
+      "illegal_games": 0,
+      "shards": 2,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11748028072,
+          "name": "played-move-archive-38246812966",
+          "size_in_bytes": 696429,
+          "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11748028072",
+          "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11748028072/zip",
+          "expired": false,
+          "created_at": "2026-10-12T12:38:48Z",
+          "expires_at": "2027-01-10T12:05:18Z",
+          "updated_at": "2026-10-12T12:38:48Z",
+          "digest": "sha256:4bdaa84bdfdf96e32d5c70eb66d9df596be3ee7d5679e53b1425bad0c96128e4",
+          "workflow_run": {
+            "id": 38246812966,
+            "repository_id": 1405637901,
+            "head_repository_id": 1405637901,
+            "head_branch": "main",
+            "head_sha": "5ee92650858f4b0d980e8552d9428e391a93099e"
+          }
+        },
+        {
+          "id": 11747997922,
+          "name": "generic-engine-match-38246812966-0",
+          "size_in_bytes": 512042,
+          "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11747997922",
+          "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11747997922/zip",
+          "expired": false,
+          "created_at": "2026-10-12T12:38:25Z",
+          "expires_at": "2027-01-10T12:05:18Z",
+          "updated_at": "2026-10-12T12:38:25Z",
+          "digest": "sha256:7d0754de0882222ed86acf6b9a00671bc7809cb939f50238a2bab78651ba1076",
+          "workflow_run": {
+            "id": 38246812966,
+            "repository_id": 1405637901,
+            "head_repository_id": 1405637901,
+            "head_branch": "main",
+            "head_sha": "5ee92650858f4b0d980e8552d9428e391a93099e"
+          }
+        },
+        {
+          "id": 11747638212,
+          "name": "generic-engine-match-38246812966-1",
+          "size_in_bytes": 513092,
+          "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11747638212",
+          "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11747638212/zip",
+          "expired": false,
+          "created_at": "2026-10-12T12:38:38Z",
+          "expires_at": "2027-01-10T12:05:18Z",
+          "updated_at": "2026-10-12T12:38:38Z",
+          "digest": "sha256:14f7c72fc1d8122cc38764aaf05224ddebfe91f5248ae1c296c6ecf32101b3f2",
+          "workflow_run": {
+            "id": 38246812966,
+            "repository_id": 1405637901,
+            "head_repository_id": 1405637901,
+            "head_branch": "main",
+            "head_sha": "5ee92650858f4b0d980e8552d9428e391a93099e"
+          }
+        },
+        {
+          "id": 11747243609,
+          "name": "generic-engine-match-summary-38246812966",
+          "size_in_bytes": 566,
+          "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11747243609",
+          "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11747243609/zip",
+          "expired": false,
+          "created_at": "2026-10-12T12:38:49Z",
+          "expires_at": "2027-01-10T12:05:18Z",
+          "updated_at": "2026-10-12T12:38:49Z",
+          "digest": "sha256:13dc5e98c37b0879d38e1d7d3c7f8fcf3fe1dec1e6a9b4c9eed90fbcc4841a1f",
+          "workflow_run": {
+            "id": 38246812966,
+            "repository_id": 1405637901,
+            "head_repository_id": 1405637901,
+            "head_branch": "main",
+            "head_sha": "5ee92650858f4b0d980e8552d9428e391a93099e"
+          }
+        },
+        {
+          "id": 11745693077,
+          "name": "generic-engine-binaries-38246812966",
+          "size_in_bytes": 4319464,
+          "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11745693077",
+          "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11745693077/zip",
+          "expired": false,
+          "created_at": "2026-10-12T12:06:19Z",
+          "expires_at": "2027-01-10T12:05:18Z",
+          "updated_at": "2026-10-12T12:06:19Z",
+          "digest": "sha256:3a6146693b21c750f7694db395169fa253c72f2604c62d9c515b8d0ff2232193",
+          "workflow_run": {
+            "id": 38246812966,
+            "repository_id": 1405637901,
+            "head_repository_id": 1405637901,
+            "head_branch": "main",
+            "head_sha": "5ee92650858f4b0d980e8552d9428e391a93099e"
+          }
+        }
+      ]
+    },
+    "raw_audit": {
+      "request_id": "ve28-20261012-mid-unified-q14",
+      "run_id": 38246812966,
+      "a": "UNIFIED",
+      "b": "Q14",
+      "wins": 50,
+      "draws": 2,
+      "losses": 48,
+      "score": 0.51,
+      "approx_95pct": [
+        0.4125161064844582,
+        0.6074838935155418
+      ],
+      "colors": {
+        "A": 50,
+        "B": 50
+      },
+      "phase_missing_plies": 0,
+      "raw_sha256": {
+        "build/mid-raw/38246812966/shard-0.json": "fa07f49452982606914d15591176c56da05aa613e30a3843ef2f7bbc84f8529d",
+        "build/mid-raw/38246812966/shard-1.json": "7cdfc8e8226014818a31f80c0d2cc9a9290354a0b34f9370de7857bbfe23e8cc"
+      }
+    }
+  },
+  {
+    "stage": "intermediate",
+    "model": "BLEND",
+    "baseline": "M",
+    "request_id": "ve28-20261012-mid-blend-m",
+    "ref_a": "75e8b589bc44db131a3361d1f83a7150723218e2",
+    "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+    "games": 100,
+    "shards": 2,
+    "go_command": "go movetime 200",
+    "max_plies": 300,
+    "seed": 2012200000,
+    "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "requested",
+    "issue": 228,
+    "run": 38310744857,
+    "build_refs_verified": true,
+    "jobs": [
+      {
+        "id": 115015590278,
+        "name": "plan",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 115015621766,
+        "name": "build",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 115015953351,
+        "name": "match (0, 50, 2012200000, 0)",
+        "status": "in_progress",
+        "conclusion": null,
+        "run_shard_started": "2026-10-12T21:28:39Z"
+      },
+      {
+        "id": 115015953464,
+        "name": "match (1, 50, 2012300000, 50)",
+        "status": "in_progress",
+        "conclusion": null,
+        "run_shard_started": "2026-10-12T21:28:40Z"
+      }
+    ]
+  },
+  {
+    "stage": "intermediate",
+    "model": "BLEND",
+    "baseline": "Q14",
+    "request_id": "ve28-20261012-mid-blend-q14",
+    "ref_a": "75e8b589bc44db131a3361d1f83a7150723218e2",
+    "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+    "games": 100,
+    "shards": 2,
+    "go_command": "go movetime 200",
+    "max_plies": 300,
+    "seed": 2012210000,
+    "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "requested",
+    "issue": 229,
+    "run": 38310765778,
+    "build_refs_verified": true,
+    "jobs": [
+      {
+        "id": 115015659934,
+        "name": "plan",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 115015705743,
+        "name": "build",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 115016018395,
+        "name": "match (0, 50, 2012210000, 0)",
+        "status": "in_progress",
+        "conclusion": null,
+        "run_shard_started": "2026-10-12T21:28:51Z"
+      },
+      {
+        "id": 115016018409,
+        "name": "match (1, 50, 2012310000, 50)",
+        "status": "in_progress",
+        "conclusion": null,
+        "run_shard_started": "2026-10-12T21:28:52Z"
+      }
+    ]
+  },
+  {
+    "stage": "intermediate",
+    "model": "ATTACK",
+    "baseline": "M",
+    "request_id": "ve28-20261012-mid-attack-m",
+    "ref_a": "2aed7a905d09ea1d2435e87567f31bf77a0f0847",
+    "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+    "games": 100,
+    "shards": 2,
+    "go_command": "go movetime 200",
+    "max_plies": 300,
+    "seed": 2012200000,
+    "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "requested",
+    "issue": 230,
+    "run": 38310795719,
+    "build_refs_verified": true,
+    "jobs": [
+      {
+        "id": 115015765665,
+        "name": "plan",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 115015798462,
+        "name": "build",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 115016052496,
+        "name": "match (1, 50, 2012300000, 50)",
+        "status": "in_progress",
+        "conclusion": null,
+        "run_shard_started": "2026-10-12T21:28:55Z"
+      },
+      {
+        "id": 115016052543,
+        "name": "match (0, 50, 2012200000, 0)",
+        "status": "in_progress",
+        "conclusion": null,
+        "run_shard_started": "2026-10-12T21:28:59Z"
+      }
+    ]
+  },
+  {
+    "stage": "intermediate",
+    "model": "ATTACK",
+    "baseline": "Q14",
+    "request_id": "ve28-20261012-mid-attack-q14",
+    "ref_a": "2aed7a905d09ea1d2435e87567f31bf77a0f0847",
+    "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+    "games": 100,
+    "shards": 2,
+    "go_command": "go movetime 200",
+    "max_plies": 300,
+    "seed": 2012210000,
+    "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "requested",
+    "issue": 231,
+    "run": 38310789493,
+    "build_refs_verified": true,
+    "jobs": [
+      {
+        "id": 115015744521,
+        "name": "plan",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 115015788609,
+        "name": "build",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 115016102631,
+        "name": "match (0, 50, 2012210000, 0)",
+        "status": "in_progress",
+        "conclusion": null,
+        "run_shard_started": "2026-10-12T21:29:06Z"
+      },
+      {
+        "id": 115016102651,
+        "name": "match (1, 50, 2012310000, 50)",
+        "status": "in_progress",
+        "conclusion": null,
+        "run_shard_started": "2026-10-12T21:29:07Z"
+      }
+    ]
+  },
+  {
+    "stage": "intermediate",
+    "model": "RESOURCE_BALANCE",
+    "baseline": "M",
+    "request_id": "ve28-20261012-mid-resource_balance-m",
+    "ref_a": "3101e5a444396a0b2271320459a4ae325b709b2b",
+    "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+    "games": 100,
+    "shards": 2,
+    "go_command": "go movetime 200",
+    "max_plies": 300,
+    "seed": 2012200000,
+    "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "requested",
+    "issue": 232,
+    "run": 38310812684,
+    "build_refs_verified": true,
+    "jobs": [
+      {
+        "id": 115015823459,
+        "name": "plan",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 115015865608,
+        "name": "build",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 115016179535,
+        "name": "match (0, 50, 2012200000, 0)",
+        "status": "in_progress",
+        "conclusion": null,
+        "run_shard_started": "2026-10-12T21:29:22Z"
+      },
+      {
+        "id": 115016179571,
+        "name": "match (1, 50, 2012300000, 50)",
+        "status": "in_progress",
+        "conclusion": null,
+        "run_shard_started": "2026-10-12T21:29:21Z"
+      }
+    ]
+  },
+  {
+    "stage": "intermediate",
+    "model": "RESOURCE_BALANCE",
+    "baseline": "Q14",
+    "request_id": "ve28-20261012-mid-resource_balance-q14",
+    "ref_a": "3101e5a444396a0b2271320459a4ae325b709b2b",
+    "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+    "games": 100,
+    "shards": 2,
+    "go_command": "go movetime 200",
+    "max_plies": 300,
+    "seed": 2012210000,
+    "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "not_requested"
+  },
+  {
+    "stage": "intermediate",
+    "model": "MOBILE",
+    "baseline": "M",
+    "request_id": "ve28-20261012-mid-mobile-m",
+    "ref_a": "664ce96c9bbbad777a1ae9f66ef4c5380fa56136",
+    "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+    "games": 100,
+    "shards": 2,
+    "go_command": "go movetime 200",
+    "max_plies": 300,
+    "seed": 2012200000,
+    "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "not_requested"
+  },
+  {
+    "stage": "intermediate",
+    "model": "MOBILE",
+    "baseline": "Q14",
+    "request_id": "ve28-20261012-mid-mobile-q14",
+    "ref_a": "664ce96c9bbbad777a1ae9f66ef4c5380fa56136",
+    "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+    "games": 100,
+    "shards": 2,
+    "go_command": "go movetime 200",
+    "max_plies": 300,
+    "seed": 2012210000,
+    "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "not_requested"
+  },
+  {
+    "stage": "intermediate",
+    "model": "STEP",
+    "baseline": "M",
+    "request_id": "ve28-20261012-mid-step-m",
+    "ref_a": "5dc993b9d10e0f151c448e2971195d34be35c861",
+    "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+    "games": 100,
+    "shards": 2,
+    "go_command": "go movetime 200",
+    "max_plies": 300,
+    "seed": 2012200000,
+    "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "not_requested"
+  },
+  {
+    "stage": "intermediate",
+    "model": "STEP",
+    "baseline": "Q14",
+    "request_id": "ve28-20261012-mid-step-q14",
+    "ref_a": "5dc993b9d10e0f151c448e2971195d34be35c861",
+    "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+    "games": 100,
+    "shards": 2,
+    "go_command": "go movetime 200",
+    "max_plies": 300,
+    "seed": 2012210000,
+    "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "not_requested"
+  }
+]
