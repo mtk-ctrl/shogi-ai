@@ -1,5 +1,6 @@
 #pragma once
-// ADOPTED Q14 PHASE PROFILE - KUMOJI v2.0.12.
+// RESEARCH VARIANT BASED ON ADOPTED Q14 - NOT FORMALLY ADOPTED.
+// research: hand potential +15% versus Q5; unchanged other axes
 // The anchors and contextual bonuses reproduce the tested Q14 exactly.
 #include "strategy/evaluation_params.h"
 #include <algorithm>
@@ -8,9 +9,9 @@
 #include <cstddef>
 namespace shogi::strategy {
 inline constexpr int AdoptedPhaseProfile=34;
-inline constexpr std::array<int,10> StageOpening{200,450,390,560,135,245,300,900,56,30};
-inline constexpr std::array<int,10> StageMiddle{155,540,540,470,170,300,270,780,119,26};
-inline constexpr std::array<int,10> StageEnd{110,740,670,380,225,180,180,570,250,22};
+inline constexpr std::array<int,10> StageOpening{200,450,390,560,135,245,300,900,52,30};
+inline constexpr std::array<int,10> StageMiddle{155,540,540,470,170,300,270,780,109,26};
+inline constexpr std::array<int,10> StageEnd{110,740,670,380,225,180,180,570,230,22};
 inline constexpr std::array<int,3> StageHandMaterial{100,145,220};
 inline constexpr std::array<int,10> MWeights{100,480,380,410,150,140,210,340,60,20};
 inline double phase_smoothstep(double x){ x=std::clamp(x,0.0,1.0); return x*x*(3.0-2.0*x); }
