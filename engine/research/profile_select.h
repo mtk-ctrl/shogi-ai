@@ -1,5 +1,5 @@
 #pragma once
-// Research branch only. M: fixed candidate index.
+// Research branch only. FAVG: fixed candidate index.
 namespace shogi::strategy {
-inline constexpr int SelectedResearchProfile = 1;
+inline constexpr int SelectedResearchProfile = 2;
 }
