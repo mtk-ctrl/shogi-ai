@@ -1,5 +1,5 @@
 #pragma once
-// Research branch only. LIN: fixed candidate index.
+// Research branch only. DELAY: fixed candidate index.
 namespace shogi::strategy {
-inline constexpr int SelectedResearchProfile = 4;
+inline constexpr int SelectedResearchProfile = 5;
 }
