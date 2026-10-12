@@ -236,5 +236,39 @@
         "3e486db45161d60618f23e6248dbb4867a8470122d2c435d09c594c1bb9c6f98"
       ]
     }
+  },
+  "38313954096": {
+    "long_think_total": {
+      "A": 977,
+      "B": 990
+    },
+    "max_per_game": {
+      "A": 10,
+      "B": 10
+    },
+    "knowledge": {
+      "A_knowledge_probes_total": 4773,
+      "A_knowledge_hits_total": 0,
+      "A_knowledge_promotions_total": 0,
+      "B_knowledge_probes_total": 4852,
+      "B_knowledge_hits_total": 0,
+      "B_knowledge_promotions_total": 0
+    },
+    "phase_counts": {
+      "A_opening": 1498,
+      "B_opening": 1512,
+      "A_middle": 1921,
+      "B_middle": 1893,
+      "A_end": 2104,
+      "B_end": 2104
+    },
+    "binary_hashes": {
+      "A": [
+        "dcdda2d2c395b3652a3cf94ebdae8a31a6bde653651e12cadc8529d586c26e9f"
+      ],
+      "B": [
+        "94b9fc2a3165107d291472d21c939faf2c24858fe43129c75a5d110b124a1103"
+      ]
+    }
   }
 }

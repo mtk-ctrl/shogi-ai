@@ -115,6 +115,29 @@
     }
   },
   {
+    "request_id": "ve28-20261012-mid-resource_balance-q14",
+    "run_id": 38313954096,
+    "a": "RESOURCE_BALANCE",
+    "b": "Q14",
+    "wins": 64,
+    "draws": 0,
+    "losses": 36,
+    "score": 0.64,
+    "approx_95pct": [
+      0.5454460423404134,
+      0.7345539576595866
+    ],
+    "colors": {
+      "A": 50,
+      "B": 50
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/mid-raw/38313954096/shard-0.json": "df083ad94484cad9de41e1039a8fc7f2dd2ecb38aa5627ddde84205b38908f87",
+      "build/mid-raw/38313954096/shard-1.json": "e3766f33ace754a307a0d31afd399cea1d68555e92c9cc06dac31d412f50ed50"
+    }
+  },
+  {
     "request_id": "ve28-20261012-mid-unified-m",
     "run_id": 38246798419,
     "a": "UNIFIED",
