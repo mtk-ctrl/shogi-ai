@@ -3,9 +3,9 @@
 #include <stdexcept>
 
 namespace shogi::strategy {
-// Explainable static-evaluation parameters. Defaults are the adopted
-// Evaluation-v2 M profile selected on 2026-10-10.  The former v1 evaluator
-// remains reproducible through explicit USI options and legacy_v1().
+// Explainable static-evaluation parameters. M weights are the reference
+// values for USI options. The adopted Q14 profile scales them each turn.
+// Earlier fixed static profiles remain reproducible when explicitly requested.
 struct EvaluationParameters {
     int guard_gold = 12, guard_silver = 10, guard_pawn = 4;
     int pressure_king = 12, pressure_occupied = 6, pressure_empty = 4;
@@ -13,16 +13,16 @@ struct EvaluationParameters {
     int mobility_major = 2, mobility_minor = 1, mobility_piece_cap = 12;
     int danger_numerator = 1, danger_denominator = 8;
 
-    // Feature caps and adopted M-profile weights.
+    // Feature caps and M reference weights for the adopted Q14 profile.
     std::array<int, 4> caps{80, 120, 100, 160};
     std::array<int, 4> weights{480, 380, 410, 150};
 
     // Evaluation-v2 keeps Material as one axis rather than an implicit master
-    // axis. M is the production default after 600-game comparison.
+    // axis. Q14 is applied at the beginning of each production move.
     bool v2_enabled = true;
     int material_weight = 100;
-    // Research-compatible independent scale for material value in hand.
-    // Defaults at 100 preserve all adopted M/N evaluation results.
+    // Independent scale for material value in hand. Q14 assigns 100-220
+    // based on maturity; reference 100 preserves fixed-M behavior.
     int hand_material_weight = 100;
     std::array<int, 4> v2_caps{160, 240, 200, 400};
     int influence_weight = 140;

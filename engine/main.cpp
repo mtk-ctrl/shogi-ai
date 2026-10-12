@@ -8,7 +8,7 @@
 #include "strategy/promotion_policy.h"
 #include "strategy/long_think_budget.h"
 #include "strategy/turn_phase.h"
-#include "strategy/phase_weights_experiment.h"
+#include "strategy/phase_weights.h"
 #include <algorithm>
 #include <chrono>
 #include <random>
@@ -100,7 +100,7 @@ int main() {
         if (command != "isready" && command != "stop" && command != "ponderhit" && command != "quit")
             finish_search(true);
         if (command == "usi") {
-            std::cout << "id name KUMOJI v2.0.11\nid author mtk-ctrl + ChatGPT\n"
+            std::cout << "id name KUMOJI v2.0.12\nid author mtk-ctrl + ChatGPT\n"
                       << "option name USI_Ponder type check default false\n"
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
@@ -264,7 +264,7 @@ int main() {
                     << " battle " << phase.components.battle
                     << " invasion " << phase.components.invasion
                     << " king_threat " << phase.components.king_threat
-                    << " phase_weight_profile " << shogi::strategy::ExperimentalPhaseProfile
+                    << " phase_weight_profile " << shogi::strategy::AdoptedPhaseProfile
                      << " static_cp_black " << eval.total << '\n';
                 emit(out.str());
             }

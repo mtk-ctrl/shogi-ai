@@ -1,12 +1,13 @@
 #pragma once
-// RESEARCH ONLY EXPERIMENT Q14: hand potential +25% from Q5; one-axis test vs Q5, not adopted.
+// ADOPTED Q14 PHASE PROFILE - KUMOJI v2.0.12.
+// The anchors and contextual bonuses reproduce the tested Q14 exactly.
 #include "strategy/evaluation_params.h"
 #include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstddef>
 namespace shogi::strategy {
-inline constexpr int ExperimentalPhaseProfile=34;
+inline constexpr int AdoptedPhaseProfile=34;
 inline constexpr std::array<int,10> StageOpening{200,450,390,560,135,245,300,900,56,30};
 inline constexpr std::array<int,10> StageMiddle{155,540,540,470,170,300,270,780,119,26};
 inline constexpr std::array<int,10> StageEnd{110,740,670,380,225,180,180,570,250,22};

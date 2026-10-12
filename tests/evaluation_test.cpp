@@ -1,5 +1,5 @@
 #include "strategy/alphabeta3_tt.h"
-#include "strategy/phase_weights_experiment.h"
+#include "strategy/phase_weights.h"
 #include "strategy/promotion_policy.h"
 #include <iostream>
 #include <map>
@@ -110,6 +110,7 @@ int main(){try{
     require(nm.count[0][sq("4c")]==1&&nm.count[0][sq("6c")]==1,"knight jumps blockers");
     std::cout<<"PASS every piece/promotion geometry, blockers and king-vacated xray\n";
 
+    require(AdoptedPhaseProfile==34, "Q14 adopted profile identifier");
     const auto start=phase_turn_parameters(EvaluationParameters{},0);
     const auto middle=phase_turn_parameters(EvaluationParameters{},50);
     const auto finish=phase_turn_parameters(EvaluationParameters{},100);
@@ -147,7 +148,7 @@ int main(){try{
             evaluate(hand,finish).material_term==180*StageHandMaterial[2]/100,
             "held material value in actual evaluation");
     require(evaluate(hand).material_term==material_black(hand),
-            "unchanged v2.0.11 M baseline evaluation");
+            "unmodified M reference evaluation without phase transformation");
     std::cout<<"PASS phase profile directions, held material and baseline invariant\n";
     // Risk response must be contextual rather than a constant maturity-only rescaling.
     const auto quiet=phase_turn_parameters(EvaluationParameters{},50,0,0);

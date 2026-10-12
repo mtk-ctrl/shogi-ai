@@ -86,8 +86,8 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
     EvaluationBreakdown b;
     b.material=material_black(s);
     // Distinguish pieces on board from pieces in hand: their strategic
-    // values need not follow the same maturity trajectory. The two weights
-    // both default to 100 and preserve the fixed M/N evaluation exactly.
+    // values need not follow the same maturity trajectory. Reference 100
+    // reproduces earlier fixed-M material evaluation when used directly.
     int hand_material=0;
     for (int color=0; color<2; ++color)
         for (int kind=1; kind<=7; ++kind)
