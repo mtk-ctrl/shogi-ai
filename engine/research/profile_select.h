@@ -1,5 +1,5 @@
 #pragma once
-// Research branch only. UNIFIED: fixed candidate index.
+// Research branch only. POSITIONAL: fixed candidate index.
 namespace shogi::strategy {
-inline constexpr int SelectedResearchProfile = 25;
+inline constexpr int SelectedResearchProfile = 26;
 }
