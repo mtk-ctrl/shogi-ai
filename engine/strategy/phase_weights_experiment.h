@@ -1,15 +1,15 @@
 #pragma once
-// RESEARCH ONLY EXPERIMENT Q5: Q2 baseline coordination +50%. Not adopted.
+// RESEARCH ONLY EXPERIMENT Q11: attack pressure -15% from Q5; one-axis test vs Q5, not adopted.
 #include "strategy/evaluation_params.h"
 #include <algorithm>
 #include <array>
 #include <cmath>
 #include <cstddef>
 namespace shogi::strategy {
-inline constexpr int ExperimentalPhaseProfile=25;
-inline constexpr std::array<int,10> StageOpening{200,450,390,560,135,245,300,900,45,30};
-inline constexpr std::array<int,10> StageMiddle{155,540,540,470,170,300,270,780,95,26};
-inline constexpr std::array<int,10> StageEnd{110,740,670,380,225,180,180,570,200,22};
+inline constexpr int ExperimentalPhaseProfile=31;
+inline constexpr std::array<int,10> StageOpening{200,450,332,560,135,245,300,900,45,30};
+inline constexpr std::array<int,10> StageMiddle{155,540,459,470,170,300,270,780,95,26};
+inline constexpr std::array<int,10> StageEnd{110,740,570,380,225,180,180,570,200,22};
 inline constexpr std::array<int,3> StageHandMaterial{100,145,220};
 inline constexpr std::array<int,10> MWeights{100,480,380,410,150,140,210,340,60,20};
 inline double phase_smoothstep(double x){ x=std::clamp(x,0.0,1.0); return x*x*(3.0-2.0*x); }
