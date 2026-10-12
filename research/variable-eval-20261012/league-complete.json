@@ -1,0 +1,1181 @@
+{
+  "games": 2800,
+  "illegal_games": 0,
+  "matches": [
+    {
+      "pair": 1,
+      "a": "M",
+      "b": "HS15",
+      "run": 38206595687,
+      "wins_a": 58,
+      "draws": 1,
+      "wins_b": 41,
+      "illegal": 0,
+      "score_a": 0.585,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11729110508,
+          "name": "played-move-archive-38206595687"
+        },
+        {
+          "id": 11729105455,
+          "name": "generic-engine-match-summary-38206595687"
+        }
+      ]
+    },
+    {
+      "pair": 2,
+      "a": "Q2",
+      "b": "MAT20",
+      "run": 38206599180,
+      "wins_a": 44,
+      "draws": 4,
+      "wins_b": 52,
+      "illegal": 0,
+      "score_a": 0.46,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11728615838,
+          "name": "played-move-archive-38206599180"
+        },
+        {
+          "id": 11728401293,
+          "name": "generic-engine-match-summary-38206599180"
+        }
+      ]
+    },
+    {
+      "pair": 3,
+      "a": "Q5",
+      "b": "H35",
+      "run": 38206599188,
+      "wins_a": 46,
+      "draws": 4,
+      "wins_b": 50,
+      "illegal": 0,
+      "score_a": 0.48,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11728816174,
+          "name": "played-move-archive-38206599188"
+        },
+        {
+          "id": 11728761262,
+          "name": "generic-engine-match-summary-38206599188"
+        }
+      ]
+    },
+    {
+      "pair": 4,
+      "a": "Q14",
+      "b": "H15",
+      "run": 38206601218,
+      "wins_a": 48,
+      "draws": 3,
+      "wins_b": 49,
+      "illegal": 0,
+      "score_a": 0.495,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11728920341,
+          "name": "generic-engine-match-summary-38206601218"
+        },
+        {
+          "id": 11728645791,
+          "name": "played-move-archive-38206601218"
+        }
+      ]
+    },
+    {
+      "pair": 5,
+      "a": "M",
+      "b": "MAT20",
+      "run": 38206601914,
+      "wins_a": 53,
+      "draws": 2,
+      "wins_b": 45,
+      "illegal": 0,
+      "score_a": 0.54,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11728831091,
+          "name": "played-move-archive-38206601914"
+        },
+        {
+          "id": 11728756341,
+          "name": "generic-engine-match-summary-38206601914"
+        }
+      ]
+    },
+    {
+      "pair": 6,
+      "a": "HS15",
+      "b": "H35",
+      "run": 38206605584,
+      "wins_a": 51,
+      "draws": 3,
+      "wins_b": 46,
+      "illegal": 0,
+      "score_a": 0.525,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11728956067,
+          "name": "played-move-archive-38206605584"
+        },
+        {
+          "id": 11728357661,
+          "name": "generic-engine-match-summary-38206605584"
+        }
+      ]
+    },
+    {
+      "pair": 7,
+      "a": "Q2",
+      "b": "H15",
+      "run": 38206609540,
+      "wins_a": 39,
+      "draws": 5,
+      "wins_b": 56,
+      "illegal": 0,
+      "score_a": 0.415,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11728845599,
+          "name": "played-move-archive-38206609540"
+        },
+        {
+          "id": 11728202188,
+          "name": "generic-engine-match-summary-38206609540"
+        }
+      ]
+    },
+    {
+      "pair": 8,
+      "a": "Q5",
+      "b": "Q14",
+      "run": 38206611083,
+      "wins_a": 47,
+      "draws": 8,
+      "wins_b": 45,
+      "illegal": 0,
+      "score_a": 0.51,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11728626601,
+          "name": "played-move-archive-38206611083"
+        },
+        {
+          "id": 11728546694,
+          "name": "generic-engine-match-summary-38206611083"
+        }
+      ]
+    },
+    {
+      "pair": 9,
+      "a": "M",
+      "b": "H35",
+      "run": 38206613356,
+      "wins_a": 46,
+      "draws": 9,
+      "wins_b": 45,
+      "illegal": 0,
+      "score_a": 0.505,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11728456346,
+          "name": "played-move-archive-38206613356"
+        },
+        {
+          "id": 11728221916,
+          "name": "generic-engine-match-summary-38206613356"
+        }
+      ]
+    },
+    {
+      "pair": 10,
+      "a": "MAT20",
+      "b": "H15",
+      "run": 38206764710,
+      "wins_a": 54,
+      "draws": 4,
+      "wins_b": 42,
+      "illegal": 0,
+      "score_a": 0.56,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11728976225,
+          "name": "generic-engine-match-summary-38206764710"
+        },
+        {
+          "id": 11728776753,
+          "name": "played-move-archive-38206764710"
+        }
+      ]
+    },
+    {
+      "pair": 11,
+      "a": "HS15",
+      "b": "Q14",
+      "run": 38210554060,
+      "wins_a": 51,
+      "draws": 4,
+      "wins_b": 45,
+      "illegal": 0,
+      "score_a": 0.53,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11730481364,
+          "name": "played-move-archive-38210554060"
+        },
+        {
+          "id": 11730351533,
+          "name": "generic-engine-match-summary-38210554060"
+        }
+      ]
+    },
+    {
+      "pair": 12,
+      "a": "Q2",
+      "b": "Q5",
+      "run": 38210594750,
+      "wins_a": 43,
+      "draws": 7,
+      "wins_b": 50,
+      "illegal": 0,
+      "score_a": 0.465,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11730446380,
+          "name": "generic-engine-match-summary-38210594750"
+        },
+        {
+          "id": 11729772354,
+          "name": "played-move-archive-38210594750"
+        }
+      ]
+    },
+    {
+      "pair": 13,
+      "a": "M",
+      "b": "H15",
+      "run": 38210605409,
+      "wins_a": 55,
+      "draws": 5,
+      "wins_b": 40,
+      "illegal": 0,
+      "score_a": 0.575,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11729737369,
+          "name": "played-move-archive-38210605409"
+        },
+        {
+          "id": 11729547576,
+          "name": "generic-engine-match-summary-38210605409"
+        }
+      ]
+    },
+    {
+      "pair": 14,
+      "a": "H35",
+      "b": "Q14",
+      "run": 38210615504,
+      "wins_a": 52,
+      "draws": 5,
+      "wins_b": 43,
+      "illegal": 0,
+      "score_a": 0.545,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11730501213,
+          "name": "played-move-archive-38210615504"
+        },
+        {
+          "id": 11730151643,
+          "name": "generic-engine-match-summary-38210615504"
+        }
+      ]
+    },
+    {
+      "pair": 15,
+      "a": "MAT20",
+      "b": "Q5",
+      "run": 38210628163,
+      "wins_a": 53,
+      "draws": 5,
+      "wins_b": 42,
+      "illegal": 0,
+      "score_a": 0.555,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11730536119,
+          "name": "generic-engine-match-summary-38210628163"
+        },
+        {
+          "id": 11729757432,
+          "name": "played-move-archive-38210628163"
+        }
+      ]
+    },
+    {
+      "pair": 16,
+      "a": "HS15",
+      "b": "Q2",
+      "run": 38214854523,
+      "wins_a": 49,
+      "draws": 8,
+      "wins_b": 43,
+      "illegal": 0,
+      "score_a": 0.53,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11733755031,
+          "name": "played-move-archive-38214854523"
+        },
+        {
+          "id": 11733665140,
+          "name": "generic-engine-match-summary-38214854523"
+        }
+      ]
+    },
+    {
+      "pair": 17,
+      "a": "M",
+      "b": "Q14",
+      "run": 38214865084,
+      "wins_a": 52,
+      "draws": 6,
+      "wins_b": 42,
+      "illegal": 0,
+      "score_a": 0.55,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11733376122,
+          "name": "played-move-archive-38214865084"
+        },
+        {
+          "id": 11732816292,
+          "name": "generic-engine-match-summary-38214865084"
+        }
+      ]
+    },
+    {
+      "pair": 18,
+      "a": "H15",
+      "b": "Q5",
+      "run": 38214878088,
+      "wins_a": 46,
+      "draws": 3,
+      "wins_b": 51,
+      "illegal": 0,
+      "score_a": 0.475,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11732751193,
+          "name": "generic-engine-match-summary-38214878088"
+        },
+        {
+          "id": 11732671256,
+          "name": "played-move-archive-38214878088"
+        }
+      ]
+    },
+    {
+      "pair": 19,
+      "a": "H35",
+      "b": "Q2",
+      "run": 38214890529,
+      "wins_a": 53,
+      "draws": 5,
+      "wins_b": 42,
+      "illegal": 0,
+      "score_a": 0.555,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11733720376,
+          "name": "generic-engine-match-summary-38214890529"
+        },
+        {
+          "id": 11733015715,
+          "name": "played-move-archive-38214890529"
+        }
+      ]
+    },
+    {
+      "pair": 20,
+      "a": "MAT20",
+      "b": "HS15",
+      "run": 38214904295,
+      "wins_a": 45,
+      "draws": 6,
+      "wins_b": 49,
+      "illegal": 0,
+      "score_a": 0.48,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11733176094,
+          "name": "generic-engine-match-summary-38214904295"
+        },
+        {
+          "id": 11732981089,
+          "name": "played-move-archive-38214904295"
+        }
+      ]
+    },
+    {
+      "pair": 21,
+      "a": "M",
+      "b": "Q5",
+      "run": 38215357370,
+      "wins_a": 52,
+      "draws": 3,
+      "wins_b": 45,
+      "illegal": 0,
+      "score_a": 0.535,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11733307327,
+          "name": "generic-engine-match-summary-38215357370"
+        },
+        {
+          "id": 11732777495,
+          "name": "played-move-archive-38215357370"
+        }
+      ]
+    },
+    {
+      "pair": 22,
+      "a": "Q14",
+      "b": "Q2",
+      "run": 38215372295,
+      "wins_a": 52,
+      "draws": 3,
+      "wins_b": 45,
+      "illegal": 0,
+      "score_a": 0.535,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11733242351,
+          "name": "played-move-archive-38215372295"
+        },
+        {
+          "id": 11732877568,
+          "name": "generic-engine-match-summary-38215372295"
+        }
+      ]
+    },
+    {
+      "pair": 23,
+      "run": 38220837085,
+      "ref_a": "ade30d12ef6e7e3e03d838371a7677fc3d26f73d",
+      "ref_b": "666ed5e653ad15608d2018130f66f252ca0e9a37",
+      "go_command": "go movetime 200",
+      "options_a": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+      },
+      "options_b": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+      },
+      "games": 100,
+      "wins_a": 54,
+      "draws": 4,
+      "wins_b": 42,
+      "score_a": 0.56,
+      "score_a_approx_95pct": [
+        0.46270815861543174,
+        0.6572918413845683
+      ],
+      "average_plies": 121.08,
+      "illegal_games": 0,
+      "shards": 2,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "a": "H15",
+      "b": "HS15"
+    },
+    {
+      "pair": 24,
+      "run": 38220853473,
+      "ref_a": "e59b0b9f4122b7c73b7fcd33a92e1f92e26c82cc",
+      "ref_b": "5b6979aecb603342734b66fb05853afbcb1dcf5e",
+      "go_command": "go movetime 200",
+      "options_a": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+      },
+      "options_b": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+      },
+      "games": 100,
+      "wins_a": 53,
+      "draws": 3,
+      "wins_b": 44,
+      "score_a": 0.545,
+      "score_a_approx_95pct": [
+        0.447397706994149,
+        0.642602293005851
+      ],
+      "average_plies": 114.36,
+      "illegal_games": 0,
+      "shards": 2,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "a": "H35",
+      "b": "MAT20"
+    },
+    {
+      "pair": 25,
+      "run": 38220861868,
+      "ref_a": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+      "ref_b": "8e2b1572ba95e3cd3fbe59c048a6a48d16061868",
+      "go_command": "go movetime 200",
+      "options_a": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+      },
+      "options_b": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+      },
+      "games": 100,
+      "wins_a": 50,
+      "draws": 5,
+      "wins_b": 45,
+      "score_a": 0.525,
+      "score_a_approx_95pct": [
+        0.42712257665835296,
+        0.6228774233416471
+      ],
+      "average_plies": 114.48,
+      "illegal_games": 0,
+      "shards": 2,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "a": "M",
+      "b": "Q2"
+    },
+    {
+      "pair": 26,
+      "run": 38220887160,
+      "ref_a": "9c82f98ec00e2085934e0095a6b1e8c8a036a6ab",
+      "ref_b": "666ed5e653ad15608d2018130f66f252ca0e9a37",
+      "go_command": "go movetime 200",
+      "options_a": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+      },
+      "options_b": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+      },
+      "games": 100,
+      "wins_a": 46,
+      "draws": 3,
+      "wins_b": 51,
+      "score_a": 0.475,
+      "score_a_approx_95pct": [
+        0.3771225766583529,
+        0.572877423341647
+      ],
+      "average_plies": 122.66,
+      "illegal_games": 0,
+      "shards": 2,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "a": "Q5",
+      "b": "HS15"
+    },
+    {
+      "pair": 27,
+      "run": 38220899928,
+      "ref_a": "c6311d266717d41cb3b6b84bbe22e870450e6365",
+      "ref_b": "5b6979aecb603342734b66fb05853afbcb1dcf5e",
+      "go_command": "go movetime 200",
+      "options_a": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+      },
+      "options_b": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+      },
+      "games": 100,
+      "wins_a": 48,
+      "draws": 4,
+      "wins_b": 48,
+      "score_a": 0.5,
+      "score_a_approx_95pct": [
+        0.402,
+        0.598
+      ],
+      "average_plies": 110.12,
+      "illegal_games": 0,
+      "shards": 2,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "a": "Q14",
+      "b": "MAT20"
+    },
+    {
+      "pair": 28,
+      "run": 38224264525,
+      "ref_a": "ade30d12ef6e7e3e03d838371a7677fc3d26f73d",
+      "ref_b": "e59b0b9f4122b7c73b7fcd33a92e1f92e26c82cc",
+      "go_command": "go movetime 200",
+      "options_a": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+      },
+      "options_b": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+      },
+      "games": 100,
+      "wins_a": 53,
+      "draws": 5,
+      "wins_b": 42,
+      "score_a": 0.555,
+      "score_a_approx_95pct": [
+        0.45759470445607187,
+        0.6524052955439282
+      ],
+      "average_plies": 112.37,
+      "illegal_games": 0,
+      "shards": 2,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11737465041,
+          "name": "generic-engine-match-summary-38224264525",
+          "expired": false,
+          "expires_at": "2027-01-10T08:33:15Z",
+          "digest": "sha256:ea096e9110487e00e06ad6ef3c100c506b0f544b35cb016f422571d09020e242"
+        },
+        {
+          "id": 11737165288,
+          "name": "played-move-archive-38224264525",
+          "expired": false,
+          "expires_at": "2027-01-10T08:33:15Z",
+          "digest": "sha256:ac743b309e952548e8cf8981b633105c85dc4eb9c8c895f3c29e930340b6ebe4"
+        },
+        {
+          "id": 11736098958,
+          "name": "generic-engine-match-38224264525-0",
+          "expired": false,
+          "expires_at": "2027-01-10T08:33:15Z",
+          "digest": "sha256:f1fa65c895ea63d709c70f90cd52569cbdc1ed993fe9118a9a5b1708a545d47e"
+        },
+        {
+          "id": 11735999137,
+          "name": "generic-engine-match-38224264525-1",
+          "expired": false,
+          "expires_at": "2027-01-10T08:33:15Z",
+          "digest": "sha256:897c105e0c1cfa4d7f7f450dab7f872d6ef1db34442c1aaa9cd26efd01535fc8"
+        },
+        {
+          "id": 11734764554,
+          "name": "generic-engine-binaries-38224264525",
+          "expired": false,
+          "expires_at": "2027-01-10T08:33:15Z",
+          "digest": "sha256:6952a3297f4d28da3be18ec36a7a3f3e58dc8c8f8f225f434cb327e176ced1de"
+        }
+      ],
+      "a": "H15",
+      "b": "H35"
+    }
+  ],
+  "totals": {
+    "M": {
+      "w": 366,
+      "d": 31,
+      "l": 303
+    },
+    "HS15": {
+      "w": 334,
+      "d": 29,
+      "l": 337
+    },
+    "Q2": {
+      "w": 301,
+      "d": 37,
+      "l": 362
+    },
+    "MAT20": {
+      "w": 341,
+      "d": 28,
+      "l": 331
+    },
+    "Q5": {
+      "w": 327,
+      "d": 33,
+      "l": 340
+    },
+    "H35": {
+      "w": 341,
+      "d": 34,
+      "l": 325
+    },
+    "Q14": {
+      "w": 323,
+      "d": 33,
+      "l": 344
+    },
+    "H15": {
+      "w": 340,
+      "d": 29,
+      "l": 331
+    }
+  }
+}

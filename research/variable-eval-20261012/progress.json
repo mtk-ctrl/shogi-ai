@@ -1,20 +1,15 @@
 {
-  "as_of": "2026-10-12T17:41:00+09:00",
-  "research_branch": "research/variable-eval-systematic-20261012",
-  "ci_run": 38224238396,
-  "ci_conclusion": "success",
+  "updated_at": "2026-10-12T11:50:00Z",
+  "tracker_issue": 170,
+  "branch": "research/variable-eval-systematic-20261012",
   "formal_engine_unchanged": true,
-  "runner_cap": 10,
-  "legacy_last_pair": {
-    "issue": 171,
-    "run": 38224264525,
-    "games": 100,
-    "shards": 2
-  },
-  "screen_total_games": 1040,
-  "screen_requested_games": 160,
-  "screen_unrequested_games": 880,
-  "screen_first_batch": [
+  "runner_limit": 10,
+  "automation_id": "6acc6bd66e588191a524ea14c47a5d2c",
+  "phase": "screen",
+  "planned_games": 1040,
+  "completed_games": 560,
+  "requested_games": 760,
+  "records": [
     {
       "stage": "screen",
       "model": "UNIFIED",
@@ -29,14 +24,88 @@
       "seed": 2012000000,
       "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
       "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-      "state": "not_requested",
+      "state": "completed",
+      "index": 0,
       "issue": 172,
       "run": 38224820908,
-      "job": 114730004728,
-      "build_ref_verified": true,
-      "status": "in_progress",
-      "step": "Run shard",
-      "started": "2026-10-12T08:39:47Z"
+      "result": {
+        "run": 38224820908,
+        "ref_a": "3fd3c37cc4b83f9645af509e1002837c09f4d5dd",
+        "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 10,
+        "draws": 4,
+        "wins_b": 6,
+        "score_a": 0.6,
+        "score_a_approx_95pct": [
+          0.38529275745797487,
+          0.8147072425420251
+        ],
+        "average_plies": 152.05,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11736820306,
+            "name": "played-move-archive-38224820908",
+            "size_in_bytes": 153468,
+            "expired": false,
+            "expires_at": "2027-01-10T08:38:40Z",
+            "digest": "sha256:95e4d6f708eeaa09e40eb6710ec6a383c32614cb314cff4418325b6c051243e1"
+          },
+          {
+            "id": 11736610467,
+            "name": "generic-engine-match-38224820908-0",
+            "size_in_bytes": 226478,
+            "expired": false,
+            "expires_at": "2027-01-10T08:38:40Z",
+            "digest": "sha256:c9ae230f67923ddf75c4f6a0cdd710dec55f150cb592f96080b752ea5d585cb6"
+          },
+          {
+            "id": 11735795644,
+            "name": "generic-engine-binaries-38224820908",
+            "size_in_bytes": 4325556,
+            "expired": false,
+            "expires_at": "2027-01-10T08:38:40Z",
+            "digest": "sha256:d0ed105e8d5d0d2d28697833254066cbc506a74c72a629d01b364002649d9cd5"
+          },
+          {
+            "id": 11735783251,
+            "name": "generic-engine-match-summary-38224820908",
+            "size_in_bytes": 571,
+            "expired": false,
+            "expires_at": "2027-01-10T08:38:40Z",
+            "digest": "sha256:0a0527e59b6c9224dec25f817ed01fa8c98d54e9606a9b39daf97cb91195e15a"
+          }
+        ]
+      }
     },
     {
       "stage": "screen",
@@ -52,14 +121,88 @@
       "seed": 2012010000,
       "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
       "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-      "state": "not_requested",
+      "state": "completed",
+      "index": 1,
       "issue": 173,
       "run": 38224830098,
-      "job": 114729987352,
-      "build_ref_verified": true,
-      "status": "in_progress",
-      "step": "Run shard",
-      "started": "2026-10-12T08:39:44Z"
+      "result": {
+        "run": 38224830098,
+        "ref_a": "3fd3c37cc4b83f9645af509e1002837c09f4d5dd",
+        "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 13,
+        "draws": 3,
+        "wins_b": 4,
+        "score_a": 0.725,
+        "score_a_approx_95pct": [
+          0.5293064896323846,
+          0.9206935103676154
+        ],
+        "average_plies": 135.05,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11736940176,
+            "name": "played-move-archive-38224830098",
+            "size_in_bytes": 133826,
+            "expired": false,
+            "expires_at": "2027-01-10T08:38:45Z",
+            "digest": "sha256:b8fdc0a91baa22c058b7e0e3e66546ac6d8abf95139237264cf824b591110eba"
+          },
+          {
+            "id": 11736655328,
+            "name": "generic-engine-match-38224830098-0",
+            "size_in_bytes": 196116,
+            "expired": false,
+            "expires_at": "2027-01-10T08:38:45Z",
+            "digest": "sha256:e870c199c8cb54ff63f4078b6326e3fb14f572e8d4f0413cec5ee03ccc1aa9b0"
+          },
+          {
+            "id": 11736560441,
+            "name": "generic-engine-match-summary-38224830098",
+            "size_in_bytes": 574,
+            "expired": false,
+            "expires_at": "2027-01-10T08:38:45Z",
+            "digest": "sha256:cfc91cf3dd551faaaf1e1513dfbdaddb4b7f7684ef2237ef2f129da6b04a7298"
+          },
+          {
+            "id": 11735875510,
+            "name": "generic-engine-binaries-38224830098",
+            "size_in_bytes": 4319359,
+            "expired": false,
+            "expires_at": "2027-01-10T08:38:45Z",
+            "digest": "sha256:ae414a1d2068d57b428e41b59c80001cc2027db28bf94f004d68a1474e13c8ba"
+          }
+        ]
+      }
     },
     {
       "stage": "screen",
@@ -75,14 +218,88 @@
       "seed": 2012000000,
       "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
       "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-      "state": "not_requested",
+      "state": "completed",
+      "index": 2,
       "issue": 174,
       "run": 38224843757,
-      "job": 114730052395,
-      "build_ref_verified": true,
-      "status": "in_progress",
-      "step": "Run shard",
-      "started": "2026-10-12T08:39:56Z"
+      "result": {
+        "run": 38224843757,
+        "ref_a": "981b893c71da9915cca481bc6749f56b152c34a1",
+        "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 7,
+        "draws": 6,
+        "wins_b": 7,
+        "score_a": 0.5,
+        "score_a_approx_95pct": [
+          0.28086533820502063,
+          0.7191346617949794
+        ],
+        "average_plies": 152.7,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11736430620,
+            "name": "generic-engine-match-38224843757-0",
+            "size_in_bytes": 223078,
+            "expired": false,
+            "expires_at": "2027-01-10T08:38:53Z",
+            "digest": "sha256:d0dd823c64fe0eafef6ce641fca664302f7eb743aaf3c842c079376fc19c90bf"
+          },
+          {
+            "id": 11736370102,
+            "name": "generic-engine-binaries-38224843757",
+            "size_in_bytes": 4325807,
+            "expired": false,
+            "expires_at": "2027-01-10T08:38:53Z",
+            "digest": "sha256:1e4c2ab863734033775618b11a5ac46ed0ebaeac4e20d795765d76b2f8f8ded6"
+          },
+          {
+            "id": 11735925891,
+            "name": "played-move-archive-38224843757",
+            "size_in_bytes": 151487,
+            "expired": false,
+            "expires_at": "2027-01-10T08:38:53Z",
+            "digest": "sha256:dd47e6d1f9891e546c83493e5fd59f2bb152f5923e12695e25707f1fdac4540e"
+          },
+          {
+            "id": 11735920881,
+            "name": "generic-engine-match-summary-38224843757",
+            "size_in_bytes": 570,
+            "expired": false,
+            "expires_at": "2027-01-10T08:38:53Z",
+            "digest": "sha256:064843a962ef4240e3c3a3060b0c0345c8bbfe836da863f6f58b16d538618b1d"
+          }
+        ]
+      }
     },
     {
       "stage": "screen",
@@ -98,14 +315,88 @@
       "seed": 2012010000,
       "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
       "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-      "state": "not_requested",
+      "state": "completed",
+      "index": 3,
       "issue": 175,
       "run": 38224858353,
-      "job": 114730119706,
-      "build_ref_verified": true,
-      "status": "in_progress",
-      "step": "Run shard",
-      "started": "2026-10-12T08:40:08Z"
+      "result": {
+        "run": 38224858353,
+        "ref_a": "981b893c71da9915cca481bc6749f56b152c34a1",
+        "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 8,
+        "draws": 2,
+        "wins_b": 10,
+        "score_a": 0.45,
+        "score_a_approx_95pct": [
+          0.23196376447938752,
+          0.6680362355206125
+        ],
+        "average_plies": 127.35,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11736585531,
+            "name": "generic-engine-match-38224858353-0",
+            "size_in_bytes": 193391,
+            "expired": false,
+            "expires_at": "2027-01-10T08:39:03Z",
+            "digest": "sha256:d7f1941beaef822df497b15ff1e529aabe4937dc95bc00a2f5610f19b0bf39d1"
+          },
+          {
+            "id": 11735875951,
+            "name": "played-move-archive-38224858353",
+            "size_in_bytes": 131471,
+            "expired": false,
+            "expires_at": "2027-01-10T08:39:03Z",
+            "digest": "sha256:235bcf03a3938a3e1ae650c53fd00e4e9ae8adff057250460accd2c2467973e3"
+          },
+          {
+            "id": 11735840908,
+            "name": "generic-engine-match-summary-38224858353",
+            "size_in_bytes": 572,
+            "expired": false,
+            "expires_at": "2027-01-10T08:39:03Z",
+            "digest": "sha256:35bf23bc1a4e37dd5eedecfd51981ab839e59dc7e075e3736cc03934d187bbe7"
+          },
+          {
+            "id": 11735759538,
+            "name": "generic-engine-binaries-38224858353",
+            "size_in_bytes": 4319405,
+            "expired": false,
+            "expires_at": "2027-01-10T08:39:03Z",
+            "digest": "sha256:a395fe0aa8d945e1b3363a3c278b0e3ef1034630f0ab424100ee579f2a8850e7"
+          }
+        ]
+      }
     },
     {
       "stage": "screen",
@@ -121,14 +412,88 @@
       "seed": 2012000000,
       "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
       "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-      "state": "not_requested",
+      "state": "completed",
+      "index": 4,
       "issue": 176,
       "run": 38224869910,
-      "job": 114730170583,
-      "build_ref_verified": true,
-      "status": "in_progress",
-      "step": "Run shard",
-      "started": "2026-10-12T08:40:17Z"
+      "result": {
+        "run": 38224869910,
+        "ref_a": "3101e5a444396a0b2271320459a4ae325b709b2b",
+        "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 10,
+        "draws": 6,
+        "wins_b": 4,
+        "score_a": 0.65,
+        "score_a_approx_95pct": [
+          0.4409588557245249,
+          0.8590411442754751
+        ],
+        "average_plies": 125.35,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11736425696,
+            "name": "generic-engine-match-summary-38224869910",
+            "size_in_bytes": 572,
+            "expired": false,
+            "expires_at": "2027-01-10T08:39:08Z",
+            "digest": "sha256:45ad85d001e166ce8c278f084e74ef6e68765e025bbb24a0aeaf47e9c07be480"
+          },
+          {
+            "id": 11736360725,
+            "name": "played-move-archive-38224869910",
+            "size_in_bytes": 126247,
+            "expired": false,
+            "expires_at": "2027-01-10T08:39:08Z",
+            "digest": "sha256:25e324ddc21e0f119b091d90b7773c9131f252db89c58ec675fa1db89aab7d09"
+          },
+          {
+            "id": 11735880840,
+            "name": "generic-engine-match-38224869910-0",
+            "size_in_bytes": 185401,
+            "expired": false,
+            "expires_at": "2027-01-10T08:39:08Z",
+            "digest": "sha256:e20877e0f65d12eeeec3b418991ce3e0d847c42532a5be80a7b178ca4c854fa1"
+          },
+          {
+            "id": 11735449989,
+            "name": "generic-engine-binaries-38224869910",
+            "size_in_bytes": 4325672,
+            "expired": false,
+            "expires_at": "2027-01-10T08:39:08Z",
+            "digest": "sha256:a2e6b6e2f6562bcd4740b6bbdf09143efab40670e41777bb5b1158580c70b29a"
+          }
+        ]
+      }
     },
     {
       "stage": "screen",
@@ -144,14 +509,88 @@
       "seed": 2012010000,
       "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
       "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-      "state": "not_requested",
+      "state": "completed",
+      "index": 5,
       "issue": 177,
       "run": 38224890494,
-      "job": 114730173303,
-      "build_ref_verified": true,
-      "status": "in_progress",
-      "step": "Run shard",
-      "started": "2026-10-12T08:40:17Z"
+      "result": {
+        "run": 38224890494,
+        "ref_a": "3101e5a444396a0b2271320459a4ae325b709b2b",
+        "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 9,
+        "draws": 4,
+        "wins_b": 7,
+        "score_a": 0.55,
+        "score_a_approx_95pct": [
+          0.3319637644793876,
+          0.7680362355206125
+        ],
+        "average_plies": 136.9,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11736960149,
+            "name": "generic-engine-match-38224890494-0",
+            "size_in_bytes": 200449,
+            "expired": false,
+            "expires_at": "2027-01-10T08:39:20Z",
+            "digest": "sha256:ac92892331ec76d748a6d522091ff46949d46a714df16aecf2d0d2125d55d6bd"
+          },
+          {
+            "id": 11736775438,
+            "name": "generic-engine-match-summary-38224890494",
+            "size_in_bytes": 572,
+            "expired": false,
+            "expires_at": "2027-01-10T08:39:20Z",
+            "digest": "sha256:950da0d2477b68f48c559803106a6df012b4b93639fcbcc415d49cc484c7e9f0"
+          },
+          {
+            "id": 11736555585,
+            "name": "played-move-archive-38224890494",
+            "size_in_bytes": 136416,
+            "expired": false,
+            "expires_at": "2027-01-10T08:39:20Z",
+            "digest": "sha256:d0e8103c65b25438cb9e14ce1a8845133658f7ff66000d3f747b52408053f86f"
+          },
+          {
+            "id": 11736255126,
+            "name": "generic-engine-binaries-38224890494",
+            "size_in_bytes": 4319379,
+            "expired": false,
+            "expires_at": "2027-01-10T08:39:20Z",
+            "digest": "sha256:702ff022fae9925c45aecc5ef8bf9f65e42417c342a847f324b201e37a454604"
+          }
+        ]
+      }
     },
     {
       "stage": "screen",
@@ -167,14 +606,88 @@
       "seed": 2012000000,
       "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
       "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-      "state": "not_requested",
+      "state": "completed",
+      "index": 6,
       "issue": 178,
       "run": 38224901457,
-      "job": 114730259585,
-      "build_ref_verified": true,
-      "status": "in_progress",
-      "step": "Run shard",
-      "started": "2026-10-12T08:40:31Z"
+      "result": {
+        "run": 38224901457,
+        "ref_a": "515e2a1a51f6fd0037db7f9d96a77e7dc44e051a",
+        "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 13,
+        "draws": 3,
+        "wins_b": 4,
+        "score_a": 0.725,
+        "score_a_approx_95pct": [
+          0.5293064896323846,
+          0.9206935103676154
+        ],
+        "average_plies": 133.9,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11736710555,
+            "name": "generic-engine-match-38224901457-0",
+            "size_in_bytes": 201589,
+            "expired": false,
+            "expires_at": "2027-01-10T08:39:26Z",
+            "digest": "sha256:7ba100f936ed0140995168c4558c59adc9573835cb4222ece4b57647137af40a"
+          },
+          {
+            "id": 11736480177,
+            "name": "generic-engine-binaries-38224901457",
+            "size_in_bytes": 4325737,
+            "expired": false,
+            "expires_at": "2027-01-10T08:39:26Z",
+            "digest": "sha256:30d6addb175258f2a533f61f970c18c1e300c20b7521e15bee0980d0e4feb420"
+          },
+          {
+            "id": 11736240677,
+            "name": "played-move-archive-38224901457",
+            "size_in_bytes": 137052,
+            "expired": false,
+            "expires_at": "2027-01-10T08:39:26Z",
+            "digest": "sha256:940dc1e0c26a4af9263bc3e5551df3fe65073039b4dcc8c40b60c81f9dcecdb2"
+          },
+          {
+            "id": 11735786181,
+            "name": "generic-engine-match-summary-38224901457",
+            "size_in_bytes": 571,
+            "expired": false,
+            "expires_at": "2027-01-10T08:39:26Z",
+            "digest": "sha256:980ffd53800eccf87e2f99264be42176f94bad056c4fdda7c2dbc89bfd54ed59"
+          }
+        ]
+      }
     },
     {
       "stage": "screen",
@@ -190,16 +703,3078 @@
       "seed": 2012010000,
       "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
       "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-      "state": "not_requested",
+      "state": "completed",
+      "index": 7,
       "issue": 179,
       "run": 38224919058,
-      "job": 114730310389,
-      "build_ref_verified": true,
-      "status": "in_progress",
+      "result": {
+        "run": 38224919058,
+        "ref_a": "515e2a1a51f6fd0037db7f9d96a77e7dc44e051a",
+        "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 7,
+        "draws": 5,
+        "wins_b": 8,
+        "score_a": 0.475,
+        "score_a_approx_95pct": [
+          0.2561394279455525,
+          0.6938605720544475
+        ],
+        "average_plies": 168.75,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11736850679,
+            "name": "played-move-archive-38224919058",
+            "size_in_bytes": 161131,
+            "expired": false,
+            "expires_at": "2027-01-10T08:39:37Z",
+            "digest": "sha256:b3f389bac5e487e9ddbe36295c5e256722f1fad12ea477e9aeec36d5fef0dac0"
+          },
+          {
+            "id": 11736465812,
+            "name": "generic-engine-match-38224919058-0",
+            "size_in_bytes": 237072,
+            "expired": false,
+            "expires_at": "2027-01-10T08:39:37Z",
+            "digest": "sha256:9793bf21808b1efd30769fe8d54f05ee4bc7ebc1fd781c193bec4ec3feb4ba98"
+          },
+          {
+            "id": 11736400967,
+            "name": "generic-engine-match-summary-38224919058",
+            "size_in_bytes": 571,
+            "expired": false,
+            "expires_at": "2027-01-10T08:39:37Z",
+            "digest": "sha256:d7ed5baf9cecaf6c9ea2796ccff8e047b81088caa05dfb296d4f883c4dc3ac09"
+          },
+          {
+            "id": 11735734850,
+            "name": "generic-engine-binaries-38224919058",
+            "size_in_bytes": 4319312,
+            "expired": false,
+            "expires_at": "2027-01-10T08:39:37Z",
+            "digest": "sha256:0ea25f5faacf9320843cbf10489c35e8b7e14df661ae5097db096aa59575b2ea"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "LIN",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-lin-m",
+      "ref_a": "0d3ea005a06d259cecacb36473558cdbd8f4c3dc",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "completed",
+      "index": 8,
+      "issue": 180,
+      "run": 38243493996,
+      "ref_verified": true,
+      "job_id": 114791960326,
+      "job_status": "in_progress",
       "step": "Run shard",
-      "started": "2026-10-12T08:40:40Z"
+      "start": "2026-10-12T11:35:20Z",
+      "result": {
+        "run": 38243493996,
+        "ref_a": "0d3ea005a06d259cecacb36473558cdbd8f4c3dc",
+        "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 8,
+        "draws": 4,
+        "wins_b": 8,
+        "score_a": 0.5,
+        "score_a_approx_95pct": [
+          0.28086533820502063,
+          0.7191346617949794
+        ],
+        "average_plies": 160.1,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11743928322,
+            "name": "generic-engine-match-38243493996-0",
+            "size_in_bytes": 231920,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:14Z",
+            "digest": "sha256:c91da1a06272dac1cb52fb4931af2e479d588d3f7db028cb1b169daa314ee105"
+          },
+          {
+            "id": 11743878421,
+            "name": "generic-engine-match-summary-38243493996",
+            "size_in_bytes": 569,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:14Z",
+            "digest": "sha256:e7969c34938889b3c0c549d77c8f7b18a6e539694f77f7a0e22dd77bcc3bbd61"
+          },
+          {
+            "id": 11743648655,
+            "name": "played-move-archive-38243493996",
+            "size_in_bytes": 157858,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:14Z",
+            "digest": "sha256:352c3f22727073d0acde38d26ba068cbd9f464c8c4310ad1a5a606166839e747"
+          },
+          {
+            "id": 11743343378,
+            "name": "generic-engine-binaries-38243493996",
+            "size_in_bytes": 4325675,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:14Z",
+            "digest": "sha256:4258167082a4db4a8eaede901f18061cd731d2f523f9d3c2d6e992500a787eb7"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "LIN",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-lin-q14",
+      "ref_a": "0d3ea005a06d259cecacb36473558cdbd8f4c3dc",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "completed",
+      "index": 9,
+      "issue": 181,
+      "run": 38243509101,
+      "ref_verified": true,
+      "job_id": 114791997769,
+      "job_status": "in_progress",
+      "step": "Run shard",
+      "start": "2026-10-12T11:35:26Z",
+      "result": {
+        "run": 38243509101,
+        "ref_a": "0d3ea005a06d259cecacb36473558cdbd8f4c3dc",
+        "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 7,
+        "draws": 3,
+        "wins_b": 10,
+        "score_a": 0.425,
+        "score_a_approx_95pct": [
+          0.20834462849954538,
+          0.6416553715004546
+        ],
+        "average_plies": 158.9,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11744337888,
+            "name": "generic-engine-match-38243509101-0",
+            "size_in_bytes": 241937,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:22Z",
+            "digest": "sha256:769f3031d8a3005fcc82e40e16f9ec2c12cdd47ee795cb68d93f4d8c52ea301c"
+          },
+          {
+            "id": 11743938470,
+            "name": "played-move-archive-38243509101",
+            "size_in_bytes": 164391,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:22Z",
+            "digest": "sha256:da6090ff861bdafb4f2dbc6e5a07b713bc730f36b75853fd69e06e3f98158758"
+          },
+          {
+            "id": 11743733613,
+            "name": "generic-engine-match-summary-38243509101",
+            "size_in_bytes": 572,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:22Z",
+            "digest": "sha256:51980eaf9851c02ab4372bc23b6b511f6bbf69a6f71504250cc0c97ac91efd04"
+          },
+          {
+            "id": 11743553249,
+            "name": "generic-engine-binaries-38243509101",
+            "size_in_bytes": 4319480,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:22Z",
+            "digest": "sha256:ecb958f4aaff2867f56f6d53f6fc112953d2e8603710a32e48f5136e4abfb3c8"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "AMP3",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-amp3-m",
+      "ref_a": "ce5590fc6bf9862c9f2abb4968c4865675397957",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "completed",
+      "index": 10,
+      "issue": 182,
+      "run": 38243516682,
+      "ref_verified": true,
+      "job_id": 114792031392,
+      "job_status": "completed",
+      "start": "2026-10-12T11:35:32Z",
+      "result": {
+        "run": 38243516682,
+        "ref_a": "ce5590fc6bf9862c9f2abb4968c4865675397957",
+        "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 3,
+        "draws": 5,
+        "wins_b": 12,
+        "score_a": 0.275,
+        "score_a_approx_95pct": [
+          0.07930648963238462,
+          0.4706935103676154
+        ],
+        "average_plies": 136.15,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11743932580,
+            "name": "played-move-archive-38243516682",
+            "size_in_bytes": 137477,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:27Z",
+            "digest": "sha256:4b66df8af4b9adb4f4bef8abdf88e96df4e0eb24ae342468cdb5ae2a4926143c"
+          },
+          {
+            "id": 11743882672,
+            "name": "generic-engine-match-summary-38243516682",
+            "size_in_bytes": 574,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:27Z",
+            "digest": "sha256:94062ffce77df125568c7c9e8a64b35ab6f92ac43d22d9317c6e38607bfab3e0"
+          },
+          {
+            "id": 11743847901,
+            "name": "generic-engine-binaries-38243516682",
+            "size_in_bytes": 4325944,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:27Z",
+            "digest": "sha256:6e8dd964cb144af613beaf8d343a4d27f7102ebae005df16aafc33fbe35f89e8"
+          },
+          {
+            "id": 11743698690,
+            "name": "generic-engine-match-38243516682-0",
+            "size_in_bytes": 201186,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:27Z",
+            "digest": "sha256:37f8fa23fabe215c12bd021f52998d4b99b2daccbd9a55cb730f046ea16ece67"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "AMP3",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-amp3-q14",
+      "ref_a": "ce5590fc6bf9862c9f2abb4968c4865675397957",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "completed",
+      "index": 11,
+      "issue": 183,
+      "run": 38243524856,
+      "ref_verified": true,
+      "job_id": 114792049366,
+      "job_status": "in_progress",
+      "step": "Run shard",
+      "start": "2026-10-12T11:35:35Z",
+      "result": {
+        "run": 38243524856,
+        "ref_a": "ce5590fc6bf9862c9f2abb4968c4865675397957",
+        "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 8,
+        "draws": 1,
+        "wins_b": 11,
+        "score_a": 0.425,
+        "score_a_approx_95pct": [
+          0.20834462849954538,
+          0.6416553715004546
+        ],
+        "average_plies": 137.75,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11744422820,
+            "name": "generic-engine-match-summary-38243524856",
+            "size_in_bytes": 574,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:32Z",
+            "digest": "sha256:8ccda328e1f0fc020da92f93fd5f22ad6f8e5e9a919e54b5ca4414327fb57978"
+          },
+          {
+            "id": 11743923309,
+            "name": "played-move-archive-38243524856",
+            "size_in_bytes": 140551,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:32Z",
+            "digest": "sha256:ed7e84346cdfefb8393df89715d54912159a6d20e6d0014192019227b33ae0fc"
+          },
+          {
+            "id": 11743907639,
+            "name": "generic-engine-match-38243524856-0",
+            "size_in_bytes": 205932,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:32Z",
+            "digest": "sha256:9fd1030346084e327944172c29eefffab3362aa1d1d8171d16eba0b23dcdcb98"
+          },
+          {
+            "id": 11743853056,
+            "name": "generic-engine-binaries-38243524856",
+            "size_in_bytes": 4319751,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:32Z",
+            "digest": "sha256:df885ea362d6a721061b7f6d5dd554b350c64b09cdd774fefa30d6292d5f0592"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "REV",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-rev-m",
+      "ref_a": "b3f212bff326391e8a66468ceff823a97eb8d946",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "completed",
+      "index": 12,
+      "issue": 184,
+      "run": 38243537030,
+      "ref_verified": true,
+      "job_id": 114792116577,
+      "job_status": "in_progress",
+      "step": "Run shard",
+      "start": "2026-10-12T11:35:46Z",
+      "result": {
+        "run": 38243537030,
+        "ref_a": "b3f212bff326391e8a66468ceff823a97eb8d946",
+        "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 6,
+        "draws": 2,
+        "wins_b": 12,
+        "score_a": 0.35,
+        "score_a_approx_95pct": [
+          0.14095885572452488,
+          0.559041144275475
+        ],
+        "average_plies": 127.75,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11743548351,
+            "name": "generic-engine-binaries-38243537030",
+            "size_in_bytes": 4325575,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:38Z",
+            "digest": "sha256:c4cde9d3dcd9ec5df71cebbf8782a2307087e9c68f37869f69711957fbdabe69"
+          },
+          {
+            "id": 11743423876,
+            "name": "generic-engine-match-38243537030-0",
+            "size_in_bytes": 194290,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:38Z",
+            "digest": "sha256:d64d54c9faee18e689421ecfa6ffa67ebb4df43feda7934cbc16db4da55286a3"
+          },
+          {
+            "id": 11743338968,
+            "name": "played-move-archive-38243537030",
+            "size_in_bytes": 131971,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:38Z",
+            "digest": "sha256:d866bfbf7e6b5c57e655f51d129f903a88d3f24e6e6821dcc076bcc14f3e8183"
+          },
+          {
+            "id": 11743184323,
+            "name": "generic-engine-match-summary-38243537030",
+            "size_in_bytes": 571,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:38Z",
+            "digest": "sha256:c2b4c3a6eaa42fa72e57476466ab4692f8fd28857d6870f2143bbb2dc97c03f3"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "REV",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-rev-q14",
+      "ref_a": "b3f212bff326391e8a66468ceff823a97eb8d946",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "completed",
+      "index": 13,
+      "issue": 185,
+      "run": 38243549347,
+      "ref_verified": true,
+      "job_id": 114792144062,
+      "job_status": "in_progress",
+      "step": "Run shard",
+      "start": "2026-10-12T11:35:51Z",
+      "result": {
+        "run": 38243549347,
+        "ref_a": "b3f212bff326391e8a66468ceff823a97eb8d946",
+        "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 7,
+        "draws": 3,
+        "wins_b": 10,
+        "score_a": 0.425,
+        "score_a_approx_95pct": [
+          0.20834462849954538,
+          0.6416553715004546
+        ],
+        "average_plies": 121.15,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11744223121,
+            "name": "generic-engine-match-summary-38243549347",
+            "size_in_bytes": 574,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:46Z",
+            "digest": "sha256:4eab59a14847534b948ec6531d5eecfdd1a1463a7187634aafbd30fca526dfb7"
+          },
+          {
+            "id": 11744042139,
+            "name": "generic-engine-binaries-38243549347",
+            "size_in_bytes": 4319287,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:46Z",
+            "digest": "sha256:e8424ce399ee430015f1e33ad3492b27c0d273373b01eb944a949efc7a927d63"
+          },
+          {
+            "id": 11743548756,
+            "name": "generic-engine-match-38243549347-0",
+            "size_in_bytes": 179887,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:46Z",
+            "digest": "sha256:24d379de9899d98b64e164ca413ce82abd0f34ee36ecb6f7db75252953aec8cc"
+          },
+          {
+            "id": 11743239349,
+            "name": "played-move-archive-38243549347",
+            "size_in_bytes": 122163,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:46Z",
+            "digest": "sha256:eb4b3429005a871b9aebb45e21a106cf10257f6044f935d80165f8442685dcea"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "BATTLE",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-battle-m",
+      "ref_a": "f017163105034e845689ec7287377deb84aa6682",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "completed",
+      "index": 14,
+      "issue": 186,
+      "run": 38243559349,
+      "ref_verified": true,
+      "job_id": 114792180675,
+      "job_status": "in_progress",
+      "step": "Run shard",
+      "start": "2026-10-12T11:35:57Z",
+      "result": {
+        "run": 38243559349,
+        "ref_a": "f017163105034e845689ec7287377deb84aa6682",
+        "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 5,
+        "draws": 6,
+        "wins_b": 9,
+        "score_a": 0.4,
+        "score_a_approx_95pct": [
+          0.1852927574579749,
+          0.6147072425420251
+        ],
+        "average_plies": 133.3,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11744470877,
+            "name": "generic-engine-binaries-38243559349",
+            "size_in_bytes": 4325725,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:51Z",
+            "digest": "sha256:04c56f42dedcb96b20481a44e5d4780768566d7e9607a82a0562a1c42be78398"
+          },
+          {
+            "id": 11744432698,
+            "name": "generic-engine-match-38243559349-0",
+            "size_in_bytes": 204894,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:51Z",
+            "digest": "sha256:7bccea87047140f5f199ad334ff2e65838a31aa11e0c49b1c2c2e6a1cc9d3893"
+          },
+          {
+            "id": 11744093337,
+            "name": "generic-engine-match-summary-38243559349",
+            "size_in_bytes": 571,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:51Z",
+            "digest": "sha256:e408f521e90e4c89fa72b812022517313b1a36c08105901691a2316b6d58fb68"
+          },
+          {
+            "id": 11744093332,
+            "name": "played-move-archive-38243559349",
+            "size_in_bytes": 139036,
+            "expired": false,
+            "expires_at": "2027-01-10T11:34:51Z",
+            "digest": "sha256:d936d98894501a91ad6541880e33647919a901784e0a6f6d3bf7e079fcd72311"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "BATTLE",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-battle-q14",
+      "ref_a": "f017163105034e845689ec7287377deb84aa6682",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "completed",
+      "index": 15,
+      "issue": 187,
+      "run": 38243572847,
+      "ref_verified": true,
+      "job_id": 114792169927,
+      "job_status": "in_progress",
+      "step": "Upload shard",
+      "start": "2026-10-12T11:35:55Z",
+      "result": {
+        "run": 38243572847,
+        "ref_a": "f017163105034e845689ec7287377deb84aa6682",
+        "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 10,
+        "draws": 2,
+        "wins_b": 8,
+        "score_a": 0.55,
+        "score_a_approx_95pct": [
+          0.3319637644793876,
+          0.7680362355206125
+        ],
+        "average_plies": 119.4,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11744158245,
+            "name": "played-move-archive-38243572847",
+            "size_in_bytes": 121601,
+            "expired": false,
+            "expires_at": "2027-01-10T11:35:01Z",
+            "digest": "sha256:4e9f5934aaad0d6adc95e26913baea570a56f6538a529314061a8938211c0b06"
+          },
+          {
+            "id": 11743708147,
+            "name": "generic-engine-binaries-38243572847",
+            "size_in_bytes": 4319434,
+            "expired": false,
+            "expires_at": "2027-01-10T11:35:01Z",
+            "digest": "sha256:ff166453903adf2051d7cfaa6415a41f1a7fa57794f8949ec5a398bd1d83f416"
+          },
+          {
+            "id": 11743378885,
+            "name": "generic-engine-match-summary-38243572847",
+            "size_in_bytes": 571,
+            "expired": false,
+            "expires_at": "2027-01-10T11:35:01Z",
+            "digest": "sha256:1561079b36478e8b2616c78f8b7ee62c0defc7322068c54f8ea2a7fd27558d9b"
+          },
+          {
+            "id": 11743204197,
+            "name": "generic-engine-match-38243572847-0",
+            "size_in_bytes": 178871,
+            "expired": false,
+            "expires_at": "2027-01-10T11:35:01Z",
+            "digest": "sha256:08758425573e4791ae63afedd9ddfd2a1a3f97db92a096184d3bd831a6cfbf29"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "MOBILE",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-mobile-m",
+      "ref_a": "664ce96c9bbbad777a1ae9f66ef4c5380fa56136",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "completed",
+      "index": 16,
+      "issue": 188,
+      "run": 38243591077,
+      "ref_verified": true,
+      "job_id": 114792204995,
+      "job_status": "in_progress",
+      "step": "Run shard",
+      "start": "2026-10-12T11:36:01Z",
+      "result": {
+        "run": 38243591077,
+        "ref_a": "664ce96c9bbbad777a1ae9f66ef4c5380fa56136",
+        "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 9,
+        "draws": 4,
+        "wins_b": 7,
+        "score_a": 0.55,
+        "score_a_approx_95pct": [
+          0.3319637644793876,
+          0.7680362355206125
+        ],
+        "average_plies": 155.35,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11744212505,
+            "name": "generic-engine-match-38243591077-0",
+            "size_in_bytes": 220077,
+            "expired": false,
+            "expires_at": "2027-01-10T11:35:09Z",
+            "digest": "sha256:41f9d54845395773ce6686b65a69a92c88f810de38aff27ec420dda6d83e1af3"
+          },
+          {
+            "id": 11744032633,
+            "name": "played-move-archive-38243591077",
+            "size_in_bytes": 149449,
+            "expired": false,
+            "expires_at": "2027-01-10T11:35:09Z",
+            "digest": "sha256:e9de11deab2de7bea561c74ed097a3e39ae8fcf94c8efc24543916243fc14822"
+          },
+          {
+            "id": 11743932718,
+            "name": "generic-engine-match-summary-38243591077",
+            "size_in_bytes": 572,
+            "expired": false,
+            "expires_at": "2027-01-10T11:35:09Z",
+            "digest": "sha256:6edf4907c01e50145ed9bebb4f0a9023809f89d3ccc5ab94eafc23e283b44824"
+          },
+          {
+            "id": 11743657475,
+            "name": "generic-engine-binaries-38243591077",
+            "size_in_bytes": 4325602,
+            "expired": false,
+            "expires_at": "2027-01-10T11:35:09Z",
+            "digest": "sha256:ede60b46e52b24f8d2cc30d42ccf44ef21cc494812c4a173da68e7f67f38e086"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "MOBILE",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-mobile-q14",
+      "ref_a": "664ce96c9bbbad777a1ae9f66ef4c5380fa56136",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "completed",
+      "index": 17,
+      "issue": 189,
+      "run": 38243601670,
+      "ref_verified": true,
+      "job_id": 114792294768,
+      "job_status": "in_progress",
+      "step": "Run shard",
+      "start": "2026-10-12T11:36:16Z",
+      "result": {
+        "run": 38243601670,
+        "ref_a": "664ce96c9bbbad777a1ae9f66ef4c5380fa56136",
+        "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 8,
+        "draws": 5,
+        "wins_b": 7,
+        "score_a": 0.525,
+        "score_a_approx_95pct": [
+          0.30613942794555254,
+          0.7438605720544476
+        ],
+        "average_plies": 126.5,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11744248178,
+            "name": "played-move-archive-38243601670",
+            "size_in_bytes": 126590,
+            "expired": false,
+            "expires_at": "2027-01-10T11:35:15Z",
+            "digest": "sha256:182384c663b89ec84ebe6a606f91f9de7ebd8dae9db81cb3d371ed63f2e72890"
+          },
+          {
+            "id": 11743538344,
+            "name": "generic-engine-binaries-38243601670",
+            "size_in_bytes": 4319359,
+            "expired": false,
+            "expires_at": "2027-01-10T11:35:15Z",
+            "digest": "sha256:e3b17170bbdeb9292a93de4b420a8833b3b1a8853d37082a4218d46c2a0ca60b"
+          },
+          {
+            "id": 11743493855,
+            "name": "generic-engine-match-38243601670-0",
+            "size_in_bytes": 186205,
+            "expired": false,
+            "expires_at": "2027-01-10T11:35:15Z",
+            "digest": "sha256:704e07f4c3d4c2984ab65ae39eaae73a531b5c312ae409d135015abe36ea9b2b"
+          },
+          {
+            "id": 11743164548,
+            "name": "generic-engine-match-summary-38243601670",
+            "size_in_bytes": 573,
+            "expired": false,
+            "expires_at": "2027-01-10T11:35:15Z",
+            "digest": "sha256:b5203b7684f32d408c5a87019793337706b822b42a6d61a075e60e974edd64b1"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "HMAT",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-hmat-m",
+      "ref_a": "638fc1d0e0e527838ea8e1159b7001bd2cbcd9fe",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "completed",
+      "index": 18,
+      "issue": 190,
+      "run": 38244254918,
+      "build_refs_verified": true,
+      "jobs": [
+        {
+          "id": 114794103063,
+          "name": "plan",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:41:19Z"
+        },
+        {
+          "id": 114794152282,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:41:27Z"
+        },
+        {
+          "id": 114794449832,
+          "name": "match (0, 20, 2012000000, 0)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:42:17Z"
+        },
+        {
+          "id": 114795419908,
+          "name": "aggregate",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:45:03Z"
+        }
+      ],
+      "result": {
+        "run": 38244254918,
+        "ref_a": "638fc1d0e0e527838ea8e1159b7001bd2cbcd9fe",
+        "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 4,
+        "draws": 2,
+        "wins_b": 14,
+        "score_a": 0.25,
+        "score_a_approx_95pct": [
+          0.06022381603583657,
+          0.4397761839641634
+        ],
+        "average_plies": 155.65,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11744695179,
+            "name": "generic-engine-match-38244254918-0",
+            "size_in_bytes": 216926,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:16Z",
+            "digest": "sha256:b40c64582ff6fbe0367869269ad2849f2c99490cbc70b93f0c6c7e41ea1d1974"
+          },
+          {
+            "id": 11744438282,
+            "name": "generic-engine-binaries-38244254918",
+            "size_in_bytes": 4325653,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:16Z",
+            "digest": "sha256:0d5def5add367b56e4a9e3d4e01782b817b2821df615ef17d660188ca1bbe6f6"
+          },
+          {
+            "id": 11744038632,
+            "name": "played-move-archive-38244254918",
+            "size_in_bytes": 147931,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:16Z",
+            "digest": "sha256:a7479f4a42289581e5d0581b123bc49c766934eb560194b83895887b06d7d5ab"
+          },
+          {
+            "id": 11743723855,
+            "name": "generic-engine-match-summary-38244254918",
+            "size_in_bytes": 573,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:16Z",
+            "digest": "sha256:ded75aae338db1e5033346868ecc3657e5d1def152934ddbc97115f91487af42"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "HMAT",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-hmat-q14",
+      "ref_a": "638fc1d0e0e527838ea8e1159b7001bd2cbcd9fe",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "completed",
+      "index": 19,
+      "issue": 191,
+      "run": 38244271779,
+      "build_refs_verified": true,
+      "jobs": [
+        {
+          "id": 114794158198,
+          "name": "plan",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:41:28Z"
+        },
+        {
+          "id": 114794190639,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:41:34Z"
+        },
+        {
+          "id": 114794438854,
+          "name": "match (0, 20, 2012010000, 0)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:42:16Z"
+        },
+        {
+          "id": 114795466680,
+          "name": "aggregate",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:45:11Z"
+        }
+      ],
+      "result": {
+        "run": 38244271779,
+        "ref_a": "638fc1d0e0e527838ea8e1159b7001bd2cbcd9fe",
+        "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 7,
+        "draws": 4,
+        "wins_b": 9,
+        "score_a": 0.45,
+        "score_a_approx_95pct": [
+          0.23196376447938752,
+          0.6680362355206125
+        ],
+        "average_plies": 161.7,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11744855047,
+            "name": "played-move-archive-38244271779",
+            "size_in_bytes": 154191,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:26Z",
+            "digest": "sha256:f7b2f8a7b5bc6f84ae84fdce7e96987fbd7207bd47d0e3cfafde97e2bbfdd0e5"
+          },
+          {
+            "id": 11744393930,
+            "name": "generic-engine-match-38244271779-0",
+            "size_in_bytes": 226009,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:26Z",
+            "digest": "sha256:8ea6e963348c06d8ea4be0ed5b8fc386be74e3cadf7068fb43c731ac9c2a0a7a"
+          },
+          {
+            "id": 11744233554,
+            "name": "generic-engine-match-summary-38244271779",
+            "size_in_bytes": 572,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:26Z",
+            "digest": "sha256:9b800d56a9ac9f4adf01ac684c2ab512a4a629c80f06194d3a17f7d3a568537a"
+          },
+          {
+            "id": 11743434684,
+            "name": "generic-engine-binaries-38244271779",
+            "size_in_bytes": 4319426,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:26Z",
+            "digest": "sha256:3c7081470e74749551901e2139f375e7edd9b3f39e4395f6f8cd450a70a187fe"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "FAVG",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-favg-m",
+      "ref_a": "d928846ca3e386625e532686753f3f32392c8054",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "completed",
+      "index": 20,
+      "issue": 192,
+      "run": 38244285509,
+      "build_refs_verified": true,
+      "jobs": [
+        {
+          "id": 114794204484,
+          "name": "plan",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:41:36Z"
+        },
+        {
+          "id": 114794254794,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:41:44Z"
+        },
+        {
+          "id": 114794569854,
+          "name": "match (0, 20, 2012000000, 0)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:42:38Z"
+        },
+        {
+          "id": 114795290790,
+          "name": "aggregate",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:44:41Z"
+        }
+      ],
+      "result": {
+        "run": 38244285509,
+        "ref_a": "d928846ca3e386625e532686753f3f32392c8054",
+        "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 6,
+        "draws": 3,
+        "wins_b": 11,
+        "score_a": 0.375,
+        "score_a_approx_95pct": [
+          0.16282377607281254,
+          0.5871762239271875
+        ],
+        "average_plies": 117.55,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11744750062,
+            "name": "generic-engine-match-38244285509-0",
+            "size_in_bytes": 180767,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:34Z",
+            "digest": "sha256:7096ae92c07e1b60363377fa1c690cfbe7c5a4a46dd0efe29717dbc34e5c0ddc"
+          },
+          {
+            "id": 11743869690,
+            "name": "played-move-archive-38244285509",
+            "size_in_bytes": 123344,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:34Z",
+            "digest": "sha256:5f6adcac8e91a7bb50da88ade448065474a26eebf73f84bffd4faae6d98b068d"
+          },
+          {
+            "id": 11743864159,
+            "name": "generic-engine-binaries-38244285509",
+            "size_in_bytes": 4325610,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:34Z",
+            "digest": "sha256:e7f779665e35c0f140059410e9affbd9b01d7db3b156c2f34a1a57f9855be27e"
+          },
+          {
+            "id": 11743474949,
+            "name": "generic-engine-match-summary-38244285509",
+            "size_in_bytes": 574,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:34Z",
+            "digest": "sha256:fb74b78bbd81c1049d3d9f9a564456f34603047f6444063a22524cd7afb7b26e"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "FAVG",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-favg-q14",
+      "ref_a": "d928846ca3e386625e532686753f3f32392c8054",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "completed",
+      "index": 21,
+      "issue": 193,
+      "run": 38244300515,
+      "build_refs_verified": true,
+      "jobs": [
+        {
+          "id": 114794252297,
+          "name": "plan",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:41:44Z"
+        },
+        {
+          "id": 114794283844,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:41:50Z"
+        },
+        {
+          "id": 114794629637,
+          "name": "match (0, 20, 2012010000, 0)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:42:49Z"
+        },
+        {
+          "id": 114795542012,
+          "name": "aggregate",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:45:23Z"
+        }
+      ],
+      "result": {
+        "run": 38244300515,
+        "ref_a": "d928846ca3e386625e532686753f3f32392c8054",
+        "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 11,
+        "draws": 4,
+        "wins_b": 5,
+        "score_a": 0.65,
+        "score_a_approx_95pct": [
+          0.4409588557245249,
+          0.8590411442754751
+        ],
+        "average_plies": 138.3,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11744368282,
+            "name": "played-move-archive-38244300515",
+            "size_in_bytes": 136519,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:42Z",
+            "digest": "sha256:9abb6378c279bb482f141f6c7bc346280dccd46da397b039bf07f84eb2377f88"
+          },
+          {
+            "id": 11744173517,
+            "name": "generic-engine-match-summary-38244300515",
+            "size_in_bytes": 572,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:42Z",
+            "digest": "sha256:9c7e38ac74dec26fd93780fa09dc4163791c642cb5e433b2775d6f9da762835c"
+          },
+          {
+            "id": 11743743915,
+            "name": "generic-engine-match-38244300515-0",
+            "size_in_bytes": 200505,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:42Z",
+            "digest": "sha256:5411d2f424f005861452aedbea596d5cc2adba4322ef2b5003418004b5e9699c"
+          },
+          {
+            "id": 11743434773,
+            "name": "generic-engine-binaries-38244300515",
+            "size_in_bytes": 4319347,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:42Z",
+            "digest": "sha256:5e4c77847b8e73eff82cd040a1f20fb855069b92dc33d9f385fb706380e8f38c"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "NOC",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-noc-m",
+      "ref_a": "c7a851384a41b2132cd46d6ebadc3c754aad5815",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "completed",
+      "index": 22,
+      "issue": 194,
+      "run": 38244315059,
+      "build_refs_verified": true,
+      "jobs": [
+        {
+          "id": 114794302497,
+          "name": "plan",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:41:53Z"
+        },
+        {
+          "id": 114794348150,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:42:00Z"
+        },
+        {
+          "id": 114794658201,
+          "name": "match (0, 20, 2012000000, 0)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:42:54Z"
+        },
+        {
+          "id": 114795619112,
+          "name": "aggregate",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:45:36Z"
+        }
+      ],
+      "result": {
+        "run": 38244315059,
+        "ref_a": "c7a851384a41b2132cd46d6ebadc3c754aad5815",
+        "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 9,
+        "draws": 4,
+        "wins_b": 7,
+        "score_a": 0.55,
+        "score_a_approx_95pct": [
+          0.3319637644793876,
+          0.7680362355206125
+        ],
+        "average_plies": 153.1,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11745455025,
+            "name": "generic-engine-match-summary-38244315059",
+            "size_in_bytes": 571,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:50Z",
+            "digest": "sha256:66b591ab662e7da376c7f84094a6587e74fa13c84d0158e1a2803edc8a875187"
+          },
+          {
+            "id": 11744800195,
+            "name": "generic-engine-match-38244315059-0",
+            "size_in_bytes": 224380,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:50Z",
+            "digest": "sha256:e34245d7001ebae7e24ef72c6064be6904f8ae18c549cead8c414914ab153418"
+          },
+          {
+            "id": 11744347851,
+            "name": "generic-engine-binaries-38244315059",
+            "size_in_bytes": 4325838,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:50Z",
+            "digest": "sha256:5b8515b4d0a9ff87b2d1077fd59b7e0c1af636e00f46885d811c6e207a70c764"
+          },
+          {
+            "id": 11744343356,
+            "name": "played-move-archive-38244315059",
+            "size_in_bytes": 152896,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:50Z",
+            "digest": "sha256:daa1769a6140a7d5173d0ccf90cb1566a782640c3ddad6874f9cc893648079c6"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "NOC",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-noc-q14",
+      "ref_a": "c7a851384a41b2132cd46d6ebadc3c754aad5815",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "completed",
+      "index": 23,
+      "issue": 195,
+      "run": 38244329667,
+      "build_refs_verified": true,
+      "jobs": [
+        {
+          "id": 114794351916,
+          "name": "plan",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:42:01Z"
+        },
+        {
+          "id": 114794384187,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:42:06Z"
+        },
+        {
+          "id": 114794690216,
+          "name": "match (0, 20, 2012010000, 0)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:42:59Z"
+        },
+        {
+          "id": 114795621450,
+          "name": "aggregate",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:45:36Z"
+        }
+      ],
+      "result": {
+        "run": 38244329667,
+        "ref_a": "c7a851384a41b2132cd46d6ebadc3c754aad5815",
+        "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 9,
+        "draws": 1,
+        "wins_b": 10,
+        "score_a": 0.475,
+        "score_a_approx_95pct": [
+          0.2561394279455525,
+          0.6938605720544475
+        ],
+        "average_plies": 152.2,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11745385001,
+            "name": "generic-engine-match-38244329667-0",
+            "size_in_bytes": 226364,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:59Z",
+            "digest": "sha256:22a74dfdd7787b04cd970d16113b373d44ee267d476d0304cbc86890bd4e947f"
+          },
+          {
+            "id": 11744780207,
+            "name": "generic-engine-match-summary-38244329667",
+            "size_in_bytes": 572,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:59Z",
+            "digest": "sha256:a74c6554022bf8655e4420a935eec72a3789c23eeba3bfbb8c630593494f3a9e"
+          },
+          {
+            "id": 11744590059,
+            "name": "generic-engine-binaries-38244329667",
+            "size_in_bytes": 4319619,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:59Z",
+            "digest": "sha256:c4fa64cefdfe65bde84b2fa4858b4fad909f2e836e4c854c33a9736397792601"
+          },
+          {
+            "id": 11744024745,
+            "name": "played-move-archive-38244329667",
+            "size_in_bytes": 154221,
+            "expired": false,
+            "expires_at": "2027-01-10T11:41:59Z",
+            "digest": "sha256:4ddc46f9d417ebf3d15bdd03295fbaa6c285c4deeea28794f71acb06c2f31868"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "DELAY",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-delay-m",
+      "ref_a": "17706bbfb8ae12a25fc144b2fa48e45442fbd2b2",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "completed",
+      "index": 24,
+      "issue": 196,
+      "run": 38244344719,
+      "build_refs_verified": true,
+      "jobs": [
+        {
+          "id": 114794402089,
+          "name": "plan",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:42:10Z"
+        },
+        {
+          "id": 114794446319,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:42:17Z"
+        },
+        {
+          "id": 114794672817,
+          "name": "match (0, 20, 2012000000, 0)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:42:56Z"
+        },
+        {
+          "id": 114795402526,
+          "name": "aggregate",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:45:00Z"
+        }
+      ],
+      "result": {
+        "run": 38244344719,
+        "ref_a": "17706bbfb8ae12a25fc144b2fa48e45442fbd2b2",
+        "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 10,
+        "draws": 3,
+        "wins_b": 7,
+        "score_a": 0.575,
+        "score_a_approx_95pct": [
+          0.35834462849954535,
+          0.7916553715004546
+        ],
+        "average_plies": 122.9,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11744715183,
+            "name": "played-move-archive-38244344719",
+            "size_in_bytes": 132764,
+            "expired": false,
+            "expires_at": "2027-01-10T11:42:07Z",
+            "digest": "sha256:171f36b3405d5b1eef6713f449c87e1bd27a800c6b1951719fe67413afd091be"
+          },
+          {
+            "id": 11744630388,
+            "name": "generic-engine-match-summary-38244344719",
+            "size_in_bytes": 573,
+            "expired": false,
+            "expires_at": "2027-01-10T11:42:07Z",
+            "digest": "sha256:93316c540fbc20447c59dedcce6391de23d3fe8cd92b42129ac1cdfa646499a9"
+          },
+          {
+            "id": 11744038286,
+            "name": "generic-engine-binaries-38244344719",
+            "size_in_bytes": 4325812,
+            "expired": false,
+            "expires_at": "2027-01-10T11:42:07Z",
+            "digest": "sha256:4c37c2d8f744a0b7ed8ab12d4242457ef23e9b7680f0798148eb5eafe1929cf5"
+          },
+          {
+            "id": 11743953599,
+            "name": "generic-engine-match-38244344719-0",
+            "size_in_bytes": 195526,
+            "expired": false,
+            "expires_at": "2027-01-10T11:42:07Z",
+            "digest": "sha256:1b1bb7b7b282d91ee6e14eaa78f4d718965f73d366a4060411cb910723a49f91"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "DELAY",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-delay-q14",
+      "ref_a": "17706bbfb8ae12a25fc144b2fa48e45442fbd2b2",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "completed",
+      "index": 25,
+      "issue": 197,
+      "run": 38244362147,
+      "build_refs_verified": true,
+      "jobs": [
+        {
+          "id": 114794460102,
+          "name": "plan",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:42:19Z"
+        },
+        {
+          "id": 114794508927,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:42:28Z"
+        },
+        {
+          "id": 114794843760,
+          "name": "match (0, 20, 2012010000, 0)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:43:26Z"
+        },
+        {
+          "id": 114795771648,
+          "name": "aggregate",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:46:01Z"
+        }
+      ],
+      "result": {
+        "run": 38244362147,
+        "ref_a": "17706bbfb8ae12a25fc144b2fa48e45442fbd2b2",
+        "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 3,
+        "draws": 5,
+        "wins_b": 12,
+        "score_a": 0.275,
+        "score_a_approx_95pct": [
+          0.07930648963238462,
+          0.4706935103676154
+        ],
+        "average_plies": 146.45,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11744491102,
+            "name": "generic-engine-match-summary-38244362147",
+            "size_in_bytes": 574,
+            "expired": false,
+            "expires_at": "2027-01-10T11:42:17Z",
+            "digest": "sha256:601479ea2fc84d4380795214ab0ba3619d184e7e199085fa57652879bd0ecd15"
+          },
+          {
+            "id": 11744403310,
+            "name": "generic-engine-match-38244362147-0",
+            "size_in_bytes": 212906,
+            "expired": false,
+            "expires_at": "2027-01-10T11:42:17Z",
+            "digest": "sha256:ebc55f8903d8ce6818f3ec4253cbfcff079e84ecfd03e84596e353005aadcd25"
+          },
+          {
+            "id": 11743924206,
+            "name": "generic-engine-binaries-38244362147",
+            "size_in_bytes": 4319277,
+            "expired": false,
+            "expires_at": "2027-01-10T11:42:17Z",
+            "digest": "sha256:ed2ad9927d734a81129a20e8cf87ed7c3a35374551150a07ef2882f0861c4e34"
+          },
+          {
+            "id": 11743729975,
+            "name": "played-move-archive-38244362147",
+            "size_in_bytes": 144422,
+            "expired": false,
+            "expires_at": "2027-01-10T11:42:17Z",
+            "digest": "sha256:d9d5f878ecbc093ffa71215b2a2c06e194badea56589855727f069fa5fcbaf24"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "LATE",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-late-m",
+      "ref_a": "a3a112046079e0891a9513bf4fa0c951cf8d4979",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "completed",
+      "index": 26,
+      "issue": 198,
+      "run": 38244377456,
+      "build_refs_verified": true,
+      "jobs": [
+        {
+          "id": 114794509477,
+          "name": "plan",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:42:28Z"
+        },
+        {
+          "id": 114794542907,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:42:34Z"
+        },
+        {
+          "id": 114794882556,
+          "name": "match (0, 20, 2012000000, 0)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:43:32Z"
+        },
+        {
+          "id": 114795888500,
+          "name": "aggregate",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:46:20Z"
+        }
+      ],
+      "result": {
+        "run": 38244377456,
+        "ref_a": "a3a112046079e0891a9513bf4fa0c951cf8d4979",
+        "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 4,
+        "draws": 4,
+        "wins_b": 12,
+        "score_a": 0.3,
+        "score_a_approx_95pct": [
+          0.09915976498719187,
+          0.500840235012808
+        ],
+        "average_plies": 154.35,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11744875138,
+            "name": "generic-engine-match-38244377456-0",
+            "size_in_bytes": 220321,
+            "expired": false,
+            "expires_at": "2027-01-10T11:42:26Z",
+            "digest": "sha256:b0540e536139f88ab0969d9be804c609860ddb09f706d1949ca403e25abdfd70"
+          },
+          {
+            "id": 11744835244,
+            "name": "generic-engine-match-summary-38244377456",
+            "size_in_bytes": 571,
+            "expired": false,
+            "expires_at": "2027-01-10T11:42:26Z",
+            "digest": "sha256:825d058092a9f9d50ba6420556268eb7886018324ae01a8d10012b7b7fe913ee"
+          },
+          {
+            "id": 11744084776,
+            "name": "played-move-archive-38244377456",
+            "size_in_bytes": 149848,
+            "expired": false,
+            "expires_at": "2027-01-10T11:42:26Z",
+            "digest": "sha256:8ce63220700912302c15c5c4a2b0ea7b40b77f0b2229305569b2be53da73acc2"
+          },
+          {
+            "id": 11744059358,
+            "name": "generic-engine-binaries-38244377456",
+            "size_in_bytes": 4325601,
+            "expired": false,
+            "expires_at": "2027-01-10T11:42:26Z",
+            "digest": "sha256:c028d3c798d07b1ab78d08253bbaf1232099bd8d8871975c23f3c7d60694d8a9"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "LATE",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-late-q14",
+      "ref_a": "a3a112046079e0891a9513bf4fa0c951cf8d4979",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "completed",
+      "index": 27,
+      "issue": 199,
+      "run": 38244388040,
+      "build_refs_verified": true,
+      "jobs": [
+        {
+          "id": 114794545424,
+          "name": "plan",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:42:34Z"
+        },
+        {
+          "id": 114794583698,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:42:41Z"
+        },
+        {
+          "id": 114794838321,
+          "name": "match (0, 20, 2012010000, 0)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:43:25Z"
+        },
+        {
+          "id": 114795734566,
+          "name": "aggregate",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:45:55Z"
+        }
+      ],
+      "result": {
+        "run": 38244388040,
+        "ref_a": "a3a112046079e0891a9513bf4fa0c951cf8d4979",
+        "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+        "go_command": "go movetime 50",
+        "options_a": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "options_b": {
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv"
+        },
+        "games": 20,
+        "wins_a": 10,
+        "draws": 5,
+        "wins_b": 5,
+        "score_a": 0.625,
+        "score_a_approx_95pct": [
+          0.4128237760728125,
+          0.8371762239271875
+        ],
+        "average_plies": 141.25,
+        "illegal_games": 0,
+        "shards": 1,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        },
+        "artifacts": [
+          {
+            "id": 11745425078,
+            "name": "generic-engine-match-summary-38244388040",
+            "size_in_bytes": 571,
+            "expired": false,
+            "expires_at": "2027-01-10T11:42:32Z",
+            "digest": "sha256:e72c58e6ace7089e0e909d4ef643288938328a45ccde0d09b4b3804b6f714805"
+          },
+          {
+            "id": 11744905065,
+            "name": "generic-engine-match-38244388040-0",
+            "size_in_bytes": 205788,
+            "expired": false,
+            "expires_at": "2027-01-10T11:42:32Z",
+            "digest": "sha256:94dbbdf0965ff9fcc77ffcae65cc17e034da91f1c3c916b5fe47e1adf6328688"
+          },
+          {
+            "id": 11744188182,
+            "name": "generic-engine-binaries-38244388040",
+            "size_in_bytes": 4319424,
+            "expired": false,
+            "expires_at": "2027-01-10T11:42:32Z",
+            "digest": "sha256:1ecfc4a30fd8a805909136ff7cfd7b35e9e4c9b3c314ac6cca5015f6678f4b1a"
+          },
+          {
+            "id": 11743953753,
+            "name": "played-move-archive-38244388040",
+            "size_in_bytes": 139650,
+            "expired": false,
+            "expires_at": "2027-01-10T11:42:32Z",
+            "digest": "sha256:0836e3165be25a4afb5e7bf110ecba85ee74253c9a1fbb7f4e6b1ec5bd25cca7"
+          }
+        ]
+      }
+    },
+    {
+      "stage": "screen",
+      "model": "STEP",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-step-m",
+      "ref_a": "5dc993b9d10e0f151c448e2971195d34be35c861",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "requested",
+      "index": 28,
+      "issue": 200,
+      "run": 38244832980,
+      "build_refs_verified": true,
+      "jobs": [
+        {
+          "id": 114796009308,
+          "name": "plan",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:46:41Z"
+        },
+        {
+          "id": 114796064709,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:46:50Z"
+        },
+        {
+          "id": 114796432503,
+          "name": "match (0, 20, 2012000000, 0)",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-12T11:47:52Z",
+          "run_shard_started": "2026-10-12T11:48:02Z"
+        }
+      ]
+    },
+    {
+      "stage": "screen",
+      "model": "STEP",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-step-q14",
+      "ref_a": "5dc993b9d10e0f151c448e2971195d34be35c861",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "requested",
+      "index": 29,
+      "issue": 205,
+      "failed_requests": [
+        {
+          "issue": 201,
+          "reason": "ref_b transcription error; match not started"
+        }
+      ],
+      "run": 38245002151,
+      "build_refs_verified": true,
+      "jobs": [
+        {
+          "id": 114796571064,
+          "name": "plan",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:48:15Z"
+        },
+        {
+          "id": 114796619201,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:48:24Z"
+        },
+        {
+          "id": 114796915948,
+          "name": "match (0, 20, 2012010000, 0)",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-12T11:49:13Z",
+          "run_shard_started": "2026-10-12T11:49:20Z"
+        }
+      ]
+    },
+    {
+      "stage": "screen",
+      "model": "EARLY",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-early-m",
+      "ref_a": "f28d1c547182e138729f87ef51f7587e1f9452e9",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "requested",
+      "index": 30,
+      "issue": 202,
+      "run": 38244831707,
+      "build_refs_verified": true,
+      "jobs": [
+        {
+          "id": 114796006269,
+          "name": "plan",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:46:40Z"
+        },
+        {
+          "id": 114796040569,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:46:45Z"
+        },
+        {
+          "id": 114796369453,
+          "name": "match (0, 20, 2012000000, 0)",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-12T11:47:42Z",
+          "run_shard_started": "2026-10-12T11:47:47Z"
+        }
+      ]
+    },
+    {
+      "stage": "screen",
+      "model": "EARLY",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-early-q14",
+      "ref_a": "f28d1c547182e138729f87ef51f7587e1f9452e9",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "requested",
+      "index": 31,
+      "issue": 206,
+      "failed_requests": [
+        {
+          "issue": 203,
+          "reason": "ref_b transcription error; match not started"
+        }
+      ],
+      "run": 38245009835,
+      "build_refs_verified": true,
+      "jobs": [
+        {
+          "id": 114796598605,
+          "name": "plan",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:48:19Z"
+        },
+        {
+          "id": 114796635877,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:48:26Z"
+        },
+        {
+          "id": 114796964431,
+          "name": "match (0, 20, 2012010000, 0)",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-12T11:49:22Z",
+          "run_shard_started": "2026-10-12T11:49:31Z"
+        }
+      ]
+    },
+    {
+      "stage": "screen",
+      "model": "AMP2",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-amp2-m",
+      "ref_a": "6885dc64a3c1c3b51f91e3a6b675ed5209b60158",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "requested",
+      "index": 32,
+      "issue": 204,
+      "run": 38244839509,
+      "build_refs_verified": true,
+      "jobs": [
+        {
+          "id": 114796032555,
+          "name": "plan",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:46:44Z"
+        },
+        {
+          "id": 114796065815,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:46:50Z"
+        },
+        {
+          "id": 114796386053,
+          "name": "match (0, 20, 2012000000, 0)",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-12T11:47:44Z",
+          "run_shard_started": "2026-10-12T11:47:51Z"
+        }
+      ]
+    },
+    {
+      "stage": "screen",
+      "model": "AMP2",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-amp2-q14",
+      "ref_a": "6885dc64a3c1c3b51f91e3a6b675ed5209b60158",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "requested",
+      "index": 33,
+      "issue": 207,
+      "run": 38245042338,
+      "build_refs_verified": true,
+      "jobs": [
+        {
+          "id": 114796704188,
+          "name": "plan",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:48:37Z"
+        },
+        {
+          "id": 114796741205,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:48:44Z"
+        },
+        {
+          "id": 114797040737,
+          "name": "match (0, 20, 2012010000, 0)",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-12T11:49:35Z",
+          "run_shard_started": "2026-10-12T11:49:41Z"
+        }
+      ]
+    },
+    {
+      "stage": "screen",
+      "model": "BOARD",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-board-m",
+      "ref_a": "2face12b32eade0bab65f62b80d7bbf7e09b7e4a",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "requested",
+      "index": 34,
+      "issue": 208,
+      "run": 38245042367,
+      "build_refs_verified": true,
+      "jobs": [
+        {
+          "id": 114796703357,
+          "name": "plan",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:48:37Z"
+        },
+        {
+          "id": 114796740179,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:48:44Z"
+        },
+        {
+          "id": 114797067234,
+          "name": "match (0, 20, 2012000000, 0)",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-12T11:49:39Z",
+          "run_shard_started": null
+        }
+      ]
+    },
+    {
+      "stage": "screen",
+      "model": "BOARD",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-board-q14",
+      "ref_a": "2face12b32eade0bab65f62b80d7bbf7e09b7e4a",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "requested",
+      "index": 35,
+      "issue": 209,
+      "run": 38245047037,
+      "build_refs_verified": true,
+      "jobs": [
+        {
+          "id": 114796719579,
+          "name": "plan",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:48:40Z"
+        },
+        {
+          "id": 114796755791,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:48:46Z"
+        },
+        {
+          "id": 114797072447,
+          "name": "match (0, 20, 2012010000, 0)",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-12T11:49:40Z",
+          "run_shard_started": "2026-10-12T11:49:45Z"
+        }
+      ]
+    },
+    {
+      "stage": "screen",
+      "model": "HPOT",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-hpot-m",
+      "ref_a": "15cd08ecea9d86d7b94394e3767f2a608af8b8b3",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "requested",
+      "index": 36,
+      "issue": 210,
+      "run": 38245046400,
+      "build_refs_verified": true,
+      "jobs": [
+        {
+          "id": 114796715891,
+          "name": "plan",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:48:39Z"
+        },
+        {
+          "id": 114796758228,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:48:46Z"
+        },
+        {
+          "id": 114797039243,
+          "name": "match (0, 20, 2012000000, 0)",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-12T11:49:35Z",
+          "run_shard_started": "2026-10-12T11:49:42Z"
+        }
+      ]
+    },
+    {
+      "stage": "screen",
+      "model": "HPOT",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-hpot-q14",
+      "ref_a": "15cd08ecea9d86d7b94394e3767f2a608af8b8b3",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "requested",
+      "index": 37,
+      "issue": 211,
+      "run": 38245054967,
+      "build_refs_verified": true,
+      "jobs": [
+        {
+          "id": 114796746296,
+          "name": "plan",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:48:44Z"
+        },
+        {
+          "id": 114796781116,
+          "name": "build",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-12T11:48:50Z"
+        },
+        {
+          "id": 114797082064,
+          "name": "match (0, 20, 2012010000, 0)",
+          "status": "in_progress",
+          "conclusion": null,
+          "started_at": "2026-10-12T11:49:42Z",
+          "run_shard_started": null
+        }
+      ]
+    },
+    {
+      "stage": "screen",
+      "model": "ATTACK",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-attack-m",
+      "ref_a": "2aed7a905d09ea1d2435e87567f31bf77a0f0847",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "not_requested",
+      "index": 38
+    },
+    {
+      "stage": "screen",
+      "model": "ATTACK",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-attack-q14",
+      "ref_a": "2aed7a905d09ea1d2435e87567f31bf77a0f0847",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "not_requested",
+      "index": 39
+    },
+    {
+      "stage": "screen",
+      "model": "EXCHANGE",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-exchange-m",
+      "ref_a": "7d548e371372423f4f9ba86734218e0052832b67",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "not_requested",
+      "index": 40
+    },
+    {
+      "stage": "screen",
+      "model": "EXCHANGE",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-exchange-q14",
+      "ref_a": "7d548e371372423f4f9ba86734218e0052832b67",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "not_requested",
+      "index": 41
+    },
+    {
+      "stage": "screen",
+      "model": "KING",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-king-m",
+      "ref_a": "2211b4f654bc9e0e7b25a60fd99bebf993ce4c0f",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "not_requested",
+      "index": 42
+    },
+    {
+      "stage": "screen",
+      "model": "KING",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-king-q14",
+      "ref_a": "2211b4f654bc9e0e7b25a60fd99bebf993ce4c0f",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "not_requested",
+      "index": 43
+    },
+    {
+      "stage": "screen",
+      "model": "HYBRID",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-hybrid-m",
+      "ref_a": "806e3d916bcb02e4bbd4866da82dc7b572200748",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "not_requested",
+      "index": 44
+    },
+    {
+      "stage": "screen",
+      "model": "HYBRID",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-hybrid-q14",
+      "ref_a": "806e3d916bcb02e4bbd4866da82dc7b572200748",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "not_requested",
+      "index": 45
+    },
+    {
+      "stage": "screen",
+      "model": "RISK",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-risk-m",
+      "ref_a": "3e0a4777756d868dec70378a862923f408297289",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "not_requested",
+      "index": 46
+    },
+    {
+      "stage": "screen",
+      "model": "RISK",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-risk-q14",
+      "ref_a": "3e0a4777756d868dec70378a862923f408297289",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "not_requested",
+      "index": 47
+    },
+    {
+      "stage": "screen",
+      "model": "BLEND",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-blend-m",
+      "ref_a": "75e8b589bc44db131a3361d1f83a7150723218e2",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "not_requested",
+      "index": 48
+    },
+    {
+      "stage": "screen",
+      "model": "BLEND",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-blend-q14",
+      "ref_a": "75e8b589bc44db131a3361d1f83a7150723218e2",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "not_requested",
+      "index": 49
+    },
+    {
+      "stage": "screen",
+      "model": "RESOURCE",
+      "baseline": "M",
+      "request_id": "ve28-20261012-screen-resource-m",
+      "ref_a": "430b274c906274dd8e0a20a09a6c6faa5b67b092",
+      "ref_b": "5633b6b1db555d17004dc4f5051d71a71a1fbe20",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012000000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "not_requested",
+      "index": 50
+    },
+    {
+      "stage": "screen",
+      "model": "RESOURCE",
+      "baseline": "Q14",
+      "request_id": "ve28-20261012-screen-resource-q14",
+      "ref_a": "430b274c906274dd8e0a20a09a6c6faa5b67b092",
+      "ref_b": "42262e80234bd200743ecb713e0274522753ebfd",
+      "games": 20,
+      "shards": 1,
+      "go_command": "go movetime 50",
+      "max_plies": 300,
+      "seed": 2012010000,
+      "options_a": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "options_b": "{\"AdaptiveLongThink\":false,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+      "state": "not_requested",
+      "index": 51
     }
   ],
-  "expected_first_batch_completion": "2026-10-12T17:46:00+09:00",
-  "timer_id": "6acc6bd66e588191a524ea14c47a5d2c"
+  "next_check_jst": "2026-10-12T21:10:00+09:00"
 }
