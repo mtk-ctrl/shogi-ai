@@ -1,5 +1,5 @@
 #pragma once
-// Research branch only. REV: fixed candidate index.
+// Research branch only. BOARD: fixed candidate index.
 namespace shogi::strategy {
-inline constexpr int SelectedResearchProfile = 11;
+inline constexpr int SelectedResearchProfile = 12;
 }
