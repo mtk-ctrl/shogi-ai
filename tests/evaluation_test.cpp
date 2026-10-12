@@ -1,4 +1,5 @@
 #include "strategy/alphabeta3_tt.h"
+#include "strategy/phase_weights.h"
 #include "strategy/promotion_policy.h"
 #include <iostream>
 #include <map>
@@ -108,6 +109,57 @@ int main(){try{
     auto knight=snap({{"5e","N"},{"5d","P"}});AttackMap nm(knight);
     require(nm.count[0][sq("4c")]==1&&nm.count[0][sq("6c")]==1,"knight jumps blockers");
     std::cout<<"PASS every piece/promotion geometry, blockers and king-vacated xray\n";
+
+    require(AdoptedPhaseProfile==34, "Q14 adopted profile identifier");
+    const auto start=phase_turn_parameters(EvaluationParameters{},0);
+    const auto middle=phase_turn_parameters(EvaluationParameters{},50);
+    const auto finish=phase_turn_parameters(EvaluationParameters{},100);
+    const std::array<EvaluationParameters,3> all{start,middle,finish};
+    for(int i=0;i<3;++i) {
+        const auto& t=all[i];
+        const auto& a=(i==0?StageOpening:(i==1?StageMiddle:StageEnd));
+        require(t.material_weight==a[0]&&t.weights[0]==a[1]&&
+                t.weights[1]==a[2]&&t.weights[2]==a[3]&&
+                t.weights[3]==a[4]&&t.influence_weight==a[5]&&
+                t.potential_weight==a[6]&&t.coordination_weight==a[7]&&
+                t.hand_potential_weight==a[8]&&t.threat_weight==a[9]&&
+                t.hand_material_weight==StageHandMaterial[i],
+                "three phase anchor values");
+    }
+    require(start.material_weight>middle.material_weight&&middle.material_weight>finish.material_weight,
+            "declining board material");
+    require(start.hand_material_weight<middle.hand_material_weight&&middle.hand_material_weight<finish.hand_material_weight,
+            "increasing held material");
+    require(start.weights[0]<middle.weights[0]&&middle.weights[0]<finish.weights[0],
+            "increasing king safety");
+    require(start.hand_potential_weight<middle.hand_potential_weight&&middle.hand_potential_weight<finish.hand_potential_weight,
+            "increasing in-hand potential");
+    require(start.coordination_weight>=middle.coordination_weight&&middle.coordination_weight>=finish.coordination_weight,
+            "coordination must be flat/declining");
+    require(start.threat_weight>=middle.threat_weight&&middle.threat_weight>=finish.threat_weight,
+            "fork/threat must be flat/declining");
+    auto board=snap({{"9i","K"},{"1a","k"},{"5e","P"}});
+    auto hand=snap({{"9i","K"},{"1a","k"}});
+    hand.hands[0][0]=1;
+    require(evaluate(board,start).material_term==120*StageOpening[0]/100&&
+            evaluate(board,finish).material_term==120*StageEnd[0]/100,
+            "board material value in actual evaluation");
+    require(evaluate(hand,start).material_term==180*StageHandMaterial[0]/100&&
+            evaluate(hand,finish).material_term==180*StageHandMaterial[2]/100,
+            "held material value in actual evaluation");
+    require(evaluate(hand).material_term==material_black(hand),
+            "unmodified M reference evaluation without phase transformation");
+    std::cout<<"PASS phase profile directions, held material and baseline invariant\n";
+    // Risk response must be contextual rather than a constant maturity-only rescaling.
+    const auto quiet=phase_turn_parameters(EvaluationParameters{},50,0,0);
+    const auto risk=phase_turn_parameters(EvaluationParameters{},50,70,80);
+    require(risk.weights[0]>quiet.weights[0]&&risk.weights[3]>quiet.weights[3]&&
+            risk.weights[1]>quiet.weights[1]&&risk.threat_weight>quiet.threat_weight, "hybrid stage/context response");
+    require(risk.material_weight==quiet.material_weight&&
+            risk.hand_material_weight==quiet.hand_material_weight,
+            "contextual bonuses must not alter board/hand material scaling");
+    std::cout<<"PASS hybrid contextual risk and material isolation\\n";
+
 
     // Evaluation-v2: multiple non-material ideas remain visible in the leaf
     // score instead of competing only for move-ordering priority.

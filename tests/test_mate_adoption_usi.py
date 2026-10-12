@@ -73,7 +73,8 @@ def main(executable: str):
     try:
         eng.send("usi")
         lines = eng.until("usiok")
-        assert any("id name KUMOJI v2.0.11" in x for x in lines)
+        # Verify the formal engine identity without pinning this mate test to an old release.
+        assert any(x.startswith("id name KUMOJI v") for x in lines)
         for option in ("MateLearning type check default true",
                        "MateStageBudget type check default true",
                        "MateBudgetProfile type combo default aggressive",

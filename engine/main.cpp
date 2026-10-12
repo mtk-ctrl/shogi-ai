@@ -8,6 +8,7 @@
 #include "strategy/promotion_policy.h"
 #include "strategy/long_think_budget.h"
 #include "strategy/turn_phase.h"
+#include "strategy/phase_weights.h"
 #include <algorithm>
 #include <chrono>
 #include <random>
@@ -99,7 +100,7 @@ int main() {
         if (command != "isready" && command != "stop" && command != "ponderhit" && command != "quit")
             finish_search(true);
         if (command == "usi") {
-            std::cout << "id name KUMOJI v2.0.11\nid author mtk-ctrl + ChatGPT\n"
+            std::cout << "id name KUMOJI v2.0.12\nid author mtk-ctrl + ChatGPT\n"
                       << "option name USI_Ponder type check default false\n"
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
@@ -129,8 +130,13 @@ int main() {
                       << "option name PositionKnowledgeFile type string default position-knowledge-v1.tsv\n"
                       << "usiok\n" << std::flush;
         } else if (command == "eval") {
-            const auto b = shogi::strategy::evaluate(position.snapshot(), material_profile
-                ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters);
+            const auto root = position.snapshot();
+            const auto phase = shogi::strategy::classify_turn_phase(root);
+            const auto params = material_profile
+                ? shogi::strategy::EvaluationParameters::material_only()
+                : shogi::strategy::phase_turn_parameters(evaluation_parameters, phase.maturity,
+                    phase.components.battle, phase.components.king_threat);
+            const auto b = shogi::strategy::evaluate(root, params);
             std::cout << "info string evaluation material " << b.material
                       << " material_term " << b.material_term
                       << " safety " << b.terms[0] << " pressure " << b.terms[1]
@@ -245,9 +251,12 @@ int main() {
             {
                 const auto root = position.snapshot();
                 const auto phase = shogi::strategy::classify_turn_phase(root);
-                const auto eval = shogi::strategy::evaluate(root, material_profile
+                const auto active_parameters = material_profile
                     ? shogi::strategy::EvaluationParameters::material_only()
-                    : evaluation_parameters);
+                    : shogi::strategy::phase_turn_parameters(evaluation_parameters, phase.maturity,
+                    phase.components.battle, phase.components.king_threat);
+                strategy.set_evaluator(shogi::strategy::FeatureEvaluator(active_parameters));
+                const auto eval = shogi::strategy::evaluate(root, active_parameters);
                 std::ostringstream out;
                 out << "info string phase v 1 maturity " << phase.maturity
                     << " stage " << phase.stage
@@ -255,7 +264,8 @@ int main() {
                     << " battle " << phase.components.battle
                     << " invasion " << phase.components.invasion
                     << " king_threat " << phase.components.king_threat
-                    << " static_cp_black " << eval.total << '\n';
+                    << " phase_weight_profile " << shogi::strategy::AdoptedPhaseProfile
+                     << " static_cp_black " << eval.total << '\n';
                 emit(out.str());
             }
             if (!restrict && entering_king && position.can_declare_win()) {
