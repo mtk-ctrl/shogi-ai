@@ -89,6 +89,32 @@ def check(root: Path = ROOT) -> tuple[list[str], list[str]]:
     if not re.search(r"bool v2_enabled\s*=\s*true", params) or "EvalV2=true" not in spec:
         errors.append(f"{spec_path}: 評価関数v2の既定値が実装と一致しない")
 
+    # Production Q14 stages must match the adopted stage table, not just the M reference.
+    q14 = read("engine/strategy/phase_weights.h")
+    source = read("engine/main.cpp")
+    if "phase_turn_parameters(" not in source or "AdoptedPhaseProfile" not in source:
+        errors.append("engine/main.cpp: Q14段階評価が対局に接続されていない")
+    anchors = {}
+    for stage in ("StageOpening", "StageMiddle", "StageEnd", "StageHandMaterial"):
+        match_anchor = re.search(rf"std::array<int,\s*\d+>\s+{stage}\s*\{{([^}}]+)\}}", q14)
+        if not match_anchor:
+            errors.append(f"phase_weights.h: {stage} の値を読み取れない")
+        else:
+            anchors[stage] = [int(n) for n in re.findall(r"\d+", match_anchor.group(1))]
+    if len(anchors) == 4:
+        names = ("StageOpening", "StageMiddle", "StageEnd")
+        for label, index in (("駒得", 0), ("玉の安全", 1), ("攻撃圧力", 2),
+                             ("駒の活動", 3), ("駒の危険", 4), ("効き", 5),
+                             ("潜在的な活動", 6), ("駒の連携", 7),
+                             ("持ち駒の潜在効果", 8), ("両取り等の脅威", 9),
+                             ("持ち駒の駒得倍率", None)):
+            expected = [anchors[n][index] if index is not None
+                        else anchors["StageHandMaterial"][i] for i, n in enumerate(names)]
+            pattern = rf"^\|\s*{re.escape(label)}\s*\|\s*(\d+)\s*\|\s*(\d+)\s*\|\s*(\d+)\s*\|"
+            found = re.search(pattern, spec, re.M)
+            if not found or [int(v) for v in found.groups()] != expected:
+                errors.append(f"{spec_path}: Q14型 {label} の実配点が実装と一致しない")
+
     phase = read("engine/strategy/turn_phase.h")
     for label, field in (("配置展開", "development"), ("戦闘", "battle"), ("敵陣進出", "invasion")):
         actual = re.search(rf"(\d+)\s*\*\s*out\.components\.{field}", phase)
