@@ -1,5 +1,5 @@
 #pragma once
-// Research branch only. AMP2: fixed candidate index.
+// Research branch only. AMP3: fixed candidate index.
 namespace shogi::strategy {
-inline constexpr int SelectedResearchProfile = 9;
+inline constexpr int SelectedResearchProfile = 10;
 }
