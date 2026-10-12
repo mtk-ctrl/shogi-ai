@@ -1,5 +1,5 @@
 #pragma once
-// Research branch only. RESOURCE_BALANCE: fixed candidate index.
+// Research branch only. Each candidate commit pins exactly one index.
 namespace shogi::strategy {
-inline constexpr int SelectedResearchProfile = 27;
+inline constexpr int SelectedResearchProfile = 0;
 }
