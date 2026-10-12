@@ -1,5 +1,5 @@
 #pragma once
-// Research branch only. EXCHANGE: fixed candidate index.
+// Research branch only. KING: fixed candidate index.
 namespace shogi::strategy {
-inline constexpr int SelectedResearchProfile = 18;
+inline constexpr int SelectedResearchProfile = 19;
 }
