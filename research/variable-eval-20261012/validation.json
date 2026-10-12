@@ -21,5 +21,13 @@
     "conclusion": "execution check only, not strength evidence"
   },
   "evaluation_regression": "all tests passed after repairing existing duplicate local variable and obsolete G-material expectations",
-  "workflow_preflight": "24 active workflows passed; none changed"
+  "workflow_preflight": "24 active workflows passed; none changed",
+  "m_exact_fixture_checks": {
+    "fixtures": 4,
+    "reference_commit": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+    "static_eval": "equal",
+    "bestmove": "equal",
+    "nodes": "equal",
+    "depth": "equal"
+  }
 }

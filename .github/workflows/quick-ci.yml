@@ -60,6 +60,15 @@ jobs:
       - name: Build engine
         run: python3 scripts/build.py --output build/shogi-ai
 
+      - name: Candidate phase-profile validation (research branch only)
+        if: hashFiles('scripts/variable_eval_profiles.py') != ''
+        run: |
+          python3 scripts/variable_eval_profiles.py --check
+          g++ -std=c++17 -O2 -Iengine tests/variable_phase_test.cpp -o build/variable-phase-test
+          ./build/variable-phase-test
+          python3 scripts/build.py --evaluation-test --output build/evaluation-test
+          ./build/evaluation-test
+
       - name: Strategy tests
         run: |
           python3 scripts/build.py --strategy-test --output build/strategy-test
