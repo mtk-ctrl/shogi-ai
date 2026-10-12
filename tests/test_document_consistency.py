@@ -19,6 +19,7 @@ import check_match_workflows as match_workflows
 NEEDED = (
     "README.md", "engine/main.cpp", "docs/現行エンジン仕様.md",
     "engine/strategy/material.h", "engine/strategy/evaluation_params.h",
+    "engine/strategy/phase_weights.h",
     "engine/strategy/turn_phase.h", "position-knowledge-v1.manifest.json",
     "docs/rules/R00_基本原則.md", "docs/rules/R20_対局・比較・統計.md",
     "docs/rules/R70_記録・Journal・バージョン.md",
@@ -83,6 +84,13 @@ class ClaimChecks(unittest.TestCase):
         self.change("docs/現行エンジン仕様.md", "配置展開係数 **4408**", "配置展開係数 **4407**")
         errors, _ = claims.check(self.root)
         self.assertTrue(any("成熟度配置展開係数" in e for e in errors), errors)
+
+    def test_wrong_q14_dynamic_weight_fails(self):
+        self.change("docs/現行エンジン仕様.md",
+                    "| 持ち駒の潜在効果 | 56 | 119 | 250 |",
+                    "| 持ち駒の潜在効果 | 56 | 119 | 251 |")
+        errors, _ = claims.check(self.root)
+        self.assertTrue(any("Q14型" in e and "持ち駒の潜在効果" in e for e in errors), errors)
 
     def test_wrong_knowledge_count_fails(self):
         manifest = json.loads((self.root / "position-knowledge-v1.manifest.json").read_text(encoding="utf-8"))
