@@ -1,5 +1,120 @@
 [
   {
+    "request_id": "ve28-20261012-mid-attack-m",
+    "run_id": 38310795719,
+    "a": "ATTACK",
+    "b": "M",
+    "wins": 59,
+    "draws": 1,
+    "losses": 40,
+    "score": 0.595,
+    "approx_95pct": [
+      0.4988033600620399,
+      0.6911966399379601
+    ],
+    "colors": {
+      "A": 50,
+      "B": 50
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/mid-raw/38310795719/shard-0.json": "147db4d67fb06c5bc41c785ac38b75496073dbf616e88685d4df8a1fb9cf5a92",
+      "build/mid-raw/38310795719/shard-1.json": "1f8d920240e38a707444c2b55973d7520fc73debcece14b100ea109c67f9a284"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-mid-attack-q14",
+    "run_id": 38310789493,
+    "a": "ATTACK",
+    "b": "Q14",
+    "wins": 55,
+    "draws": 2,
+    "losses": 43,
+    "score": 0.56,
+    "approx_95pct": [
+      0.4632152111458865,
+      0.6567847888541136
+    ],
+    "colors": {
+      "A": 50,
+      "B": 50
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/mid-raw/38310789493/shard-0.json": "db92a856549a4e6470a8ac726ac3bf673bee4ef2f851109391d8bd0ecb3e9c90",
+      "build/mid-raw/38310789493/shard-1.json": "923477a00b21c401dd67686e843005d60448494f0d1a2bb392729079341fd5a8"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-mid-blend-m",
+    "run_id": 38310744857,
+    "a": "BLEND",
+    "b": "M",
+    "wins": 48,
+    "draws": 1,
+    "losses": 51,
+    "score": 0.485,
+    "approx_95pct": [
+      0.3870445555831168,
+      0.5829554444168832
+    ],
+    "colors": {
+      "A": 50,
+      "B": 50
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/mid-raw/38310744857/shard-0.json": "35985367cf9446b6d90d6adcb5688a3dbbfaa7d2fe1705575663c6aaecceb8ac",
+      "build/mid-raw/38310744857/shard-1.json": "38d9b13ff8d1f2ada46be1823934ced99e53adff848d2ca0801c9660afbf6b05"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-mid-blend-q14",
+    "run_id": 38310765778,
+    "a": "BLEND",
+    "b": "Q14",
+    "wins": 51,
+    "draws": 4,
+    "losses": 45,
+    "score": 0.53,
+    "approx_95pct": [
+      0.4336773855182177,
+      0.6263226144817824
+    ],
+    "colors": {
+      "A": 50,
+      "B": 50
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/mid-raw/38310765778/shard-0.json": "6442488bda38bfc96cb2e7945a756586113c47f996fcce1e4c006720abc660d2",
+      "build/mid-raw/38310765778/shard-1.json": "0eb7d1b2a1a49475fd65d60f2989f1fb25694e04c9b64d5c42a1eca5485eeff6"
+    }
+  },
+  {
+    "request_id": "ve28-20261012-mid-resource_balance-m",
+    "run_id": 38310812684,
+    "a": "RESOURCE_BALANCE",
+    "b": "M",
+    "wins": 34,
+    "draws": 2,
+    "losses": 64,
+    "score": 0.35,
+    "approx_95pct": [
+      0.2570812236956438,
+      0.44291877630435617
+    ],
+    "colors": {
+      "A": 50,
+      "B": 50
+    },
+    "phase_missing_plies": 0,
+    "raw_sha256": {
+      "build/mid-raw/38310812684/shard-0.json": "5c1468314f217ade7424c107dc1b4780ae0a9264d81178c67d6a3d449f004eda",
+      "build/mid-raw/38310812684/shard-1.json": "d74982e74abed196019d2c16a762e77f05fad35339874455580b543607f10ad2"
+    }
+  },
+  {
     "request_id": "ve28-20261012-mid-unified-m",
     "run_id": 38246798419,
     "a": "UNIFIED",
