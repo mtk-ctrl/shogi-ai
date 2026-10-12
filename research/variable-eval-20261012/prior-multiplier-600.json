@@ -1,0 +1,171 @@
+{
+  "source": "15 completed aggregate logs, 40 games each",
+  "total_games": 600,
+  "matches": [
+    {
+      "run": 38182457041,
+      "a": "M",
+      "b": "Q2",
+      "wins_a": 24,
+      "draws": 0,
+      "wins_b": 16,
+      "score_a": 0.6,
+      "illegal_games": 0,
+      "go_command": "go movetime 200"
+    },
+    {
+      "run": 38182664355,
+      "a": "M",
+      "b": "Q4",
+      "wins_a": 27,
+      "draws": 1,
+      "wins_b": 12,
+      "score_a": 0.6875,
+      "illegal_games": 0,
+      "go_command": "go movetime 200"
+    },
+    {
+      "run": 38182667542,
+      "a": "M",
+      "b": "Q5",
+      "wins_a": 20,
+      "draws": 1,
+      "wins_b": 19,
+      "score_a": 0.5125,
+      "illegal_games": 0,
+      "go_command": "go movetime 200"
+    },
+    {
+      "run": 38182671613,
+      "a": "M",
+      "b": "Q7",
+      "wins_a": 27,
+      "draws": 1,
+      "wins_b": 12,
+      "score_a": 0.6875,
+      "illegal_games": 0,
+      "go_command": "go movetime 200"
+    },
+    {
+      "run": 38182674686,
+      "a": "M",
+      "b": "Q6",
+      "wins_a": 28,
+      "draws": 1,
+      "wins_b": 11,
+      "score_a": 0.7125,
+      "illegal_games": 0,
+      "go_command": "go movetime 200"
+    },
+    {
+      "run": 38182676522,
+      "a": "Q2",
+      "b": "Q4",
+      "wins_a": 20,
+      "draws": 1,
+      "wins_b": 19,
+      "score_a": 0.5125,
+      "illegal_games": 0,
+      "go_command": "go movetime 200"
+    },
+    {
+      "run": 38182678269,
+      "a": "Q2",
+      "b": "Q5",
+      "wins_a": 20,
+      "draws": 2,
+      "wins_b": 18,
+      "score_a": 0.525,
+      "illegal_games": 0,
+      "go_command": "go movetime 200"
+    },
+    {
+      "run": 38182682597,
+      "a": "Q2",
+      "b": "Q7",
+      "wins_a": 25,
+      "draws": 1,
+      "wins_b": 14,
+      "score_a": 0.6375,
+      "illegal_games": 0,
+      "go_command": "go movetime 200"
+    },
+    {
+      "run": 38182683099,
+      "a": "Q2",
+      "b": "Q6",
+      "wins_a": 24,
+      "draws": 1,
+      "wins_b": 15,
+      "score_a": 0.6125,
+      "illegal_games": 0,
+      "go_command": "go movetime 200"
+    },
+    {
+      "run": 38182686662,
+      "a": "Q4",
+      "b": "Q5",
+      "wins_a": 19,
+      "draws": 1,
+      "wins_b": 20,
+      "score_a": 0.4875,
+      "illegal_games": 0,
+      "go_command": "go movetime 200"
+    },
+    {
+      "run": 38182688800,
+      "a": "Q4",
+      "b": "Q6",
+      "wins_a": 26,
+      "draws": 1,
+      "wins_b": 13,
+      "score_a": 0.6625,
+      "illegal_games": 0,
+      "go_command": "go movetime 200"
+    },
+    {
+      "run": 38182691517,
+      "a": "Q4",
+      "b": "Q7",
+      "wins_a": 25,
+      "draws": 0,
+      "wins_b": 15,
+      "score_a": 0.625,
+      "illegal_games": 0,
+      "go_command": "go movetime 200"
+    },
+    {
+      "run": 38182694761,
+      "a": "Q5",
+      "b": "Q6",
+      "wins_a": 26,
+      "draws": 0,
+      "wins_b": 14,
+      "score_a": 0.65,
+      "illegal_games": 0,
+      "go_command": "go movetime 200"
+    },
+    {
+      "run": 38182694986,
+      "a": "Q5",
+      "b": "Q7",
+      "wins_a": 31,
+      "draws": 0,
+      "wins_b": 9,
+      "score_a": 0.775,
+      "illegal_games": 0,
+      "go_command": "go movetime 200"
+    },
+    {
+      "run": 38182697503,
+      "a": "Q6",
+      "b": "Q7",
+      "wins_a": 22,
+      "draws": 1,
+      "wins_b": 17,
+      "score_a": 0.5625,
+      "illegal_games": 0,
+      "go_command": "go movetime 200"
+    }
+  ]
+}
