@@ -1,5 +1,5 @@
 #pragma once
-// Research branch only. HPOT: fixed candidate index.
+// Research branch only. ATTACK: fixed candidate index.
 namespace shogi::strategy {
-inline constexpr int SelectedResearchProfile = 15;
+inline constexpr int SelectedResearchProfile = 16;
 }
