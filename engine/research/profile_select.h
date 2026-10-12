@@ -1,5 +1,5 @@
 #pragma once
-// Research branch only. KING: fixed candidate index.
+// Research branch only. HYBRID: fixed candidate index.
 namespace shogi::strategy {
-inline constexpr int SelectedResearchProfile = 19;
+inline constexpr int SelectedResearchProfile = 20;
 }
