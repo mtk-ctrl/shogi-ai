@@ -1,0 +1,865 @@
+{
+  "completed_games": 2200,
+  "expected_games": 2800,
+  "complete": false,
+  "matches": [
+    {
+      "pair": 1,
+      "a": "M",
+      "b": "HS15",
+      "run": 38206595687,
+      "wins_a": 58,
+      "draws": 1,
+      "wins_b": 41,
+      "illegal": 0,
+      "score_a": 0.585,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11729110508,
+          "name": "played-move-archive-38206595687",
+          "expires": "2027-01-10T05:07:33Z"
+        },
+        {
+          "id": 11729105455,
+          "name": "generic-engine-match-summary-38206595687",
+          "expires": "2027-01-10T05:07:33Z"
+        }
+      ]
+    },
+    {
+      "pair": 2,
+      "a": "Q2",
+      "b": "MAT20",
+      "run": 38206599180,
+      "wins_a": 44,
+      "draws": 4,
+      "wins_b": 52,
+      "illegal": 0,
+      "score_a": 0.46,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11728615838,
+          "name": "played-move-archive-38206599180",
+          "expires": "2027-01-10T05:07:36Z"
+        },
+        {
+          "id": 11728401293,
+          "name": "generic-engine-match-summary-38206599180",
+          "expires": "2027-01-10T05:07:36Z"
+        }
+      ]
+    },
+    {
+      "pair": 3,
+      "a": "Q5",
+      "b": "H35",
+      "run": 38206599188,
+      "wins_a": 46,
+      "draws": 4,
+      "wins_b": 50,
+      "illegal": 0,
+      "score_a": 0.48,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11728816174,
+          "name": "played-move-archive-38206599188",
+          "expires": "2027-01-10T05:07:36Z"
+        },
+        {
+          "id": 11728761262,
+          "name": "generic-engine-match-summary-38206599188",
+          "expires": "2027-01-10T05:07:36Z"
+        }
+      ]
+    },
+    {
+      "pair": 4,
+      "a": "Q14",
+      "b": "H15",
+      "run": 38206601218,
+      "wins_a": 48,
+      "draws": 3,
+      "wins_b": 49,
+      "illegal": 0,
+      "score_a": 0.495,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11728920341,
+          "name": "generic-engine-match-summary-38206601218",
+          "expires": "2027-01-10T05:07:38Z"
+        },
+        {
+          "id": 11728645791,
+          "name": "played-move-archive-38206601218",
+          "expires": "2027-01-10T05:07:38Z"
+        }
+      ]
+    },
+    {
+      "pair": 5,
+      "a": "M",
+      "b": "MAT20",
+      "run": 38206601914,
+      "wins_a": 53,
+      "draws": 2,
+      "wins_b": 45,
+      "illegal": 0,
+      "score_a": 0.54,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11728831091,
+          "name": "played-move-archive-38206601914",
+          "expires": "2027-01-10T05:07:38Z"
+        },
+        {
+          "id": 11728756341,
+          "name": "generic-engine-match-summary-38206601914",
+          "expires": "2027-01-10T05:07:38Z"
+        }
+      ]
+    },
+    {
+      "pair": 6,
+      "a": "HS15",
+      "b": "H35",
+      "run": 38206605584,
+      "wins_a": 51,
+      "draws": 3,
+      "wins_b": 46,
+      "illegal": 0,
+      "score_a": 0.525,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11728956067,
+          "name": "played-move-archive-38206605584",
+          "expires": "2027-01-10T05:07:42Z"
+        },
+        {
+          "id": 11728357661,
+          "name": "generic-engine-match-summary-38206605584",
+          "expires": "2027-01-10T05:07:42Z"
+        }
+      ]
+    },
+    {
+      "pair": 7,
+      "a": "Q2",
+      "b": "H15",
+      "run": 38206609540,
+      "wins_a": 39,
+      "draws": 5,
+      "wins_b": 56,
+      "illegal": 0,
+      "score_a": 0.415,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11728845599,
+          "name": "played-move-archive-38206609540",
+          "expires": "2027-01-10T05:07:45Z"
+        },
+        {
+          "id": 11728202188,
+          "name": "generic-engine-match-summary-38206609540",
+          "expires": "2027-01-10T05:07:45Z"
+        }
+      ]
+    },
+    {
+      "pair": 8,
+      "a": "Q5",
+      "b": "Q14",
+      "run": 38206611083,
+      "wins_a": 47,
+      "draws": 8,
+      "wins_b": 45,
+      "illegal": 0,
+      "score_a": 0.51,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11728626601,
+          "name": "played-move-archive-38206611083",
+          "expires": "2027-01-10T05:07:47Z"
+        },
+        {
+          "id": 11728546694,
+          "name": "generic-engine-match-summary-38206611083",
+          "expires": "2027-01-10T05:07:47Z"
+        }
+      ]
+    },
+    {
+      "pair": 9,
+      "a": "M",
+      "b": "H35",
+      "run": 38206613356,
+      "wins_a": 46,
+      "draws": 9,
+      "wins_b": 45,
+      "illegal": 0,
+      "score_a": 0.505,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11728456346,
+          "name": "played-move-archive-38206613356",
+          "expires": "2027-01-10T05:07:49Z"
+        },
+        {
+          "id": 11728221916,
+          "name": "generic-engine-match-summary-38206613356",
+          "expires": "2027-01-10T05:07:49Z"
+        }
+      ]
+    },
+    {
+      "pair": 10,
+      "a": "MAT20",
+      "b": "H15",
+      "run": 38206764710,
+      "wins_a": 54,
+      "draws": 4,
+      "wins_b": 42,
+      "illegal": 0,
+      "score_a": 0.56,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11728976225,
+          "name": "generic-engine-match-summary-38206764710",
+          "expires": "2027-01-10T05:10:05Z"
+        },
+        {
+          "id": 11728776753,
+          "name": "played-move-archive-38206764710",
+          "expires": "2027-01-10T05:10:05Z"
+        }
+      ]
+    },
+    {
+      "pair": 11,
+      "a": "HS15",
+      "b": "Q14",
+      "run": 38210554060,
+      "wins_a": 51,
+      "draws": 4,
+      "wins_b": 45,
+      "illegal": 0,
+      "score_a": 0.53,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11730481364,
+          "name": "played-move-archive-38210554060",
+          "expires": "2027-01-10T06:01:30Z"
+        },
+        {
+          "id": 11730351533,
+          "name": "generic-engine-match-summary-38210554060",
+          "expires": "2027-01-10T06:01:30Z"
+        }
+      ]
+    },
+    {
+      "pair": 12,
+      "a": "Q2",
+      "b": "Q5",
+      "run": 38210594750,
+      "wins_a": 43,
+      "draws": 7,
+      "wins_b": 50,
+      "illegal": 0,
+      "score_a": 0.465,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11730446380,
+          "name": "generic-engine-match-summary-38210594750",
+          "expires": "2027-01-10T06:02:02Z"
+        },
+        {
+          "id": 11729772354,
+          "name": "played-move-archive-38210594750",
+          "expires": "2027-01-10T06:02:02Z"
+        }
+      ]
+    },
+    {
+      "pair": 13,
+      "a": "M",
+      "b": "H15",
+      "run": 38210605409,
+      "wins_a": 55,
+      "draws": 5,
+      "wins_b": 40,
+      "illegal": 0,
+      "score_a": 0.575,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11729737369,
+          "name": "played-move-archive-38210605409",
+          "expires": "2027-01-10T06:02:10Z"
+        },
+        {
+          "id": 11729547576,
+          "name": "generic-engine-match-summary-38210605409",
+          "expires": "2027-01-10T06:02:10Z"
+        }
+      ]
+    },
+    {
+      "pair": 14,
+      "a": "H35",
+      "b": "Q14",
+      "run": 38210615504,
+      "wins_a": 52,
+      "draws": 5,
+      "wins_b": 43,
+      "illegal": 0,
+      "score_a": 0.545,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11730501213,
+          "name": "played-move-archive-38210615504",
+          "expires": "2027-01-10T06:02:17Z"
+        },
+        {
+          "id": 11730151643,
+          "name": "generic-engine-match-summary-38210615504",
+          "expires": "2027-01-10T06:02:17Z"
+        }
+      ]
+    },
+    {
+      "pair": 15,
+      "a": "MAT20",
+      "b": "Q5",
+      "run": 38210628163,
+      "wins_a": 53,
+      "draws": 5,
+      "wins_b": 42,
+      "illegal": 0,
+      "score_a": 0.555,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11730536119,
+          "name": "generic-engine-match-summary-38210628163",
+          "expires": "2027-01-10T06:02:28Z"
+        },
+        {
+          "id": 11729757432,
+          "name": "played-move-archive-38210628163",
+          "expires": "2027-01-10T06:02:28Z"
+        }
+      ]
+    },
+    {
+      "pair": 16,
+      "a": "HS15",
+      "b": "Q2",
+      "run": 38214854523,
+      "wins_a": 49,
+      "draws": 8,
+      "wins_b": 43,
+      "illegal": 0,
+      "score_a": 0.53,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11733755031,
+          "name": "played-move-archive-38214854523",
+          "expires": "2027-01-10T06:54:21Z"
+        },
+        {
+          "id": 11733665140,
+          "name": "generic-engine-match-summary-38214854523",
+          "expires": "2027-01-10T06:54:21Z"
+        }
+      ]
+    },
+    {
+      "pair": 17,
+      "a": "M",
+      "b": "Q14",
+      "run": 38214865084,
+      "wins_a": 52,
+      "draws": 6,
+      "wins_b": 42,
+      "illegal": 0,
+      "score_a": 0.55,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11733376122,
+          "name": "played-move-archive-38214865084",
+          "expires": "2027-01-10T06:54:28Z"
+        },
+        {
+          "id": 11732816292,
+          "name": "generic-engine-match-summary-38214865084",
+          "expires": "2027-01-10T06:54:28Z"
+        }
+      ]
+    },
+    {
+      "pair": 18,
+      "a": "H15",
+      "b": "Q5",
+      "run": 38214878088,
+      "wins_a": 46,
+      "draws": 3,
+      "wins_b": 51,
+      "illegal": 0,
+      "score_a": 0.475,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11732751193,
+          "name": "generic-engine-match-summary-38214878088",
+          "expires": "2027-01-10T06:54:37Z"
+        },
+        {
+          "id": 11732671256,
+          "name": "played-move-archive-38214878088",
+          "expires": "2027-01-10T06:54:37Z"
+        }
+      ]
+    },
+    {
+      "pair": 19,
+      "a": "H35",
+      "b": "Q2",
+      "run": 38214890529,
+      "wins_a": 53,
+      "draws": 5,
+      "wins_b": 42,
+      "illegal": 0,
+      "score_a": 0.555,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11733720376,
+          "name": "generic-engine-match-summary-38214890529",
+          "expires": "2027-01-10T06:54:46Z"
+        },
+        {
+          "id": 11733015715,
+          "name": "played-move-archive-38214890529",
+          "expires": "2027-01-10T06:54:46Z"
+        }
+      ]
+    },
+    {
+      "pair": 20,
+      "a": "MAT20",
+      "b": "HS15",
+      "run": 38214904295,
+      "wins_a": 45,
+      "draws": 6,
+      "wins_b": 49,
+      "illegal": 0,
+      "score_a": 0.48,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11733176094,
+          "name": "generic-engine-match-summary-38214904295",
+          "expires": "2027-01-10T06:54:56Z"
+        },
+        {
+          "id": 11732981089,
+          "name": "played-move-archive-38214904295",
+          "expires": "2027-01-10T06:54:56Z"
+        }
+      ]
+    },
+    {
+      "pair": 21,
+      "a": "M",
+      "b": "Q5",
+      "run": 38215357370,
+      "wins_a": 52,
+      "draws": 3,
+      "wins_b": 45,
+      "illegal": 0,
+      "score_a": 0.535,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11733307327,
+          "name": "generic-engine-match-summary-38215357370",
+          "expires": "2027-01-10T07:00:10Z"
+        },
+        {
+          "id": 11732777495,
+          "name": "played-move-archive-38215357370",
+          "expires": "2027-01-10T07:00:10Z"
+        }
+      ]
+    },
+    {
+      "pair": 22,
+      "a": "Q14",
+      "b": "Q2",
+      "run": 38215372295,
+      "wins_a": 52,
+      "draws": 3,
+      "wins_b": 45,
+      "illegal": 0,
+      "score_a": 0.535,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      },
+      "artifacts": [
+        {
+          "id": 11733242351,
+          "name": "played-move-archive-38215372295",
+          "expires": "2027-01-10T07:00:18Z"
+        },
+        {
+          "id": 11732877568,
+          "name": "generic-engine-match-summary-38215372295",
+          "expires": "2027-01-10T07:00:18Z"
+        }
+      ]
+    }
+  ]
+}

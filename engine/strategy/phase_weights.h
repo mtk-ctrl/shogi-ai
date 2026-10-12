@@ -2,6 +2,8 @@
 // ADOPTED Q14 PHASE PROFILE - KUMOJI v2.0.12.
 // The anchors and contextual bonuses reproduce the tested Q14 exactly.
 #include "strategy/evaluation_params.h"
+#include "research/variable_profiles.h"
+#include "research/profile_select.h"
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -20,8 +22,8 @@ inline int phase_interpolate(int maturity,int a,int b,int c) {
         ? a+(b-a)*phase_smoothstep(m/50.0)
         : b+(c-b)*phase_smoothstep((m-50)/50.0)));
 }
-inline EvaluationParameters phase_turn_parameters(EvaluationParameters p,int maturity,
-                                                   int battle=0,int king_threat=0) {
+inline EvaluationParameters q14_turn_parameters(EvaluationParameters p,int maturity,
+                                                int battle=0,int king_threat=0) {
     const int urgency=std::clamp(king_threat-20,0,80);
     const int fight=std::clamp(battle-20,0,80);
     std::array<int*,10> target{{
@@ -41,5 +43,62 @@ inline EvaluationParameters phase_turn_parameters(EvaluationParameters p,int mat
     p.hand_material_weight=phase_interpolate(maturity,StageHandMaterial[0],
                                               StageHandMaterial[1],StageHandMaterial[2]);
     return p;
+}
+
+// All research profiles freeze a common, symmetric parameter vector at turn
+// entry. Neither the maturity diagnosis nor the mate-budget policy is changed.
+inline double research_phase_signal(const ResearchPhaseProfile& profile, int maturity,
+                                    int battle, int risk, int hand_resource) {
+    double x=maturity;
+    if(profile.signal==1) x=battle;
+    if(profile.signal==2) x=risk;
+    if(profile.signal==3) x=(5.0*maturity+3.0*battle+2.0*risk)/10.0;
+    if(profile.signal==4) x=hand_resource;
+    x=std::clamp(x,0.0,100.0);
+    if(profile.curve==2) x=100.0*std::max(0.0,x-35.0)/65.0;
+    if(profile.curve==3) x=x*x/100.0;
+    if(profile.curve==5) x=100.0*std::sqrt(x/100.0);
+    return x;
+}
+inline int research_phase_interpolate(const ResearchPhaseProfile& profile, double x,
+                                      int a,int b,int c) {
+    if(profile.curve==4) return x<=33.0 ? a : x<=66.0 ? b : c;
+    const double fraction=x<=50.0 ? x/50.0 : (x-50.0)/50.0;
+    const double t=profile.curve==1 ? fraction : phase_smoothstep(fraction);
+    return static_cast<int>(std::lround(x<=50.0 ? a+(b-a)*t : b+(c-b)*t));
+}
+inline EvaluationParameters research_turn_parameters(EvaluationParameters p,int index,
+        int maturity,int battle=0,int king_threat=0,int hand_resource=0) {
+    const auto& profile=ResearchProfiles.at(static_cast<std::size_t>(index));
+    const auto x=research_phase_signal(profile,maturity,battle,king_threat,hand_resource);
+    const int urgency=std::clamp(king_threat-20,0,80);
+    const int fight=std::clamp(battle-20,0,80);
+    std::array<int*,10> target{{&p.material_weight,&p.weights[0],&p.weights[1],
+        &p.weights[2],&p.weights[3],&p.influence_weight,&p.potential_weight,
+        &p.coordination_weight,&p.hand_potential_weight,&p.threat_weight}};
+    for(std::size_t i=0;i<target.size();++i){
+        int w=research_phase_interpolate(profile,x,profile.anchors[0][i],
+                                        profile.anchors[1][i],profile.anchors[2][i]);
+        if(profile.context){
+            if(i==1) w+=urgency/2;
+            if(i==4) w+=urgency/3;
+            if(i==2) w+=fight;
+            if(i==9) w+=fight/3;
+        }
+        *target[i]=std::clamp(static_cast<int>(std::lround(
+            double(*target[i])*w/MWeights[i])),0,10000);
+    }
+    p.hand_material_weight=research_phase_interpolate(profile,x,
+        profile.hand_material[0],profile.hand_material[1],profile.hand_material[2]);
+    return p;
+}
+inline EvaluationParameters phase_turn_parameters(EvaluationParameters p,int maturity,
+        int battle=0,int king_threat=0,int hand_resource=0) {
+    static_assert(SelectedResearchProfile>=0 && SelectedResearchProfile<
+                  static_cast<int>(ResearchProfiles.size()));
+    if constexpr(SelectedResearchProfile==0)
+        return q14_turn_parameters(p,maturity,battle,king_threat);
+    return research_turn_parameters(p,SelectedResearchProfile,maturity,battle,
+                                   king_threat,hand_resource);
 }
 } // namespace shogi::strategy

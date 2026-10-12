@@ -1,0 +1,25 @@
+{
+  "q14_exact_contexts": 1648,
+  "profiles": 28,
+  "baseline_fixture_checks": {
+    "fixtures": 4,
+    "static_eval": "equal",
+    "bestmove": "equal",
+    "nodes": "equal",
+    "depth": "equal"
+  },
+  "smoke": {
+    "games": 2,
+    "wins": 1,
+    "draws": 0,
+    "losses": 1,
+    "illegal_games": 0,
+    "go_command": "go movetime 200",
+    "adaptive_long_think": true,
+    "knowledge_positions": 163,
+    "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+    "conclusion": "execution check only, not strength evidence"
+  },
+  "evaluation_regression": "all tests passed after repairing existing duplicate local variable and obsolete G-material expectations",
+  "workflow_preflight": "24 active workflows passed; none changed"
+}

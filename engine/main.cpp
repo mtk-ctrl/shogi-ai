@@ -135,7 +135,10 @@ int main() {
             const auto params = material_profile
                 ? shogi::strategy::EvaluationParameters::material_only()
                 : shogi::strategy::phase_turn_parameters(evaluation_parameters, phase.maturity,
-                    phase.components.battle, phase.components.king_threat);
+                    phase.components.battle, phase.components.king_threat,
+                    [&] { int n=0; constexpr int w[7]={1,2,2,3,6,6,3};
+                        for(const auto& side:root.hands) for(int k=0;k<7;++k) n+=side[k]*w[k];
+                        return std::min(100,4*n); }());
             const auto b = shogi::strategy::evaluate(root, params);
             std::cout << "info string evaluation material " << b.material
                       << " material_term " << b.material_term
@@ -254,7 +257,10 @@ int main() {
                 const auto active_parameters = material_profile
                     ? shogi::strategy::EvaluationParameters::material_only()
                     : shogi::strategy::phase_turn_parameters(evaluation_parameters, phase.maturity,
-                    phase.components.battle, phase.components.king_threat);
+                    phase.components.battle, phase.components.king_threat,
+                    [&] { int n=0; constexpr int w[7]={1,2,2,3,6,6,3};
+                        for(const auto& side:root.hands) for(int k=0;k<7;++k) n+=side[k]*w[k];
+                        return std::min(100,4*n); }());
                 strategy.set_evaluator(shogi::strategy::FeatureEvaluator(active_parameters));
                 const auto eval = shogi::strategy::evaluate(root, active_parameters);
                 std::ostringstream out;
@@ -265,6 +271,7 @@ int main() {
                     << " invasion " << phase.components.invasion
                     << " king_threat " << phase.components.king_threat
                     << " phase_weight_profile " << shogi::strategy::AdoptedPhaseProfile
+                    << " research_profile " << shogi::strategy::SelectedResearchProfile
                      << " static_cp_black " << eval.total << '\n';
                 emit(out.str());
             }
