@@ -1,5 +1,5 @@
 #pragma once
-// Research branch only. RISK: fixed candidate index.
+// Research branch only. BLEND: fixed candidate index.
 namespace shogi::strategy {
-inline constexpr int SelectedResearchProfile = 22;
+inline constexpr int SelectedResearchProfile = 23;
 }
