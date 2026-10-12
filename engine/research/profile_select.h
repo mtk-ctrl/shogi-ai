@@ -1,5 +1,5 @@
 #pragma once
-// Research branch only. ATTACK: fixed candidate index.
+// Research branch only. MOBILE: fixed candidate index.
 namespace shogi::strategy {
-inline constexpr int SelectedResearchProfile = 16;
+inline constexpr int SelectedResearchProfile = 17;
 }
