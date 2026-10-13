@@ -41,6 +41,10 @@ on:
       - "tests/test_external_match.py"
       - "scripts/build.py"
       - "scripts/variable_eval_profiles.py"
+      - "benchmarks/variable_eval_search.py"
+      - "tests/test_variable_search.py"
+      - "tests/test_runtime_profiles.py"
+      - ".github/workflows/variable-eval-search.yml"
       - "tests/variable_phase_test.cpp"
       - ".github/workflows/quick-ci.yml"
   workflow_dispatch:

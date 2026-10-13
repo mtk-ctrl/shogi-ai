@@ -58,7 +58,7 @@ def allocation(plan, shards):
     counts = [q+(i<r) for i in range(shards)]
     if min(counts) < 1:
         raise ValueError('empty lane')
-    limit = 240 if plan['stage']=='coarse' else 120
+    limit = 240 if plan['stage']=='coarse' else 60
     if max(counts)>limit:
         raise ValueError('too many games per lane; timeout-safe limit exceeded')
     assigned = []

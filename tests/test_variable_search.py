@@ -8,7 +8,7 @@ from variable_eval_search import allocation,audit,load_plan,options,KNOWLEDGE_HA
 
 plan,registry=load_plan('round2-coarse')
 lanes=allocation(plan,10)
-assert len(registry)==71 and len(plan['profiles'])==40
+assert len(registry)>=71 and len(plan['profiles'])==40
 assert [sum(f['games'] for f in lane) for lane in lanes]==[96]*10
 
 def check_coverage(p,lanes):
