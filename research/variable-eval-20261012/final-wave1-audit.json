@@ -1,0 +1,82 @@
+{
+  "updated_at": "2026-10-13T17:13:00+09:00",
+  "stage": "final_recovery_wave1",
+  "conditions": {
+    "games_per_comparison": 600,
+    "shards": 5,
+    "games_per_shard": 120,
+    "go_command": "go movetime 200",
+    "adaptive_long_think": true,
+    "position_knowledge": true,
+    "position_knowledge_entries": 163,
+    "position_knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+    "max_plies": 300
+  },
+  "comparisons": [
+    {
+      "model": "ATTACK_AVG",
+      "baseline": "FORMAL_M",
+      "issue": 250,
+      "run": 38358477790,
+      "ref_a": "4e2711f616ce363ab36bbddff25c3d7fcf2aaec8",
+      "ref_b": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+      "binary_a": "da91f40ca539668e7a8d4d19845ae37940cfd5cebcb65a0e53926b5e4a087f57",
+      "binary_b": "51f8b62c95a4633a01ad3a36f83b97defbd2e1f2d7bf253c17b7275384d91f92",
+      "seed": 2114000000,
+      "wins_a": 328,
+      "draws": 15,
+      "wins_b": 257,
+      "score": 0.5591666667,
+      "approx95": [
+        0.5194394356,
+        0.5988938977
+      ],
+      "illegal": 0,
+      "average_plies": 112.915,
+      "played_archive_sha256": "4e4dd02c80fd667f424211d1bdc8dadb65ba99ce34d33818e692de30f286c229",
+      "artifact_expiry": "2027-01-11T06:45:06Z",
+      "raw_artifacts": [
+        11797545509,
+        11797545319,
+        11797410955,
+        11797346192,
+        11796682066
+      ]
+    },
+    {
+      "model": "ATTACK_AVG",
+      "baseline": "FORMAL_Q14",
+      "issue": 251,
+      "run": 38358478141,
+      "ref_a": "4e2711f616ce363ab36bbddff25c3d7fcf2aaec8",
+      "ref_b": "c6311d266717d41cb3b6b84bbe22e870450e6365",
+      "binary_a": "da91f40ca539668e7a8d4d19845ae37940cfd5cebcb65a0e53926b5e4a087f57",
+      "binary_b": "ab9f911d7c920f7ef4a6bd3224d4f26b00ba3492ed23b34257eda48d17bde1eb",
+      "seed": 2114010000,
+      "wins_a": 305,
+      "draws": 16,
+      "wins_b": 279,
+      "score": 0.5216666667,
+      "approx95": [
+        0.4816959152,
+        0.5616374181
+      ],
+      "illegal": 0,
+      "average_plies": 114.623333,
+      "played_archive_sha256": "435d27b5c74b5ccfdd402f3ab6493d420b301cb2e9e145122769c6dbd76cb3bc",
+      "artifact_expiry": "2027-01-11T06:45:07Z",
+      "raw_artifacts": [
+        11797203042,
+        11796951882,
+        11796618615,
+        11796532742,
+        11796482948
+      ]
+    }
+  ],
+  "aggregate_verified": true,
+  "artifact_metadata_and_digest_verified": true,
+  "raw_content_download_audit_status": "pending_transient_artifact_download_502",
+  "final_estimate_use": false,
+  "note": "raw ZIPの内容監査完了後にfinal_estimate_useをtrueへ更新する。旧timeout波は不使用。"
+}

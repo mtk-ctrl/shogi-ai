@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-10-13T15:51:00+09:00",
-  "phase": "final_recovery_wave1_running",
+  "updated_at": "2026-10-13T17:13:00+09:00",
+  "phase": "final_recovery_wave2_running",
   "tracker_issue": 170,
   "addness_goal": "cf8ec928-61c0-48a1-ba3c-7c0635797e1b",
   "branch": "research/variable-eval-systematic-20261012",
@@ -2173,7 +2173,7 @@
       }
     ]
   },
-  "next_check_jst": "2026-10-13T17:05:00+09:00",
+  "next_check_jst": "2026-10-13T18:35:00+09:00",
   "current_lanes": 10,
   "other_lanes": 0,
   "ablation": {
@@ -3391,9 +3391,9 @@
   },
   "final": {
     "planned_games": 2400,
-    "completed_games": 0,
+    "completed_games": 1200,
     "active_games": 1200,
-    "not_requested_games": 1200,
+    "not_requested_games": 0,
     "candidates": [
       {
         "name": "ATTACK_AVG",
@@ -3658,7 +3658,7 @@
         "seed": 2114000000,
         "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
         "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-        "state": "running",
+        "state": "completed_pending_raw_content_audit",
         "wave": 1,
         "allocation_note": "5 shard×120局。seedはbase+i×100000、game_offsetは0/120/240/360/480。失敗波の部分結果は最終推定へ不使用。",
         "issue": 250,
@@ -3721,7 +3721,22 @@
             "conclusion": null,
             "run_shard_started": "2026-10-13T06:46:07Z"
           }
-        ]
+        ],
+        "run_conclusion": "success",
+        "aggregate_conclusion": "success",
+        "result": {
+          "wins_a": 328,
+          "draws": 15,
+          "wins_b": 257,
+          "score": 0.5591666667,
+          "approx95": [
+            0.5194394356,
+            0.5988938977
+          ],
+          "illegal": 0
+        },
+        "artifact_expiry": "2027-01-11T06:45:06Z",
+        "final_estimate_use": false
       },
       {
         "stage": "final_recovery",
@@ -3737,7 +3752,7 @@
         "seed": 2114010000,
         "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
         "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-        "state": "running",
+        "state": "completed_pending_raw_content_audit",
         "wave": 1,
         "allocation_note": "5 shard×120局。seedはbase+i×100000、game_offsetは0/120/240/360/480。失敗波の部分結果は最終推定へ不使用。",
         "issue": 251,
@@ -3800,7 +3815,22 @@
             "conclusion": null,
             "run_shard_started": "2026-10-13T06:46:09Z"
           }
-        ]
+        ],
+        "run_conclusion": "success",
+        "aggregate_conclusion": "success",
+        "result": {
+          "wins_a": 305,
+          "draws": 16,
+          "wins_b": 279,
+          "score": 0.5216666667,
+          "approx95": [
+            0.4816959152,
+            0.5616374181
+          ],
+          "illegal": 0
+        },
+        "artifact_expiry": "2027-01-11T06:45:07Z",
+        "final_estimate_use": false
       },
       {
         "stage": "final_recovery",
@@ -3816,9 +3846,70 @@
         "seed": 2114000000,
         "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
         "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-        "state": "planned",
+        "state": "running",
         "wave": 2,
-        "allocation_note": "5 shard×120局。seedはbase+i×100000、game_offsetは0/120/240/360/480。失敗波の部分結果は最終推定へ不使用。"
+        "allocation_note": "5 shard×120局。seedはbase+i×100000、game_offsetは0/120/240/360/480。失敗波の部分結果は最終推定へ不使用。",
+        "issue": 252,
+        "launcher_run": 38367499880,
+        "launcher_success": true,
+        "run": 38367511116,
+        "plan_settings_verified": true,
+        "build_refs_verified": true,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "binary_hashes": {
+          "A": "205e5e011b79bc224c5b2f0aa25f95e82e36a57493b43a7084970b909c50bc30",
+          "B": "51f8b62c95a4633a01ad3a36f83b97defbd2e1f2d7bf253c17b7275384d91f92"
+        },
+        "started_at": "2026-10-13T08:11:51Z",
+        "jobs": [
+          {
+            "id": 115196081357,
+            "name": "plan",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "id": 115196130314,
+            "name": "build",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "id": 115196427669,
+            "name": "match (4, 120, 2114400000, 480)",
+            "status": "in_progress",
+            "conclusion": null,
+            "run_shard_started": "2026-10-13T08:11:51Z"
+          },
+          {
+            "id": 115196427676,
+            "name": "match (3, 120, 2114300000, 360)",
+            "status": "in_progress",
+            "conclusion": null,
+            "run_shard_started": "2026-10-13T08:11:51Z"
+          },
+          {
+            "id": 115196427686,
+            "name": "match (1, 120, 2114100000, 120)",
+            "status": "in_progress",
+            "conclusion": null,
+            "run_shard_started": "2026-10-13T08:11:51Z"
+          },
+          {
+            "id": 115196427723,
+            "name": "match (2, 120, 2114200000, 240)",
+            "status": "in_progress",
+            "conclusion": null,
+            "run_shard_started": "2026-10-13T08:11:51Z"
+          },
+          {
+            "id": 115196427885,
+            "name": "match (0, 120, 2114000000, 0)",
+            "status": "in_progress",
+            "conclusion": null,
+            "run_shard_started": "2026-10-13T08:11:51Z"
+          }
+        ]
       },
       {
         "stage": "final_recovery",
@@ -3834,9 +3925,70 @@
         "seed": 2114010000,
         "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
         "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-        "state": "planned",
+        "state": "running",
         "wave": 2,
-        "allocation_note": "5 shard×120局。seedはbase+i×100000、game_offsetは0/120/240/360/480。失敗波の部分結果は最終推定へ不使用。"
+        "allocation_note": "5 shard×120局。seedはbase+i×100000、game_offsetは0/120/240/360/480。失敗波の部分結果は最終推定へ不使用。",
+        "issue": 253,
+        "launcher_run": 38367501817,
+        "launcher_success": true,
+        "run": 38367515175,
+        "plan_settings_verified": true,
+        "build_refs_verified": true,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "binary_hashes": {
+          "A": "205e5e011b79bc224c5b2f0aa25f95e82e36a57493b43a7084970b909c50bc30",
+          "B": "ab9f911d7c920f7ef4a6bd3224d4f26b00ba3492ed23b34257eda48d17bde1eb"
+        },
+        "started_at": "2026-10-13T08:11:54Z",
+        "jobs": [
+          {
+            "id": 115196092541,
+            "name": "plan",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "id": 115196129172,
+            "name": "build",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "id": 115196447459,
+            "name": "match (1, 120, 2114110000, 120)",
+            "status": "in_progress",
+            "conclusion": null,
+            "run_shard_started": "2026-10-13T08:11:54Z"
+          },
+          {
+            "id": 115196447472,
+            "name": "match (3, 120, 2114310000, 360)",
+            "status": "in_progress",
+            "conclusion": null,
+            "run_shard_started": "2026-10-13T08:11:54Z"
+          },
+          {
+            "id": 115196447475,
+            "name": "match (0, 120, 2114010000, 0)",
+            "status": "in_progress",
+            "conclusion": null,
+            "run_shard_started": "2026-10-13T08:11:54Z"
+          },
+          {
+            "id": 115196447551,
+            "name": "match (2, 120, 2114210000, 240)",
+            "status": "in_progress",
+            "conclusion": null,
+            "run_shard_started": "2026-10-13T08:11:54Z"
+          },
+          {
+            "id": 115196447647,
+            "name": "match (4, 120, 2114410000, 480)",
+            "status": "in_progress",
+            "conclusion": null,
+            "run_shard_started": "2026-10-13T08:11:54Z"
+          }
+        ]
       }
     ],
     "selection_data_excluded": true,
@@ -3896,6 +4048,7 @@
       "new_seed_m": 2114000000,
       "new_seed_q14": 2114010000,
       "old_partial_results_excluded": true
-    }
+    },
+    "eta_wave2_jst": "2026-10-13T18:35:00+09:00"
   }
 }
