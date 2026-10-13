@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-13T17:13:00+09:00",
+  "updated_at": "2026-10-14T07:20:21+09:00",
   "stage": "final_recovery_wave1",
   "conditions": {
     "games_per_comparison": 600,
@@ -76,7 +76,8 @@
   ],
   "aggregate_verified": true,
   "artifact_metadata_and_digest_verified": true,
-  "raw_content_download_audit_status": "pending_transient_artifact_download_502",
-  "final_estimate_use": false,
-  "note": "raw ZIPの内容監査完了後にfinal_estimate_useをtrueへ更新する。旧timeout波は不使用。"
+  "raw_content_download_audit_status": "completed_20261014",
+  "final_estimate_use": true,
+  "note": "停止後の本人依頼の詳細報告として終了済み原記録を確認。新規対局なし。旧timeout波は不使用。",
+  "raw_content_audit_file": "final-raw-audit-20261014.json"
 }

@@ -1,0 +1,482 @@
+{
+  "audit_date_jst": "2026-10-14",
+  "purpose": "Read-only verification of completed results for the requested report; research remains stopped.",
+  "method": "Verify GitHub ZIP digests, recompute winners from game details, compare full played sequences against archives; no new games or engine changes.",
+  "limitations": [
+    "No independent full legal-move replay.",
+    "Confidence intervals assume independent games, do not adjust for shared openings or multiple comparisons.",
+    "Build refs are verified from archive manifests; binary content is not rebuilt in this audit.",
+    "No external validation of these new candidates."
+  ],
+  "comparisons": [
+    {
+      "run": 38358477790,
+      "model": "ATTACK_AVG",
+      "opponent": "M",
+      "ref_a": "4e2711f616ce363ab36bbddff25c3d7fcf2aaec8",
+      "ref_b": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+      "games": 600,
+      "wins": 328,
+      "draws": 15,
+      "losses": 257,
+      "score": 0.5591666666666667,
+      "score_approx95_draw_adjusted": [
+        0.5199135874573095,
+        0.5984197458760239
+      ],
+      "score_approx95_workflow": [
+        0.519439435614943,
+        0.5988938977183904
+      ],
+      "illegal": 0,
+      "colors": {
+        "A_black": 300,
+        "A_white": 300
+      },
+      "plies": 67749,
+      "phase": {
+        "A_opening": 7499,
+        "B_opening": 7452,
+        "B_middle": 12603,
+        "A_middle": 12593,
+        "B_end": 13803,
+        "A_end": 13799
+      },
+      "knowledge": {
+        "A_knowledge_probes": 31262,
+        "A_knowledge_hits": 0,
+        "A_knowledge_promotions": 0,
+        "B_knowledge_probes": 31440,
+        "B_knowledge_hits": 0,
+        "B_knowledge_promotions": 0
+      },
+      "long_think_uses": {
+        "A": 5887,
+        "B": 5896
+      },
+      "max_long_think_per_game": {
+        "A": 10,
+        "B": 10
+      },
+      "binary_hashes": {
+        "a": "da91f40ca539668e7a8d4d19845ae37940cfd5cebcb65a0e53926b5e4a087f57",
+        "b": "51f8b62c95a4633a01ad3a36f83b97defbd2e1f2d7bf253c17b7275384d91f92"
+      },
+      "terminal_reasons": {
+        "checkmate": 585,
+        "fourfold_repetition": 13,
+        "move_limit": 2
+      },
+      "archive_sha256": "4e4dd02c80fd667f424211d1bdc8dadb65ba99ce34d33818e692de30f286c229",
+      "missing_search_score_plies": 2551,
+      "all_shard_and_archive_sequences_verified": true,
+      "artifact_evidence": [
+        {
+          "id": 11797545509,
+          "name": "generic-engine-match-38358477790-1",
+          "digest": "sha256:2a7d843ee6bc81c593a6305c96ee12c164ae880beffc38a72437fe542a898ad8",
+          "expires_at": "2027-01-11T06:45:06Z",
+          "size_in_bytes": 1194820
+        },
+        {
+          "id": 11797545319,
+          "name": "generic-engine-match-38358477790-4",
+          "digest": "sha256:4351b41fbd77d74ad167035e416cc3bf09595374cfddac71424e157081d7d0b7",
+          "expires_at": "2027-01-11T06:45:06Z",
+          "size_in_bytes": 1171805
+        },
+        {
+          "id": 11797410955,
+          "name": "generic-engine-match-38358477790-0",
+          "digest": "sha256:fe08cacc8d932c2b67445e03dd3a32049535a36e27da02c707cc0eb3319f5248",
+          "expires_at": "2027-01-11T06:45:06Z",
+          "size_in_bytes": 1175485
+        },
+        {
+          "id": 11797346192,
+          "name": "generic-engine-match-38358477790-2",
+          "digest": "sha256:f24831c3496dc63826683e57546ca7c6f826e7b08e3465388d4f2545d88582bd",
+          "expires_at": "2027-01-11T06:45:06Z",
+          "size_in_bytes": 1181171
+        },
+        {
+          "id": 11797162818,
+          "name": "played-move-archive-38358477790",
+          "digest": "sha256:ceb3935f111f4cc743e22b95c2a730ef391948224f542b81bf52dd06ee1db78d",
+          "expires_at": "2027-01-11T06:45:06Z",
+          "size_in_bytes": 3951263
+        },
+        {
+          "id": 11796873637,
+          "name": "generic-engine-match-summary-38358477790",
+          "digest": "sha256:4c28a58e3db59fba2e73f9f6e7757b04946547c32ab1fcb80c41d82b4e875c78",
+          "expires_at": "2027-01-11T06:45:06Z",
+          "size_in_bytes": 575
+        },
+        {
+          "id": 11796682066,
+          "name": "generic-engine-match-38358477790-3",
+          "digest": "sha256:b6ec8c9b08c2d8a45e1af54bf09c688dbb2f945ad8892bace4dad3ccc30a7b21",
+          "expires_at": "2027-01-11T06:45:06Z",
+          "size_in_bytes": 1120954
+        }
+      ],
+      "score_approx_familywise95_bonferroni4": [
+        0.5091449162438331,
+        0.6091884170895003
+      ]
+    },
+    {
+      "run": 38358478141,
+      "model": "ATTACK_AVG",
+      "opponent": "Q14",
+      "ref_a": "4e2711f616ce363ab36bbddff25c3d7fcf2aaec8",
+      "ref_b": "c6311d266717d41cb3b6b84bbe22e870450e6365",
+      "games": 600,
+      "wins": 305,
+      "draws": 16,
+      "losses": 279,
+      "score": 0.5216666666666666,
+      "score_approx95_draw_adjusted": [
+        0.48220057387729415,
+        0.5611327594560391
+      ],
+      "score_approx95_workflow": [
+        0.4816959152305181,
+        0.5616374181028152
+      ],
+      "illegal": 0,
+      "colors": {
+        "A_black": 300,
+        "A_white": 300
+      },
+      "plies": 68774,
+      "phase": {
+        "A_opening": 9099,
+        "B_opening": 8993,
+        "B_middle": 12072,
+        "A_middle": 12009,
+        "B_end": 13315,
+        "A_end": 13286
+      },
+      "knowledge": {
+        "A_knowledge_probes": 31387,
+        "A_knowledge_hits": 0,
+        "A_knowledge_promotions": 0,
+        "B_knowledge_probes": 31438,
+        "B_knowledge_hits": 0,
+        "B_knowledge_promotions": 0
+      },
+      "long_think_uses": {
+        "A": 5944,
+        "B": 5950
+      },
+      "max_long_think_per_game": {
+        "A": 10,
+        "B": 10
+      },
+      "binary_hashes": {
+        "a": "da91f40ca539668e7a8d4d19845ae37940cfd5cebcb65a0e53926b5e4a087f57",
+        "b": "ab9f911d7c920f7ef4a6bd3224d4f26b00ba3492ed23b34257eda48d17bde1eb"
+      },
+      "terminal_reasons": {
+        "checkmate": 584,
+        "fourfold_repetition": 16
+      },
+      "archive_sha256": "435d27b5c74b5ccfdd402f3ab6493d420b301cb2e9e145122769c6dbd76cb3bc",
+      "missing_search_score_plies": 2674,
+      "all_shard_and_archive_sequences_verified": true,
+      "artifact_evidence": [
+        {
+          "id": 11797203042,
+          "name": "generic-engine-match-38358478141-2",
+          "digest": "sha256:ec5d3a35954b47c70b5b948b490f60d36e2dfef03a989efaab985f7605182088",
+          "expires_at": "2027-01-11T06:45:07Z",
+          "size_in_bytes": 1248847
+        },
+        {
+          "id": 11796951882,
+          "name": "generic-engine-match-38358478141-4",
+          "digest": "sha256:76af0ffd4e19b8d2d0cf17681fbe86315ed9d0ff4e9b13e568275c4214784dcc",
+          "expires_at": "2027-01-11T06:45:07Z",
+          "size_in_bytes": 1172912
+        },
+        {
+          "id": 11796708017,
+          "name": "generic-engine-match-summary-38358478141",
+          "digest": "sha256:979f2be42f74947c2cf26115dd4f010f2f16c2fe215449c7a8e241ca3a7648b9",
+          "expires_at": "2027-01-11T06:45:07Z",
+          "size_in_bytes": 579
+        },
+        {
+          "id": 11796623116,
+          "name": "played-move-archive-38358478141",
+          "digest": "sha256:52f09fca7358951ba4fa2c4776c7caa8f577fd1c2d34572bda36d78cbbd49c18",
+          "expires_at": "2027-01-11T06:45:07Z",
+          "size_in_bytes": 4043813
+        },
+        {
+          "id": 11796618615,
+          "name": "generic-engine-match-38358478141-0",
+          "digest": "sha256:155d4e3a8c44df53685ab0018bff533001d9bfc9e65497ea10bf721d9b2aacb9",
+          "expires_at": "2027-01-11T06:45:07Z",
+          "size_in_bytes": 1150301
+        },
+        {
+          "id": 11796532742,
+          "name": "generic-engine-match-38358478141-1",
+          "digest": "sha256:49a95bb32ad984b694ccfa53cae55ee2c3f325e15a86caf8815f1861a3191a43",
+          "expires_at": "2027-01-11T06:45:07Z",
+          "size_in_bytes": 1202538
+        },
+        {
+          "id": 11796482948,
+          "name": "generic-engine-match-38358478141-3",
+          "digest": "sha256:2140f26422058a057e1b73ef410ce8fdc86be120ae40b78478a818b7a15136ed",
+          "expires_at": "2027-01-11T06:45:07Z",
+          "size_in_bytes": 1205962
+        }
+      ],
+      "score_approx_familywise95_bonferroni4": [
+        0.4713734646188694,
+        0.5719598687144638
+      ]
+    },
+    {
+      "run": 38367511116,
+      "model": "UNIFIED",
+      "opponent": "M",
+      "ref_a": "3fd3c37cc4b83f9645af509e1002837c09f4d5dd",
+      "ref_b": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+      "games": 600,
+      "wins": 317,
+      "draws": 10,
+      "losses": 273,
+      "score": 0.5366666666666666,
+      "score_approx95_draw_adjusted": [
+        0.49706876037230024,
+        0.5762645729610331
+      ],
+      "score_approx95_workflow": [
+        0.49676605718464195,
+        0.5765672761486913
+      ],
+      "illegal": 0,
+      "colors": {
+        "A_black": 300,
+        "A_white": 300
+      },
+      "plies": 66700,
+      "phase": {
+        "A_opening": 7556,
+        "B_opening": 7418,
+        "B_middle": 12531,
+        "A_middle": 12347,
+        "A_end": 13457,
+        "B_end": 13391
+      },
+      "knowledge": {
+        "A_knowledge_probes": 31266,
+        "A_knowledge_hits": 0,
+        "A_knowledge_promotions": 0,
+        "B_knowledge_probes": 31301,
+        "B_knowledge_hits": 0,
+        "B_knowledge_promotions": 0
+      },
+      "long_think_uses": {
+        "A": 5847,
+        "B": 5826
+      },
+      "max_long_think_per_game": {
+        "A": 10,
+        "B": 10
+      },
+      "binary_hashes": {
+        "a": "205e5e011b79bc224c5b2f0aa25f95e82e36a57493b43a7084970b909c50bc30",
+        "b": "51f8b62c95a4633a01ad3a36f83b97defbd2e1f2d7bf253c17b7275384d91f92"
+      },
+      "terminal_reasons": {
+        "checkmate": 588,
+        "declare_win": 2,
+        "fourfold_repetition": 10
+      },
+      "archive_sha256": "e0c6cbbe046520d4da5f627df7acff9aa43b29e0e57c06ce2579ac4b3a1bed51",
+      "missing_search_score_plies": 2778,
+      "all_shard_and_archive_sequences_verified": true,
+      "artifact_evidence": [
+        {
+          "id": 11801945435,
+          "name": "played-move-archive-38367511116",
+          "digest": "sha256:8ee5625be185d13a749ef275b206aff8bc69b498bcc64730f3a16f8788db23af",
+          "expires_at": "2027-01-11T08:10:51Z",
+          "size_in_bytes": 3916130
+        },
+        {
+          "id": 11801850648,
+          "name": "generic-engine-match-38367511116-4",
+          "digest": "sha256:2f5ab2b4e5b756806887e2d04cd6dc21494789321d96a6ad9ee1a3c55f5d2861",
+          "expires_at": "2027-01-11T08:10:51Z",
+          "size_in_bytes": 1209046
+        },
+        {
+          "id": 11801587205,
+          "name": "generic-engine-match-summary-38367511116",
+          "digest": "sha256:cb63f82dde40674aa72c4efffc6130a7ec951ca001f22a6d8384f3ecad2c1b03",
+          "expires_at": "2027-01-11T08:10:51Z",
+          "size_in_bytes": 579
+        },
+        {
+          "id": 11801466864,
+          "name": "generic-engine-match-38367511116-0",
+          "digest": "sha256:a0efe49ef888a7bd835fd89c54a398d4cea5b9e603d9b9e6d84ad1478fed98c9",
+          "expires_at": "2027-01-11T08:10:51Z",
+          "size_in_bytes": 1170147
+        },
+        {
+          "id": 11800813023,
+          "name": "generic-engine-match-38367511116-1",
+          "digest": "sha256:4ade6c0bbd8aa1dee08569a8d712b6894511c1594d946f52b491e1e0338cb384",
+          "expires_at": "2027-01-11T08:10:51Z",
+          "size_in_bytes": 1172441
+        },
+        {
+          "id": 11800742993,
+          "name": "generic-engine-match-38367511116-3",
+          "digest": "sha256:7f276010526e25fbe4a338bb00572280938e855d7962e64faf0b86c47221ec76",
+          "expires_at": "2027-01-11T08:10:51Z",
+          "size_in_bytes": 1127487
+        },
+        {
+          "id": 11800509803,
+          "name": "generic-engine-match-38367511116-2",
+          "digest": "sha256:9032c7000ed09d35a443bba22e842e690bbedb90ad649f2a3b8093d327422e58",
+          "expires_at": "2027-01-11T08:10:51Z",
+          "size_in_bytes": 1104859
+        }
+      ],
+      "score_approx_familywise95_bonferroni4": [
+        0.4862054894591629,
+        0.5871278438741703
+      ]
+    },
+    {
+      "run": 38367515175,
+      "model": "UNIFIED",
+      "opponent": "Q14",
+      "ref_a": "3fd3c37cc4b83f9645af509e1002837c09f4d5dd",
+      "ref_b": "c6311d266717d41cb3b6b84bbe22e870450e6365",
+      "games": 600,
+      "wins": 318,
+      "draws": 20,
+      "losses": 262,
+      "score": 0.5466666666666666,
+      "score_approx95_draw_adjusted": [
+        0.5074757569434394,
+        0.5858575763898939
+      ],
+      "score_approx95_workflow": [
+        0.5068329738742392,
+        0.5865003594590941
+      ],
+      "illegal": 0,
+      "colors": {
+        "A_black": 300,
+        "A_white": 300
+      },
+      "plies": 66723,
+      "phase": {
+        "A_opening": 8714,
+        "B_opening": 8783,
+        "A_middle": 11830,
+        "B_middle": 11691,
+        "A_end": 12834,
+        "B_end": 12871
+      },
+      "knowledge": {
+        "A_knowledge_probes": 30333,
+        "A_knowledge_hits": 0,
+        "A_knowledge_promotions": 0,
+        "B_knowledge_probes": 30481,
+        "B_knowledge_hits": 0,
+        "B_knowledge_promotions": 0
+      },
+      "long_think_uses": {
+        "A": 5890,
+        "B": 5918
+      },
+      "max_long_think_per_game": {
+        "A": 10,
+        "B": 10
+      },
+      "binary_hashes": {
+        "a": "205e5e011b79bc224c5b2f0aa25f95e82e36a57493b43a7084970b909c50bc30",
+        "b": "ab9f911d7c920f7ef4a6bd3224d4f26b00ba3492ed23b34257eda48d17bde1eb"
+      },
+      "terminal_reasons": {
+        "checkmate": 580,
+        "fourfold_repetition": 17,
+        "move_limit": 3
+      },
+      "archive_sha256": "2608565abaa0fe2e1789d848456a0e118471917d3f124ca063674365d199a697",
+      "missing_search_score_plies": 2751,
+      "all_shard_and_archive_sequences_verified": true,
+      "artifact_evidence": [
+        {
+          "id": 11801950208,
+          "name": "generic-engine-match-38367515175-3",
+          "digest": "sha256:a315b58c7bd7f0d55933197a54e6c3139a96879704e0307e1188831c9cb2d5be",
+          "expires_at": "2027-01-11T08:10:53Z",
+          "size_in_bytes": 1170659
+        },
+        {
+          "id": 11801750431,
+          "name": "generic-engine-match-38367515175-1",
+          "digest": "sha256:399413954ff4abd0d76ca5bba40e12b71e362b355ba512aa4269c91f1d411dc6",
+          "expires_at": "2027-01-11T08:10:53Z",
+          "size_in_bytes": 1096277
+        },
+        {
+          "id": 11801566879,
+          "name": "played-move-archive-38367515175",
+          "digest": "sha256:ae8cc559c884ab4bee885a68925e070c655b71e097925f54345abd50726eb587",
+          "expires_at": "2027-01-11T08:10:53Z",
+          "size_in_bytes": 3913214
+        },
+        {
+          "id": 11801531914,
+          "name": "generic-engine-match-38367515175-2",
+          "digest": "sha256:2f8e178baf3576e501ec5757cbe9b668cc45803a78e45acd6f8c4a52718fe16b",
+          "expires_at": "2027-01-11T08:10:53Z",
+          "size_in_bytes": 1220475
+        },
+        {
+          "id": 11801456172,
+          "name": "generic-engine-match-38367515175-0",
+          "digest": "sha256:f0de5e18db573ab70d743029172b6a3448460c40d95ba2e2633db7a910e4efdf",
+          "expires_at": "2027-01-11T08:10:53Z",
+          "size_in_bytes": 1127271
+        },
+        {
+          "id": 11801217361,
+          "name": "generic-engine-match-summary-38367515175",
+          "digest": "sha256:c6103d735b7e4e91797a77d7dd17d33a439cd0b6b56e8014432d6163861f7c55",
+          "expires_at": "2027-01-11T08:10:53Z",
+          "size_in_bytes": 575
+        },
+        {
+          "id": 11801117065,
+          "name": "generic-engine-match-38367515175-4",
+          "digest": "sha256:ffb7229f3748ccfa2c1c69f29652b910388a3fe680487f2ba7d03c0c67d6568b",
+          "expires_at": "2027-01-11T08:10:53Z",
+          "size_in_bytes": 1156212
+        }
+      ],
+      "score_approx_familywise95_bonferroni4": [
+        0.496724141277429,
+        0.5966091920559043
+      ]
+    }
+  ],
+  "completed_games": 2400,
+  "all_28_zip_digests_verified": true
+}
