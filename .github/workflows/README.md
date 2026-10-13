@@ -25,6 +25,7 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 | `.github/workflows/eval-bold-league.yml` | 研究依頼ファイルの変更 / 手動 | 正式M・従来W・大胆な配点6案（P0～P5）を固定エンジンで8型総当たりし、実戦・評価の統計を記録。正式採用はしない |
 | `.github/workflows/eval-wide-league.yml` | 明示的な依頼ファイル更新 / 手動 | 評価8型（現行M型、既存S/A/T型、新規X/Y/Z/W型）を総当たり。事前検査後に空きrunner数で並列実行し、全局の棋譜・評価内訳・順位を保存。候補の自動採用はしない |
 | `.github/workflows/engine-match.yml` | 手動 | 汎用の内部Engine比較。既定は200ms・AdaptiveLongThink=true。研究条件は明示入力で変更 |
+| `.github/workflows/variable-eval-search.yml` | オーナーの `[KUMOJI SEARCH]` Issue / 手動 | 固定した研究commitと配点一覧を使い、多数の新しい組合せを少数局で比較。共通バイナリ1本・最大10runner・標準arena/実戦手保存を再利用。候補の自動採用はしない |
 | `.github/workflows/engine-match-request.yml` | オーナーのIssue作成 / request更新 / 手動 | 対局条件だけを検証し `engine-match.yml` を起動する軽量入口。通常はIssue方式でコードを変更しない。対局処理は持たない |
 | `.github/workflows/position-knowledge-refresh.yml` | 知識更新request / 手動 | 承認した候補データから採用済み局面知識を生成する。新候補を自動採用しない |
 | `.github/workflows/yaneuraou-ladder.yml` | 依頼ファイル更新 / 手動 / 条件付き自動進行 | やねうら王Material版で正式棋力測定（雲路200ms・長考ON・局面知識ON）。100局ごとにレベルを1上げ、勝率30%未満で自動停止。レベル別対局記録と集計を保存し、固定エンジンcommitを引き継ぐ |

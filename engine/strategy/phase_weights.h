@@ -48,12 +48,13 @@ inline EvaluationParameters q14_turn_parameters(EvaluationParameters p,int matur
 // All research profiles freeze a common, symmetric parameter vector at turn
 // entry. Neither the maturity diagnosis nor the mate-budget policy is changed.
 inline double research_phase_signal(const ResearchPhaseProfile& profile, int maturity,
-                                    int battle, int risk, int hand_resource) {
+                                    int battle, int risk, int hand_resource, int signal_override=-1) {
+    const int signal=signal_override<0 ? profile.signal : signal_override;
     double x=maturity;
-    if(profile.signal==1) x=battle;
-    if(profile.signal==2) x=risk;
-    if(profile.signal==3) x=(5.0*maturity+3.0*battle+2.0*risk)/10.0;
-    if(profile.signal==4) x=hand_resource;
+    if(signal==1) x=battle;
+    if(signal==2) x=risk;
+    if(signal==3) x=(5.0*maturity+3.0*battle+2.0*risk)/10.0;
+    if(signal==4) x=hand_resource;
     x=std::clamp(x,0.0,100.0);
     if(profile.curve==2) x=100.0*std::max(0.0,x-35.0)/65.0;
     if(profile.curve==3) x=x*x/100.0;
@@ -77,7 +78,9 @@ inline EvaluationParameters research_turn_parameters(EvaluationParameters p,int 
         &p.weights[2],&p.weights[3],&p.influence_weight,&p.potential_weight,
         &p.coordination_weight,&p.hand_potential_weight,&p.threat_weight}};
     for(std::size_t i=0;i<target.size();++i){
-        int w=research_phase_interpolate(profile,x,profile.anchors[0][i],
+        const auto axis_x=profile.axis_signals[i]<0 ? x : research_phase_signal(
+            profile,maturity,battle,king_threat,hand_resource,profile.axis_signals[i]);
+        int w=research_phase_interpolate(profile,axis_x,profile.anchors[0][i],
                                         profile.anchors[1][i],profile.anchors[2][i]);
         if(profile.context){
             if(i==1) w+=urgency/2;
@@ -88,17 +91,19 @@ inline EvaluationParameters research_turn_parameters(EvaluationParameters p,int 
         *target[i]=std::clamp(static_cast<int>(std::lround(
             double(*target[i])*w/MWeights[i])),0,10000);
     }
-    p.hand_material_weight=research_phase_interpolate(profile,x,
+    const auto hand_x=profile.hand_signal<0 ? x : research_phase_signal(
+        profile,maturity,battle,king_threat,hand_resource,profile.hand_signal);
+    p.hand_material_weight=research_phase_interpolate(profile,hand_x,
         profile.hand_material[0],profile.hand_material[1],profile.hand_material[2]);
     return p;
 }
 inline EvaluationParameters phase_turn_parameters(EvaluationParameters p,int maturity,
-        int battle=0,int king_threat=0,int hand_resource=0) {
+        int battle=0,int king_threat=0,int hand_resource=0,int profile_index=SelectedResearchProfile) {
     static_assert(SelectedResearchProfile>=0 && SelectedResearchProfile<
                   static_cast<int>(ResearchProfiles.size()));
-    if constexpr(SelectedResearchProfile==0)
+    if(profile_index==0)
         return q14_turn_parameters(p,maturity,battle,king_threat);
-    return research_turn_parameters(p,SelectedResearchProfile,maturity,battle,
+    return research_turn_parameters(p,profile_index,maturity,battle,
                                    king_threat,hand_resource);
 }
 } // namespace shogi::strategy

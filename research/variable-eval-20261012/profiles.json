@@ -76,7 +76,9 @@
       "context": true,
       "reason": "現行Q14を同じ研究コードで完全再現する対照",
       "family": "control",
-      "control": true
+      "control": true,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 1,
@@ -130,7 +132,9 @@
       "context": false,
       "reason": "探索・駒単価・知識をそろえた固定M配点",
       "family": "control",
-      "control": true
+      "control": true,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 2,
@@ -184,7 +188,9 @@
       "context": false,
       "reason": "成熟度が均等分布する場合のQ14曲線の平均。可変性と平均配点を区別する",
       "family": "control",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 3,
@@ -238,7 +244,9 @@
       "context": false,
       "reason": "Q14の成熟度変化を残し危険度・戦闘度の追加補正だけ外す",
       "family": "context",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 4,
@@ -292,7 +300,9 @@
       "context": true,
       "reason": "三次補間の平坦区間が必要か",
       "family": "curve",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 5,
@@ -346,7 +356,9 @@
       "context": true,
       "reason": "成熟度35までは序盤配点、その後65点で全域を変化",
       "family": "curve",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 6,
@@ -400,7 +412,9 @@
       "context": true,
       "reason": "成熟度をm²/100へ写し配点変化を遅らせる",
       "family": "curve",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 7,
@@ -454,7 +468,9 @@
       "context": true,
       "reason": "33・66を境として配点を切り替える",
       "family": "curve",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 8,
@@ -508,7 +524,9 @@
       "context": true,
       "reason": "100√(m/100)で変化を早める",
       "family": "curve",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 9,
@@ -562,7 +580,9 @@
       "context": true,
       "reason": "Q14とMの差を拡大。倍率を全項目へ一律に掛ける変更と区別する",
       "family": "amplitude",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 10,
@@ -616,7 +636,9 @@
       "context": true,
       "reason": "Q14とMの差を拡大。倍率を全項目へ一律に掛ける変更と区別する",
       "family": "amplitude",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 11,
@@ -670,7 +692,9 @@
       "context": false,
       "reason": "序終盤の配点を反転。直感と反対の変化も検証する",
       "family": "direction",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 12,
@@ -724,7 +748,9 @@
       "context": false,
       "reason": "盤上駒得の減少だけを切り分ける",
       "family": "axis",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 13,
@@ -778,7 +804,9 @@
       "context": false,
       "reason": "玉安全の序盤0.75倍・終盤3倍だけを試す",
       "family": "axis",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 14,
@@ -832,7 +860,9 @@
       "context": false,
       "reason": "持ち駒価値を最大4倍にする",
       "family": "axis",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 15,
@@ -886,7 +916,9 @@
       "context": false,
       "reason": "潜在効果をMの0.5・2・8倍にする",
       "family": "axis",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 16,
@@ -940,7 +972,9 @@
       "context": false,
       "reason": "玉安全と攻撃の役割を分ける",
       "family": "axis",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 17,
@@ -994,7 +1028,9 @@
       "context": false,
       "reason": "活動・連携を序盤2倍から終盤0.5倍にする",
       "family": "axis",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 18,
@@ -1048,7 +1084,9 @@
       "context": false,
       "reason": "BOARDとHMATの相互作用",
       "family": "interaction",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 19,
@@ -1102,7 +1140,9 @@
       "context": false,
       "reason": "SAFEとATTACKの相互作用",
       "family": "interaction",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 20,
@@ -1156,7 +1196,9 @@
       "context": false,
       "reason": "Mを土台に、活動から安全・持ち駒への重点移動を組み合わせる",
       "family": "interaction",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 21,
@@ -1210,7 +1252,9 @@
       "context": false,
       "reason": "成熟度を使わず戦闘度で配点を決める",
       "family": "gate",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 22,
@@ -1264,7 +1308,9 @@
       "context": false,
       "reason": "玉危険度だけで安全・駒危険を重くする",
       "family": "gate",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 23,
@@ -1318,7 +1364,9 @@
       "context": false,
       "reason": "配点用指標=(5成熟度＋3戦闘度＋2危険度)/10。元の成熟度・詰み時間配分は変更しない",
       "family": "gate",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 24,
@@ -1372,7 +1420,9 @@
       "context": false,
       "reason": "両者の持ち駒量（歩1・香桂2・銀金3・角飛6、合計×4上限100）で手駒軸だけ変える",
       "family": "gate",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 25,
@@ -1426,7 +1476,9 @@
       "context": true,
       "reason": "Q14の他軸を維持し持ち駒倍率を盤上と同じにする。駒打ちの点落ちを抑える",
       "family": "material_balance",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 26,
@@ -1480,7 +1532,9 @@
       "context": true,
       "reason": "盤上・持ち駒をMに固定。Q14の位置配点変化だけを切り分ける",
       "family": "material_balance",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 27,
@@ -1534,7 +1588,9 @@
       "context": false,
       "reason": "全駒共通の倍率を下げつつ、手駒の実用性を潜在効果で加点する",
       "family": "material_balance",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 28,
@@ -1588,7 +1644,9 @@
       "context": false,
       "reason": "ATTACKから脅威の変化を除き、攻撃圧力の寄与を切り分ける",
       "family": "ablation",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 29,
@@ -1642,7 +1700,9 @@
       "context": false,
       "reason": "ATTACKから攻撃圧力の変化を除き、脅威の寄与を切り分ける",
       "family": "ablation",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
     },
     {
       "index": 30,
@@ -1696,7 +1756,2309 @@
       "context": false,
       "reason": "中間200局の自分の着手11,045件から平均を推定し固定。可変性と平均配点の増加を独立seedで比較する",
       "family": "ablation",
-      "control": false
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 31,
+      "name": "BAL_smooth_0",
+      "label": "攻撃＋玉安全＋駒危険",
+      "anchors": [
+        [
+          100,
+          480,
+          450,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          12
+        ],
+        [
+          100,
+          720,
+          750,
+          410,
+          240,
+          140,
+          210,
+          340,
+          60,
+          24
+        ],
+        [
+          100,
+          1100,
+          1050,
+          410,
+          360,
+          140,
+          210,
+          340,
+          60,
+          36
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "smooth",
+      "signal": "maturity",
+      "context": false,
+      "reason": "同じ配点で曲線4種×成熟度一括/攻守別指標を比較する",
+      "family": "round2_balance",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 32,
+      "name": "BAL_smooth_1",
+      "label": "攻撃＋玉安全＋駒危険",
+      "anchors": [
+        [
+          100,
+          480,
+          450,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          12
+        ],
+        [
+          100,
+          720,
+          750,
+          410,
+          240,
+          140,
+          210,
+          340,
+          60,
+          24
+        ],
+        [
+          100,
+          1100,
+          1050,
+          410,
+          360,
+          140,
+          210,
+          340,
+          60,
+          36
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "smooth",
+      "signal": "maturity",
+      "context": false,
+      "reason": "同じ配点で曲線4種×成熟度一括/攻守別指標を比較する",
+      "family": "round2_balance",
+      "control": false,
+      "axis_signals": {
+        "pressure": "battle",
+        "threat": "battle",
+        "safety": "risk",
+        "danger": "risk"
+      },
+      "hand_signal": null
+    },
+    {
+      "index": 33,
+      "name": "BAL_linear_0",
+      "label": "攻撃＋玉安全＋駒危険",
+      "anchors": [
+        [
+          100,
+          480,
+          450,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          12
+        ],
+        [
+          100,
+          720,
+          750,
+          410,
+          240,
+          140,
+          210,
+          340,
+          60,
+          24
+        ],
+        [
+          100,
+          1100,
+          1050,
+          410,
+          360,
+          140,
+          210,
+          340,
+          60,
+          36
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "linear",
+      "signal": "maturity",
+      "context": false,
+      "reason": "同じ配点で曲線4種×成熟度一括/攻守別指標を比較する",
+      "family": "round2_balance",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 34,
+      "name": "BAL_linear_1",
+      "label": "攻撃＋玉安全＋駒危険",
+      "anchors": [
+        [
+          100,
+          480,
+          450,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          12
+        ],
+        [
+          100,
+          720,
+          750,
+          410,
+          240,
+          140,
+          210,
+          340,
+          60,
+          24
+        ],
+        [
+          100,
+          1100,
+          1050,
+          410,
+          360,
+          140,
+          210,
+          340,
+          60,
+          36
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "linear",
+      "signal": "maturity",
+      "context": false,
+      "reason": "同じ配点で曲線4種×成熟度一括/攻守別指標を比較する",
+      "family": "round2_balance",
+      "control": false,
+      "axis_signals": {
+        "pressure": "battle",
+        "threat": "battle",
+        "safety": "risk",
+        "danger": "risk"
+      },
+      "hand_signal": null
+    },
+    {
+      "index": 35,
+      "name": "BAL_delayed_0",
+      "label": "攻撃＋玉安全＋駒危険",
+      "anchors": [
+        [
+          100,
+          480,
+          450,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          12
+        ],
+        [
+          100,
+          720,
+          750,
+          410,
+          240,
+          140,
+          210,
+          340,
+          60,
+          24
+        ],
+        [
+          100,
+          1100,
+          1050,
+          410,
+          360,
+          140,
+          210,
+          340,
+          60,
+          36
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "delayed",
+      "signal": "maturity",
+      "context": false,
+      "reason": "同じ配点で曲線4種×成熟度一括/攻守別指標を比較する",
+      "family": "round2_balance",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 36,
+      "name": "BAL_delayed_1",
+      "label": "攻撃＋玉安全＋駒危険",
+      "anchors": [
+        [
+          100,
+          480,
+          450,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          12
+        ],
+        [
+          100,
+          720,
+          750,
+          410,
+          240,
+          140,
+          210,
+          340,
+          60,
+          24
+        ],
+        [
+          100,
+          1100,
+          1050,
+          410,
+          360,
+          140,
+          210,
+          340,
+          60,
+          36
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "delayed",
+      "signal": "maturity",
+      "context": false,
+      "reason": "同じ配点で曲線4種×成熟度一括/攻守別指標を比較する",
+      "family": "round2_balance",
+      "control": false,
+      "axis_signals": {
+        "pressure": "battle",
+        "threat": "battle",
+        "safety": "risk",
+        "danger": "risk"
+      },
+      "hand_signal": null
+    },
+    {
+      "index": 37,
+      "name": "BAL_late_0",
+      "label": "攻撃＋玉安全＋駒危険",
+      "anchors": [
+        [
+          100,
+          480,
+          450,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          12
+        ],
+        [
+          100,
+          720,
+          750,
+          410,
+          240,
+          140,
+          210,
+          340,
+          60,
+          24
+        ],
+        [
+          100,
+          1100,
+          1050,
+          410,
+          360,
+          140,
+          210,
+          340,
+          60,
+          36
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "late",
+      "signal": "maturity",
+      "context": false,
+      "reason": "同じ配点で曲線4種×成熟度一括/攻守別指標を比較する",
+      "family": "round2_balance",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 38,
+      "name": "BAL_late_1",
+      "label": "攻撃＋玉安全＋駒危険",
+      "anchors": [
+        [
+          100,
+          480,
+          450,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          12
+        ],
+        [
+          100,
+          720,
+          750,
+          410,
+          240,
+          140,
+          210,
+          340,
+          60,
+          24
+        ],
+        [
+          100,
+          1100,
+          1050,
+          410,
+          360,
+          140,
+          210,
+          340,
+          60,
+          36
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "late",
+      "signal": "maturity",
+      "context": false,
+      "reason": "同じ配点で曲線4種×成熟度一括/攻守別指標を比較する",
+      "family": "round2_balance",
+      "control": false,
+      "axis_signals": {
+        "pressure": "battle",
+        "threat": "battle",
+        "safety": "risk",
+        "danger": "risk"
+      },
+      "hand_signal": null
+    },
+    {
+      "index": 39,
+      "name": "MAT_up_mild",
+      "label": "攻撃＋盤上/持ち駒同倍率",
+      "anchors": [
+        [
+          140,
+          480,
+          480,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          110,
+          480,
+          800,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          80,
+          480,
+          1200,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        140,
+        110,
+        80
+      ],
+      "curve": "smooth",
+      "signal": "maturity",
+      "context": false,
+      "reason": "攻撃方向2種×駒得4種で相互作用を探索。脅威と他軸はM固定",
+      "family": "round2_material",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 40,
+      "name": "MAT_up_reverse",
+      "label": "攻撃＋盤上/持ち駒同倍率",
+      "anchors": [
+        [
+          80,
+          480,
+          480,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          110,
+          480,
+          800,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          140,
+          480,
+          1200,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        80,
+        110,
+        140
+      ],
+      "curve": "smooth",
+      "signal": "maturity",
+      "context": false,
+      "reason": "攻撃方向2種×駒得4種で相互作用を探索。脅威と他軸はM固定",
+      "family": "round2_material",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 41,
+      "name": "MAT_up_wide",
+      "label": "攻撃＋盤上/持ち駒同倍率",
+      "anchors": [
+        [
+          180,
+          480,
+          480,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          800,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          60,
+          480,
+          1200,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        180,
+        100,
+        60
+      ],
+      "curve": "smooth",
+      "signal": "maturity",
+      "context": false,
+      "reason": "攻撃方向2種×駒得4種で相互作用を探索。脅威と他軸はM固定",
+      "family": "round2_material",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 42,
+      "name": "MAT_up_flat",
+      "label": "攻撃＋盤上/持ち駒同倍率",
+      "anchors": [
+        [
+          100,
+          480,
+          480,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          800,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          1200,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "smooth",
+      "signal": "maturity",
+      "context": false,
+      "reason": "攻撃方向2種×駒得4種で相互作用を探索。脅威と他軸はM固定",
+      "family": "round2_material",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 43,
+      "name": "MAT_down_mild",
+      "label": "攻撃＋盤上/持ち駒同倍率",
+      "anchors": [
+        [
+          140,
+          480,
+          1000,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          110,
+          480,
+          700,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          80,
+          480,
+          450,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        140,
+        110,
+        80
+      ],
+      "curve": "smooth",
+      "signal": "maturity",
+      "context": false,
+      "reason": "攻撃方向2種×駒得4種で相互作用を探索。脅威と他軸はM固定",
+      "family": "round2_material",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 44,
+      "name": "MAT_down_reverse",
+      "label": "攻撃＋盤上/持ち駒同倍率",
+      "anchors": [
+        [
+          80,
+          480,
+          1000,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          110,
+          480,
+          700,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          140,
+          480,
+          450,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        80,
+        110,
+        140
+      ],
+      "curve": "smooth",
+      "signal": "maturity",
+      "context": false,
+      "reason": "攻撃方向2種×駒得4種で相互作用を探索。脅威と他軸はM固定",
+      "family": "round2_material",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 45,
+      "name": "MAT_down_wide",
+      "label": "攻撃＋盤上/持ち駒同倍率",
+      "anchors": [
+        [
+          180,
+          480,
+          1000,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          700,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          60,
+          480,
+          450,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        180,
+        100,
+        60
+      ],
+      "curve": "smooth",
+      "signal": "maturity",
+      "context": false,
+      "reason": "攻撃方向2種×駒得4種で相互作用を探索。脅威と他軸はM固定",
+      "family": "round2_material",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 46,
+      "name": "MAT_down_flat",
+      "label": "攻撃＋盤上/持ち駒同倍率",
+      "anchors": [
+        [
+          100,
+          480,
+          1000,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          700,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          450,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "smooth",
+      "signal": "maturity",
+      "context": false,
+      "reason": "攻撃方向2種×駒得4種で相互作用を探索。脅威と他軸はM固定",
+      "family": "round2_material",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 47,
+      "name": "MOB_smooth_0",
+      "label": "攻撃＋活動/効き/連携",
+      "anchors": [
+        [
+          100,
+          480,
+          450,
+          600,
+          150,
+          180,
+          300,
+          500,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          750,
+          500,
+          150,
+          240,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          1050,
+          300,
+          150,
+          120,
+          160,
+          220,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "smooth",
+      "signal": "maturity",
+      "context": false,
+      "reason": "活動/連携の増減方向2種×曲線4種。旧MOBILEをそのまま再測せず攻撃との融合を比較",
+      "family": "round2_mobility",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 48,
+      "name": "MOB_smooth_1",
+      "label": "攻撃＋活動/効き/連携",
+      "anchors": [
+        [
+          100,
+          480,
+          450,
+          250,
+          150,
+          180,
+          300,
+          180,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          750,
+          410,
+          150,
+          240,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          1050,
+          700,
+          150,
+          120,
+          160,
+          550,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "smooth",
+      "signal": "maturity",
+      "context": false,
+      "reason": "活動/連携の増減方向2種×曲線4種。旧MOBILEをそのまま再測せず攻撃との融合を比較",
+      "family": "round2_mobility",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 49,
+      "name": "MOB_linear_0",
+      "label": "攻撃＋活動/効き/連携",
+      "anchors": [
+        [
+          100,
+          480,
+          450,
+          600,
+          150,
+          180,
+          300,
+          500,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          750,
+          500,
+          150,
+          240,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          1050,
+          300,
+          150,
+          120,
+          160,
+          220,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "linear",
+      "signal": "maturity",
+      "context": false,
+      "reason": "活動/連携の増減方向2種×曲線4種。旧MOBILEをそのまま再測せず攻撃との融合を比較",
+      "family": "round2_mobility",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 50,
+      "name": "MOB_linear_1",
+      "label": "攻撃＋活動/効き/連携",
+      "anchors": [
+        [
+          100,
+          480,
+          450,
+          250,
+          150,
+          180,
+          300,
+          180,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          750,
+          410,
+          150,
+          240,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          1050,
+          700,
+          150,
+          120,
+          160,
+          550,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "linear",
+      "signal": "maturity",
+      "context": false,
+      "reason": "活動/連携の増減方向2種×曲線4種。旧MOBILEをそのまま再測せず攻撃との融合を比較",
+      "family": "round2_mobility",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 51,
+      "name": "MOB_late_0",
+      "label": "攻撃＋活動/効き/連携",
+      "anchors": [
+        [
+          100,
+          480,
+          450,
+          600,
+          150,
+          180,
+          300,
+          500,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          750,
+          500,
+          150,
+          240,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          1050,
+          300,
+          150,
+          120,
+          160,
+          220,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "late",
+      "signal": "maturity",
+      "context": false,
+      "reason": "活動/連携の増減方向2種×曲線4種。旧MOBILEをそのまま再測せず攻撃との融合を比較",
+      "family": "round2_mobility",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 52,
+      "name": "MOB_late_1",
+      "label": "攻撃＋活動/効き/連携",
+      "anchors": [
+        [
+          100,
+          480,
+          450,
+          250,
+          150,
+          180,
+          300,
+          180,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          750,
+          410,
+          150,
+          240,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          1050,
+          700,
+          150,
+          120,
+          160,
+          550,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "late",
+      "signal": "maturity",
+      "context": false,
+      "reason": "活動/連携の増減方向2種×曲線4種。旧MOBILEをそのまま再測せず攻撃との融合を比較",
+      "family": "round2_mobility",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 53,
+      "name": "MOB_early_0",
+      "label": "攻撃＋活動/効き/連携",
+      "anchors": [
+        [
+          100,
+          480,
+          450,
+          600,
+          150,
+          180,
+          300,
+          500,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          750,
+          500,
+          150,
+          240,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          1050,
+          300,
+          150,
+          120,
+          160,
+          220,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "early",
+      "signal": "maturity",
+      "context": false,
+      "reason": "活動/連携の増減方向2種×曲線4種。旧MOBILEをそのまま再測せず攻撃との融合を比較",
+      "family": "round2_mobility",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 54,
+      "name": "MOB_early_1",
+      "label": "攻撃＋活動/効き/連携",
+      "anchors": [
+        [
+          100,
+          480,
+          450,
+          250,
+          150,
+          180,
+          300,
+          180,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          750,
+          410,
+          150,
+          240,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          480,
+          1050,
+          700,
+          150,
+          120,
+          160,
+          550,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "early",
+      "signal": "maturity",
+      "context": false,
+      "reason": "活動/連携の増減方向2種×曲線4種。旧MOBILEをそのまま再測せず攻撃との融合を比較",
+      "family": "round2_mobility",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 55,
+      "name": "HAND_smooth_0_0",
+      "label": "攻撃＋玉安全＋持ち駒実用性",
+      "anchors": [
+        [
+          100,
+          400,
+          380,
+          410,
+          150,
+          140,
+          210,
+          340,
+          30,
+          20
+        ],
+        [
+          100,
+          650,
+          700,
+          410,
+          150,
+          140,
+          210,
+          340,
+          90,
+          20
+        ],
+        [
+          100,
+          1000,
+          1100,
+          410,
+          150,
+          140,
+          210,
+          340,
+          180,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "smooth",
+      "signal": "maturity",
+      "context": false,
+      "reason": "材料倍率を固定し、持ち駒潜在2強度×判定2種×曲線2種。持ち駒倍率の過大化を避ける",
+      "family": "round2_hand",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 56,
+      "name": "HAND_smooth_0_1",
+      "label": "攻撃＋玉安全＋持ち駒実用性",
+      "anchors": [
+        [
+          100,
+          400,
+          380,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          650,
+          700,
+          410,
+          150,
+          140,
+          210,
+          340,
+          160,
+          20
+        ],
+        [
+          100,
+          1000,
+          1100,
+          410,
+          150,
+          140,
+          210,
+          340,
+          360,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "smooth",
+      "signal": "maturity",
+      "context": false,
+      "reason": "材料倍率を固定し、持ち駒潜在2強度×判定2種×曲線2種。持ち駒倍率の過大化を避ける",
+      "family": "round2_hand",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 57,
+      "name": "HAND_smooth_1_0",
+      "label": "攻撃＋玉安全＋持ち駒実用性",
+      "anchors": [
+        [
+          100,
+          400,
+          380,
+          410,
+          150,
+          140,
+          210,
+          340,
+          30,
+          20
+        ],
+        [
+          100,
+          650,
+          700,
+          410,
+          150,
+          140,
+          210,
+          340,
+          90,
+          20
+        ],
+        [
+          100,
+          1000,
+          1100,
+          410,
+          150,
+          140,
+          210,
+          340,
+          180,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "smooth",
+      "signal": "maturity",
+      "context": false,
+      "reason": "材料倍率を固定し、持ち駒潜在2強度×判定2種×曲線2種。持ち駒倍率の過大化を避ける",
+      "family": "round2_hand",
+      "control": false,
+      "axis_signals": {
+        "pressure": "battle",
+        "safety": "risk",
+        "hand_potential": "hand"
+      },
+      "hand_signal": null
+    },
+    {
+      "index": 58,
+      "name": "HAND_smooth_1_1",
+      "label": "攻撃＋玉安全＋持ち駒実用性",
+      "anchors": [
+        [
+          100,
+          400,
+          380,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          650,
+          700,
+          410,
+          150,
+          140,
+          210,
+          340,
+          160,
+          20
+        ],
+        [
+          100,
+          1000,
+          1100,
+          410,
+          150,
+          140,
+          210,
+          340,
+          360,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "smooth",
+      "signal": "maturity",
+      "context": false,
+      "reason": "材料倍率を固定し、持ち駒潜在2強度×判定2種×曲線2種。持ち駒倍率の過大化を避ける",
+      "family": "round2_hand",
+      "control": false,
+      "axis_signals": {
+        "pressure": "battle",
+        "safety": "risk",
+        "hand_potential": "hand"
+      },
+      "hand_signal": null
+    },
+    {
+      "index": 59,
+      "name": "HAND_late_0_0",
+      "label": "攻撃＋玉安全＋持ち駒実用性",
+      "anchors": [
+        [
+          100,
+          400,
+          380,
+          410,
+          150,
+          140,
+          210,
+          340,
+          30,
+          20
+        ],
+        [
+          100,
+          650,
+          700,
+          410,
+          150,
+          140,
+          210,
+          340,
+          90,
+          20
+        ],
+        [
+          100,
+          1000,
+          1100,
+          410,
+          150,
+          140,
+          210,
+          340,
+          180,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "late",
+      "signal": "maturity",
+      "context": false,
+      "reason": "材料倍率を固定し、持ち駒潜在2強度×判定2種×曲線2種。持ち駒倍率の過大化を避ける",
+      "family": "round2_hand",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 60,
+      "name": "HAND_late_0_1",
+      "label": "攻撃＋玉安全＋持ち駒実用性",
+      "anchors": [
+        [
+          100,
+          400,
+          380,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          650,
+          700,
+          410,
+          150,
+          140,
+          210,
+          340,
+          160,
+          20
+        ],
+        [
+          100,
+          1000,
+          1100,
+          410,
+          150,
+          140,
+          210,
+          340,
+          360,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "late",
+      "signal": "maturity",
+      "context": false,
+      "reason": "材料倍率を固定し、持ち駒潜在2強度×判定2種×曲線2種。持ち駒倍率の過大化を避ける",
+      "family": "round2_hand",
+      "control": false,
+      "axis_signals": {},
+      "hand_signal": null
+    },
+    {
+      "index": 61,
+      "name": "HAND_late_1_0",
+      "label": "攻撃＋玉安全＋持ち駒実用性",
+      "anchors": [
+        [
+          100,
+          400,
+          380,
+          410,
+          150,
+          140,
+          210,
+          340,
+          30,
+          20
+        ],
+        [
+          100,
+          650,
+          700,
+          410,
+          150,
+          140,
+          210,
+          340,
+          90,
+          20
+        ],
+        [
+          100,
+          1000,
+          1100,
+          410,
+          150,
+          140,
+          210,
+          340,
+          180,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "late",
+      "signal": "maturity",
+      "context": false,
+      "reason": "材料倍率を固定し、持ち駒潜在2強度×判定2種×曲線2種。持ち駒倍率の過大化を避ける",
+      "family": "round2_hand",
+      "control": false,
+      "axis_signals": {
+        "pressure": "battle",
+        "safety": "risk",
+        "hand_potential": "hand"
+      },
+      "hand_signal": null
+    },
+    {
+      "index": 62,
+      "name": "HAND_late_1_1",
+      "label": "攻撃＋玉安全＋持ち駒実用性",
+      "anchors": [
+        [
+          100,
+          400,
+          380,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          650,
+          700,
+          410,
+          150,
+          140,
+          210,
+          340,
+          160,
+          20
+        ],
+        [
+          100,
+          1000,
+          1100,
+          410,
+          150,
+          140,
+          210,
+          340,
+          360,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "late",
+      "signal": "maturity",
+      "context": false,
+      "reason": "材料倍率を固定し、持ち駒潜在2強度×判定2種×曲線2種。持ち駒倍率の過大化を避ける",
+      "family": "round2_hand",
+      "control": false,
+      "axis_signals": {
+        "pressure": "battle",
+        "safety": "risk",
+        "hand_potential": "hand"
+      },
+      "hand_signal": null
+    },
+    {
+      "index": 63,
+      "name": "SHAPE_middle_peak_smooth",
+      "label": "非単調/急変攻撃＋危険連動の守り",
+      "anchors": [
+        [
+          100,
+          450,
+          600,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          800,
+          1200,
+          410,
+          200,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          1100,
+          600,
+          410,
+          330,
+          140,
+          210,
+          340,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "smooth",
+      "signal": "maturity",
+      "context": false,
+      "reason": "中盤ピーク/谷/終盤急増/逆方向の4形×滑らか/段階。玉安全は独立した危険度で判断",
+      "family": "round2_shape",
+      "control": false,
+      "axis_signals": {
+        "safety": "risk",
+        "danger": "risk"
+      },
+      "hand_signal": null
+    },
+    {
+      "index": 64,
+      "name": "SHAPE_middle_peak_step",
+      "label": "非単調/急変攻撃＋危険連動の守り",
+      "anchors": [
+        [
+          100,
+          450,
+          600,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          800,
+          1200,
+          410,
+          200,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          1100,
+          600,
+          410,
+          330,
+          140,
+          210,
+          340,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "step",
+      "signal": "maturity",
+      "context": false,
+      "reason": "中盤ピーク/谷/終盤急増/逆方向の4形×滑らか/段階。玉安全は独立した危険度で判断",
+      "family": "round2_shape",
+      "control": false,
+      "axis_signals": {
+        "safety": "risk",
+        "danger": "risk"
+      },
+      "hand_signal": null
+    },
+    {
+      "index": 65,
+      "name": "SHAPE_middle_dip_smooth",
+      "label": "非単調/急変攻撃＋危険連動の守り",
+      "anchors": [
+        [
+          100,
+          450,
+          1000,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          800,
+          500,
+          410,
+          200,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          1100,
+          1000,
+          410,
+          330,
+          140,
+          210,
+          340,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "smooth",
+      "signal": "maturity",
+      "context": false,
+      "reason": "中盤ピーク/谷/終盤急増/逆方向の4形×滑らか/段階。玉安全は独立した危険度で判断",
+      "family": "round2_shape",
+      "control": false,
+      "axis_signals": {
+        "safety": "risk",
+        "danger": "risk"
+      },
+      "hand_signal": null
+    },
+    {
+      "index": 66,
+      "name": "SHAPE_middle_dip_step",
+      "label": "非単調/急変攻撃＋危険連動の守り",
+      "anchors": [
+        [
+          100,
+          450,
+          1000,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          800,
+          500,
+          410,
+          200,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          1100,
+          1000,
+          410,
+          330,
+          140,
+          210,
+          340,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "step",
+      "signal": "maturity",
+      "context": false,
+      "reason": "中盤ピーク/谷/終盤急増/逆方向の4形×滑らか/段階。玉安全は独立した危険度で判断",
+      "family": "round2_shape",
+      "control": false,
+      "axis_signals": {
+        "safety": "risk",
+        "danger": "risk"
+      },
+      "hand_signal": null
+    },
+    {
+      "index": 67,
+      "name": "SHAPE_end_surge_smooth",
+      "label": "非単調/急変攻撃＋危険連動の守り",
+      "anchors": [
+        [
+          100,
+          450,
+          800,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          800,
+          800,
+          410,
+          200,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          1100,
+          1600,
+          410,
+          330,
+          140,
+          210,
+          340,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "smooth",
+      "signal": "maturity",
+      "context": false,
+      "reason": "中盤ピーク/谷/終盤急増/逆方向の4形×滑らか/段階。玉安全は独立した危険度で判断",
+      "family": "round2_shape",
+      "control": false,
+      "axis_signals": {
+        "safety": "risk",
+        "danger": "risk"
+      },
+      "hand_signal": null
+    },
+    {
+      "index": 68,
+      "name": "SHAPE_end_surge_step",
+      "label": "非単調/急変攻撃＋危険連動の守り",
+      "anchors": [
+        [
+          100,
+          450,
+          800,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          800,
+          800,
+          410,
+          200,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          1100,
+          1600,
+          410,
+          330,
+          140,
+          210,
+          340,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "step",
+      "signal": "maturity",
+      "context": false,
+      "reason": "中盤ピーク/谷/終盤急増/逆方向の4形×滑らか/段階。玉安全は独立した危険度で判断",
+      "family": "round2_shape",
+      "control": false,
+      "axis_signals": {
+        "safety": "risk",
+        "danger": "risk"
+      },
+      "hand_signal": null
+    },
+    {
+      "index": 69,
+      "name": "SHAPE_reverse_smooth",
+      "label": "非単調/急変攻撃＋危険連動の守り",
+      "anchors": [
+        [
+          100,
+          450,
+          1200,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          800,
+          800,
+          410,
+          200,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          1100,
+          400,
+          410,
+          330,
+          140,
+          210,
+          340,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "smooth",
+      "signal": "maturity",
+      "context": false,
+      "reason": "中盤ピーク/谷/終盤急増/逆方向の4形×滑らか/段階。玉安全は独立した危険度で判断",
+      "family": "round2_shape",
+      "control": false,
+      "axis_signals": {
+        "safety": "risk",
+        "danger": "risk"
+      },
+      "hand_signal": null
+    },
+    {
+      "index": 70,
+      "name": "SHAPE_reverse_step",
+      "label": "非単調/急変攻撃＋危険連動の守り",
+      "anchors": [
+        [
+          100,
+          450,
+          1200,
+          410,
+          150,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          800,
+          800,
+          410,
+          200,
+          140,
+          210,
+          340,
+          60,
+          20
+        ],
+        [
+          100,
+          1100,
+          400,
+          410,
+          330,
+          140,
+          210,
+          340,
+          60,
+          20
+        ]
+      ],
+      "hand_material": [
+        100,
+        100,
+        100
+      ],
+      "curve": "step",
+      "signal": "maturity",
+      "context": false,
+      "reason": "中盤ピーク/谷/終盤急増/逆方向の4形×滑らか/段階。玉安全は独立した危険度で判断",
+      "family": "round2_shape",
+      "control": false,
+      "axis_signals": {
+        "safety": "risk",
+        "danger": "risk"
+      },
+      "hand_signal": null
     }
   ]
 }

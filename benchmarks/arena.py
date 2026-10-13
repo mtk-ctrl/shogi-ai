@@ -133,6 +133,8 @@ def parse_info_line(line):
                         "phase_king_threat": numeric["king_threat"],
                         "phase_static_cp_black": int(pairs["static_cp_black"]),
                     })
+                    if "research_profile" in pairs:
+                        info["phase_research_profile"] = int(pairs["research_profile"])
         except (KeyError, ValueError):
             pass
     if len(parts) >= 3 and parts[1:3] == ["string", "research_decision"]:
@@ -196,7 +198,7 @@ def compact_search_telemetry(info, side_to_move):
         out["score_upperbound"] = True
     for name in ("phase_version", "phase_maturity", "phase_stage",
                  "phase_development", "phase_battle", "phase_invasion",
-                 "phase_king_threat", "phase_static_cp_black"):
+                 "phase_king_threat", "phase_static_cp_black", "phase_research_profile"):
         if name in info:
             out[name] = info[name]
     for name in ("decision_source", "research_id", "research_step", "research_total", "research_move"):

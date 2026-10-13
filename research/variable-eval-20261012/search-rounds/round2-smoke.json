@@ -1,0 +1,24 @@
+{
+  "plan_id": "round2-smoke",
+  "stage": "coarse",
+  "profiles": [
+    32,
+    39,
+    47,
+    55,
+    63
+  ],
+  "games_per_baseline": 2,
+  "go_command": "go movetime 50",
+  "adaptive_long_think": false,
+  "seeds": {
+    "M": 1815000000,
+    "Q14": 1815010000
+  },
+  "max_plies": 300,
+  "controls": {
+    "M": 1,
+    "Q14": 0
+  },
+  "selection_notice": "動作確認のみ。候補選択と棋力推定には使わない。"
+}

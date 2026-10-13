@@ -14,11 +14,13 @@ H = [100,145,220]
 PROFILES = []
 
 def add(name, label, anchors=None, hand=None, curve='smooth', signal='maturity',
-        context=False, reason='', family='axis', control=False):
+        context=False, reason='', family='axis', control=False, axis_signals=None,
+        hand_signal=None):
     PROFILES.append(dict(index=len(PROFILES), name=name, label=label,
         anchors=[list(x) for x in (anchors if anchors is not None else Q)],
         hand_material=list(hand if hand is not None else H), curve=curve,
-        signal=signal, context=context, reason=reason, family=family, control=control))
+        signal=signal, context=context, reason=reason, family=family, control=control,
+        axis_signals=axis_signals or {}, hand_signal=hand_signal))
 
 def hybrid(changes):
     a=[list(M) for _ in range(3)]
@@ -98,17 +100,62 @@ add('ATTACK_AVG','ATTACK実戦平均配点を固定',anchors=hybrid(
     {'pressure':[639]*3,'threat':[28]*3}),hand=[100]*3,family='ablation',
     reason='中間200局の自分の着手11,045件から平均を推定し固定。可変性と平均配点の増加を独立seedで比較する')
 
+# Round 2: 40 new combinations, rather than further precision on old winners.
+# Each family is a small factorial comparison so the next generation can use
+# axis/curve contributions. These are selection hypotheses, not adopted values.
+for curve in ['smooth','linear','delayed','late']:
+    for gated in [False,True]:
+        add(f'BAL_{curve}_{int(gated)}','攻撃＋玉安全＋駒危険',anchors=hybrid({
+            'pressure':[450,750,1050],'safety':[480,720,1100],
+            'danger':[150,240,360],'threat':[12,24,36]}),hand=[100]*3,
+            curve=curve,family='round2_balance',
+            axis_signals={'pressure':'battle','threat':'battle','safety':'risk','danger':'risk'} if gated else {},
+            reason='同じ配点で曲線4種×成熟度一括/攻守別指標を比較する')
+for direction,pressure in [('up',[480,800,1200]),('down',[1000,700,450])]:
+    for tag,material in [('mild',[140,110,80]),('reverse',[80,110,140]),
+                         ('wide',[180,100,60]),('flat',[100,100,100])]:
+        add(f'MAT_{direction}_{tag}','攻撃＋盤上/持ち駒同倍率',anchors=hybrid({
+            'pressure':pressure,'board_material':material}),hand=material,
+            family='round2_material',reason='攻撃方向2種×駒得4種で相互作用を探索。脅威と他軸はM固定')
+for curve in ['smooth','linear','late','early']:
+    for reverse in [False,True]:
+        changes={'pressure':[450,750,1050],
+            'activity':[250,410,700] if reverse else [600,500,300],
+            'coordination':[180,340,550] if reverse else [500,340,220],
+            'influence':[180,240,120],'potential':[300,210,160]}
+        add(f'MOB_{curve}_{int(reverse)}','攻撃＋活動/効き/連携',anchors=hybrid(changes),
+            hand=[100]*3,curve=curve,family='round2_mobility',
+            reason='活動/連携の増減方向2種×曲線4種。旧MOBILEをそのまま再測せず攻撃との融合を比較')
+for curve in ['smooth','late']:
+    for gated in [False,True]:
+        for strong in [False,True]:
+            add(f'HAND_{curve}_{int(gated)}_{int(strong)}','攻撃＋玉安全＋持ち駒実用性',
+                anchors=hybrid({'pressure':[380,700,1100],'safety':[400,650,1000],
+                    'hand_potential':[60,160,360] if strong else [30,90,180]}),
+                hand=[100]*3,curve=curve,family='round2_hand',
+                axis_signals={'pressure':'battle','safety':'risk','hand_potential':'hand'} if gated else {},
+                reason='材料倍率を固定し、持ち駒潜在2強度×判定2種×曲線2種。持ち駒倍率の過大化を避ける')
+for tag,pressure in [('middle_peak',[600,1200,600]),('middle_dip',[1000,500,1000]),
+                      ('end_surge',[800,800,1600]),('reverse',[1200,800,400])]:
+    for curve in ['smooth','step']:
+        add(f'SHAPE_{tag}_{curve}','非単調/急変攻撃＋危険連動の守り',
+            anchors=hybrid({'pressure':pressure,'safety':[450,800,1100],'danger':[150,200,330]}),
+            hand=[100]*3,curve=curve,axis_signals={'safety':'risk','danger':'risk'},
+            family='round2_shape',reason='中盤ピーク/谷/終盤急増/逆方向の4形×滑らか/段階。玉安全は独立した危険度で判断')
+
 CURVES=['smooth','linear','delayed','late','step','early']
 SIGNALS=['maturity','battle','risk','blend','hand']
 
 def header():
     rows=[]
     for p in PROFILES:
+        signals=','.join(str(SIGNALS.index(p['axis_signals'][a])) if a in p['axis_signals'] else '-1' for a in AXES)
+        hand_signal=-1 if p['hand_signal'] is None else SIGNALS.index(p['hand_signal'])
         stages=','.join('std::array<int,10>{{'+','.join(map(str,a))+'}}' for a in p['anchors'])
         rows.append('    ResearchPhaseProfile{std::array<std::array<int,10>,3>{{'+stages+'}}, std::array<int,3>{{'+
             ','.join(map(str,p['hand_material']))+'}}, '+
             str(CURVES.index(p['curve']))+', '+str(SIGNALS.index(p['signal']))+
-            ', '+str(p['context']).lower()+'}, // '+p['name'])
+            ', '+str(p['context']).lower()+', std::array<int,10>{{'+signals+'}}, '+str(hand_signal)+'}, // '+p['name'])
     return '''#pragma once
 // Generated from scripts/variable_eval_profiles.py; candidate research only.
 #include <array>
@@ -118,6 +165,8 @@ struct ResearchPhaseProfile {
     std::array<int,3> hand_material;
     int curve, signal;
     bool context;
+    std::array<int,10> axis_signals;
+    int hand_signal;
 };
 inline constexpr std::array<ResearchPhaseProfile,'''+str(len(PROFILES))+'''> ResearchProfiles{{
 '''+ '\n'.join(rows)+'''

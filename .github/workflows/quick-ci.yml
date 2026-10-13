@@ -71,6 +71,11 @@ jobs:
           ./build/variable-phase-test
           python3 scripts/build.py --evaluation-test --output build/evaluation-test
           ./build/evaluation-test
+          if test -f tests/test_runtime_profiles.py; then
+            python3 scripts/build.py --variable-eval-probe --output build/runtime-profile-probe
+            python3 tests/test_runtime_profiles.py build/shogi-ai build/runtime-profile-probe
+            python3 tests/test_variable_search.py
+          fi
 
       - name: Strategy tests
         run: |

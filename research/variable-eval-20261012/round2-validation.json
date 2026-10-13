@@ -1,0 +1,30 @@
+{
+  "generated_profiles": 71,
+  "new_candidates": 40,
+  "old_profile_indices_preserved": true,
+  "q14_exact_contexts": 1648,
+  "runtime_fixture_checks": 213,
+  "runtime_move_profile_checks": 71,
+  "smoke_games": 20,
+  "smoke_illegal": 0,
+  "smoke_settings_verified": true,
+  "smoke_knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+  "smoke_archives": [
+    {
+      "shard": 0,
+      "games": 10,
+      "plies": 1500,
+      "sha256": "d1d51422ebfafb4d3db1cc5e59db790f52c5238f19bb13c8eccea4dda4714e50",
+      "manifest_sha256": "e5953671ef80989dd7e16773ed0cadd76bf8c93e138c2b711811323ce3e5c866"
+    },
+    {
+      "shard": 1,
+      "games": 10,
+      "plies": 1285,
+      "sha256": "4b689ebee7cff38c858100cbcadb5967bdf43998761a13f81ae9fbfc5409f04d",
+      "manifest_sha256": "703fea152cc40935e15e43d3fec1d971665ce8ec3809d771d0317b6901d1e623"
+    }
+  ],
+  "profile_registry_sha256": "a940aa8a3c1c52b005f86e7a579da97991222944ad110a9ce1ca4b2e9b71a6d3",
+  "notes": "local smoke is functional only, not strength or selection data; pinned python-shogi 1.1.1; CI pending runner availability"
+}

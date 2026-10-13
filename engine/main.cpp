@@ -29,6 +29,7 @@ int main() {
     shogi::strategy::IterativeSearch strategy;
     shogi::strategy::EvaluationParameters evaluation_parameters;
     bool material_profile = false;
+    int research_profile = shogi::strategy::SelectedResearchProfile;
     bool quiescence_enabled = true;
     bool mate_assist_enabled = true;
     bool mate_learning_enabled = true;
@@ -114,6 +115,8 @@ int main() {
                       << "option name RandomSeed type spin default 5489 min 0 max 2147483647\n"
                       << "option name OpeningRandomNonLance type check default true\n"
                       << "option name EvalProfile type combo default features var features var material\n"
+                      << "option name ResearchProfile type spin default " << research_profile
+                      << " min 0 max " << shogi::strategy::ResearchProfiles.size()-1 << "\n"
                       << "option name EvalSafety type spin default " << evaluation_parameters.weights[0] << " min 0 max 10000\n"
                       << "option name EvalPressure type spin default " << evaluation_parameters.weights[1] << " min 0 max 10000\n"
                       << "option name EvalActivity type spin default " << evaluation_parameters.weights[2] << " min 0 max 10000\n"
@@ -138,7 +141,7 @@ int main() {
                     phase.components.battle, phase.components.king_threat,
                     [&] { int n=0; constexpr int w[7]={1,2,2,3,6,6,3};
                         for(const auto& side:root.hands) for(int k=0;k<7;++k) n+=side[k]*w[k];
-                        return std::min(100,4*n); }());
+                        return std::min(100,4*n); }(),research_profile);
             const auto b = shogi::strategy::evaluate(root, params);
             std::cout << "info string evaluation material " << b.material
                       << " material_term " << b.material_term
@@ -260,7 +263,7 @@ int main() {
                     phase.components.battle, phase.components.king_threat,
                     [&] { int n=0; constexpr int w[7]={1,2,2,3,6,6,3};
                         for(const auto& side:root.hands) for(int k=0;k<7;++k) n+=side[k]*w[k];
-                        return std::min(100,4*n); }());
+                        return std::min(100,4*n); }(),research_profile);
                 strategy.set_evaluator(shogi::strategy::FeatureEvaluator(active_parameters));
                 const auto eval = shogi::strategy::evaluate(root, active_parameters);
                 std::ostringstream out;
@@ -271,7 +274,7 @@ int main() {
                     << " invasion " << phase.components.invasion
                     << " king_threat " << phase.components.king_threat
                     << " phase_weight_profile " << shogi::strategy::AdoptedPhaseProfile
-                    << " research_profile " << shogi::strategy::SelectedResearchProfile
+                    << " research_profile " << research_profile
                      << " static_cp_black " << eval.total << '\n';
                 emit(out.str());
             }
@@ -710,6 +713,17 @@ int main() {
                         strategy.clear_position_knowledge();
                         position_knowledge_loaded = false;
                     }
+                } else if (name == "ResearchProfile") {
+                    try {
+                        std::size_t used=0;
+                        const int index=std::stoi(value,&used);
+                        if(used==value.size() && index>=0 && index<static_cast<int>(shogi::strategy::ResearchProfiles.size())) {
+                            research_profile=index;
+                            strategy.clear_research_continuation();
+                            previous_root_score_valid=false;
+                            emit("info string research_profile_selected "+std::to_string(index)+"\n");
+                        }
+                    } catch(const std::exception&) {}
                 } else if (name == "EvalProfile") {
                     if (value == "features" || value == "material") {
                         material_profile = value == "material";

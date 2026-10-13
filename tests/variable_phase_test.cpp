@@ -56,6 +56,12 @@ int main() {
         assert(threat==expected_threat);
         assert(average==expected_average);
     }
+    // Axis-specific gates must not let attack urgency change defense, or vice versa.
+    auto gated=research_turn_parameters({},32,50,0,100,0);
+    assert(gated.weights[1]==450 && gated.weights[0]==1100 && gated.weights[3]==360);
+    auto inverse=research_turn_parameters({},32,50,100,0,0);
+    assert(inverse.weights[1]==1050 && inverse.weights[0]==480 && inverse.weights[3]==150);
+    assert(gated.material_weight==100 && gated.hand_material_weight==100);
     std::cout<<"PASS exact Q14 across 1648 contexts, M invariant, all "
              <<ResearchProfiles.size()<<" bounded profiles, curves, independent gates, hand/board balance and isolated attack ablations\n";
 }

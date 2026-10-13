@@ -21,13 +21,13 @@ SEARCH_FIELDS = (
     "decision_source", "research_id", "research_step", "research_total", "research_move",
     "phase_version", "phase_maturity", "phase_stage",
     "phase_development", "phase_battle", "phase_invasion",
-    "phase_king_threat", "phase_static_cp_black",
+    "phase_king_threat", "phase_static_cp_black", "phase_research_profile",
 )
 META_FIELDS = (
     "telemetry_schema_version", "engine_a", "engine_b", "sha256_a", "sha256_b",
     "options_a", "options_b", "seed", "max_plies", "go_command",
     "position_knowledge",
-    "response_watchdog_seconds", "timing_note", "start_sfen",
+    "response_watchdog_seconds", "timing_note", "start_sfen", "research_meta",
 )
 MOVE_FIELDS = (
     "ply", "side_to_move", "engine", "move", "in_check_before",
