@@ -39,5 +39,23 @@ int main() {
     assert(research_turn_parameters({},25,100).hand_material_weight==110);
     assert(research_turn_parameters({},26,100).material_weight==100);
     assert(research_turn_parameters({},26,100).hand_material_weight==100);
-    std::cout<<"PASS exact Q14 across 1648 contexts, M invariant, all 28 bounded profiles, curves, independent gates and hand/board balance\n";
+    // The ablations change only their declared axes. In particular, changing
+    // attack pressure must never silently change safety or material value.
+    for(int m=0;m<=100;++m){
+        auto attack=values(research_turn_parameters({},16,m));
+        auto pressure=values(research_turn_parameters({},28,m));
+        auto threat=values(research_turn_parameters({},29,m));
+        auto average=values(research_turn_parameters({},30,m));
+        auto expected_pressure=values(EvaluationParameters{});
+        auto expected_threat=expected_pressure;
+        auto expected_average=expected_pressure;
+        expected_pressure[2]=attack[2];
+        expected_threat[9]=attack[9];
+        expected_average[2]=639; expected_average[9]=28;
+        assert(pressure==expected_pressure);
+        assert(threat==expected_threat);
+        assert(average==expected_average);
+    }
+    std::cout<<"PASS exact Q14 across 1648 contexts, M invariant, all "
+             <<ResearchProfiles.size()<<" bounded profiles, curves, independent gates, hand/board balance and isolated attack ablations\n";
 }

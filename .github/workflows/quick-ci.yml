@@ -5,6 +5,7 @@ on:
     branches: ["**"]
     paths:
       - "engine/strategy/**"
+      - "engine/research/**"
       - "engine/main.cpp"
       - "engine/rules/**"
       - "position-knowledge-v1.tsv"
@@ -39,6 +40,8 @@ on:
       - "tests/test_match_sharding.py"
       - "tests/test_external_match.py"
       - "scripts/build.py"
+      - "scripts/variable_eval_profiles.py"
+      - "tests/variable_phase_test.cpp"
       - ".github/workflows/quick-ci.yml"
   workflow_dispatch:
 

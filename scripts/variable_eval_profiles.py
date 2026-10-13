@@ -85,6 +85,19 @@ add('RESOURCE_BALANCE','M＋同倍率駒得と手駒潜在効果',anchors=hybrid
     board|{'hand_potential':[56,119,250]}),hand=[200,150,75],
     family='material_balance',reason='全駒共通の倍率を下げつつ、手駒の実用性を潜在効果で加点する')
 
+# Freeze these ablations before any new comparison. The fixed mean is from
+# 11,045 actually played ATTACK turns in the 200-game intermediate sample;
+# its source hashes and rounding are recorded in attack-fixed-mean.json.
+add('PRESS_ONLY','M＋攻撃圧力だけ可変',anchors=hybrid({'pressure':[190,570,1140]}),
+    hand=[100]*3,family='ablation',
+    reason='ATTACKから脅威の変化を除き、攻撃圧力の寄与を切り分ける')
+add('THREAT_ONLY','M＋脅威だけ可変',anchors=hybrid({'threat':[10,20,60]}),
+    hand=[100]*3,family='ablation',
+    reason='ATTACKから攻撃圧力の変化を除き、脅威の寄与を切り分ける')
+add('ATTACK_AVG','ATTACK実戦平均配点を固定',anchors=hybrid(
+    {'pressure':[639]*3,'threat':[28]*3}),hand=[100]*3,family='ablation',
+    reason='中間200局の自分の着手11,045件から平均を推定し固定。可変性と平均配点の増加を独立seedで比較する')
+
 CURVES=['smooth','linear','delayed','late','step','early']
 SIGNALS=['maturity','battle','risk','blend','hand']
 

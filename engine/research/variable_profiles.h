@@ -8,7 +8,7 @@ struct ResearchPhaseProfile {
     int curve, signal;
     bool context;
 };
-inline constexpr std::array<ResearchPhaseProfile,28> ResearchProfiles{{
+inline constexpr std::array<ResearchPhaseProfile,31> ResearchProfiles{{
     ResearchPhaseProfile{std::array<std::array<int,10>,3>{{std::array<int,10>{{200,450,390,560,135,245,300,900,56,30}},std::array<int,10>{{155,540,540,470,170,300,270,780,119,26}},std::array<int,10>{{110,740,670,380,225,180,180,570,250,22}}}}, std::array<int,3>{{100,145,220}}, 0, 0, true}, // Q14
     ResearchPhaseProfile{std::array<std::array<int,10>,3>{{std::array<int,10>{{100,480,380,410,150,140,210,340,60,20}},std::array<int,10>{{100,480,380,410,150,140,210,340,60,20}},std::array<int,10>{{100,480,380,410,150,140,210,340,60,20}}}}, std::array<int,3>{{100,100,100}}, 0, 0, false}, // M
     ResearchPhaseProfile{std::array<std::array<int,10>,3>{{std::array<int,10>{{155,568,535,470,175,256,255,758,136,26}},std::array<int,10>{{155,568,535,470,175,256,255,758,136,26}},std::array<int,10>{{155,568,535,470,175,256,255,758,136,26}}}}, std::array<int,3>{{153,153,153}}, 0, 0, false}, // FAVG
@@ -37,5 +37,8 @@ inline constexpr std::array<ResearchPhaseProfile,28> ResearchProfiles{{
     ResearchPhaseProfile{std::array<std::array<int,10>,3>{{std::array<int,10>{{200,450,390,560,135,245,300,900,56,30}},std::array<int,10>{{155,540,540,470,170,300,270,780,119,26}},std::array<int,10>{{110,740,670,380,225,180,180,570,250,22}}}}, std::array<int,3>{{200,155,110}}, 0, 0, true}, // UNIFIED
     ResearchPhaseProfile{std::array<std::array<int,10>,3>{{std::array<int,10>{{100,450,390,560,135,245,300,900,56,30}},std::array<int,10>{{100,540,540,470,170,300,270,780,119,26}},std::array<int,10>{{100,740,670,380,225,180,180,570,250,22}}}}, std::array<int,3>{{100,100,100}}, 0, 0, true}, // POSITIONAL
     ResearchPhaseProfile{std::array<std::array<int,10>,3>{{std::array<int,10>{{200,480,380,410,150,140,210,340,56,20}},std::array<int,10>{{150,480,380,410,150,140,210,340,119,20}},std::array<int,10>{{75,480,380,410,150,140,210,340,250,20}}}}, std::array<int,3>{{200,150,75}}, 0, 0, false}, // RESOURCE_BALANCE
+    ResearchPhaseProfile{std::array<std::array<int,10>,3>{{std::array<int,10>{{100,480,190,410,150,140,210,340,60,20}},std::array<int,10>{{100,480,570,410,150,140,210,340,60,20}},std::array<int,10>{{100,480,1140,410,150,140,210,340,60,20}}}}, std::array<int,3>{{100,100,100}}, 0, 0, false}, // PRESS_ONLY
+    ResearchPhaseProfile{std::array<std::array<int,10>,3>{{std::array<int,10>{{100,480,380,410,150,140,210,340,60,10}},std::array<int,10>{{100,480,380,410,150,140,210,340,60,20}},std::array<int,10>{{100,480,380,410,150,140,210,340,60,60}}}}, std::array<int,3>{{100,100,100}}, 0, 0, false}, // THREAT_ONLY
+    ResearchPhaseProfile{std::array<std::array<int,10>,3>{{std::array<int,10>{{100,480,639,410,150,140,210,340,60,28}},std::array<int,10>{{100,480,639,410,150,140,210,340,60,28}},std::array<int,10>{{100,480,639,410,150,140,210,340,60,28}}}}, std::array<int,3>{{100,100,100}}, 0, 0, false}, // ATTACK_AVG
 }};
 } // namespace shogi::strategy
