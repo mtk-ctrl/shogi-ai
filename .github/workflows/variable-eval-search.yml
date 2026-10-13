@@ -1,0 +1,187 @@
+name: KUMOJI New Parameter Combination Search
+
+on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+    inputs:
+      request_id:
+        description: "Unique authorized research request"
+        required: true
+        type: string
+      engine_ref:
+        description: "Pinned research commit; production engine is unchanged"
+        required: true
+        type: string
+      plan_id:
+        description: "Committed selection plan identifier"
+        required: true
+        type: string
+      shards:
+        description: "Currently available runners, maximum 10"
+        required: true
+        default: "10"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.issue.user.login == github.repository_owner &&
+       startsWith(github.event.issue.title, '[KUMOJI SEARCH] '))
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      engine_ref: ${{ steps.request.outputs.engine_ref }}
+      plan_id: ${{ steps.request.outputs.plan_id }}
+      shards: ${{ steps.request.outputs.shards }}
+      matrix: ${{ steps.request.outputs.matrix }}
+    steps:
+      - name: Checkout workflow revision
+        uses: actions/checkout@v5
+      - name: Preflight workflow and inventory
+        run: |
+          python3 scripts/check_match_workflows.py --workflow .github/workflows/variable-eval-search.yml
+          python3 scripts/check_workflow_inventory.py
+      - name: Validate owner request and fixed inputs
+        id: request
+        env:
+          INPUT_REQUEST_ID: ${{ inputs.request_id }}
+          INPUT_ENGINE_REF: ${{ inputs.engine_ref }}
+          INPUT_PLAN_ID: ${{ inputs.plan_id }}
+          INPUT_SHARDS: ${{ inputs.shards }}
+        run: |
+          python3 - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          event=json.loads(Path(os.environ['GITHUB_EVENT_PATH']).read_text())
+          if os.environ['GITHUB_EVENT_NAME']=='issues':
+              request=json.loads(event['issue']['body'])
+              if set(request)!={'request_id','engine_ref','plan_id','shards'}:
+                  raise SystemExit('unexpected request fields')
+          else:
+              request={k:os.environ['INPUT_'+k.upper()] for k in
+                       ['request_id','engine_ref','plan_id','shards']}
+          ref=request['engine_ref']; plan=request['plan_id']
+          if not isinstance(ref,str) or not re.fullmatch(r'[0-9a-f]{40}',ref):
+              raise SystemExit('immutable research SHA required')
+          if not isinstance(plan,str) or not re.fullmatch(r'[a-z0-9_-]{1,48}',plan):
+              raise SystemExit('invalid committed plan identifier')
+          rid=request['request_id']
+          if not isinstance(rid,str) or not re.fullmatch(r'[a-z0-9_-]{1,80}',rid):
+              raise SystemExit('invalid unique request identifier')
+          if type(request['shards']) is not int and not (isinstance(request['shards'],str) and request['shards'].isdigit()):
+              raise SystemExit('invalid shards')
+          shards=int(request['shards'])
+          if not 1<=shards<=10:
+              raise SystemExit('runner limit is 10')
+          matrix={'include':[{'shard':i} for i in range(shards)]}
+          with open(os.environ['GITHUB_OUTPUT'],'a') as out:
+              out.write(f'engine_ref={ref}\nplan_id={plan}\nshards={shards}\n')
+              out.write('matrix='+json.dumps(matrix,separators=(',',':'))+'\n')
+          print('validated',rid,'engine',ref,'plan',plan,'shards',shards)
+          PY
+      - name: Checkout immutable research plan
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ steps.request.outputs.engine_ref }}
+          path: study
+      - name: Validate profile and balanced timeout-safe allocation before build
+        run: |
+          python3 study/benchmarks/variable_eval_search.py validate --plan '${{ steps.request.outputs.plan_id }}' --shards '${{ steps.request.outputs.shards }}' --engine-ref '${{ steps.request.outputs.engine_ref }}'
+
+  build:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.plan.outputs.engine_ref }}
+          path: study
+      - name: Install pinned validation dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: Build one shared research binary and verify actual profile selection
+        run: |
+          python3 study/scripts/variable_eval_profiles.py --check
+          python3 study/scripts/build.py --output "$GITHUB_WORKSPACE/build/search-engine"
+          python3 study/scripts/build.py --variable-eval-probe --output "$GITHUB_WORKSPACE/build/profile-probe"
+          python3 study/tests/test_runtime_profiles.py build/search-engine build/profile-probe
+          python3 study/tests/test_variable_search.py
+          cp study/position-knowledge-v1.tsv build/position-knowledge-v1.tsv
+          cp study/position-knowledge-v1.manifest.json build/position-knowledge-v1.manifest.json
+          cp study/research/variable-eval-20261012/profiles.json build/profiles.json
+      - name: Package shared binary, build command and frozen settings
+        run: |
+          sha256sum build/search-engine build/position-knowledge-v1.tsv build/profiles.json
+          tar -czf search-binary.tgz build/search-engine build/search-engine.build.json build/position-knowledge-v1.tsv build/position-knowledge-v1.manifest.json build/profiles.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: variable-search-build-${{ github.run_id }}
+          path: search-binary.tgz
+          retention-days: 90
+          if-no-files-found: error
+
+  match:
+    needs: [plan, build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.plan.outputs.engine_ref }}
+          path: study
+      - name: Install reproducible arena dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: variable-search-build-${{ github.run_id }}
+      - name: Prepare shared binary
+        run: |
+          tar -xzf search-binary.tgz
+          chmod +x build/search-engine
+      - name: Run new profile combinations through standard arena
+        run: |
+          python3 study/benchmarks/variable_eval_search.py run --plan '${{ needs.plan.outputs.plan_id }}' --shards '${{ needs.plan.outputs.shards }}' --shard '${{ matrix.shard }}' --engine build/search-engine --engine-ref '${{ needs.plan.outputs.engine_ref }}' --output-dir results
+      - name: Archive only actually played moves and actual profile metadata
+        run: |
+          python3 study/tools/records/archive_played_moves.py --input results/raw-*.json --output-dir results/played-archive-${{ matrix.shard }} --run-id "$GITHUB_RUN_ID" --ref-a '${{ needs.plan.outputs.engine_ref }}' --ref-b '${{ needs.plan.outputs.engine_ref }}'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: variable-search-raw-${{ github.run_id }}-${{ matrix.shard }}
+          path: results/
+          retention-days: 90
+          if-no-files-found: error
+
+  aggregate:
+    needs: [plan, match]
+    if: always() && needs.match.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.plan.outputs.engine_ref }}
+          path: study
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: variable-search-raw-${{ github.run_id }}-*
+          path: results
+          merge-multiple: true
+      - name: Audit every comparison and propose the next short selection round
+        run: |
+          python3 study/benchmarks/variable_eval_search.py aggregate --plan '${{ needs.plan.outputs.plan_id }}' --shards '${{ needs.plan.outputs.shards }}' --engine-ref '${{ needs.plan.outputs.engine_ref }}' --input-dir results --output-dir report
+          cat report/search-summary.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: variable-search-summary-${{ github.run_id }}
+          path: report/
+          retention-days: 90
+          if-no-files-found: error
