@@ -1,0 +1,802 @@
+{
+  "updated_at": "2026-10-13T13:40:00+09:00",
+  "stage": "ablation",
+  "games": 1000,
+  "raw_shards": 10,
+  "all_aggregate_success": true,
+  "all_digests_verified": true,
+  "all_summary_raw_match": true,
+  "all_illegal_zero": true,
+  "all_conditions_verified": true,
+  "all_knowledge_verified": true,
+  "knowledge": {
+    "positions": 163,
+    "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c"
+  },
+  "go_command": "go movetime 200",
+  "adaptive_long_think": true,
+  "max_long_think_seconds": 1,
+  "max_long_think_uses_per_game": 10,
+  "played_move_archives_verified": true,
+  "phase_recording_complete": true,
+  "artifact_retention_note": "Actions期限付き。Releaseへの長期保存は未実施。",
+  "records": [
+    {
+      "request_id": "ve31-20261013-ablate-press_only-m",
+      "issue": 238,
+      "run": 38341061009,
+      "model": "PRESS_ONLY",
+      "baseline": "M",
+      "result": {
+        "wins_a": 52,
+        "draws": 1,
+        "wins_b": 47,
+        "score_a": 0.525,
+        "ci95_sample_variance": [
+          0.4271238155895548,
+          0.6228761844104452
+        ],
+        "a_as_black": {
+          "games": 50,
+          "wins": 25,
+          "draws": 0,
+          "losses": 25
+        },
+        "a_as_white": {
+          "games": 50,
+          "wins": 27,
+          "draws": 1,
+          "losses": 22
+        },
+        "illegal_games": 0,
+        "seeds": [
+          2013000000
+        ],
+        "game_offsets": [
+          0
+        ],
+        "binary_hashes": [
+          [
+            "9d0fe693253a8c5d2bf9fed39d2863ca12456570ca926a1850656d0b88d176ea",
+            "3e486db45161d60618f23e6248dbb4867a8470122d2c435d09c594c1bb9c6f98"
+          ]
+        ],
+        "long_think_max_used_per_game": 10,
+        "long_think_moves": {
+          "A": 980,
+          "B": 982
+        },
+        "search": {
+          "nodes_total_A": 180465214,
+          "nodes_total_B": 181392003,
+          "samples_A": 5367,
+          "samples_B": 5374,
+          "nodes_per_move_A": 33624.970001863236,
+          "nodes_per_move_B": 33753.62914030517
+        },
+        "maturity": {
+          "samples": 11032,
+          "min": 0,
+          "max": 95,
+          "mean": 54.712200870195794,
+          "p100": 0
+        },
+        "summary_raw_match": true,
+        "conditions_ok": true,
+        "knowledge_ok": true
+      },
+      "artifacts": {
+        "summary": [
+          11788404290,
+          "6c5ae71b6b63580dba3aed194696a555ccd451adefbba70ff6236d152ac2ebf6"
+        ],
+        "raw": [
+          [
+            11789355043,
+            "5b5a4c89fa4027f53a5fc298b363ebea37ffc5ef8f16fa3d6ee9b3286796dddc"
+          ]
+        ],
+        "played": [
+          11788458998,
+          "5ce5ec760100761a99bf4f76314ab43ffe83b32d24188ed463c87d90fce2d0bf"
+        ],
+        "expires_at": "2027-01-11T04:30:00Z",
+        "storage": "GitHub Actions artifact (temporary; not Release)"
+      }
+    },
+    {
+      "request_id": "ve31-20261013-ablate-press_only-q14",
+      "issue": 239,
+      "run": 38341078012,
+      "model": "PRESS_ONLY",
+      "baseline": "Q14",
+      "result": {
+        "wins_a": 54,
+        "draws": 6,
+        "wins_b": 40,
+        "score_a": 0.57,
+        "ci95_sample_variance": [
+          0.4755076209582503,
+          0.6644923790417496
+        ],
+        "a_as_black": {
+          "games": 50,
+          "wins": 26,
+          "draws": 2,
+          "losses": 22
+        },
+        "a_as_white": {
+          "games": 50,
+          "wins": 28,
+          "draws": 4,
+          "losses": 18
+        },
+        "illegal_games": 0,
+        "seeds": [
+          2013010000
+        ],
+        "game_offsets": [
+          0
+        ],
+        "binary_hashes": [
+          [
+            "9d0fe693253a8c5d2bf9fed39d2863ca12456570ca926a1850656d0b88d176ea",
+            "94b9fc2a3165107d291472d21c939faf2c24858fe43129c75a5d110b124a1103"
+          ]
+        ],
+        "long_think_max_used_per_game": 10,
+        "long_think_moves": {
+          "A": 983,
+          "B": 991
+        },
+        "search": {
+          "nodes_total_A": 136751836,
+          "nodes_total_B": 139178943,
+          "samples_A": 5795,
+          "samples_B": 5814,
+          "nodes_per_move_A": 23598.2460742019,
+          "nodes_per_move_B": 23938.586687306502
+        },
+        "maturity": {
+          "samples": 11893,
+          "min": 0,
+          "max": 95,
+          "mean": 53.93836710670142,
+          "p100": 0
+        },
+        "summary_raw_match": true,
+        "conditions_ok": true,
+        "knowledge_ok": true
+      },
+      "artifacts": {
+        "summary": [
+          11788990516,
+          "405de7801987fc1833ecac6ae45a1de38da09d36f77620df7acfe01cad7bc0cb"
+        ],
+        "raw": [
+          [
+            11788995474,
+            "30e037f2f10a4d7590bbda5eddf02c5a7b18e1f2cc0c45b3f30fe8eda1b64fea"
+          ]
+        ],
+        "played": [
+          11789135350,
+          "5fdfdc26ffb9549d46a2fd55029981ac8317f6260be107bde18b48fa29ceedf2"
+        ],
+        "expires_at": "2027-01-11T04:30:00Z",
+        "storage": "GitHub Actions artifact (temporary; not Release)"
+      }
+    },
+    {
+      "request_id": "ve31-20261013-ablate-threat_only-m",
+      "issue": 240,
+      "run": 38341088046,
+      "model": "THREAT_ONLY",
+      "baseline": "M",
+      "result": {
+        "wins_a": 43,
+        "draws": 4,
+        "wins_b": 53,
+        "score_a": 0.45,
+        "ci95_sample_variance": [
+          0.35400021043794105,
+          0.545999789562059
+        ],
+        "a_as_black": {
+          "games": 50,
+          "wins": 19,
+          "draws": 2,
+          "losses": 29
+        },
+        "a_as_white": {
+          "games": 50,
+          "wins": 24,
+          "draws": 2,
+          "losses": 24
+        },
+        "illegal_games": 0,
+        "seeds": [
+          2013000000
+        ],
+        "game_offsets": [
+          0
+        ],
+        "binary_hashes": [
+          [
+            "270dd8db7f4190ba9904f9583ca630948a33b60ae077f03d75642e954798f206",
+            "3e486db45161d60618f23e6248dbb4867a8470122d2c435d09c594c1bb9c6f98"
+          ]
+        ],
+        "long_think_max_used_per_game": 10,
+        "long_think_moves": {
+          "A": 985,
+          "B": 984
+        },
+        "search": {
+          "nodes_total_A": 106763903,
+          "nodes_total_B": 105278395,
+          "samples_A": 5513,
+          "samples_B": 5499,
+          "nodes_per_move_A": 19365.84491202612,
+          "nodes_per_move_B": 19145.00727404983
+        },
+        "maturity": {
+          "samples": 11297,
+          "min": 0,
+          "max": 95,
+          "mean": 52.864742852084625,
+          "p100": 0
+        },
+        "summary_raw_match": true,
+        "conditions_ok": true,
+        "knowledge_ok": true
+      },
+      "artifacts": {
+        "summary": [
+          11788239933,
+          "9877e3582afb016a295485ce57b48c52d914eb2d8f943df8e34b0aa90677743a"
+        ],
+        "raw": [
+          [
+            11788950323,
+            "4fd5cd998014815bc6619a2eabd41a6f2224c10967d3d7f0cfcb8ec0946bce87"
+          ]
+        ],
+        "played": [
+          11789320300,
+          "ccc0a6a0ee9576051b1c13d52b7d88816cf576ae14b11b6ee686e1fff2443089"
+        ],
+        "expires_at": "2027-01-11T04:30:00Z",
+        "storage": "GitHub Actions artifact (temporary; not Release)"
+      }
+    },
+    {
+      "request_id": "ve31-20261013-ablate-threat_only-q14",
+      "issue": 241,
+      "run": 38341102934,
+      "model": "THREAT_ONLY",
+      "baseline": "Q14",
+      "result": {
+        "wins_a": 52,
+        "draws": 7,
+        "wins_b": 41,
+        "score_a": 0.555,
+        "ci95_sample_variance": [
+          0.46063603880867887,
+          0.6493639611913212
+        ],
+        "a_as_black": {
+          "games": 50,
+          "wins": 24,
+          "draws": 2,
+          "losses": 24
+        },
+        "a_as_white": {
+          "games": 50,
+          "wins": 28,
+          "draws": 5,
+          "losses": 17
+        },
+        "illegal_games": 0,
+        "seeds": [
+          2013010000
+        ],
+        "game_offsets": [
+          0
+        ],
+        "binary_hashes": [
+          [
+            "270dd8db7f4190ba9904f9583ca630948a33b60ae077f03d75642e954798f206",
+            "94b9fc2a3165107d291472d21c939faf2c24858fe43129c75a5d110b124a1103"
+          ]
+        ],
+        "long_think_max_used_per_game": 10,
+        "long_think_moves": {
+          "A": 987,
+          "B": 987
+        },
+        "search": {
+          "nodes_total_A": 112181267,
+          "nodes_total_B": 111592852,
+          "samples_A": 5924,
+          "samples_B": 5950,
+          "nodes_per_move_A": 18936.743247805538,
+          "nodes_per_move_B": 18755.101176470587
+        },
+        "maturity": {
+          "samples": 12146,
+          "min": 0,
+          "max": 95,
+          "mean": 53.4325703935452,
+          "p100": 0
+        },
+        "summary_raw_match": true,
+        "conditions_ok": true,
+        "knowledge_ok": true
+      },
+      "artifacts": {
+        "summary": [
+          11789410593,
+          "5a978a46c317d5559edc6463fe4d3c9af5ac034673159862fa2960238fd3c38d"
+        ],
+        "raw": [
+          [
+            11788795984,
+            "135c81a2276e894ffc588c637f8f12be844b38a01408b538e50d80398da35c94"
+          ]
+        ],
+        "played": [
+          11789201127,
+          "a25ab3dccb91b3921e9e641af223febe6f621a5843619d3d7203b50362c66938"
+        ],
+        "expires_at": "2027-01-11T04:30:00Z",
+        "storage": "GitHub Actions artifact (temporary; not Release)"
+      }
+    },
+    {
+      "request_id": "ve31-20261013-ablate-attack_avg-m",
+      "issue": 242,
+      "run": 38341225561,
+      "model": "ATTACK_AVG",
+      "baseline": "M",
+      "result": {
+        "wins_a": 53,
+        "draws": 3,
+        "wins_b": 44,
+        "score_a": 0.545,
+        "ci95_sample_variance": [
+          0.44840081979560276,
+          0.6415991802043973
+        ],
+        "a_as_black": {
+          "games": 50,
+          "wins": 30,
+          "draws": 2,
+          "losses": 18
+        },
+        "a_as_white": {
+          "games": 50,
+          "wins": 23,
+          "draws": 1,
+          "losses": 26
+        },
+        "illegal_games": 0,
+        "seeds": [
+          2013000000
+        ],
+        "game_offsets": [
+          0
+        ],
+        "binary_hashes": [
+          [
+            "da91f40ca539668e7a8d4d19845ae37940cfd5cebcb65a0e53926b5e4a087f57",
+            "3e486db45161d60618f23e6248dbb4867a8470122d2c435d09c594c1bb9c6f98"
+          ]
+        ],
+        "long_think_max_used_per_game": 10,
+        "long_think_moves": {
+          "A": 984,
+          "B": 988
+        },
+        "search": {
+          "nodes_total_A": 107340414,
+          "nodes_total_B": 107429871,
+          "samples_A": 5217,
+          "samples_B": 5229,
+          "nodes_per_move_A": 20575.122484186315,
+          "nodes_per_move_B": 20545.012621916238
+        },
+        "maturity": {
+          "samples": 10736,
+          "min": 0,
+          "max": 95,
+          "mean": 53.69970193740686,
+          "p100": 0
+        },
+        "summary_raw_match": true,
+        "conditions_ok": true,
+        "knowledge_ok": true
+      },
+      "artifacts": {
+        "summary": [
+          11788770705,
+          "e626bfe4d204c44e1d3c5a98b32707fd5e8fe63a1c4b382811c7aed392870009"
+        ],
+        "raw": [
+          [
+            11789235477,
+            "d024e45c3fbe0e2f070af865e7984653eda43c8d16261db7164d5a7c9335af4f"
+          ]
+        ],
+        "played": [
+          11789040267,
+          "5472875cbb9cde89d2002b6143d464ce7965315d7b96071e7e1bb3bec06b78c5"
+        ],
+        "expires_at": "2027-01-11T04:30:00Z",
+        "storage": "GitHub Actions artifact (temporary; not Release)"
+      }
+    },
+    {
+      "request_id": "ve31-20261013-ablate-attack_avg-q14",
+      "issue": 243,
+      "run": 38341238293,
+      "model": "ATTACK_AVG",
+      "baseline": "Q14",
+      "result": {
+        "wins_a": 62,
+        "draws": 3,
+        "wins_b": 35,
+        "score_a": 0.635,
+        "ci95_sample_variance": [
+          0.5417113288677764,
+          0.7282886711322236
+        ],
+        "a_as_black": {
+          "games": 50,
+          "wins": 28,
+          "draws": 2,
+          "losses": 20
+        },
+        "a_as_white": {
+          "games": 50,
+          "wins": 34,
+          "draws": 1,
+          "losses": 15
+        },
+        "illegal_games": 0,
+        "seeds": [
+          2013010000
+        ],
+        "game_offsets": [
+          0
+        ],
+        "binary_hashes": [
+          [
+            "da91f40ca539668e7a8d4d19845ae37940cfd5cebcb65a0e53926b5e4a087f57",
+            "94b9fc2a3165107d291472d21c939faf2c24858fe43129c75a5d110b124a1103"
+          ]
+        ],
+        "long_think_max_used_per_game": 10,
+        "long_think_moves": {
+          "A": 984,
+          "B": 988
+        },
+        "search": {
+          "nodes_total_A": 131047912,
+          "nodes_total_B": 133005023,
+          "samples_A": 5395,
+          "samples_B": 5432,
+          "nodes_per_move_A": 24290.623169601484,
+          "nodes_per_move_B": 24485.460787923417
+        },
+        "maturity": {
+          "samples": 11117,
+          "min": 0,
+          "max": 95,
+          "mean": 51.95214536295763,
+          "p100": 0
+        },
+        "summary_raw_match": true,
+        "conditions_ok": true,
+        "knowledge_ok": true
+      },
+      "artifacts": {
+        "summary": [
+          11789150255,
+          "9853141a12b99f3ab1c60e57445e7fb664b87a936c981b4d5ee9423bb2b06a51"
+        ],
+        "raw": [
+          [
+            11788599340,
+            "7a77486302fcb1f7aa1b63c75fd365804f66f768d465a416d062e68f8c78b93d"
+          ]
+        ],
+        "played": [
+          11788736277,
+          "63422f17dd2921c622110536f06e7a2cdc697c35ff23f72b84b940897e3c39f4"
+        ],
+        "expires_at": "2027-01-11T04:30:00Z",
+        "storage": "GitHub Actions artifact (temporary; not Release)"
+      }
+    },
+    {
+      "request_id": "ve31-20261013-ablate-attack-m",
+      "issue": 244,
+      "run": 38341325132,
+      "model": "ATTACK",
+      "baseline": "M",
+      "result": {
+        "wins_a": 50,
+        "draws": 4,
+        "wins_b": 46,
+        "score_a": 0.52,
+        "ci95_sample_variance": [
+          0.4235767243825015,
+          0.6164232756174985
+        ],
+        "a_as_black": {
+          "games": 50,
+          "wins": 23,
+          "draws": 2,
+          "losses": 25
+        },
+        "a_as_white": {
+          "games": 50,
+          "wins": 27,
+          "draws": 2,
+          "losses": 21
+        },
+        "illegal_games": 0,
+        "seeds": [
+          2013000000
+        ],
+        "game_offsets": [
+          0
+        ],
+        "binary_hashes": [
+          [
+            "abd5c7e23d8baa3c27f6a9db284e7326677a5716358076730e62f1ddf895a121",
+            "3e486db45161d60618f23e6248dbb4867a8470122d2c435d09c594c1bb9c6f98"
+          ]
+        ],
+        "long_think_max_used_per_game": 10,
+        "long_think_moves": {
+          "A": 972,
+          "B": 981
+        },
+        "search": {
+          "nodes_total_A": 103470997,
+          "nodes_total_B": 102926778,
+          "samples_A": 5559,
+          "samples_B": 5566,
+          "nodes_per_move_A": 18613.239251663967,
+          "nodes_per_move_B": 18492.05497664391
+        },
+        "maturity": {
+          "samples": 11412,
+          "min": 0,
+          "max": 95,
+          "mean": 53.50446898002103,
+          "p100": 0
+        },
+        "summary_raw_match": true,
+        "conditions_ok": true,
+        "knowledge_ok": true
+      },
+      "artifacts": {
+        "summary": [
+          11789500347,
+          "757aa613fca4d72e27e857cbdac2bb2db71185812d44ece91f06f14eac5ca8a9"
+        ],
+        "raw": [
+          [
+            11789560203,
+            "061e47adc4039d997728696a683ce3d4e00b16ee4a3ec16ba6376b95b3909b72"
+          ]
+        ],
+        "played": [
+          11789126244,
+          "bc5a247b77dab21c7b877c08578e634574c96777ea26636e3cda2e502d9b5c3e"
+        ],
+        "expires_at": "2027-01-11T04:30:00Z",
+        "storage": "GitHub Actions artifact (temporary; not Release)"
+      }
+    },
+    {
+      "request_id": "ve31-20261013-ablate-attack-q14",
+      "issue": 245,
+      "run": 38341335023,
+      "model": "ATTACK",
+      "baseline": "Q14",
+      "result": {
+        "wins_a": 45,
+        "draws": 4,
+        "wins_b": 51,
+        "score_a": 0.47,
+        "ci95_sample_variance": [
+          0.37367738551821766,
+          0.5663226144817823
+        ],
+        "a_as_black": {
+          "games": 50,
+          "wins": 21,
+          "draws": 4,
+          "losses": 25
+        },
+        "a_as_white": {
+          "games": 50,
+          "wins": 24,
+          "draws": 0,
+          "losses": 26
+        },
+        "illegal_games": 0,
+        "seeds": [
+          2013010000
+        ],
+        "game_offsets": [
+          0
+        ],
+        "binary_hashes": [
+          [
+            "abd5c7e23d8baa3c27f6a9db284e7326677a5716358076730e62f1ddf895a121",
+            "94b9fc2a3165107d291472d21c939faf2c24858fe43129c75a5d110b124a1103"
+          ]
+        ],
+        "long_think_max_used_per_game": 10,
+        "long_think_moves": {
+          "A": 983,
+          "B": 976
+        },
+        "search": {
+          "nodes_total_A": 131117057,
+          "nodes_total_B": 131414929,
+          "samples_A": 5268,
+          "samples_B": 5258,
+          "nodes_per_move_A": 24889.342634776007,
+          "nodes_per_move_B": 24993.329973373908
+        },
+        "maturity": {
+          "samples": 10814,
+          "min": 0,
+          "max": 95,
+          "mean": 51.468374329572775,
+          "p100": 0
+        },
+        "summary_raw_match": true,
+        "conditions_ok": true,
+        "knowledge_ok": true
+      },
+      "artifacts": {
+        "summary": [
+          11788683764,
+          "4a585b1111528b447d370842208cc8c57673b24b2e26995adb39cb5f22231e07"
+        ],
+        "raw": [
+          [
+            11788885646,
+            "373f44f85a02f129b272ec6ba2aefc6a8863b19906cfe025ec31c6825a1db032"
+          ]
+        ],
+        "played": [
+          11788659189,
+          "33f4e5da086ee5f3f6a749191bdcbdafb69fea41e6c0af4cf923d21986d234db"
+        ],
+        "expires_at": "2027-01-11T04:30:00Z",
+        "storage": "GitHub Actions artifact (temporary; not Release)"
+      }
+    },
+    {
+      "request_id": "ve31-20261013-ablate-attack-attack_avg",
+      "issue": 246,
+      "run": 38341388664,
+      "model": "ATTACK",
+      "baseline": "ATTACK_AVG",
+      "result": {
+        "wins_a": 105,
+        "draws": 5,
+        "wins_b": 90,
+        "score_a": 0.5375,
+        "ci95_sample_variance": [
+          0.4691016783684713,
+          0.6058983216315287
+        ],
+        "a_as_black": {
+          "games": 100,
+          "wins": 49,
+          "draws": 3,
+          "losses": 48
+        },
+        "a_as_white": {
+          "games": 100,
+          "wins": 56,
+          "draws": 2,
+          "losses": 42
+        },
+        "illegal_games": 0,
+        "seeds": [
+          2013020000,
+          2013120000
+        ],
+        "game_offsets": [
+          0,
+          100
+        ],
+        "binary_hashes": [
+          [
+            "abd5c7e23d8baa3c27f6a9db284e7326677a5716358076730e62f1ddf895a121",
+            "ac95d2b58db91ad9859021e104dc0d146c578453b1c6bba09708ed504c02b6b1"
+          ],
+          [
+            "abd5c7e23d8baa3c27f6a9db284e7326677a5716358076730e62f1ddf895a121",
+            "ac95d2b58db91ad9859021e104dc0d146c578453b1c6bba09708ed504c02b6b1"
+          ]
+        ],
+        "long_think_max_used_per_game": 10,
+        "long_think_moves": {
+          "A": 1961,
+          "B": 1948
+        },
+        "search": {
+          "nodes_total_A": 302115821,
+          "nodes_total_B": 301520873,
+          "samples_A": 10917,
+          "samples_B": 10936,
+          "nodes_per_move_A": 27673.886690482734,
+          "nodes_per_move_B": 27571.40389539137
+        },
+        "maturity": {
+          "samples": 22428,
+          "min": 0,
+          "max": 95,
+          "mean": 53.651016586409845,
+          "p100": 0
+        },
+        "summary_raw_match": true,
+        "conditions_ok": true,
+        "knowledge_ok": true
+      },
+      "artifacts": {
+        "summary": [
+          11788724346,
+          "7045f51a1c7e7c7d06c03844253b12a1c136c97742d069ac03c38a03483a5b7b"
+        ],
+        "raw": [
+          [
+            11789480592,
+            "4d52f6460bbdf05472c2e7bec8c2eb843fa7189ac5cf1b78e8bdac1f9f3ecd16"
+          ],
+          [
+            11788659147,
+            "c54611152524f1edac85d3f6e6ab31bf809dd367bae4eed3118102445c7971ec"
+          ]
+        ],
+        "played": [
+          11789455804,
+          "f50de558dba163b48bf75bcc23e217086cfc83b70444e0658abc706b887e01eb"
+        ],
+        "expires_at": "2027-01-11T04:30:00Z",
+        "storage": "GitHub Actions artifact (temporary; not Release)"
+      }
+    }
+  ],
+  "interpretation": {
+    "pressure_only": "M 52.5%, Q14 57.0%。攻撃圧力単独は両対照の点推定で50%以上だが各100局CIは50%を跨ぐ。",
+    "threat_only": "M 45.0%, Q14 55.5%。脅威軸単独の一貫した改善は見られない。",
+    "attack_avg": "M 54.5%, Q14 63.5%。両対照の低い方54.5%で寄与確認首位。固定平均増加が有望。",
+    "attack_repeat": "M 52.0%, Q14 47.0%。中間59.5%/56.0%を再現せず、候補選択偏り・seed感度が大きい。",
+    "direct": "ATTACK対ATTACK_AVGは105-5-90、53.75%、95%区間46.91〜60.59%。可変性の優位は未実証。"
+  },
+  "frozen_candidates": [
+    {
+      "name": "ATTACK_AVG",
+      "sha": "4e2711f616ce363ab36bbddff25c3d7fcf2aaec8",
+      "basis": "寄与確認の両対照下限54.5%、固定平均による効果の分離"
+    },
+    {
+      "name": "UNIFIED",
+      "sha": "3fd3c37cc4b83f9645af509e1002837c09f4d5dd",
+      "basis": "中間M59.0%/Q14 51.0%、ATTACK系と異なる持ち駒・盤上統合仮説"
+    }
+  ],
+  "selection_warning": "探索・中間・寄与データは候補選択専用。最終評価へ合算しない。"
+}
