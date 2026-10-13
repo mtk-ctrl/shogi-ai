@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-10-13T13:40:00+09:00",
-  "phase": "final_preregister",
+  "updated_at": "2026-10-13T14:46:00+09:00",
+  "phase": "final",
   "tracker_issue": 170,
   "addness_goal": "cf8ec928-61c0-48a1-ba3c-7c0635797e1b",
   "branch": "research/variable-eval-systematic-20261012",
@@ -2173,8 +2173,8 @@
       }
     ]
   },
-  "next_check_jst": "2026-10-13T13:45:00+09:00",
-  "current_lanes": 0,
+  "next_check_jst": "2026-10-13T15:45:00+09:00",
+  "current_lanes": 9,
   "other_lanes": 0,
   "ablation": {
     "planned_games": 1000,
@@ -3392,8 +3392,8 @@
   "final": {
     "planned_games": 2400,
     "completed_games": 0,
-    "active_games": 0,
-    "not_requested_games": 2400,
+    "active_games": 1800,
+    "not_requested_games": 600,
     "candidates": [
       {
         "name": "ATTACK_AVG",
@@ -3421,7 +3421,55 @@
         "seed": 2014000000,
         "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
         "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-        "state": "planned"
+        "state": "running",
+        "launcher_run": 38347144524,
+        "launcher_job": 115131071922,
+        "launcher_success": true,
+        "issue": 247,
+        "run": 38347156256,
+        "plan_settings_verified": true,
+        "build_refs_verified": true,
+        "jobs": [
+          {
+            "id": 115131109139,
+            "name": "plan",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-13T04:35:15Z"
+          },
+          {
+            "id": 115131145360,
+            "name": "build",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-13T04:35:24Z"
+          },
+          {
+            "id": 115131382783,
+            "name": "match (2, 200, 2014200000, 400)",
+            "status": "in_progress",
+            "conclusion": null,
+            "started_at": "2026-10-13T04:36:18Z",
+            "run_shard_started": "2026-10-13T04:36:22Z"
+          },
+          {
+            "id": 115131382801,
+            "name": "match (0, 200, 2014000000, 0)",
+            "status": "in_progress",
+            "conclusion": null,
+            "started_at": "2026-10-13T04:36:18Z",
+            "run_shard_started": "2026-10-13T04:36:27Z"
+          },
+          {
+            "id": 115131382898,
+            "name": "match (1, 200, 2014100000, 200)",
+            "status": "in_progress",
+            "conclusion": null,
+            "started_at": "2026-10-13T04:36:19Z",
+            "run_shard_started": "2026-10-13T04:36:28Z"
+          }
+        ],
+        "started_at": "2026-10-13T04:36:22Z"
       },
       {
         "stage": "final",
@@ -3437,7 +3485,55 @@
         "seed": 2014010000,
         "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
         "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-        "state": "planned"
+        "state": "running",
+        "launcher_run": 38347145934,
+        "launcher_job": 115131076290,
+        "launcher_success": true,
+        "issue": 248,
+        "run": 38347153897,
+        "plan_settings_verified": true,
+        "build_refs_verified": true,
+        "jobs": [
+          {
+            "id": 115131102644,
+            "name": "plan",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-13T04:35:13Z"
+          },
+          {
+            "id": 115131128358,
+            "name": "build",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-13T04:35:19Z"
+          },
+          {
+            "id": 115131289558,
+            "name": "match (0, 200, 2014010000, 0)",
+            "status": "in_progress",
+            "conclusion": null,
+            "started_at": "2026-10-13T04:35:57Z",
+            "run_shard_started": "2026-10-13T04:36:04Z"
+          },
+          {
+            "id": 115131289564,
+            "name": "match (2, 200, 2014210000, 400)",
+            "status": "in_progress",
+            "conclusion": null,
+            "started_at": "2026-10-13T04:35:57Z",
+            "run_shard_started": "2026-10-13T04:36:05Z"
+          },
+          {
+            "id": 115131289565,
+            "name": "match (1, 200, 2014110000, 200)",
+            "status": "in_progress",
+            "conclusion": null,
+            "started_at": "2026-10-13T04:35:57Z",
+            "run_shard_started": "2026-10-13T04:36:03Z"
+          }
+        ],
+        "started_at": "2026-10-13T04:36:03Z"
       },
       {
         "stage": "final",
@@ -3453,7 +3549,55 @@
         "seed": 2014000000,
         "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
         "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-        "state": "planned"
+        "state": "running",
+        "launcher_run": 38347147216,
+        "launcher_job": 115131080141,
+        "launcher_success": true,
+        "issue": 249,
+        "run": 38347157846,
+        "plan_settings_verified": true,
+        "build_refs_verified": true,
+        "jobs": [
+          {
+            "id": 115131114169,
+            "name": "plan",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-13T04:35:16Z"
+          },
+          {
+            "id": 115131139973,
+            "name": "build",
+            "status": "completed",
+            "conclusion": "success",
+            "started_at": "2026-10-13T04:35:22Z"
+          },
+          {
+            "id": 115131383635,
+            "name": "match (1, 200, 2014100000, 200)",
+            "status": "in_progress",
+            "conclusion": null,
+            "started_at": "2026-10-13T04:36:19Z",
+            "run_shard_started": "2026-10-13T04:36:24Z"
+          },
+          {
+            "id": 115131383752,
+            "name": "match (2, 200, 2014200000, 400)",
+            "status": "in_progress",
+            "conclusion": null,
+            "started_at": "2026-10-13T04:36:19Z",
+            "run_shard_started": "2026-10-13T04:36:24Z"
+          },
+          {
+            "id": 115131383812,
+            "name": "match (0, 200, 2014000000, 0)",
+            "status": "in_progress",
+            "conclusion": null,
+            "started_at": "2026-10-13T04:36:19Z",
+            "run_shard_started": "2026-10-13T04:36:25Z"
+          }
+        ],
+        "started_at": "2026-10-13T04:36:24Z"
       },
       {
         "stage": "final",
@@ -3463,15 +3607,58 @@
         "ref_a": "3fd3c37cc4b83f9645af509e1002837c09f4d5dd",
         "ref_b": "c6311d266717d41cb3b6b84bbe22e870450e6365",
         "games": 600,
-        "shards": 3,
+        "shards": 10,
         "go_command": "go movetime 200",
         "max_plies": 300,
         "seed": 2014010000,
         "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
         "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-        "state": "planned"
+        "state": "planned",
+        "allocation_note": "未起動の600局のみ、全先発終了後の空きrunnerへ10×60局に再配分。候補/比較相手/総局数/時間/知識/採否基準は不変。最終成績を未閲覧の時点で固定。"
       }
     ],
-    "selection_data_excluded": true
+    "selection_data_excluded": true,
+    "eta_wave1_jst": "2026-10-13T15:45:00+09:00",
+    "eta_all_jst": "2026-10-13T16:30:00+09:00",
+    "eta_evidence": [
+      {
+        "run": 38341225561,
+        "games": 100,
+        "minutes": 59.766666666666666
+      },
+      {
+        "run": 38341238293,
+        "games": 100,
+        "minutes": 60.75
+      },
+      {
+        "run": 38341325132,
+        "games": 100,
+        "minutes": 61.56666666666667
+      },
+      {
+        "run": 38341335023,
+        "games": 100,
+        "minutes": 59.666666666666664
+      },
+      {
+        "run": 38341388664,
+        "games": 100,
+        "minutes": 58.88333333333333
+      },
+      {
+        "run": 38341388664,
+        "games": 100,
+        "minutes": 62.93333333333333
+      }
+    ],
+    "allocation_revision": {
+      "at": "2026-10-13T14:46:00+09:00",
+      "unstarted_request_id": "ve31-20261013-final-unified-q14",
+      "old_shards": 3,
+      "new_shards": 10,
+      "before_final_results": true,
+      "reason": "先発9laneの終了後、空く10runnerへ600局を均等配分し待ち時間を短縮。分割変更による新seed群は他の候補との完全対応比較ではない。"
+    }
   }
 }
