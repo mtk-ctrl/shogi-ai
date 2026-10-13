@@ -13,7 +13,7 @@
     "seed": 2014000000,
     "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
     "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-    "state": "running",
+    "state": "cancelled_timeout_120m",
     "launcher_run": 38347144524,
     "launcher_job": 115131071922,
     "launcher_success": true,
@@ -61,7 +61,16 @@
         "run_shard_started": "2026-10-13T04:36:28Z"
       }
     ],
-    "started_at": "2026-10-13T04:36:22Z"
+    "started_at": "2026-10-13T04:36:22Z",
+    "run_conclusion": "cancelled",
+    "aggregate_conclusion": "skipped",
+    "final_estimate_use": false,
+    "failure_audit": {
+      "detected_at": "2026-10-13T15:41:00+09:00",
+      "reason": "engine-match.yml の match timeout-minutes=120。8/9 shardが開始約120分で operation canceled、1 shardのみ完了。aggregateは3 runともskipped。",
+      "final_estimate_use": false,
+      "recovery": "全4比較を未使用seed・5 shard×120局で再実行し、失敗波の部分結果は最終推定へ合算しない。"
+    }
   },
   {
     "stage": "final",
@@ -77,7 +86,7 @@
     "seed": 2014010000,
     "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
     "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-    "state": "running",
+    "state": "cancelled_timeout_120m",
     "launcher_run": 38347145934,
     "launcher_job": 115131076290,
     "launcher_success": true,
@@ -125,7 +134,16 @@
         "run_shard_started": "2026-10-13T04:36:03Z"
       }
     ],
-    "started_at": "2026-10-13T04:36:03Z"
+    "started_at": "2026-10-13T04:36:03Z",
+    "run_conclusion": "cancelled",
+    "aggregate_conclusion": "skipped",
+    "final_estimate_use": false,
+    "failure_audit": {
+      "detected_at": "2026-10-13T15:41:00+09:00",
+      "reason": "engine-match.yml の match timeout-minutes=120。8/9 shardが開始約120分で operation canceled、1 shardのみ完了。aggregateは3 runともskipped。",
+      "final_estimate_use": false,
+      "recovery": "全4比較を未使用seed・5 shard×120局で再実行し、失敗波の部分結果は最終推定へ合算しない。"
+    }
   },
   {
     "stage": "final",
@@ -141,7 +159,7 @@
     "seed": 2014000000,
     "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
     "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-    "state": "running",
+    "state": "cancelled_timeout_120m",
     "launcher_run": 38347147216,
     "launcher_job": 115131080141,
     "launcher_success": true,
@@ -189,7 +207,16 @@
         "run_shard_started": "2026-10-13T04:36:25Z"
       }
     ],
-    "started_at": "2026-10-13T04:36:24Z"
+    "started_at": "2026-10-13T04:36:24Z",
+    "run_conclusion": "cancelled",
+    "aggregate_conclusion": "skipped",
+    "final_estimate_use": false,
+    "failure_audit": {
+      "detected_at": "2026-10-13T15:41:00+09:00",
+      "reason": "engine-match.yml の match timeout-minutes=120。8/9 shardが開始約120分で operation canceled、1 shardのみ完了。aggregateは3 runともskipped。",
+      "final_estimate_use": false,
+      "recovery": "全4比較を未使用seed・5 shard×120局で再実行し、失敗波の部分結果は最終推定へ合算しない。"
+    }
   },
   {
     "stage": "final",
@@ -205,7 +232,80 @@
     "seed": 2014010000,
     "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
     "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "superseded_by_recovery_plan",
+    "allocation_note": "未起動の600局のみ、全先発終了後の空きrunnerへ10×60局に再配分。候補/比較相手/総局数/時間/知識/採否基準は不変。最終成績を未閲覧の時点で固定。",
+    "final_estimate_use": false
+  },
+  {
+    "stage": "final_recovery",
+    "model": "ATTACK_AVG",
+    "baseline": "FORMAL_M",
+    "request_id": "ve31-20261013-final-r1-attack_avg-m",
+    "ref_a": "4e2711f616ce363ab36bbddff25c3d7fcf2aaec8",
+    "ref_b": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+    "games": 600,
+    "shards": 5,
+    "go_command": "go movetime 200",
+    "max_plies": 300,
+    "seed": 2114000000,
+    "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
     "state": "planned",
-    "allocation_note": "未起動の600局のみ、全先発終了後の空きrunnerへ10×60局に再配分。候補/比較相手/総局数/時間/知識/採否基準は不変。最終成績を未閲覧の時点で固定。"
+    "wave": 1,
+    "allocation_note": "5 shard×120局。seedはbase+i×100000、game_offsetは0/120/240/360/480。失敗波の部分結果は最終推定へ不使用。"
+  },
+  {
+    "stage": "final_recovery",
+    "model": "ATTACK_AVG",
+    "baseline": "FORMAL_Q14",
+    "request_id": "ve31-20261013-final-r1-attack_avg-q14",
+    "ref_a": "4e2711f616ce363ab36bbddff25c3d7fcf2aaec8",
+    "ref_b": "c6311d266717d41cb3b6b84bbe22e870450e6365",
+    "games": 600,
+    "shards": 5,
+    "go_command": "go movetime 200",
+    "max_plies": 300,
+    "seed": 2114010000,
+    "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "planned",
+    "wave": 1,
+    "allocation_note": "5 shard×120局。seedはbase+i×100000、game_offsetは0/120/240/360/480。失敗波の部分結果は最終推定へ不使用。"
+  },
+  {
+    "stage": "final_recovery",
+    "model": "UNIFIED",
+    "baseline": "FORMAL_M",
+    "request_id": "ve31-20261013-final-r1-unified-m",
+    "ref_a": "3fd3c37cc4b83f9645af509e1002837c09f4d5dd",
+    "ref_b": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+    "games": 600,
+    "shards": 5,
+    "go_command": "go movetime 200",
+    "max_plies": 300,
+    "seed": 2114000000,
+    "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "planned",
+    "wave": 2,
+    "allocation_note": "5 shard×120局。seedはbase+i×100000、game_offsetは0/120/240/360/480。失敗波の部分結果は最終推定へ不使用。"
+  },
+  {
+    "stage": "final_recovery",
+    "model": "UNIFIED",
+    "baseline": "FORMAL_Q14",
+    "request_id": "ve31-20261013-final-r1-unified-q14",
+    "ref_a": "3fd3c37cc4b83f9645af509e1002837c09f4d5dd",
+    "ref_b": "c6311d266717d41cb3b6b84bbe22e870450e6365",
+    "games": 600,
+    "shards": 5,
+    "go_command": "go movetime 200",
+    "max_plies": 300,
+    "seed": 2114010000,
+    "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "state": "planned",
+    "wave": 2,
+    "allocation_note": "5 shard×120局。seedはbase+i×100000、game_offsetは0/120/240/360/480。失敗波の部分結果は最終推定へ不使用。"
   }
 ]
