@@ -13,7 +13,39 @@
     "seed": 2013000000,
     "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
     "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-    "state": "planned"
+    "state": "running",
+    "issue": 238,
+    "launcher_run": 38341050954,
+    "launcher_job": 115111875300,
+    "launcher_success": true,
+    "run": 38341061009,
+    "jobs": [
+      {
+        "id": 115111913671,
+        "name": "plan",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T03:18:16Z"
+      },
+      {
+        "id": 115111947811,
+        "name": "build",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T03:18:24Z"
+      },
+      {
+        "id": 115112160942,
+        "name": "match (0, 100, 2013000000, 0)",
+        "status": "in_progress",
+        "conclusion": null,
+        "started_at": "2026-10-13T03:19:15Z",
+        "run_shard_started": "2026-10-13T03:19:22Z"
+      }
+    ],
+    "started_at": "2026-10-13T03:19:22Z",
+    "plan_settings_verified": true,
+    "build_refs_verified": true
   },
   {
     "stage": "ablation",
@@ -29,7 +61,39 @@
     "seed": 2013010000,
     "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
     "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-    "state": "planned"
+    "state": "running",
+    "issue": 239,
+    "launcher_run": 38341069275,
+    "launcher_job": 115111933695,
+    "launcher_success": true,
+    "run": 38341078012,
+    "jobs": [
+      {
+        "id": 115111973318,
+        "name": "plan",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T03:18:30Z"
+      },
+      {
+        "id": 115111997493,
+        "name": "build",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T03:18:36Z"
+      },
+      {
+        "id": 115112180604,
+        "name": "match (0, 100, 2013010000, 0)",
+        "status": "in_progress",
+        "conclusion": null,
+        "started_at": "2026-10-13T03:19:20Z",
+        "run_shard_started": "2026-10-13T03:19:27Z"
+      }
+    ],
+    "started_at": "2026-10-13T03:19:27Z",
+    "plan_settings_verified": true,
+    "build_refs_verified": true
   },
   {
     "stage": "ablation",
@@ -45,7 +109,39 @@
     "seed": 2013000000,
     "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
     "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-    "state": "planned"
+    "state": "running",
+    "issue": 240,
+    "launcher_run": 38341079365,
+    "launcher_job": 115111967005,
+    "launcher_success": true,
+    "run": 38341088046,
+    "jobs": [
+      {
+        "id": 115111998213,
+        "name": "plan",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T03:18:36Z"
+      },
+      {
+        "id": 115112034627,
+        "name": "build",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T03:18:45Z"
+      },
+      {
+        "id": 115112277939,
+        "name": "match (0, 100, 2013000000, 0)",
+        "status": "in_progress",
+        "conclusion": null,
+        "started_at": "2026-10-13T03:19:43Z",
+        "run_shard_started": "2026-10-13T03:19:53Z"
+      }
+    ],
+    "started_at": "2026-10-13T03:19:53Z",
+    "plan_settings_verified": true,
+    "build_refs_verified": true
   },
   {
     "stage": "ablation",
@@ -61,7 +157,39 @@
     "seed": 2013010000,
     "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
     "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-    "state": "planned"
+    "state": "running",
+    "issue": 241,
+    "launcher_run": 38341095076,
+    "launcher_job": 115112017052,
+    "launcher_success": true,
+    "run": 38341102934,
+    "jobs": [
+      {
+        "id": 115112045743,
+        "name": "plan",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T03:18:47Z"
+      },
+      {
+        "id": 115112067666,
+        "name": "build",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T03:18:52Z"
+      },
+      {
+        "id": 115112282380,
+        "name": "match (0, 100, 2013010000, 0)",
+        "status": "in_progress",
+        "conclusion": null,
+        "started_at": "2026-10-13T03:19:45Z",
+        "run_shard_started": "2026-10-13T03:19:54Z"
+      }
+    ],
+    "started_at": "2026-10-13T03:19:54Z",
+    "plan_settings_verified": true,
+    "build_refs_verified": true
   },
   {
     "stage": "ablation",
@@ -77,7 +205,39 @@
     "seed": 2013000000,
     "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
     "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-    "state": "planned"
+    "state": "running",
+    "issue": 242,
+    "launcher_run": 38341213260,
+    "launcher_job": 115112386818,
+    "launcher_success": true,
+    "run": 38341225561,
+    "jobs": [
+      {
+        "id": 115112430637,
+        "name": "plan",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T03:20:19Z"
+      },
+      {
+        "id": 115112456256,
+        "name": "build",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T03:20:25Z"
+      },
+      {
+        "id": 115112613061,
+        "name": "match (0, 100, 2013000000, 0)",
+        "status": "in_progress",
+        "conclusion": null,
+        "started_at": "2026-10-13T03:21:03Z",
+        "run_shard_started": "2026-10-13T03:21:11Z"
+      }
+    ],
+    "started_at": "2026-10-13T03:21:11Z",
+    "plan_settings_verified": true,
+    "build_refs_verified": true
   },
   {
     "stage": "ablation",
@@ -93,7 +253,39 @@
     "seed": 2013010000,
     "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
     "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-    "state": "planned"
+    "state": "running",
+    "issue": 243,
+    "launcher_run": 38341226064,
+    "launcher_job": 115112425862,
+    "launcher_success": true,
+    "run": 38341238293,
+    "jobs": [
+      {
+        "id": 115112467304,
+        "name": "plan",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T03:20:28Z"
+      },
+      {
+        "id": 115112499107,
+        "name": "build",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T03:20:36Z"
+      },
+      {
+        "id": 115112753986,
+        "name": "match (0, 100, 2013010000, 0)",
+        "status": "in_progress",
+        "conclusion": null,
+        "started_at": "2026-10-13T03:21:37Z",
+        "run_shard_started": "2026-10-13T03:21:43Z"
+      }
+    ],
+    "started_at": "2026-10-13T03:21:43Z",
+    "plan_settings_verified": true,
+    "build_refs_verified": true
   },
   {
     "stage": "ablation",
@@ -109,7 +301,39 @@
     "seed": 2013000000,
     "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
     "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-    "state": "planned"
+    "state": "running",
+    "issue": 244,
+    "run": 38341325132,
+    "launcher_run": 38341316730,
+    "jobs": [
+      {
+        "id": 115112738643,
+        "name": "plan",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T03:21:33Z"
+      },
+      {
+        "id": 115112768853,
+        "name": "build",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T03:21:41Z"
+      },
+      {
+        "id": 115113003786,
+        "name": "match (0, 100, 2013000000, 0)",
+        "status": "in_progress",
+        "conclusion": null,
+        "started_at": "2026-10-13T03:22:38Z",
+        "run_shard_started": "2026-10-13T03:22:46Z"
+      }
+    ],
+    "started_at": "2026-10-13T03:22:46Z",
+    "launcher_success": true,
+    "launcher_job": 115112708147,
+    "plan_settings_verified": true,
+    "build_refs_verified": true
   },
   {
     "stage": "ablation",
@@ -125,7 +349,39 @@
     "seed": 2013010000,
     "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
     "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-    "state": "planned"
+    "state": "running",
+    "issue": 245,
+    "run": 38341335023,
+    "launcher_run": 38341326588,
+    "jobs": [
+      {
+        "id": 115112769040,
+        "name": "plan",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T03:21:40Z"
+      },
+      {
+        "id": 115112790563,
+        "name": "build",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T03:21:46Z"
+      },
+      {
+        "id": 115113022639,
+        "name": "match (0, 100, 2013010000, 0)",
+        "status": "in_progress",
+        "conclusion": null,
+        "started_at": "2026-10-13T03:22:43Z",
+        "run_shard_started": "2026-10-13T03:22:52Z"
+      }
+    ],
+    "started_at": "2026-10-13T03:22:52Z",
+    "launcher_success": true,
+    "launcher_job": 115112739558,
+    "plan_settings_verified": true,
+    "build_refs_verified": true
   },
   {
     "stage": "ablation",
@@ -141,6 +397,46 @@
     "seed": 2013020000,
     "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
     "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
-    "state": "planned"
+    "state": "running",
+    "issue": 246,
+    "run": 38341388664,
+    "launcher_run": 38341379894,
+    "jobs": [
+      {
+        "id": 115112936820,
+        "name": "plan",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T03:22:22Z"
+      },
+      {
+        "id": 115112977196,
+        "name": "build",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-13T03:22:31Z"
+      },
+      {
+        "id": 115113188350,
+        "name": "match (1, 100, 2013120000, 100)",
+        "status": "in_progress",
+        "conclusion": null,
+        "started_at": "2026-10-13T03:23:23Z",
+        "run_shard_started": "2026-10-13T03:23:30Z"
+      },
+      {
+        "id": 115113188370,
+        "name": "match (0, 100, 2013020000, 0)",
+        "status": "in_progress",
+        "conclusion": null,
+        "started_at": "2026-10-13T03:23:24Z",
+        "run_shard_started": "2026-10-13T03:23:30Z"
+      }
+    ],
+    "launcher_success": true,
+    "launcher_job": 115112905905,
+    "started_at": "2026-10-13T03:23:30Z",
+    "build_refs_verified": true,
+    "plan_settings_verified": true
   }
 ]
