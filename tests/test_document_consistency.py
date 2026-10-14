@@ -85,12 +85,12 @@ class ClaimChecks(unittest.TestCase):
         errors, _ = claims.check(self.root)
         self.assertTrue(any("成熟度配置展開係数" in e for e in errors), errors)
 
-    def test_wrong_q14_dynamic_weight_fails(self):
+    def test_wrong_adopted_dynamic_weight_fails(self):
         self.change("docs/現行エンジン仕様.md",
-                    "| 持ち駒の潜在効果 | 56 | 119 | 250 |",
-                    "| 持ち駒の潜在効果 | 56 | 119 | 251 |")
+                    "| 駒の活動 | 600 | 500 | 300 |",
+                    "| 駒の活動 | 600 | 500 | 301 |")
         errors, _ = claims.check(self.root)
-        self.assertTrue(any("Q14型" in e and "持ち駒の潜在効果" in e for e in errors), errors)
+        self.assertTrue(any("採用評価" in e and "駒の活動" in e for e in errors), errors)
 
     def test_wrong_knowledge_count_fails(self):
         manifest = json.loads((self.root / "position-knowledge-v1.manifest.json").read_text(encoding="utf-8"))

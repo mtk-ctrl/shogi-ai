@@ -89,11 +89,11 @@ def check(root: Path = ROOT) -> tuple[list[str], list[str]]:
     if not re.search(r"bool v2_enabled\s*=\s*true", params) or "EvalV2=true" not in spec:
         errors.append(f"{spec_path}: 評価関数v2の既定値が実装と一致しない")
 
-    # Production Q14 stages must match the adopted stage table, not just the M reference.
+    # Production adopted stages must match the adopted stage table, not just the M reference.
     q14 = read("engine/strategy/phase_weights.h")
     source = read("engine/main.cpp")
     if "phase_turn_parameters(" not in source or "AdoptedPhaseProfile" not in source:
-        errors.append("engine/main.cpp: Q14段階評価が対局に接続されていない")
+        errors.append("engine/main.cpp: 採用段階評価が対局に接続されていない")
     anchors = {}
     for stage in ("StageOpening", "StageMiddle", "StageEnd", "StageHandMaterial"):
         match_anchor = re.search(rf"std::array<int,\s*\d+>\s+{stage}\s*\{{([^}}]+)\}}", q14)
@@ -113,7 +113,7 @@ def check(root: Path = ROOT) -> tuple[list[str], list[str]]:
             pattern = rf"^\|\s*{re.escape(label)}\s*\|\s*(\d+)\s*\|\s*(\d+)\s*\|\s*(\d+)\s*\|"
             found = re.search(pattern, spec, re.M)
             if not found or [int(v) for v in found.groups()] != expected:
-                errors.append(f"{spec_path}: Q14型 {label} の実配点が実装と一致しない")
+                errors.append(f"{spec_path}: 採用評価 {label} の実配点が実装と一致しない")
 
     phase = read("engine/strategy/turn_phase.h")
     for label, field in (("配置展開", "development"), ("戦闘", "battle"), ("敵陣進出", "invasion")):

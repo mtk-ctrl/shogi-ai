@@ -84,10 +84,10 @@ int main(){try{
     auto hanging=snap({{"9i","K"},{"1a","k"},{"5e","R"},{"5a","r"},{"8h","G"}});
     auto guarded=hanging;std::swap(guarded.board[sq("8h")],guarded.board[sq("5f")]);
     a=evaluate(hanging);b=evaluate(guarded);
-    require(a.raw[0].exposure==1000&&b.raw[0].exposure==0,"defended equal rook exchange not penalized");
+    require(a.raw[0].exposure==1650&&b.raw[0].exposure==0,"defended equal rook exchange not penalized");
     require(a.material==b.material&&a.total<b.total,"guarded high-value piece outranks hanging piece");
     guarded.board[sq("5a")]={};guarded.board[sq("5d")]={1,rules::Color::White,false};
-    require(evaluate(guarded).raw[0].exposure==900,"guard does not excuse rook lost to a pawn");
+    require(evaluate(guarded).raw[0].exposure==1530,"guard does not excuse rook lost to a pawn");
     std::cout<<"PASS hanging high-value piece, equal exchange, cheap attacker\n";
 
     auto xray=snap({{"9i","K"},{"5b","k"},{"5e","R"}});
@@ -110,7 +110,7 @@ int main(){try{
     require(nm.count[0][sq("4c")]==1&&nm.count[0][sq("6c")]==1,"knight jumps blockers");
     std::cout<<"PASS every piece/promotion geometry, blockers and king-vacated xray\n";
 
-    require(AdoptedPhaseProfile==34, "Q14 adopted profile identifier");
+    require(AdoptedPhaseProfile==47, "profile 47 adopted identifier");
     const auto start=phase_turn_parameters(EvaluationParameters{},0);
     const auto middle=phase_turn_parameters(EvaluationParameters{},50);
     const auto finish=phase_turn_parameters(EvaluationParameters{},100);
@@ -126,40 +126,51 @@ int main(){try{
                 t.hand_material_weight==StageHandMaterial[i],
                 "three phase anchor values");
     }
-    require(start.material_weight>middle.material_weight&&middle.material_weight>finish.material_weight,
-            "declining board material");
-    require(start.hand_material_weight<middle.hand_material_weight&&middle.hand_material_weight<finish.hand_material_weight,
-            "increasing held material");
-    require(start.weights[0]<middle.weights[0]&&middle.weights[0]<finish.weights[0],
-            "increasing king safety");
-    require(start.hand_potential_weight<middle.hand_potential_weight&&middle.hand_potential_weight<finish.hand_potential_weight,
-            "increasing in-hand potential");
-    require(start.coordination_weight>=middle.coordination_weight&&middle.coordination_weight>=finish.coordination_weight,
-            "coordination must be flat/declining");
-    require(start.threat_weight>=middle.threat_weight&&middle.threat_weight>=finish.threat_weight,
-            "fork/threat must be flat/declining");
+    require(start.material_weight==100&&middle.material_weight==100&&finish.material_weight==100,
+            "fixed board material");
+    require(start.hand_material_weight==100&&middle.hand_material_weight==100&&finish.hand_material_weight==100,
+            "fixed held material");
+    require(start.weights[1]<middle.weights[1]&&middle.weights[1]<finish.weights[1],
+            "increasing pressure");
+    require(start.weights[2]>middle.weights[2]&&middle.weights[2]>finish.weights[2],
+            "declining activity");
+    require(start.influence_weight<middle.influence_weight&&middle.influence_weight>finish.influence_weight,
+            "middle influence peak");
+    require(start.potential_weight>middle.potential_weight&&middle.potential_weight>finish.potential_weight&&
+            start.coordination_weight>middle.coordination_weight&&middle.coordination_weight>finish.coordination_weight,
+            "declining potential and coordination");
     auto board=snap({{"9i","K"},{"1a","k"},{"5e","P"}});
-    auto hand=snap({{"9i","K"},{"1a","k"}});
-    hand.hands[0][0]=1;
+    auto held_material=snap({{"9i","K"},{"1a","k"}});
+    held_material.hands[0][0]=1;
     require(evaluate(board,start).material_term==120*StageOpening[0]/100&&
             evaluate(board,finish).material_term==120*StageEnd[0]/100,
             "board material value in actual evaluation");
-    require(evaluate(hand,start).material_term==180*StageHandMaterial[0]/100&&
-            evaluate(hand,finish).material_term==180*StageHandMaterial[2]/100,
+    require(evaluate(held_material,start).material_term==180*StageHandMaterial[0]/100&&
+            evaluate(held_material,finish).material_term==180*StageHandMaterial[2]/100,
             "held material value in actual evaluation");
-    require(evaluate(hand).material_term==material_black(hand),
+    require(evaluate(held_material).material_term==material_black(held_material),
             "unmodified M reference evaluation without phase transformation");
     std::cout<<"PASS phase profile directions, held material and baseline invariant\n";
-    // Risk response must be contextual rather than a constant maturity-only rescaling.
-    const auto quiet=phase_turn_parameters(EvaluationParameters{},50,0,0);
-    const auto risk=phase_turn_parameters(EvaluationParameters{},50,70,80);
-    require(risk.weights[0]>quiet.weights[0]&&risk.weights[3]>quiet.weights[3]&&
-            risk.weights[1]>quiet.weights[1]&&risk.threat_weight>quiet.threat_weight, "hybrid stage/context response");
-    require(risk.material_weight==quiet.material_weight&&
-            risk.hand_material_weight==quiet.hand_material_weight,
-            "contextual bonuses must not alter board/hand material scaling");
-    std::cout<<"PASS hybrid contextual risk and material isolation\\n";
-
+    // Only maturity drives this profile; risk and battle must not silently
+    // retain the previous Q14 bonuses. Custom USI weights still scale per axis.
+    for(int maturity=0;maturity<=100;++maturity) {
+        const auto quiet=phase_turn_parameters(EvaluationParameters{},maturity,0,0);
+        for(int risk:{0,20,50,80,100})for(int battle:{0,20,50,80,100}) {
+            const auto busy=phase_turn_parameters(EvaluationParameters{},maturity,battle,risk);
+            require(busy.weights==quiet.weights&&busy.material_weight==quiet.material_weight&&
+                busy.hand_material_weight==quiet.hand_material_weight&&busy.influence_weight==quiet.influence_weight&&
+                busy.potential_weight==quiet.potential_weight&&busy.coordination_weight==quiet.coordination_weight&&
+                busy.hand_potential_weight==quiet.hand_potential_weight&&busy.threat_weight==quiet.threat_weight,
+                "profile47 context independence");
+        }
+        auto custom=EvaluationParameters{};
+        custom.weights[1]=0;
+        custom.coordination_weight=680;
+        const auto scaled=phase_turn_parameters(custom,maturity);
+        require(scaled.weights[1]==0&&scaled.coordination_weight==quiet.coordination_weight*2,
+                "independent USI scaling");
+    }
+    std::cout<<"PASS adopted maturity profile and context isolation\n";
 
     // Evaluation-v2: multiple non-material ideas remain visible in the leaf
     // score instead of competing only for move-ordering priority.
