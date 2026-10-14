@@ -1,0 +1,33 @@
+{
+  "state": "two-100-game-matches-running",
+  "official_engine": "KUMOJI v2.0.13/profile47",
+  "research_source": "4d8a4b9723c21c6163cad03358ba35e4b93d4687",
+  "previous_candidate": "7ab3dab9b909503d340fb1f374da09f8d0e2e209",
+  "runs": [
+    {
+      "mask": 7,
+      "run_id": 38646191420,
+      "games": 100,
+      "shards": 5
+    },
+    {
+      "mask": 23,
+      "run_id": 38646220538,
+      "games": 100,
+      "shards": 5
+    }
+  ],
+  "go": "go movetime 200",
+  "long_think": true,
+  "knowledge_positions": 163,
+  "max_runners": 10,
+  "max_plies": 300,
+  "seed": 2026101500,
+  "eta_jst": "2026-10-15T07:30:00+09:00",
+  "continuation_task": "6acfff1f8a6c8191a22ba2b011d175bd",
+  "final_selection": "highest score vs previous; tie prefers mask7",
+  "independent_final_games": 100,
+  "independent_final_seed": 2026101580,
+  "independent_final_baseline": "73884f6d7e6a265803bde3e26953d63c7e1b1c58",
+  "no_automatic_adoption": true
+}
