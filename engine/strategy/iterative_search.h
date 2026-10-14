@@ -365,15 +365,23 @@ private:
             b.key = p.hash_key();
             b.tokens = p.legal_generated_moves();
             b.strings.clear();
-            b.strings.reserve(b.tokens.size());
-            for (const auto& token : b.tokens) b.strings.push_back(p.generated_move_usi(token));
             b.valid = true;
             ++stats_.legal_batches;
         }
         return b;
     }
     std::vector<std::string> legal(const rules::Position& p, int ply) {
-        if (research_mask_ & (GeneratedPlay | SharedLegal)) return batch(p, ply).strings;
+        if (research_mask_ & (GeneratedPlay | SharedLegal)) {
+            batch(p, ply);
+            auto& b = legal_batches_.at(ply);
+            // Terminal and stand-pat cutoffs need only the tokens' count.
+            // Convert to USI only when this node actually explores its moves.
+            if (b.strings.empty() && !b.tokens.empty()) {
+                b.strings.reserve(b.tokens.size());
+                for (const auto& token : b.tokens) b.strings.push_back(p.generated_move_usi(token));
+            }
+            return b.strings;
+        }
         return p.legal_moves();
     }
     rules::Status node_status(const rules::Position& p, int ply) {
@@ -381,7 +389,7 @@ private:
         // Repetition remains history-sensitive and is never cached.
         auto status = p.repetition_status();
         if (status.result != rules::Result::Ongoing) return status;
-        if (batch(p, ply).strings.empty())
+        if (batch(p, ply).tokens.empty())
             return {p.turn() == rules::Color::Black ? rules::Result::WhiteWin : rules::Result::BlackWin,
                     p.in_check() ? "checkmate" : "no legal moves"};
         return {};
