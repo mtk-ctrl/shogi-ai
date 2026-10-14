@@ -1,5 +1,5 @@
 {
-  "state": "selection-audited-final100-running",
+  "state": "research-complete-owner-adoption-pending",
   "official_engine": "KUMOJI v2.0.13/profile47",
   "research_source": "4d8a4b9723c21c6163cad03358ba35e4b93d4687",
   "previous_candidate": "7ab3dab9b909503d340fb1f374da09f8d0e2e209",
@@ -23,7 +23,6 @@
   "max_runners": 10,
   "max_plies": 300,
   "seed": 2026101500,
-  "eta_jst": "2026-10-15T07:47:00+09:00",
   "continuation_task": "6acfff1f8a6c8191a22ba2b011d175bd",
   "final_selection": "highest score vs previous; tie prefers mask7",
   "independent_final_games": 100,
@@ -48,5 +47,18 @@
   "final_run_id": 38648621520,
   "final_request_commit": "17d588778b9102cb8665ecb3dd1d382dd4d8d976",
   "final_games": 100,
-  "final_shards": 10
+  "final_shards": 10,
+  "final_results": [53, 2, 45],
+  "final_score": 0.54,
+  "final_approx95pct": [0.4428151069643876, 0.6371848930356124],
+  "final_audited_plies": 11492,
+  "total_audited_plies": 33580,
+  "candidate_default": 23,
+  "quick_ci_all32_added": true,
+  "latest_candidate_ci": "success",
+  "candidate_commit": "305e5a7eee4c75d03f6b11d6cdb2c98d30eb53d3",
+  "quick_ci_run": 38650963142,
+  "document_ci_run": 38650968240,
+  "all32_ci_log_verified": true,
+  "recommendation": "promising efficiency candidate; strength-based adoption on hold; owner decides"
 }
