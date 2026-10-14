@@ -1,0 +1,252 @@
+{
+  "updated_at": "2026-10-14T13:20:00+09:00",
+  "stage": "closing_final_internal_complete",
+  "selection_data_not_combined": true,
+  "candidate": {
+    "profile": 47,
+    "name": "MOB_smooth_0",
+    "ref": "e74403540653bf8073051108d9216c2b7a4269e3",
+    "binary_sha256": "5525bae22972371618387b9a1092b5f57310efc1995fc32414d5db54aff5d890",
+    "selected_for_ladder": true
+  },
+  "conditions": {
+    "go_command": "go movetime 200",
+    "adaptive_long_think": true,
+    "long_think_max_per_game": 10,
+    "knowledge_positions": 163,
+    "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+    "max_plies": 300,
+    "shards": 5,
+    "games_per_control": 100
+  },
+  "controls": {
+    "M": {
+      "ref": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+      "wins": 61,
+      "draws": 0,
+      "losses": 39,
+      "score": 0.61,
+      "games": 100,
+      "plies": 11055,
+      "illegal": 0,
+      "aBlack": 50,
+      "aWhite": 50,
+      "longMaxA": 10,
+      "longMaxB": 10,
+      "phaseMissing": 0,
+      "profileMismatch": 0,
+      "archiveSha256": "fbcb006a314df24f0db6f8335e566d5e84bbd83cea4ca2b4a874f250f3e7479e",
+      "summary95": [
+        0.5144010125576636,
+        0.7055989874423364
+      ],
+      "rows": [
+        {
+          "i": 0,
+          "sha256": "67711b5fdb7d927596a631aee4222b0156f5dbcac55d84c62255d35613f23a6c",
+          "seed": 1915300000,
+          "offset": 0,
+          "wins": 12,
+          "draws": 0,
+          "losses": 8,
+          "plies": 2190
+        },
+        {
+          "i": 1,
+          "sha256": "20bcbdbdc122c808895ac57fbdc4a545376eb9ca0c1f6111a8a54c0fd887d06d",
+          "seed": 1915400000,
+          "offset": 20,
+          "wins": 12,
+          "draws": 0,
+          "losses": 8,
+          "plies": 2042
+        },
+        {
+          "i": 2,
+          "sha256": "9a110368454e5921e90082f356bc86bc8f40051abbabdc4e3093a175c84cd57c",
+          "seed": 1915500000,
+          "offset": 40,
+          "wins": 13,
+          "draws": 0,
+          "losses": 7,
+          "plies": 2255
+        },
+        {
+          "i": 3,
+          "sha256": "0f9aad4237cc63578053d8cd204b248e2abe2fd5c9aa6f3f6a3bd71d2d0b2d0f",
+          "seed": 1915600000,
+          "offset": 60,
+          "wins": 10,
+          "draws": 0,
+          "losses": 10,
+          "plies": 2420
+        },
+        {
+          "i": 4,
+          "sha256": "3079a38d7557a2426135ee633d7122646aa8601f50e6febac7b7cfb01d76ecbb",
+          "seed": 1915700000,
+          "offset": 80,
+          "wins": 14,
+          "draws": 0,
+          "losses": 6,
+          "plies": 2148
+        }
+      ],
+      "artifacts": {
+        "run": 38505569456,
+        "expires_at": "2027-01-12T03:18:31Z",
+        "summary": {
+          "id": 11867224365,
+          "digest": "sha256:9b09428e3c0b93dfe6bd00b6a441166c12167d44a5d11183013ca1d588edc13f"
+        },
+        "played": {
+          "id": 11867893425,
+          "digest": "sha256:171db9447f627d19481316c077adbbaab1b3d47306ba473920ccb6003cda33a0"
+        },
+        "raw": [
+          {
+            "id": 11868405460,
+            "digest": "sha256:7a6d2cebe90c854a94b533755bafbeb8766332a7c24b4154243d4514da94a5cf"
+          },
+          {
+            "id": 11868141144,
+            "digest": "sha256:6613e8fa2790b44356da5c193f29f367d303f181ee9c50aeea9fb11c11613d73"
+          },
+          {
+            "id": 11867898306,
+            "digest": "sha256:c46aaf0076efb0cb89b3ad6138ec76fbb9b721e62041239203d7fcaf5b875b03"
+          },
+          {
+            "id": 11868520446,
+            "digest": "sha256:268ea026927fdc01f2c4629fa8ef9292d0720f7f1fc73db184f6f31dc8c31c6e"
+          },
+          {
+            "id": 11868340506,
+            "digest": "sha256:5b2f822df8f1bbad47ea2285e611e6fbc196907d0768800a7bd33cfb93feb93e"
+          }
+        ]
+      }
+    },
+    "Q14": {
+      "ref": "c6311d266717d41cb3b6b84bbe22e870450e6365",
+      "wins": 61,
+      "draws": 4,
+      "losses": 35,
+      "score": 0.63,
+      "games": 100,
+      "plies": 10541,
+      "illegal": 0,
+      "aBlack": 50,
+      "aWhite": 50,
+      "longMaxA": 10,
+      "longMaxB": 10,
+      "phaseMissing": 0,
+      "profileMismatch": 0,
+      "archiveSha256": "7248f147d5b2fd67fa194d6874ca4124ea9382a6ff19954dcda190ddf6f47340",
+      "summary95": [
+        0.5353703555961452,
+        0.7246296444038548
+      ],
+      "rows": [
+        {
+          "i": 0,
+          "sha256": "21a8533a6f3a1522c6f34b500584824b832f7daefcc4bbe1cb7a6ee841c0265c",
+          "seed": 1915310000,
+          "offset": 0,
+          "wins": 15,
+          "draws": 0,
+          "losses": 5,
+          "plies": 1959
+        },
+        {
+          "i": 1,
+          "sha256": "9c8bec716823c8ba356199ce7f108db56994935387a7b33db2126b2b2c6e7732",
+          "seed": 1915410000,
+          "offset": 20,
+          "wins": 8,
+          "draws": 0,
+          "losses": 12,
+          "plies": 1822
+        },
+        {
+          "i": 2,
+          "sha256": "cc8c91d272dadc02c2295d84c5db1cc6ad71664fa0180581ea4b811a49230b3d",
+          "seed": 1915510000,
+          "offset": 40,
+          "wins": 10,
+          "draws": 1,
+          "losses": 9,
+          "plies": 2243
+        },
+        {
+          "i": 3,
+          "sha256": "28cded255e34ef3fa8a9813973cf573a749714eb21365ac9777c8f773bf5589e",
+          "seed": 1915610000,
+          "offset": 60,
+          "wins": 16,
+          "draws": 1,
+          "losses": 3,
+          "plies": 2305
+        },
+        {
+          "i": 4,
+          "sha256": "3eb5a0c5ae70b4bf3e0a4d27881a4446fddd60594492ea30ad373ecbd5d817f5",
+          "seed": 1915710000,
+          "offset": 80,
+          "wins": 12,
+          "draws": 2,
+          "losses": 6,
+          "plies": 2212
+        }
+      ],
+      "artifacts": {
+        "run": 38505598972,
+        "expires_at": "2027-01-12T03:18:53Z",
+        "summary": {
+          "id": 11866939744,
+          "digest": "sha256:e6d77b611e07de6de0fbb0953529a60c1b8b44413ad2b654174b3446e63a0aed"
+        },
+        "played": {
+          "id": 11866884927,
+          "digest": "sha256:8de89ba3d3d2b9737b24e9d925b18d8b9d6939c4dd2068c1e33dd27e4056df0b"
+        },
+        "raw": [
+          {
+            "id": 11868475309,
+            "digest": "sha256:c8ede6b1bad5169d283d9103a4cd5685f74a85cb50f1f31006b370e6ce909b6c"
+          },
+          {
+            "id": 11867944392,
+            "digest": "sha256:113f70b91affdfcc244c14732364303ca528e8042d7d8700ad7a73b28bada446"
+          },
+          {
+            "id": 11867249430,
+            "digest": "sha256:668c965d399be2ba2f569bc066de0dd84bf92f2c9353e46aee89e26e7257273c"
+          },
+          {
+            "id": 11868395565,
+            "digest": "sha256:eb911d470ad7e5561296afd159bc7b9caa3779b98f25b61bbd7395040e11247a"
+          },
+          {
+            "id": 11867329230,
+            "digest": "sha256:afeda70a89b3b16f5b8c904ec9887e1261de2076d1a48582e51229acf0558f61"
+          }
+        ]
+      }
+    }
+  },
+  "audit": {
+    "errors": [],
+    "raw_source_digests_verified": true,
+    "summary_recomputed": true,
+    "played_archive_sequences_verified": true,
+    "phase_recorded_all_plies": true,
+    "colors_balanced": true
+  },
+  "decision": {
+    "rule": "wins > losses against both controls in the one pre-specified 100-game comparison",
+    "passed": true,
+    "fallback_used": false,
+    "next": "YaneuraOu Material ladder from Lv48"
+  }
+}
