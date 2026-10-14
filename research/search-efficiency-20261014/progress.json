@@ -1,6 +1,6 @@
 {
-  "updated_jst": "2026-10-14T19:02:00+09:00",
-  "phase": "formal_match_running",
+  "updated_jst": "2026-10-14T23:24:00+09:00",
+  "phase": "formal_match_complete",
   "baseline_ref": "dc866ab712da28b9d103484d1b504e4dd38385df",
   "formal_main_head": "d637d61a95e910736ff062547c871bb0e9d437a2",
   "formal_engine": "KUMOJI v2.0.13 / profile 47",
@@ -26,14 +26,11 @@
     "run": 38546182074,
     "conclusion": "success"
   },
+  "match_conclusion": "success",
   "runner_limit": 10,
-  "runners_now": 9,
+  "runners_now": 0,
   "other_purpose_runners_now": 0,
   "peak_including_ci": 10,
-  "arena_started_jst": [
-    "2026-10-14T19:00:54+09:00",
-    "2026-10-14T19:00:59+09:00"
-  ],
   "lane_games": [
     12,
     11,
@@ -45,21 +42,52 @@
     11,
     11
   ],
-  "all_arena_steps_started": true,
-  "match_job_ids": [
-    115793861837,
-    115793861862,
-    115793861875,
-    115793861891,
-    115793861952,
-    115793861965,
-    115793861996,
-    115793862031,
-    115793862073
+  "seeds": [
+    1916000000,
+    1916100000,
+    1916200000,
+    1916300000,
+    1916400000,
+    1916500000,
+    1916600000,
+    1916700000,
+    1916800000
   ],
-  "eta_jst": "2026-10-14T19:12:00+09:00",
-  "eta_basis": "Formal profile47-M run38505569456:20-game lanes11m38s..12m56s;12 games~7m46s plus setup/aggregate/artifact and longer-game margin.",
+  "offsets": [
+    0,
+    12,
+    23,
+    34,
+    45,
+    56,
+    67,
+    78,
+    89
+  ],
+  "result": {
+    "wins_a": 51,
+    "draws": 3,
+    "wins_b": 46,
+    "score_a": 0.525,
+    "score_a_approx_95pct": [
+      0.42712257665835296,
+      0.6228774233416471
+    ],
+    "illegal_games": 0,
+    "a_black": 50,
+    "a_white": 50,
+    "plies": 11280,
+    "average_plies": 112.8
+  },
+  "audit": {
+    "file": "formal-match-audit.json",
+    "sha256": "1bbc67d08173b748a66f84c19ae28a838804fec6234a46132dde67f9a291e69b",
+    "raw_shards": 9,
+    "played_games": 100,
+    "artifact_expires_at": "2027-01-12T09:59:48Z",
+    "long_term_release": false
+  },
   "automation_id": "6acc6bd66e588191a524ea14c47a5d2c",
   "measurement_file": "local-measurement.json",
-  "next": "Audit formal100 raw/aggregate/archive/settings/digests and report once; do not automatically adopt the search change."
+  "next": "Await the user's adoption decision or a separately authorized next search-efficiency candidate. Do not auto-adopt or rerun this candidate."
 }
