@@ -1,0 +1,84 @@
+{
+  "date_jst": "2026-10-14",
+  "owner_instruction": "そうですね。そのやり方でパラメータ調整に区切りをつけましょう。最後に選ばれたものとやねうらおうのレベル48から1ずつ上げていくのもしてもらって、現行とm型と比較してください。まずはそこまでお願いします",
+  "scope": "One final parameter-search cycle, select one candidate, final internal comparison, Material ladder and comparison report. Do not start search-efficiency research.",
+  "runner_limit": 10,
+  "production_engine_unchanged_until_owner_adoption": true,
+  "coarse": {
+    "plan_id": "round2-coarse",
+    "engine_ref": "8f1dc91e67577a5f056137755f0a214a49a7b6cc",
+    "request_id": "ve71-20261014-final-coarse",
+    "new_candidates": 40,
+    "games_per_control": 12,
+    "total_games": 960,
+    "go_command": "go movetime 50",
+    "long_think": false,
+    "knowledge_positions": 163,
+    "shards": 10,
+    "lane_games": 96
+  },
+  "followup": {
+    "new_candidates": 6,
+    "max_per_family": 2,
+    "reference_profiles": [
+      25,
+      30
+    ],
+    "total_candidates": 8,
+    "games_per_control": 24,
+    "total_games": 384,
+    "go_command": "go movetime 200",
+    "long_think": true,
+    "seeds": {
+      "M": 1915200000,
+      "Q14": 1915210000
+    },
+    "ranking": "descending minimum(M score,Q14 score), then descending mean, then index ascending; choose top six new candidates subject to family maximum two; add frozen UNIFIED(25),ATTACK_AVG(30). Override generated round2-followup.json. No new20 generation."
+  },
+  "candidate_selection": "Rank followup minimum(M,Q14), then mean. Exact tie prefer UNIFIED25, then lower index. If leading candidate is not UNIFIED and has min score <= UNIFIED min score, use UNIFIED. Freeze one selected profile/ref before final results.",
+  "final": {
+    "games_per_control": 100,
+    "total_games": 200,
+    "controls": {
+      "M": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+      "Q14": "c6311d266717d41cb3b6b84bbe22e870450e6365"
+    },
+    "seeds": {
+      "M": 1915300000,
+      "Q14": 1915310000
+    },
+    "go_command": "go movetime 200",
+    "long_think": true,
+    "knowledge_positions": 163,
+    "one_attempt_only": true,
+    "criterion": "wins > losses against BOTH controls (score>50%), without requiring statistical significance; report uncertainty."
+  },
+  "fallback": "If selected new candidate fails either control, end adjustment and choose frozen UNIFIED based on completed independent 600/control results. Do not test repeated candidates until one wins.",
+  "ladder": {
+    "start_level": 48,
+    "games_per_level": 100,
+    "side_alternation": true,
+    "continue_if_win_pct_at_least": 30,
+    "stop_if_win_pct_below": 30,
+    "level_increment": 1,
+    "max_level": 100,
+    "shards": 10,
+    "kumoji_go": "go movetime 200",
+    "long_think": true,
+    "max_ms": 1000,
+    "max_long_think_per_game": 10,
+    "knowledge_positions": 163,
+    "opponent": "YaneuraOu Material",
+    "opponent_ref": "c1b80eaa09fe13d5f12b1599d1ae4d53c224de30",
+    "opponent_threads": 1,
+    "opponent_hash_mb": 16,
+    "opponent_book": false,
+    "comparison": {
+      "M_ref": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+      "Q14_ref": "c6311d266717d41cb3b6b84bbe22e870450e6365",
+      "reference_date": "2026-10-12",
+      "reuse": "Reuse completed matching formal M/Q14 ladders after verifying fixed refs, actual settings, knowledge identity, Material nodes and results; if unverifiable, rerun only necessary comparisons."
+    }
+  },
+  "stop_point": "After selected candidate ladder completes, verify raw/summary/illegal/settings/color/records/artifact expiry and report per-level candidate/current/M comparison. Keep candidate unpromoted unless owner explicitly adopts it; stop tracking after final report. No additional parameter cycle or efficiency research."
+}

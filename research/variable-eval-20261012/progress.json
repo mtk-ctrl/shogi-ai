@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-10-14T07:20:21+09:00",
-  "phase": "stopped_by_owner",
+  "updated_at": "2026-10-14T11:19:00+09:00",
+  "phase": "closing_cycle_prepared",
   "tracker_issue": 170,
   "addness_goal": "cf8ec928-61c0-48a1-ba3c-7c0635797e1b",
   "branch": "research/variable-eval-systematic-20261012",
@@ -5067,6 +5067,15 @@
     "automation_enabled": false,
     "new_games_authorized": false,
     "detailed_report": "詳細研究報告_20261014.md",
-    "reason": "Explicit owner stop, not objective achievement."
+    "reason": "Explicit owner stop, not objective achievement.",
+    "superseded_by": "2026-10-14 owner authorization for final cycle and external ladder"
+  },
+  "closing_cycle": {
+    "plan_file": "closing-plan.json",
+    "stage": "prepared",
+    "coarse_request_id": "ve71-20261014-final-coarse",
+    "coarse_engine_ref": "8f1dc91e67577a5f056137755f0a214a49a7b6cc",
+    "new_cycle_afterwards": false,
+    "external_start_level": 48
   }
 }
