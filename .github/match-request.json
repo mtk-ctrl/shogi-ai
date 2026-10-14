@@ -1,5 +1,5 @@
 {
-  "request_id": "search-expansion-20261015-mask7-vs-pr259-100",
+  "request_id": "search-expansion-20261015-mask23-vs-pr259-100",
   "ref_a": "4d8a4b9723c21c6163cad03358ba35e4b93d4687",
   "ref_b": "7ab3dab9b909503d340fb1f374da09f8d0e2e209",
   "games": 100,
@@ -7,6 +7,6 @@
   "go_command": "go movetime 200",
   "max_plies": 300,
   "seed": 2026101500,
-  "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"SearchResearchMask\":7}",
+  "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"SearchResearchMask\":23}",
   "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true}"
 }
