@@ -1,5 +1,5 @@
 {
-  "state": "two-100-game-matches-running",
+  "state": "selection-audited-final100-running",
   "official_engine": "KUMOJI v2.0.13/profile47",
   "research_source": "4d8a4b9723c21c6163cad03358ba35e4b93d4687",
   "previous_candidate": "7ab3dab9b909503d340fb1f374da09f8d0e2e209",
@@ -23,11 +23,30 @@
   "max_runners": 10,
   "max_plies": 300,
   "seed": 2026101500,
-  "eta_jst": "2026-10-15T07:30:00+09:00",
+  "eta_jst": "2026-10-15T07:47:00+09:00",
   "continuation_task": "6acfff1f8a6c8191a22ba2b011d175bd",
   "final_selection": "highest score vs previous; tie prefers mask7",
   "independent_final_games": 100,
   "independent_final_seed": 2026101580,
   "independent_final_baseline": "73884f6d7e6a265803bde3e26953d63c7e1b1c58",
-  "no_automatic_adoption": true
+  "no_automatic_adoption": true,
+  "selected_mask": 23,
+  "selection_results": {
+    "7": [
+      49,
+      6,
+      45
+    ],
+    "23": [
+      58,
+      1,
+      41
+    ]
+  },
+  "selection_audited_games": 200,
+  "selection_audited_plies": 22088,
+  "final_run_id": 38648621520,
+  "final_request_commit": "17d588778b9102cb8665ecb3dd1d382dd4d8d976",
+  "final_games": 100,
+  "final_shards": 10
 }
