@@ -1,6 +1,7 @@
 #pragma once
 
 #include "strategy/alphabeta3_tt.h"
+#include "strategy/search_research.h"
 #include "strategy/position_knowledge.h"
 #include <optional>
 #include "strategy/move_hint_cache.h"
@@ -70,6 +71,8 @@ public:
         int knowledge_research_depth = 0, knowledge_score_value = 0;
         std::string knowledge_score_kind;
         std::uint64_t knowledge_disabled_repetition = 0;
+        std::uint64_t generated_plays = 0, legal_batches = 0, order_reuse_hits = 0;
+        std::uint64_t qtt_probes = 0, qtt_hits = 0, qtt_cutoffs = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -164,6 +167,8 @@ public:
     std::size_t position_knowledge_size() const { return position_knowledge_.size(); }
     void set_quiescence_enabled(bool enabled) { quiescence_enabled_ = enabled; }
     const Stats& last_stats() const { return stats_; }
+    void set_research_mask(unsigned mask) { research_mask_ = mask & 31; }
+    unsigned research_mask() const { return research_mask_; }
 
     SearchResult choose(rules::Position& position, int max_depth, SearchControl& control,
                         const std::vector<std::string>& allowed = {},
@@ -171,25 +176,28 @@ public:
         stats_ = {};
         control_ = &control;
         tt_.new_search();
+        qtt_.new_search();
+        for (auto& batch : legal_batches_) batch.valid = false;
         iteration_hints_.clear();
         // The cache contains static evaluations only. A new go must not reuse
         // evaluations from a previous position, weight set or search session.
         ++eval_epoch_;
         if (!eval_epoch_) {
             for (auto& cell : eval_cache_) cell.epoch = 0;
+            for (auto& cell : order_cache_) cell.epoch = 0;
             eval_epoch_ = 1;
         }
         root_in_check_ = position.in_check();
         has_previous_completed_ = false;
         has_last_completed_ = false;
-        auto original = position.legal_moves();
+        auto original = legal(position, 0);
         if (!allowed.empty())
             original.erase(std::remove_if(original.begin(), original.end(), [&](const auto& m) {
                 return std::find(allowed.begin(), allowed.end(), m) == allowed.end();
             }), original.end());
         SearchResult result;
         root_ = position.snapshot().turn;
-        const auto status = position.status();
+        const auto status = node_status(position, 0);
         if (status.result != rules::Result::Ongoing) {
             result.score = terminal(position, status, 0);
             result.has_score = true;
@@ -235,7 +243,7 @@ public:
             iteration_hints_.new_search();
             try {
                 check_stop();
-                auto moves = ordered(position, original, {}, depth >= 4 && result.depth ? result.move : "",
+                auto moves = ordered(position, original, {}, depth >= ((research_mask_ & EarlyHints) ? 2 : 4) && result.depth ? result.move : "",
                                      root_knowledge_move);
                 int best = -Infinity;
                 std::vector<SearchResult> tied;
@@ -243,7 +251,7 @@ public:
                     check_stop();
                     Node child;
                     {
-                        make(position, move);
+                        make(position, move, 0);
                         Undo undo{position};
                         visit(1);
                         child = search(position, depth - 1, 1, best, Infinity,
@@ -343,13 +351,51 @@ private:
         stats_.seldepth = std::max(stats_.seldepth, ply);
         if (ply < static_cast<int>(stats_.nodes_by_ply.size())) ++stats_.nodes_by_ply[ply];
     }
-    static void make(rules::Position& position, const std::string& move) {
-        // Every caller supplies a move from this position's legal_moves().
-        // The ongoing status has already been checked at the parent node.
-        // Avoid redoing status()/checkmate detection in play(). The rules
-        // layer still verifies the move against its legal move generator.
+    struct LegalBatch {
+        bool valid = false;
+        std::uint64_t key = 0;
+        std::vector<rules::GeneratedMove> tokens;
+        std::vector<std::string> strings;
+    };
+    std::array<LegalBatch, MaxPly + 1> legal_batches_{};
+    const LegalBatch& batch(const rules::Position& p, int ply) {
+        auto& b = legal_batches_.at(ply);
+        if (!b.valid || b.key != p.hash_key()) {
+            b.valid = false;
+            b.key = p.hash_key();
+            b.tokens = p.legal_generated_moves();
+            b.strings.clear();
+            b.strings.reserve(b.tokens.size());
+            for (const auto& token : b.tokens) b.strings.push_back(p.generated_move_usi(token));
+            b.valid = true;
+            ++stats_.legal_batches;
+        }
+        return b;
+    }
+    std::vector<std::string> legal(const rules::Position& p, int ply) {
+        if (research_mask_ & (GeneratedPlay | SharedLegal)) return batch(p, ply).strings;
+        return p.legal_moves();
+    }
+    rules::Status node_status(const rules::Position& p, int ply) {
+        if (!(research_mask_ & SharedLegal)) return p.status();
+        // Repetition remains history-sensitive and is never cached.
+        auto status = p.repetition_status();
+        if (status.result != rules::Result::Ongoing) return status;
+        if (batch(p, ply).strings.empty())
+            return {p.turn() == rules::Color::Black ? rules::Result::WhiteWin : rules::Result::BlackWin,
+                    p.in_check() ? "checkmate" : "no legal moves"};
+        return {};
+    }
+    void make(rules::Position& position, const std::string& move, int ply) {
         std::string error;
-        if (!position.play_generated_legal(move, error)) throw std::logic_error(error);
+        if (research_mask_ & GeneratedPlay) {
+            const auto& b = batch(position, ply);
+            const auto it = std::find(b.strings.begin(), b.strings.end(), move);
+            if (it == b.strings.end()) throw std::logic_error("move absent from current legal batch");
+            if (!position.play_generated_move(b.tokens[it - b.strings.begin()], error))
+                throw std::logic_error(error);
+            ++stats_.generated_plays;
+        } else if (!position.play_generated_legal(move, error)) throw std::logic_error(error);
     }
     // Exact board/hands/side identity; no repetition-sensitive search scores
     // are cached here. Terminal and repetition results remain uncached.
@@ -384,7 +430,7 @@ private:
         // different from full-width depth. Normal ancestors use history keys.
         if (depth == 0 && quiescence_enabled_)
             return quiescence(p, ply, 0, alpha, beta);
-        const auto status = p.status();
+        const auto status = node_status(p, ply);
         if (status.result != rules::Result::Ongoing) {
             ++stats_.terminal_nodes;
             return {terminal(p, status, ply), {}};
@@ -416,14 +462,14 @@ private:
             if (tt_.store(score_key, depth, value, Bound::Exact)) ++stats_.tt_replacements;
             return {value, {}};
         }
-        auto moves = ordered(p, p.legal_moves(), tt_move);
+        auto moves = ordered(p, legal(p, ply), tt_move);
         const bool maximizing = p.snapshot().turn == root_;
         Node best{maximizing ? -Infinity : Infinity, {}};
         for (const auto& move : moves) {
             check_stop();
             Node child;
             {
-                make(p, move);
+                make(p, move, ply);
                 Undo undo{p};
                 visit(ply + 1);
                 child = search(p, depth - 1, ply + 1, alpha, beta,
@@ -454,9 +500,33 @@ private:
         return best;
     }
     Node quiescence(rules::Position& p, int ply, int qply, int alpha, int beta) {
+        if (!(research_mask_ & QuiescenceReuse)) return quiescence_impl(p, ply, qply, alpha, beta);
+        check_stop();
+        // Same go, root orientation, ordered history, ply and qply. No board-only scores.
+        const auto key = p.history_key() ^ (std::uint64_t(ply + 1) * 0x94d049bb133111ebULL);
+        ++stats_.qtt_probes;
+        if (const auto* e = qtt_.probe(key, qply)) {
+            ++stats_.qtt_hits;
+            const int value = from_table(e->value, ply);
+            if (e->bound == Bound::Exact || (e->bound == Bound::Lower && value >= beta)
+                || (e->bound == Bound::Upper && value < alpha)) {
+                ++stats_.qtt_cutoffs;
+                const auto move = TranspositionTable::best_move(*e);
+                return {value, e->bound == Bound::Exact && !move.empty()
+                    ? std::vector<std::string>{move} : std::vector<std::string>{}};
+            }
+        }
+        auto result = quiescence_impl(p, ply, qply, alpha, beta);
+        const auto bound = result.value <= alpha ? Bound::Upper
+            : result.value >= beta ? Bound::Lower : Bound::Exact;
+        qtt_.store(key, qply, to_table(result.value, ply), bound,
+                   result.pv.empty() ? "" : result.pv.front());
+        return result;
+    }
+    Node quiescence_impl(rules::Position& p, int ply, int qply, int alpha, int beta) {
         check_stop();
         ++stats_.qnodes; // The normal leaf was already counted by visit().
-        const auto status = p.status();
+        const auto status = node_status(p, ply);
         if (status.result != rules::Result::Ongoing) {
             ++stats_.terminal_nodes;
             return {terminal(p, status, ply), {}};
@@ -484,7 +554,7 @@ private:
             if (maximizing) alpha = std::max(alpha, best.value);
             else beta = std::min(beta, best.value);
         }
-        auto moves = p.legal_moves();
+        auto moves = legal(p, ply);
         if (!checked) {
             moves.erase(std::remove_if(moves.begin(), moves.end(), [&](const auto& move) {
                 const int dst = (move[2] - '1') * 9 + move[3] - 'a';
@@ -537,7 +607,7 @@ private:
             check_stop();
             Node child;
             {
-                make(p, move);
+                make(p, move, ply);
                 Undo undo{p};
                 visit(ply + 1);
                 child = quiescence(p, ply + 1, qply + 1, alpha, beta);
@@ -560,7 +630,18 @@ private:
                                     const std::string& knowledge_move = {}) {
         ++stats_.order_calls;
         stats_.ordered_moves += moves.size();
-        auto result = MoveOrder::order(p.snapshot(), moves);
+        std::vector<std::string> result;
+        if (research_mask_ & OrderReuse) {
+            const auto key = p.hash_key();
+            auto& cell = order_cache_[key & (order_cache_.size() - 1)];
+            if (cell.epoch == eval_epoch_ && cell.key == key && cell.original == moves) {
+                result = cell.ordered;
+                ++stats_.order_reuse_hits;
+            } else {
+                result = MoveOrder::order(p.snapshot(), moves);
+                cell = {key, eval_epoch_, moves, result};
+            }
+        } else result = MoveOrder::order(p.snapshot(), moves);
         auto promote = [&](const std::string& hint) {
             auto it = std::find(result.begin(), result.end(), hint);
             if (it == result.end()) return false;
@@ -570,7 +651,7 @@ private:
         // At introductory depths, horizon changes made previous-iteration
         // ordering worse on contact positions. Preserve the accepted ordering
         // through depth three; use iterative hints when going deeper.
-        if (iteration_depth_ >= 4)
+        if (iteration_depth_ >= ((research_mask_ & EarlyHints) ? 2 : 4))
             if (const auto* e = iteration_hints_.probe(p.hash_key())) promote(MoveHintCache::best_move(*e));
         if (promote(tt_move)) ++stats_.tt_move_first;
         promote(previous_root);
@@ -581,6 +662,14 @@ private:
     Evaluator evaluator_;
     Stats stats_{};
     TranspositionTable tt_;
+    TranspositionTable qtt_;
+    unsigned research_mask_ = DefaultSearchResearchMask;
+    struct OrderCell {
+        std::uint64_t key = 0;
+        std::uint32_t epoch = 0;
+        std::vector<std::string> original, ordered;
+    };
+    std::vector<OrderCell> order_cache_ = std::vector<OrderCell>(1u << 12);
     MoveHintCache iteration_hints_;
     PositionKnowledge position_knowledge_;
     struct ResearchContinuation {
