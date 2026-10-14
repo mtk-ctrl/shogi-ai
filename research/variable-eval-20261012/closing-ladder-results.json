@@ -1,0 +1,3033 @@
+{
+  "schema_version": 1,
+  "completed_at": "2026-10-14T08:12:50Z",
+  "status": "completed_stop_at_level_58",
+  "selected_candidate": {
+    "name": "MOB_smooth_0",
+    "profile_index": 47,
+    "engine_ref": "e74403540653bf8073051108d9216c2b7a4269e3",
+    "self_binary_sha256": "929992c21789f162ed19d1d41d86a0802041c51c6175549d1973cda4989b60b4"
+  },
+  "material": {
+    "engine_ref": "c1b80eaa09fe13d5f12b1599d1ae4d53c224de30",
+    "binary_sha256": "8bbb647be0e08f2c998431fc02cc1737ebfe3f64b244f8b8a10798901d4484c2"
+  },
+  "conditions": {
+    "games_per_level": 100,
+    "shards": 10,
+    "self_go": "go movetime 200",
+    "adaptive_long_think": true,
+    "long_think_cap_per_game": 10,
+    "position_knowledge": true,
+    "knowledge_positions": 163,
+    "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+    "max_plies": 400,
+    "colors_per_level": {
+      "self_black": 50,
+      "self_white": 50
+    },
+    "material_threads": 1,
+    "material_hash_mb": 16,
+    "material_book": false
+  },
+  "audit": {
+    "all_runs_success": true,
+    "runs": [
+      38510955872,
+      38511391999,
+      38511841817,
+      38512260832,
+      38512678745,
+      38513117808,
+      38513556620,
+      38514009493,
+      38514433389,
+      38514866509,
+      38515323682
+    ],
+    "all_154_jobs_success": true,
+    "artifact_zip_count": 121,
+    "all_zip_digests_verified": true,
+    "artifacts_expired": 0,
+    "raw_summary_match": true,
+    "illegal_games": 0,
+    "phase_missing": 0,
+    "profile_mismatch": 0,
+    "total_plies": 116121
+  },
+  "totals": {
+    "games": 1100,
+    "wins": 577,
+    "draws": 13,
+    "losses": 510,
+    "plies": 116121
+  },
+  "levels": [
+    {
+      "level": 48,
+      "run": 38510955872,
+      "games": 100,
+      "wins": 73,
+      "draws": 0,
+      "losses": 27,
+      "win_pct": 73,
+      "point_pct": 73,
+      "score_approx_95pct": [
+        0.6425455755056592,
+        0.8174544244943408
+      ],
+      "illegal": 0,
+      "selfBlack": 50,
+      "selfWhite": 50,
+      "plies": 10107,
+      "longMax": 10,
+      "longTotal": 963,
+      "phaseMissing": 0,
+      "profileMismatch": 0,
+      "knowledgeProbes": 4605,
+      "knowledgeHits": 0,
+      "selfBinary": "929992c21789f162ed19d1d41d86a0802041c51c6175549d1973cda4989b60b4",
+      "materialBinary": "8bbb647be0e08f2c998431fc02cc1737ebfe3f64b244f8b8a10798901d4484c2",
+      "opponentGo": "go nodes 2364",
+      "decision": "next_level",
+      "raw_sources": [
+        {
+          "shard": 0,
+          "sha256": "2ba120ce3a93187052adfceddce85d50ee5065e903b7937bc0cc6be30e2e4003",
+          "games": 10,
+          "seed": 2026100500,
+          "offset": 0,
+          "wins": 6,
+          "draws": 0,
+          "losses": 4,
+          "plies": 1065
+        },
+        {
+          "shard": 1,
+          "sha256": "fffad0dd57f316c6bed87df2494b3de23acfa112dd76dfc86eadcb9b4304ee83",
+          "games": 10,
+          "seed": 2026200500,
+          "offset": 10,
+          "wins": 8,
+          "draws": 0,
+          "losses": 2,
+          "plies": 1037
+        },
+        {
+          "shard": 2,
+          "sha256": "b983065a7fc8a3ef7f979d624e5fae9ffdc2159fc5fd2fcc554f823924f21dce",
+          "games": 10,
+          "seed": 2026300500,
+          "offset": 20,
+          "wins": 7,
+          "draws": 0,
+          "losses": 3,
+          "plies": 942
+        },
+        {
+          "shard": 3,
+          "sha256": "10cf8d263babca6f4d54231c5d8b6f0fe7c27e0b17bbfc729fcc4e0c52d41b01",
+          "games": 10,
+          "seed": 2026400500,
+          "offset": 30,
+          "wins": 8,
+          "draws": 0,
+          "losses": 2,
+          "plies": 1099
+        },
+        {
+          "shard": 4,
+          "sha256": "ee0088fc46d4947fe1719d8742637458e5da43debd89037c535f5a696f78a17a",
+          "games": 10,
+          "seed": 2026500500,
+          "offset": 40,
+          "wins": 8,
+          "draws": 0,
+          "losses": 2,
+          "plies": 961
+        },
+        {
+          "shard": 5,
+          "sha256": "4c152c5fc77db0feefb58afdabeac9195d7d4c405b103f4dbef5d46956f46333",
+          "games": 10,
+          "seed": 2026600500,
+          "offset": 50,
+          "wins": 6,
+          "draws": 0,
+          "losses": 4,
+          "plies": 865
+        },
+        {
+          "shard": 6,
+          "sha256": "efea40ff5dd7441cde37499de053b92d63be71fe017eddb71e9c04bbcbf41a9a",
+          "games": 10,
+          "seed": 2026700500,
+          "offset": 60,
+          "wins": 8,
+          "draws": 0,
+          "losses": 2,
+          "plies": 991
+        },
+        {
+          "shard": 7,
+          "sha256": "2808a14fddbed1d1e8cbd7ea808d3f37ccc59400d46057cc23491aa1f97173c1",
+          "games": 10,
+          "seed": 2026800500,
+          "offset": 70,
+          "wins": 8,
+          "draws": 0,
+          "losses": 2,
+          "plies": 951
+        },
+        {
+          "shard": 8,
+          "sha256": "fd1d7739014b75385370bd15d2fb34f2de28eb87ae2262220a5a9db09af7a2e4",
+          "games": 10,
+          "seed": 2026900500,
+          "offset": 80,
+          "wins": 8,
+          "draws": 0,
+          "losses": 2,
+          "plies": 937
+        },
+        {
+          "shard": 9,
+          "sha256": "68f1c17249ac9bf4f1fa6a2871b141c9e7e97c6f53310b47c063397020161ca9",
+          "games": 10,
+          "seed": 2027000500,
+          "offset": 90,
+          "wins": 6,
+          "draws": 0,
+          "losses": 4,
+          "plies": 1259
+        }
+      ]
+    },
+    {
+      "level": 49,
+      "run": 38511391999,
+      "games": 100,
+      "wins": 68,
+      "draws": 1,
+      "losses": 31,
+      "win_pct": 68,
+      "point_pct": 68.5,
+      "score_approx_95pct": [
+        0.5940278519701128,
+        0.7759721480298873
+      ],
+      "illegal": 0,
+      "selfBlack": 50,
+      "selfWhite": 50,
+      "plies": 10838,
+      "longMax": 10,
+      "longTotal": 956,
+      "phaseMissing": 0,
+      "profileMismatch": 0,
+      "knowledgeProbes": 4933,
+      "knowledgeHits": 0,
+      "selfBinary": "929992c21789f162ed19d1d41d86a0802041c51c6175549d1973cda4989b60b4",
+      "materialBinary": "8bbb647be0e08f2c998431fc02cc1737ebfe3f64b244f8b8a10798901d4484c2",
+      "opponentGo": "go nodes 2656",
+      "decision": "next_level",
+      "raw_sources": [
+        {
+          "shard": 0,
+          "sha256": "f07c6c2a4f230552d84287b4f2956bd25ad264638bf18afbdd4d3f0cbd99bf03",
+          "games": 10,
+          "seed": 2026100500,
+          "offset": 0,
+          "wins": 8,
+          "draws": 0,
+          "losses": 2,
+          "plies": 1025
+        },
+        {
+          "shard": 1,
+          "sha256": "1f3e865d34b788e063fcd94d23e14f9056f943077c03a24d4dab7fab0cb26d5f",
+          "games": 10,
+          "seed": 2026200500,
+          "offset": 10,
+          "wins": 6,
+          "draws": 0,
+          "losses": 4,
+          "plies": 1143
+        },
+        {
+          "shard": 2,
+          "sha256": "0cdda37ce8cdde916d62bb8b5883b0c82fce5db5cf0036073a8e30fda6cccab7",
+          "games": 10,
+          "seed": 2026300500,
+          "offset": 20,
+          "wins": 7,
+          "draws": 0,
+          "losses": 3,
+          "plies": 1022
+        },
+        {
+          "shard": 3,
+          "sha256": "ddb3b14e9d753c3c1b64e0860a0b40eedf99db0f22db2ae4cf08be39d0e19bc8",
+          "games": 10,
+          "seed": 2026400500,
+          "offset": 30,
+          "wins": 8,
+          "draws": 0,
+          "losses": 2,
+          "plies": 795
+        },
+        {
+          "shard": 4,
+          "sha256": "984136e3215857e43c776b827cdf7ca21250da45eaff5f9cb402757ab1c58845",
+          "games": 10,
+          "seed": 2026500500,
+          "offset": 40,
+          "wins": 7,
+          "draws": 1,
+          "losses": 2,
+          "plies": 1274
+        },
+        {
+          "shard": 5,
+          "sha256": "a529ccdf7144537d4da6534d1ab63bbcd2c200b1b9c02e209efc48771e0e0d45",
+          "games": 10,
+          "seed": 2026600500,
+          "offset": 50,
+          "wins": 7,
+          "draws": 0,
+          "losses": 3,
+          "plies": 1110
+        },
+        {
+          "shard": 6,
+          "sha256": "d95ff1b30fa7b9c2f4c66bff4be848e1bd0a8de9990ea84444fdb4962cddb50f",
+          "games": 10,
+          "seed": 2026700500,
+          "offset": 60,
+          "wins": 6,
+          "draws": 0,
+          "losses": 4,
+          "plies": 1095
+        },
+        {
+          "shard": 7,
+          "sha256": "e3ab74fad205779a361fa02013e744f281cebf96438293437d3c101466faf485",
+          "games": 10,
+          "seed": 2026800500,
+          "offset": 70,
+          "wins": 6,
+          "draws": 0,
+          "losses": 4,
+          "plies": 1067
+        },
+        {
+          "shard": 8,
+          "sha256": "c6961f4e584127de4dcd434f114162bcf542f4aa8141f38cd1b28828e94543ac",
+          "games": 10,
+          "seed": 2026900500,
+          "offset": 80,
+          "wins": 7,
+          "draws": 0,
+          "losses": 3,
+          "plies": 1036
+        },
+        {
+          "shard": 9,
+          "sha256": "e4848ee720ff0902cec3c3289243efe7a649068f130cbafee967fe02bf1e6433",
+          "games": 10,
+          "seed": 2027000500,
+          "offset": 90,
+          "wins": 6,
+          "draws": 0,
+          "losses": 4,
+          "plies": 1271
+        }
+      ]
+    },
+    {
+      "level": 50,
+      "run": 38511841817,
+      "games": 100,
+      "wins": 67,
+      "draws": 3,
+      "losses": 30,
+      "win_pct": 67,
+      "point_pct": 68.5,
+      "score_approx_95pct": [
+        0.5951005477483232,
+        0.7748994522516769
+      ],
+      "illegal": 0,
+      "selfBlack": 50,
+      "selfWhite": 50,
+      "plies": 10397,
+      "longMax": 10,
+      "longTotal": 944,
+      "phaseMissing": 0,
+      "profileMismatch": 0,
+      "knowledgeProbes": 4440,
+      "knowledgeHits": 0,
+      "selfBinary": "929992c21789f162ed19d1d41d86a0802041c51c6175549d1973cda4989b60b4",
+      "materialBinary": "8bbb647be0e08f2c998431fc02cc1737ebfe3f64b244f8b8a10798901d4484c2",
+      "opponentGo": "go nodes 2984",
+      "decision": "next_level",
+      "raw_sources": [
+        {
+          "shard": 0,
+          "sha256": "5a23b9e65752b14056562cf3386fee06e95a4ffb584538d38aca74489244719a",
+          "games": 10,
+          "seed": 2026100500,
+          "offset": 0,
+          "wins": 7,
+          "draws": 0,
+          "losses": 3,
+          "plies": 1102
+        },
+        {
+          "shard": 1,
+          "sha256": "d4788b4d2e5cfd6edc8b530cba39a8cc84d2f76f4a6830bbe3d8f03b0d327db9",
+          "games": 10,
+          "seed": 2026200500,
+          "offset": 10,
+          "wins": 5,
+          "draws": 0,
+          "losses": 5,
+          "plies": 1224
+        },
+        {
+          "shard": 2,
+          "sha256": "6593f5c6a53e713f181611cd405257f3af48f3e9ffd27711fb067a6fcb9c2ccd",
+          "games": 10,
+          "seed": 2026300500,
+          "offset": 20,
+          "wins": 6,
+          "draws": 0,
+          "losses": 4,
+          "plies": 1081
+        },
+        {
+          "shard": 3,
+          "sha256": "ca7eb41874ea0783ffe536728ad00ea2bee052f5574c3895409cff9f05b5363d",
+          "games": 10,
+          "seed": 2026400500,
+          "offset": 30,
+          "wins": 7,
+          "draws": 0,
+          "losses": 3,
+          "plies": 1094
+        },
+        {
+          "shard": 4,
+          "sha256": "71e331fdd38a552012d04242badfaf008b6fe7dd311031a1bd83ec749feafa3a",
+          "games": 10,
+          "seed": 2026500500,
+          "offset": 40,
+          "wins": 7,
+          "draws": 0,
+          "losses": 3,
+          "plies": 908
+        },
+        {
+          "shard": 5,
+          "sha256": "e2496a29bb95eb88804a6919c25a901b8e8f17caaa2f14b5246fb9e72045f3dc",
+          "games": 10,
+          "seed": 2026600500,
+          "offset": 50,
+          "wins": 5,
+          "draws": 1,
+          "losses": 4,
+          "plies": 816
+        },
+        {
+          "shard": 6,
+          "sha256": "eede25d32f8d836c89c9a4664cf3d954c2513a4edb377f98286c1e881541cf96",
+          "games": 10,
+          "seed": 2026700500,
+          "offset": 60,
+          "wins": 9,
+          "draws": 0,
+          "losses": 1,
+          "plies": 1150
+        },
+        {
+          "shard": 7,
+          "sha256": "6e123a5c650826683e97b025f5284b7b44cc0be639a4a27fcf36f78ed7177d25",
+          "games": 10,
+          "seed": 2026800500,
+          "offset": 70,
+          "wins": 5,
+          "draws": 1,
+          "losses": 4,
+          "plies": 1102
+        },
+        {
+          "shard": 8,
+          "sha256": "c0c75ac29212c746f1baf0c4a205f3768d48e8084a5acab9ea9c4aa88fb13801",
+          "games": 10,
+          "seed": 2026900500,
+          "offset": 80,
+          "wins": 7,
+          "draws": 1,
+          "losses": 2,
+          "plies": 1002
+        },
+        {
+          "shard": 9,
+          "sha256": "ecf3f5f40087d41fd011b98fd42619e3239e8317e0e7f221d0da3fce0569b58c",
+          "games": 10,
+          "seed": 2027000500,
+          "offset": 90,
+          "wins": 9,
+          "draws": 0,
+          "losses": 1,
+          "plies": 918
+        }
+      ]
+    },
+    {
+      "level": 51,
+      "run": 38512260832,
+      "games": 100,
+      "wins": 53,
+      "draws": 2,
+      "losses": 45,
+      "win_pct": 53,
+      "point_pct": 54,
+      "score_approx_95pct": [
+        0.44281510696438764,
+        0.6371848930356124
+      ],
+      "illegal": 0,
+      "selfBlack": 50,
+      "selfWhite": 50,
+      "plies": 10697,
+      "longMax": 10,
+      "longTotal": 963,
+      "phaseMissing": 0,
+      "profileMismatch": 0,
+      "knowledgeProbes": 4850,
+      "knowledgeHits": 0,
+      "selfBinary": "929992c21789f162ed19d1d41d86a0802041c51c6175549d1973cda4989b60b4",
+      "materialBinary": "8bbb647be0e08f2c998431fc02cc1737ebfe3f64b244f8b8a10798901d4484c2",
+      "opponentGo": "go nodes 3352",
+      "decision": "next_level",
+      "raw_sources": [
+        {
+          "shard": 0,
+          "sha256": "c2e54584ff394a79106974358e4b77ac5c9ed796fd6e4ab0c34c32521ae4e0fe",
+          "games": 10,
+          "seed": 2026100500,
+          "offset": 0,
+          "wins": 7,
+          "draws": 0,
+          "losses": 3,
+          "plies": 938
+        },
+        {
+          "shard": 1,
+          "sha256": "178582ea40620482c857421fc47f16c0aa377966f3083d95f7a6ef9a92289d5f",
+          "games": 10,
+          "seed": 2026200500,
+          "offset": 10,
+          "wins": 4,
+          "draws": 0,
+          "losses": 6,
+          "plies": 957
+        },
+        {
+          "shard": 2,
+          "sha256": "70aa92371456c7a5c60d458ccb363c2c7add415fbd59f527b6201924891e69d2",
+          "games": 10,
+          "seed": 2026300500,
+          "offset": 20,
+          "wins": 4,
+          "draws": 0,
+          "losses": 6,
+          "plies": 1153
+        },
+        {
+          "shard": 3,
+          "sha256": "8c746e5f8a69c9de96e8d7e0c8d86508a5ae9d8fa6892b6aa421bee93a68bb0b",
+          "games": 10,
+          "seed": 2026400500,
+          "offset": 30,
+          "wins": 5,
+          "draws": 1,
+          "losses": 4,
+          "plies": 916
+        },
+        {
+          "shard": 4,
+          "sha256": "e764665c3012040011a3e05b6c77b5fab4f626c1089f6235258200c63494727c",
+          "games": 10,
+          "seed": 2026500500,
+          "offset": 40,
+          "wins": 6,
+          "draws": 0,
+          "losses": 4,
+          "plies": 1295
+        },
+        {
+          "shard": 5,
+          "sha256": "467dae9b979d2cb04c8bb832aa284556c05106fcb0bbb57f11fdf2fd16f061b5",
+          "games": 10,
+          "seed": 2026600500,
+          "offset": 50,
+          "wins": 4,
+          "draws": 0,
+          "losses": 6,
+          "plies": 1261
+        },
+        {
+          "shard": 6,
+          "sha256": "31c7baa5df415fa758ae6498701ad229175f18a96fb7ecd50a7cb9b4f1a3efea",
+          "games": 10,
+          "seed": 2026700500,
+          "offset": 60,
+          "wins": 3,
+          "draws": 0,
+          "losses": 7,
+          "plies": 1062
+        },
+        {
+          "shard": 7,
+          "sha256": "cf7aa2f5142113b9874b0fb9909623bb7e3e1e3f0363e8dc9662bb468f0ca2a7",
+          "games": 10,
+          "seed": 2026800500,
+          "offset": 70,
+          "wins": 7,
+          "draws": 1,
+          "losses": 2,
+          "plies": 926
+        },
+        {
+          "shard": 8,
+          "sha256": "2660927ac40ad4762e862a692295ccd0c31e8a8993bf20e9e32b4046bdeb92a6",
+          "games": 10,
+          "seed": 2026900500,
+          "offset": 80,
+          "wins": 5,
+          "draws": 0,
+          "losses": 5,
+          "plies": 1148
+        },
+        {
+          "shard": 9,
+          "sha256": "71ec8b71881b50c6b88d6856ee7cda8341058eecb828e50273ad377e04a9442d",
+          "games": 10,
+          "seed": 2027000500,
+          "offset": 90,
+          "wins": 8,
+          "draws": 0,
+          "losses": 2,
+          "plies": 1041
+        }
+      ]
+    },
+    {
+      "level": 52,
+      "run": 38512678745,
+      "games": 100,
+      "wins": 62,
+      "draws": 0,
+      "losses": 38,
+      "win_pct": 62,
+      "point_pct": 62,
+      "score_approx_95pct": [
+        0.5243849806819456,
+        0.7156150193180544
+      ],
+      "illegal": 0,
+      "selfBlack": 50,
+      "selfWhite": 50,
+      "plies": 10418,
+      "longMax": 10,
+      "longTotal": 962,
+      "phaseMissing": 0,
+      "profileMismatch": 0,
+      "knowledgeProbes": 4616,
+      "knowledgeHits": 0,
+      "selfBinary": "929992c21789f162ed19d1d41d86a0802041c51c6175549d1973cda4989b60b4",
+      "materialBinary": "8bbb647be0e08f2c998431fc02cc1737ebfe3f64b244f8b8a10798901d4484c2",
+      "opponentGo": "go nodes 3765",
+      "decision": "next_level",
+      "raw_sources": [
+        {
+          "shard": 0,
+          "sha256": "e0d01ea4a7c2b426c5e208082a92ff657018fd3915efab8c27afee90b7675d51",
+          "games": 10,
+          "seed": 2026100500,
+          "offset": 0,
+          "wins": 6,
+          "draws": 0,
+          "losses": 4,
+          "plies": 931
+        },
+        {
+          "shard": 1,
+          "sha256": "21a8deae0cb606a29a0e8c284be3a8f13ce330ea8981ded9921a295ef47e6547",
+          "games": 10,
+          "seed": 2026200500,
+          "offset": 10,
+          "wins": 8,
+          "draws": 0,
+          "losses": 2,
+          "plies": 803
+        },
+        {
+          "shard": 2,
+          "sha256": "b87fe0dcf60a987575530fe4cee2348a83197146bf0bc41ff697d0cfdf7f6a1e",
+          "games": 10,
+          "seed": 2026300500,
+          "offset": 20,
+          "wins": 7,
+          "draws": 0,
+          "losses": 3,
+          "plies": 1202
+        },
+        {
+          "shard": 3,
+          "sha256": "bf3cbbb94df8c175ca69bb8dc5ecca5dad97080191180bc61c85fed749f219bd",
+          "games": 10,
+          "seed": 2026400500,
+          "offset": 30,
+          "wins": 7,
+          "draws": 0,
+          "losses": 3,
+          "plies": 896
+        },
+        {
+          "shard": 4,
+          "sha256": "8a92852e188fd0d35507c2dd80b11c0307a99ff29e51255d013c000217deb353",
+          "games": 10,
+          "seed": 2026500500,
+          "offset": 40,
+          "wins": 8,
+          "draws": 0,
+          "losses": 2,
+          "plies": 1061
+        },
+        {
+          "shard": 5,
+          "sha256": "8d5d8117a6058508a24bea273c4c8f069c457750daa72dc11a5d0dae35fb3bc6",
+          "games": 10,
+          "seed": 2026600500,
+          "offset": 50,
+          "wins": 5,
+          "draws": 0,
+          "losses": 5,
+          "plies": 1062
+        },
+        {
+          "shard": 6,
+          "sha256": "c9dcc6125f98f716e321d452f9569c80f6e04ee4e90e06c3084cd3f8b736694c",
+          "games": 10,
+          "seed": 2026700500,
+          "offset": 60,
+          "wins": 3,
+          "draws": 0,
+          "losses": 7,
+          "plies": 1322
+        },
+        {
+          "shard": 7,
+          "sha256": "3696423d93600ddf98adb750b1766d31d00f84d18f11bb47a54deff923b841eb",
+          "games": 10,
+          "seed": 2026800500,
+          "offset": 70,
+          "wins": 7,
+          "draws": 0,
+          "losses": 3,
+          "plies": 1174
+        },
+        {
+          "shard": 8,
+          "sha256": "41a071c901204122be015f795afa05f0c40f7e8124e03acc3204afa00cce3b31",
+          "games": 10,
+          "seed": 2026900500,
+          "offset": 80,
+          "wins": 4,
+          "draws": 0,
+          "losses": 6,
+          "plies": 897
+        },
+        {
+          "shard": 9,
+          "sha256": "770f74c887ed33a4ba4b0242ba64fe1a6fb2242c81261d341666bd4d3eb12046",
+          "games": 10,
+          "seed": 2027000500,
+          "offset": 90,
+          "wins": 7,
+          "draws": 0,
+          "losses": 3,
+          "plies": 1070
+        }
+      ]
+    },
+    {
+      "level": 53,
+      "run": 38513117808,
+      "games": 100,
+      "wins": 59,
+      "draws": 1,
+      "losses": 40,
+      "win_pct": 59,
+      "point_pct": 59.5,
+      "score_approx_95pct": [
+        0.4988033600620399,
+        0.6911966399379601
+      ],
+      "illegal": 0,
+      "selfBlack": 50,
+      "selfWhite": 50,
+      "plies": 10199,
+      "longMax": 10,
+      "longTotal": 975,
+      "phaseMissing": 0,
+      "profileMismatch": 0,
+      "knowledgeProbes": 4324,
+      "knowledgeHits": 0,
+      "selfBinary": "929992c21789f162ed19d1d41d86a0802041c51c6175549d1973cda4989b60b4",
+      "materialBinary": "8bbb647be0e08f2c998431fc02cc1737ebfe3f64b244f8b8a10798901d4484c2",
+      "opponentGo": "go nodes 4229",
+      "decision": "next_level",
+      "raw_sources": [
+        {
+          "shard": 0,
+          "sha256": "f9ee9dcd06a6aeb89d856e5a83a266f75b59a253e6f2e81f8b4de620cc0deea4",
+          "games": 10,
+          "seed": 2026100500,
+          "offset": 0,
+          "wins": 4,
+          "draws": 0,
+          "losses": 6,
+          "plies": 1075
+        },
+        {
+          "shard": 1,
+          "sha256": "f982fbb169f9f0afcc40e25cfcd0469a90c922f39005e983b01c2e5853cf99ad",
+          "games": 10,
+          "seed": 2026200500,
+          "offset": 10,
+          "wins": 6,
+          "draws": 1,
+          "losses": 3,
+          "plies": 827
+        },
+        {
+          "shard": 2,
+          "sha256": "78ebc82d9fea56a2ba4263c58883f30c29299461d1cf69f06ae33d1f35c45f23",
+          "games": 10,
+          "seed": 2026300500,
+          "offset": 20,
+          "wins": 5,
+          "draws": 0,
+          "losses": 5,
+          "plies": 1186
+        },
+        {
+          "shard": 3,
+          "sha256": "0aa17bc9a25e9c2f86db66afd6edf9ed18968e44f67622095ba2fa6ac30bab23",
+          "games": 10,
+          "seed": 2026400500,
+          "offset": 30,
+          "wins": 7,
+          "draws": 0,
+          "losses": 3,
+          "plies": 1004
+        },
+        {
+          "shard": 4,
+          "sha256": "b5967adae2cf78f18ceb5a00863b616528c06957d0aab72c170753e3099fa5c4",
+          "games": 10,
+          "seed": 2026500500,
+          "offset": 40,
+          "wins": 6,
+          "draws": 0,
+          "losses": 4,
+          "plies": 959
+        },
+        {
+          "shard": 5,
+          "sha256": "67b342afe88da565826fcee170bbc7399d5b187eb8767960a5e47d9c0aa5e428",
+          "games": 10,
+          "seed": 2026600500,
+          "offset": 50,
+          "wins": 7,
+          "draws": 0,
+          "losses": 3,
+          "plies": 940
+        },
+        {
+          "shard": 6,
+          "sha256": "c62d19cbade63d2f84707ca3e8c442e00b51f47d51e3f0d10e568abad70a4816",
+          "games": 10,
+          "seed": 2026700500,
+          "offset": 60,
+          "wins": 7,
+          "draws": 0,
+          "losses": 3,
+          "plies": 848
+        },
+        {
+          "shard": 7,
+          "sha256": "889df3e1e27821292ad842ab2db0ac1df6e8fd5865e88ae739cc2b09d892aecd",
+          "games": 10,
+          "seed": 2026800500,
+          "offset": 70,
+          "wins": 6,
+          "draws": 0,
+          "losses": 4,
+          "plies": 1121
+        },
+        {
+          "shard": 8,
+          "sha256": "f331a4e826f534b0eef27ff1db3dabf63bbdf70f1d58d789b389575dc5d66955",
+          "games": 10,
+          "seed": 2026900500,
+          "offset": 80,
+          "wins": 6,
+          "draws": 0,
+          "losses": 4,
+          "plies": 1107
+        },
+        {
+          "shard": 9,
+          "sha256": "60688eea82689f55d85305e4e51ba05a999a510c7e5bf7d4df21fe054b7aee09",
+          "games": 10,
+          "seed": 2027000500,
+          "offset": 90,
+          "wins": 5,
+          "draws": 0,
+          "losses": 5,
+          "plies": 1132
+        }
+      ]
+    },
+    {
+      "level": 54,
+      "run": 38513556620,
+      "games": 100,
+      "wins": 44,
+      "draws": 0,
+      "losses": 56,
+      "win_pct": 44,
+      "point_pct": 44,
+      "score_approx_95pct": [
+        0.3422180202923077,
+        0.5377819797076923
+      ],
+      "illegal": 0,
+      "selfBlack": 50,
+      "selfWhite": 50,
+      "plies": 10872,
+      "longMax": 10,
+      "longTotal": 978,
+      "phaseMissing": 0,
+      "profileMismatch": 0,
+      "knowledgeProbes": 4652,
+      "knowledgeHits": 0,
+      "selfBinary": "929992c21789f162ed19d1d41d86a0802041c51c6175549d1973cda4989b60b4",
+      "materialBinary": "8bbb647be0e08f2c998431fc02cc1737ebfe3f64b244f8b8a10798901d4484c2",
+      "opponentGo": "go nodes 4751",
+      "decision": "next_level",
+      "raw_sources": [
+        {
+          "shard": 0,
+          "sha256": "de11330320be5a847432fda01a01e1fe239037448bd09091b9d3c5fa56d0db40",
+          "games": 10,
+          "seed": 2026100500,
+          "offset": 0,
+          "wins": 5,
+          "draws": 0,
+          "losses": 5,
+          "plies": 1222
+        },
+        {
+          "shard": 1,
+          "sha256": "ff4d1a1d7721d5226f7a47f3d5f43071bed48c72505af3aa9ea2d1d4cb624b83",
+          "games": 10,
+          "seed": 2026200500,
+          "offset": 10,
+          "wins": 6,
+          "draws": 0,
+          "losses": 4,
+          "plies": 811
+        },
+        {
+          "shard": 2,
+          "sha256": "cf8081b6dd8e4c85c49daf7d519864427e54923dd7be651736e1ce512b678618",
+          "games": 10,
+          "seed": 2026300500,
+          "offset": 20,
+          "wins": 5,
+          "draws": 0,
+          "losses": 5,
+          "plies": 1172
+        },
+        {
+          "shard": 3,
+          "sha256": "3272ad38becfbb25ab5aceb82c5703c0e76d41afb453d0e8d97d3312ae934302",
+          "games": 10,
+          "seed": 2026400500,
+          "offset": 30,
+          "wins": 4,
+          "draws": 0,
+          "losses": 6,
+          "plies": 917
+        },
+        {
+          "shard": 4,
+          "sha256": "9233577248dba1f869681e9343823f0daf375661e1cb83df00df87a5adc6efc4",
+          "games": 10,
+          "seed": 2026500500,
+          "offset": 40,
+          "wins": 5,
+          "draws": 0,
+          "losses": 5,
+          "plies": 1072
+        },
+        {
+          "shard": 5,
+          "sha256": "7c1802ed336db2b58de02e58e8d2d08238e054b8365c541b452ddc0d073d9728",
+          "games": 10,
+          "seed": 2026600500,
+          "offset": 50,
+          "wins": 2,
+          "draws": 0,
+          "losses": 8,
+          "plies": 1163
+        },
+        {
+          "shard": 6,
+          "sha256": "f896ac0dd437f5a3f6423498a186d882de8f7116628d98a0c8ca5754bc491a89",
+          "games": 10,
+          "seed": 2026700500,
+          "offset": 60,
+          "wins": 5,
+          "draws": 0,
+          "losses": 5,
+          "plies": 1328
+        },
+        {
+          "shard": 7,
+          "sha256": "5aafc394a4b3d359598c12da4876278a57d728aaaf2bb092899e43b7c52a3c3e",
+          "games": 10,
+          "seed": 2026800500,
+          "offset": 70,
+          "wins": 5,
+          "draws": 0,
+          "losses": 5,
+          "plies": 1088
+        },
+        {
+          "shard": 8,
+          "sha256": "8794004925869e33f34a9d18274c9ff97746b1316f6a7bc6ea3b547bd252cd97",
+          "games": 10,
+          "seed": 2026900500,
+          "offset": 80,
+          "wins": 5,
+          "draws": 0,
+          "losses": 5,
+          "plies": 1094
+        },
+        {
+          "shard": 9,
+          "sha256": "d0a0e3b0b7fadf48c1ce6d6ec125469b5cea05c72015d9a2567350a1f2b3d245",
+          "games": 10,
+          "seed": 2027000500,
+          "offset": 90,
+          "wins": 2,
+          "draws": 0,
+          "losses": 8,
+          "plies": 1005
+        }
+      ]
+    },
+    {
+      "level": 55,
+      "run": 38514009493,
+      "games": 100,
+      "wins": 43,
+      "draws": 4,
+      "losses": 53,
+      "win_pct": 43,
+      "point_pct": 45,
+      "score_approx_95pct": [
+        0.35400021043794105,
+        0.545999789562059
+      ],
+      "illegal": 0,
+      "selfBlack": 50,
+      "selfWhite": 50,
+      "plies": 10339,
+      "longMax": 10,
+      "longTotal": 978,
+      "phaseMissing": 0,
+      "profileMismatch": 0,
+      "knowledgeProbes": 4640,
+      "knowledgeHits": 0,
+      "selfBinary": "929992c21789f162ed19d1d41d86a0802041c51c6175549d1973cda4989b60b4",
+      "materialBinary": "8bbb647be0e08f2c998431fc02cc1737ebfe3f64b244f8b8a10798901d4484c2",
+      "opponentGo": "go nodes 5337",
+      "decision": "next_level",
+      "raw_sources": [
+        {
+          "shard": 0,
+          "sha256": "2b454d8f6549304d3d66d1d085829e1c238f2fce8fd99296c5138ccd1a40bb73",
+          "games": 10,
+          "seed": 2026100500,
+          "offset": 0,
+          "wins": 4,
+          "draws": 0,
+          "losses": 6,
+          "plies": 1039
+        },
+        {
+          "shard": 1,
+          "sha256": "f2b61b8861cf7c57a9b7ef78816adbde80624fef2914a326c23035a581cb9289",
+          "games": 10,
+          "seed": 2026200500,
+          "offset": 10,
+          "wins": 6,
+          "draws": 0,
+          "losses": 4,
+          "plies": 923
+        },
+        {
+          "shard": 2,
+          "sha256": "459efdedef5989e07ad24e53f036281d0fe81892c1a2bcc1125097d72585ceaa",
+          "games": 10,
+          "seed": 2026300500,
+          "offset": 20,
+          "wins": 5,
+          "draws": 0,
+          "losses": 5,
+          "plies": 1152
+        },
+        {
+          "shard": 3,
+          "sha256": "d49d89423cb4557f81707a82a61689601fec343dca2cd79e1173d7295b9d4c68",
+          "games": 10,
+          "seed": 2026400500,
+          "offset": 30,
+          "wins": 3,
+          "draws": 0,
+          "losses": 7,
+          "plies": 1032
+        },
+        {
+          "shard": 4,
+          "sha256": "82c7c878112803fd331e9aad0aab9e32a23b9640a6542b12d8a8e3fcfb8c3c12",
+          "games": 10,
+          "seed": 2026500500,
+          "offset": 40,
+          "wins": 9,
+          "draws": 0,
+          "losses": 1,
+          "plies": 1068
+        },
+        {
+          "shard": 5,
+          "sha256": "dd91c4cc8a2a285c021cb70ed2856264df4a71ab4dfee7a1264b05bbda7fd246",
+          "games": 10,
+          "seed": 2026600500,
+          "offset": 50,
+          "wins": 3,
+          "draws": 0,
+          "losses": 7,
+          "plies": 1098
+        },
+        {
+          "shard": 6,
+          "sha256": "362ed59d0f22fbb52167f358d1cf401cf2dc6ff14155862c255e6413fa5cd89f",
+          "games": 10,
+          "seed": 2026700500,
+          "offset": 60,
+          "wins": 2,
+          "draws": 0,
+          "losses": 8,
+          "plies": 1017
+        },
+        {
+          "shard": 7,
+          "sha256": "3df3b20f830ff9b147d662bfd48be618f56fcdee7a736a39360a4c7276df2a16",
+          "games": 10,
+          "seed": 2026800500,
+          "offset": 70,
+          "wins": 2,
+          "draws": 3,
+          "losses": 5,
+          "plies": 1067
+        },
+        {
+          "shard": 8,
+          "sha256": "495a032abb785e11a6d6dce9ed45564df03a5bf40c2b5d08c49d1a1032d70680",
+          "games": 10,
+          "seed": 2026900500,
+          "offset": 80,
+          "wins": 4,
+          "draws": 1,
+          "losses": 5,
+          "plies": 1113
+        },
+        {
+          "shard": 9,
+          "sha256": "cd0856a484543688c6e9432030ef2d757033511e40e172a9795c77722b728948",
+          "games": 10,
+          "seed": 2027000500,
+          "offset": 90,
+          "wins": 5,
+          "draws": 0,
+          "losses": 5,
+          "plies": 830
+        }
+      ]
+    },
+    {
+      "level": 56,
+      "run": 38514433389,
+      "games": 100,
+      "wins": 47,
+      "draws": 0,
+      "losses": 53,
+      "win_pct": 47,
+      "point_pct": 47,
+      "score_approx_95pct": [
+        0.3716837426228679,
+        0.5683162573771321
+      ],
+      "illegal": 0,
+      "selfBlack": 50,
+      "selfWhite": 50,
+      "plies": 10713,
+      "longMax": 10,
+      "longTotal": 980,
+      "phaseMissing": 0,
+      "profileMismatch": 0,
+      "knowledgeProbes": 4775,
+      "knowledgeHits": 0,
+      "selfBinary": "929992c21789f162ed19d1d41d86a0802041c51c6175549d1973cda4989b60b4",
+      "materialBinary": "8bbb647be0e08f2c998431fc02cc1737ebfe3f64b244f8b8a10798901d4484c2",
+      "opponentGo": "go nodes 5995",
+      "decision": "next_level",
+      "raw_sources": [
+        {
+          "shard": 0,
+          "sha256": "b3482f2bd4c6ab272e89f37d519ce7c6d76e04823d7fdb8629a21ac848df2fb9",
+          "games": 10,
+          "seed": 2026100500,
+          "offset": 0,
+          "wins": 3,
+          "draws": 0,
+          "losses": 7,
+          "plies": 1162
+        },
+        {
+          "shard": 1,
+          "sha256": "bac3e90230ac987310f9ec9642bae58d49deeac752f37f8ed62d922632f6032d",
+          "games": 10,
+          "seed": 2026200500,
+          "offset": 10,
+          "wins": 4,
+          "draws": 0,
+          "losses": 6,
+          "plies": 1121
+        },
+        {
+          "shard": 2,
+          "sha256": "67205f55bf837d8d23d03c05307671f422cbba727deb5eb8df72e86f711406a5",
+          "games": 10,
+          "seed": 2026300500,
+          "offset": 20,
+          "wins": 8,
+          "draws": 0,
+          "losses": 2,
+          "plies": 1043
+        },
+        {
+          "shard": 3,
+          "sha256": "24028da9dbc62fafd143987690fd8cf53811fffd0ccc68ba8371cf8110905f1a",
+          "games": 10,
+          "seed": 2026400500,
+          "offset": 30,
+          "wins": 8,
+          "draws": 0,
+          "losses": 2,
+          "plies": 835
+        },
+        {
+          "shard": 4,
+          "sha256": "9082f76f82ab918b1b71faed97a0467664b37c2b07deb3e945bbc766c2a943c0",
+          "games": 10,
+          "seed": 2026500500,
+          "offset": 40,
+          "wins": 4,
+          "draws": 0,
+          "losses": 6,
+          "plies": 1155
+        },
+        {
+          "shard": 5,
+          "sha256": "42f730aa5eb56d9d782b6f1b823a95e51b11594c087459ef408c2f1358c2dd3e",
+          "games": 10,
+          "seed": 2026600500,
+          "offset": 50,
+          "wins": 4,
+          "draws": 0,
+          "losses": 6,
+          "plies": 1167
+        },
+        {
+          "shard": 6,
+          "sha256": "d1f44c3fd559571671dd97d7e44ba5ecd34ba29ac45a17fba6953c075e3f7cfb",
+          "games": 10,
+          "seed": 2026700500,
+          "offset": 60,
+          "wins": 2,
+          "draws": 0,
+          "losses": 8,
+          "plies": 1083
+        },
+        {
+          "shard": 7,
+          "sha256": "a43d91059fd3775dcfaf7c99f9060ba40b92b338b235df66c1567877f6463e6d",
+          "games": 10,
+          "seed": 2026800500,
+          "offset": 70,
+          "wins": 5,
+          "draws": 0,
+          "losses": 5,
+          "plies": 1108
+        },
+        {
+          "shard": 8,
+          "sha256": "892c1b4fd15bdd026f25258776feee97c69bd96449d40cd96e30d80cec110d21",
+          "games": 10,
+          "seed": 2026900500,
+          "offset": 80,
+          "wins": 6,
+          "draws": 0,
+          "losses": 4,
+          "plies": 1009
+        },
+        {
+          "shard": 9,
+          "sha256": "6002d101ed2904d3f36010ab766bdaa47242d66bba99bc07f25defa100d3670b",
+          "games": 10,
+          "seed": 2027000500,
+          "offset": 90,
+          "wins": 3,
+          "draws": 0,
+          "losses": 7,
+          "plies": 1030
+        }
+      ]
+    },
+    {
+      "level": 57,
+      "run": 38514866509,
+      "games": 100,
+      "wins": 35,
+      "draws": 1,
+      "losses": 64,
+      "win_pct": 35,
+      "point_pct": 35.5,
+      "score_approx_95pct": [
+        0.26125489319167094,
+        0.448745106808329
+      ],
+      "illegal": 0,
+      "selfBlack": 50,
+      "selfWhite": 50,
+      "plies": 10767,
+      "longMax": 10,
+      "longTotal": 979,
+      "phaseMissing": 0,
+      "profileMismatch": 0,
+      "knowledgeProbes": 4999,
+      "knowledgeHits": 0,
+      "selfBinary": "929992c21789f162ed19d1d41d86a0802041c51c6175549d1973cda4989b60b4",
+      "materialBinary": "8bbb647be0e08f2c998431fc02cc1737ebfe3f64b244f8b8a10798901d4484c2",
+      "opponentGo": "go nodes 6734",
+      "decision": "next_level",
+      "raw_sources": [
+        {
+          "shard": 0,
+          "sha256": "969657c213ec124e23dc4e482766e22ad0c2a5c631cfd726698089cc5901abb1",
+          "games": 10,
+          "seed": 2026100500,
+          "offset": 0,
+          "wins": 5,
+          "draws": 0,
+          "losses": 5,
+          "plies": 1106
+        },
+        {
+          "shard": 1,
+          "sha256": "a3c0593cdf2f34cd8bc72bb4ef5776dc284fd06c41e05c741d288f0e813536ac",
+          "games": 10,
+          "seed": 2026200500,
+          "offset": 10,
+          "wins": 4,
+          "draws": 0,
+          "losses": 6,
+          "plies": 947
+        },
+        {
+          "shard": 2,
+          "sha256": "9176bd768ea4f5945408b817c3fe3e10701ce57b7baab37f5bf5a0ac393e5b37",
+          "games": 10,
+          "seed": 2026300500,
+          "offset": 20,
+          "wins": 4,
+          "draws": 0,
+          "losses": 6,
+          "plies": 1113
+        },
+        {
+          "shard": 3,
+          "sha256": "3fbcf4bf4f6908a3e50878bf71d368e6d6e72fc1de9b5dd9cdbe184ac477b2f8",
+          "games": 10,
+          "seed": 2026400500,
+          "offset": 30,
+          "wins": 3,
+          "draws": 0,
+          "losses": 7,
+          "plies": 1034
+        },
+        {
+          "shard": 4,
+          "sha256": "d5ca5eafe54facf19b9d2a30f61227a12a6875c594c8a415c0eb2f664cff5ee3",
+          "games": 10,
+          "seed": 2026500500,
+          "offset": 40,
+          "wins": 2,
+          "draws": 0,
+          "losses": 8,
+          "plies": 1139
+        },
+        {
+          "shard": 5,
+          "sha256": "fac4ae7412e672ad653606b950009938d94f67009cd33b3aba688a8388514687",
+          "games": 10,
+          "seed": 2026600500,
+          "offset": 50,
+          "wins": 3,
+          "draws": 0,
+          "losses": 7,
+          "plies": 886
+        },
+        {
+          "shard": 6,
+          "sha256": "8d91a9bb2adce957fe5fe15a28f396de5817e545b8e46c7379b204b990d55e50",
+          "games": 10,
+          "seed": 2026700500,
+          "offset": 60,
+          "wins": 2,
+          "draws": 1,
+          "losses": 7,
+          "plies": 1157
+        },
+        {
+          "shard": 7,
+          "sha256": "5ae6a03dcd585e0d9121d185bfa4cdf970b3559523623fb17e98f0e74f8b68b2",
+          "games": 10,
+          "seed": 2026800500,
+          "offset": 70,
+          "wins": 4,
+          "draws": 0,
+          "losses": 6,
+          "plies": 1155
+        },
+        {
+          "shard": 8,
+          "sha256": "220b20d722387e466bc8d52261fee561652fdbc8c4c8e43f3bb7491f3aae3c9b",
+          "games": 10,
+          "seed": 2026900500,
+          "offset": 80,
+          "wins": 3,
+          "draws": 0,
+          "losses": 7,
+          "plies": 1018
+        },
+        {
+          "shard": 9,
+          "sha256": "ecce98dcc24b11d285821e0230b1ab35b5846817052f229f55c3959dde76635e",
+          "games": 10,
+          "seed": 2027000500,
+          "offset": 90,
+          "wins": 5,
+          "draws": 0,
+          "losses": 5,
+          "plies": 1212
+        }
+      ]
+    },
+    {
+      "level": 58,
+      "run": 38515323682,
+      "games": 100,
+      "wins": 26,
+      "draws": 1,
+      "losses": 73,
+      "win_pct": 26,
+      "point_pct": 26.5,
+      "score_approx_95pct": [
+        0.1786226484043017,
+        0.35137735159569833
+      ],
+      "illegal": 0,
+      "selfBlack": 50,
+      "selfWhite": 50,
+      "plies": 10774,
+      "longMax": 10,
+      "longTotal": 990,
+      "phaseMissing": 0,
+      "profileMismatch": 0,
+      "knowledgeProbes": 4935,
+      "knowledgeHits": 0,
+      "selfBinary": "929992c21789f162ed19d1d41d86a0802041c51c6175549d1973cda4989b60b4",
+      "materialBinary": "8bbb647be0e08f2c998431fc02cc1737ebfe3f64b244f8b8a10798901d4484c2",
+      "opponentGo": "go nodes 7565",
+      "decision": "below_30_percent",
+      "raw_sources": [
+        {
+          "shard": 0,
+          "sha256": "443e089083ce79e2d6abd1cfc666b055ed2296acc02714247749f03a9748cde0",
+          "games": 10,
+          "seed": 2026100500,
+          "offset": 0,
+          "wins": 0,
+          "draws": 0,
+          "losses": 10,
+          "plies": 1199
+        },
+        {
+          "shard": 1,
+          "sha256": "0573dc03591c8203954b81eb59b06506049e13335ed2e1e6b77d09325b3a5d9c",
+          "games": 10,
+          "seed": 2026200500,
+          "offset": 10,
+          "wins": 1,
+          "draws": 0,
+          "losses": 9,
+          "plies": 1194
+        },
+        {
+          "shard": 2,
+          "sha256": "7487d5f3650e9442f70f91262bdfad497ce8e3a3128330a01355fdfecb97ce90",
+          "games": 10,
+          "seed": 2026300500,
+          "offset": 20,
+          "wins": 3,
+          "draws": 0,
+          "losses": 7,
+          "plies": 1070
+        },
+        {
+          "shard": 3,
+          "sha256": "44d1235a6a667bab686d53a3ccb9f25800a32e13cb12946efe33755078bf9ea9",
+          "games": 10,
+          "seed": 2026400500,
+          "offset": 30,
+          "wins": 3,
+          "draws": 0,
+          "losses": 7,
+          "plies": 1014
+        },
+        {
+          "shard": 4,
+          "sha256": "ce902f345512c4cd47b0aa0c6cb531f0ce392222e50a1418c6a13e6899f334ce",
+          "games": 10,
+          "seed": 2026500500,
+          "offset": 40,
+          "wins": 1,
+          "draws": 0,
+          "losses": 9,
+          "plies": 1036
+        },
+        {
+          "shard": 5,
+          "sha256": "4edf40c8fc878b59424dcdaf696d0fe98c818d6c0f082121ffffab79a6a318e8",
+          "games": 10,
+          "seed": 2026600500,
+          "offset": 50,
+          "wins": 3,
+          "draws": 0,
+          "losses": 7,
+          "plies": 1066
+        },
+        {
+          "shard": 6,
+          "sha256": "df898e60029b30551f7c7d08274bcd38bd4e9cfafcc31c360e299e3942ac453a",
+          "games": 10,
+          "seed": 2026700500,
+          "offset": 60,
+          "wins": 3,
+          "draws": 0,
+          "losses": 7,
+          "plies": 1014
+        },
+        {
+          "shard": 7,
+          "sha256": "ffccbe96dadae77d8dcca786bf373117958254257d086a743e54269539fe7b33",
+          "games": 10,
+          "seed": 2026800500,
+          "offset": 70,
+          "wins": 4,
+          "draws": 0,
+          "losses": 6,
+          "plies": 945
+        },
+        {
+          "shard": 8,
+          "sha256": "a052b85765f26387a760ddd05658036b511b1556e2607c65968859507785e94a",
+          "games": 10,
+          "seed": 2026900500,
+          "offset": 80,
+          "wins": 5,
+          "draws": 0,
+          "losses": 5,
+          "plies": 1020
+        },
+        {
+          "shard": 9,
+          "sha256": "b4fa722e90050dc8d3b087daaec25fece8b3b66b877e022b5751bc984f4b4d5a",
+          "games": 10,
+          "seed": 2027000500,
+          "offset": 90,
+          "wins": 3,
+          "draws": 1,
+          "losses": 6,
+          "plies": 1216
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "run": 38510955872,
+      "id": 11870400173,
+      "name": "yaneuraou-ladder-38510955872-0",
+      "size_in_bytes": 63239,
+      "digest": "sha256:4e147e31b416082298f497f7471a770404a09111ffe42c09f24b688aa3a006cb",
+      "expires_at": "2027-01-12T04:21:22Z",
+      "expired": false
+    },
+    {
+      "run": 38510955872,
+      "id": 11869379495,
+      "name": "yaneuraou-ladder-38510955872-1",
+      "size_in_bytes": 61489,
+      "digest": "sha256:7db740aff0b6bb1a9ebf77e3d4a7a96ee61addbe5a28f9470d03a0daf5c17f6e",
+      "expires_at": "2027-01-12T04:21:22Z",
+      "expired": false
+    },
+    {
+      "run": 38510955872,
+      "id": 11870370756,
+      "name": "yaneuraou-ladder-38510955872-2",
+      "size_in_bytes": 56122,
+      "digest": "sha256:61960f6e156d3ed8eb1dfe1aa5b42b3fdb2c502b39dd7f6d8dda33e4ecdaf5d6",
+      "expires_at": "2027-01-12T04:21:22Z",
+      "expired": false
+    },
+    {
+      "run": 38510955872,
+      "id": 11869459387,
+      "name": "yaneuraou-ladder-38510955872-3",
+      "size_in_bytes": 64623,
+      "digest": "sha256:c728c88349eda8a8a3068c22a933ce9121e8de37f247735e7f494e5193cc550b",
+      "expires_at": "2027-01-12T04:21:22Z",
+      "expired": false
+    },
+    {
+      "run": 38510955872,
+      "id": 11869154555,
+      "name": "yaneuraou-ladder-38510955872-4",
+      "size_in_bytes": 57152,
+      "digest": "sha256:8191d0b66ddf1029d4ab78a9e3e6029e3234432ced8310e769718f2849dcefe4",
+      "expires_at": "2027-01-12T04:21:22Z",
+      "expired": false
+    },
+    {
+      "run": 38510955872,
+      "id": 11870055606,
+      "name": "yaneuraou-ladder-38510955872-5",
+      "size_in_bytes": 53240,
+      "digest": "sha256:20e48849149df46a8bd3e6fd3bad1725849a37d4c72be89582fd9c7bf0a551bf",
+      "expires_at": "2027-01-12T04:21:22Z",
+      "expired": false
+    },
+    {
+      "run": 38510955872,
+      "id": 11869499073,
+      "name": "yaneuraou-ladder-38510955872-6",
+      "size_in_bytes": 58540,
+      "digest": "sha256:ec7816bf7a8f05a5e5caab4770a998024918198a55be26f31e781bf622741bbb",
+      "expires_at": "2027-01-12T04:21:22Z",
+      "expired": false
+    },
+    {
+      "run": 38510955872,
+      "id": 11869529170,
+      "name": "yaneuraou-ladder-38510955872-7",
+      "size_in_bytes": 56049,
+      "digest": "sha256:a7f4e66df9478bc24df1624de635dd8e106e9bcf4070572794b736729456c7f0",
+      "expires_at": "2027-01-12T04:21:22Z",
+      "expired": false
+    },
+    {
+      "run": 38510955872,
+      "id": 11869808617,
+      "name": "yaneuraou-ladder-38510955872-8",
+      "size_in_bytes": 55481,
+      "digest": "sha256:7e61e145df0e83768d0904d9c77b6beecaf776cf40a774e48f8aa0a7c87327cb",
+      "expires_at": "2027-01-12T04:21:22Z",
+      "expired": false
+    },
+    {
+      "run": 38510955872,
+      "id": 11870295424,
+      "name": "yaneuraou-ladder-38510955872-9",
+      "size_in_bytes": 72371,
+      "digest": "sha256:842fc7806c1d3f34de66dfaccbdde411c7c13ddcf1c6aa73b42b2cd1f29ba161",
+      "expires_at": "2027-01-12T04:21:22Z",
+      "expired": false
+    },
+    {
+      "run": 38510955872,
+      "id": 11870495176,
+      "name": "yaneuraou-ladder-summary-38510955872",
+      "size_in_bytes": 429,
+      "digest": "sha256:8709231c2c8f4dec3eea65201791da1cf29ccde5c73100b3a3d25caa245373ea",
+      "expires_at": "2027-01-12T04:21:22Z",
+      "expired": false
+    },
+    {
+      "run": 38511391999,
+      "id": 11869184718,
+      "name": "yaneuraou-ladder-38511391999-0",
+      "size_in_bytes": 60264,
+      "digest": "sha256:ef9573033090c3862317b7fd893117d3c6af4d4caa53f2ff955521a0280a143c",
+      "expires_at": "2027-01-12T04:26:28Z",
+      "expired": false
+    },
+    {
+      "run": 38511391999,
+      "id": 11870615373,
+      "name": "yaneuraou-ladder-38511391999-1",
+      "size_in_bytes": 66595,
+      "digest": "sha256:62d259d758757711a2b9ea19193f1aa2553d40bd5cdb22f69098a231f16e8f93",
+      "expires_at": "2027-01-12T04:26:28Z",
+      "expired": false
+    },
+    {
+      "run": 38511391999,
+      "id": 11870580446,
+      "name": "yaneuraou-ladder-38511391999-2",
+      "size_in_bytes": 60521,
+      "digest": "sha256:d40b551443956cab67e6fe0c0048998909b81a2f4d28c2b1c9d52546bd332e12",
+      "expires_at": "2027-01-12T04:26:28Z",
+      "expired": false
+    },
+    {
+      "run": 38511391999,
+      "id": 11869624573,
+      "name": "yaneuraou-ladder-38511391999-3",
+      "size_in_bytes": 49427,
+      "digest": "sha256:26e313366437a6e5e13005034b44694f548cfd3781471ee3511c3abe2485c7fb",
+      "expires_at": "2027-01-12T04:26:28Z",
+      "expired": false
+    },
+    {
+      "run": 38511391999,
+      "id": 11869839491,
+      "name": "yaneuraou-ladder-38511391999-4",
+      "size_in_bytes": 73275,
+      "digest": "sha256:084bc9fa6639b34763935d4947459ff4560ba99be2435943187f0ba55661bec4",
+      "expires_at": "2027-01-12T04:26:28Z",
+      "expired": false
+    },
+    {
+      "run": 38511391999,
+      "id": 11869784645,
+      "name": "yaneuraou-ladder-38511391999-5",
+      "size_in_bytes": 65240,
+      "digest": "sha256:a8563a62dbf88a27e75fc48b455de4eb767f2459ad8cb34e6b76145fc457e601",
+      "expires_at": "2027-01-12T04:26:28Z",
+      "expired": false
+    },
+    {
+      "run": 38511391999,
+      "id": 11870555159,
+      "name": "yaneuraou-ladder-38511391999-6",
+      "size_in_bytes": 63747,
+      "digest": "sha256:c6e842fe18d9bf4d0511333637b04b04eb98fd6efcdd9e23be00595e68c69a06",
+      "expires_at": "2027-01-12T04:26:28Z",
+      "expired": false
+    },
+    {
+      "run": 38511391999,
+      "id": 11870276720,
+      "name": "yaneuraou-ladder-38511391999-7",
+      "size_in_bytes": 62846,
+      "digest": "sha256:691c5b2f84cf5da680f5fe7da8af019e0a7c89ac82c5156328cfa72678f3810d",
+      "expires_at": "2027-01-12T04:26:28Z",
+      "expired": false
+    },
+    {
+      "run": 38511391999,
+      "id": 11870426369,
+      "name": "yaneuraou-ladder-38511391999-8",
+      "size_in_bytes": 61838,
+      "digest": "sha256:65ba8840c197ad1c8fe75c2bbea2fd0f0b8dab3a39b2437ed1a2d68b15127ffd",
+      "expires_at": "2027-01-12T04:26:28Z",
+      "expired": false
+    },
+    {
+      "run": 38511391999,
+      "id": 11869764558,
+      "name": "yaneuraou-ladder-38511391999-9",
+      "size_in_bytes": 74506,
+      "digest": "sha256:cd82e2289f35323820a32b930525164d5e63332d3bcc81854c31ec762078b61b",
+      "expires_at": "2027-01-12T04:26:28Z",
+      "expired": false
+    },
+    {
+      "run": 38511391999,
+      "id": 11869854474,
+      "name": "yaneuraou-ladder-summary-38511391999",
+      "size_in_bytes": 430,
+      "digest": "sha256:77c4835eb943e8811531748bf26012bc4530517b0ad80211530f9678a3d0def2",
+      "expires_at": "2027-01-12T04:26:28Z",
+      "expired": false
+    },
+    {
+      "run": 38511841817,
+      "id": 11870960371,
+      "name": "yaneuraou-ladder-38511841817-0",
+      "size_in_bytes": 64290,
+      "digest": "sha256:897fd6d90172818b3be3d877a58ca928c2373cd7ab8473e0584ca0668e80941d",
+      "expires_at": "2027-01-12T04:31:36Z",
+      "expired": false
+    },
+    {
+      "run": 38511841817,
+      "id": 11870960428,
+      "name": "yaneuraou-ladder-38511841817-1",
+      "size_in_bytes": 70621,
+      "digest": "sha256:201a3a0589fd68a5e8287bf2c9570e15b1cef79795c4acdc85dbc2b241b64c10",
+      "expires_at": "2027-01-12T04:31:36Z",
+      "expired": false
+    },
+    {
+      "run": 38511841817,
+      "id": 11870590623,
+      "name": "yaneuraou-ladder-38511841817-2",
+      "size_in_bytes": 62564,
+      "digest": "sha256:498dad974658985a74f80ca947fd9f4bab44e6b44acb160e2b3344197a9ae6d4",
+      "expires_at": "2027-01-12T04:31:36Z",
+      "expired": false
+    },
+    {
+      "run": 38511841817,
+      "id": 11870251642,
+      "name": "yaneuraou-ladder-38511841817-3",
+      "size_in_bytes": 64096,
+      "digest": "sha256:1e83b974fff04fc666d86119d79905339b4f80785d600b2b56b401d4a265aba7",
+      "expires_at": "2027-01-12T04:31:36Z",
+      "expired": false
+    },
+    {
+      "run": 38511841817,
+      "id": 11870920350,
+      "name": "yaneuraou-ladder-38511841817-4",
+      "size_in_bytes": 54987,
+      "digest": "sha256:9b20f2fdc5d235041924205525ba804458ee2263f68d39d7fb8d6a0450c2ab15",
+      "expires_at": "2027-01-12T04:31:36Z",
+      "expired": false
+    },
+    {
+      "run": 38511841817,
+      "id": 11870985199,
+      "name": "yaneuraou-ladder-38511841817-5",
+      "size_in_bytes": 50100,
+      "digest": "sha256:d4e617ed304fa27f13629c0ecc04584377949b66b750163ff40e43f6402e493a",
+      "expires_at": "2027-01-12T04:31:36Z",
+      "expired": false
+    },
+    {
+      "run": 38511841817,
+      "id": 11870760800,
+      "name": "yaneuraou-ladder-38511841817-6",
+      "size_in_bytes": 65041,
+      "digest": "sha256:7391d27b91c66157557eba636bfa9f134df1e7a6a1fd645fcb504f99b3bf7915",
+      "expires_at": "2027-01-12T04:31:36Z",
+      "expired": false
+    },
+    {
+      "run": 38511841817,
+      "id": 11870601214,
+      "name": "yaneuraou-ladder-38511841817-7",
+      "size_in_bytes": 63079,
+      "digest": "sha256:db0f86a45867cd8d8abda62bba9632c981da1e97c188c120a0bf10af94661d84",
+      "expires_at": "2027-01-12T04:31:36Z",
+      "expired": false
+    },
+    {
+      "run": 38511841817,
+      "id": 11869869742,
+      "name": "yaneuraou-ladder-38511841817-8",
+      "size_in_bytes": 58235,
+      "digest": "sha256:195aea1b559abafdc29484223bc7ea7f7a229167043021668dd5f56025434795",
+      "expires_at": "2027-01-12T04:31:36Z",
+      "expired": false
+    },
+    {
+      "run": 38511841817,
+      "id": 11870056850,
+      "name": "yaneuraou-ladder-38511841817-9",
+      "size_in_bytes": 54505,
+      "digest": "sha256:72bf69ae896b62a8156eac4787eb4ba783ad19d181904dd76e2f97704f943f0c",
+      "expires_at": "2027-01-12T04:31:36Z",
+      "expired": false
+    },
+    {
+      "run": 38511841817,
+      "id": 11870785778,
+      "name": "yaneuraou-ladder-summary-38511841817",
+      "size_in_bytes": 433,
+      "digest": "sha256:e1ccd71cf3ddaa32de6edcb1878301b0934f47a47a02de5229f17b84b31bfde1",
+      "expires_at": "2027-01-12T04:31:36Z",
+      "expired": false
+    },
+    {
+      "run": 38512260832,
+      "id": 11870696602,
+      "name": "yaneuraou-ladder-38512260832-0",
+      "size_in_bytes": 55394,
+      "digest": "sha256:075d168205e54131e6351b23274e5f245d951b25a244b9264d1713a63e03b36e",
+      "expires_at": "2027-01-12T04:36:26Z",
+      "expired": false
+    },
+    {
+      "run": 38512260832,
+      "id": 11870572077,
+      "name": "yaneuraou-ladder-38512260832-1",
+      "size_in_bytes": 57187,
+      "digest": "sha256:5eb34d139bb386d197a5ef3feb94fcc83f1c433b8e37bdfe2d31f60f4f51a548",
+      "expires_at": "2027-01-12T04:36:26Z",
+      "expired": false
+    },
+    {
+      "run": 38512260832,
+      "id": 11870781460,
+      "name": "yaneuraou-ladder-38512260832-2",
+      "size_in_bytes": 67211,
+      "digest": "sha256:3533bd03155da1d0b07054c62a1993e02fef984c938309551473a8a14088a4e8",
+      "expires_at": "2027-01-12T04:36:26Z",
+      "expired": false
+    },
+    {
+      "run": 38512260832,
+      "id": 11870716431,
+      "name": "yaneuraou-ladder-38512260832-3",
+      "size_in_bytes": 54863,
+      "digest": "sha256:71c83f57a554f3c5d68ccf2cad509749220ac53ffa8b4db7aa96388fdc1c9189",
+      "expires_at": "2027-01-12T04:36:26Z",
+      "expired": false
+    },
+    {
+      "run": 38512260832,
+      "id": 11870901208,
+      "name": "yaneuraou-ladder-38512260832-4",
+      "size_in_bytes": 74159,
+      "digest": "sha256:9388c7da266f51e3c577388b8525530fc2ca37df879e9c8c5921970f2fdbe0fd",
+      "expires_at": "2027-01-12T04:36:26Z",
+      "expired": false
+    },
+    {
+      "run": 38512260832,
+      "id": 11870082424,
+      "name": "yaneuraou-ladder-38512260832-5",
+      "size_in_bytes": 72367,
+      "digest": "sha256:31862adbc1a81db8f3489aa58d1cc5b9ba34207095ebaa6b098b1778ac68dccb",
+      "expires_at": "2027-01-12T04:36:26Z",
+      "expired": false
+    },
+    {
+      "run": 38512260832,
+      "id": 11870562071,
+      "name": "yaneuraou-ladder-38512260832-6",
+      "size_in_bytes": 62900,
+      "digest": "sha256:4ebbbd7d7cbf0109be615ead6924b0d40b0e0b550f893729cc231e389ecaf0f6",
+      "expires_at": "2027-01-12T04:36:26Z",
+      "expired": false
+    },
+    {
+      "run": 38512260832,
+      "id": 11871035922,
+      "name": "yaneuraou-ladder-38512260832-7",
+      "size_in_bytes": 54163,
+      "digest": "sha256:6ab2f93b500be63fda8e4aa2ba004ee9677ce41cc95e5747bc6b69659ee64422",
+      "expires_at": "2027-01-12T04:36:26Z",
+      "expired": false
+    },
+    {
+      "run": 38512260832,
+      "id": 11870257195,
+      "name": "yaneuraou-ladder-38512260832-8",
+      "size_in_bytes": 66693,
+      "digest": "sha256:03a2ae588345db33c9f3bd52046b73c8f5c399fd94a5e8a03bf10fa527a31f4d",
+      "expires_at": "2027-01-12T04:36:26Z",
+      "expired": false
+    },
+    {
+      "run": 38512260832,
+      "id": 11870192294,
+      "name": "yaneuraou-ladder-38512260832-9",
+      "size_in_bytes": 61256,
+      "digest": "sha256:f6fc563112aac91ca0d71e36557d299e6288c2f20434f7e0f86835a505863ffc",
+      "expires_at": "2027-01-12T04:36:26Z",
+      "expired": false
+    },
+    {
+      "run": 38512260832,
+      "id": 11870532740,
+      "name": "yaneuraou-ladder-summary-38512260832",
+      "size_in_bytes": 432,
+      "digest": "sha256:37b93858b63b4c38e7a2fcf54fa0e24877787d8ae9dd030214a1ec294d14818e",
+      "expires_at": "2027-01-12T04:36:26Z",
+      "expired": false
+    },
+    {
+      "run": 38512678745,
+      "id": 11870862060,
+      "name": "yaneuraou-ladder-38512678745-0",
+      "size_in_bytes": 55596,
+      "digest": "sha256:0c7690fd19c355137b32fc063443dda6efc3b4b569ef43a5a0bb3dca311bb5f1",
+      "expires_at": "2027-01-12T04:41:21Z",
+      "expired": false
+    },
+    {
+      "run": 38512678745,
+      "id": 11870192875,
+      "name": "yaneuraou-ladder-38512678745-1",
+      "size_in_bytes": 48515,
+      "digest": "sha256:1dcef2cf5f2d243057d60bab111e74fe1ee8a1cda51c4410be05df9e0eb29274",
+      "expires_at": "2027-01-12T04:41:21Z",
+      "expired": false
+    },
+    {
+      "run": 38512678745,
+      "id": 11870334019,
+      "name": "yaneuraou-ladder-38512678745-2",
+      "size_in_bytes": 69724,
+      "digest": "sha256:6474f412df623167c65757a1fada1b335af789e00599446ffe0c599f8e24720b",
+      "expires_at": "2027-01-12T04:41:21Z",
+      "expired": false
+    },
+    {
+      "run": 38512678745,
+      "id": 11870453784,
+      "name": "yaneuraou-ladder-38512678745-3",
+      "size_in_bytes": 53612,
+      "digest": "sha256:42bc6179e2f791c67f0231b94f8a4492c34f44a4fb2f8a81d8fbb7ea6328b255",
+      "expires_at": "2027-01-12T04:41:21Z",
+      "expired": false
+    },
+    {
+      "run": 38512678745,
+      "id": 11870448788,
+      "name": "yaneuraou-ladder-38512678745-4",
+      "size_in_bytes": 62563,
+      "digest": "sha256:11f9149c977245ee0910ea85816889cf557e33c967529da7cc8daef579b12839",
+      "expires_at": "2027-01-12T04:41:21Z",
+      "expired": false
+    },
+    {
+      "run": 38512678745,
+      "id": 11870562892,
+      "name": "yaneuraou-ladder-38512678745-5",
+      "size_in_bytes": 61314,
+      "digest": "sha256:048ee1e32f613d0228f949bd25df73a58a83637dec3f177fb036af1fc30cd47d",
+      "expires_at": "2027-01-12T04:41:21Z",
+      "expired": false
+    },
+    {
+      "run": 38512678745,
+      "id": 11870508623,
+      "name": "yaneuraou-ladder-38512678745-6",
+      "size_in_bytes": 75911,
+      "digest": "sha256:f099e567f5305dbfa1e850877a6e8f14bfecd99f57e71ce75c474f26140fa293",
+      "expires_at": "2027-01-12T04:41:21Z",
+      "expired": false
+    },
+    {
+      "run": 38512678745,
+      "id": 11870428719,
+      "name": "yaneuraou-ladder-38512678745-7",
+      "size_in_bytes": 65980,
+      "digest": "sha256:87794d0d1f2b0f3d658e8691bc96fa579e77e4de9b4fe8800cb62579ec38bcdd",
+      "expires_at": "2027-01-12T04:41:21Z",
+      "expired": false
+    },
+    {
+      "run": 38512678745,
+      "id": 11870473607,
+      "name": "yaneuraou-ladder-38512678745-8",
+      "size_in_bytes": 54204,
+      "digest": "sha256:ea74d6d5b217a42eb92916b35574d70cd78f39f2762282813bfaa3494c9aa03a",
+      "expires_at": "2027-01-12T04:41:21Z",
+      "expired": false
+    },
+    {
+      "run": 38512678745,
+      "id": 11870867142,
+      "name": "yaneuraou-ladder-38512678745-9",
+      "size_in_bytes": 62452,
+      "digest": "sha256:c562e610aa7665760df4ac2c6807d2abd4bb6d44d76e3a848892158c9e03f88f",
+      "expires_at": "2027-01-12T04:41:21Z",
+      "expired": false
+    },
+    {
+      "run": 38512678745,
+      "id": 11870682537,
+      "name": "yaneuraou-ladder-summary-38512678745",
+      "size_in_bytes": 429,
+      "digest": "sha256:c3f86fd3a5a77a1b48fc7dfef8a34f52e12a3a001a38c4b6254d72ce73f88c4d",
+      "expires_at": "2027-01-12T04:41:21Z",
+      "expired": false
+    },
+    {
+      "run": 38513117808,
+      "id": 11870768097,
+      "name": "yaneuraou-ladder-38513117808-0",
+      "size_in_bytes": 63011,
+      "digest": "sha256:678bd3f2b8dd313d3fc4420ddcd6c63e9edd9da7731645667af15b2f78a87e21",
+      "expires_at": "2027-01-12T04:46:23Z",
+      "expired": false
+    },
+    {
+      "run": 38513117808,
+      "id": 11869983533,
+      "name": "yaneuraou-ladder-38513117808-1",
+      "size_in_bytes": 50165,
+      "digest": "sha256:251ea5952e62f7eff75287fd0c8d615604cb5af8a61c7b3c08086cd05db6f89e",
+      "expires_at": "2027-01-12T04:46:23Z",
+      "expired": false
+    },
+    {
+      "run": 38513117808,
+      "id": 11870862977,
+      "name": "yaneuraou-ladder-38513117808-2",
+      "size_in_bytes": 67813,
+      "digest": "sha256:0c13540ade8b6dcd579447e55d6fc9bbf7b8c90559e009f6c04fdcd8763c9aeb",
+      "expires_at": "2027-01-12T04:46:23Z",
+      "expired": false
+    },
+    {
+      "run": 38513117808,
+      "id": 11870897842,
+      "name": "yaneuraou-ladder-38513117808-3",
+      "size_in_bytes": 59503,
+      "digest": "sha256:407cb9b00323a259f5c4bb4088995cdf43bce2ce77a07cebd7f164685d74b4f2",
+      "expires_at": "2027-01-12T04:46:23Z",
+      "expired": false
+    },
+    {
+      "run": 38513117808,
+      "id": 11871052651,
+      "name": "yaneuraou-ladder-38513117808-4",
+      "size_in_bytes": 56981,
+      "digest": "sha256:c5d42c5f6d7344af91a873678fd8c6f75348a36eb05f986b857754dbdf9c4b38",
+      "expires_at": "2027-01-12T04:46:23Z",
+      "expired": false
+    },
+    {
+      "run": 38513117808,
+      "id": 11870857989,
+      "name": "yaneuraou-ladder-38513117808-5",
+      "size_in_bytes": 56250,
+      "digest": "sha256:1a93cf8789c2600e57a051c26b576b3dcc2fcbde469c47411e44f51138a42e60",
+      "expires_at": "2027-01-12T04:46:23Z",
+      "expired": false
+    },
+    {
+      "run": 38513117808,
+      "id": 11870818030,
+      "name": "yaneuraou-ladder-38513117808-6",
+      "size_in_bytes": 50963,
+      "digest": "sha256:06fe7dd2e8c20808d9138a7c5f6346e9d7cb5d2d7d17370e3aa50b7c750e86b0",
+      "expires_at": "2027-01-12T04:46:23Z",
+      "expired": false
+    },
+    {
+      "run": 38513117808,
+      "id": 11870568809,
+      "name": "yaneuraou-ladder-38513117808-7",
+      "size_in_bytes": 65798,
+      "digest": "sha256:01cedf38bdd8fca4e71185888cc2737c3aa693eadcf06a6cf42e61abb74f22a9",
+      "expires_at": "2027-01-12T04:46:23Z",
+      "expired": false
+    },
+    {
+      "run": 38513117808,
+      "id": 11870414795,
+      "name": "yaneuraou-ladder-38513117808-8",
+      "size_in_bytes": 63871,
+      "digest": "sha256:cdee38e101cb50325285ed991a6f1f0a42a87b8ecc3112a6f8e39f297b22b51c",
+      "expires_at": "2027-01-12T04:46:23Z",
+      "expired": false
+    },
+    {
+      "run": 38513117808,
+      "id": 11870917929,
+      "name": "yaneuraou-ladder-38513117808-9",
+      "size_in_bytes": 65873,
+      "digest": "sha256:5ecc65481321bcc241755455279cddb59fb8ed55794765216da684be0602a2d5",
+      "expires_at": "2027-01-12T04:46:23Z",
+      "expired": false
+    },
+    {
+      "run": 38513117808,
+      "id": 11869963683,
+      "name": "yaneuraou-ladder-summary-38513117808",
+      "size_in_bytes": 429,
+      "digest": "sha256:d2e91394af594d494741f0da5e74e72315b8d8e980dedb3f063c2bbcadc937e7",
+      "expires_at": "2027-01-12T04:46:23Z",
+      "expired": false
+    },
+    {
+      "run": 38513556620,
+      "id": 11870323947,
+      "name": "yaneuraou-ladder-38513556620-0",
+      "size_in_bytes": 69977,
+      "digest": "sha256:537886bbf248247dce18b70d0e4e87514bdfdf39f2a630120f830e622b5cbb79",
+      "expires_at": "2027-01-12T04:51:24Z",
+      "expired": false
+    },
+    {
+      "run": 38513556620,
+      "id": 11870833729,
+      "name": "yaneuraou-ladder-38513556620-1",
+      "size_in_bytes": 49328,
+      "digest": "sha256:d583e1d00d888af45243afb5f5723505a4d8aede68a8c9a6f003f4d2203ac8a8",
+      "expires_at": "2027-01-12T04:51:24Z",
+      "expired": false
+    },
+    {
+      "run": 38513556620,
+      "id": 11870654314,
+      "name": "yaneuraou-ladder-38513556620-2",
+      "size_in_bytes": 69070,
+      "digest": "sha256:8563df5256b541d82ad5c86b331fca94678b3aa8994ddce5310a5a6d01ffe53f",
+      "expires_at": "2027-01-12T04:51:24Z",
+      "expired": false
+    },
+    {
+      "run": 38513556620,
+      "id": 11871003452,
+      "name": "yaneuraou-ladder-38513556620-3",
+      "size_in_bytes": 54770,
+      "digest": "sha256:3aaa33a6d3bef445715c6a05b21dce329cb159de9f2e1a71ebb3d1f9843d4aa9",
+      "expires_at": "2027-01-12T04:51:24Z",
+      "expired": false
+    },
+    {
+      "run": 38513556620,
+      "id": 11870308895,
+      "name": "yaneuraou-ladder-38513556620-4",
+      "size_in_bytes": 62742,
+      "digest": "sha256:4024b5af8c8b7a9708fd44eaa8d876836e3cfbcc1839e47f2af15dd618f63f79",
+      "expires_at": "2027-01-12T04:51:24Z",
+      "expired": false
+    },
+    {
+      "run": 38513556620,
+      "id": 11870548276,
+      "name": "yaneuraou-ladder-38513556620-5",
+      "size_in_bytes": 68705,
+      "digest": "sha256:0bff7e4f4b7e61379dfce61b63c4b57f828ce4d24ec4932155091282a7d3c757",
+      "expires_at": "2027-01-12T04:51:24Z",
+      "expired": false
+    },
+    {
+      "run": 38513556620,
+      "id": 11869944479,
+      "name": "yaneuraou-ladder-38513556620-6",
+      "size_in_bytes": 73974,
+      "digest": "sha256:ab47c59be0a61912fe1e3da4a97e24bfa7bf1b0ca7c61bfce913705086de2eaa",
+      "expires_at": "2027-01-12T04:51:24Z",
+      "expired": false
+    },
+    {
+      "run": 38513556620,
+      "id": 11870773889,
+      "name": "yaneuraou-ladder-38513556620-7",
+      "size_in_bytes": 64762,
+      "digest": "sha256:0d9a9e0abb7a664518b7fcc3d8c5082601b347f4b23819e49b82608776ccc925",
+      "expires_at": "2027-01-12T04:51:24Z",
+      "expired": false
+    },
+    {
+      "run": 38513556620,
+      "id": 11870579442,
+      "name": "yaneuraou-ladder-38513556620-8",
+      "size_in_bytes": 63693,
+      "digest": "sha256:6684c28df2e602598c1eaa3a7b798c02258d2c593861f9897d419844a43d4c12",
+      "expires_at": "2027-01-12T04:51:24Z",
+      "expired": false
+    },
+    {
+      "run": 38513556620,
+      "id": 11870898628,
+      "name": "yaneuraou-ladder-38513556620-9",
+      "size_in_bytes": 60383,
+      "digest": "sha256:752b869c1b3d45d586501dd21c63b1edba309c162179c32595315cbf4214cbcc",
+      "expires_at": "2027-01-12T04:51:24Z",
+      "expired": false
+    },
+    {
+      "run": 38513556620,
+      "id": 11870174154,
+      "name": "yaneuraou-ladder-summary-38513556620",
+      "size_in_bytes": 429,
+      "digest": "sha256:aba7dea28947114f41efa8c083b67d01cba0055a80f4c59883aeccadb26bb57c",
+      "expires_at": "2027-01-12T04:51:24Z",
+      "expired": false
+    },
+    {
+      "run": 38514009493,
+      "id": 11870989369,
+      "name": "yaneuraou-ladder-38514009493-0",
+      "size_in_bytes": 61616,
+      "digest": "sha256:6a455e5026a7a6f7b07d80c9d6edbeec7267db05cecbc019ecb5ca50fc6d198d",
+      "expires_at": "2027-01-12T04:56:36Z",
+      "expired": false
+    },
+    {
+      "run": 38514009493,
+      "id": 11870714908,
+      "name": "yaneuraou-ladder-38514009493-1",
+      "size_in_bytes": 55311,
+      "digest": "sha256:3b95a60f435733a17dedf0fe2842578d88b48efd591fbd138804cc9060d34cfa",
+      "expires_at": "2027-01-12T04:56:36Z",
+      "expired": false
+    },
+    {
+      "run": 38514009493,
+      "id": 11869969870,
+      "name": "yaneuraou-ladder-38514009493-2",
+      "size_in_bytes": 67684,
+      "digest": "sha256:4921211d7c8834c310e98476b336e41c71f136a033db1abee1cb98aa8bf75757",
+      "expires_at": "2027-01-12T04:56:36Z",
+      "expired": false
+    },
+    {
+      "run": 38514009493,
+      "id": 11870239612,
+      "name": "yaneuraou-ladder-38514009493-3",
+      "size_in_bytes": 61242,
+      "digest": "sha256:24ec6dcf289bcd9f0ffeb483fe69951de2c507551e45f58f67f29adbcc51cc7c",
+      "expires_at": "2027-01-12T04:56:36Z",
+      "expired": false
+    },
+    {
+      "run": 38514009493,
+      "id": 11870499290,
+      "name": "yaneuraou-ladder-38514009493-4",
+      "size_in_bytes": 62440,
+      "digest": "sha256:f37edbd038b7c4a2b8f9daef95c42f1d97d2dfa4afbecaecb23c3d2ddb69ce23",
+      "expires_at": "2027-01-12T04:56:36Z",
+      "expired": false
+    },
+    {
+      "run": 38514009493,
+      "id": 11870804701,
+      "name": "yaneuraou-ladder-38514009493-5",
+      "size_in_bytes": 65262,
+      "digest": "sha256:ae8dbf5c95f2d8046c4a4bdd31a51273724c20343ba5a197a642d371528a436a",
+      "expires_at": "2027-01-12T04:56:36Z",
+      "expired": false
+    },
+    {
+      "run": 38514009493,
+      "id": 11871460187,
+      "name": "yaneuraou-ladder-38514009493-6",
+      "size_in_bytes": 60106,
+      "digest": "sha256:6d0843c8e41821814f9f60326dcb92dc9e91c07b266db686f2f7f154a57267e6",
+      "expires_at": "2027-01-12T04:56:36Z",
+      "expired": false
+    },
+    {
+      "run": 38514009493,
+      "id": 11871655024,
+      "name": "yaneuraou-ladder-38514009493-7",
+      "size_in_bytes": 61398,
+      "digest": "sha256:5587bd1f6672849888aa85f237885b335e332229748fe97413f0b5e4e769b367",
+      "expires_at": "2027-01-12T04:56:36Z",
+      "expired": false
+    },
+    {
+      "run": 38514009493,
+      "id": 11871286042,
+      "name": "yaneuraou-ladder-38514009493-8",
+      "size_in_bytes": 64747,
+      "digest": "sha256:cce240cbf645c2b99924fc65a318d53468d7dcca20673fb608f23be16c39e1b4",
+      "expires_at": "2027-01-12T04:56:36Z",
+      "expired": false
+    },
+    {
+      "run": 38514009493,
+      "id": 11870319478,
+      "name": "yaneuraou-ladder-38514009493-9",
+      "size_in_bytes": 50417,
+      "digest": "sha256:4e6416ce61eb73f5cc98816e3cf414ce1a28c59db7c21ecdd22f21520c92b68a",
+      "expires_at": "2027-01-12T04:56:36Z",
+      "expired": false
+    },
+    {
+      "run": 38514009493,
+      "id": 11871019401,
+      "name": "yaneuraou-ladder-summary-38514009493",
+      "size_in_bytes": 432,
+      "digest": "sha256:eb81be9638fd22e3e401a80d20cf6e97512e12caa4972bb7f58008671496b5cc",
+      "expires_at": "2027-01-12T04:56:36Z",
+      "expired": false
+    },
+    {
+      "run": 38514433389,
+      "id": 11871114594,
+      "name": "yaneuraou-ladder-38514433389-0",
+      "size_in_bytes": 68318,
+      "digest": "sha256:29dd4941c403e13b27d6d0e56fda31fa3ebd8d032a152f821dfeff828911ba17",
+      "expires_at": "2027-01-12T05:01:29Z",
+      "expired": false
+    },
+    {
+      "run": 38514433389,
+      "id": 11871114591,
+      "name": "yaneuraou-ladder-38514433389-1",
+      "size_in_bytes": 66058,
+      "digest": "sha256:d4441ec1b514c21778b19c0284c8192f1c10102b866b0cce38407975842d6c2d",
+      "expires_at": "2027-01-12T05:01:29Z",
+      "expired": false
+    },
+    {
+      "run": 38514433389,
+      "id": 11871900457,
+      "name": "yaneuraou-ladder-38514433389-2",
+      "size_in_bytes": 61795,
+      "digest": "sha256:afe294ef03c7757e7ccd43b7839cac85f2e624170ca58a26deca11026e639a94",
+      "expires_at": "2027-01-12T05:01:29Z",
+      "expired": false
+    },
+    {
+      "run": 38514433389,
+      "id": 11871104558,
+      "name": "yaneuraou-ladder-38514433389-3",
+      "size_in_bytes": 50467,
+      "digest": "sha256:474f9f302d3f41cd238225e0a6bb7b3c235984b3afe8a2c7e1b571d60a54dade",
+      "expires_at": "2027-01-12T05:01:29Z",
+      "expired": false
+    },
+    {
+      "run": 38514433389,
+      "id": 11871500406,
+      "name": "yaneuraou-ladder-38514433389-4",
+      "size_in_bytes": 68241,
+      "digest": "sha256:9e3a3a9b38029270de7c57fe80bdfa4f1d13830f15cb51d271682081219abe03",
+      "expires_at": "2027-01-12T05:01:29Z",
+      "expired": false
+    },
+    {
+      "run": 38514433389,
+      "id": 11870444952,
+      "name": "yaneuraou-ladder-38514433389-5",
+      "size_in_bytes": 68002,
+      "digest": "sha256:4c08ba50ecae3f8f4091a8139f12fe6b713d6450096a82b69470065b7cde8f1a",
+      "expires_at": "2027-01-12T05:01:29Z",
+      "expired": false
+    },
+    {
+      "run": 38514433389,
+      "id": 11871690693,
+      "name": "yaneuraou-ladder-38514433389-6",
+      "size_in_bytes": 63498,
+      "digest": "sha256:86339eba94ec2b241d448812aca47acb8e09473674329924924d441e4b5f3708",
+      "expires_at": "2027-01-12T05:01:29Z",
+      "expired": false
+    },
+    {
+      "run": 38514433389,
+      "id": 11871820521,
+      "name": "yaneuraou-ladder-38514433389-7",
+      "size_in_bytes": 65463,
+      "digest": "sha256:fdfd8d67450e9cbc7bcd5e9443628c5f869b56e3274e1f28751f61cab9e89c16",
+      "expires_at": "2027-01-12T05:01:29Z",
+      "expired": false
+    },
+    {
+      "run": 38514433389,
+      "id": 11871475434,
+      "name": "yaneuraou-ladder-38514433389-8",
+      "size_in_bytes": 59529,
+      "digest": "sha256:2e199f52f93ee55b1b870ef88dec9b0de2e443d10191a43928a1d8a9c2c6c129",
+      "expires_at": "2027-01-12T05:01:29Z",
+      "expired": false
+    },
+    {
+      "run": 38514433389,
+      "id": 11871410491,
+      "name": "yaneuraou-ladder-38514433389-9",
+      "size_in_bytes": 61440,
+      "digest": "sha256:926438d22a1e670ad5fda4d1729e3da89cd3726bace6ba15158297a801ebbda0",
+      "expires_at": "2027-01-12T05:01:29Z",
+      "expired": false
+    },
+    {
+      "run": 38514433389,
+      "id": 11872210141,
+      "name": "yaneuraou-ladder-summary-38514433389",
+      "size_in_bytes": 429,
+      "digest": "sha256:23a0f70b56ec0d173ec8adc77591e7f901a9d77e9df12ce7f3d7652632a0e378",
+      "expires_at": "2027-01-12T05:01:29Z",
+      "expired": false
+    },
+    {
+      "run": 38514866509,
+      "id": 11871316433,
+      "name": "yaneuraou-ladder-38514866509-0",
+      "size_in_bytes": 64796,
+      "digest": "sha256:4a1e952196b1884e04a4642cb50d5a0009c92d6eb3754722b22809cb639688ea",
+      "expires_at": "2027-01-12T05:06:28Z",
+      "expired": false
+    },
+    {
+      "run": 38514866509,
+      "id": 11871272574,
+      "name": "yaneuraou-ladder-38514866509-1",
+      "size_in_bytes": 56547,
+      "digest": "sha256:5f13d3443b49f448211ff96586f6da350af259b15f23898cdddb87db3b369eaa",
+      "expires_at": "2027-01-12T05:06:28Z",
+      "expired": false
+    },
+    {
+      "run": 38514866509,
+      "id": 11871895609,
+      "name": "yaneuraou-ladder-38514866509-2",
+      "size_in_bytes": 65238,
+      "digest": "sha256:12548bfe67dbd1fb9c9608d03ad1685aeff3316c13099fc64ac99f9964bcee12",
+      "expires_at": "2027-01-12T05:06:28Z",
+      "expired": false
+    },
+    {
+      "run": 38514866509,
+      "id": 11872160931,
+      "name": "yaneuraou-ladder-38514866509-3",
+      "size_in_bytes": 60723,
+      "digest": "sha256:d027cd4f3c6b1c41be5c1aed7b9e34eeb5b11c8166528b4f29376c6440496582",
+      "expires_at": "2027-01-12T05:06:28Z",
+      "expired": false
+    },
+    {
+      "run": 38514866509,
+      "id": 11872066167,
+      "name": "yaneuraou-ladder-38514866509-4",
+      "size_in_bytes": 66147,
+      "digest": "sha256:661468188726e757ec56a4771be6524595c183a80578cdadd9ed719be303854d",
+      "expires_at": "2027-01-12T05:06:28Z",
+      "expired": false
+    },
+    {
+      "run": 38514866509,
+      "id": 11871431765,
+      "name": "yaneuraou-ladder-38514866509-5",
+      "size_in_bytes": 53694,
+      "digest": "sha256:563dd7b1cb52a9b0bc273eba8d039cb9fbcc77ee5ea638cb96326538373e6eca",
+      "expires_at": "2027-01-12T05:06:28Z",
+      "expired": false
+    },
+    {
+      "run": 38514866509,
+      "id": 11871521772,
+      "name": "yaneuraou-ladder-38514866509-6",
+      "size_in_bytes": 67307,
+      "digest": "sha256:95fce85850304f063cb7f36dc590160f06f9b00d6f7ff532704b8f19fc399807",
+      "expires_at": "2027-01-12T05:06:28Z",
+      "expired": false
+    },
+    {
+      "run": 38514866509,
+      "id": 11871620853,
+      "name": "yaneuraou-ladder-38514866509-7",
+      "size_in_bytes": 68120,
+      "digest": "sha256:4c2f40b9656dc69a9e11d3f9e2de633c35b1a961b57eab41fa6ea4175d2ee82b",
+      "expires_at": "2027-01-12T05:06:28Z",
+      "expired": false
+    },
+    {
+      "run": 38514866509,
+      "id": 11871511731,
+      "name": "yaneuraou-ladder-38514866509-8",
+      "size_in_bytes": 60484,
+      "digest": "sha256:98db1406d174e36db2e9a31153e5fbf0a37bd7c1b44a22f3abbb75b81640c6d3",
+      "expires_at": "2027-01-12T05:06:28Z",
+      "expired": false
+    },
+    {
+      "run": 38514866509,
+      "id": 11872156054,
+      "name": "yaneuraou-ladder-38514866509-9",
+      "size_in_bytes": 70626,
+      "digest": "sha256:270af5105d1d7dc125348d1610fa12d0aa5b3eaf31786968e49d9950fc0d6211",
+      "expires_at": "2027-01-12T05:06:28Z",
+      "expired": false
+    },
+    {
+      "run": 38514866509,
+      "id": 11872040572,
+      "name": "yaneuraou-ladder-summary-38514866509",
+      "size_in_bytes": 430,
+      "digest": "sha256:01bbf0ca3b456cf8c6db889062f5d24e695ffd44d0ded1295d592dc14bbaf974",
+      "expires_at": "2027-01-12T05:06:28Z",
+      "expired": false
+    },
+    {
+      "run": 38515323682,
+      "id": 11872221813,
+      "name": "yaneuraou-ladder-38515323682-0",
+      "size_in_bytes": 69562,
+      "digest": "sha256:60239cf54bc992cb623bc8f479757dda92b8de47873ec8f57331fcfa2e013ed0",
+      "expires_at": "2027-01-12T05:11:41Z",
+      "expired": false
+    },
+    {
+      "run": 38515323682,
+      "id": 11871747323,
+      "name": "yaneuraou-ladder-38515323682-1",
+      "size_in_bytes": 70436,
+      "digest": "sha256:4bb2d4b9ec3cc7adf9884e82f757d08e1fa81b6c73bde205427962aca68f4db8",
+      "expires_at": "2027-01-12T05:11:41Z",
+      "expired": false
+    },
+    {
+      "run": 38515323682,
+      "id": 11871592449,
+      "name": "yaneuraou-ladder-38515323682-2",
+      "size_in_bytes": 63108,
+      "digest": "sha256:24e9e6004f8757de0bce72d90c7e244ca383d1d779882f6760c251854b3458fb",
+      "expires_at": "2027-01-12T05:11:41Z",
+      "expired": false
+    },
+    {
+      "run": 38515323682,
+      "id": 11872156829,
+      "name": "yaneuraou-ladder-38515323682-3",
+      "size_in_bytes": 60403,
+      "digest": "sha256:21c7baa5c5cd478be7c8338bab5be5355e4408fa4feec2f4930ec5c162c2305a",
+      "expires_at": "2027-01-12T05:11:41Z",
+      "expired": false
+    },
+    {
+      "run": 38515323682,
+      "id": 11871303343,
+      "name": "yaneuraou-ladder-38515323682-4",
+      "size_in_bytes": 61673,
+      "digest": "sha256:dd3cdf3a6894e61e49ec8caf335ae1d4aa0c7c52cf906b68228ec199ebd406e2",
+      "expires_at": "2027-01-12T05:11:41Z",
+      "expired": false
+    },
+    {
+      "run": 38515323682,
+      "id": 11871681327,
+      "name": "yaneuraou-ladder-38515323682-5",
+      "size_in_bytes": 63032,
+      "digest": "sha256:66f1640646d5895d41f25ed00a0a1e06d90aa1cde362fae78372e8409f490eb0",
+      "expires_at": "2027-01-12T05:11:41Z",
+      "expired": false
+    },
+    {
+      "run": 38515323682,
+      "id": 11872062001,
+      "name": "yaneuraou-ladder-38515323682-6",
+      "size_in_bytes": 60554,
+      "digest": "sha256:882b348b9765d090c51ba022a47326ed99461047c7c75519348983edd06aed83",
+      "expires_at": "2027-01-12T05:11:41Z",
+      "expired": false
+    },
+    {
+      "run": 38515323682,
+      "id": 11872230978,
+      "name": "yaneuraou-ladder-38515323682-7",
+      "size_in_bytes": 56240,
+      "digest": "sha256:c9fa532d577fb42c7a2e7943dd21495062068cc8f48c5981533a31b033e49e0e",
+      "expires_at": "2027-01-12T05:11:41Z",
+      "expired": false
+    },
+    {
+      "run": 38515323682,
+      "id": 11871258594,
+      "name": "yaneuraou-ladder-38515323682-8",
+      "size_in_bytes": 61276,
+      "digest": "sha256:33e39d47fa3f627e5a70fc9ab1213bacb899e26159a0af95607e42836a5528c8",
+      "expires_at": "2027-01-12T05:11:41Z",
+      "expired": false
+    },
+    {
+      "run": 38515323682,
+      "id": 11872256731,
+      "name": "yaneuraou-ladder-38515323682-9",
+      "size_in_bytes": 71363,
+      "digest": "sha256:bae3f44892ed367c596d6b03eaf46e7f5d135eb14f5d84bfb6035e05e5ac13a0",
+      "expires_at": "2027-01-12T05:11:41Z",
+      "expired": false
+    },
+    {
+      "run": 38515323682,
+      "id": 11871482594,
+      "name": "yaneuraou-ladder-summary-38515323682",
+      "size_in_bytes": 438,
+      "digest": "sha256:4e9c5b57c98ce6edfb62dc0b3459a9e3f18d4a4cbef40c818adb53ab5275d25b",
+      "expires_at": "2027-01-12T05:11:41Z",
+      "expired": false
+    }
+  ],
+  "baseline_comparison": {
+    "method": "independent historic samples; not paired because shard counts and seed/opening series differ",
+    "candidate_common48_56": {
+      "games": 900,
+      "wins": 516,
+      "draws": 11,
+      "losses": 373,
+      "win_pct": 57.333333333333336,
+      "point_pct": 57.94444444444444
+    },
+    "M_common48_56": {
+      "games": 900,
+      "wins": 438,
+      "draws": 20,
+      "losses": 442,
+      "win_pct": 48.666666666666664,
+      "point_pct": 49.77777777777778
+    },
+    "Q14_common48_56": {
+      "games": 900,
+      "wins": 425,
+      "draws": 19,
+      "losses": 456,
+      "win_pct": 47.22222222222222,
+      "point_pct": 48.27777777777778
+    },
+    "levels": [
+      {
+        "level": 48,
+        "candidate": {
+          "run": 38510955872,
+          "wins": 73,
+          "draws": 0,
+          "losses": 27,
+          "win_pct": 73,
+          "point_pct": 73,
+          "decision": "next_level"
+        },
+        "M": {
+          "wins": 66,
+          "draws": 1,
+          "losses": 33,
+          "win_pct": 66,
+          "point_pct": 66.5,
+          "decision": "next_level"
+        },
+        "Q14": {
+          "wins": 69,
+          "draws": 2,
+          "losses": 29,
+          "win_pct": 69,
+          "point_pct": 70,
+          "decision": "next_level"
+        }
+      },
+      {
+        "level": 49,
+        "candidate": {
+          "run": 38511391999,
+          "wins": 68,
+          "draws": 1,
+          "losses": 31,
+          "win_pct": 68,
+          "point_pct": 68.5,
+          "decision": "next_level"
+        },
+        "M": {
+          "wins": 60,
+          "draws": 3,
+          "losses": 37,
+          "win_pct": 60,
+          "point_pct": 61.5,
+          "decision": "next_level"
+        },
+        "Q14": {
+          "wins": 59,
+          "draws": 1,
+          "losses": 40,
+          "win_pct": 59,
+          "point_pct": 59.5,
+          "decision": "next_level"
+        }
+      },
+      {
+        "level": 50,
+        "candidate": {
+          "run": 38511841817,
+          "wins": 67,
+          "draws": 3,
+          "losses": 30,
+          "win_pct": 67,
+          "point_pct": 68.5,
+          "decision": "next_level"
+        },
+        "M": {
+          "wins": 60,
+          "draws": 2,
+          "losses": 38,
+          "win_pct": 60,
+          "point_pct": 61,
+          "decision": "next_level"
+        },
+        "Q14": {
+          "wins": 56,
+          "draws": 3,
+          "losses": 41,
+          "win_pct": 56,
+          "point_pct": 57.5,
+          "decision": "next_level"
+        }
+      },
+      {
+        "level": 51,
+        "candidate": {
+          "run": 38512260832,
+          "wins": 53,
+          "draws": 2,
+          "losses": 45,
+          "win_pct": 53,
+          "point_pct": 54,
+          "decision": "next_level"
+        },
+        "M": {
+          "wins": 46,
+          "draws": 5,
+          "losses": 49,
+          "win_pct": 46,
+          "point_pct": 48.5,
+          "decision": "next_level"
+        },
+        "Q14": {
+          "wins": 56,
+          "draws": 0,
+          "losses": 44,
+          "win_pct": 56,
+          "point_pct": 56,
+          "decision": "next_level"
+        }
+      },
+      {
+        "level": 52,
+        "candidate": {
+          "run": 38512678745,
+          "wins": 62,
+          "draws": 0,
+          "losses": 38,
+          "win_pct": 62,
+          "point_pct": 62,
+          "decision": "next_level"
+        },
+        "M": {
+          "wins": 42,
+          "draws": 2,
+          "losses": 56,
+          "win_pct": 42,
+          "point_pct": 43,
+          "decision": "next_level"
+        },
+        "Q14": {
+          "wins": 44,
+          "draws": 3,
+          "losses": 53,
+          "win_pct": 44,
+          "point_pct": 45.5,
+          "decision": "next_level"
+        }
+      },
+      {
+        "level": 53,
+        "candidate": {
+          "run": 38513117808,
+          "wins": 59,
+          "draws": 1,
+          "losses": 40,
+          "win_pct": 59,
+          "point_pct": 59.5,
+          "decision": "next_level"
+        },
+        "M": {
+          "wins": 54,
+          "draws": 2,
+          "losses": 44,
+          "win_pct": 54,
+          "point_pct": 55,
+          "decision": "next_level"
+        },
+        "Q14": {
+          "wins": 33,
+          "draws": 2,
+          "losses": 65,
+          "win_pct": 33,
+          "point_pct": 34,
+          "decision": "next_level"
+        }
+      },
+      {
+        "level": 54,
+        "candidate": {
+          "run": 38513556620,
+          "wins": 44,
+          "draws": 0,
+          "losses": 56,
+          "win_pct": 44,
+          "point_pct": 44,
+          "decision": "next_level"
+        },
+        "M": {
+          "wins": 36,
+          "draws": 1,
+          "losses": 63,
+          "win_pct": 36,
+          "point_pct": 36.5,
+          "decision": "next_level"
+        },
+        "Q14": {
+          "wins": 38,
+          "draws": 4,
+          "losses": 58,
+          "win_pct": 38,
+          "point_pct": 40,
+          "decision": "next_level"
+        }
+      },
+      {
+        "level": 55,
+        "candidate": {
+          "run": 38514009493,
+          "wins": 43,
+          "draws": 4,
+          "losses": 53,
+          "win_pct": 43,
+          "point_pct": 45,
+          "decision": "next_level"
+        },
+        "M": {
+          "wins": 38,
+          "draws": 1,
+          "losses": 61,
+          "win_pct": 38,
+          "point_pct": 38.5,
+          "decision": "next_level"
+        },
+        "Q14": {
+          "wins": 42,
+          "draws": 2,
+          "losses": 56,
+          "win_pct": 42,
+          "point_pct": 43,
+          "decision": "next_level"
+        }
+      },
+      {
+        "level": 56,
+        "candidate": {
+          "run": 38514433389,
+          "wins": 47,
+          "draws": 0,
+          "losses": 53,
+          "win_pct": 47,
+          "point_pct": 47,
+          "decision": "next_level"
+        },
+        "M": {
+          "wins": 36,
+          "draws": 3,
+          "losses": 61,
+          "win_pct": 36,
+          "point_pct": 37.5,
+          "decision": "next_level"
+        },
+        "Q14": {
+          "wins": 28,
+          "draws": 2,
+          "losses": 70,
+          "win_pct": 28,
+          "point_pct": 29,
+          "decision": "below_30_percent"
+        }
+      },
+      {
+        "level": 57,
+        "candidate": {
+          "run": 38514866509,
+          "wins": 35,
+          "draws": 1,
+          "losses": 64,
+          "win_pct": 35,
+          "point_pct": 35.5,
+          "decision": "next_level"
+        },
+        "M": {
+          "wins": 33,
+          "draws": 1,
+          "losses": 66,
+          "win_pct": 33,
+          "point_pct": 33.5,
+          "decision": "next_level"
+        },
+        "Q14": null
+      },
+      {
+        "level": 58,
+        "candidate": {
+          "run": 38515323682,
+          "wins": 26,
+          "draws": 1,
+          "losses": 73,
+          "win_pct": 26,
+          "point_pct": 26.5,
+          "decision": "below_30_percent"
+        },
+        "M": {
+          "wins": 30,
+          "draws": 3,
+          "losses": 67,
+          "win_pct": 30,
+          "point_pct": 31.5,
+          "decision": "next_level"
+        },
+        "Q14": null
+      }
+    ],
+    "stops": {
+      "candidate": "Lv58 (26% wins)",
+      "M": "Lv59 (20% wins; Lv58 passed at 30%)",
+      "Q14": "Lv56 (28% wins)"
+    }
+  },
+  "limitations": [
+    "100 games per level yields wide sampling error; do not infer small level-by-level differences as proven strength.",
+    "Candidate, M, and Q14 ladders are independent samples with different shard counts and seeds/openings.",
+    "Actions artifacts are retention-limited and expire from 2027-01-12; repository stores compact results and digests, not long-term raw archives.",
+    "Research result only. Formal main v2.0.12/Q14 is unchanged and no automatic adoption was performed."
+  ]
+}
+
