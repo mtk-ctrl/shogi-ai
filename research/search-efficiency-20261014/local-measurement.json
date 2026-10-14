@@ -1,0 +1,44 @@
+{
+  "positions": 24,
+  "repeats": 3,
+  "fixed_depth": 3,
+  "isolation_options": {
+    "OpeningRandomNonLance": false,
+    "MateAssist": false,
+    "MateLearning": false,
+    "AdaptiveLongThink": false,
+    "PositionKnowledge": true
+  },
+  "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+  "binary_sha256": {
+    "candidate": "97c265529de9e1d70e9e4eb734f9f98dec4a50eee2f0c4a47472cbd24ad25a91",
+    "baseline": "e51fbf85357a5c5b104212f0a87b49194ba01c55e3a2ab562e0e7161309b2509"
+  },
+  "fixed_trials": 72,
+  "fixed_identical": 72,
+  "mismatches": [],
+  "fixed_elapsed_ms": {
+    "candidate": 37984.887,
+    "baseline": 40043.833
+  },
+  "fixed_total_speedup": 1.054204347113103,
+  "fixed_median_paired_speedup": 1.0519236611702292,
+  "timed_trials": 72,
+  "timed_depth_sum": {
+    "candidate": 162,
+    "baseline": 161
+  },
+  "timed_nodes_sum": {
+    "candidate": 1002996,
+    "baseline": 963726
+  },
+  "timed_depth_comparison": {
+    "higher": 3,
+    "equal": 67,
+    "lower": 2
+  },
+  "candidate_ref": "24c212e59e69196db0c4475637a3f624109c43f4",
+  "baseline_ref": "dc866ab712da28b9d103484d1b504e4dd38385df",
+  "benchmark_source": "benchmarks/results/2026-10-05_v019-mate-assist-50ms-100games.json",
+  "interpretation": "Local paired timing, not strength proof; all fixed-depth move/score/PV/nodes/cutoffs identical. Formal100-game test pending."
+}
