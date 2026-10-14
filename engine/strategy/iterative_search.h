@@ -344,8 +344,12 @@ private:
         if (ply < static_cast<int>(stats_.nodes_by_ply.size())) ++stats_.nodes_by_ply[ply];
     }
     static void make(rules::Position& position, const std::string& move) {
+        // Every caller supplies a move from this position's legal_moves().
+        // The ongoing status has already been checked at the parent node.
+        // Avoid redoing status()/checkmate detection in play(). The rules
+        // layer still verifies the move against its legal move generator.
         std::string error;
-        if (!position.play(move, error)) throw std::logic_error(error);
+        if (!position.play_generated_legal(move, error)) throw std::logic_error(error);
     }
     // Exact board/hands/side identity; no repetition-sensitive search scores
     // are cached here. Terminal and repetition results remain uncached.
