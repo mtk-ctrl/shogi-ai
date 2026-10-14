@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-10-14T11:20:00+09:00",
-  "phase": "closing_coarse_running",
+  "updated_at": "2026-10-14T11:34:00+09:00",
+  "phase": "closing_followup_prepared",
   "tracker_issue": 170,
   "addness_goal": "cf8ec928-61c0-48a1-ba3c-7c0635797e1b",
   "branch": "research/variable-eval-systematic-20261012",
@@ -2174,7 +2174,7 @@
     ]
   },
   "next_check_jst": "2026-10-14T11:40:00+09:00",
-  "current_lanes": 10,
+  "current_lanes": 0,
   "other_lanes": 0,
   "ablation": {
     "planned_games": 1000,
@@ -5072,7 +5072,7 @@
   },
   "closing_cycle": {
     "plan_file": "closing-plan.json",
-    "stage": "coarse_running",
+    "stage": "followup_prepared",
     "coarse_request_id": "ve71-20261014-final-coarse",
     "coarse_engine_ref": "8f1dc91e67577a5f056137755f0a214a49a7b6cc",
     "new_cycle_afterwards": false,
@@ -5098,6 +5098,20 @@
       115645379723,
       115645379741,
       115645379860
-    ]
+    ],
+    "coarse_completed_games": 960,
+    "coarse_illegal": 0,
+    "coarse_audit_file": "closing-coarse-results.json",
+    "followup_profiles": [
+      32,
+      38,
+      39,
+      40,
+      68,
+      47,
+      25,
+      30
+    ],
+    "followup_plan": "closing-followup"
   }
 }

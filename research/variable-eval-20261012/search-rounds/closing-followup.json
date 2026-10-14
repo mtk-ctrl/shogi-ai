@@ -1,0 +1,27 @@
+{
+  "plan_id": "closing-followup",
+  "stage": "followup",
+  "profiles": [
+    32,
+    38,
+    39,
+    40,
+    68,
+    47,
+    25,
+    30
+  ],
+  "games_per_baseline": 24,
+  "go_command": "go movetime 200",
+  "adaptive_long_think": true,
+  "seeds": {
+    "M": 1915200000,
+    "Q14": 1915210000
+  },
+  "max_plies": 300,
+  "controls": {
+    "M": 1,
+    "Q14": 0
+  },
+  "selection_notice": "Final closing cycle: six new candidates and UNIFIED/ATTACK_AVG references, selection only. Freeze one candidate, one 100-game match per formal control, then selected Material ladder. No new parameter generation."
+}

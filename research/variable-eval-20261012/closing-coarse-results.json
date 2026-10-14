@@ -1,0 +1,2350 @@
+{
+  "run": 38500214029,
+  "issue": 254,
+  "date_jst": "2026-10-14",
+  "stage": "closing_coarse",
+  "plan": {
+    "plan_id": "round2-coarse",
+    "stage": "coarse",
+    "profiles": [
+      31,
+      39,
+      47,
+      55,
+      63,
+      32,
+      40,
+      48,
+      56,
+      64,
+      33,
+      41,
+      49,
+      57,
+      65,
+      34,
+      42,
+      50,
+      58,
+      66,
+      35,
+      43,
+      51,
+      59,
+      67,
+      36,
+      44,
+      52,
+      60,
+      68,
+      37,
+      45,
+      53,
+      61,
+      69,
+      38,
+      46,
+      54,
+      62,
+      70
+    ],
+    "games_per_baseline": 12,
+    "go_command": "go movetime 50",
+    "adaptive_long_think": false,
+    "seeds": {
+      "M": 1915000000,
+      "Q14": 1915010000
+    },
+    "max_plies": 300,
+    "controls": {
+      "M": 1,
+      "Q14": 0
+    },
+    "selection_notice": "新組合せ40案の選択用。強さや正式採用の証明ではない。上位8の短い確認後、新20案を作る。"
+  },
+  "engine_ref": "8f1dc91e67577a5f056137755f0a214a49a7b6cc",
+  "binary_sha256": "cf6e2e8ddff1679ad9f6eacf6606b9973ee08ae7a303db454a7659d1b346e4a7",
+  "registry_sha256": "a940aa8a3c1c52b005f86e7a579da97991222944ad110a9ce1ca4b2e9b71a6d3",
+  "games": 960,
+  "illegal": 0,
+  "all_raw_and_archive_checks_repeated_locally": true,
+  "github_summary_matches_recomputed_raw": true,
+  "zip_digests_verified": true,
+  "records": [
+    {
+      "profile": 31,
+      "baseline": "M",
+      "score": 0.625,
+      "approx95": [
+        0.23294986215015728,
+        1
+      ],
+      "wins": 6,
+      "draws": 3,
+      "losses": 3,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 31,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p031-M-000.json",
+          "sha256": "954d56dadf9c1cf672507942ee3af78dcdbc9f92692c257697657a6a52dfe289"
+        }
+      ]
+    },
+    {
+      "profile": 31,
+      "baseline": "Q14",
+      "score": 0.3333333333333333,
+      "approx95": [
+        0,
+        0.725383471183176
+      ],
+      "wins": 2,
+      "draws": 4,
+      "losses": 6,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 31,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p031-Q14-000.json",
+          "sha256": "0f6395d68e76b2f6a13373d90c47467c368fcdcb9896e7e177958b9d591e54c6"
+        }
+      ]
+    },
+    {
+      "profile": 32,
+      "baseline": "M",
+      "score": 0.7083333333333334,
+      "approx95": [
+        0.31628319548349065,
+        1
+      ],
+      "wins": 7,
+      "draws": 3,
+      "losses": 2,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 32,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p032-M-000.json",
+          "sha256": "43bdd6771d7ad2c5ffb1b81c7bfb268c28b17e52b9d0ebf2b97a45be963a9652"
+        }
+      ]
+    },
+    {
+      "profile": 32,
+      "baseline": "Q14",
+      "score": 0.7083333333333334,
+      "approx95": [
+        0.31628319548349065,
+        1
+      ],
+      "wins": 8,
+      "draws": 1,
+      "losses": 3,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 32,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p032-Q14-000.json",
+          "sha256": "255feada31a2789a2e73731fe857182b3f0fe564f06c76b5d8e12ef774168692"
+        }
+      ]
+    },
+    {
+      "profile": 33,
+      "baseline": "M",
+      "score": 0.4583333333333333,
+      "approx95": [
+        0.0662831954834906,
+        0.850383471183176
+      ],
+      "wins": 4,
+      "draws": 3,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 33,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p033-M-000.json",
+          "sha256": "ec31a66d8928821b22424c730cd682ab99b61804abe68dd6f656fdaf307485b6"
+        }
+      ]
+    },
+    {
+      "profile": 33,
+      "baseline": "Q14",
+      "score": 0.875,
+      "approx95": [
+        0.4829498621501573,
+        1
+      ],
+      "wins": 10,
+      "draws": 1,
+      "losses": 1,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 33,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p033-Q14-000.json",
+          "sha256": "2a59e1e0a296c7d918445d4d27fbbb0c5896d220b93eb09f9931895ad48d7ccd"
+        }
+      ]
+    },
+    {
+      "profile": 34,
+      "baseline": "M",
+      "score": 0.7083333333333334,
+      "approx95": [
+        0.31628319548349065,
+        1
+      ],
+      "wins": 7,
+      "draws": 3,
+      "losses": 2,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 34,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p034-M-000.json",
+          "sha256": "f2dbba7c4b5ffebcab79e75752d1a419ab605f5d26922b16f1303d33bbfbfee0"
+        }
+      ]
+    },
+    {
+      "profile": 34,
+      "baseline": "Q14",
+      "score": 0.4166666666666667,
+      "approx95": [
+        0.024616528816823968,
+        0.8087168045165094
+      ],
+      "wins": 5,
+      "draws": 0,
+      "losses": 7,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 34,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p034-Q14-000.json",
+          "sha256": "4fc84e7851462c9940f00eb01cad290fca105873a3472c083d88de2c17eb31f1"
+        }
+      ]
+    },
+    {
+      "profile": 35,
+      "baseline": "M",
+      "score": 0.5833333333333334,
+      "approx95": [
+        0.19128319548349065,
+        0.9753834711831761
+      ],
+      "wins": 7,
+      "draws": 0,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 35,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p035-M-000.json",
+          "sha256": "b024bc52696db2d50ec87b28934085f7bf3e87cc69baa14f65518ad96a017107"
+        }
+      ]
+    },
+    {
+      "profile": 35,
+      "baseline": "Q14",
+      "score": 0.7916666666666666,
+      "approx95": [
+        0.3996165288168239,
+        1
+      ],
+      "wins": 8,
+      "draws": 3,
+      "losses": 1,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 35,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p035-Q14-000.json",
+          "sha256": "277522973e7212d72c8a2e951cbaa37c898fc4f0c89ac6257c4638fa76822164"
+        }
+      ]
+    },
+    {
+      "profile": 36,
+      "baseline": "M",
+      "score": 0.625,
+      "approx95": [
+        0.23294986215015728,
+        1
+      ],
+      "wins": 6,
+      "draws": 3,
+      "losses": 3,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 36,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p036-M-000.json",
+          "sha256": "5402e6283b488fe84c733637a8f53ed625612195c28b71f9688d97580cc48f03"
+        }
+      ]
+    },
+    {
+      "profile": 36,
+      "baseline": "Q14",
+      "score": 0.7083333333333334,
+      "approx95": [
+        0.31628319548349065,
+        1
+      ],
+      "wins": 8,
+      "draws": 1,
+      "losses": 3,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 36,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p036-Q14-000.json",
+          "sha256": "2b4d2947fcb846d1757f0b7f4934ee1f5d32312c518a135f3a136c6aac30643c"
+        }
+      ]
+    },
+    {
+      "profile": 37,
+      "baseline": "M",
+      "score": 0.375,
+      "approx95": [
+        0,
+        0.7670501378498427
+      ],
+      "wins": 3,
+      "draws": 3,
+      "losses": 6,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 37,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p037-M-000.json",
+          "sha256": "9b293476452f984ed7e7b656574983b0c394ba96976c36cf30628d6f35795cc9"
+        }
+      ]
+    },
+    {
+      "profile": 37,
+      "baseline": "Q14",
+      "score": 0.625,
+      "approx95": [
+        0.23294986215015728,
+        1
+      ],
+      "wins": 7,
+      "draws": 1,
+      "losses": 4,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 37,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p037-Q14-000.json",
+          "sha256": "2adc54f64dfac64860586b60f6e34fd4d81de34aab865793a15c2a65e44260f6"
+        }
+      ]
+    },
+    {
+      "profile": 38,
+      "baseline": "M",
+      "score": 0.7916666666666666,
+      "approx95": [
+        0.3996165288168239,
+        1
+      ],
+      "wins": 8,
+      "draws": 3,
+      "losses": 1,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 38,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p038-M-000.json",
+          "sha256": "08cdbeaf99accf231af1c4ea852870eed9b4171105a1b6c326047a7b1c5aee6c"
+        }
+      ]
+    },
+    {
+      "profile": 38,
+      "baseline": "Q14",
+      "score": 0.6666666666666666,
+      "approx95": [
+        0.2746165288168239,
+        1
+      ],
+      "wins": 7,
+      "draws": 2,
+      "losses": 3,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 38,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p038-Q14-000.json",
+          "sha256": "099c76079210204e789c1863cd1a95fa4b359f795e0e3a4c65b5fd5746b4a36d"
+        }
+      ]
+    },
+    {
+      "profile": 39,
+      "baseline": "M",
+      "score": 0.625,
+      "approx95": [
+        0.23294986215015728,
+        1
+      ],
+      "wins": 7,
+      "draws": 1,
+      "losses": 4,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 39,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p039-M-000.json",
+          "sha256": "6a17fc7036bf1c346a686d28e14f57585a928daa0681c3fba11fb4fad7000526"
+        }
+      ]
+    },
+    {
+      "profile": 39,
+      "baseline": "Q14",
+      "score": 0.7916666666666666,
+      "approx95": [
+        0.3996165288168239,
+        1
+      ],
+      "wins": 9,
+      "draws": 1,
+      "losses": 2,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 39,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p039-Q14-000.json",
+          "sha256": "94c50311258d697c79d7021e20821132a2481789af5adc3b4c1e74e6bbaeea18"
+        }
+      ]
+    },
+    {
+      "profile": 40,
+      "baseline": "M",
+      "score": 0.5833333333333334,
+      "approx95": [
+        0.19128319548349065,
+        0.9753834711831761
+      ],
+      "wins": 7,
+      "draws": 0,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 40,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p040-M-000.json",
+          "sha256": "a53301719ef7a45e8aa80590e6924d00d1c687ff4210e9b95184780047938a53"
+        }
+      ]
+    },
+    {
+      "profile": 40,
+      "baseline": "Q14",
+      "score": 0.6666666666666666,
+      "approx95": [
+        0.2746165288168239,
+        1
+      ],
+      "wins": 7,
+      "draws": 2,
+      "losses": 3,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 40,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p040-Q14-000.json",
+          "sha256": "10d8262b7e17ddcf1e13a14d635b0f72541e8c462310399453ddef01c79b5834"
+        }
+      ]
+    },
+    {
+      "profile": 41,
+      "baseline": "M",
+      "score": 0.5416666666666666,
+      "approx95": [
+        0.1496165288168239,
+        0.9337168045165094
+      ],
+      "wins": 6,
+      "draws": 1,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 41,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p041-M-000.json",
+          "sha256": "907bb687638a4600228b21371cbeb028e74a5d071c9bcb41c3c6299a5dd8c30f"
+        }
+      ]
+    },
+    {
+      "profile": 41,
+      "baseline": "Q14",
+      "score": 0.5833333333333334,
+      "approx95": [
+        0.19128319548349065,
+        0.9753834711831761
+      ],
+      "wins": 5,
+      "draws": 4,
+      "losses": 3,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 41,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p041-Q14-000.json",
+          "sha256": "9925684237979f8c76b37e7c2296753a82027d58ce2309b150a72af2edde1cac"
+        }
+      ]
+    },
+    {
+      "profile": 42,
+      "baseline": "M",
+      "score": 0.4166666666666667,
+      "approx95": [
+        0.024616528816823968,
+        0.8087168045165094
+      ],
+      "wins": 5,
+      "draws": 0,
+      "losses": 7,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 42,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p042-M-000.json",
+          "sha256": "0294a78d5075ab57417e62770d28c031931225ff20e6cc15bf515543c831caa7"
+        }
+      ]
+    },
+    {
+      "profile": 42,
+      "baseline": "Q14",
+      "score": 0.4583333333333333,
+      "approx95": [
+        0.0662831954834906,
+        0.850383471183176
+      ],
+      "wins": 4,
+      "draws": 3,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 42,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p042-Q14-000.json",
+          "sha256": "e6545ba9fa18295aa78ea46b9986ab270ceeb81aec12711756247ff638657392"
+        }
+      ]
+    },
+    {
+      "profile": 43,
+      "baseline": "M",
+      "score": 0.7083333333333334,
+      "approx95": [
+        0.31628319548349065,
+        1
+      ],
+      "wins": 7,
+      "draws": 3,
+      "losses": 2,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 43,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p043-M-000.json",
+          "sha256": "38a31e37cafba22f7c98aa11b3e265d277b0f79e5f1d2a201deaa5fb12f8883f"
+        }
+      ]
+    },
+    {
+      "profile": 43,
+      "baseline": "Q14",
+      "score": 0.5,
+      "approx95": [
+        0.10794986215015728,
+        0.8920501378498427
+      ],
+      "wins": 4,
+      "draws": 4,
+      "losses": 4,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 43,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p043-Q14-000.json",
+          "sha256": "c6e15b784934771fbe742dd5005923341f80df9dac9048bda679067af7a9937c"
+        }
+      ]
+    },
+    {
+      "profile": 44,
+      "baseline": "M",
+      "score": 0.4166666666666667,
+      "approx95": [
+        0.024616528816823968,
+        0.8087168045165094
+      ],
+      "wins": 5,
+      "draws": 0,
+      "losses": 7,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 44,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p044-M-000.json",
+          "sha256": "ba945fb7a7264b9833e198cc4725b092a9367ce57d900f0f3a8448ef9c1b5fa6"
+        }
+      ]
+    },
+    {
+      "profile": 44,
+      "baseline": "Q14",
+      "score": 0.2916666666666667,
+      "approx95": [
+        0,
+        0.6837168045165094
+      ],
+      "wins": 3,
+      "draws": 1,
+      "losses": 8,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 44,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p044-Q14-000.json",
+          "sha256": "2d6819c869022c1d24ca1a2d1dd94f239a8dcb9a7c4afaa3cfb932ce98e63ec5"
+        }
+      ]
+    },
+    {
+      "profile": 45,
+      "baseline": "M",
+      "score": 0.5416666666666666,
+      "approx95": [
+        0.1496165288168239,
+        0.9337168045165094
+      ],
+      "wins": 4,
+      "draws": 5,
+      "losses": 3,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 45,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p045-M-000.json",
+          "sha256": "fa00ed2bc5e87272124f4408dea6cb8c6427bfd2d1051c6fbcc48c731bff6cba"
+        }
+      ]
+    },
+    {
+      "profile": 45,
+      "baseline": "Q14",
+      "score": 0.6666666666666666,
+      "approx95": [
+        0.2746165288168239,
+        1
+      ],
+      "wins": 7,
+      "draws": 2,
+      "losses": 3,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 45,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p045-Q14-000.json",
+          "sha256": "0245e0c0c958b2111efa8a34a8c4cbbfff6d551861fd5f70f2f12bf601e4c437"
+        }
+      ]
+    },
+    {
+      "profile": 46,
+      "baseline": "M",
+      "score": 0.5833333333333334,
+      "approx95": [
+        0.19128319548349065,
+        0.9753834711831761
+      ],
+      "wins": 5,
+      "draws": 4,
+      "losses": 3,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 46,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p046-M-000.json",
+          "sha256": "917f8921c4559652a747d5a3130286f4bb889ceb71b0b213f177582ad34e3595"
+        }
+      ]
+    },
+    {
+      "profile": 46,
+      "baseline": "Q14",
+      "score": 0.4583333333333333,
+      "approx95": [
+        0.0662831954834906,
+        0.850383471183176
+      ],
+      "wins": 4,
+      "draws": 3,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 46,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p046-Q14-000.json",
+          "sha256": "3d0e1bbcff7254a3e68fb02b8139b8d8a3e4d0dbe4ecd02531046f9c5b6cd8a6"
+        }
+      ]
+    },
+    {
+      "profile": 47,
+      "baseline": "M",
+      "score": 0.625,
+      "approx95": [
+        0.23294986215015728,
+        1
+      ],
+      "wins": 7,
+      "draws": 1,
+      "losses": 4,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 47,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p047-M-000.json",
+          "sha256": "aa37b8e33031496659d2b931cb9a535a8cebd8ad161aef28b13014b8e45149ce"
+        }
+      ]
+    },
+    {
+      "profile": 47,
+      "baseline": "Q14",
+      "score": 0.5416666666666666,
+      "approx95": [
+        0.1496165288168239,
+        0.9337168045165094
+      ],
+      "wins": 5,
+      "draws": 3,
+      "losses": 4,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 47,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p047-Q14-000.json",
+          "sha256": "45dec15f4daa2742e18f2ae65187d5587c24d1f01ef86aa2732e1eec774cd980"
+        }
+      ]
+    },
+    {
+      "profile": 48,
+      "baseline": "M",
+      "score": 0.4166666666666667,
+      "approx95": [
+        0.024616528816823968,
+        0.8087168045165094
+      ],
+      "wins": 3,
+      "draws": 4,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 48,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p048-M-000.json",
+          "sha256": "2d97d19f139aff36abdd4e8471c790a93b2786662adc834fda554ce563597222"
+        }
+      ]
+    },
+    {
+      "profile": 48,
+      "baseline": "Q14",
+      "score": 0.8333333333333334,
+      "approx95": [
+        0.44128319548349065,
+        1
+      ],
+      "wins": 9,
+      "draws": 2,
+      "losses": 1,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 48,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p048-Q14-000.json",
+          "sha256": "7a30467b0ae70ff7796d3c60f578ac145e2082c45b1c93eb54e462467cdca2b0"
+        }
+      ]
+    },
+    {
+      "profile": 49,
+      "baseline": "M",
+      "score": 0.5,
+      "approx95": [
+        0.10794986215015728,
+        0.8920501378498427
+      ],
+      "wins": 5,
+      "draws": 2,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 49,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p049-M-000.json",
+          "sha256": "b2ac1fa7bff029eeb5500473bc89148b69f787a6dbe5314087a262c2251932ec"
+        }
+      ]
+    },
+    {
+      "profile": 49,
+      "baseline": "Q14",
+      "score": 0.625,
+      "approx95": [
+        0.23294986215015728,
+        1
+      ],
+      "wins": 6,
+      "draws": 3,
+      "losses": 3,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 49,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p049-Q14-000.json",
+          "sha256": "e10135604c4e466f7dc5a61dfa4ebed15dea424fa8e21521688ef978f2809268"
+        }
+      ]
+    },
+    {
+      "profile": 50,
+      "baseline": "M",
+      "score": 0.5,
+      "approx95": [
+        0.10794986215015728,
+        0.8920501378498427
+      ],
+      "wins": 5,
+      "draws": 2,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 50,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p050-M-000.json",
+          "sha256": "50e3a75f9a7945f0505ee4a6f461e77653fc9cade807ca58c446a1379b7236ae"
+        }
+      ]
+    },
+    {
+      "profile": 50,
+      "baseline": "Q14",
+      "score": 0.8333333333333334,
+      "approx95": [
+        0.44128319548349065,
+        1
+      ],
+      "wins": 9,
+      "draws": 2,
+      "losses": 1,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 50,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p050-Q14-000.json",
+          "sha256": "07833291f5ec0448f763ef39cc2a58306ce700b05e81393692c75041cba9f91a"
+        }
+      ]
+    },
+    {
+      "profile": 51,
+      "baseline": "M",
+      "score": 0.5416666666666666,
+      "approx95": [
+        0.1496165288168239,
+        0.9337168045165094
+      ],
+      "wins": 6,
+      "draws": 1,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 51,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p051-M-000.json",
+          "sha256": "8eb337eeb9774a01e70294eb7a0d5bd0940564ae4e94f103737eec17b60f5d68"
+        }
+      ]
+    },
+    {
+      "profile": 51,
+      "baseline": "Q14",
+      "score": 0.4583333333333333,
+      "approx95": [
+        0.0662831954834906,
+        0.850383471183176
+      ],
+      "wins": 4,
+      "draws": 3,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 51,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p051-Q14-000.json",
+          "sha256": "cf8fa2639d4d0eaf1fb6fb001b83b691a536f780a0b5da37e9d5353ed6b58c3a"
+        }
+      ]
+    },
+    {
+      "profile": 52,
+      "baseline": "M",
+      "score": 0.4166666666666667,
+      "approx95": [
+        0.024616528816823968,
+        0.8087168045165094
+      ],
+      "wins": 4,
+      "draws": 2,
+      "losses": 6,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 52,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p052-M-000.json",
+          "sha256": "4043e475e0aa4a1a4e6bfcca3e0ea174a2db2547f9fad4ca6f0be5b50948fa5c"
+        }
+      ]
+    },
+    {
+      "profile": 52,
+      "baseline": "Q14",
+      "score": 0.375,
+      "approx95": [
+        0,
+        0.7670501378498427
+      ],
+      "wins": 3,
+      "draws": 3,
+      "losses": 6,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 52,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p052-Q14-000.json",
+          "sha256": "31565208e9a64c8e1c0c5294ca8b744bfd096c80ffdc73fc57823985118e47a8"
+        }
+      ]
+    },
+    {
+      "profile": 53,
+      "baseline": "M",
+      "score": 0.4583333333333333,
+      "approx95": [
+        0.0662831954834906,
+        0.850383471183176
+      ],
+      "wins": 5,
+      "draws": 1,
+      "losses": 6,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 53,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p053-M-000.json",
+          "sha256": "c43144c0f803b6f9f05c4dee9486e573d90ab98c4755e40ea764d797d8555aad"
+        }
+      ]
+    },
+    {
+      "profile": 53,
+      "baseline": "Q14",
+      "score": 0.5833333333333334,
+      "approx95": [
+        0.19128319548349065,
+        0.9753834711831761
+      ],
+      "wins": 6,
+      "draws": 2,
+      "losses": 4,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 53,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p053-Q14-000.json",
+          "sha256": "e4ae3364fe5eed4b04bd0751caea891e961ec6fcdfcb285cfa98ae24a88a7c32"
+        }
+      ]
+    },
+    {
+      "profile": 54,
+      "baseline": "M",
+      "score": 0.5,
+      "approx95": [
+        0.10794986215015728,
+        0.8920501378498427
+      ],
+      "wins": 5,
+      "draws": 2,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 54,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p054-M-000.json",
+          "sha256": "b44c9e7807d066d364700beb31bc572f17e815bc3d3665012b3a90fc882ec146"
+        }
+      ]
+    },
+    {
+      "profile": 54,
+      "baseline": "Q14",
+      "score": 0.5,
+      "approx95": [
+        0.10794986215015728,
+        0.8920501378498427
+      ],
+      "wins": 5,
+      "draws": 2,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 54,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p054-Q14-000.json",
+          "sha256": "a326c9b8a7b2d7ad5a3bef703954bcf32df59abab2d3ea64b15d431238ccd1f3"
+        }
+      ]
+    },
+    {
+      "profile": 55,
+      "baseline": "M",
+      "score": 0.4166666666666667,
+      "approx95": [
+        0.024616528816823968,
+        0.8087168045165094
+      ],
+      "wins": 3,
+      "draws": 4,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 55,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p055-M-000.json",
+          "sha256": "f1fb9a7c367f056d72b89b798e78d19a7b2b6ccd2af4875763ab212c23972ac3"
+        }
+      ]
+    },
+    {
+      "profile": 55,
+      "baseline": "Q14",
+      "score": 0.5416666666666666,
+      "approx95": [
+        0.1496165288168239,
+        0.9337168045165094
+      ],
+      "wins": 5,
+      "draws": 3,
+      "losses": 4,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 55,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p055-Q14-000.json",
+          "sha256": "9a434c55167b6fb9d16eeb4b9b0bf59e44b7c278aeb70f8377eb9fc4d0b272be"
+        }
+      ]
+    },
+    {
+      "profile": 56,
+      "baseline": "M",
+      "score": 0.5416666666666666,
+      "approx95": [
+        0.1496165288168239,
+        0.9337168045165094
+      ],
+      "wins": 5,
+      "draws": 3,
+      "losses": 4,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 56,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p056-M-000.json",
+          "sha256": "b847f2bf9b14cf523ed6350d29de697ae20886456c2a122498e555b7bcd11b17"
+        }
+      ]
+    },
+    {
+      "profile": 56,
+      "baseline": "Q14",
+      "score": 0.625,
+      "approx95": [
+        0.23294986215015728,
+        1
+      ],
+      "wins": 6,
+      "draws": 3,
+      "losses": 3,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 56,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p056-Q14-000.json",
+          "sha256": "dda33d325b634e7d9002362bdbadbdaef280f69f91e6c0fb43f4a1b9bcaa0a57"
+        }
+      ]
+    },
+    {
+      "profile": 57,
+      "baseline": "M",
+      "score": 0.5416666666666666,
+      "approx95": [
+        0.1496165288168239,
+        0.9337168045165094
+      ],
+      "wins": 6,
+      "draws": 1,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 57,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p057-M-000.json",
+          "sha256": "f4e1abb806f9be00021cda38b15d1ba0f96d03793e6582172fcdf91818691f2a"
+        }
+      ]
+    },
+    {
+      "profile": 57,
+      "baseline": "Q14",
+      "score": 0.4166666666666667,
+      "approx95": [
+        0.024616528816823968,
+        0.8087168045165094
+      ],
+      "wins": 4,
+      "draws": 2,
+      "losses": 6,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 57,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p057-Q14-000.json",
+          "sha256": "dc992bd66148278eff0be26c2643faff97728661987e9f6fcf084b034203469e"
+        }
+      ]
+    },
+    {
+      "profile": 58,
+      "baseline": "M",
+      "score": 0.625,
+      "approx95": [
+        0.23294986215015728,
+        1
+      ],
+      "wins": 7,
+      "draws": 1,
+      "losses": 4,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 58,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p058-M-000.json",
+          "sha256": "28b47bdd18f0a7016fbd78ccf026925b032f9d5c6f520fab2026e5ca81e3c594"
+        }
+      ]
+    },
+    {
+      "profile": 58,
+      "baseline": "Q14",
+      "score": 0.3333333333333333,
+      "approx95": [
+        0,
+        0.725383471183176
+      ],
+      "wins": 3,
+      "draws": 2,
+      "losses": 7,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 58,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p058-Q14-000.json",
+          "sha256": "338c1448ebe4b05206193de92e2b11805999380ca9a52f022d9763bd972faadd"
+        }
+      ]
+    },
+    {
+      "profile": 59,
+      "baseline": "M",
+      "score": 0.5833333333333334,
+      "approx95": [
+        0.19128319548349065,
+        0.9753834711831761
+      ],
+      "wins": 6,
+      "draws": 2,
+      "losses": 4,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 59,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p059-M-000.json",
+          "sha256": "8467c784da4c68b8806249976cb03c3dfe88345ee2dbe787fb2ccf4354cc84c1"
+        }
+      ]
+    },
+    {
+      "profile": 59,
+      "baseline": "Q14",
+      "score": 0.5416666666666666,
+      "approx95": [
+        0.1496165288168239,
+        0.9337168045165094
+      ],
+      "wins": 5,
+      "draws": 3,
+      "losses": 4,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 59,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p059-Q14-000.json",
+          "sha256": "17c5579af507a0bb4033f50646527da91cb0a465cd5e00c88c3175984de0133b"
+        }
+      ]
+    },
+    {
+      "profile": 60,
+      "baseline": "M",
+      "score": 0.5,
+      "approx95": [
+        0.10794986215015728,
+        0.8920501378498427
+      ],
+      "wins": 4,
+      "draws": 4,
+      "losses": 4,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 60,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p060-M-000.json",
+          "sha256": "9d6777d441578c85337f7a5562275f567f414e837062c973f6a918aeae44e973"
+        }
+      ]
+    },
+    {
+      "profile": 60,
+      "baseline": "Q14",
+      "score": 0.5833333333333334,
+      "approx95": [
+        0.19128319548349065,
+        0.9753834711831761
+      ],
+      "wins": 5,
+      "draws": 4,
+      "losses": 3,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 60,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p060-Q14-000.json",
+          "sha256": "a782d0dc62d24492b689cd75f04f629b82b7a4b887a7d1ed5e121aebe724fb4b"
+        }
+      ]
+    },
+    {
+      "profile": 61,
+      "baseline": "M",
+      "score": 0.4166666666666667,
+      "approx95": [
+        0.024616528816823968,
+        0.8087168045165094
+      ],
+      "wins": 4,
+      "draws": 2,
+      "losses": 6,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 61,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p061-M-000.json",
+          "sha256": "319dc9910c3e792600ec57a2fbea41998e63dc407d4d81e40a1484056f850ff4"
+        }
+      ]
+    },
+    {
+      "profile": 61,
+      "baseline": "Q14",
+      "score": 0.4583333333333333,
+      "approx95": [
+        0.0662831954834906,
+        0.850383471183176
+      ],
+      "wins": 5,
+      "draws": 1,
+      "losses": 6,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 61,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p061-Q14-000.json",
+          "sha256": "888a53067c834ccb6f4e71f5568d948ca484f01671f424aec350b796d230d67f"
+        }
+      ]
+    },
+    {
+      "profile": 62,
+      "baseline": "M",
+      "score": 0.5833333333333334,
+      "approx95": [
+        0.19128319548349065,
+        0.9753834711831761
+      ],
+      "wins": 6,
+      "draws": 2,
+      "losses": 4,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 62,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p062-M-000.json",
+          "sha256": "7328baf5f5362cbebdae1c9c9cd5db0b93330553fabdb7a7e9391244261d5484"
+        }
+      ]
+    },
+    {
+      "profile": 62,
+      "baseline": "Q14",
+      "score": 0.4583333333333333,
+      "approx95": [
+        0.0662831954834906,
+        0.850383471183176
+      ],
+      "wins": 4,
+      "draws": 3,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 62,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p062-Q14-000.json",
+          "sha256": "0a27e4a1bd806ebfa9b7bffa0cf70b41e238a58bd2749bc43f85c3a49a94829a"
+        }
+      ]
+    },
+    {
+      "profile": 63,
+      "baseline": "M",
+      "score": 0.4166666666666667,
+      "approx95": [
+        0.024616528816823968,
+        0.8087168045165094
+      ],
+      "wins": 5,
+      "draws": 0,
+      "losses": 7,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 63,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p063-M-000.json",
+          "sha256": "93bdaa505864e883e5969e764e91665bcde5bf363392d8f44c56e2783184a1ac"
+        }
+      ]
+    },
+    {
+      "profile": 63,
+      "baseline": "Q14",
+      "score": 0.6666666666666666,
+      "approx95": [
+        0.2746165288168239,
+        1
+      ],
+      "wins": 6,
+      "draws": 4,
+      "losses": 2,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 63,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p063-Q14-000.json",
+          "sha256": "eb98acc67bcf3e25e45777165cf473f10894b8fa242b94bcaaa4942e7a6ec408"
+        }
+      ]
+    },
+    {
+      "profile": 64,
+      "baseline": "M",
+      "score": 0.375,
+      "approx95": [
+        0,
+        0.7670501378498427
+      ],
+      "wins": 4,
+      "draws": 1,
+      "losses": 7,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 64,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p064-M-000.json",
+          "sha256": "2f8b5036409e4441d6505702f20e40c2c51bf830d9ef5b1935f03b3a3ab0eaa4"
+        }
+      ]
+    },
+    {
+      "profile": 64,
+      "baseline": "Q14",
+      "score": 0.5,
+      "approx95": [
+        0.10794986215015728,
+        0.8920501378498427
+      ],
+      "wins": 5,
+      "draws": 2,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 64,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p064-Q14-000.json",
+          "sha256": "627ea48188cdc5839dc3e7374a65e6aee3fb6a2a8daf59c00a0782b55f2fe473"
+        }
+      ]
+    },
+    {
+      "profile": 65,
+      "baseline": "M",
+      "score": 0.4166666666666667,
+      "approx95": [
+        0.024616528816823968,
+        0.8087168045165094
+      ],
+      "wins": 3,
+      "draws": 4,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 65,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p065-M-000.json",
+          "sha256": "474d7286491a9b408576594315d8f63ab2cbe59fc4cd7993fc0ca1cfcd385974"
+        }
+      ]
+    },
+    {
+      "profile": 65,
+      "baseline": "Q14",
+      "score": 0.5,
+      "approx95": [
+        0.10794986215015728,
+        0.8920501378498427
+      ],
+      "wins": 6,
+      "draws": 0,
+      "losses": 6,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 65,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p065-Q14-000.json",
+          "sha256": "8ca1105fd098c043c12be38eb2530190d4e6d00f1e826493c5bf378efe0e9cc6"
+        }
+      ]
+    },
+    {
+      "profile": 66,
+      "baseline": "M",
+      "score": 0.4583333333333333,
+      "approx95": [
+        0.0662831954834906,
+        0.850383471183176
+      ],
+      "wins": 5,
+      "draws": 1,
+      "losses": 6,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 66,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p066-M-000.json",
+          "sha256": "5261a50e174a9c42d17e2937447939a954288b1acc58d83be7c11421e622498e"
+        }
+      ]
+    },
+    {
+      "profile": 66,
+      "baseline": "Q14",
+      "score": 0.625,
+      "approx95": [
+        0.23294986215015728,
+        1
+      ],
+      "wins": 6,
+      "draws": 3,
+      "losses": 3,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 66,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p066-Q14-000.json",
+          "sha256": "ffeaa53c6d43954ae80e11a167148c95417050b9c2ba17f1367a1e8d8835d25b"
+        }
+      ]
+    },
+    {
+      "profile": 67,
+      "baseline": "M",
+      "score": 0.5,
+      "approx95": [
+        0.10794986215015728,
+        0.8920501378498427
+      ],
+      "wins": 5,
+      "draws": 2,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 67,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p067-M-000.json",
+          "sha256": "3799516c5efbabc06bfb298efeabe4afdfd3b16b49c58145681ff2c467873332"
+        }
+      ]
+    },
+    {
+      "profile": 67,
+      "baseline": "Q14",
+      "score": 0.4583333333333333,
+      "approx95": [
+        0.0662831954834906,
+        0.850383471183176
+      ],
+      "wins": 5,
+      "draws": 1,
+      "losses": 6,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 67,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p067-Q14-000.json",
+          "sha256": "32b661b8a988c09d83904521641821c505c1df40befbfa681d2aac39a582795e"
+        }
+      ]
+    },
+    {
+      "profile": 68,
+      "baseline": "M",
+      "score": 0.5833333333333334,
+      "approx95": [
+        0.19128319548349065,
+        0.9753834711831761
+      ],
+      "wins": 6,
+      "draws": 2,
+      "losses": 4,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 68,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p068-M-000.json",
+          "sha256": "f44fcf421e5b0aaba3ae43672a7ac65542588c065639283289a2422dd92eccd3"
+        }
+      ]
+    },
+    {
+      "profile": 68,
+      "baseline": "Q14",
+      "score": 0.5833333333333334,
+      "approx95": [
+        0.19128319548349065,
+        0.9753834711831761
+      ],
+      "wins": 7,
+      "draws": 0,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 68,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p068-Q14-000.json",
+          "sha256": "02dee558323f75768f4b99ac0fe76cd6c79c3e711ee0109f01dcf22d58ca2d50"
+        }
+      ]
+    },
+    {
+      "profile": 69,
+      "baseline": "M",
+      "score": 0.75,
+      "approx95": [
+        0.3579498621501573,
+        1
+      ],
+      "wins": 8,
+      "draws": 2,
+      "losses": 2,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 69,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p069-M-000.json",
+          "sha256": "c3d3304ab691d9646a7150ff42c3968bd747eb7f8ac73c6653c6c5d0c0cbb54a"
+        }
+      ]
+    },
+    {
+      "profile": 69,
+      "baseline": "Q14",
+      "score": 0.5,
+      "approx95": [
+        0.10794986215015728,
+        0.8920501378498427
+      ],
+      "wins": 5,
+      "draws": 2,
+      "losses": 5,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 69,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p069-Q14-000.json",
+          "sha256": "bf129170aacb6aba6af40d5b3f15575d79887560723cc9dd62ad73705921135e"
+        }
+      ]
+    },
+    {
+      "profile": 70,
+      "baseline": "M",
+      "score": 0.625,
+      "approx95": [
+        0.23294986215015728,
+        1
+      ],
+      "wins": 6,
+      "draws": 3,
+      "losses": 3,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 70,
+          "baseline": "M",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915000000,
+          "path": "raw-p070-M-000.json",
+          "sha256": "1028589d0b38c43bc0cef40e1a2bdecc352fb954e6c4ed7d44033f2ac0ce081c"
+        }
+      ]
+    },
+    {
+      "profile": 70,
+      "baseline": "Q14",
+      "score": 0.5416666666666666,
+      "approx95": [
+        0.1496165288168239,
+        0.9337168045165094
+      ],
+      "wins": 4,
+      "draws": 5,
+      "losses": 3,
+      "colors": 6,
+      "fragments": [
+        {
+          "profile": 70,
+          "baseline": "Q14",
+          "offset": 0,
+          "games": 12,
+          "seed": 1915010000,
+          "path": "raw-p070-Q14-000.json",
+          "sha256": "d0fa8d9d04747c2cb7d46103995474520059ec27292d3d592d9767c8e5e3ea86"
+        }
+      ]
+    }
+  ],
+  "ranking": [
+    {
+      "profile": 32,
+      "name": "BAL_smooth_1",
+      "family": "round2_balance",
+      "min_score": 0.7083333333333334,
+      "mean_score": 0.7083333333333334
+    },
+    {
+      "profile": 38,
+      "name": "BAL_late_1",
+      "family": "round2_balance",
+      "min_score": 0.6666666666666666,
+      "mean_score": 0.7291666666666666
+    },
+    {
+      "profile": 39,
+      "name": "MAT_up_mild",
+      "family": "round2_material",
+      "min_score": 0.625,
+      "mean_score": 0.7083333333333333
+    },
+    {
+      "profile": 36,
+      "name": "BAL_delayed_1",
+      "family": "round2_balance",
+      "min_score": 0.625,
+      "mean_score": 0.6666666666666667
+    },
+    {
+      "profile": 35,
+      "name": "BAL_delayed_0",
+      "family": "round2_balance",
+      "min_score": 0.5833333333333334,
+      "mean_score": 0.6875
+    },
+    {
+      "profile": 40,
+      "name": "MAT_up_reverse",
+      "family": "round2_material",
+      "min_score": 0.5833333333333334,
+      "mean_score": 0.625
+    },
+    {
+      "profile": 68,
+      "name": "SHAPE_end_surge_step",
+      "family": "round2_shape",
+      "min_score": 0.5833333333333334,
+      "mean_score": 0.5833333333333334
+    },
+    {
+      "profile": 45,
+      "name": "MAT_down_wide",
+      "family": "round2_material",
+      "min_score": 0.5416666666666666,
+      "mean_score": 0.6041666666666666
+    },
+    {
+      "profile": 47,
+      "name": "MOB_smooth_0",
+      "family": "round2_mobility",
+      "min_score": 0.5416666666666666,
+      "mean_score": 0.5833333333333333
+    },
+    {
+      "profile": 56,
+      "name": "HAND_smooth_0_1",
+      "family": "round2_hand",
+      "min_score": 0.5416666666666666,
+      "mean_score": 0.5833333333333333
+    },
+    {
+      "profile": 70,
+      "name": "SHAPE_reverse_step",
+      "family": "round2_shape",
+      "min_score": 0.5416666666666666,
+      "mean_score": 0.5833333333333333
+    },
+    {
+      "profile": 41,
+      "name": "MAT_up_wide",
+      "family": "round2_material",
+      "min_score": 0.5416666666666666,
+      "mean_score": 0.5625
+    },
+    {
+      "profile": 59,
+      "name": "HAND_late_0_0",
+      "family": "round2_hand",
+      "min_score": 0.5416666666666666,
+      "mean_score": 0.5625
+    },
+    {
+      "profile": 50,
+      "name": "MOB_linear_1",
+      "family": "round2_mobility",
+      "min_score": 0.5,
+      "mean_score": 0.6666666666666667
+    },
+    {
+      "profile": 69,
+      "name": "SHAPE_reverse_smooth",
+      "family": "round2_shape",
+      "min_score": 0.5,
+      "mean_score": 0.625
+    },
+    {
+      "profile": 43,
+      "name": "MAT_down_mild",
+      "family": "round2_material",
+      "min_score": 0.5,
+      "mean_score": 0.6041666666666667
+    },
+    {
+      "profile": 49,
+      "name": "MOB_linear_0",
+      "family": "round2_mobility",
+      "min_score": 0.5,
+      "mean_score": 0.5625
+    },
+    {
+      "profile": 60,
+      "name": "HAND_late_0_1",
+      "family": "round2_hand",
+      "min_score": 0.5,
+      "mean_score": 0.5416666666666667
+    },
+    {
+      "profile": 54,
+      "name": "MOB_early_1",
+      "family": "round2_mobility",
+      "min_score": 0.5,
+      "mean_score": 0.5
+    },
+    {
+      "profile": 33,
+      "name": "BAL_linear_0",
+      "family": "round2_balance",
+      "min_score": 0.4583333333333333,
+      "mean_score": 0.6666666666666666
+    },
+    {
+      "profile": 66,
+      "name": "SHAPE_middle_dip_step",
+      "family": "round2_shape",
+      "min_score": 0.4583333333333333,
+      "mean_score": 0.5416666666666666
+    },
+    {
+      "profile": 46,
+      "name": "MAT_down_flat",
+      "family": "round2_material",
+      "min_score": 0.4583333333333333,
+      "mean_score": 0.5208333333333334
+    },
+    {
+      "profile": 53,
+      "name": "MOB_early_0",
+      "family": "round2_mobility",
+      "min_score": 0.4583333333333333,
+      "mean_score": 0.5208333333333334
+    },
+    {
+      "profile": 62,
+      "name": "HAND_late_1_1",
+      "family": "round2_hand",
+      "min_score": 0.4583333333333333,
+      "mean_score": 0.5208333333333334
+    },
+    {
+      "profile": 51,
+      "name": "MOB_late_0",
+      "family": "round2_mobility",
+      "min_score": 0.4583333333333333,
+      "mean_score": 0.5
+    },
+    {
+      "profile": 67,
+      "name": "SHAPE_end_surge_smooth",
+      "family": "round2_shape",
+      "min_score": 0.4583333333333333,
+      "mean_score": 0.47916666666666663
+    },
+    {
+      "profile": 48,
+      "name": "MOB_smooth_1",
+      "family": "round2_mobility",
+      "min_score": 0.4166666666666667,
+      "mean_score": 0.625
+    },
+    {
+      "profile": 34,
+      "name": "BAL_linear_1",
+      "family": "round2_balance",
+      "min_score": 0.4166666666666667,
+      "mean_score": 0.5625
+    },
+    {
+      "profile": 63,
+      "name": "SHAPE_middle_peak_smooth",
+      "family": "round2_shape",
+      "min_score": 0.4166666666666667,
+      "mean_score": 0.5416666666666666
+    },
+    {
+      "profile": 55,
+      "name": "HAND_smooth_0_0",
+      "family": "round2_hand",
+      "min_score": 0.4166666666666667,
+      "mean_score": 0.47916666666666663
+    },
+    {
+      "profile": 57,
+      "name": "HAND_smooth_1_0",
+      "family": "round2_hand",
+      "min_score": 0.4166666666666667,
+      "mean_score": 0.47916666666666663
+    },
+    {
+      "profile": 65,
+      "name": "SHAPE_middle_dip_smooth",
+      "family": "round2_shape",
+      "min_score": 0.4166666666666667,
+      "mean_score": 0.45833333333333337
+    },
+    {
+      "profile": 42,
+      "name": "MAT_up_flat",
+      "family": "round2_material",
+      "min_score": 0.4166666666666667,
+      "mean_score": 0.4375
+    },
+    {
+      "profile": 61,
+      "name": "HAND_late_1_0",
+      "family": "round2_hand",
+      "min_score": 0.4166666666666667,
+      "mean_score": 0.4375
+    },
+    {
+      "profile": 37,
+      "name": "BAL_late_0",
+      "family": "round2_balance",
+      "min_score": 0.375,
+      "mean_score": 0.5
+    },
+    {
+      "profile": 64,
+      "name": "SHAPE_middle_peak_step",
+      "family": "round2_shape",
+      "min_score": 0.375,
+      "mean_score": 0.4375
+    },
+    {
+      "profile": 52,
+      "name": "MOB_late_1",
+      "family": "round2_mobility",
+      "min_score": 0.375,
+      "mean_score": 0.39583333333333337
+    },
+    {
+      "profile": 31,
+      "name": "BAL_smooth_0",
+      "family": "round2_balance",
+      "min_score": 0.3333333333333333,
+      "mean_score": 0.47916666666666663
+    },
+    {
+      "profile": 58,
+      "name": "HAND_smooth_1_1",
+      "family": "round2_hand",
+      "min_score": 0.3333333333333333,
+      "mean_score": 0.47916666666666663
+    },
+    {
+      "profile": 44,
+      "name": "MAT_down_reverse",
+      "family": "round2_material",
+      "min_score": 0.2916666666666667,
+      "mean_score": 0.3541666666666667
+    }
+  ],
+  "played_move_archives": [
+    {
+      "shard": 0,
+      "games": 96,
+      "plies": 14210,
+      "sha256": "9cbebba18ca994b76a72e6cb1ee6410684e730995dfb17f7c89ad00f32bda69d",
+      "manifest_sha256": "4b4bbb591c3c3f8761aed7cac5e306e1f588ca35e22f1317de0d05aea9e42659"
+    },
+    {
+      "shard": 1,
+      "games": 96,
+      "plies": 13314,
+      "sha256": "a4c849daf5cc045373daaa8f27ba197f6c7bc8df610603cc844b6da513d2e485",
+      "manifest_sha256": "1bc98dc92fbc46724ad9e5b54ae7ae3ff36f928c219ad19b53ac79a443c75f65"
+    },
+    {
+      "shard": 2,
+      "games": 96,
+      "plies": 13244,
+      "sha256": "3631ac15464d4228ffc70104a9f1d115f6f7d97f9094897a166beecae9db6008",
+      "manifest_sha256": "041f7456cbe9eeb3f1c5fbab25b5a94f8ff79374a0b8392ab6f3330ccfaadefd"
+    },
+    {
+      "shard": 3,
+      "games": 96,
+      "plies": 13886,
+      "sha256": "528806a9a7d7d88f894de0dc4ba4b08c3da8fbce2a689f5231950a3fb182a2b6",
+      "manifest_sha256": "68ec948f4112a87ae764ec8303f6592a5450ad4197d38eebc571ee6c147bef83"
+    },
+    {
+      "shard": 4,
+      "games": 96,
+      "plies": 14865,
+      "sha256": "40912069a7190efa1eeadb723406af51a8f875701affda8e36f3f7d65c022965",
+      "manifest_sha256": "06a3207dc88537319a3b62a4bf5cce6699cd02bffe62640f4c96308f37683e69"
+    },
+    {
+      "shard": 5,
+      "games": 96,
+      "plies": 13787,
+      "sha256": "4f004bb695bf40cc8187b65fae5e5783495aaebff1e5960570749a2b6d428a80",
+      "manifest_sha256": "cc5b673f776c03003ae0ff57cfc604437842953adb6198a68afaa5e43b95a61a"
+    },
+    {
+      "shard": 6,
+      "games": 96,
+      "plies": 13388,
+      "sha256": "c791ce0690c02a33ae98e71fa402929bd94d966c1d9168638d4ae176bf9b3e26",
+      "manifest_sha256": "011faa4deef025e1115bc780aa7d3af49068b5496ab312e53fd937a3910abd0e"
+    },
+    {
+      "shard": 7,
+      "games": 96,
+      "plies": 14002,
+      "sha256": "de99db495cc42c48980cada08814187132313729abe0d1a6868395fcc414af77",
+      "manifest_sha256": "ed8d6680bab16a1dd9969c89e9c9b8da20809c75e57c13191445b83f1afaf194"
+    },
+    {
+      "shard": 8,
+      "games": 96,
+      "plies": 13135,
+      "sha256": "3a7cd3a6dfcc5c4193b45c87e7edb99a190dbb58e8df8923a1295cf0aa05afca",
+      "manifest_sha256": "d363beaddce7ef27384efa4a7b3a4a69dbda4c44704cfa8874d1b08bad08c4a3"
+    },
+    {
+      "shard": 9,
+      "games": 96,
+      "plies": 15457,
+      "sha256": "0c353656065f790287f74b7c7cd975a75b5c4b286de2446706d38f4d7a4058f0",
+      "manifest_sha256": "0761846bb2e94a2a5849170709f754d871793bb5adcccfbf3e02de8f7c2b0e98"
+    }
+  ],
+  "warning": "Selection only, 12 games/control; no statistical strength proof; last closing cycle, no new20 generation."
+}
