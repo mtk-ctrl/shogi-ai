@@ -4,7 +4,7 @@
 
 namespace shogi::strategy {
 // Explainable static-evaluation parameters. M weights are the reference
-// values for USI options. The adopted Q14 profile scales them each turn.
+// values for USI options. The adopted profile 47 scales them each turn.
 // Earlier fixed static profiles remain reproducible when explicitly requested.
 struct EvaluationParameters {
     int guard_gold = 12, guard_silver = 10, guard_pawn = 4;
@@ -13,16 +13,16 @@ struct EvaluationParameters {
     int mobility_major = 2, mobility_minor = 1, mobility_piece_cap = 12;
     int danger_numerator = 1, danger_denominator = 8;
 
-    // Feature caps and M reference weights for the adopted Q14 profile.
+    // Feature caps and M reference weights for the adopted profile 47.
     std::array<int, 4> caps{80, 120, 100, 160};
     std::array<int, 4> weights{480, 380, 410, 150};
 
     // Evaluation-v2 keeps Material as one axis rather than an implicit master
-    // axis. Q14 is applied at the beginning of each production move.
+    // axis. Profile 47 is applied at the beginning of each production move.
     bool v2_enabled = true;
     int material_weight = 100;
-    // Independent scale for material value in hand. Q14 assigns 100-220
-    // based on maturity; reference 100 preserves fixed-M behavior.
+    // Independent scale for material value in hand. Profile 47 holds this at 100 across maturity;
+    // reference 100 preserves fixed-M behavior.
     int hand_material_weight = 100;
     std::array<int, 4> v2_caps{160, 240, 200, 400};
     int influence_weight = 140;
@@ -36,8 +36,8 @@ struct EvaluationParameters {
     int hand_potential_cap = 120;
     int threat_cap = 1600;
 
-    // In legacy-v1 reproduction this is +/-300.  The adopted M profile uses
-    // the wider v2 bound validated in the parameter search.
+    // In legacy-v1 reproduction this is +/-300.  The adopted v2 profile retains
+    // the wider bound validated in the parameter search.
     int positional_cap = 5000;
     static constexpr int StaticLimit = 1000000; // Far below mate=100000000.
 
