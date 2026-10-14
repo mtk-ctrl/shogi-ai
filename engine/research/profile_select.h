@@ -1,5 +1,5 @@
 #pragma once
-// Research branch only. Each candidate commit pins exactly one index.
+// Research branch only. Final closing candidate fixed before independent results.
 namespace shogi::strategy {
-inline constexpr int SelectedResearchProfile = 0;
+inline constexpr int SelectedResearchProfile = 47;
 }

@@ -1,0 +1,662 @@
+{
+  "schema_version": 1,
+  "run_id": 38501800182,
+  "issue": 255,
+  "request_id": "ve71-20261014-final-followup",
+  "completed_at": "2026-10-14T12:01:34+09:00",
+  "engine_ref": "e0f2b63b0bfdcbb989d3c7ab8243c94acf3ffe59",
+  "plan_id": "closing-followup",
+  "games": 384,
+  "go_command": "go movetime 200",
+  "adaptive_long_think": true,
+  "max_long_think_per_game": 10,
+  "position_knowledge": {
+    "positions": 163,
+    "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c"
+  },
+  "raw_audit": {
+    "raw_fragments": 25,
+    "games": 384,
+    "plies": 44816,
+    "illegal_games": 0,
+    "played_archive_games": 384,
+    "played_archive_plies": 44816,
+    "binary_hashes": [
+      "cf6e2e8ddff1679ad9f6eacf6606b9973ee08ae7a303db454a7659d1b346e4a7"
+    ],
+    "colors_per_comparison": "A_black 12 / A_white 12",
+    "source_and_archive_digests_match": true,
+    "phase_profile_all_moves_match": true,
+    "errors": []
+  },
+  "ranking": [
+    {
+      "profile": 47,
+      "name": "MOB_smooth_0",
+      "family": "round2_mobility",
+      "min_score": 0.6666666666666666,
+      "mean_score": 0.6875,
+      "M": {
+        "profile": 47,
+        "baseline": "M",
+        "score": 0.6666666666666666,
+        "approx95": [
+          0.3894453556279221,
+          0.9438879777054112
+        ],
+        "wins": 16,
+        "draws": 0,
+        "losses": 8,
+        "colors": 12,
+        "fragments": [
+          {
+            "profile": 47,
+            "baseline": "M",
+            "offset": 0,
+            "games": 24,
+            "seed": 1915200000,
+            "path": "raw-p047-M-000.json",
+            "sha256": "2c533e4b4756b89c4e330faf4d07c9addac89f1abef991db7427c075f467bf82"
+          }
+        ]
+      },
+      "Q14": {
+        "profile": 47,
+        "baseline": "Q14",
+        "score": 0.7083333333333334,
+        "approx95": [
+          0.43111202229458884,
+          0.985554644372078
+        ],
+        "wins": 17,
+        "draws": 0,
+        "losses": 7,
+        "colors": 12,
+        "fragments": [
+          {
+            "profile": 47,
+            "baseline": "Q14",
+            "offset": 0,
+            "games": 6,
+            "seed": 1915210000,
+            "path": "raw-p047-Q14-000.json",
+            "sha256": "ac053f2c76b5291845e89e8f403919174935c8d26d335baa651187a367b5dd1a"
+          },
+          {
+            "profile": 47,
+            "baseline": "Q14",
+            "offset": 6,
+            "games": 18,
+            "seed": 1915210012,
+            "path": "raw-p047-Q14-006.json",
+            "sha256": "3350e28dc263450f663a6b296a0e01a0f31e4af8ffd305ddcb6594ed8a3760ac"
+          }
+        ]
+      }
+    },
+    {
+      "profile": 68,
+      "name": "SHAPE_end_surge_step",
+      "family": "round2_shape",
+      "min_score": 0.5625,
+      "mean_score": 0.7083333333333333,
+      "M": {
+        "profile": 68,
+        "baseline": "M",
+        "score": 0.8541666666666666,
+        "approx95": [
+          0.576945355627922,
+          1
+        ],
+        "wins": 20,
+        "draws": 1,
+        "losses": 3,
+        "colors": 12,
+        "fragments": [
+          {
+            "profile": 68,
+            "baseline": "M",
+            "offset": 0,
+            "games": 2,
+            "seed": 1915200000,
+            "path": "raw-p068-M-000.json",
+            "sha256": "3b06c6677d40e7607521f16661d84009528f0209b37db0fd2b2d5ec871778d90"
+          },
+          {
+            "profile": 68,
+            "baseline": "M",
+            "offset": 2,
+            "games": 22,
+            "seed": 1915200004,
+            "path": "raw-p068-M-002.json",
+            "sha256": "971ea118debe51ccfeaec00dfba6f22523cde393f51cf608da4fe9f912429765"
+          }
+        ]
+      },
+      "Q14": {
+        "profile": 68,
+        "baseline": "Q14",
+        "score": 0.5625,
+        "approx95": [
+          0.28527868896125547,
+          0.8397213110387445
+        ],
+        "wins": 13,
+        "draws": 1,
+        "losses": 10,
+        "colors": 12,
+        "fragments": [
+          {
+            "profile": 68,
+            "baseline": "Q14",
+            "offset": 0,
+            "games": 16,
+            "seed": 1915210000,
+            "path": "raw-p068-Q14-000.json",
+            "sha256": "923ed3b96fed11dea32a74183fc703cbcd9a14eb381be142e564b04ae19ddbe1"
+          },
+          {
+            "profile": 68,
+            "baseline": "Q14",
+            "offset": 16,
+            "games": 8,
+            "seed": 1915210032,
+            "path": "raw-p068-Q14-016.json",
+            "sha256": "4e2083e5e3ec4748a19b7e9d4f38c6c16c1a3ac3ff5a89b09b8c823c35ecdb86"
+          }
+        ]
+      }
+    },
+    {
+      "profile": 25,
+      "name": "UNIFIED",
+      "family": "material_balance",
+      "min_score": 0.5625,
+      "mean_score": 0.59375,
+      "M": {
+        "profile": 25,
+        "baseline": "M",
+        "score": 0.625,
+        "approx95": [
+          0.34777868896125547,
+          0.9022213110387445
+        ],
+        "wins": 15,
+        "draws": 0,
+        "losses": 9,
+        "colors": 12,
+        "fragments": [
+          {
+            "profile": 25,
+            "baseline": "M",
+            "offset": 0,
+            "games": 20,
+            "seed": 1915200000,
+            "path": "raw-p025-M-000.json",
+            "sha256": "d41e1f9f4a1916d7a753236875da0e739cfdaffc67549c59ec5525212d2bcdd9"
+          },
+          {
+            "profile": 25,
+            "baseline": "M",
+            "offset": 20,
+            "games": 4,
+            "seed": 1915200040,
+            "path": "raw-p025-M-020.json",
+            "sha256": "4f78cd47239ba0ffa5743a7c56c5a4cbd901fad6abbbb2b0b56e95678760f299"
+          }
+        ]
+      },
+      "Q14": {
+        "profile": 25,
+        "baseline": "Q14",
+        "score": 0.5625,
+        "approx95": [
+          0.28527868896125547,
+          0.8397213110387445
+        ],
+        "wins": 13,
+        "draws": 1,
+        "losses": 10,
+        "colors": 12,
+        "fragments": [
+          {
+            "profile": 25,
+            "baseline": "Q14",
+            "offset": 0,
+            "games": 24,
+            "seed": 1915210000,
+            "path": "raw-p025-Q14-000.json",
+            "sha256": "d8fc48d57a51e2d66bb24d486c045a40c208675bfaeacaee18201da240aa7099"
+          }
+        ]
+      }
+    },
+    {
+      "profile": 38,
+      "name": "BAL_late_1",
+      "family": "round2_balance",
+      "min_score": 0.5416666666666666,
+      "mean_score": 0.5625,
+      "M": {
+        "profile": 38,
+        "baseline": "M",
+        "score": 0.5833333333333334,
+        "approx95": [
+          0.30611202229458884,
+          0.860554644372078
+        ],
+        "wins": 14,
+        "draws": 0,
+        "losses": 10,
+        "colors": 12,
+        "fragments": [
+          {
+            "profile": 38,
+            "baseline": "M",
+            "offset": 0,
+            "games": 24,
+            "seed": 1915200000,
+            "path": "raw-p038-M-000.json",
+            "sha256": "102f3849992ea92fa81e64d3e8da2772f0aa4872efc575c22427a0cb6428a312"
+          }
+        ]
+      },
+      "Q14": {
+        "profile": 38,
+        "baseline": "Q14",
+        "score": 0.5416666666666666,
+        "approx95": [
+          0.2644453556279221,
+          0.8188879777054112
+        ],
+        "wins": 13,
+        "draws": 0,
+        "losses": 11,
+        "colors": 12,
+        "fragments": [
+          {
+            "profile": 38,
+            "baseline": "Q14",
+            "offset": 0,
+            "games": 6,
+            "seed": 1915210000,
+            "path": "raw-p038-Q14-000.json",
+            "sha256": "d396d7d853ecbc6b043a1de72268dde1955a74135bc78960ea12c74edcd760f6"
+          },
+          {
+            "profile": 38,
+            "baseline": "Q14",
+            "offset": 6,
+            "games": 18,
+            "seed": 1915210012,
+            "path": "raw-p038-Q14-006.json",
+            "sha256": "4ef77663bee0cbcd3210352d63540a8cf55a211851941456814f0ceb134de2fb"
+          }
+        ]
+      }
+    },
+    {
+      "profile": 30,
+      "name": "ATTACK_AVG",
+      "family": "ablation",
+      "min_score": 0.5,
+      "mean_score": 0.5625,
+      "M": {
+        "profile": 30,
+        "baseline": "M",
+        "score": 0.625,
+        "approx95": [
+          0.34777868896125547,
+          0.9022213110387445
+        ],
+        "wins": 15,
+        "draws": 0,
+        "losses": 9,
+        "colors": 12,
+        "fragments": [
+          {
+            "profile": 30,
+            "baseline": "M",
+            "offset": 0,
+            "games": 10,
+            "seed": 1915200000,
+            "path": "raw-p030-M-000.json",
+            "sha256": "ec1066364af90a4ecf2520c328564cc729e85b418b685f2840b3c36a7bbf65c8"
+          },
+          {
+            "profile": 30,
+            "baseline": "M",
+            "offset": 10,
+            "games": 14,
+            "seed": 1915200020,
+            "path": "raw-p030-M-010.json",
+            "sha256": "392d55ee4c2f14fcfbe37c1209a9619e57d5b9a38df3fa81e6fcf75cd991193e"
+          }
+        ]
+      },
+      "Q14": {
+        "profile": 30,
+        "baseline": "Q14",
+        "score": 0.5,
+        "approx95": [
+          0.22277868896125547,
+          0.7772213110387445
+        ],
+        "wins": 12,
+        "draws": 0,
+        "losses": 12,
+        "colors": 12,
+        "fragments": [
+          {
+            "profile": 30,
+            "baseline": "Q14",
+            "offset": 0,
+            "games": 24,
+            "seed": 1915210000,
+            "path": "raw-p030-Q14-000.json",
+            "sha256": "eb577c133fd642b2dabe14ff6c90fb7b3fe80bd7b82bdb5c8103a1fdd0031c8d"
+          }
+        ]
+      }
+    },
+    {
+      "profile": 32,
+      "name": "BAL_smooth_1",
+      "family": "round2_balance",
+      "min_score": 0.4375,
+      "mean_score": 0.44791666666666663,
+      "M": {
+        "profile": 32,
+        "baseline": "M",
+        "score": 0.4583333333333333,
+        "approx95": [
+          0.18111202229458878,
+          0.7355546443720778
+        ],
+        "wins": 10,
+        "draws": 2,
+        "losses": 12,
+        "colors": 12,
+        "fragments": [
+          {
+            "profile": 32,
+            "baseline": "M",
+            "offset": 0,
+            "games": 24,
+            "seed": 1915200000,
+            "path": "raw-p032-M-000.json",
+            "sha256": "3ac9a3d90d70d41181f14b3834ad58e9ce9ad16fc8bb2b0f14d67af194d6c7e3"
+          }
+        ]
+      },
+      "Q14": {
+        "profile": 32,
+        "baseline": "Q14",
+        "score": 0.4375,
+        "approx95": [
+          0.16027868896125547,
+          0.7147213110387445
+        ],
+        "wins": 10,
+        "draws": 1,
+        "losses": 13,
+        "colors": 12,
+        "fragments": [
+          {
+            "profile": 32,
+            "baseline": "Q14",
+            "offset": 0,
+            "games": 15,
+            "seed": 1915210000,
+            "path": "raw-p032-Q14-000.json",
+            "sha256": "05334daa876f16fe401d10769ef79b8e5c6054eabdf911dfc573deadaae6145a"
+          },
+          {
+            "profile": 32,
+            "baseline": "Q14",
+            "offset": 15,
+            "games": 9,
+            "seed": 1915210030,
+            "path": "raw-p032-Q14-015.json",
+            "sha256": "56948406e6d020704a08ab25322742196255a05f44525705c9bd11080ced03a9"
+          }
+        ]
+      }
+    },
+    {
+      "profile": 39,
+      "name": "MAT_up_mild",
+      "family": "round2_material",
+      "min_score": 0.4166666666666667,
+      "mean_score": 0.5,
+      "M": {
+        "profile": 39,
+        "baseline": "M",
+        "score": 0.4166666666666667,
+        "approx95": [
+          0.13944535562792215,
+          0.6938879777054112
+        ],
+        "wins": 10,
+        "draws": 0,
+        "losses": 14,
+        "colors": 12,
+        "fragments": [
+          {
+            "profile": 39,
+            "baseline": "M",
+            "offset": 0,
+            "games": 21,
+            "seed": 1915200000,
+            "path": "raw-p039-M-000.json",
+            "sha256": "602b12416987f8846c096345f55666e2a5245b4773c167b668befca24b7d2cfd"
+          },
+          {
+            "profile": 39,
+            "baseline": "M",
+            "offset": 21,
+            "games": 3,
+            "seed": 1915200042,
+            "path": "raw-p039-M-021.json",
+            "sha256": "e81e25e995ef476c8dffbca162869e260abbc1643ed45094f419bbe1679d2a1a"
+          }
+        ]
+      },
+      "Q14": {
+        "profile": 39,
+        "baseline": "Q14",
+        "score": 0.5833333333333334,
+        "approx95": [
+          0.30611202229458884,
+          0.860554644372078
+        ],
+        "wins": 14,
+        "draws": 0,
+        "losses": 10,
+        "colors": 12,
+        "fragments": [
+          {
+            "profile": 39,
+            "baseline": "Q14",
+            "offset": 0,
+            "games": 24,
+            "seed": 1915210000,
+            "path": "raw-p039-Q14-000.json",
+            "sha256": "7c06168663714457dc620da11a59d4a863c758500fb19fb4d74cf6475a00537a"
+          }
+        ]
+      }
+    },
+    {
+      "profile": 40,
+      "name": "MAT_up_reverse",
+      "family": "round2_material",
+      "min_score": 0.4166666666666667,
+      "mean_score": 0.4375,
+      "M": {
+        "profile": 40,
+        "baseline": "M",
+        "score": 0.4166666666666667,
+        "approx95": [
+          0.13944535562792215,
+          0.6938879777054112
+        ],
+        "wins": 10,
+        "draws": 0,
+        "losses": 14,
+        "colors": 12,
+        "fragments": [
+          {
+            "profile": 40,
+            "baseline": "M",
+            "offset": 0,
+            "games": 12,
+            "seed": 1915200000,
+            "path": "raw-p040-M-000.json",
+            "sha256": "fb8636b107a85562123c301ddb9930bae8300f70824aa0edcea924a0dda2c6b3"
+          },
+          {
+            "profile": 40,
+            "baseline": "M",
+            "offset": 12,
+            "games": 12,
+            "seed": 1915200024,
+            "path": "raw-p040-M-012.json",
+            "sha256": "e8e2cba75d4470b8732da28b2a87cf07ced31089a7fec7ffac5e7df6e3fc1e7a"
+          }
+        ]
+      },
+      "Q14": {
+        "profile": 40,
+        "baseline": "Q14",
+        "score": 0.4583333333333333,
+        "approx95": [
+          0.18111202229458878,
+          0.7355546443720778
+        ],
+        "wins": 11,
+        "draws": 0,
+        "losses": 13,
+        "colors": 12,
+        "fragments": [
+          {
+            "profile": 40,
+            "baseline": "Q14",
+            "offset": 0,
+            "games": 24,
+            "seed": 1915210000,
+            "path": "raw-p040-Q14-000.json",
+            "sha256": "310149e84da498952c055bee255db72538f43483cd6786f5dcc64f3c85ecdab8"
+          }
+        ]
+      }
+    }
+  ],
+  "selection": {
+    "profile": 47,
+    "name": "MOB_smooth_0",
+    "rule": "maximum min(M,Q14), then mean; non-UNIFIED must exceed UNIFIED minimum",
+    "selected_min_score": 0.6666666666666666,
+    "unified_min_score": 0.5625,
+    "reason": "Profile47 leads and its minimum score exceeds UNIFIED's minimum score."
+  },
+  "artifacts": [
+    {
+      "id": 11867740245,
+      "name": "variable-search-raw-38501800182-9",
+      "size_in_bytes": 669599,
+      "digest": "sha256:12a5cdbad45cadd9fcb70a6aa6a591d293d8314d582316abb9daa1badd5f9fbe",
+      "expires_at": "2027-01-12T02:35:08Z",
+      "expired": false
+    },
+    {
+      "id": 11867285407,
+      "name": "variable-search-raw-38501800182-5",
+      "size_in_bytes": 642429,
+      "digest": "sha256:8d9c83b7578e0f00528a4909f26d27d2560270cd4ac7ebe57f680939f3f513d8",
+      "expires_at": "2027-01-12T02:35:08Z",
+      "expired": false
+    },
+    {
+      "id": 11867260757,
+      "name": "variable-search-summary-38501800182",
+      "size_in_bytes": 7158,
+      "digest": "sha256:af810b64456178ad8b6f1c46f1c8691a15e050d1bde72f7cf144d21935ff7965",
+      "expires_at": "2027-01-12T02:35:08Z",
+      "expired": false
+    },
+    {
+      "id": 11867245718,
+      "name": "variable-search-raw-38501800182-3",
+      "size_in_bytes": 694688,
+      "digest": "sha256:107f26fb039af21a133cde0f3330fe603b15200908b3c1a5c8f195ca887fb0ad",
+      "expires_at": "2027-01-12T02:35:08Z",
+      "expired": false
+    },
+    {
+      "id": 11867155807,
+      "name": "variable-search-raw-38501800182-0",
+      "size_in_bytes": 700241,
+      "digest": "sha256:0cf2a4e937b69ca34581a7d24c6550422b86ef3e2e3e02b938be5cdff4ffc609",
+      "expires_at": "2027-01-12T02:35:08Z",
+      "expired": false
+    },
+    {
+      "id": 11866861929,
+      "name": "variable-search-raw-38501800182-7",
+      "size_in_bytes": 665788,
+      "digest": "sha256:476b5a23cd6f82a7e39a3d622ae71253451d6b6b5a3afb2cc0ae9ad67ee0268f",
+      "expires_at": "2027-01-12T02:35:08Z",
+      "expired": false
+    },
+    {
+      "id": 11866817003,
+      "name": "variable-search-raw-38501800182-8",
+      "size_in_bytes": 652565,
+      "digest": "sha256:bb47ce61fc8aa88fd7b11740b707efc9899b5b7887af56c1030b4faee6012825",
+      "expires_at": "2027-01-12T02:35:08Z",
+      "expired": false
+    },
+    {
+      "id": 11866782032,
+      "name": "variable-search-raw-38501800182-1",
+      "size_in_bytes": 637572,
+      "digest": "sha256:98e85a08f93e13a01540f8dad8e369a21e32947ac33554ff4dce2b0e44dc4014",
+      "expires_at": "2027-01-12T02:35:08Z",
+      "expired": false
+    },
+    {
+      "id": 11866709714,
+      "name": "variable-search-raw-38501800182-6",
+      "size_in_bytes": 674555,
+      "digest": "sha256:dc68235dab84d0898a787ad61d22936a0531546e5f9432c36eb566de18cb4d30",
+      "expires_at": "2027-01-12T02:35:08Z",
+      "expired": false
+    },
+    {
+      "id": 11866664819,
+      "name": "variable-search-raw-38501800182-4",
+      "size_in_bytes": 636522,
+      "digest": "sha256:7fafa251b2b21fb5e47adc9f9aafc2f45c5af6023ec6c0b28ce300f742fee3a2",
+      "expires_at": "2027-01-12T02:35:08Z",
+      "expired": false
+    },
+    {
+      "id": 11866491257,
+      "name": "variable-search-build-38501800182",
+      "size_in_bytes": 2194946,
+      "digest": "sha256:5ecdb4cfb978f6ea0fcc4d6cdc240ee42de283a55de36eea7c977fcf478aa84a",
+      "expires_at": "2027-01-12T02:35:08Z",
+      "expired": false
+    },
+    {
+      "id": 11866199356,
+      "name": "variable-search-raw-38501800182-2",
+      "size_in_bytes": 679206,
+      "digest": "sha256:2d3f59840661c90dc39b43da20f6e365e433423d5c3ccb6929cb79abd0050f5b",
+      "expires_at": "2027-01-12T02:35:08Z",
+      "expired": false
+    }
+  ],
+  "artifact_scope": "GitHub Actions retention only; not a permanent Release archive."
+}
