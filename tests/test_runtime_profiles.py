@@ -17,6 +17,16 @@ expected=[json.loads(x) for x in subprocess.check_output([probe_path],
 e=Engine(engine_path,'test',{'PositionKnowledge':True,'MateAssist':False,
     'MateLearning':False,'AdaptiveLongThink':False})
 try:
+    # The candidate-only commit must select profile 47 before any USI override.
+    e.send('position sfen '+fixtures[0]);e.send('eval')
+    tokens=e.wait_prefix('info string evaluation ',10).split()[3:]
+    actual=dict(zip(tokens[::2],map(int,tokens[1::2])))
+    selected=expected[0]['profiles'][47]
+    assert actual['total']==selected['total'],('default profile',actual,selected)
+    e.send('position startpos');e.send('go depth 1 searchmoves 7g7f')
+    phase=e.wait_prefix('info string phase ',10)
+    assert parse_info_line(phase)['phase_research_profile']==47
+    assert e.wait_prefix('bestmove ',10)=='bestmove 7g7f'
     for sfen,row in zip(fixtures,expected):
         for profile in row['profiles']:
             i=profile['index']

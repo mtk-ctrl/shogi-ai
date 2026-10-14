@@ -111,9 +111,11 @@ int main(){try{
     std::cout<<"PASS every piece/promotion geometry, blockers and king-vacated xray\n";
 
     require(AdoptedPhaseProfile==34, "Q14 adopted profile identifier");
-    const auto start=phase_turn_parameters(EvaluationParameters{},0);
-    const auto middle=phase_turn_parameters(EvaluationParameters{},50);
-    const auto finish=phase_turn_parameters(EvaluationParameters{},100);
+    // Keep the adopted Q14 oracle explicit even when a research branch pins a
+    // different default candidate for independent matches.
+    const auto start=phase_turn_parameters(EvaluationParameters{},0,0,0,0,0);
+    const auto middle=phase_turn_parameters(EvaluationParameters{},50,0,0,0,0);
+    const auto finish=phase_turn_parameters(EvaluationParameters{},100,0,0,0,0);
     const std::array<EvaluationParameters,3> all{start,middle,finish};
     for(int i=0;i<3;++i) {
         const auto& t=all[i];
@@ -150,9 +152,24 @@ int main(){try{
     require(evaluate(q14_hand).material_term==material_black(q14_hand),
             "unmodified M reference evaluation without phase transformation");
     std::cout<<"PASS phase profile directions, held material and baseline invariant\n";
+    require(SelectedResearchProfile==47,"closing candidate profile pin");
+    for(int maturity:{0,50,100}) {
+        const auto selected=phase_turn_parameters(EvaluationParameters{},maturity);
+        const auto direct=research_turn_parameters(EvaluationParameters{},47,maturity);
+        require(selected.material_weight==direct.material_weight&&
+                selected.hand_material_weight==direct.hand_material_weight&&
+                selected.weights==direct.weights&&
+                selected.influence_weight==direct.influence_weight&&
+                selected.potential_weight==direct.potential_weight&&
+                selected.coordination_weight==direct.coordination_weight&&
+                selected.hand_potential_weight==direct.hand_potential_weight&&
+                selected.threat_weight==direct.threat_weight,
+                "default closing candidate matches registry");
+    }
+    std::cout<<"PASS closing candidate default matches profile 47 registry\n";
     // Risk response must be contextual rather than a constant maturity-only rescaling.
-    const auto quiet=phase_turn_parameters(EvaluationParameters{},50,0,0);
-    const auto risk=phase_turn_parameters(EvaluationParameters{},50,70,80);
+    const auto quiet=phase_turn_parameters(EvaluationParameters{},50,0,0,0,0);
+    const auto risk=phase_turn_parameters(EvaluationParameters{},50,70,80,0,0);
     require(risk.weights[0]>quiet.weights[0]&&risk.weights[3]>quiet.weights[3]&&
             risk.weights[1]>quiet.weights[1]&&risk.threat_weight>quiet.threat_weight, "hybrid stage/context response");
     require(risk.material_weight==quiet.material_weight&&

@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-10-14T12:08:00+09:00",
-  "phase": "closing_candidate_frozen_ci_pending",
+  "updated_at": "2026-10-14T12:14:00+09:00",
+  "phase": "closing_candidate_ci_repair_pending",
   "tracker_issue": 170,
   "addness_goal": "cf8ec928-61c0-48a1-ba3c-7c0635797e1b",
   "branch": "research/variable-eval-systematic-20261012",
@@ -5072,7 +5072,7 @@
   },
   "closing_cycle": {
     "plan_file": "closing-plan.json",
-    "stage": "candidate_frozen_ci_pending",
+    "stage": "candidate_ci_repair_pending",
     "coarse_request_id": "ve71-20261014-final-coarse",
     "coarse_engine_ref": "8f1dc91e67577a5f056137755f0a214a49a7b6cc",
     "new_cycle_afterwards": false,
@@ -5156,6 +5156,13 @@
     "selected_name": "MOB_smooth_0",
     "selection_min_score": 0.6666666666666666,
     "unified_min_score": 0.5625,
-    "next": "Verify candidate-fixed commit and Quick CI, then one 100-game comparison against each formal M/Q14 control."
+    "next": "Verify candidate-fixed commit and Quick CI, then one 100-game comparison against each formal M/Q14 control.",
+    "candidate_commit_initial": "1966a2fbc3bdc1cd7aadb0f88e6dc72a7e2d606a",
+    "quick_ci_initial": {
+      "run": 38504981964,
+      "conclusion": "failure",
+      "cause": "evaluation_test Q14 anchor oracle implicitly used the research default after profile 47 was pinned; engine build and 71-profile registry validation passed.",
+      "repair": "Make Q14 oracle calls explicit with profile 0 and add explicit profile47 default/registry/runtime USI checks."
+    }
   }
 }
