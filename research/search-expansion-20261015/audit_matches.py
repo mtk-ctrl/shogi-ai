@@ -6,6 +6,9 @@ import shogi
 ap = argparse.ArgumentParser()
 ap.add_argument('--artifacts', required=True)
 ap.add_argument('--output', required=True)
+ap.add_argument('--seed', type=int, default=2026101500)
+ap.add_argument('--games-per-shard', type=int, default=20)
+ap.add_argument('--baseline-ref', default='7ab3dab9b909503d340fb1f374da09f8d0e2e209')
 args = ap.parse_args()
 artifacts = json.loads(Path(args.artifacts).read_text())
 out = {}
@@ -28,18 +31,25 @@ for run in sorted({a['run'] for a in artifacts}):
                 content = z.read(name)
                 raw[name] = (content, json.loads(content))
     assert summary and archive and manifest
+    assert summary['ref_a'] == manifest['requested_ref_a'] == '4d8a4b9723c21c6163cad03358ba35e4b93d4687'
+    assert summary['ref_b'] == manifest['requested_ref_b'] == args.baseline_ref
+    assert len(raw) == 100 // args.games_per_shard
     sources = {s['file']: s for s in manifest['sources']}
     records = {(g['source_id'], g['source_game_index']): g for g in archive}
     stats = {side: collections.defaultdict(list) for side in ['A','B']}
     wins = collections.Counter(); blacks = collections.Counter()
     plies = 0; games = 0; long_max = 0
     mask = summary['options_a']['SearchResearchMask']
+    binaries = None
     for index, (name, (content, data)) in enumerate(sorted(raw.items())):
         source = sources[name]
         assert hashlib.sha256(content).hexdigest() == source['source_id']
-        assert data['games'] == len(data['details'])
-        assert data['game_offset'] == index * 20
-        assert data['seed'] == 2026101500 + index * 100000
+        assert data['games'] == len(data['details']) == args.games_per_shard
+        assert data['game_offset'] == index * args.games_per_shard
+        assert data['seed'] == args.seed + index * 100000
+        hashes = (data['sha256_a'], data['sha256_b'])
+        if binaries is None: binaries = hashes
+        assert hashes == binaries
         assert data['go_command'] == 'go movetime 200' and data['max_plies'] == 300
         assert data['options_a'] == summary['options_a'] and data['options_b'] == summary['options_b']
         assert data['illegal_games'] == 0
