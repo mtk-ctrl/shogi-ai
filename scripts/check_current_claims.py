@@ -90,13 +90,13 @@ def check(root: Path = ROOT) -> tuple[list[str], list[str]]:
         errors.append(f"{spec_path}: 評価関数v2の既定値が実装と一致しない")
 
     # Production adopted stages must match the adopted stage table, not just the M reference.
-    q14 = read("engine/strategy/phase_weights.h")
+    stage_source = read("engine/strategy/phase_weights.h")
     source = read("engine/main.cpp")
     if "phase_turn_parameters(" not in source or "AdoptedPhaseProfile" not in source:
         errors.append("engine/main.cpp: 採用段階評価が対局に接続されていない")
     anchors = {}
     for stage in ("StageOpening", "StageMiddle", "StageEnd", "StageHandMaterial"):
-        match_anchor = re.search(rf"std::array<int,\s*\d+>\s+{stage}\s*\{{([^}}]+)\}}", q14)
+        match_anchor = re.search(rf"std::array<int,\s*\d+>\s+{stage}\s*\{{([^}}]+)\}}", stage_source)
         if not match_anchor:
             errors.append(f"phase_weights.h: {stage} の値を読み取れない")
         else:
