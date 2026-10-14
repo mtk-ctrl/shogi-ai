@@ -45,6 +45,9 @@ def main():
                     for key in keys:
                         e = engines[key]
                         e.configure_game(2026101500 + i)
+                        # Exclude asynchronous usinewgame/cache construction from search timing.
+                        e.send('isready')
+                        e.wait_prefix('readyok', 10)
                         e.go_command = command
                         move = e.bestmove(case['moves'])
                         info = dict(e.last_search)

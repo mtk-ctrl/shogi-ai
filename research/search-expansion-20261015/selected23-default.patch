@@ -1,0 +1,6 @@
+*** Begin Patch
+*** Update File: engine/strategy/search_research.h
+@@
+-inline constexpr unsigned DefaultSearchResearchMask = 31;
++inline constexpr unsigned DefaultSearchResearchMask = 23;
+*** End Patch

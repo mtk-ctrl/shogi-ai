@@ -1,0 +1,402 @@
+{
+  "38648621520": {
+    "mask": 23,
+    "wins": 53,
+    "draws": 2,
+    "losses": 45,
+    "score": 0.54,
+    "approx_95pct": [
+      0.4428151069643876,
+      0.6371848930356124
+    ],
+    "games": 100,
+    "plies": 11492,
+    "a_black": 50,
+    "illegal_replay": 0,
+    "max_long_uses": 10,
+    "summary": {
+      "ref_a": "4d8a4b9723c21c6163cad03358ba35e4b93d4687",
+      "ref_b": "73884f6d7e6a265803bde3e26953d63c7e1b1c58",
+      "go_command": "go movetime 200",
+      "options_a": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+        "OpeningRandomNonLance": true,
+        "SearchResearchMask": 23
+      },
+      "options_b": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+        "OpeningRandomNonLance": true
+      },
+      "games": 100,
+      "wins_a": 53,
+      "draws": 2,
+      "wins_b": 45,
+      "score_a": 0.54,
+      "score_a_approx_95pct": [
+        0.4423141033720835,
+        0.6376858966279166
+      ],
+      "average_plies": 114.92,
+      "illegal_games": 0,
+      "shards": 10,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      }
+    },
+    "telemetry": {
+      "A": {
+        "elapsed_ms": {
+          "n": 5748,
+          "total": 1851312.709,
+          "mean": 322.0794552887961,
+          "max": 991.331
+        },
+        "depth": {
+          "n": 5541,
+          "total": 13094,
+          "mean": 2.363111351741563,
+          "max": 6
+        },
+        "nodes": {
+          "n": 5596,
+          "total": 133804839,
+          "mean": 23910.800393137957,
+          "max": 148484
+        },
+        "knowledge_probes": {
+          "n": 5541,
+          "total": 5265,
+          "mean": 0.9501894964807797,
+          "max": 1
+        },
+        "knowledge_hits": {
+          "n": 5541,
+          "total": 0,
+          "mean": 0,
+          "max": 0
+        },
+        "knowledge_promotions": {
+          "n": 5541,
+          "total": 0,
+          "mean": 0,
+          "max": 0
+        }
+      },
+      "B": {
+        "depth": {
+          "n": 5562,
+          "total": 12061,
+          "mean": 2.1684645810859404,
+          "max": 5
+        },
+        "nodes": {
+          "n": 5607,
+          "total": 106862894,
+          "mean": 19058.836097734973,
+          "max": 99793
+        },
+        "elapsed_ms": {
+          "n": 5744,
+          "total": 1859276.384,
+          "mean": 323.6901782729805,
+          "max": 991.255
+        },
+        "knowledge_probes": {
+          "n": 5562,
+          "total": 5294,
+          "mean": 0.9518158935634664,
+          "max": 1
+        },
+        "knowledge_hits": {
+          "n": 5562,
+          "total": 0,
+          "mean": 0,
+          "max": 0
+        },
+        "knowledge_promotions": {
+          "n": 5562,
+          "total": 0,
+          "mean": 0,
+          "max": 0
+        }
+      }
+    },
+    "archive_manifest": {
+      "schema_version": 1,
+      "archive": "played-games.jsonl.gz",
+      "archive_sha256": "efb250762f80da5025179e7222ca90ce1892465e67a9bada1e94a0f01b558960",
+      "archive_bytes": 669656,
+      "games": 100,
+      "plies": 11492,
+      "scored_plies": 11013,
+      "missing_score_plies": 479,
+      "ambiguous_score_plies": 0,
+      "without_telemetry_plies": 0,
+      "phase_recorded_plies": 11492,
+      "phase_missing_plies": 0,
+      "run_id": "38648621520",
+      "requested_ref_a": "4d8a4b9723c21c6163cad03358ba35e4b93d4687",
+      "requested_ref_b": "73884f6d7e6a265803bde3e26953d63c7e1b1c58",
+      "scope": "Played moves only; PV, candidate moves and search trees are excluded."
+    },
+    "artifacts": [
+      {
+        "id": 11934745106,
+        "name": "generic-engine-match-38648621520-5",
+        "size_in_bytes": 92691,
+        "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11934745106",
+        "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11934745106/zip",
+        "expired": false,
+        "created_at": "2026-10-14T22:42:02Z",
+        "expires_at": "2027-01-12T22:34:55Z",
+        "updated_at": "2026-10-14T22:42:02Z",
+        "digest": "sha256:febff68ad2bc3c1e6e20c8e617ec43afb6ebd139dafccfc0c79148ee6369c3e8",
+        "workflow_run": {
+          "id": 38648621520,
+          "repository_id": 1405637901,
+          "head_repository_id": 1405637901,
+          "head_branch": "main",
+          "head_sha": "17d588778b9102cb8665ecb3dd1d382dd4d8d976"
+        },
+        "run": 38648621520
+      },
+      {
+        "id": 11934526041,
+        "name": "generic-engine-match-summary-38648621520",
+        "size_in_bytes": 605,
+        "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11934526041",
+        "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11934526041/zip",
+        "expired": false,
+        "created_at": "2026-10-14T22:43:29Z",
+        "expires_at": "2027-01-12T22:34:55Z",
+        "updated_at": "2026-10-14T22:43:29Z",
+        "digest": "sha256:f893dd1ff3bbe4e24914ed5b988de55f643bc2f54d0503090c732bd35ae5eaa0",
+        "workflow_run": {
+          "id": 38648621520,
+          "repository_id": 1405637901,
+          "head_repository_id": 1405637901,
+          "head_branch": "main",
+          "head_sha": "17d588778b9102cb8665ecb3dd1d382dd4d8d976"
+        },
+        "run": 38648621520
+      },
+      {
+        "id": 11934485748,
+        "name": "generic-engine-match-38648621520-7",
+        "size_in_bytes": 81104,
+        "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11934485748",
+        "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11934485748/zip",
+        "expired": false,
+        "created_at": "2026-10-14T22:41:32Z",
+        "expires_at": "2027-01-12T22:34:55Z",
+        "updated_at": "2026-10-14T22:41:32Z",
+        "digest": "sha256:396c1e36d382b01682f2621119de7d0d9ae4cd914e9eb7d33a0a51d4d3d88a83",
+        "workflow_run": {
+          "id": 38648621520,
+          "repository_id": 1405637901,
+          "head_repository_id": 1405637901,
+          "head_branch": "main",
+          "head_sha": "17d588778b9102cb8665ecb3dd1d382dd4d8d976"
+        },
+        "run": 38648621520
+      },
+      {
+        "id": 11934481066,
+        "name": "played-move-archive-38648621520",
+        "size_in_bytes": 671073,
+        "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11934481066",
+        "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11934481066/zip",
+        "expired": false,
+        "created_at": "2026-10-14T22:43:28Z",
+        "expires_at": "2027-01-12T22:34:55Z",
+        "updated_at": "2026-10-14T22:43:28Z",
+        "digest": "sha256:0811baf288e1880176602d822b77ea4de1c5bd0d24b85b80998567f4ed71e6ec",
+        "workflow_run": {
+          "id": 38648621520,
+          "repository_id": 1405637901,
+          "head_repository_id": 1405637901,
+          "head_branch": "main",
+          "head_sha": "17d588778b9102cb8665ecb3dd1d382dd4d8d976"
+        },
+        "run": 38648621520
+      },
+      {
+        "id": 11934426005,
+        "name": "generic-engine-match-38648621520-3",
+        "size_in_bytes": 105299,
+        "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11934426005",
+        "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11934426005/zip",
+        "expired": false,
+        "created_at": "2026-10-14T22:42:38Z",
+        "expires_at": "2027-01-12T22:34:55Z",
+        "updated_at": "2026-10-14T22:42:38Z",
+        "digest": "sha256:4e98787af84abc11bdc0e1ddb9b31b2c7c6e8bfeefec05f412683b5f7149035d",
+        "workflow_run": {
+          "id": 38648621520,
+          "repository_id": 1405637901,
+          "head_repository_id": 1405637901,
+          "head_branch": "main",
+          "head_sha": "17d588778b9102cb8665ecb3dd1d382dd4d8d976"
+        },
+        "run": 38648621520
+      },
+      {
+        "id": 11934276461,
+        "name": "generic-engine-match-38648621520-6",
+        "size_in_bytes": 121880,
+        "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11934276461",
+        "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11934276461/zip",
+        "expired": false,
+        "created_at": "2026-10-14T22:43:19Z",
+        "expires_at": "2027-01-12T22:34:55Z",
+        "updated_at": "2026-10-14T22:43:19Z",
+        "digest": "sha256:821947c692462ecb4d9d9afdfc1ee25a05b7b0d0e9431cdcc45e771e48eaa2e0",
+        "workflow_run": {
+          "id": 38648621520,
+          "repository_id": 1405637901,
+          "head_repository_id": 1405637901,
+          "head_branch": "main",
+          "head_sha": "17d588778b9102cb8665ecb3dd1d382dd4d8d976"
+        },
+        "run": 38648621520
+      },
+      {
+        "id": 11934256405,
+        "name": "generic-engine-match-38648621520-4",
+        "size_in_bytes": 109128,
+        "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11934256405",
+        "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11934256405/zip",
+        "expired": false,
+        "created_at": "2026-10-14T22:42:43Z",
+        "expires_at": "2027-01-12T22:34:55Z",
+        "updated_at": "2026-10-14T22:42:43Z",
+        "digest": "sha256:bfe9feab421e9e406cf44f63b680cdddd415546151db412b21378c4101b0b52e",
+        "workflow_run": {
+          "id": 38648621520,
+          "repository_id": 1405637901,
+          "head_repository_id": 1405637901,
+          "head_branch": "main",
+          "head_sha": "17d588778b9102cb8665ecb3dd1d382dd4d8d976"
+        },
+        "run": 38648621520
+      },
+      {
+        "id": 11934231157,
+        "name": "generic-engine-match-38648621520-9",
+        "size_in_bytes": 79138,
+        "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11934231157",
+        "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11934231157/zip",
+        "expired": false,
+        "created_at": "2026-10-14T22:41:28Z",
+        "expires_at": "2027-01-12T22:34:55Z",
+        "updated_at": "2026-10-14T22:41:28Z",
+        "digest": "sha256:c65d294641c1724f7d974f80d28deb242ef10ed296c81fbd65996ff53c07bf05",
+        "workflow_run": {
+          "id": 38648621520,
+          "repository_id": 1405637901,
+          "head_repository_id": 1405637901,
+          "head_branch": "main",
+          "head_sha": "17d588778b9102cb8665ecb3dd1d382dd4d8d976"
+        },
+        "run": 38648621520
+      },
+      {
+        "id": 11934161485,
+        "name": "generic-engine-match-38648621520-1",
+        "size_in_bytes": 106875,
+        "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11934161485",
+        "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11934161485/zip",
+        "expired": false,
+        "created_at": "2026-10-14T22:42:34Z",
+        "expires_at": "2027-01-12T22:34:55Z",
+        "updated_at": "2026-10-14T22:42:34Z",
+        "digest": "sha256:daf09ecf42712e43d3de99f9ae315a86d80d1df3a22e8b56506d051ca1937a81",
+        "workflow_run": {
+          "id": 38648621520,
+          "repository_id": 1405637901,
+          "head_repository_id": 1405637901,
+          "head_branch": "main",
+          "head_sha": "17d588778b9102cb8665ecb3dd1d382dd4d8d976"
+        },
+        "run": 38648621520
+      },
+      {
+        "id": 11934021614,
+        "name": "generic-engine-match-38648621520-0",
+        "size_in_bytes": 104259,
+        "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11934021614",
+        "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11934021614/zip",
+        "expired": false,
+        "created_at": "2026-10-14T22:42:32Z",
+        "expires_at": "2027-01-12T22:34:55Z",
+        "updated_at": "2026-10-14T22:42:32Z",
+        "digest": "sha256:6e3710073ca7397400009417d148154ba41133348cae9f170e65a304e59b1eb0",
+        "workflow_run": {
+          "id": 38648621520,
+          "repository_id": 1405637901,
+          "head_repository_id": 1405637901,
+          "head_branch": "main",
+          "head_sha": "17d588778b9102cb8665ecb3dd1d382dd4d8d976"
+        },
+        "run": 38648621520
+      },
+      {
+        "id": 11933806571,
+        "name": "generic-engine-match-38648621520-2",
+        "size_in_bytes": 110721,
+        "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11933806571",
+        "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11933806571/zip",
+        "expired": false,
+        "created_at": "2026-10-14T22:42:48Z",
+        "expires_at": "2027-01-12T22:34:55Z",
+        "updated_at": "2026-10-14T22:42:48Z",
+        "digest": "sha256:15952f6612c6a443275f2a8e022c142a9b6af7f7c2f683cd832fb52fe5a3b852",
+        "workflow_run": {
+          "id": 38648621520,
+          "repository_id": 1405637901,
+          "head_repository_id": 1405637901,
+          "head_branch": "main",
+          "head_sha": "17d588778b9102cb8665ecb3dd1d382dd4d8d976"
+        },
+        "run": 38648621520
+      },
+      {
+        "id": 11933607179,
+        "name": "generic-engine-match-38648621520-8",
+        "size_in_bytes": 98180,
+        "url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11933607179",
+        "archive_download_url": "https://api.github.com/repos/mtk-ctrl/shogi-ai/actions/artifacts/11933607179/zip",
+        "expired": false,
+        "created_at": "2026-10-14T22:42:16Z",
+        "expires_at": "2027-01-12T22:34:55Z",
+        "updated_at": "2026-10-14T22:42:16Z",
+        "digest": "sha256:178921b66b11ad38737039b5cf0db2e2c6178acc0e86dc8caab7bd352c50c8e7",
+        "workflow_run": {
+          "id": 38648621520,
+          "repository_id": 1405637901,
+          "head_repository_id": 1405637901,
+          "head_branch": "main",
+          "head_sha": "17d588778b9102cb8665ecb3dd1d382dd4d8d976"
+        },
+        "run": 38648621520
+      }
+    ]
+  }
+}
