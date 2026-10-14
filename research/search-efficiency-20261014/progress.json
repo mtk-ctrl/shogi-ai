@@ -1,0 +1,65 @@
+{
+  "updated_jst": "2026-10-14T19:02:00+09:00",
+  "phase": "formal_match_running",
+  "baseline_ref": "dc866ab712da28b9d103484d1b504e4dd38385df",
+  "formal_main_head": "d637d61a95e910736ff062547c871bb0e9d437a2",
+  "formal_engine": "KUMOJI v2.0.13 / profile 47",
+  "candidate_ref": "24c212e59e69196db0c4475637a3f624109c43f4",
+  "branch": "research/search-efficiency-20261014",
+  "candidate_adopted": false,
+  "request": {
+    "request_id": "se1-20261014-generated-legal",
+    "ref_a": "24c212e59e69196db0c4475637a3f624109c43f4",
+    "ref_b": "dc866ab712da28b9d103484d1b504e4dd38385df",
+    "games": 100,
+    "shards": 9,
+    "go_command": "go movetime 200",
+    "max_plies": 300,
+    "seed": 1916000000,
+    "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}",
+    "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\"}"
+  },
+  "issue": 258,
+  "launcher_run": 38546398469,
+  "match_run": 38546410593,
+  "candidate_quick_ci": {
+    "run": 38546182074,
+    "conclusion": "success"
+  },
+  "runner_limit": 10,
+  "runners_now": 9,
+  "other_purpose_runners_now": 0,
+  "peak_including_ci": 10,
+  "arena_started_jst": [
+    "2026-10-14T19:00:54+09:00",
+    "2026-10-14T19:00:59+09:00"
+  ],
+  "lane_games": [
+    12,
+    11,
+    11,
+    11,
+    11,
+    11,
+    11,
+    11,
+    11
+  ],
+  "all_arena_steps_started": true,
+  "match_job_ids": [
+    115793861837,
+    115793861862,
+    115793861875,
+    115793861891,
+    115793861952,
+    115793861965,
+    115793861996,
+    115793862031,
+    115793862073
+  ],
+  "eta_jst": "2026-10-14T19:12:00+09:00",
+  "eta_basis": "Formal profile47-M run38505569456:20-game lanes11m38s..12m56s;12 games~7m46s plus setup/aggregate/artifact and longer-game margin.",
+  "automation_id": "6acc6bd66e588191a524ea14c47a5d2c",
+  "measurement_file": "local-measurement.json",
+  "next": "Audit formal100 raw/aggregate/archive/settings/digests and report once; do not automatically adopt the search change."
+}
