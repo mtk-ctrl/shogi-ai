@@ -345,7 +345,11 @@ private:
     }
     static void make(rules::Position& position, const std::string& move) {
         std::string error;
-        if (!position.play(move, error)) throw std::logic_error(error);
+        // choose/search/quiescence have already adjudicated the current node.
+        // Every move comes from that node's legal list, and Undo restores the
+        // node before the next sibling. Keep the legal lookup, skip only the
+        // duplicate terminal scan inside play().
+        if (!position.play_generated_legal(move, error)) throw std::logic_error(error);
     }
     // Exact board/hands/side identity; no repetition-sensitive search scores
     // are cached here. Terminal and repetition results remain uncached.
