@@ -1,0 +1,2741 @@
+{
+  "source_date": "2026-10-12",
+  "audit_date": "2026-10-14",
+  "purpose": "Reuse completed formal M and Q14 ladders for the authorized selected-candidate comparison. No new baseline games.",
+  "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+  "material_ref": "c1b80eaa09fe13d5f12b1599d1ae4d53c224de30",
+  "comparisons": [
+    {
+      "run": 38197671385,
+      "model": "Q14",
+      "level": 48,
+      "result": {
+        "series_id": "20261012-v2012-Q14-material-Lv48-ladder",
+        "engine_ref": "c6311d266717d41cb3b6b84bbe22e870450e6365",
+        "level": 48,
+        "games": 100,
+        "shards": 7,
+        "wins": 69,
+        "draws": 2,
+        "losses": 29,
+        "win_pct": 69.0,
+        "point_pct": 70.0,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "next_level"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 980,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 5234,
+      "knowledge_probes": 4493,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "69c6d9cdcddb8d3e5bf5a7c53f009eb20b5d976325f05a3b35896ddff93f81fe",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "4afc8bbfd8e689fc8db31e98d1ef5a7b26d345c30203553533b16659dcbcd63d",
+          "games": 15,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "90acb588dce04b9c48478e889643521306a54e87304e103a99be335fc3a6b80f",
+          "games": 15,
+          "seed": 2026200500,
+          "offset": 15
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "55678ae2755892f2c3a093ac2045bd061bfb56427550055eb10e7f266a6f6d15",
+          "games": 14,
+          "seed": 2026300500,
+          "offset": 30
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "38a5b41d27d5796b729f7825fb5502f57c9cecc95409d0f38f0d44913f55a590",
+          "games": 14,
+          "seed": 2026400500,
+          "offset": 44
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "99349c780c57f07bb03e476eca5825aed9339a79e7207b21d5d5884cb87430b7",
+          "games": 14,
+          "seed": 2026500500,
+          "offset": 58
+        },
+        {
+          "file": "shard-5.json",
+          "sha256": "57317d27067189934a043c777675d2a8a76515c79fab66e416ca953bb54f252d",
+          "games": 14,
+          "seed": 2026600500,
+          "offset": 72
+        },
+        {
+          "file": "shard-6.json",
+          "sha256": "02ba70344830548c5fe7355f32a82a56877c5c16e009cd9a0b5eabb463ef49a3",
+          "games": 14,
+          "seed": 2026700500,
+          "offset": 86
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11724890088,
+          "name": "yaneuraou-ladder-38197671385-6",
+          "size_in_bytes": 72857,
+          "digest": "sha256:596febc4b0c06012b689f2d9e88eb4356d77ac8ba1c32ee91ae4e3edd92a4120",
+          "expires_at": "2027-01-10T02:55:01Z"
+        },
+        {
+          "id": 11724830290,
+          "name": "yaneuraou-ladder-38197671385-5",
+          "size_in_bytes": 81437,
+          "digest": "sha256:f9ef1867809160a18604dbc3668e03814e671505f6e8dfecc479f9b93e3c630c",
+          "expires_at": "2027-01-10T02:55:01Z"
+        },
+        {
+          "id": 11724710754,
+          "name": "yaneuraou-ladder-38197671385-2",
+          "size_in_bytes": 82212,
+          "digest": "sha256:3af63a4cc32acfca8ce484cf92f57bdec84671fca327094b0b2e1432fba63a6d",
+          "expires_at": "2027-01-10T02:55:01Z"
+        },
+        {
+          "id": 11724591262,
+          "name": "yaneuraou-ladder-38197671385-1",
+          "size_in_bytes": 97813,
+          "digest": "sha256:002f2278a1a33757ae88e65b399e7036a2d8bbd71cc49ac63a34aaae7564ca13",
+          "expires_at": "2027-01-10T02:55:01Z"
+        },
+        {
+          "id": 11724576277,
+          "name": "yaneuraou-ladder-summary-38197671385",
+          "size_in_bytes": 453,
+          "digest": "sha256:661121d3389e7e9ca28ef2474b690193271ed7569148ffec6971a37e0f822745",
+          "expires_at": "2027-01-10T02:55:01Z"
+        },
+        {
+          "id": 11724381814,
+          "name": "yaneuraou-ladder-38197671385-4",
+          "size_in_bytes": 96899,
+          "digest": "sha256:e74856433a86ad801ef71156e929715e266a46a6d3f5afff1019fd638a91e094",
+          "expires_at": "2027-01-10T02:55:01Z"
+        },
+        {
+          "id": 11724222731,
+          "name": "yaneuraou-ladder-38197671385-3",
+          "size_in_bytes": 90277,
+          "digest": "sha256:eb09815dd89e20f275d8c5d4f80628168cb5875b925bfbabf48997396c8a781b",
+          "expires_at": "2027-01-10T02:55:01Z"
+        },
+        {
+          "id": 11723972161,
+          "name": "yaneuraou-ladder-38197671385-0",
+          "size_in_bytes": 84251,
+          "digest": "sha256:89fac2b9ce0119f6f63ad981fabc8005b00218ffd7c3045f4d7fa590d24b9e90",
+          "expires_at": "2027-01-10T02:55:01Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    },
+    {
+      "run": 38198075991,
+      "model": "Q14",
+      "level": 49,
+      "result": {
+        "series_id": "20261012-v2012-Q14-material-Lv48-ladder",
+        "engine_ref": "c6311d266717d41cb3b6b84bbe22e870450e6365",
+        "level": 49,
+        "games": 100,
+        "shards": 7,
+        "wins": 59,
+        "draws": 1,
+        "losses": 40,
+        "win_pct": 59.0,
+        "point_pct": 59.5,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "next_level"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 976,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 5498,
+      "knowledge_probes": 4958,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "69c6d9cdcddb8d3e5bf5a7c53f009eb20b5d976325f05a3b35896ddff93f81fe",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "0c2065d056cf5f03f3b0833e3ed9a0ca4a8a94c44f70091153cf3e81bb4b40f4",
+          "games": 15,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "c19c8b3201421b625db76f709173942ed0b2710f48326d339066349121409fdd",
+          "games": 15,
+          "seed": 2026200500,
+          "offset": 15
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "c362051839e42da4e5109ee4d9b2f09071b7b19be98188984e0aa82b9bdc29bb",
+          "games": 14,
+          "seed": 2026300500,
+          "offset": 30
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "4633b08d2142342a11ce3f4a5837d46b8fd01829d6aead07cc90d4ff0879143b",
+          "games": 14,
+          "seed": 2026400500,
+          "offset": 44
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "9d108443773cb0da1005e57d8003e6715b53e22de9ca3c3814c403813ff03da0",
+          "games": 14,
+          "seed": 2026500500,
+          "offset": 58
+        },
+        {
+          "file": "shard-5.json",
+          "sha256": "c42aa8a737fc95b29c2446d1427b3c2c449bd4ee31e646b57fe29a39764fd956",
+          "games": 14,
+          "seed": 2026600500,
+          "offset": 72
+        },
+        {
+          "file": "shard-6.json",
+          "sha256": "23a3948520b0abe25c8a27dab8bd432d951004351a1313981a0402f139d4569a",
+          "games": 14,
+          "seed": 2026700500,
+          "offset": 86
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11724890948,
+          "name": "yaneuraou-ladder-38198075991-5",
+          "size_in_bytes": 80587,
+          "digest": "sha256:8b97eb5e1de1b1be028d0f8b6479206c397c9beeebf3f36b65fba4783f03aa21",
+          "expires_at": "2027-01-10T03:00:58Z"
+        },
+        {
+          "id": 11724826219,
+          "name": "yaneuraou-ladder-38198075991-3",
+          "size_in_bytes": 95480,
+          "digest": "sha256:c8e9be7483a25d9434f7d7685a23351522ed6cb43c1b4e0a8ea3f6e82bdaa649",
+          "expires_at": "2027-01-10T03:00:58Z"
+        },
+        {
+          "id": 11724696558,
+          "name": "yaneuraou-ladder-38198075991-4",
+          "size_in_bytes": 79292,
+          "digest": "sha256:d27b47863fffc1dc76c75899183d487faccc3f41705474f230f800bc1ec39bc1",
+          "expires_at": "2027-01-10T03:00:58Z"
+        },
+        {
+          "id": 11724582074,
+          "name": "yaneuraou-ladder-38198075991-6",
+          "size_in_bytes": 89121,
+          "digest": "sha256:324353317ad19e5cbf96938985b63cde51bc9ae6c95eb595807cb44988a13876",
+          "expires_at": "2027-01-10T03:00:58Z"
+        },
+        {
+          "id": 11724447463,
+          "name": "yaneuraou-ladder-38198075991-1",
+          "size_in_bytes": 93088,
+          "digest": "sha256:84e0286c3d7a75ff9d356661efc69e474a7f780174010d86af696c6a575709fe",
+          "expires_at": "2027-01-10T03:00:58Z"
+        },
+        {
+          "id": 11724437471,
+          "name": "yaneuraou-ladder-summary-38198075991",
+          "size_in_bytes": 451,
+          "digest": "sha256:d7a303e1ef8d58c56887f87923d4bc5130b8bc2faa542f4a5246c7cc8ca9abe6",
+          "expires_at": "2027-01-10T03:00:58Z"
+        },
+        {
+          "id": 11724263330,
+          "name": "yaneuraou-ladder-38198075991-2",
+          "size_in_bytes": 93309,
+          "digest": "sha256:7c9b7866ef72c2e2392cb16b6ff6a8f469f33e1e09c68bb94f68248084a01ca0",
+          "expires_at": "2027-01-10T03:00:58Z"
+        },
+        {
+          "id": 11723957731,
+          "name": "yaneuraou-ladder-38198075991-0",
+          "size_in_bytes": 103140,
+          "digest": "sha256:9c6661e84a7d0a243c10a1d7475bb2796057a308e9d53708bd065958d7f24912",
+          "expires_at": "2027-01-10T03:00:58Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    },
+    {
+      "run": 38198522589,
+      "model": "Q14",
+      "level": 50,
+      "result": {
+        "series_id": "20261012-v2012-Q14-material-Lv48-ladder",
+        "engine_ref": "c6311d266717d41cb3b6b84bbe22e870450e6365",
+        "level": 50,
+        "games": 100,
+        "shards": 7,
+        "wins": 56,
+        "draws": 3,
+        "losses": 41,
+        "win_pct": 56.0,
+        "point_pct": 57.5,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "next_level"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 982,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 5662,
+      "knowledge_probes": 5076,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "69c6d9cdcddb8d3e5bf5a7c53f009eb20b5d976325f05a3b35896ddff93f81fe",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "185d749123430f896defb38abe5c6a3a95d5efe3fcae2f2328285911cbf2037c",
+          "games": 15,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "81ca5acd697da23389e6af987222db1efbd4c391145d85b9b7c7803da6a08147",
+          "games": 15,
+          "seed": 2026200500,
+          "offset": 15
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "39b8c28335d8b9bd157ab29d8526999e667a5f22bf76df32930e97cd93e47158",
+          "games": 14,
+          "seed": 2026300500,
+          "offset": 30
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "e2050abc6e1bf468b02ee7b4da339b989ba98a50f008033497ecb40bd2232b2c",
+          "games": 14,
+          "seed": 2026400500,
+          "offset": 44
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "9152ab47f292cf243164e5a958a985b8a8cb363b27d2ff8c89d18bf9c16f84d6",
+          "games": 14,
+          "seed": 2026500500,
+          "offset": 58
+        },
+        {
+          "file": "shard-5.json",
+          "sha256": "d372373d30fdf164a87865cc33dbd45cc8a94fcb2282e19ca9fab1f7a16f4024",
+          "games": 14,
+          "seed": 2026600500,
+          "offset": 72
+        },
+        {
+          "file": "shard-6.json",
+          "sha256": "1270457e2442325f7b248062b2998e841dfa3ed2b68c51fb44c66e42ae80d2ef",
+          "games": 14,
+          "seed": 2026700500,
+          "offset": 86
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11724757374,
+          "name": "yaneuraou-ladder-38198522589-0",
+          "size_in_bytes": 106030,
+          "digest": "sha256:0f0c415e7754553e8d9f16e3e968f37e8232e8a367a538448c04b120453481fb",
+          "expires_at": "2027-01-10T03:07:36Z"
+        },
+        {
+          "id": 11724737394,
+          "name": "yaneuraou-ladder-38198522589-3",
+          "size_in_bytes": 101495,
+          "digest": "sha256:9b936d05a1f0de92c6e374e53223bb85018dd8055f89581174942fa0cef55850",
+          "expires_at": "2027-01-10T03:07:36Z"
+        },
+        {
+          "id": 11724517974,
+          "name": "yaneuraou-ladder-38198522589-4",
+          "size_in_bytes": 99935,
+          "digest": "sha256:8d8c6c7a8c33a3a7fc75c99c16bb9eae2e5c3b02ff745ac0401bc45db76ba6d1",
+          "expires_at": "2027-01-10T03:07:36Z"
+        },
+        {
+          "id": 11724463067,
+          "name": "yaneuraou-ladder-38198522589-6",
+          "size_in_bytes": 88377,
+          "digest": "sha256:91587408aa1aaccb11b3b1c188165475299e4660a9ce66070989c3ab444b6f14",
+          "expires_at": "2027-01-10T03:07:36Z"
+        },
+        {
+          "id": 11724363551,
+          "name": "yaneuraou-ladder-38198522589-2",
+          "size_in_bytes": 90081,
+          "digest": "sha256:13497edc25c6e691d7972b08b64369080bf6bbdf3d54cf8be47f4b3e5aa98f27",
+          "expires_at": "2027-01-10T03:07:36Z"
+        },
+        {
+          "id": 11724173060,
+          "name": "yaneuraou-ladder-38198522589-5",
+          "size_in_bytes": 85818,
+          "digest": "sha256:e08c1854b97d3b7bbc5796a2404733c17f60f07083d42e5e6e370f3bac988e8f",
+          "expires_at": "2027-01-10T03:07:36Z"
+        },
+        {
+          "id": 11724142923,
+          "name": "yaneuraou-ladder-38198522589-1",
+          "size_in_bytes": 81211,
+          "digest": "sha256:4bd4bc2bfbca601ed3a345323eaf0c638ef2574659618147a4ee67e0b9ab7713",
+          "expires_at": "2027-01-10T03:07:36Z"
+        },
+        {
+          "id": 11723754192,
+          "name": "yaneuraou-ladder-summary-38198522589",
+          "size_in_bytes": 452,
+          "digest": "sha256:aedef16304124923d64eda4123e1706a76fe764bbbaca72ff4f988fd66a14708",
+          "expires_at": "2027-01-10T03:07:36Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    },
+    {
+      "run": 38198949152,
+      "model": "Q14",
+      "level": 51,
+      "result": {
+        "series_id": "20261012-v2012-Q14-material-Lv48-ladder",
+        "engine_ref": "c6311d266717d41cb3b6b84bbe22e870450e6365",
+        "level": 51,
+        "games": 100,
+        "shards": 7,
+        "wins": 56,
+        "draws": 0,
+        "losses": 44,
+        "win_pct": 56.0,
+        "point_pct": 56.0,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "next_level"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 985,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 5462,
+      "knowledge_probes": 5017,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "69c6d9cdcddb8d3e5bf5a7c53f009eb20b5d976325f05a3b35896ddff93f81fe",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "2860bd071fede44c00838c66dfca52447b5de28d9983472dfda0ce99cf3ae824",
+          "games": 15,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "d76ba1d064f33034bdd8a81a5559c0382cd566ace9b34628384205d401596df5",
+          "games": 15,
+          "seed": 2026200500,
+          "offset": 15
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "14db94662672a2a14a5e4a2c6a0faa5cbdcdcb7e734ecbfe7db8c9b2911348d2",
+          "games": 14,
+          "seed": 2026300500,
+          "offset": 30
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "74cecac58220d2c60e6166a7a3ed4faa49c2db6ea95fe2b42222323b9af523b1",
+          "games": 14,
+          "seed": 2026400500,
+          "offset": 44
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "a3fa18c75954fa9049508689cace28271491e145bf3ae8ddc2dba13999276d54",
+          "games": 14,
+          "seed": 2026500500,
+          "offset": 58
+        },
+        {
+          "file": "shard-5.json",
+          "sha256": "3b6a491aa709ad88c0c3edf627ff41adb5d716dfe2514c2c440edb2476500886",
+          "games": 14,
+          "seed": 2026600500,
+          "offset": 72
+        },
+        {
+          "file": "shard-6.json",
+          "sha256": "2864c086e682315b34ec352bc1dd25f981dc0f5ad1ab9765fb5a7e63f955dd3c",
+          "games": 14,
+          "seed": 2026700500,
+          "offset": 86
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11724847644,
+          "name": "yaneuraou-ladder-38198949152-1",
+          "size_in_bytes": 102495,
+          "digest": "sha256:163805d8546675f707f3413612cfd35eee2a5bacecae92ee33b2feeef738662f",
+          "expires_at": "2027-01-10T03:14:09Z"
+        },
+        {
+          "id": 11724837691,
+          "name": "yaneuraou-ladder-38198949152-4",
+          "size_in_bytes": 85094,
+          "digest": "sha256:aa7d5486dc3db1025fd60d341d353186aa647a47f09ef64fbad8e48d1027712c",
+          "expires_at": "2027-01-10T03:14:09Z"
+        },
+        {
+          "id": 11724787980,
+          "name": "yaneuraou-ladder-summary-38198949152",
+          "size_in_bytes": 449,
+          "digest": "sha256:4c77e770916da1b69971794a0adc980231508f4f31639978c0ff47ccf185140a",
+          "expires_at": "2027-01-10T03:14:09Z"
+        },
+        {
+          "id": 11724593532,
+          "name": "yaneuraou-ladder-38198949152-5",
+          "size_in_bytes": 93576,
+          "digest": "sha256:f5b2e99a91c790529ab10da2bf33502b10e2726c06d0052d91f510254652cc97",
+          "expires_at": "2027-01-10T03:14:09Z"
+        },
+        {
+          "id": 11724394165,
+          "name": "yaneuraou-ladder-38198949152-0",
+          "size_in_bytes": 95679,
+          "digest": "sha256:c6652482e30b9ae853d7d2d77ba2022bd11ec2e316d5f06d60648901646ffdcd",
+          "expires_at": "2027-01-10T03:14:09Z"
+        },
+        {
+          "id": 11724349086,
+          "name": "yaneuraou-ladder-38198949152-6",
+          "size_in_bytes": 93674,
+          "digest": "sha256:c0d998f734c9b47d44e309cc901c245a6500d3fb231ec208f4ae2bb3062e6f86",
+          "expires_at": "2027-01-10T03:14:09Z"
+        },
+        {
+          "id": 11723919149,
+          "name": "yaneuraou-ladder-38198949152-3",
+          "size_in_bytes": 91586,
+          "digest": "sha256:239f7ef8f252c10e411ce9054b662a8c51c7facc8510f765237e12ad00267bb4",
+          "expires_at": "2027-01-10T03:14:09Z"
+        },
+        {
+          "id": 11723879256,
+          "name": "yaneuraou-ladder-38198949152-2",
+          "size_in_bytes": 72063,
+          "digest": "sha256:0b981d1f5428ee27c3ecb4782399a8ef920d1dadf15dc9dfaaa95f20830234f9",
+          "expires_at": "2027-01-10T03:14:09Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    },
+    {
+      "run": 38199365415,
+      "model": "Q14",
+      "level": 52,
+      "result": {
+        "series_id": "20261012-v2012-Q14-material-Lv48-ladder",
+        "engine_ref": "c6311d266717d41cb3b6b84bbe22e870450e6365",
+        "level": 52,
+        "games": 100,
+        "shards": 7,
+        "wins": 44,
+        "draws": 3,
+        "losses": 53,
+        "win_pct": 44.0,
+        "point_pct": 45.5,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "next_level"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 984,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 5921,
+      "knowledge_probes": 5296,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "69c6d9cdcddb8d3e5bf5a7c53f009eb20b5d976325f05a3b35896ddff93f81fe",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "67e449f628bfda794f22a3ea55ad7c993098476fb3a0a0a8a394e1b64844d12f",
+          "games": 15,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "009da2bfa1819de365ee408b8effaea7d91e755fe8f2b68906dff3148b89055c",
+          "games": 15,
+          "seed": 2026200500,
+          "offset": 15
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "c55becd67572c7ad0062366c950debc6fc98c8b299765d443aabdb6d1faa5e2e",
+          "games": 14,
+          "seed": 2026300500,
+          "offset": 30
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "4a1e27d32a6c590fb79ed6a671b13717389697007fe3c79d5cdd36838f96b1b7",
+          "games": 14,
+          "seed": 2026400500,
+          "offset": 44
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "c9cbcd67a261ede9f3e73140b1d0e0f8680acd3dd7004856be10094bc8e5727f",
+          "games": 14,
+          "seed": 2026500500,
+          "offset": 58
+        },
+        {
+          "file": "shard-5.json",
+          "sha256": "8350184c9ee881c7e7f3ecbb9c0f167aebbda018537cbeab5ee945a9afea44e0",
+          "games": 14,
+          "seed": 2026600500,
+          "offset": 72
+        },
+        {
+          "file": "shard-6.json",
+          "sha256": "52b1a0094e5c20d3b4b6eb6fe627f24d39a4a8067e1cd32b9388f429767f5d38",
+          "games": 14,
+          "seed": 2026700500,
+          "offset": 86
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11725145170,
+          "name": "yaneuraou-ladder-38199365415-3",
+          "size_in_bytes": 96695,
+          "digest": "sha256:57d1752c3a79758e9b04fb1bd2c271c110c19d4c0ed121f75fc102cfac614c1e",
+          "expires_at": "2027-01-10T03:20:30Z"
+        },
+        {
+          "id": 11725140197,
+          "name": "yaneuraou-ladder-38199365415-4",
+          "size_in_bytes": 92781,
+          "digest": "sha256:944b5d72ea8e701a6d91f93160ea93bd3762973dfe1910e35fbb0982cb04fc27",
+          "expires_at": "2027-01-10T03:20:30Z"
+        },
+        {
+          "id": 11724858569,
+          "name": "yaneuraou-ladder-38199365415-1",
+          "size_in_bytes": 113012,
+          "digest": "sha256:365edb280a10bf08c65c87d6d74e6a66b3fbf1d5800ee979a9bacf4e775e7b27",
+          "expires_at": "2027-01-10T03:20:30Z"
+        },
+        {
+          "id": 11724614219,
+          "name": "yaneuraou-ladder-38199365415-5",
+          "size_in_bytes": 92008,
+          "digest": "sha256:aed6cf76ccccae5f933c89c64e01cdc9a1fdc67f4ce3b273806f79b775bed2fa",
+          "expires_at": "2027-01-10T03:20:30Z"
+        },
+        {
+          "id": 11724519381,
+          "name": "yaneuraou-ladder-38199365415-6",
+          "size_in_bytes": 86040,
+          "digest": "sha256:9f75a69da79c66b51ad1e908195f2289d7047d4814c5f3a86df984b4ccc1dbe6",
+          "expires_at": "2027-01-10T03:20:30Z"
+        },
+        {
+          "id": 11724374916,
+          "name": "yaneuraou-ladder-38199365415-0",
+          "size_in_bytes": 94257,
+          "digest": "sha256:3141fba6931254c07b53362a673511780e3eff24c475e705bd0dd5f3ff27906d",
+          "expires_at": "2027-01-10T03:20:30Z"
+        },
+        {
+          "id": 11724253793,
+          "name": "yaneuraou-ladder-summary-38199365415",
+          "size_in_bytes": 453,
+          "digest": "sha256:efe0be946d1c0d49fe33193fc251859dbcdcab942c959fb60e7e52f2e3ec7214",
+          "expires_at": "2027-01-10T03:20:30Z"
+        },
+        {
+          "id": 11723899533,
+          "name": "yaneuraou-ladder-38199365415-2",
+          "size_in_bytes": 105159,
+          "digest": "sha256:766650e6374bce9f4902e1aa9fe1358a47408723ba2099f658c36c30466fe844",
+          "expires_at": "2027-01-10T03:20:30Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    },
+    {
+      "run": 38199796910,
+      "model": "Q14",
+      "level": 53,
+      "result": {
+        "series_id": "20261012-v2012-Q14-material-Lv48-ladder",
+        "engine_ref": "c6311d266717d41cb3b6b84bbe22e870450e6365",
+        "level": 53,
+        "games": 100,
+        "shards": 7,
+        "wins": 33,
+        "draws": 2,
+        "losses": 65,
+        "win_pct": 33.0,
+        "point_pct": 34.0,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "next_level"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 983,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 5865,
+      "knowledge_probes": 5412,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "69c6d9cdcddb8d3e5bf5a7c53f009eb20b5d976325f05a3b35896ddff93f81fe",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "2c22dc4267a88d56aa3068f2de49af7ccdaed08866571af4b5a6423f05cd79d6",
+          "games": 15,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "05c537d9fce872b613c631866c7ccce22b097f030ee1043fcde8c5e417f68cc4",
+          "games": 15,
+          "seed": 2026200500,
+          "offset": 15
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "16c2e2255e0ba6df54a28c18d5f75f640276d6295e860ab63aaecee3c43ed48e",
+          "games": 14,
+          "seed": 2026300500,
+          "offset": 30
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "5f1513611a5f216fe6f8e5a684c31b28b6c0b9862d28d6c12b7e085cefdd5f86",
+          "games": 14,
+          "seed": 2026400500,
+          "offset": 44
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "b8ccde46c06de16a75e972b772bab3b783c8b6704de3118dbc226ced3ee65207",
+          "games": 14,
+          "seed": 2026500500,
+          "offset": 58
+        },
+        {
+          "file": "shard-5.json",
+          "sha256": "2d9e450d768d7c1f190b4484d6296cc46be4b81ce7fbf0b3a0bd51c2e1e6a892",
+          "games": 14,
+          "seed": 2026600500,
+          "offset": 72
+        },
+        {
+          "file": "shard-6.json",
+          "sha256": "77fb94316bb2b27497cad1c738aa3dfe64a202d329f2c0aecbf319644c7aeb59",
+          "games": 14,
+          "seed": 2026700500,
+          "offset": 86
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11725475253,
+          "name": "yaneuraou-ladder-38199796910-1",
+          "size_in_bytes": 85002,
+          "digest": "sha256:abc03f96a61316c7df2c538d4ce1182fcf72cee8b051f35b136117a707a07227",
+          "expires_at": "2027-01-10T03:27:11Z"
+        },
+        {
+          "id": 11725205928,
+          "name": "yaneuraou-ladder-38199796910-6",
+          "size_in_bytes": 95855,
+          "digest": "sha256:ba26433152e721107d97d178354a10e4b7a5bf1877783c3914b0cbc96d1ad60c",
+          "expires_at": "2027-01-10T03:27:11Z"
+        },
+        {
+          "id": 11725155455,
+          "name": "yaneuraou-ladder-38199796910-2",
+          "size_in_bytes": 100779,
+          "digest": "sha256:a8183f2b922a40f0879445c2a15368347061f71c5f37590fa727c65615d1105a",
+          "expires_at": "2027-01-10T03:27:11Z"
+        },
+        {
+          "id": 11725106193,
+          "name": "yaneuraou-ladder-38199796910-0",
+          "size_in_bytes": 101193,
+          "digest": "sha256:7d6ccaf547895a7e85afab4f05206d99799f00609ed08e481fd791d7086512f7",
+          "expires_at": "2027-01-10T03:27:11Z"
+        },
+        {
+          "id": 11725100598,
+          "name": "yaneuraou-ladder-38199796910-5",
+          "size_in_bytes": 100007,
+          "digest": "sha256:7533274766e14aeafa6abf1d9c6e6e933f1929cd2e855a1d33d4c76ef0d334a1",
+          "expires_at": "2027-01-10T03:27:11Z"
+        },
+        {
+          "id": 11725100576,
+          "name": "yaneuraou-ladder-38199796910-4",
+          "size_in_bytes": 89787,
+          "digest": "sha256:b249868d585caa33629324cba8fd5ccfd8f5de14fdad1a137235b9ec40d18ddf",
+          "expires_at": "2027-01-10T03:27:11Z"
+        },
+        {
+          "id": 11724789456,
+          "name": "yaneuraou-ladder-38199796910-3",
+          "size_in_bytes": 101558,
+          "digest": "sha256:7d08054d5b6bb9c85e9191834bfa3e8cfc441a1efea4dae1441d3fedf2858f98",
+          "expires_at": "2027-01-10T03:27:11Z"
+        },
+        {
+          "id": 11724024975,
+          "name": "yaneuraou-ladder-summary-38199796910",
+          "size_in_bytes": 451,
+          "digest": "sha256:8d58dfe5a018f871226e75026d4c3115d6e1b34a692d404733bfca76b0bbca8b",
+          "expires_at": "2027-01-10T03:27:11Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    },
+    {
+      "run": 38200212461,
+      "model": "Q14",
+      "level": 54,
+      "result": {
+        "series_id": "20261012-v2012-Q14-material-Lv48-ladder",
+        "engine_ref": "c6311d266717d41cb3b6b84bbe22e870450e6365",
+        "level": 54,
+        "games": 100,
+        "shards": 7,
+        "wins": 38,
+        "draws": 4,
+        "losses": 58,
+        "win_pct": 38.0,
+        "point_pct": 40.0,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "next_level"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 975,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 5727,
+      "knowledge_probes": 4926,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "69c6d9cdcddb8d3e5bf5a7c53f009eb20b5d976325f05a3b35896ddff93f81fe",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "9d1b6293dc4107191a27ab3b15dea9fe89614141c6108d126e0ab8a117e14995",
+          "games": 15,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "71e5831258e43b440f34a671025ca482612ef4b46d219cbedd19c891b2b444cf",
+          "games": 15,
+          "seed": 2026200500,
+          "offset": 15
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "c35994428e2c2614eafde0be51db31c8a9c8341522fd14f5a3b6d47a4ef11729",
+          "games": 14,
+          "seed": 2026300500,
+          "offset": 30
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "e0034e3fef22e8eb99773efd9e9b2fdb4066df203f44b4c8ce8db86bfa7792ae",
+          "games": 14,
+          "seed": 2026400500,
+          "offset": 44
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "d479dbbefe0613de7f8c91a55637b7b2c1021e9f96988334089ea04007d1986a",
+          "games": 14,
+          "seed": 2026500500,
+          "offset": 58
+        },
+        {
+          "file": "shard-5.json",
+          "sha256": "bd4334c6192cac3b1617836fc4860244bc2fd9a2c4f3296e8711751c3360cf98",
+          "games": 14,
+          "seed": 2026600500,
+          "offset": 72
+        },
+        {
+          "file": "shard-6.json",
+          "sha256": "586535c72bdf47c77b4f77d14c075eb41710ac92829aa0d4a34bd01f4cf67473",
+          "games": 14,
+          "seed": 2026700500,
+          "offset": 86
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11725985190,
+          "name": "yaneuraou-ladder-38200212461-4",
+          "size_in_bytes": 103219,
+          "digest": "sha256:9f1a308b4ef11de5b1db656d5de3cdf1204038bb25a33e42bcd835160039394c",
+          "expires_at": "2027-01-10T03:33:24Z"
+        },
+        {
+          "id": 11725965166,
+          "name": "yaneuraou-ladder-38200212461-1",
+          "size_in_bytes": 83561,
+          "digest": "sha256:4a795dafff16883782e63c41022ffca0eb62f4ac2c6e5828ec52fbbac9d4b8b8",
+          "expires_at": "2027-01-10T03:33:24Z"
+        },
+        {
+          "id": 11725835166,
+          "name": "yaneuraou-ladder-38200212461-5",
+          "size_in_bytes": 96301,
+          "digest": "sha256:8eb57ad8f86367c13b14d08a683ece087a19a5d74f6ee220e63b522cf65fd52f",
+          "expires_at": "2027-01-10T03:33:24Z"
+        },
+        {
+          "id": 11725720677,
+          "name": "yaneuraou-ladder-38200212461-2",
+          "size_in_bytes": 94271,
+          "digest": "sha256:d8830c501a08d1dfb4ad088fb06730633d691b463525b695e40b890e577674cd",
+          "expires_at": "2027-01-10T03:33:24Z"
+        },
+        {
+          "id": 11725530969,
+          "name": "yaneuraou-ladder-38200212461-3",
+          "size_in_bytes": 87638,
+          "digest": "sha256:8dfee15fe41259f152defa748260f93866c9b9fa702c8dcc3cc925254d74134f",
+          "expires_at": "2027-01-10T03:33:24Z"
+        },
+        {
+          "id": 11725476143,
+          "name": "yaneuraou-ladder-summary-38200212461",
+          "size_in_bytes": 452,
+          "digest": "sha256:ffb42a516a0a551cf471f5dac6e7c2fc741b04aebdcc01f9dfe16bf7575b8e0b",
+          "expires_at": "2027-01-10T03:33:24Z"
+        },
+        {
+          "id": 11725346305,
+          "name": "yaneuraou-ladder-38200212461-6",
+          "size_in_bytes": 95167,
+          "digest": "sha256:ed887c72237a08d21b67177efe62c400913a1c6a8c733f037364f90061459b0f",
+          "expires_at": "2027-01-10T03:33:24Z"
+        },
+        {
+          "id": 11725166680,
+          "name": "yaneuraou-ladder-38200212461-0",
+          "size_in_bytes": 95584,
+          "digest": "sha256:f68de51d04a3c0378dbdbea5a35fb79f1702ed3edc37825fe46ac9b54765e6cd",
+          "expires_at": "2027-01-10T03:33:24Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    },
+    {
+      "run": 38200650436,
+      "model": "Q14",
+      "level": 55,
+      "result": {
+        "series_id": "20261012-v2012-Q14-material-Lv48-ladder",
+        "engine_ref": "c6311d266717d41cb3b6b84bbe22e870450e6365",
+        "level": 55,
+        "games": 100,
+        "shards": 7,
+        "wins": 42,
+        "draws": 2,
+        "losses": 56,
+        "win_pct": 42.0,
+        "point_pct": 43.0,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "next_level"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 988,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 5762,
+      "knowledge_probes": 5042,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "69c6d9cdcddb8d3e5bf5a7c53f009eb20b5d976325f05a3b35896ddff93f81fe",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "3129a523146b4bd48a7792d41013414563ac3cd33b6107544fc107abc0405bbd",
+          "games": 15,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "1267f43cac622a7026c4245bd6830d9ec1f0cb9a6947b838887223d8043957e8",
+          "games": 15,
+          "seed": 2026200500,
+          "offset": 15
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "a2b4d68cc27c6549251ab8e615ae58f2d5de11ea2a2f2f1d53dbc1a07ba48278",
+          "games": 14,
+          "seed": 2026300500,
+          "offset": 30
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "ffb948c31e0a6d4b2f618fd45c5e58b9be358232361034dc65c36b8d9b418f4f",
+          "games": 14,
+          "seed": 2026400500,
+          "offset": 44
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "b953bd3b81508c0f2e48606b3ec101bbda89b210b9b49726669350efa7fea733",
+          "games": 14,
+          "seed": 2026500500,
+          "offset": 58
+        },
+        {
+          "file": "shard-5.json",
+          "sha256": "19b5e357c37dddac25f8bd54a9d33d096aa86b891f0d1d4f641c3344e18f143f",
+          "games": 14,
+          "seed": 2026600500,
+          "offset": 72
+        },
+        {
+          "file": "shard-6.json",
+          "sha256": "af6c63618cd0651d7247b9876782ea38746c261d6463eb38757e411aa0310fc7",
+          "games": 14,
+          "seed": 2026700500,
+          "offset": 86
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11725975923,
+          "name": "yaneuraou-ladder-38200650436-1",
+          "size_in_bytes": 92743,
+          "digest": "sha256:9d06bf4fb98c77915149f4944d7a380ed77ce35d8c9cb9842c3c2fab595431ad",
+          "expires_at": "2027-01-10T03:40:05Z"
+        },
+        {
+          "id": 11725821356,
+          "name": "yaneuraou-ladder-38200650436-0",
+          "size_in_bytes": 94149,
+          "digest": "sha256:d5275adca671bf98523d5509cfc26bbeac2bfdf4cfe82e33900e3003c9068d32",
+          "expires_at": "2027-01-10T03:40:05Z"
+        },
+        {
+          "id": 11725816433,
+          "name": "yaneuraou-ladder-38200650436-5",
+          "size_in_bytes": 102782,
+          "digest": "sha256:8d0775478fd3aa1cc9e9bc16076a95fa6a39e7cf4bdae0fcb2c7b18e80f51bf8",
+          "expires_at": "2027-01-10T03:40:05Z"
+        },
+        {
+          "id": 11725760784,
+          "name": "yaneuraou-ladder-38200650436-6",
+          "size_in_bytes": 90184,
+          "digest": "sha256:5e492f49ca9b09f9082c5433f8cd2686fee7a1e5308bc06350ef1fbf4f7537c8",
+          "expires_at": "2027-01-10T03:40:05Z"
+        },
+        {
+          "id": 11725615966,
+          "name": "yaneuraou-ladder-38200650436-2",
+          "size_in_bytes": 100215,
+          "digest": "sha256:7b7f3ca042d56b795639fe07dad55b4c15e169a5e824b39e0e7069cde4d258a3",
+          "expires_at": "2027-01-10T03:40:05Z"
+        },
+        {
+          "id": 11725432116,
+          "name": "yaneuraou-ladder-summary-38200650436",
+          "size_in_bytes": 451,
+          "digest": "sha256:c024eaaef9e26208593d9ea04241d59e6cea6068b23357f4e7d121972fc521c9",
+          "expires_at": "2027-01-10T03:40:05Z"
+        },
+        {
+          "id": 11725212460,
+          "name": "yaneuraou-ladder-38200650436-3",
+          "size_in_bytes": 93167,
+          "digest": "sha256:be9a6060cc766c0284db9428733e9daf99d3d043a63e25abf48bf8b30dad0672",
+          "expires_at": "2027-01-10T03:40:05Z"
+        },
+        {
+          "id": 11725151545,
+          "name": "yaneuraou-ladder-38200650436-4",
+          "size_in_bytes": 90330,
+          "digest": "sha256:8f1547de617de7df24c9f83c300548e0d64ed4fddccb4bf55b77d9977b3b66f7",
+          "expires_at": "2027-01-10T03:40:05Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    },
+    {
+      "run": 38201080674,
+      "model": "Q14",
+      "level": 56,
+      "result": {
+        "series_id": "20261012-v2012-Q14-material-Lv48-ladder",
+        "engine_ref": "c6311d266717d41cb3b6b84bbe22e870450e6365",
+        "level": 56,
+        "games": 100,
+        "shards": 7,
+        "wins": 28,
+        "draws": 2,
+        "losses": 70,
+        "win_pct": 28.0,
+        "point_pct": 29.0,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "below_30_percent"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 993,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 6000,
+      "knowledge_probes": 5322,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "69c6d9cdcddb8d3e5bf5a7c53f009eb20b5d976325f05a3b35896ddff93f81fe",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "57a93868f13c394cee38699ac1cbd7bf96d7d0c8dcb387222d17beaa63bf6263",
+          "games": 15,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "d52a96aea72fa4369ee4295c46defd500a97b8d063daf9d3f4a8bb4f4fd6532f",
+          "games": 15,
+          "seed": 2026200500,
+          "offset": 15
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "dd6088c1c2a4f33c92bfa9abb62f9cb8930e856f610c1804d0f8eaa35b044669",
+          "games": 14,
+          "seed": 2026300500,
+          "offset": 30
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "f6ebfb225ccf36dbdc3e4db864ca9000ad97835fef8a572de6ec35cb3bf08416",
+          "games": 14,
+          "seed": 2026400500,
+          "offset": 44
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "571bd5119b7452d130dc4a01891033c495a1086f6a887c194202e5369ed019f6",
+          "games": 14,
+          "seed": 2026500500,
+          "offset": 58
+        },
+        {
+          "file": "shard-5.json",
+          "sha256": "a1c08efa1ee01c521bc77cfd2901d33142c89f5097de1462903fd2ffb4f7bf29",
+          "games": 14,
+          "seed": 2026600500,
+          "offset": 72
+        },
+        {
+          "file": "shard-6.json",
+          "sha256": "9843c10d55108aa3d6d19a916aa870a0435a4086c6d47e2c21d1de860262e94f",
+          "games": 14,
+          "seed": 2026700500,
+          "offset": 86
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11726111172,
+          "name": "yaneuraou-ladder-38201080674-1",
+          "size_in_bytes": 99156,
+          "digest": "sha256:f9d73011a810d36e159c472ca98e7b077816a6d36a9a16e309565002754bd969",
+          "expires_at": "2027-01-10T03:46:31Z"
+        },
+        {
+          "id": 11725931853,
+          "name": "yaneuraou-ladder-38201080674-5",
+          "size_in_bytes": 91565,
+          "digest": "sha256:986b8e0b3b7ec70b36c388ef5efade10bb0c5f44c3ae1b1a25b854df691f6bd0",
+          "expires_at": "2027-01-10T03:46:31Z"
+        },
+        {
+          "id": 11725722224,
+          "name": "yaneuraou-ladder-38201080674-4",
+          "size_in_bytes": 101209,
+          "digest": "sha256:27d323e6d2a9ae160672f5de8dd0ec185b2b0010a2e497ad2a6fb344e7786264",
+          "expires_at": "2027-01-10T03:46:31Z"
+        },
+        {
+          "id": 11725452662,
+          "name": "yaneuraou-ladder-38201080674-3",
+          "size_in_bytes": 101527,
+          "digest": "sha256:00bd727e8ea9d3bc0fde5fafeb6e7044f75f5f6c99276feb1a8015bdb0a0a893",
+          "expires_at": "2027-01-10T03:46:31Z"
+        },
+        {
+          "id": 11725387983,
+          "name": "yaneuraou-ladder-38201080674-0",
+          "size_in_bytes": 105459,
+          "digest": "sha256:74c5ef6e6061c10ecfb67953888a9ba6ae9f99d8fd06a57423a6856b9e6b2528",
+          "expires_at": "2027-01-10T03:46:31Z"
+        },
+        {
+          "id": 11725282942,
+          "name": "yaneuraou-ladder-38201080674-6",
+          "size_in_bytes": 92361,
+          "digest": "sha256:ee4f7d869d3062d23d6bff0f75fc3a9861174d4660d8d4db4afd8ee22ef7b21c",
+          "expires_at": "2027-01-10T03:46:31Z"
+        },
+        {
+          "id": 11725241949,
+          "name": "yaneuraou-ladder-38201080674-2",
+          "size_in_bytes": 96935,
+          "digest": "sha256:400f7b3ffe822e68f828fb3a481b18a8523c7fcbe8756b1ced1626bba6d5ce6c",
+          "expires_at": "2027-01-10T03:46:31Z"
+        },
+        {
+          "id": 11725042541,
+          "name": "yaneuraou-ladder-summary-38201080674",
+          "size_in_bytes": 455,
+          "digest": "sha256:42e7a6491256c3b5f43994a049e5d95998380f8be46b3de40138e2e7c60aa13b",
+          "expires_at": "2027-01-10T03:46:31Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    },
+    {
+      "run": 38206858329,
+      "model": "M",
+      "level": 48,
+      "result": {
+        "series_id": "20261012-M-163-material-ladder",
+        "engine_ref": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+        "level": 48,
+        "games": 100,
+        "shards": 5,
+        "wins": 66,
+        "draws": 1,
+        "losses": 33,
+        "win_pct": 66.0,
+        "point_pct": 66.5,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "next_level"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 959,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 5590,
+      "knowledge_probes": 4811,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "fbd29afb80d087480835611e84d50e5832051fe6a0fce36b1f7e259a572dece6",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "49733187989de137a9cbc5a4b438c2b73411a2c4bd3962da748d6fbdf26c66a0",
+          "games": 20,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "2f9a7cafe56cdbf95676488826f1fc3f4bfde3d0f3bbd60f421bf978ebe3358c",
+          "games": 20,
+          "seed": 2026200500,
+          "offset": 20
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "c7621c6ae7ac1815377f5ea68ab9ce3f70e5c5b47a5b99cf452447ba8a9dcd9e",
+          "games": 20,
+          "seed": 2026300500,
+          "offset": 40
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "ec1804670ddd75082b407425505e65bc31ca092f89126f3ce33ff2957115ffe0",
+          "games": 20,
+          "seed": 2026400500,
+          "offset": 60
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "b0e04de8c6b5ea42afae90d8f78e66eccc51e4534e18617b39054709f8f9e72d",
+          "games": 20,
+          "seed": 2026500500,
+          "offset": 80
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11729285444,
+          "name": "yaneuraou-ladder-38206858329-0",
+          "size_in_bytes": 127462,
+          "digest": "sha256:d7b179b5d9afab24f9f83748ad000089f00439d5fc2cdd9a5cd3868a0f8cf5ab",
+          "expires_at": "2027-01-10T05:11:17Z"
+        },
+        {
+          "id": 11729185905,
+          "name": "yaneuraou-ladder-38206858329-2",
+          "size_in_bytes": 132330,
+          "digest": "sha256:ee3217f174a99baa515ac7eee2ee346884a910ab85ce999f9e8676525dce6f2f",
+          "expires_at": "2027-01-10T05:11:17Z"
+        },
+        {
+          "id": 11729046216,
+          "name": "yaneuraou-ladder-38206858329-3",
+          "size_in_bytes": 115288,
+          "digest": "sha256:cfe5f0d48868330e68873aef7a11f976e58feffdc6b45757783f12ca393bb355",
+          "expires_at": "2027-01-10T05:11:17Z"
+        },
+        {
+          "id": 11728906632,
+          "name": "yaneuraou-ladder-38206858329-4",
+          "size_in_bytes": 113342,
+          "digest": "sha256:6c66b351a62d5677697b8b432a306cbf4a1a5204476885ceb9e6ee179d4722bf",
+          "expires_at": "2027-01-10T05:11:17Z"
+        },
+        {
+          "id": 11728581689,
+          "name": "yaneuraou-ladder-38206858329-1",
+          "size_in_bytes": 145388,
+          "digest": "sha256:3b433084cde566c2db283aff9ac882315ceaeedb379adaa9ae667e5b0113e87b",
+          "expires_at": "2027-01-10T05:11:17Z"
+        },
+        {
+          "id": 11728222451,
+          "name": "yaneuraou-ladder-summary-38206858329",
+          "size_in_bytes": 443,
+          "digest": "sha256:0bbf9eced360d8d7c1a406677922fb75ab69daf302e0ad30898063b834db5086",
+          "expires_at": "2027-01-10T05:11:17Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    },
+    {
+      "run": 38209504275,
+      "model": "M",
+      "level": 49,
+      "result": {
+        "series_id": "20261012-M-163-material-ladder",
+        "engine_ref": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+        "level": 49,
+        "games": 100,
+        "shards": 5,
+        "wins": 60,
+        "draws": 3,
+        "losses": 37,
+        "win_pct": 60.0,
+        "point_pct": 61.5,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "next_level"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 966,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 5097,
+      "knowledge_probes": 4458,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "fbd29afb80d087480835611e84d50e5832051fe6a0fce36b1f7e259a572dece6",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "12d5cbfb96476119002caf980ff2e96ce1dbab5195f03c5876548872bcf41ec8",
+          "games": 20,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "7a765485c6db656cc9848838c07391bd412d5d53729ea21c6f1660e31a2d9de3",
+          "games": 20,
+          "seed": 2026200500,
+          "offset": 20
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "30e3bcef7e2130ddb8b4f97d5622427eea898eedb923137808306653e5df574a",
+          "games": 20,
+          "seed": 2026300500,
+          "offset": 40
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "dd571c6d521fb2dbab7c88a3dacfed66a87c2cee10744dbabf9757a4c9f09759",
+          "games": 20,
+          "seed": 2026400500,
+          "offset": 60
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "da9876bde4bd2055cda674c35766f4eca2c311e30627f72453fcdaa6f358349b",
+          "games": 20,
+          "seed": 2026500500,
+          "offset": 80
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11729037455,
+          "name": "yaneuraou-ladder-38209504275-0",
+          "size_in_bytes": 115874,
+          "digest": "sha256:d82350475f9bbd21ade220ae5e4c4580670470c227df66e175db2deb5dc8defe",
+          "expires_at": "2027-01-10T05:47:42Z"
+        },
+        {
+          "id": 11728857800,
+          "name": "yaneuraou-ladder-38209504275-1",
+          "size_in_bytes": 107255,
+          "digest": "sha256:8731ca1f980bbca59097c2f29cc12a91a76a7a0c66674c498534f6ceafc8c523",
+          "expires_at": "2027-01-10T05:47:42Z"
+        },
+        {
+          "id": 11728712083,
+          "name": "yaneuraou-ladder-38209504275-4",
+          "size_in_bytes": 114678,
+          "digest": "sha256:45ea0667f283d8f75b34c8ae3ddf53b1006e4b56c40720af71f53e2d80c27f52",
+          "expires_at": "2027-01-10T05:47:42Z"
+        },
+        {
+          "id": 11728703538,
+          "name": "yaneuraou-ladder-38209504275-2",
+          "size_in_bytes": 127425,
+          "digest": "sha256:ab7e77026e0f8856983ca8496c69d15bf5dc91495c5ea85b2d385ffdfaecf329",
+          "expires_at": "2027-01-10T05:47:42Z"
+        },
+        {
+          "id": 11728417775,
+          "name": "yaneuraou-ladder-summary-38209504275",
+          "size_in_bytes": 444,
+          "digest": "sha256:d920f0b0a29b7c8fc95cb8c49a24ab510d8fc0d715871bb4b7e612c347bf2d4b",
+          "expires_at": "2027-01-10T05:47:42Z"
+        },
+        {
+          "id": 11728294524,
+          "name": "yaneuraou-ladder-38209504275-3",
+          "size_in_bytes": 117552,
+          "digest": "sha256:a1e403fba867cf13572d905db62e5109e78f187c272acd493133cd1679b6d667",
+          "expires_at": "2027-01-10T05:47:42Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    },
+    {
+      "run": 38210086683,
+      "model": "M",
+      "level": 50,
+      "result": {
+        "series_id": "20261012-M-163-material-ladder",
+        "engine_ref": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+        "level": 50,
+        "games": 100,
+        "shards": 5,
+        "wins": 60,
+        "draws": 2,
+        "losses": 38,
+        "win_pct": 60.0,
+        "point_pct": 61.0,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "next_level"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 962,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 5446,
+      "knowledge_probes": 4831,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "fbd29afb80d087480835611e84d50e5832051fe6a0fce36b1f7e259a572dece6",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "3d37d3c0214ac6bb702158f50b547b770af1bc374d071a230556cf7cd613ce61",
+          "games": 20,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "b1b9afd2854211e174ba2f1283bf6830ca7fd56d270808f968f229585b221b9b",
+          "games": 20,
+          "seed": 2026200500,
+          "offset": 20
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "a298f204058bf4fb6e4c3f78cd471122e1dd6c7c509f7f2a9f13567d20ccfe66",
+          "games": 20,
+          "seed": 2026300500,
+          "offset": 40
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "f316fc25eed71cad0cdef956d956473fed413a883d22e87276e842906035bc86",
+          "games": 20,
+          "seed": 2026400500,
+          "offset": 60
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "014d9134f2bb2c64e51f0c97bf559bfc01c2d2de7163e36d5580d54e53a2f3fc",
+          "games": 20,
+          "seed": 2026500500,
+          "offset": 80
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11729390463,
+          "name": "yaneuraou-ladder-38210086683-1",
+          "size_in_bytes": 125465,
+          "digest": "sha256:b2ed5432ad25159e81119dd3736c510e03767e3986864472eee2e85dbe8f61a8",
+          "expires_at": "2027-01-10T05:55:26Z"
+        },
+        {
+          "id": 11729267861,
+          "name": "yaneuraou-ladder-38210086683-4",
+          "size_in_bytes": 125999,
+          "digest": "sha256:099e04bbae194245cc26a776d08721c1f650ad817fa2522ba7e0456ef5db405c",
+          "expires_at": "2027-01-10T05:55:26Z"
+        },
+        {
+          "id": 11729128244,
+          "name": "yaneuraou-ladder-38210086683-3",
+          "size_in_bytes": 123631,
+          "digest": "sha256:7b81f760afb4d47b868ebc8a842c3adcc6d13beabf3183859664b0982f6ea3dc",
+          "expires_at": "2027-01-10T05:55:26Z"
+        },
+        {
+          "id": 11728709305,
+          "name": "yaneuraou-ladder-38210086683-0",
+          "size_in_bytes": 119989,
+          "digest": "sha256:3a5d42e107a2cf1812846cf8c363a5a6d12ceb71d6fada66a4bac1f0acbabc6c",
+          "expires_at": "2027-01-10T05:55:26Z"
+        },
+        {
+          "id": 11728608068,
+          "name": "yaneuraou-ladder-38210086683-2",
+          "size_in_bytes": 123204,
+          "digest": "sha256:ec25d076c8b44d1094e00d6da5d310bfc1920dba8e4ac879efd1352e6e717e83",
+          "expires_at": "2027-01-10T05:55:26Z"
+        },
+        {
+          "id": 11728579683,
+          "name": "yaneuraou-ladder-summary-38210086683",
+          "size_in_bytes": 443,
+          "digest": "sha256:bc1e7035799ae3cfa1f3bf506a1da637454b187705298b4b1c9d1cda3b5f7cba",
+          "expires_at": "2027-01-10T05:55:26Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    },
+    {
+      "run": 38210666650,
+      "model": "M",
+      "level": 51,
+      "result": {
+        "series_id": "20261012-M-163-material-ladder",
+        "engine_ref": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+        "level": 51,
+        "games": 100,
+        "shards": 5,
+        "wins": 46,
+        "draws": 5,
+        "losses": 49,
+        "win_pct": 46.0,
+        "point_pct": 48.5,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "next_level"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 986,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 5619,
+      "knowledge_probes": 5012,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "fbd29afb80d087480835611e84d50e5832051fe6a0fce36b1f7e259a572dece6",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "63711a6890cea99653be888ffd53bbed3f170589a0050a13a9c4df4bb2477998",
+          "games": 20,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "4d5f3a11223bf9e384776b047d02b59ce87eb6b94c72ab56038389021e302038",
+          "games": 20,
+          "seed": 2026200500,
+          "offset": 20
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "5a7225f095f3c032883cc0ff9f0c30daa367b1c38d1ce1413f13d752e8526f9b",
+          "games": 20,
+          "seed": 2026300500,
+          "offset": 40
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "8f29f42ec237b627a0c5eca6ecac8685e1aca5498ef867ef525a99b41b73ba53",
+          "games": 20,
+          "seed": 2026400500,
+          "offset": 60
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "726731f1050bb61c03ccedbb574d2bf37b68abca0e14566a3f81a748e7907c8f",
+          "games": 20,
+          "seed": 2026500500,
+          "offset": 80
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11729650203,
+          "name": "yaneuraou-ladder-38210666650-3",
+          "size_in_bytes": 130055,
+          "digest": "sha256:8a2934f49e75b24940baea3d5f148dc2c9ec74713fe6b7610299535c801ef1fc",
+          "expires_at": "2027-01-10T06:02:57Z"
+        },
+        {
+          "id": 11729565398,
+          "name": "yaneuraou-ladder-38210666650-0",
+          "size_in_bytes": 122492,
+          "digest": "sha256:d8bd66e56cd8e5e04c2be5b8618e6986e2ed1b20b8167d71e3b213ac7455bb48",
+          "expires_at": "2027-01-10T06:02:57Z"
+        },
+        {
+          "id": 11729505590,
+          "name": "yaneuraou-ladder-summary-38210666650",
+          "size_in_bytes": 444,
+          "digest": "sha256:020fbf1c10c0c4b7d5464045d336710d82df72a7c1e041ea3c5aa828d16e972c",
+          "expires_at": "2027-01-10T06:02:57Z"
+        },
+        {
+          "id": 11729338426,
+          "name": "yaneuraou-ladder-38210666650-1",
+          "size_in_bytes": 122885,
+          "digest": "sha256:ad9d66c727797d3651230878876eb84d0b17b5571c9f66b31f74cf644b1b4d10",
+          "expires_at": "2027-01-10T06:02:57Z"
+        },
+        {
+          "id": 11728979848,
+          "name": "yaneuraou-ladder-38210666650-2",
+          "size_in_bytes": 125649,
+          "digest": "sha256:5dc742e67abe0ef15f9c8693fac880ae4c858324688fe960b1435a6d2a097487",
+          "expires_at": "2027-01-10T06:02:57Z"
+        },
+        {
+          "id": 11728728570,
+          "name": "yaneuraou-ladder-38210666650-4",
+          "size_in_bytes": 136910,
+          "digest": "sha256:deea5a6bc91762a0c1aa3b96da95cf1efb2f7347f1171e569091ddba457ddcf6",
+          "expires_at": "2027-01-10T06:02:57Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    },
+    {
+      "run": 38211300524,
+      "model": "M",
+      "level": 52,
+      "result": {
+        "series_id": "20261012-M-163-material-ladder",
+        "engine_ref": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+        "level": 52,
+        "games": 100,
+        "shards": 5,
+        "wins": 42,
+        "draws": 2,
+        "losses": 56,
+        "win_pct": 42.0,
+        "point_pct": 43.0,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "next_level"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 987,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 5288,
+      "knowledge_probes": 4842,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "fbd29afb80d087480835611e84d50e5832051fe6a0fce36b1f7e259a572dece6",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "f64f6ff557e3fa7e9f4973cc46edf4944067bdd1b35cd4ac5ae949b1eca23ded",
+          "games": 20,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "d1f7714cf548bc0dba3948f161568ae4450c3de04a6441092d65402376095e33",
+          "games": 20,
+          "seed": 2026200500,
+          "offset": 20
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "957d38ac370b7f8d82da4ceb3a6d7bc79dda869e75d791ad55f512e96de82d8f",
+          "games": 20,
+          "seed": 2026300500,
+          "offset": 40
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "b5d97cd7baa7c4e0df093cade6adbfde15a5c9165f9401144fd8f47abc9bb6e6",
+          "games": 20,
+          "seed": 2026400500,
+          "offset": 60
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "e12ed56a0d90cccad4c868619edaf234d7268f6d971a3bbf834db198c4fb6611",
+          "games": 20,
+          "seed": 2026500500,
+          "offset": 80
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11730345009,
+          "name": "yaneuraou-ladder-38211300524-3",
+          "size_in_bytes": 127605,
+          "digest": "sha256:076dc4311baa3b80ef8e0b1306e0e32f230b74ca973d463f8d19d7c8ab13a61c",
+          "expires_at": "2027-01-10T06:11:04Z"
+        },
+        {
+          "id": 11729486836,
+          "name": "yaneuraou-ladder-38211300524-1",
+          "size_in_bytes": 122525,
+          "digest": "sha256:c4a0ab61dc600a74c5578ec7a7701a1740c1535c90f2cc40da2f2c4f3b919778",
+          "expires_at": "2027-01-10T06:11:04Z"
+        },
+        {
+          "id": 11729461942,
+          "name": "yaneuraou-ladder-38211300524-0",
+          "size_in_bytes": 121748,
+          "digest": "sha256:1b0cd9bfc3b0cb8465168bc72ba0fb7f5442244913832b67136725fb35910329",
+          "expires_at": "2027-01-10T06:11:04Z"
+        },
+        {
+          "id": 11729402543,
+          "name": "yaneuraou-ladder-summary-38211300524",
+          "size_in_bytes": 443,
+          "digest": "sha256:9338f6ba57da77ef18608c0bf7f6c861317e5a498c2ce153a6b7ec5f0a00b82f",
+          "expires_at": "2027-01-10T06:11:04Z"
+        },
+        {
+          "id": 11729329637,
+          "name": "yaneuraou-ladder-38211300524-2",
+          "size_in_bytes": 120546,
+          "digest": "sha256:4c238e55e3325fb70acca3e37ea18f62ba87ff0c417c4d712365be5242326aab",
+          "expires_at": "2027-01-10T06:11:04Z"
+        },
+        {
+          "id": 11729319587,
+          "name": "yaneuraou-ladder-38211300524-4",
+          "size_in_bytes": 116772,
+          "digest": "sha256:a3ac02e3b9fb3da8395e387d2b49dcac97fe98ab7c45b6e0c8c9d658f2535eda",
+          "expires_at": "2027-01-10T06:11:04Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    },
+    {
+      "run": 38211935417,
+      "model": "M",
+      "level": 53,
+      "result": {
+        "series_id": "20261012-M-163-material-ladder",
+        "engine_ref": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+        "level": 53,
+        "games": 100,
+        "shards": 5,
+        "wins": 54,
+        "draws": 2,
+        "losses": 44,
+        "win_pct": 54.0,
+        "point_pct": 55.0,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "next_level"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 964,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 5704,
+      "knowledge_probes": 4970,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "fbd29afb80d087480835611e84d50e5832051fe6a0fce36b1f7e259a572dece6",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "3bc37156cc69e7f6c78c914255c9afc64df77cb7c60416da318e389f3fa23d62",
+          "games": 20,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "d734d05a3694195727841b7c8945ded9f987474539dada2ed02a34eee45fda2b",
+          "games": 20,
+          "seed": 2026200500,
+          "offset": 20
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "bca78ced393b749a733041bfc1470bf23641f9a3213c9b6b45030fd3d72d07ca",
+          "games": 20,
+          "seed": 2026300500,
+          "offset": 40
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "0ed6c10a46619e8f5069e700f3a3f1a6371257147dc5a96cb3432fa838e6afb3",
+          "games": 20,
+          "seed": 2026400500,
+          "offset": 60
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "d113cca00a10aea0ec9ca3a5e6736f1ab21065d173b68811d5348514eb420942",
+          "games": 20,
+          "seed": 2026500500,
+          "offset": 80
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11730036171,
+          "name": "yaneuraou-ladder-38211935417-1",
+          "size_in_bytes": 147153,
+          "digest": "sha256:ab11cf18c18f34554c85a952aac86d4d4568e3460abd4526f81a578342d61a58",
+          "expires_at": "2027-01-10T06:19:09Z"
+        },
+        {
+          "id": 11729896887,
+          "name": "yaneuraou-ladder-38211935417-4",
+          "size_in_bytes": 112474,
+          "digest": "sha256:8bb12913b525659fcf500863f0463a9adacab5c625dfcc691d34964118fb26f3",
+          "expires_at": "2027-01-10T06:19:09Z"
+        },
+        {
+          "id": 11729877158,
+          "name": "yaneuraou-ladder-38211935417-3",
+          "size_in_bytes": 127648,
+          "digest": "sha256:e681f916dc807904a2e04323cc809bfa99f70ca47b421bcfdf26dd2d57c49848",
+          "expires_at": "2027-01-10T06:19:09Z"
+        },
+        {
+          "id": 11729847213,
+          "name": "yaneuraou-ladder-38211935417-2",
+          "size_in_bytes": 130623,
+          "digest": "sha256:5f12aee9b4d8663122cba1af9ce93248985ff2afc2c458dc512b32843b352309",
+          "expires_at": "2027-01-10T06:19:09Z"
+        },
+        {
+          "id": 11729652760,
+          "name": "yaneuraou-ladder-summary-38211935417",
+          "size_in_bytes": 443,
+          "digest": "sha256:958d47a85600db49a5c368ecaaa7035ee909f24c5b2a155079419fd0e15991bb",
+          "expires_at": "2027-01-10T06:19:09Z"
+        },
+        {
+          "id": 11729602604,
+          "name": "yaneuraou-ladder-38211935417-0",
+          "size_in_bytes": 129764,
+          "digest": "sha256:89da7a1f6426ba406c57fbd2b6d3f4d0ecd3bfd30efce33ee0d5a6aa21afe7fa",
+          "expires_at": "2027-01-10T06:19:09Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    },
+    {
+      "run": 38212633643,
+      "model": "M",
+      "level": 54,
+      "result": {
+        "series_id": "20261012-M-163-material-ladder",
+        "engine_ref": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+        "level": 54,
+        "games": 100,
+        "shards": 5,
+        "wins": 36,
+        "draws": 1,
+        "losses": 63,
+        "win_pct": 36.0,
+        "point_pct": 36.5,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "next_level"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 983,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 5639,
+      "knowledge_probes": 5166,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "fbd29afb80d087480835611e84d50e5832051fe6a0fce36b1f7e259a572dece6",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "70c9ab1416706568046563053f15c0599fd5b51f2f002d2d18a4d11341c2b368",
+          "games": 20,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "d15d24a0ed67f93be31196c472a0e33609f2b73e588d737602a7b79b71f24cd4",
+          "games": 20,
+          "seed": 2026200500,
+          "offset": 20
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "76713496a8254a74bfb889cc1514bb86c9081902adbe7071cdd2638fc905e5ce",
+          "games": 20,
+          "seed": 2026300500,
+          "offset": 40
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "5876ece1798a6ca1e84674e6d0d66cd0da3a39f98cf18c3b7cab154bdbd4b3f4",
+          "games": 20,
+          "seed": 2026400500,
+          "offset": 60
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "1e976a9b330442a008c4fa6a13bb63d83f91de6176e39373af030b537e29a6c5",
+          "games": 20,
+          "seed": 2026500500,
+          "offset": 80
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11730402317,
+          "name": "yaneuraou-ladder-38212633643-3",
+          "size_in_bytes": 128998,
+          "digest": "sha256:5a0c0349dacf685ec464b0682269aa26228def83b3a5c469ef92b8cb0eeb1fad",
+          "expires_at": "2027-01-10T06:27:51Z"
+        },
+        {
+          "id": 11730187936,
+          "name": "yaneuraou-ladder-38212633643-2",
+          "size_in_bytes": 138982,
+          "digest": "sha256:06037abae2a8139059a9f9ea4e7429cb5a1500fd22f23e69fd6ecb0ab1c9c12a",
+          "expires_at": "2027-01-10T06:27:51Z"
+        },
+        {
+          "id": 11730142986,
+          "name": "yaneuraou-ladder-38212633643-4",
+          "size_in_bytes": 141157,
+          "digest": "sha256:1fd5ae0ec8df3e19aa421de1736c92c4b2ca0394351ae82a78c67c00a0f96f9a",
+          "expires_at": "2027-01-10T06:27:51Z"
+        },
+        {
+          "id": 11730097002,
+          "name": "yaneuraou-ladder-summary-38212633643",
+          "size_in_bytes": 443,
+          "digest": "sha256:4eee8be41c3d5ed5b0b771e4933aa7dc24b6fdf3a4674083c96f3b3280c6f13e",
+          "expires_at": "2027-01-10T06:27:51Z"
+        },
+        {
+          "id": 11730091833,
+          "name": "yaneuraou-ladder-38212633643-1",
+          "size_in_bytes": 115536,
+          "digest": "sha256:be0c07cdb03495a8082ee052182f25d157c535052447b9c16be9120574d421e7",
+          "expires_at": "2027-01-10T06:27:51Z"
+        },
+        {
+          "id": 11729748467,
+          "name": "yaneuraou-ladder-38212633643-0",
+          "size_in_bytes": 120033,
+          "digest": "sha256:57b198863bda8e66922853aa179e51c984d341d5bbfbf03cc1f2cb8376e4dd13",
+          "expires_at": "2027-01-10T06:27:51Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    },
+    {
+      "run": 38213304556,
+      "model": "M",
+      "level": 55,
+      "result": {
+        "series_id": "20261012-M-163-material-ladder",
+        "engine_ref": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+        "level": 55,
+        "games": 100,
+        "shards": 5,
+        "wins": 38,
+        "draws": 1,
+        "losses": 61,
+        "win_pct": 38.0,
+        "point_pct": 38.5,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "next_level"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 991,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 5476,
+      "knowledge_probes": 4917,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "fbd29afb80d087480835611e84d50e5832051fe6a0fce36b1f7e259a572dece6",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "621bf175ac95346139296eac29926d10645db0d959b79e43b291a17555a9379c",
+          "games": 20,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "06f9370a9b2f7a601c95480310e60d7007d9db26b86a304a4f673d81ba8d7ecd",
+          "games": 20,
+          "seed": 2026200500,
+          "offset": 20
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "602547eeca51cbb9711f7bb613130b975715c274226c286b87e437d4f3c4a012",
+          "games": 20,
+          "seed": 2026300500,
+          "offset": 40
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "832ff0bdc8cad527836c542f7077af7f0844f950d33abbf23068d28e2e6d99f4",
+          "games": 20,
+          "seed": 2026400500,
+          "offset": 60
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "b40c7223142ab9ed8626a91b7d84b58ecf2dd85d608e2bb1e90cac704eddb440",
+          "games": 20,
+          "seed": 2026500500,
+          "offset": 80
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11731350069,
+          "name": "yaneuraou-ladder-38213304556-3",
+          "size_in_bytes": 112617,
+          "digest": "sha256:2c91b7d0c9f576a48dadd34ac3760e11ca791731233dee231cb84bafda086abc",
+          "expires_at": "2027-01-10T06:35:56Z"
+        },
+        {
+          "id": 11731225176,
+          "name": "yaneuraou-ladder-38213304556-4",
+          "size_in_bytes": 118388,
+          "digest": "sha256:19dd59a0aa92c1aaac5368cce0964efd1129b7c0d19c7581b3d2ba370a866d91",
+          "expires_at": "2027-01-10T06:35:56Z"
+        },
+        {
+          "id": 11731215253,
+          "name": "yaneuraou-ladder-summary-38213304556",
+          "size_in_bytes": 440,
+          "digest": "sha256:387901e48061b246ce1b1e55df30f9f64467d7bc943ed0ff97e9015f98167418",
+          "expires_at": "2027-01-10T06:35:56Z"
+        },
+        {
+          "id": 11730740495,
+          "name": "yaneuraou-ladder-38213304556-1",
+          "size_in_bytes": 133124,
+          "digest": "sha256:dd00ff9af85c1c2d7e460d409b8c0d23a53816d5d1542c2b3bf7799f273dd31d",
+          "expires_at": "2027-01-10T06:35:56Z"
+        },
+        {
+          "id": 11730700568,
+          "name": "yaneuraou-ladder-38213304556-0",
+          "size_in_bytes": 117501,
+          "digest": "sha256:9f5e3ff59534c2a83d5b56b308555f81214c832b8a204a2d486355499855170c",
+          "expires_at": "2027-01-10T06:35:56Z"
+        },
+        {
+          "id": 11730219037,
+          "name": "yaneuraou-ladder-38213304556-2",
+          "size_in_bytes": 144427,
+          "digest": "sha256:52f24af3fd60b28971c9202f66a9bb4c6cab08d56c399afd6e89be2a1caf59f3",
+          "expires_at": "2027-01-10T06:35:56Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    },
+    {
+      "run": 38213996574,
+      "model": "M",
+      "level": 56,
+      "result": {
+        "series_id": "20261012-M-163-material-ladder",
+        "engine_ref": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+        "level": 56,
+        "games": 100,
+        "shards": 5,
+        "wins": 36,
+        "draws": 3,
+        "losses": 61,
+        "win_pct": 36.0,
+        "point_pct": 37.5,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "next_level"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 953,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 5464,
+      "knowledge_probes": 5020,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "fbd29afb80d087480835611e84d50e5832051fe6a0fce36b1f7e259a572dece6",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "600f50b6f398ec0bca2b145d7f1f11ac9d0a8bd8adac56b4ea70a30222c4dcc2",
+          "games": 20,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "a0015994a9f2cffc1654691a6f167383b0b78841b1f36d5bde9afd6f974a0426",
+          "games": 20,
+          "seed": 2026200500,
+          "offset": 20
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "f4df95802bef29ef5afbb314bf62bd839ece24ac745d6c182f86ae25a0139692",
+          "games": 20,
+          "seed": 2026300500,
+          "offset": 40
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "2b8f6f355a2ced1fb635def9842ae6a037a510b9a8665ba1e4c95f2be8fec007",
+          "games": 20,
+          "seed": 2026400500,
+          "offset": 60
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "b3d38ea6c5fbc9bc1e43c92d4ff49e70f2c8a7be354fbcfd281d371674b41377",
+          "games": 20,
+          "seed": 2026500500,
+          "offset": 80
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11732465157,
+          "name": "yaneuraou-ladder-summary-38213996574",
+          "size_in_bytes": 444,
+          "digest": "sha256:2a7c25083e5e496f04c2d048ceaff63c8af32bc3626d8375f33ea48bc11d3ee9",
+          "expires_at": "2027-01-10T06:44:17Z"
+        },
+        {
+          "id": 11732460122,
+          "name": "yaneuraou-ladder-38213996574-0",
+          "size_in_bytes": 149400,
+          "digest": "sha256:35e5b63dbaca01be62ce664793e636e6bf2999ab8a264e9679223a0ff14ccecf",
+          "expires_at": "2027-01-10T06:44:17Z"
+        },
+        {
+          "id": 11732385044,
+          "name": "yaneuraou-ladder-38213996574-3",
+          "size_in_bytes": 125500,
+          "digest": "sha256:76e92052aa3970ac73763d9516f407e28f51e9ae61f4defd16652ce9aeb7cc80",
+          "expires_at": "2027-01-10T06:44:17Z"
+        },
+        {
+          "id": 11731970285,
+          "name": "yaneuraou-ladder-38213996574-2",
+          "size_in_bytes": 129281,
+          "digest": "sha256:01981e701fb5bd8c173499d23b063aa712e9acde9e2097995a485e7780cd1889",
+          "expires_at": "2027-01-10T06:44:17Z"
+        },
+        {
+          "id": 11731610924,
+          "name": "yaneuraou-ladder-38213996574-4",
+          "size_in_bytes": 106560,
+          "digest": "sha256:f2074e07f8855f88e765f68fa5fc28fc0cab907b48ca739b4a1bb92e6cdcf3b2",
+          "expires_at": "2027-01-10T06:44:17Z"
+        },
+        {
+          "id": 11731485987,
+          "name": "yaneuraou-ladder-38213996574-1",
+          "size_in_bytes": 114773,
+          "digest": "sha256:212913ff076d725af8a1ff52ba46b6df541d219bce10223cb536514ffc7a05e1",
+          "expires_at": "2027-01-10T06:44:17Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    },
+    {
+      "run": 38214702795,
+      "model": "M",
+      "level": 57,
+      "result": {
+        "series_id": "20261012-M-163-material-ladder",
+        "engine_ref": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+        "level": 57,
+        "games": 100,
+        "shards": 5,
+        "wins": 33,
+        "draws": 1,
+        "losses": 66,
+        "win_pct": 33.0,
+        "point_pct": 33.5,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "next_level"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 974,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 5608,
+      "knowledge_probes": 5149,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "fbd29afb80d087480835611e84d50e5832051fe6a0fce36b1f7e259a572dece6",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "e996f37ef131dec2d0e0fb9a9aecb0ee27b7b731ac2c361b06353f7d45d85794",
+          "games": 20,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "0fec362da8884f6162c43a9222368deb70fb36b5d61fda28fa72d35887cb7f05",
+          "games": 20,
+          "seed": 2026200500,
+          "offset": 20
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "311f56c8385cfccee003b782af1e441ef7edd73773806838d8fc3fff0ae332a4",
+          "games": 20,
+          "seed": 2026300500,
+          "offset": 40
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "9d8d449598fe705284bfc92e46d532f46af7e402e33bed33753a46344280576d",
+          "games": 20,
+          "seed": 2026400500,
+          "offset": 60
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "0ff8c1b61307811c4e86e2a98251d87a2b79cbb601eeebda8928e81723e2eae9",
+          "games": 20,
+          "seed": 2026500500,
+          "offset": 80
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11732251536,
+          "name": "yaneuraou-ladder-summary-38214702795",
+          "size_in_bytes": 444,
+          "digest": "sha256:19afa73816702bf146ee2934c50d24e728fd882c7844f3cee188c60971b6fb5a",
+          "expires_at": "2027-01-10T06:52:34Z"
+        },
+        {
+          "id": 11732226425,
+          "name": "yaneuraou-ladder-38214702795-2",
+          "size_in_bytes": 125948,
+          "digest": "sha256:1d7a19277c28acba3c29a6a7101d8cc790185735e264accd95ab6af9d0bae8ea",
+          "expires_at": "2027-01-10T06:52:34Z"
+        },
+        {
+          "id": 11732181409,
+          "name": "yaneuraou-ladder-38214702795-1",
+          "size_in_bytes": 121232,
+          "digest": "sha256:15358e20936fd025da947a2b59b56237a08337f4c264dc52a606e55bbf03f022",
+          "expires_at": "2027-01-10T06:52:34Z"
+        },
+        {
+          "id": 11731941582,
+          "name": "yaneuraou-ladder-38214702795-4",
+          "size_in_bytes": 130640,
+          "digest": "sha256:7ce5fd77a1098f3979ff45c1978806c46be3dc92f051dc52a3a9807048c6cb8b",
+          "expires_at": "2027-01-10T06:52:34Z"
+        },
+        {
+          "id": 11731626921,
+          "name": "yaneuraou-ladder-38214702795-3",
+          "size_in_bytes": 131559,
+          "digest": "sha256:1a9541bd0d793c2cc5f162c176491d699d9f173eea3a2bbebff3ebede8af2072",
+          "expires_at": "2027-01-10T06:52:34Z"
+        },
+        {
+          "id": 11731122117,
+          "name": "yaneuraou-ladder-38214702795-0",
+          "size_in_bytes": 135787,
+          "digest": "sha256:ab65037e3301f482756f3206a65cb25e122153616b5735c6982bda616fb23349",
+          "expires_at": "2027-01-10T06:52:34Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    },
+    {
+      "run": 38215410953,
+      "model": "M",
+      "level": 58,
+      "result": {
+        "series_id": "20261012-M-163-material-ladder",
+        "engine_ref": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+        "level": 58,
+        "games": 100,
+        "shards": 5,
+        "wins": 30,
+        "draws": 3,
+        "losses": 67,
+        "win_pct": 30.0,
+        "point_pct": 31.5,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "next_level"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 974,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 5080,
+      "knowledge_probes": 4608,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "fbd29afb80d087480835611e84d50e5832051fe6a0fce36b1f7e259a572dece6",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "4d4a02e34c2893e4441512f980a519be0fdec81a3ca928362fdb52ca87ecae8a",
+          "games": 20,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "8b7c32921aaf772891d2e95ba1513075ae4d0b6fc69a6cd4ba962b951d8aff5d",
+          "games": 20,
+          "seed": 2026200500,
+          "offset": 20
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "72033449ed3ceb26bde2c9ca22283d9b99c1ea1d73906bfb1202df492aa7c7e5",
+          "games": 20,
+          "seed": 2026300500,
+          "offset": 40
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "01177cca2c9ddf0c83ccc8707ee08a8f39313115e2b0ca067043ec4f4cd27ba2",
+          "games": 20,
+          "seed": 2026400500,
+          "offset": 60
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "bed323d22b369f9b0fde28bb0b118caf92d41aa5cf5303344d6e60814bc86da3",
+          "games": 20,
+          "seed": 2026500500,
+          "offset": 80
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11732527702,
+          "name": "yaneuraou-ladder-38215410953-1",
+          "size_in_bytes": 121969,
+          "digest": "sha256:6335d1cd063972ddc9081fd4eb24de830140bbbeefeb671a391562b22a243a88",
+          "expires_at": "2027-01-10T07:00:39Z"
+        },
+        {
+          "id": 11732107836,
+          "name": "yaneuraou-ladder-38215410953-3",
+          "size_in_bytes": 111142,
+          "digest": "sha256:757cc48888c972afbe4d6fe3ac324051747321fcfd487b517cb4661d3db44e12",
+          "expires_at": "2027-01-10T07:00:39Z"
+        },
+        {
+          "id": 11731997912,
+          "name": "yaneuraou-ladder-38215410953-4",
+          "size_in_bytes": 125801,
+          "digest": "sha256:e10e491c9a6a8ce086d6cbd5073a3905feb001ac48e037c3f3cfaf1c6758f1e3",
+          "expires_at": "2027-01-10T07:00:39Z"
+        },
+        {
+          "id": 11731607781,
+          "name": "yaneuraou-ladder-38215410953-0",
+          "size_in_bytes": 107962,
+          "digest": "sha256:21072f0b0788c5bd71234447dd477b21f59bbc0244b227f2f6ed610dca2ac3c0",
+          "expires_at": "2027-01-10T07:00:39Z"
+        },
+        {
+          "id": 11731562984,
+          "name": "yaneuraou-ladder-summary-38215410953",
+          "size_in_bytes": 444,
+          "digest": "sha256:e891e632aa543a9ce34e214da632baa8738f03fa9839cca9b0df1a5ac036fd70",
+          "expires_at": "2027-01-10T07:00:39Z"
+        },
+        {
+          "id": 11731433013,
+          "name": "yaneuraou-ladder-38215410953-2",
+          "size_in_bytes": 116463,
+          "digest": "sha256:c15383c20687e10a515d763cf8addcff8b033ae623d37f0349d017e613e3f50d",
+          "expires_at": "2027-01-10T07:00:39Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    },
+    {
+      "run": 38216128889,
+      "model": "M",
+      "level": 59,
+      "result": {
+        "series_id": "20261012-M-163-material-ladder",
+        "engine_ref": "616e6f258f76642a91f8545c570f92a0dbf71ed4",
+        "level": 59,
+        "games": 100,
+        "shards": 5,
+        "wins": 20,
+        "draws": 0,
+        "losses": 80,
+        "win_pct": 20.0,
+        "point_pct": 20.0,
+        "illegal_games": 0,
+        "knowledge_positions": 163,
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "self_go": "go movetime 200",
+        "adaptive_long_think": true,
+        "decision": "below_30_percent"
+      },
+      "colors": {
+        "self_black": 50,
+        "self_white": 50
+      },
+      "long_think_moves": 974,
+      "max_long_think_per_game": 10,
+      "self_phase_recorded_moves": 5222,
+      "knowledge_probes": 4691,
+      "knowledge_hits": 0,
+      "self_binary_sha256": "fbd29afb80d087480835611e84d50e5832051fe6a0fce36b1f7e259a572dece6",
+      "material_binary_sha256": "f140c87cf0529190d0eebbd1587601b0a623008471fa8ee5d7279786b363c065",
+      "raw_sources": [
+        {
+          "file": "shard-0.json",
+          "sha256": "8e7f83f42d3d139c20e513de5c6ec5d45cc67778064080c3a09e1553e078a898",
+          "games": 20,
+          "seed": 2026100500,
+          "offset": 0
+        },
+        {
+          "file": "shard-1.json",
+          "sha256": "fc410e1a6eb73611bfe1ccd8346b4edb81983bcfb2ac3e3b973a5165a4b1a070",
+          "games": 20,
+          "seed": 2026200500,
+          "offset": 20
+        },
+        {
+          "file": "shard-2.json",
+          "sha256": "6290f4d014ce42a2571a22bf4d681d18a9b0c5b13dd7d6538d542bf0f0170efa",
+          "games": 20,
+          "seed": 2026300500,
+          "offset": 40
+        },
+        {
+          "file": "shard-3.json",
+          "sha256": "4980b248eabfe58017522e9083fb8a24bb89b9f078bec36776191a7f3fd902a5",
+          "games": 20,
+          "seed": 2026400500,
+          "offset": 60
+        },
+        {
+          "file": "shard-4.json",
+          "sha256": "9cc4b01138e3e53d534f49e1862cc74a924efd4b82919188f1fda446ea17ca68",
+          "games": 20,
+          "seed": 2026500500,
+          "offset": 80
+        }
+      ],
+      "artifacts": [
+        {
+          "id": 11732339263,
+          "name": "yaneuraou-ladder-summary-38216128889",
+          "size_in_bytes": 445,
+          "digest": "sha256:6deef16114854cf0a59b4f15145b8fc1198275acff4e6af46386eec95acf24d5",
+          "expires_at": "2027-01-10T07:08:46Z"
+        },
+        {
+          "id": 11732134255,
+          "name": "yaneuraou-ladder-38216128889-2",
+          "size_in_bytes": 116885,
+          "digest": "sha256:2b52a732e8e10db3a7c48af276e3b737dcedc3b3966d7707c1dd9f919b53e60a",
+          "expires_at": "2027-01-10T07:08:46Z"
+        },
+        {
+          "id": 11731834267,
+          "name": "yaneuraou-ladder-38216128889-1",
+          "size_in_bytes": 122443,
+          "digest": "sha256:3381b3f337d5f2396ead749e5db0847694855955ddef5d740ae81c9fbd3ca208",
+          "expires_at": "2027-01-10T07:08:46Z"
+        },
+        {
+          "id": 11731618909,
+          "name": "yaneuraou-ladder-38216128889-4",
+          "size_in_bytes": 127416,
+          "digest": "sha256:748293a975a62b27881c511d68e68ceb8d12e6a5cd281afb30a59d6b4569f682",
+          "expires_at": "2027-01-10T07:08:46Z"
+        },
+        {
+          "id": 11731259077,
+          "name": "yaneuraou-ladder-38216128889-0",
+          "size_in_bytes": 122381,
+          "digest": "sha256:b65557efd17d71d7d262bd1f9ca36c4de35ce1894a9ad4727d1da414bba4cd91",
+          "expires_at": "2027-01-10T07:08:46Z"
+        },
+        {
+          "id": 11731159047,
+          "name": "yaneuraou-ladder-38216128889-3",
+          "size_in_bytes": 116082,
+          "digest": "sha256:d74e96c3438eaf5c61c84d88194c344c52f422a41dbf94510ec1ca140b96dcd6",
+          "expires_at": "2027-01-10T07:08:46Z"
+        }
+      ],
+      "raw_summary_match": true,
+      "formal_options_and_nodes_verified": true
+    }
+  ],
+  "limitations": [
+    "No independent legal replay or rebuild in this audit.",
+    "Knowledge file identity is verified in the original aggregate snapshot audit, with actual options and runtime probes checked in raw.",
+    "Baseline M uses 5 shards; Q14 uses 7; planned candidate uses 10. Seeds/opening series are not identical; compare as separate samples, not paired games."
+  ],
+  "total_games": 2100,
+  "all_144_zip_digests_verified": true,
+  "M_common48_56": {
+    "games": 900,
+    "wins": 438,
+    "draws": 20,
+    "losses": 442,
+    "win_pct": 48.666666666666664,
+    "point_pct": 49.77777777777778
+  },
+  "Q14_common48_56": {
+    "games": 900,
+    "wins": 425,
+    "draws": 19,
+    "losses": 456,
+    "win_pct": 47.22222222222222,
+    "point_pct": 48.27777777777778
+  }
+}
