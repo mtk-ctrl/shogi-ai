@@ -1,5 +1,5 @@
 {
-  "stage": "SelectedEfficiencyMask8: confirmation passed; candidate CI and100 games pending",
+  "stage": "Selected8 CI successful; single100-game match all9 shards actually started",
   "official_main": "6445d54f23e7cfffd7cd36b62490fc42f9c142e1",
   "measured_source": "e7f357dc665b55950c5637f54850576945eb686c",
   "research_pr": 263,
@@ -10,10 +10,30 @@
   "total_speedup": 2.0307807097179915,
   "mismatches": 0,
   "remaining": [
-    "selected-default CI/readback",
     "single100-game independent comparison withseed2026101591",
     "artifact/raw/archive legality audit",
     "GitHub/Addness final report"
   ],
-  "formal_adoption": "Not authorized for this new candidate; official v2.0.14 remains"
+  "formal_adoption": "Not authorized for this new candidate; official v2.0.14 remains",
+  "candidate_source": "115c53d0d508e093ca161ec8d650600a8f421086",
+  "request_commit": "e37d5a067101a319eddb872f3d2469ef46d30ed7",
+  "request_id": "search-efficiency2-20261015-mask8-main-100",
+  "match_run": 38670894321,
+  "launcher_run": 38670885866,
+  "shards": 9,
+  "distribution": [
+    12,
+    11,
+    11,
+    11,
+    11,
+    11,
+    11,
+    11,
+    11
+  ],
+  "quick_ci": 38670789017,
+  "quick_ci_conclusion": "success",
+  "document_ci": 38670794115,
+  "document_ci_conclusion": "success"
 }

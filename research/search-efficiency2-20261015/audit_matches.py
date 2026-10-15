@@ -7,12 +7,14 @@ ap = argparse.ArgumentParser()
 ap.add_argument('--artifacts', required=True)
 ap.add_argument('--output', required=True)
 ap.add_argument('--seed', type=int, default=2026101500)
-ap.add_argument('--games-per-shard', type=int, default=20)
+ap.add_argument('--shards', type=int, required=True)
 ap.add_argument('--baseline-ref', required=True)
 ap.add_argument('--candidate-ref', required=True)
 ap.add_argument('--efficiency-mask', type=int, required=True)
+ap.add_argument('--binary-hashes', required=True)
 args = ap.parse_args()
 artifacts = json.loads(Path(args.artifacts).read_text())
+expected_hashes = json.loads(Path(args.binary_hashes).read_text())
 out = {}
 for run in sorted({a['run'] for a in artifacts}):
     group = [a for a in artifacts if a['run'] == run]
@@ -35,7 +37,7 @@ for run in sorted({a['run'] for a in artifacts}):
     assert summary and archive and manifest
     assert summary['ref_a'] == manifest['requested_ref_a'] == args.candidate_ref
     assert summary['ref_b'] == manifest['requested_ref_b'] == args.baseline_ref
-    assert len(raw) == 100 // args.games_per_shard
+    assert len(raw) == args.shards
     sources = {s['file']: s for s in manifest['sources']}
     records = {(g['source_id'], g['source_game_index']): g for g in archive}
     stats = {side: collections.defaultdict(list) for side in ['A','B']}
@@ -48,10 +50,14 @@ for run in sorted({a['run'] for a in artifacts}):
     for index, (name, (content, data)) in enumerate(sorted(raw.items())):
         source = sources[name]
         assert hashlib.sha256(content).hexdigest() == source['source_id']
-        assert data['games'] == len(data['details']) == args.games_per_shard
-        assert data['game_offset'] == index * args.games_per_shard
+        q, remainder = divmod(100, args.shards)
+        expected_games = q + (index < remainder)
+        expected_offset = index * q + min(index, remainder)
+        assert data['games'] == len(data['details']) == expected_games
+        assert data['game_offset'] == expected_offset
         assert data['seed'] == args.seed + index * 100000
         hashes = (data['sha256_a'], data['sha256_b'])
+        assert hashes == (expected_hashes['engine-a'], expected_hashes['engine-b'])
         if binaries is None: binaries = hashes
         assert hashes == binaries
         assert data['go_command'] == 'go movetime 200' and data['max_plies'] == 300
@@ -63,6 +69,7 @@ for run in sorted({a['run'] for a in artifacts}):
             assert k['sha256'] == '6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c'
             options = data['options_a' if side == 'A' else 'options_b']
             assert options['AdaptiveLongThink'] and options['OpeningRandomNonLance']
+            assert options['SearchResearchMask'] == 23
         assert data['options_a']['SearchEfficiencyMask'] == mask
         assert data['options_a']['SearchResearchMask'] == 23
         for i, game in enumerate(data['details']):
@@ -109,6 +116,7 @@ for run in sorted({a['run'] for a in artifacts}):
                     'games':games,'plies':plies,'a_black':blacks['A'],'illegal_replay':0,
                     'max_long_uses':long_max,'summary':summary,'telemetry':observed,
                     'archive_manifest':{k:v for k,v in manifest.items() if k!='sources'},
+                    'binary_sha256':expected_hashes,
                     'artifacts':[{k:v for k,v in a.items() if k!='path'} for a in group]}
     print(run, 'PASS', wins, 'plies', plies, flush=True)
 Path(args.output).write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
