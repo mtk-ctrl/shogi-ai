@@ -1,5 +1,6 @@
 #pragma once
 #include "strategy/attack_map.h"
+#include "strategy/search_research.h"
 #include "strategy/evaluation_params.h"
 #include "strategy/evaluation_v2_features.h"
 #include <cstdint>
@@ -24,9 +25,9 @@ struct EvaluationBreakdown {
 
 inline void king_safety_features(const rules::Snapshot& s, const AttackMap& a,
                                  int side, SideFeatures& out) {
-    for(int sq=0;sq<81;++sq) {
+    for(int sq : a.squares(side)) {
         const auto& p=s.board[sq];
-        if (!p.kind || int(p.color)!=side || !AttackMap::near(sq,a.kings[side])) continue;
+        if (!p.kind || int(p.color)!=side || !a.near_square(sq,a.kings[side])) continue;
         if(p.kind==7 || (p.promoted && p.kind<=4)) ++out.gold_guards;
         else if(p.kind==4) ++out.silver_guards;
         else if(p.kind==1) ++out.pawn_guards;
@@ -38,16 +39,16 @@ inline void pressure_features(const rules::Snapshot& s, const AttackMap& a,
     if(king<0)return;
     out.king_attacked=a.nonking[side][king]>0;
     for(int sq=0;sq<81;++sq) {
-        if(sq==king || !AttackMap::near(sq,king))continue;
+        if(sq==king || !a.near_square(sq,king))continue;
         if(s.board[sq].kind) out.occupied_ring += a.nonking[side][sq]>0;
         else out.denied_empty += a.escape_control[side][sq];
     }
     int participants=0;
-    for(int sq=0;sq<81;++sq) {
+    for(int sq : a.squares(side)) {
         const auto& p=s.board[sq];
         if(!p.kind || p.kind==8 || int(p.color)!=side)continue;
         if(a.count[1-side][sq] && !a.count[side][sq])continue;
-        for(int j=0;j<a.sizes[sq];++j) if(AttackMap::near(a.targets[sq][j],king)) {
+        for(int j=0;j<a.sizes[sq];++j) if(a.near_square(a.targets[sq][j],king)) {
             ++participants;break;
         }
     }
@@ -55,14 +56,14 @@ inline void pressure_features(const rules::Snapshot& s, const AttackMap& a,
 }
 inline void activity_features(const rules::Snapshot& s, const AttackMap& a,
                               int side, const EvaluationParameters& p, SideFeatures& out) {
-    for(int sq=0;sq<81;++sq) {
+    for(int sq : a.squares(side)) {
         const auto& piece=s.board[sq];
         if(!piece.kind || piece.kind==8 || int(piece.color)!=side)continue;
         const int value=piece_value(piece.kind,piece.promoted);
         int n=0;
         for(int j=0;j<a.sizes[sq];++j) {
             const int to=a.targets[sq][j];
-            if(s.board[to].kind || AttackMap::near(to,a.kings[0]) || AttackMap::near(to,a.kings[1]))continue;
+            if(s.board[to].kind || a.near_square(to,a.kings[0]) || a.near_square(to,a.kings[1]))continue;
             if(a.count[1-side][to] && a.least[1-side][to]<value)continue;
             ++n;
         }
@@ -73,7 +74,7 @@ inline void activity_features(const rules::Snapshot& s, const AttackMap& a,
 }
 inline void danger_features(const rules::Snapshot& s, const AttackMap& a,
                             int side, SideFeatures& out) {
-    for(int sq=0;sq<81;++sq) {
+    for(int sq : a.squares(side)) {
         const auto& q=s.board[sq];
         if(!q.kind || q.kind==8 || int(q.color)!=side || !a.count[1-side][sq])continue;
         const int value=piece_value(q.kind,q.promoted);
@@ -82,7 +83,8 @@ inline void danger_features(const rules::Snapshot& s, const AttackMap& a,
 }
 
 inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
-                                     const EvaluationParameters& p=EvaluationParameters{}) {
+                                     const EvaluationParameters& p=EvaluationParameters{},
+                                     unsigned reuse_mask=0) {
     EvaluationBreakdown b;
     b.material=material_black(s);
     // Distinguish pieces on board from pieces in hand: their strategic
@@ -107,7 +109,7 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
         return b;
     }
 
-    AttackMap a(s);
+    AttackMap a(s,reuse_mask & GeometryLookup,reuse_mask & OccupiedIndex);
     for(int c=0;c<2;++c) {
         auto& f=b.raw[c];
         king_safety_features(s,a,c,f);pressure_features(s,a,c,f);
@@ -157,10 +159,12 @@ struct MaterialEvaluator {
 };
 class FeatureEvaluator {
 public:
-    explicit FeatureEvaluator(EvaluationParameters p={}):params_(p){params_.validate();}
-    int operator()(const rules::Snapshot& s) const {return evaluate(s,params_).total;}
+    explicit FeatureEvaluator(EvaluationParameters p={},unsigned reuse_mask=0)
+        :params_(p),reuse_mask_(reuse_mask){params_.validate();}
+    int operator()(const rules::Snapshot& s) const {return evaluate(s,params_,reuse_mask_).total;}
     const EvaluationParameters& parameters() const {return params_;}
 private:
     EvaluationParameters params_;
+    unsigned reuse_mask_=0;
 };
 } // namespace shogi::strategy

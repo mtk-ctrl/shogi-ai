@@ -25,7 +25,7 @@ inline int v2_distance(int a, int b) {
 inline int v2_influence_side(const rules::Snapshot& s, const AttackMap& a, int side) {
     int score = 0;
     for (int sq = 0; sq < 81; ++sq) {
-        if (v2_distance(sq, a.kings[0]) <= 2 || v2_distance(sq, a.kings[1]) <= 2)
+        if (a.distance(sq, a.kings[0]) <= 2 || a.distance(sq, a.kings[1]) <= 2)
             continue;
         const int mine = std::min(a.nonking[side][sq], 3);
         const int theirs = std::min(a.nonking[1-side][sq], 3);
@@ -94,7 +94,7 @@ inline int v2_latent_ray(const rules::Snapshot& s, const AttackMap& a, int side,
 
 inline int v2_potential_side(const rules::Snapshot& s, const AttackMap& a, int side) {
     int score = 0;
-    for (int sq = 0; sq < 81; ++sq) {
+    for (int sq : a.squares(side)) {
         const auto& p = s.board[sq];
         if (!p.kind || int(p.color) != side) continue;
         int gained = 0;
@@ -113,7 +113,7 @@ inline int v2_potential_side(const rules::Snapshot& s, const AttackMap& a, int s
 
 inline int v2_coordination_side(const rules::Snapshot& s, const AttackMap& a, int side) {
     int score = 0;
-    for (int sq = 0; sq < 81; ++sq) {
+    for (int sq : a.squares(side)) {
         const auto& p = s.board[sq];
         if (!p.kind || p.kind == 8 || int(p.color) != side) continue;
         const int defenders = std::min(a.nonking[side][sq], 3);
@@ -122,7 +122,7 @@ inline int v2_coordination_side(const rules::Snapshot& s, const AttackMap& a, in
         if (p.kind == 5 || p.kind == 6) ++points;
         // Coordination is about the network itself. Immediate king shelter is
         // already Safety, so halve overlap in the closest ring.
-        if (v2_distance(sq, a.kings[side]) <= 1) points /= 2;
+        if (a.distance(sq, a.kings[side]) <= 1) points /= 2;
         score += points;
     }
     return score;
@@ -161,7 +161,7 @@ inline int v2_skewer_from(const rules::Snapshot& s, int from,
 
 inline int v2_threat_side(const rules::Snapshot& s, const AttackMap& a, int side) {
     int best = 0, second = 0;
-    for (int from = 0; from < 81; ++from) {
+    for (int from : a.squares(side)) {
         const auto& p = s.board[from];
         if (!p.kind || p.kind == 8 || int(p.color) != side) continue;
 

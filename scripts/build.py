@@ -14,6 +14,7 @@ tests = parser.add_mutually_exclusive_group()
 tests.add_argument("--test", action="store_true")
 tests.add_argument("--strategy-test", action="store_true")
 tests.add_argument("--search-test", action="store_true")
+tests.add_argument("--search-reuse-test", action="store_true")
 tests.add_argument("--mate-search-test", action="store_true")
 tests.add_argument("--mate-assist-test", action="store_true")
 tests.add_argument("--generated-move-test", action="store_true")
@@ -80,6 +81,7 @@ upstream = [source / n for n in ["bitboard.cpp", "position.cpp", "movegen.cpp", 
 test_source = ("tests/rules_test.cpp" if args.test else
                "tests/strategy_test.cpp" if args.strategy_test else
                "tests/search_test.cpp" if args.search_test else
+               "tests/search_reuse_test.cpp" if args.search_reuse_test else
                "tests/mate_search_test.cpp" if args.mate_search_test else
                "tests/mate_assist_test.cpp" if args.mate_assist_test else
                "tests/generated_move_test.cpp" if args.generated_move_test else

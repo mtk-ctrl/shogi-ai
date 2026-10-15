@@ -75,6 +75,7 @@ public:
         std::uint64_t qtt_probes = 0, qtt_hits = 0, qtt_cutoffs = 0;
         std::uint64_t ordering_rule_checks = 0, eval_cache_hits = 0, lazy_snapshots = 0;
         std::uint64_t selective_usi_skipped = 0;
+        std::uint64_t legal_cache_hits = 0, legal_cache_misses = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -173,6 +174,8 @@ public:
     unsigned research_mask() const { return research_mask_; }
     void set_efficiency_mask(unsigned mask) { efficiency_mask_ = mask & 15; }
     unsigned efficiency_mask() const { return efficiency_mask_; }
+    void set_reuse_mask(unsigned mask) { reuse_mask_ = mask & 7; }
+    unsigned reuse_mask() const { return reuse_mask_; }
 
     SearchResult choose(rules::Position& position, int max_depth, SearchControl& control,
                         const std::vector<std::string>& allowed = {},
@@ -189,6 +192,7 @@ public:
         if (!eval_epoch_) {
             for (auto& cell : eval_cache_) cell.epoch = 0;
             for (auto& cell : order_cache_) cell.epoch = 0;
+            for (auto& cell : legal_cache_) cell.epoch = 0;
             eval_epoch_ = 1;
         }
         root_in_check_ = position.in_check();
@@ -365,12 +369,31 @@ private:
         std::vector<std::size_t> tactical_indexes;
     };
     std::array<LegalBatch, MaxPly + 1> legal_batches_{};
+    struct LegalCell {
+        std::uint64_t key = 0;
+        std::uint32_t epoch = 0;
+        std::vector<rules::GeneratedMove> tokens;
+    };
+    std::vector<LegalCell> legal_cache_{2048};
     const LegalBatch& batch(const rules::Position& p, int ply) {
         auto& b = legal_batches_.at(ply);
         if (!b.valid || b.key != p.hash_key()) {
             b.valid = false;
             b.key = p.hash_key();
-            b.tokens = p.legal_generated_moves();
+            if (reuse_mask_ & LegalTokenCache) {
+                auto& cell = legal_cache_[b.key % legal_cache_.size()];
+                if (cell.epoch == eval_epoch_ && cell.key == b.key) {
+                    // Own the batch: a descendant may replace this cache slot.
+                    b.tokens = cell.tokens;
+                    ++stats_.legal_cache_hits;
+                } else {
+                    b.tokens = p.legal_generated_moves();
+                    cell.key = b.key;
+                    cell.epoch = eval_epoch_;
+                    cell.tokens = b.tokens;
+                    ++stats_.legal_cache_misses;
+                }
+            } else b.tokens = p.legal_generated_moves();
             b.strings.clear();
             b.tactical_ready = false;
             b.tactical.clear();
@@ -745,6 +768,7 @@ private:
     TranspositionTable qtt_;
     unsigned research_mask_ = DefaultSearchResearchMask;
     unsigned efficiency_mask_ = DefaultSearchEfficiencyMask;
+    unsigned reuse_mask_ = DefaultSearchReuseMask;
     struct OrderCell {
         std::uint64_t key = 0;
         std::uint32_t epoch = 0;

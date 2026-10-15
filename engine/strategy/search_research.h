@@ -13,4 +13,9 @@ enum SearchEfficiency : unsigned {
     RuleCheckOrdering = 1, OrderingWorkspace = 2, LazySnapshot = 4,
     SelectiveUSI = 8,
 };
+// Third-round research only; the official 23/8 defaults above are unchanged.
+inline constexpr unsigned DefaultSearchReuseMask = 0;
+enum SearchReuse : unsigned {
+    LegalTokenCache = 1, GeometryLookup = 2, OccupiedIndex = 4,
+};
 }
