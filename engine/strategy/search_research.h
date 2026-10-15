@@ -13,7 +13,8 @@ enum SearchEfficiency : unsigned {
     RuleCheckOrdering = 1, OrderingWorkspace = 2, LazySnapshot = 4,
     SelectiveUSI = 8,
 };
-// Third-round research only; the official 23/8 defaults above are unchanged.
+// Formally adopted in v2.0.16: geometry distance table + occupied-square evaluation scanning.
+// LegalTokenCache=OFF; the previously adopted 23/8 defaults above stay unchanged.
 inline constexpr unsigned DefaultSearchReuseMask = 6;
 enum SearchReuse : unsigned {
     LegalTokenCache = 1, GeometryLookup = 2, OccupiedIndex = 4,
