@@ -68,5 +68,7 @@
   "owner_adoption_date": "2026-10-15",
   "quick_ci_run": 38650963142,
   "document_ci_run": 38650968240,
-  "production_validation": "local build/default/all32/USI/knowledge/phase/boundary/docs passed; GitHub CI pending"
+  "production_validation": "local build/default/all32/USI/knowledge/phase/boundary/docs passed; GitHub CI pending",
+  "production_code_commit": "97d7853d73a8531eb1c5dfbcddd6d986999f349a",
+  "comparison_baseline": "97d7853d73a8531eb1c5dfbcddd6d986999f349a"
 }
