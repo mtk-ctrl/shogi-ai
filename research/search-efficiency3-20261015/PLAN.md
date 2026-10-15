@@ -1,0 +1,24 @@
+# v2.0.15を基準とする追加効率化（事前計画）
+
+基準: main e698f91b302f62693c2d83c01e7bf2e8c34a5e23、正式Engine d4b46b9a3fed540c84fae3f2183aed454fa62035（v2.0.15/profile47）。正式のSearchResearchMask=23、SearchEfficiencyMask=8、知識163件を維持する。評価重み・枝刈り条件・手順は変えない。新しいSearchReuseMaskは研究用で、正式採用は本人判断。
+
+## 仮説（測定前に固定）
+
+- bit1 LegalTokenCache: 同一go内の盤面・持駒・手番hashが一致する合法手token列を再利用する。順序を保持し、ply専用領域へコピーして子探索による上書きを防ぐ。終局判定・反復履歴・探索得点は保存しない。2048直接写像slot、完全64bit keyとepoch照合。
+- bit2 GeometryLookup: 自作評価の81×81距離表で反復する座標差・距離を置換する。従来計算を比較用に残す。
+- bit4 OccupiedIndex: AttackMap作成時に収集した先後別の駒位置を昇順に走査する。空升も評価する機能は全81升を走査する。加算順・丸め・capを保つ。
+
+3方式を単独・組合せの全8設定で検証する。前回の非採用3方式は新方式として数えない。外部エンジンの探索・評価知識は参照しない。
+
+## 選定・検証
+
+まず正式版のgprofを新24局面のうち12局面で取得し、処理分布を仮説の補助証拠とする（計装した速度を製品速度と扱わない）。全8設定で手・評価点・完了深さ・nodes/qnodes/cutoffs/PVの一致、合法性、履歴復元を確認し、距離表と評価内訳を独立照合する。
+
+固定局面は benchmarks/results/2026-10-04_iterative-identical-positions.json の行index [4,8,9,12,13,14,16,17,20,21,22,23,26,27,30,31,36,37,42,43,44,45,46,47]。前回24局面と重複しないが同じ棋譜由来のため独立した棋力標本ではない。
+
+screen: 最初の12局面×1回、depth2、全8設定と正式binaryを交互順で比較。非0設定の中央値速度上位3を確認へ送る。上位選定で最速から3%以内はbit数が少ない設定、次に数値の小さい設定を優先。
+confirm: 24局面×3回、depth2と200ms。mate assist/learning・追加長考・初手乱数OFF、知識ON、同seed・同局面・順序反転。固定深さの全探索結果が一致し、中央値1.05倍以上が条件。最速から3%以内ならbit数・数値で単純な設定を選ぶ。全量時間比は中央値と分ける。
+
+条件を満たす1設定のみ正式v2.0.15へ新seed2026101592で独立100局。go movetime200、AdaptiveLongThink=true（最大1000ms、各局各側10回）、PositionKnowledge=true（同163件/hash）、OpeningRandomNonLance=true、max_plies300、先後50ずつ、runner最大10でCI分も算入。特殊optionなのでR15で許可された既存match-request.json方式を使う。勝つまで再試行しない。有望設定がなければ対局せず棄却結果を保存する。
+
+ZIP API digest、source/build/binary/hash、設定、raw/summary/actual-move archiveを照合しpython-shogiで全手合法再生、最終SFENまで検証する。100局の得点率と概算95%区間、応答・探索量・深さを報告する。選定用速度と独立棋力を混ぜない。正式版・README現行仕様を研究中に昇格しない。
