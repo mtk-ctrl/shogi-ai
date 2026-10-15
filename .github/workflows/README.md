@@ -15,6 +15,7 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 | `.github/workflows/opening20-adopt.yml` | 明示的採用依頼のrequest更新 / 手動 | 2026-10-09承認の序盤20局面50分研究を既存53局面へ追記し、合法性・研究結果・直接選択・73件・長期保存を検証して採用版を更新する |\n| `.github/workflows/opening20-followup.yml` | request更新 / 手動 | 50分研究で終了間際に研究手が変わった序盤3局面を3runner・各30分独立再探索（固定した元Engineと知識使用、旧研究との比較、結果は自動採用しない） | 
 | `.github/workflows/opening20-long-research.yml` | 選定済み局面request更新 / 手動 | 既存棋譜から抽出した未研究の序盤20局面を1台1局面・50分並列研究。研究記録だけを保存し局面知識へ自動採用しない |\n| `.github/workflows/position10-long-research.yml` | 研究依頼JSON更新 / 手動 | 採用済み局面知識と重複しない序盤3・中盤4・終盤3の計10局面を、現行エンジンで10runner各50分研究。研究原本はReleasesへ保存し、正式採用はしない |
 | `.github/workflows/quick-ci.yml` | 関連push / 手動 | エンジンの短時間CI。通常開発の基本検査 |
+| `.github/workflows/search-all-efficiency-research.yml` | 研究ブランチ内の専用変更 / 手動 | 正式v2.0.16固定commitと研究候補の24局面×2回の探索速度・200ms到達深さを独立照合する一時研究用。新機能を自動採用せず、研究完了後にHOLD/ARCHIVEを判断 |
 | `.github/workflows/docs-rule-check.yml` | docs/workflow変更 / PR / 手動 | Rule・ルーター・workflow一覧の整合性 |
 | `.github/workflows/nn-real-study.yml` | 学習依頼ファイル更新 / 手動 / PR検査 | 保存済み自己対局の出所・容量・棋譜合法性を検証し、研究専用ニューラルネットワークを学習。現行雲路の静的評価との勝率比較、差の大きい局面、学習済み重みを90日artifactに保存。本体の指し手は変更しない |
 | `.github/workflows/nn-disagreement-study.yml` | 研究依頼更新 / 手動 / PR事前検証 | 学習済みNNと雲路の評価差を採用済み序中終判定で30局面（各10）に絞り、10runnerで各50分長考。原本と評価比較を保存し、局面知識・評価関数への自動採用はしない |
