@@ -21,6 +21,7 @@ NEEDED = (
     "engine/strategy/material.h", "engine/strategy/evaluation_params.h",
     "engine/strategy/phase_weights.h",
     "engine/strategy/turn_phase.h", "position-knowledge-v1.manifest.json",
+    "engine/strategy/search_research.h",
     "docs/rules/R00_基本原則.md", "docs/rules/R20_対局・比較・統計.md",
     "docs/rules/R70_記録・Journal・バージョン.md",
     "docs/33_Floodgate接続基盤.md",
@@ -74,6 +75,18 @@ class ClaimChecks(unittest.TestCase):
                     "| 歩 | 121 | 760 | 180 |")
         errors, _ = claims.check(self.root)
         self.assertTrue(any("駒価値" in e for e in errors), errors)
+
+    def test_wrong_documented_efficiency_default_fails(self):
+        self.change("docs/現行エンジン仕様.md", "| SearchEfficiencyMask | 8 |",
+                    "| SearchEfficiencyMask | 15 |")
+        errors, _ = claims.check(self.root)
+        self.assertTrue(any("SearchEfficiencyMask" in e for e in errors), errors)
+
+    def test_wrong_actual_search_default_fails(self):
+        self.change("engine/strategy/search_research.h", "DefaultSearchResearchMask = 23",
+                    "DefaultSearchResearchMask = 31")
+        errors, _ = claims.check(self.root)
+        self.assertTrue(any("SearchResearchMask" in e for e in errors), errors)
 
     def test_wrong_m_weight_fails(self):
         self.change("docs/現行エンジン仕様.md", "| EvalThreat | 20 |", "| EvalThreat | 21 |")

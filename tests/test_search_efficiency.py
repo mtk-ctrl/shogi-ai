@@ -50,7 +50,7 @@ try:
             observed.append(signature)
         if expected is None: expected = observed
         assert observed == expected, (mask, observed, expected)
-    print('PASS selected default 8 and all 16 efficiency combinations: exact choices/scores/depth/nodes/qnodes/cutoffs/PV and actual mask')
+    print('PASS adopted default 8 and all 16 efficiency combinations: exact choices/scores/depth/nodes/qnodes/cutoffs/PV and actual mask')
 finally:
     e.close()
     if reference: reference.close()
