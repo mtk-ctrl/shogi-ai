@@ -1,0 +1,97 @@
+{
+  "provenance": {
+    "run_id": "38731311364",
+    "archive_sha256": "fcdd7fb43a3b13710f8f2e9e237d29e7b3d5da2d2fa5185d24d43b7f817a1029",
+    "archive_games": 200,
+    "used_games": 197,
+    "excluded_unresolved_games": 0,
+    "duplicate_games": 3,
+    "samples": 1576,
+    "build_proof": {
+      "actual_sha256": {
+        "engine-a": "52c2b5b36ba49247d128674cdc5a40efc192346464283e8302a1ed8f0765b5be",
+        "engine-b": "5e338c77cdadffb281ee55e0a56d9dc3beea4166190dff68c255b478b3c71f48"
+      },
+      "normalized_elf_sha256": "cdfedcc175fb2e193c537e8471a69f96e8174ca7b8edbf6293fcac1c0146d784",
+      "normalization": "objcopy: remove debug and build-id; normalize engine-a-src/engine-b-src diagnostic paths",
+      "same_source_commit": "003f42c66f8e3f2e5deb1898103555466e72016f",
+      "same_actual_binary": false
+    }
+  },
+  "study": {
+    "seed": 202610151,
+    "split": "whole games; exact board/hand/turn overlap removed from holdouts",
+    "removed_duplicate_holdout_positions": {
+      "val": 25,
+      "test": 32
+    },
+    "calibration_temperature_train_only": 3300.0,
+    "candidate_selection": "validation only; test evaluated once after selection",
+    "candidates": [
+      {
+        "hidden": 4,
+        "epochs": 2,
+        "validation_neural_brier": 0.23701894283294678,
+        "validation_blended_brier": 0.21214159211174383,
+        "neural_weight": 0.25
+      },
+      {
+        "hidden": 8,
+        "epochs": 3,
+        "validation_neural_brier": 0.2378246784210205,
+        "validation_blended_brier": 0.20936303885399665,
+        "neural_weight": 0.25
+      },
+      {
+        "hidden": 16,
+        "epochs": 4,
+        "validation_neural_brier": 0.24846971035003662,
+        "validation_blended_brier": 0.20899429249566118,
+        "neural_weight": 0.25
+      }
+    ],
+    "selected": {
+      "hidden": 16,
+      "epochs": 4,
+      "validation_neural_brier": 0.24846971035003662,
+      "validation_blended_brier": 0.20899429249566118,
+      "neural_weight": 0.25
+    },
+    "metrics": {
+      "train": {
+        "games": 157,
+        "positions": 1256,
+        "static_brier": 0.209980483620554,
+        "neural_brier": 0.10053214430809021,
+        "blended_brier": 0.16995293905422
+      },
+      "val": {
+        "games": 18,
+        "positions": 135,
+        "static_brier": 0.21400154663185364,
+        "neural_brier": 0.24846971035003662,
+        "blended_brier": 0.20899429249566118
+      },
+      "test": {
+        "games": 20,
+        "positions": 128,
+        "static_brier": 0.2272192866571171,
+        "neural_brier": 0.2107411026954651,
+        "blended_brier": 0.20950613627297618
+      }
+    },
+    "meaning": "Prediction of empirical final game results. Not certified move labels or proof of engine strength.",
+    "engine_integration": false
+  },
+  "frozen_model_npz_sha256": "139a6dd5bcebaf905f942b6973d4145451b6eeb008da8dbe36dd6f7e5a638f59",
+  "frozen_cpp_weights_sha256": "434a7b17ac87a8d437cbd2ffb3eaa2fa4e5bbd09bbeaa748eeb17ed3ccc36a59",
+  "paired_game_bootstrap": {
+    "resamples": 10000,
+    "unit": "whole held-out game",
+    "static_minus_blended_brier": 0.017713150384140945,
+    "percentile_95_interval": [
+      0.00016849229621641767,
+      0.03694582931484535
+    ]
+  }
+}

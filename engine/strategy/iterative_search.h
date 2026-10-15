@@ -96,7 +96,7 @@ public:
     explicit BasicIterativeSearch(unsigned seed = 5489u, Evaluator evaluator = Evaluator{})
         : rng_(seed), evaluator_(evaluator) { set_reuse_mask(reuse_mask_); }
     void set_seed(unsigned seed) { rng_.seed(seed); }
-    void set_evaluator(Evaluator e) { evaluator_ = e; set_reuse_mask(reuse_mask_); set_eval_update_mask(eval_update_mask_); }
+    void set_evaluator(Evaluator e) { evaluator_ = e; set_reuse_mask(reuse_mask_); set_eval_update_mask(eval_update_mask_); set_neural_blend(neural_blend_); }
     struct DirectResearch {
         std::string move, research_id;
         std::size_t ply_index = 0, pv_length = 0;
@@ -193,6 +193,11 @@ public:
         if constexpr (std::is_same_v<Evaluator,FeatureEvaluator>) evaluator_.set_update_mask(eval_update_mask_);
     }
     unsigned eval_update_mask() const { return eval_update_mask_; }
+    void set_neural_blend(unsigned percent) {
+        neural_blend_=std::min(percent,100u);
+        if constexpr (std::is_same_v<Evaluator,FeatureEvaluator>) evaluator_.set_neural_blend(neural_blend_);
+    }
+    unsigned neural_blend() const {return neural_blend_;}
     void set_threads(unsigned count) { threads_=std::clamp(count,1u,2u); }
     unsigned threads() const { return threads_; }
 
@@ -369,7 +374,7 @@ private:
             lane.set_research_mask(research_mask_);lane.set_efficiency_mask(efficiency_mask_);
             lane.set_reuse_mask(reuse_mask_);lane.set_next_mask(next_mask_);
             lane.set_quiescence_enabled(quiescence_enabled_);
-            lane.set_eval_update_mask(eval_update_mask_);lane.set_threads(1);
+            lane.set_eval_update_mask(eval_update_mask_);lane.set_neural_blend(neural_blend_);lane.set_threads(1);
             lane.position_knowledge_=position_knowledge_;lane.position_knowledge_enabled_=position_knowledge_enabled_;
             lane.capture_root_ties_=true;
         }
@@ -960,7 +965,7 @@ private:
     unsigned efficiency_mask_ = DefaultSearchEfficiencyMask;
     unsigned reuse_mask_ = DefaultSearchReuseMask;
     unsigned eval_update_mask_ = 0;
-    unsigned threads_=1;
+    unsigned threads_=1, neural_blend_=0;
     bool capture_root_ties_=false;
     std::vector<SearchResult> root_ties_;
     std::array<std::unique_ptr<BasicIterativeSearch>,2> parallel_lanes_;

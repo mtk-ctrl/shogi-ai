@@ -1,6 +1,7 @@
 #pragma once
 #include "strategy/attack_map.h"
 #include "strategy/incremental_evaluation.h"
+#include "strategy/neural_evaluation.h"
 #include "strategy/search_research.h"
 #include "strategy/evaluation_params.h"
 #include "strategy/evaluation_v2_features.h"
@@ -169,8 +170,10 @@ public:
     int operator()(const rules::Snapshot& s) const {
         const auto* material=(update_mask_ & 1) ? &material_.update(s) : nullptr;
         const auto* attacks=(update_mask_ & 2) ? &attacks_.update(s,reuse_mask_) : nullptr;
-        return evaluate(s,params_,reuse_mask_,attacks,material).total;
+        const int classical=evaluate(s,params_,reuse_mask_,attacks,material).total;
+        return blend_selfplay_evaluation(s,classical,neural_blend_,params_.StaticLimit);
     }
+    void set_neural_blend(unsigned percent) { neural_blend_=std::min(percent,100u); }
     void set_update_mask(unsigned mask) {
         update_mask_=mask & 3; material_=IncrementalMaterial{}; attacks_=IncrementalAttackMap{};
     }
@@ -178,7 +181,7 @@ public:
     void set_reuse_mask(unsigned mask) { reuse_mask_=mask & 15; }
 private:
     EvaluationParameters params_;
-    unsigned reuse_mask_=0, update_mask_=0;
+    unsigned reuse_mask_=0, update_mask_=0, neural_blend_=0;
     mutable IncrementalMaterial material_;
     mutable IncrementalAttackMap attacks_;
 };

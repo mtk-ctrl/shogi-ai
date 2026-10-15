@@ -110,6 +110,7 @@ int main() {
                       << "option name SearchNextMask type spin default 4 min 0 max 15\n"
                       << "option name EvalUpdateMask type spin default 0 min 0 max 3\n"
                       << "option name SearchThreads type spin default 1 min 1 max 2\n"
+                      << "option name EvalNeuralBlend type spin default 0 min 0 max 100\n"
                       << "option name Quiescence type check default true\n"
                       << "option name MateAssist type check default true\n"
                       << "option name MateLearning type check default true\n"
@@ -135,6 +136,15 @@ int main() {
                       << "option name PositionKnowledge type check default true\n"
                       << "option name PositionKnowledgeFile type string default position-knowledge-v1.tsv\n"
                       << "usiok\n" << std::flush;
+        } else if (command == "neuralprobe") {
+            const auto root=position.snapshot();
+            const auto phase=shogi::strategy::classify_turn_phase(root);
+            const auto params=shogi::strategy::phase_turn_parameters(evaluation_parameters,phase.maturity,phase.components.battle,phase.components.king_threat);
+            const int classical=shogi::strategy::evaluate(root,params).total;
+            std::cout.precision(12);
+            std::cout << "info string neuralprobe probability " << shogi::strategy::selfplay_probability(root)
+                << " classical " << classical << " blended " << shogi::strategy::blend_selfplay_evaluation(root,classical,strategy.neural_blend(),params.StaticLimit)
+                << " blend " << strategy.neural_blend() << std::endl;
         } else if (command == "eval") {
             const auto root = position.snapshot();
             const auto phase = shogi::strategy::classify_turn_phase(root);
@@ -623,6 +633,7 @@ int main() {
                         << " tt_replacements " << stats.tt_replacements << " tt_move_first " << stats.tt_move_first
                         << " tt_disabled_repetition " << stats.tt_disabled_repetition
                         << " research_mask " << strategy.research_mask()
+                        << " neural_blend " << strategy.neural_blend()
                         << " search_threads " << strategy.threads()
                         << " eval_update_mask " << strategy.eval_update_mask()
                         << " reuse_mask " << strategy.reuse_mask()
@@ -714,6 +725,12 @@ int main() {
                         std::size_t used=0; const int count=std::stoi(value,&used);
                         if(used==value.size() && count>=1 && count<=2)
                             strategy.set_threads(static_cast<unsigned>(count));
+                    } catch(const std::exception&) {}
+                } else if (name == "EvalNeuralBlend") {
+                    try {
+                        std::size_t used=0;const int percent=std::stoi(value,&used);
+                        if(used==value.size() && percent>=0 && percent<=100)
+                            strategy.set_neural_blend(static_cast<unsigned>(percent));
                     } catch(const std::exception&) {}
                 } else if (name == "Quiescence") {
                     if (value == "true" || value == "false") {
