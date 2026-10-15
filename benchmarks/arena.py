@@ -294,6 +294,10 @@ class Engine:
                 return line
 
     def configure_game(self, seed):
+        if getattr(self, "pending_ponder", None):
+            self.send("stop")
+            self.wait_prefix("bestmove ", self.RESPONSE_TIMEOUT)
+            self.pending_ponder = None
         self.send(f"setoption name RandomSeed value {seed}")
         self.send("isready")
         self.wait_prefix("readyok", 10)
