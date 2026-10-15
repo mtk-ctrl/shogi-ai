@@ -61,8 +61,8 @@ public:
             });
             // Mode 1: full scoring of top 12, Mode 2: top 6 first.
             const auto full = std::min<std::size_t>(tier_mode == 1 ? 12 : 6, scored.size());
-            rules::Snapshot after = snapshot;
             for (std::size_t i = 0; i < full; ++i) {
+                rules::Snapshot after = snapshot;
                 const auto index = scored[i].original_index;
                 scored[i].score = score_move(snapshot, after, scored[i].move, before_attacks,
                                                nullptr, checks ? (*checks)[index] : -1);
@@ -104,7 +104,7 @@ public:
     // Public diagnostic/test entry point. The search path uses order(), which
     // reuses one AttackMap across all candidate moves.
     static int score_move(const rules::Snapshot& snapshot, const std::string& move) {
-        const AttackMap before_attacks(snapshot, false, false, precomputed_rays);
+        const AttackMap before_attacks(snapshot);
         return score_move(snapshot, move, before_attacks);
     }
 
