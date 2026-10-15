@@ -183,6 +183,9 @@ public:
     void set_efficiency_mask(unsigned mask) { efficiency_mask_ = mask & 15; }
     unsigned efficiency_mask() const { return efficiency_mask_; }
     void set_next_mask(unsigned mask) { next_mask_ = mask & 15; }
+    // Officially adopted: verify pawn drops the opponent can immediately capture.
+    void set_risk_verify(bool enabled) { risk_verify_enabled_ = enabled; }
+    bool risk_verify() const { return risk_verify_enabled_; }
     void set_reuse_mask(unsigned mask) {
         reuse_mask_ = mask & 15;
         if constexpr (std::is_same_v<Evaluator,FeatureEvaluator>) evaluator_.set_reuse_mask(reuse_mask_);
@@ -291,7 +294,21 @@ private:
                         make(position, move, 0);
                         Undo undo{position};
                         visit(1);
-                        child = search(position, depth - 1, 1, best, Infinity,
+                        // An immediately capturable pawn drop is fragile when chosen
+                        // from a shallow line. Verify that root candidate one ply deeper
+                        // without excluding any legal move or changing the time budget.
+                        int child_depth = depth - 1;
+                        if (risk_verify_enabled_ && depth >= 2 && move.size() == 4
+                            && move[0] == 'P' && move[1] == '*') {
+                            for (const auto& reply : legal(position, 1)) {
+                                if (reply.size() >= 4 && reply[1] != '*'
+                                    && reply[2] == move[2] && reply[3] == move[3]) {
+                                    child_depth = depth;
+                                    break;
+                                }
+                            }
+                        }
+                        child = search(position, child_depth, 1, best, Infinity,
                                        next_history(root_history, position.hash_key()));
                     }
                     const int value = child.value;
@@ -363,6 +380,7 @@ private:
             auto& lane=*parallel_lanes_[i];lane.rng_=initial_rng;lane.set_evaluator(evaluator_);
             lane.set_research_mask(research_mask_);lane.set_efficiency_mask(efficiency_mask_);
             lane.set_reuse_mask(reuse_mask_);lane.set_next_mask(next_mask_);
+            lane.set_risk_verify(risk_verify_enabled_);
             lane.set_quiescence_enabled(quiescence_enabled_);
             lane.set_threads(1);
             lane.position_knowledge_=position_knowledge_;lane.position_knowledge_enabled_=position_knowledge_enabled_;
@@ -962,6 +980,7 @@ private:
     std::vector<SearchResult> root_ties_;
     std::array<std::unique_ptr<BasicIterativeSearch>,2> parallel_lanes_;
     unsigned next_mask_ = 4;
+    bool risk_verify_enabled_ = true;
     struct OrderCell {
         std::uint64_t key = 0;
         std::uint32_t epoch = 0;
