@@ -6,6 +6,19 @@
 #include <cstdint>
 
 namespace shogi::strategy {
+inline constexpr auto SquareDistances = [] {
+    std::array<std::array<std::uint8_t,81>,81> table{};
+    for (int a=0;a<81;++a) for (int b=0;b<81;++b) {
+        const int df=a/9-b/9, dr=a%9-b%9;
+        table[a][b]=std::max(df<0?-df:df,dr<0?-dr:dr);
+    }
+    return table;
+}();
+inline constexpr auto AllSquares = [] {
+    std::array<std::uint8_t,81> squares{};
+    for (int i=0;i<81;++i) squares[i]=i;
+    return squares;
+}();
 // Geometric attacks, including friendly-occupied endpoints. Not legal moves:
 // pins, drops and king capture legality belong to the rules layer.
 struct AttackMap {
@@ -17,13 +30,37 @@ struct AttackMap {
     std::array<std::array<std::uint8_t, 32>, 81> targets{};
     std::array<std::uint8_t, 81> sizes{};
     std::array<int, 2> kings{-1, -1};
+    std::array<std::array<std::uint8_t,81>,2> occupied{};
+    std::array<std::uint8_t,2> occupied_sizes{};
+    bool geometry_lookup=false, occupied_index=false;
+    struct SquareRange {
+        const std::uint8_t* first;
+        const std::uint8_t* last;
+        auto begin() const { return first; }
+        auto end() const { return last; }
+    };
+    SquareRange squares(int side) const {
+        return occupied_index
+            ? SquareRange{occupied[side].data(),occupied[side].data()+occupied_sizes[side]}
+            : SquareRange{AllSquares.data(),AllSquares.data()+AllSquares.size()};
+    }
+    int distance(int a,int b) const {
+        if(a<0 || b<0)return 99;
+        if(geometry_lookup)return SquareDistances[a][b];
+        return std::max(std::abs(a/9-b/9),std::abs(a%9-b%9));
+    }
+    bool near_square(int a,int b) const {
+        return geometry_lookup ? distance(a,b)<=1 : near(a,b);
+    }
 
-    explicit AttackMap(const rules::Snapshot& s) {
+    explicit AttackMap(const rules::Snapshot& s, bool geometry=false, bool index=false)
+        : geometry_lookup(geometry),occupied_index(index) {
         for (auto& row : least) row.fill(NoAttacker);
         for (int from = 0; from < 81; ++from) {
             const auto& p = s.board[from];
             if (!p.kind) continue;
             const int side = int(p.color), f = from / 9, r = from % 9;
+            if(occupied_index)occupied[side][occupied_sizes[side]++]=from;
             if (p.kind == 8) kings[side] = from;
             const int value = p.kind == 8 ? NoAttacker : piece_value(p.kind, p.promoted);
             auto ray = [&](int df, int dr, bool sliding) {

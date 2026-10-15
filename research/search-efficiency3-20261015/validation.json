@@ -1,0 +1,16 @@
+{
+  "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+  "machine": "x86_64",
+  "cpu": [
+    "model name\t: AMD EPYC 9V74 80-Core Processor"
+  ],
+  "optimization": "-O2",
+  "standard": "c++17",
+  "build_translation_units": 4,
+  "upstream_rules_commit": "c1b80eaa09fe13d5f12b1599d1ae4d53c224de30",
+  "timing": "sequential paired engine requests, rotating/reversing order; arena elapsed_ms includes position reconstruction and USI I/O",
+  "final_candidate": "9d1a96d5ffa35bd059a65030c61191a039dcb314",
+  "formal_engine": "d4b46b9a3fed540c84fae3f2183aed454fa62035",
+  "ci_binaries_verified": "downloaded 100-game binary artifact and all8 USI regression vs actual baseline passed",
+  "local_tests": "500 legal positions x4 full eval breakdown, 6724 geometry pairs, all8 cache/history/PV/nodes; cache hits1728/misses6952/replacements904; existing32/16, USI, boundary, claims, arena, archive and shards passed"
+}

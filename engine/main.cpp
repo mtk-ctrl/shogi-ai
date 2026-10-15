@@ -100,12 +100,13 @@ int main() {
         if (command != "isready" && command != "stop" && command != "ponderhit" && command != "quit")
             finish_search(true);
         if (command == "usi") {
-            std::cout << "id name KUMOJI v2.0.15\nid author mtk-ctrl + ChatGPT\n"
+            std::cout << "id name KUMOJI v2.0.16\nid author mtk-ctrl + ChatGPT\n"
                       << "option name USI_Ponder type check default false\n"
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
                       << "option name SearchResearchMask type spin default " << shogi::strategy::DefaultSearchResearchMask << " min 0 max 31\n"
                       << "option name SearchEfficiencyMask type spin default " << shogi::strategy::DefaultSearchEfficiencyMask << " min 0 max 15\n"
+                      << "option name SearchReuseMask type spin default " << shogi::strategy::DefaultSearchReuseMask << " min 0 max 7\n"
                       << "option name Quiescence type check default true\n"
                       << "option name MateAssist type check default true\n"
                       << "option name MateLearning type check default true\n"
@@ -257,7 +258,7 @@ int main() {
                     ? shogi::strategy::EvaluationParameters::material_only()
                     : shogi::strategy::phase_turn_parameters(evaluation_parameters, phase.maturity,
                     phase.components.battle, phase.components.king_threat);
-                strategy.set_evaluator(shogi::strategy::FeatureEvaluator(active_parameters));
+                strategy.set_evaluator(shogi::strategy::FeatureEvaluator(active_parameters, strategy.reuse_mask()));
                 const auto eval = shogi::strategy::evaluate(root, active_parameters);
                 std::ostringstream out;
                 out << "info string phase v 1 maturity " << phase.maturity
@@ -619,6 +620,10 @@ int main() {
                         << " tt_replacements " << stats.tt_replacements << " tt_move_first " << stats.tt_move_first
                         << " tt_disabled_repetition " << stats.tt_disabled_repetition
                         << " research_mask " << strategy.research_mask()
+                        << " reuse_mask " << strategy.reuse_mask()
+                        << " legal_cache_hits " << stats.legal_cache_hits
+                        << " legal_cache_misses " << stats.legal_cache_misses
+                        << " legal_cache_replacements " << stats.legal_cache_replacements
                         << " efficiency_mask " << strategy.efficiency_mask()
                         << " ordering_rule_checks " << stats.ordering_rule_checks
                         << " eval_cache_hits " << stats.eval_cache_hits
@@ -679,6 +684,13 @@ int main() {
                         if (used == value.size() && mask >= 0 && mask <= 15)
                             strategy.set_efficiency_mask(static_cast<unsigned>(mask));
                     } catch (const std::exception&) {}
+                } else if (name == "SearchReuseMask") {
+                    try {
+                        std::size_t used=0;
+                        const int mask=std::stoi(value,&used);
+                        if(used==value.size() && mask>=0 && mask<=7)
+                            strategy.set_reuse_mask(static_cast<unsigned>(mask));
+                    } catch(const std::exception&) {}
                 } else if (name == "Quiescence") {
                     if (value == "true" || value == "false") {
                         quiescence_enabled = value == "true";
@@ -734,13 +746,13 @@ int main() {
                     if (value == "features" || value == "material") {
                         material_profile = value == "material";
                         strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
-                            ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
+                            ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters, strategy.reuse_mask()));
                     }
                 } else if (name == "EvalV2") {
                     if (value == "true" || value == "false") {
                         evaluation_parameters.v2_enabled = value == "true";
                         strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
-                            ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
+                            ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters, strategy.reuse_mask()));
                     }
                 } else if (name == "EvalSafety" || name == "EvalPressure" || name == "EvalActivity" || name == "EvalDanger"
                            || name == "EvalMaterialWeight" || name == "EvalInfluence" || name == "EvalPotential"
@@ -763,7 +775,7 @@ int main() {
                             else if (name == "EvalThreat") evaluation_parameters.threat_weight = weight;
                             else evaluation_parameters.positional_cap = weight;
                             strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
-                                ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
+                                ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters, strategy.reuse_mask()));
                         }
                     } catch (const std::exception&) {}
                 } else if (name == "RandomSeed") {

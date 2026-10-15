@@ -67,6 +67,7 @@ SEARCH_STAT_NAMES = (
     "knowledge_disabled_repetition",
     "qnodes", "qcutoffs", "qlimit_leaves",
     "research_mask", "generated_plays", "legal_batches", "order_reuse_hits", "qtt_probes", "qtt_hits", "qtt_cutoffs",
+    "reuse_mask", "legal_cache_hits", "legal_cache_misses", "legal_cache_replacements",
     "efficiency_mask", "ordering_rule_checks", "eval_cache_hits", "lazy_snapshots", "selective_usi_skipped",
 )
 
@@ -79,6 +80,7 @@ PER_MOVE_SEARCH_FIELDS = (
     "full_nodes", "cutoffs", "tt_probes", "tt_hits",
     "knowledge_probes", "knowledge_hits", "knowledge_promotions",
     "qnodes", "qcutoffs", "research_mask", "order_reuse_hits", "qtt_probes", "qtt_hits", "qtt_cutoffs",
+    "reuse_mask", "legal_cache_hits", "legal_cache_misses", "legal_cache_replacements",
     "efficiency_mask", "ordering_rule_checks", "eval_cache_hits", "lazy_snapshots", "selective_usi_skipped",
 )
 

@@ -11,6 +11,7 @@
 #include <functional>
 #include <cstdint>
 #include <vector>
+#include <type_traits>
 
 namespace shogi::strategy {
 
@@ -75,6 +76,8 @@ public:
         std::uint64_t qtt_probes = 0, qtt_hits = 0, qtt_cutoffs = 0;
         std::uint64_t ordering_rule_checks = 0, eval_cache_hits = 0, lazy_snapshots = 0;
         std::uint64_t selective_usi_skipped = 0;
+        std::uint64_t legal_cache_hits = 0, legal_cache_misses = 0;
+        std::uint64_t legal_cache_replacements = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -85,9 +88,9 @@ public:
     static bool is_mate_score(int value) { return std::abs(value) >= MateScore - MaxPly; }
 
     explicit BasicIterativeSearch(unsigned seed = 5489u, Evaluator evaluator = Evaluator{})
-        : rng_(seed), evaluator_(evaluator) {}
+        : rng_(seed), evaluator_(evaluator) { set_reuse_mask(reuse_mask_); }
     void set_seed(unsigned seed) { rng_.seed(seed); }
-    void set_evaluator(Evaluator e) { evaluator_ = e; }
+    void set_evaluator(Evaluator e) { evaluator_ = e; set_reuse_mask(reuse_mask_); }
     struct DirectResearch {
         std::string move, research_id;
         std::size_t ply_index = 0, pv_length = 0;
@@ -173,6 +176,11 @@ public:
     unsigned research_mask() const { return research_mask_; }
     void set_efficiency_mask(unsigned mask) { efficiency_mask_ = mask & 15; }
     unsigned efficiency_mask() const { return efficiency_mask_; }
+    void set_reuse_mask(unsigned mask) {
+        reuse_mask_ = mask & 7;
+        if constexpr (std::is_same_v<Evaluator,FeatureEvaluator>) evaluator_.set_reuse_mask(reuse_mask_);
+    }
+    unsigned reuse_mask() const { return reuse_mask_; }
 
     SearchResult choose(rules::Position& position, int max_depth, SearchControl& control,
                         const std::vector<std::string>& allowed = {},
@@ -189,6 +197,7 @@ public:
         if (!eval_epoch_) {
             for (auto& cell : eval_cache_) cell.epoch = 0;
             for (auto& cell : order_cache_) cell.epoch = 0;
+            for (auto& cell : legal_cache_) cell.epoch = 0;
             eval_epoch_ = 1;
         }
         root_in_check_ = position.in_check();
@@ -365,12 +374,32 @@ private:
         std::vector<std::size_t> tactical_indexes;
     };
     std::array<LegalBatch, MaxPly + 1> legal_batches_{};
+    struct LegalCell {
+        std::uint64_t key = 0;
+        std::uint32_t epoch = 0;
+        std::vector<rules::GeneratedMove> tokens;
+    };
+    std::vector<LegalCell> legal_cache_{2048};
     const LegalBatch& batch(const rules::Position& p, int ply) {
         auto& b = legal_batches_.at(ply);
         if (!b.valid || b.key != p.hash_key()) {
             b.valid = false;
             b.key = p.hash_key();
-            b.tokens = p.legal_generated_moves();
+            if (reuse_mask_ & LegalTokenCache) {
+                auto& cell = legal_cache_[b.key % legal_cache_.size()];
+                if (cell.epoch == eval_epoch_ && cell.key == b.key) {
+                    // Own the batch: a descendant may replace this cache slot.
+                    b.tokens = cell.tokens;
+                    ++stats_.legal_cache_hits;
+                } else {
+                    if (cell.epoch == eval_epoch_) ++stats_.legal_cache_replacements;
+                    b.tokens = p.legal_generated_moves();
+                    cell.key = b.key;
+                    cell.epoch = eval_epoch_;
+                    cell.tokens = b.tokens;
+                    ++stats_.legal_cache_misses;
+                }
+            } else b.tokens = p.legal_generated_moves();
             b.strings.clear();
             b.tactical_ready = false;
             b.tactical.clear();
@@ -745,6 +774,7 @@ private:
     TranspositionTable qtt_;
     unsigned research_mask_ = DefaultSearchResearchMask;
     unsigned efficiency_mask_ = DefaultSearchEfficiencyMask;
+    unsigned reuse_mask_ = DefaultSearchReuseMask;
     struct OrderCell {
         std::uint64_t key = 0;
         std::uint32_t epoch = 0;

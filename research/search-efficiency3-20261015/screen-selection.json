@@ -1,0 +1,10 @@
+{
+  "source": "screen.json",
+  "rule": "iteratively within 3% of remaining fastest, prefer fewer bits then smaller mask",
+  "selected": [
+    6,
+    7,
+    4
+  ],
+  "pv_mismatches": 0
+}

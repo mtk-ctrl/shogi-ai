@@ -1,0 +1,49 @@
+{
+  "source_sha256": "bd5d9e02f97bf6882b9c8115fda29cc811bc901e6c5531f83ac369f660b1b84d",
+  "binary_sha256": {
+    "candidate": "4be0502358531de980d49ac86f155fdfbdab89b076cccc12e70821b07a1766dc",
+    "previous": "d22e6226842c0c3fac90ddfbb3570a99ec07f546eaa717aa1be55f4ca084995e"
+  },
+  "options": {
+    "OpeningRandomNonLance": false,
+    "MateAssist": false,
+    "MateLearning": false,
+    "AdaptiveLongThink": false,
+    "PositionKnowledge": true
+  },
+  "depth": 2,
+  "cases": 24,
+  "repeats": 3,
+  "summaries": {
+    "previous": {
+      "fixed_trials": 72,
+      "fixed_mismatches": [],
+      "median_speedup": 1.0,
+      "total_speedup": 1.0,
+      "timed_depth_sum": 179,
+      "timed_nodes_sum": 1773074,
+      "timed_higher": 0,
+      "timed_lower": 0,
+      "legal_cache_hits": 0,
+      "legal_cache_misses": 0,
+      "fixed_order_hits": 19287,
+      "fixed_qtt_hits": 0,
+      "timed_elapsed_max_ms": 193.843
+    },
+    "6": {
+      "fixed_trials": 72,
+      "fixed_mismatches": [],
+      "median_speedup": 1.1128804731665882,
+      "total_speedup": 1.1284570800253457,
+      "timed_depth_sum": 184,
+      "timed_nodes_sum": 2103984,
+      "timed_higher": 5,
+      "timed_lower": 0,
+      "legal_cache_hits": 0,
+      "legal_cache_misses": 0,
+      "fixed_order_hits": 19287,
+      "fixed_qtt_hits": 0,
+      "timed_elapsed_max_ms": 194.987
+    }
+  }
+}

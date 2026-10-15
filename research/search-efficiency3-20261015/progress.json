@@ -1,0 +1,31 @@
+{
+  "phase": "research_complete",
+  "candidate": "9d1a96d5ffa35bd059a65030c61191a039dcb314",
+  "request_commit": "59567f79691407bc6cb16e59c55d8584852064cf",
+  "run": 38676667846,
+  "quick_ci": 38676478541,
+  "baseline": "d4b46b9a3fed540c84fae3f2183aed454fa62035",
+  "mask": 6,
+  "shards": 9,
+  "seed": 2026101592,
+  "next": "report CI/readback; owner decides adoption; do not start more games",
+  "eta_jst": "2026-10-15T12:41:00+09:00",
+  "binary_sha256": {
+    "engine-a": "421720ce7cd217a0d2292ff4e74af419332e42c12558c51ad850211ddd1ccc9a",
+    "engine-b": "bf0956643eda96e3f3acc58647ee1a9521a2cb5716dbb569b39ba687ef84cc68"
+  },
+  "quick_ci_conclusion": "success",
+  "result": {
+    "wins": 51,
+    "draws": 1,
+    "losses": 48,
+    "score": 0.515,
+    "approx_95pct": [
+      0.4170445555831168,
+      0.6129554444168832
+    ],
+    "plies": 10935,
+    "illegal_replay": 0
+  },
+  "formal_adoption": "not approved; keep formal main v2.0.15"
+}
