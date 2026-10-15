@@ -88,9 +88,13 @@ int main() {
         }
         std::cout << "PASS exhaustive minimax at depths 1..4 for both turns, PV and history restoration\n";
         p = fixture({{"9i","K"},{"1a","k"},{"7g","P"},{"3g","P"}});
+        // This fixture merges two root branches. Parallel lanes deliberately
+        // have separate tables, so cross-root reuse is a serial-only contract.
+        search.set_threads(1);
         strategy::SearchControl transpositions;
         search.choose(p, 3, transpositions, {"7g7f", "3g3f"});
         require(search.last_stats().tt_exact_hits > 0, "safe shallow search retains board transpositions");
+        search.set_threads(2);
         std::cout << "PASS safe three-ply transpositions retain exact score reuse\n";
         strategy::FeatureAlphaBeta3TT fixed;
         strategy::IterativeSearch features;

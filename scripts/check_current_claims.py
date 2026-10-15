@@ -32,6 +32,11 @@ def check(root: Path = ROOT) -> tuple[list[str], list[str]]:
     if engine and version and engine.group(1) != version.group(1):
         errors.append(f"{spec_path}: 現行版 {version.group(1)} と実装 {engine.group(1)} が異なる")
 
+    thread_default = re.search(r"option name SearchThreads type spin default (\d+)", read("engine/main.cpp"))
+    described_threads = re.search(r"^\|\s*SearchThreads\s*\|\s*(\d+)\s*\|", spec, re.M)
+    if not thread_default or not described_threads or thread_default.group(1) != described_threads.group(1):
+        errors.append(f"{spec_path}: SearchThreads の正式既定値が実装と一致しない")
+
     search_defaults = read("engine/strategy/search_research.h")
     for option, constant in (("SearchResearchMask", "DefaultSearchResearchMask"),
                              ("SearchEfficiencyMask", "DefaultSearchEfficiencyMask")):

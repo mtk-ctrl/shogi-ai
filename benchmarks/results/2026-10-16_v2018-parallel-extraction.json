@@ -1,0 +1,28 @@
+{
+  "reference_sha256": "fe20e7b71c750ffe50dcdf4d12d403ca962368d67cf4b6ea6f643022f45b9bef",
+  "adopted_sha256": "47a0b450ff2086e78a665e0bff15a73edce57dcae8cbe4702742100d268188dd",
+  "cases": 24,
+  "repeats": 3,
+  "checked": 72,
+  "mismatches": 0,
+  "compared_fields": [
+    "move",
+    "score_cp",
+    "score_mate",
+    "depth",
+    "nodes",
+    "qnodes",
+    "cutoffs",
+    "pv"
+  ],
+  "options": {
+    "OpeningRandomNonLance": false,
+    "MateAssist": false,
+    "MateLearning": false,
+    "AdaptiveLongThink": false,
+    "PositionKnowledge": true,
+    "SearchThreads": 2
+  },
+  "reference_note": "Frozen research 00904045c69c5c76ca78f85b5a47391bfb5c1a86 with EvalUpdateMask=0 and EvalNeuralBlend=0.",
+  "meaning": "Fixed-depth extraction regression, not a new strength estimate."
+}

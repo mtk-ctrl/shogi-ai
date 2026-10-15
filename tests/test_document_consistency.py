@@ -82,6 +82,12 @@ class ClaimChecks(unittest.TestCase):
         errors, _ = claims.check(self.root)
         self.assertTrue(any("SearchEfficiencyMask" in e for e in errors), errors)
 
+    def test_wrong_documented_thread_default_fails(self):
+        self.change("docs/現行エンジン仕様.md", "| SearchThreads | 2 |",
+                    "| SearchThreads | 1 |")
+        errors, _ = claims.check(self.root)
+        self.assertTrue(any("SearchThreads" in e for e in errors), errors)
+
     def test_wrong_actual_search_default_fails(self):
         self.change("engine/strategy/search_research.h", "DefaultSearchResearchMask = 23",
                     "DefaultSearchResearchMask = 31")
