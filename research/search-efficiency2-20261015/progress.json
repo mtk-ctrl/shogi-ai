@@ -1,5 +1,5 @@
 {
-  "stage": "Research completed: selected8 CI, single100 games and full artifact/legal audit passed",
+  "stage": "Research and formal adoption completed as KUMOJI v2.0.15",
   "official_main": "6445d54f23e7cfffd7cd36b62490fc42f9c142e1",
   "measured_source": "e7f357dc665b55950c5637f54850576945eb686c",
   "research_pr": 263,
@@ -9,12 +9,8 @@
   "median_speedup": 1.8491279976153598,
   "total_speedup": 2.0307807097179915,
   "mismatches": 0,
-  "remaining": [
-    "formalized local/CI verification",
-    "main integration and post-integration CI",
-    "baseline and final readback"
-  ],
-  "formal_adoption": "Owner explicitly adopted selected8 on2026-10-15 11:49JST; normal finishing and main integration in progress",
+  "remaining": [],
+  "formal_adoption": "Owner adopted selected8; main integration and pre/post CI verified",
   "candidate_source": "115c53d0d508e093ca161ec8d650600a8f421086",
   "request_commit": "e37d5a067101a319eddb872f3d2469ef46d30ed7",
   "request_id": "search-efficiency2-20261015-mask8-main-100",
@@ -50,9 +46,23 @@
   "illegal": 0,
   "phase_recorded_plies": 10990,
   "score_missing_plies": 402,
-  "recommendation": "Recommend SelectiveUSI only; new formal adoption is owner decision",
+  "recommendation": "Owner adopted SelectiveUSI only; other3 new flags remain defaultOFF",
   "artifacts_expire": "2027-01-13",
   "long_term_transfer": false,
   "formal_version": "2.0.15",
-  "adoption_instruction": "正式採用してエンジンを更新してください"
+  "adoption_instruction": "正式採用してエンジンを更新してください",
+  "main_engine_commit": "d4b46b9a3fed540c84fae3f2183aed454fa62035",
+  "baseline_ref": "d4b46b9a3fed540c84fae3f2183aed454fa62035",
+  "formal_pre_integration_ci": {
+    "commit": "d0dc0c2b8844b1757fa5d1c825abdd8b34c1afbe",
+    "quick": 38673657297,
+    "document": 38673661123,
+    "conclusion": "success"
+  },
+  "formal_post_integration_ci": {
+    "commit": "d4b46b9a3fed540c84fae3f2183aed454fa62035",
+    "quick": 38674019211,
+    "document": 38674019246,
+    "conclusion": "success"
+  }
 }

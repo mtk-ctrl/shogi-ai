@@ -1,0 +1,72 @@
+{
+  "official_version": "KUMOJI v2.0.15",
+  "owner_instruction": "正式採用してエンジンを更新してください",
+  "owner_instruction_at": "2026-10-15T11:49:57+09:00",
+  "pull_request": 263,
+  "formalized_commit": "d0dc0c2b8844b1757fa5d1c825abdd8b34c1afbe",
+  "main_engine_commit": "d4b46b9a3fed540c84fae3f2183aed454fa62035",
+  "baseline_ref": "d4b46b9a3fed540c84fae3f2183aed454fa62035",
+  "adopted_defaults": {
+    "SearchResearchMask": 23,
+    "SearchEfficiencyMask": 8
+  },
+  "preserved": {
+    "PositionKnowledgePositions": 163,
+    "PositionKnowledgeSHA256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+    "go_command": "go movetime 200",
+    "AdaptiveLongThink": true,
+    "phase_profile": 47
+  },
+  "pre_integration": {
+    "commit": "d0dc0c2b8844b1757fa5d1c825abdd8b34c1afbe",
+    "quick_run": 38673657297,
+    "quick_job": 116222244039,
+    "document_run": 38673661123,
+    "conclusion": "success",
+    "pass_lines": [
+      "2026-10-15T02:58:07.8021044Z PASS native checks, workspace/order identity, stale tokens and full-history restoration: 16386 legal moves at 400 positions",
+      "2026-10-15T02:58:26.0687699Z PASS unstable-priority long-think budget, both colors and ten-use cap",
+      "2026-10-15T02:59:56.3992305Z PASS adaptive long-think continues 200ms search to one-second ceiling",
+      "2026-10-15T02:59:56.3993640Z PASS responsive isready/stop/ponderhit, no duplicate or stale bestmove",
+      "2026-10-15T02:59:56.6315583Z PASS adopted default 23 and all 32 combinations: poisoned pawn, both-color scores, mate distance, legal PV, actual mask",
+      "2026-10-15T02:59:56.8211508Z PASS adopted default 8 and all 16 efficiency combinations: exact choices/scores/depth/nodes/qnodes/cutoffs/PV and actual mask",
+      "2026-10-15T02:59:57.4073129Z PASS position knowledge: 163 direct decisions by matching SFEN, PV continuation, repetition safety and fallback"
+    ]
+  },
+  "post_integration": {
+    "quick_run": 38674019211,
+    "quick_job": 116223387545,
+    "document_run": 38674019246,
+    "document_conclusion": "success",
+    "quick_conclusion": "success",
+    "pass_lines": [
+      "2026-10-15T03:02:24.3846860Z PASS native checks, workspace/order identity, stale tokens and full-history restoration: 16386 legal moves at 400 positions",
+      "2026-10-15T03:02:45.1623476Z PASS unstable-priority long-think budget, both colors and ten-use cap",
+      "2026-10-15T03:04:19.9063447Z PASS adaptive long-think continues 200ms search to one-second ceiling",
+      "2026-10-15T03:04:19.9065399Z PASS responsive isready/stop/ponderhit, no duplicate or stale bestmove",
+      "2026-10-15T03:04:20.2078140Z PASS adopted default 23 and all 32 combinations: poisoned pawn, both-color scores, mate distance, legal PV, actual mask",
+      "2026-10-15T03:04:20.4548189Z PASS adopted default 8 and all 16 efficiency combinations: exact choices/scores/depth/nodes/qnodes/cutoffs/PV and actual mask",
+      "2026-10-15T03:04:21.2097308Z PASS position knowledge: 163 direct decisions by matching SFEN, PV continuation, repetition safety and fallback"
+    ],
+    "document_job": 116223387832,
+    "document_pass_lines": [
+      "2026-10-15T03:00:57.8790515Z Ran 17 tests in 0.043s",
+      "2026-10-15T03:00:57.9304276Z Document router consistency check OK: 11 active rules, 11 unique rule_ids",
+      "2026-10-15T03:00:57.9805990Z Workflow inventory check OK: 25 ACTIVE workflows, 0 warning(s)",
+      "2026-10-15T03:00:58.1719838Z Match workflow preflight OK: 25 workflow(s) checked",
+      "2026-10-15T03:00:58.2227287Z Current-claim consistency OK (0 advisory warning(s))"
+    ]
+  },
+  "runtime_diff_from_matched_candidate": "USI version string and adoption comment only; merge preserved tested tree",
+  "local_checks": [
+    "USI v2.0.15, ordinary defaults23/8",
+    "adopted8 and all16 settings exact versus previous formal bounded searches",
+    "adopted23 and all32 research settings",
+    "USI timing/nodes/stop/ponder/EOF, long-think cap",
+    "knowledge163 and per-move phase",
+    "rules-only boundary",
+    "17 document tests, router, inventory25, workflow preflight25, claims0warnings"
+  ],
+  "additional_matches_started": 0,
+  "completion": "Formal adoption complete; pre/post-integration QuickCI and documentCI success"
+}
