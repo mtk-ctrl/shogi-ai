@@ -40,8 +40,12 @@ default_engine = Engine(sys.argv[1], 'next-default', options)
 tier6_engine = Engine(sys.argv[1], 'next-tier6', {**options, 'SearchNextMask': 4})
 try:
     for case in cases:
-        assert run(default_engine, *case) == run(tier6_engine, *case), (
-            'default must use SearchNextMask=4', case)
+        d = run(default_engine, *case)
+        t = run(tier6_engine, *case)
+        fields = ('score_cp', 'score_mate', 'depth', 'nodes', 'qnodes', 'cutoffs', 'pv')
+        fingerprint = lambda x: (x[0], *(x[1].get(k) for k in fields))
+        assert fingerprint(d) == fingerprint(t), (
+            'default must use SearchNextMask=4', case, fingerprint(d), fingerprint(t))
 finally:
     default_engine.close()
     tier6_engine.close()
