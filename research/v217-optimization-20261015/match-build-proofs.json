@@ -1,0 +1,16 @@
+{
+  "parallel": {
+    "run_id": 38732451498,
+    "build_job_id": 116413357133,
+    "built_commit_a": "3cd566957095325287f7043409a866fdbab9ef2e",
+    "built_commit_b": "003f42c66f8e3f2e5deb1898103555466e72016f",
+    "verification": "Actual git log -1 --format=%H output read back from successful build job; requested refs alone were not treated as build proof."
+  },
+  "neural": {
+    "run_id": 38804852520,
+    "build_job_id": 116662996987,
+    "built_commit_a": "00904045c69c5c76ca78f85b5a47391bfb5c1a86",
+    "built_commit_b": "003f42c66f8e3f2e5deb1898103555466e72016f",
+    "verification": "Actual git log -1 --format=%H output read back from successful build job; requested refs alone were not treated as build proof."
+  }
+}

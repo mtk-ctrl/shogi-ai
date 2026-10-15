@@ -1,0 +1,9 @@
+{
+  "sha256": "fe20e7b71c750ffe50dcdf4d12d403ca962368d67cf4b6ea6f643022f45b9bef",
+  "probe_lines": [
+    "id name KUMOJI v2.0.17",
+    "option name EvalNeuralBlend type spin default 0 min 0 max 100",
+    "info string neuralprobe probability 0.28038318148 classical 0 blended 0 blend 0",
+    "info string neuralprobe probability 0.28038318148 classical 0 blended -728 blend 25"
+  ]
+}

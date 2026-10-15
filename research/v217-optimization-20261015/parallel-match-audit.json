@@ -1,0 +1,95 @@
+{
+  "run_id": "38732451498",
+  "requested_ref_a": "3cd566957095325287f7043409a866fdbab9ef2e",
+  "requested_ref_b": "003f42c66f8e3f2e5deb1898103555466e72016f",
+  "archive_sha256": "0e1e9f82cb51fae3503257ca541aeccde9fdd90d71f266fa78d5c6a2ae4971c4",
+  "archive_bytes": 1332931,
+  "games": 200,
+  "plies": 21954,
+  "wins_a": 104,
+  "draws": 0,
+  "wins_b": 96,
+  "score_a": 0.52,
+  "color_assignment": {
+    "A_black": {
+      "games": 100,
+      "wins": 52,
+      "losses": 48
+    },
+    "A_white": {
+      "games": 100,
+      "wins": 52,
+      "losses": 48
+    }
+  },
+  "all_moves_legal_and_final_positions_verified": true,
+  "termination_reasons": {
+    "checkmate": 200
+  },
+  "duplicate_complete_move_sequences": 4,
+  "binary_sha256": {
+    "A": [
+      "30895c22e35498cd2d97024b6b4dc060c6a2b5c18dd0b18cdf9ad01f560ac2e1"
+    ],
+    "B": [
+      "5e338c77cdadffb281ee55e0a56d9dc3beea4166190dff68c255b478b3c71f48"
+    ]
+  },
+  "position_knowledge": {
+    "A": {
+      "enabled": true,
+      "file": "build/position-knowledge-v1.tsv",
+      "available": true,
+      "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+      "positions": 163
+    },
+    "B": {
+      "enabled": true,
+      "file": "build/position-knowledge-v1.tsv",
+      "available": true,
+      "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+      "positions": 163
+    }
+  },
+  "observed": {
+    "A": {
+      "played_moves": 10979,
+      "depth_recorded_moves": 10584,
+      "mean_completed_depth_on_recorded_moves": 2.952286470143613,
+      "nodes_total": 1066391048,
+      "wall_ms_median": 191.137,
+      "wall_ms_p95": 990.972,
+      "wall_ms_max": 991.897,
+      "wall_over_1100ms": 0,
+      "long_think_moves": 1978,
+      "maximum_long_thinks_per_game": 10,
+      "knowledge_probes": 20537,
+      "knowledge_hits": 0,
+      "knowledge_promotions": 0
+    },
+    "B": {
+      "played_moves": 10975,
+      "depth_recorded_moves": 10602,
+      "mean_completed_depth_on_recorded_moves": 2.8975664968873796,
+      "nodes_total": 556791241,
+      "wall_ms_median": 190.905,
+      "wall_ms_p95": 990.834,
+      "wall_ms_max": 991.322,
+      "wall_over_1100ms": 0,
+      "long_think_moves": 1966,
+      "maximum_long_thinks_per_game": 10,
+      "knowledge_probes": 10406,
+      "knowledge_hits": 0,
+      "knowledge_promotions": 0
+    }
+  },
+  "missing_score_plies": 777,
+  "phase_missing_plies": 0,
+  "timing_note": "Wall time includes reconstruction and USI I/O; depths/nodes in different game positions are descriptive, not controlled speed comparisons.",
+  "storage": "Actions artifacts expire after 90 days; not permanent Release storage.",
+  "wilson_95_interval_a": [
+    0.4510378507281424,
+    0.588208336216767
+  ],
+  "two_sided_binomial_p_equal_strength": 0.6207289280968307
+}

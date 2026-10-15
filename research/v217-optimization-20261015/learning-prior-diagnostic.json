@@ -1,0 +1,31 @@
+{
+  "archive_sha256": "fcdd7fb43a3b13710f8f2e9e237d29e7b3d5da2d2fa5185d24d43b7f817a1029",
+  "train_only_constant_black_win_probability": 0.43630573248407645,
+  "metrics": {
+    "train": {
+      "positions": 1256,
+      "games": 157,
+      "black_win_fraction": 0.43630573248407645,
+      "train_only_constant_brier": 0.2443506835977119,
+      "frozen_static_brier": 0.209980483620554,
+      "frozen_blended_brier": 0.16995293905422
+    },
+    "val": {
+      "positions": 135,
+      "games": 18,
+      "black_win_fraction": 0.45925925925925926,
+      "train_only_constant_brier": 0.24886705643531476,
+      "frozen_static_brier": 0.21400154663185364,
+      "frozen_blended_brier": 0.20899429249566118
+    },
+    "test": {
+      "positions": 128,
+      "games": 20,
+      "black_win_fraction": 0.515625,
+      "train_only_constant_brier": 0.25604740557426264,
+      "frozen_static_brier": 0.2272192866571171,
+      "frozen_blended_brier": 0.20950613627297618
+    }
+  },
+  "meaning": "Post-freeze diagnostic baseline only; no model/blend tuning or additional model selection."
+}
