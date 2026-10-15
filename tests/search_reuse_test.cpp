@@ -54,7 +54,7 @@ int main(){try {
         }
         for(const auto& params:parameters) {
             const auto expected=signature(strategy::evaluate(s,params));
-            for(unsigned mask:{2u,4u,6u})require(signature(strategy::evaluate(s,params,mask))==expected,
+            for(unsigned mask:{2u,4u,6u,8u,10u,12u,14u})require(signature(strategy::evaluate(s,params,mask))==expected,
                 "evaluation raw fields/terms/caps/rounding changed");
         }
         const auto moves=p.legal_generated_moves();
@@ -75,7 +75,7 @@ int main(){try {
         strategy::SearchControl control;
         auto result=baseline.choose(p,3,control,entry.second);
         const auto expected=signature(result,baseline.last_stats());
-        for(unsigned mask=0;mask<8;++mask) {
+        for(unsigned mask=0;mask<16;++mask) {
             strategy::IterativeSearch search(5489,strategy::FeatureEvaluator({},mask));search.set_reuse_mask(mask);
             for(int repeat=0;repeat<2;++repeat) {
                 const auto sf=p.sfen();const auto history=p.history_key();
@@ -96,11 +96,11 @@ int main(){try {
         }
     }
     require(hits>0 && replacements>0,"test must exercise cache hits and slot replacement");
-    std::cout<<"PASS all 8 masks, repeated go epochs, exact search/PV/nodes and restoration; cache hits "<<hits<<" misses "<<misses<<" replacements "<<replacements<<'\n';
+    std::cout<<"PASS all 16 masks, repeated go epochs, exact search/PV/nodes and restoration; cache hits "<<hits<<" misses "<<misses<<" replacements "<<replacements<<'\n';
     require(p.set("4k4/9/9/9/9/9/9/9/4K4 b - 1",{},error),"set repetition");
     for(int cycle=0;cycle<2;++cycle)for(auto m:{"5i6i","5a6a","6i5i","6a5a"})require(p.play(m,error),"cycle");
     for(auto m:{"5i6i","5a6a","6i5i"})require(p.play(m,error),"partial cycle");
-    for(unsigned mask=0;mask<8;++mask) {
+    for(unsigned mask=0;mask<16;++mask) {
         strategy::IterativeSearch search(5489,strategy::FeatureEvaluator({},mask));search.set_reuse_mask(mask);
         strategy::SearchControl c;const auto history=p.history_key();
         auto r=search.choose(p,4,c,{"6a5a"});
@@ -108,5 +108,5 @@ int main(){try {
             "cached legal tokens changed repetition/history");
     }
     require(p.play("6a5a",error) && p.status().result==rules::Result::Draw,"real fourth repetition changed");
-    std::cout<<"PASS all 8 masks preserve speculative and real repetition adjudication\n";
+    std::cout<<"PASS all 16 masks preserve speculative and real repetition adjudication\n";
 }catch(const std::exception& e){std::cerr<<"FAIL "<<e.what()<<'\n';return 1;}}
