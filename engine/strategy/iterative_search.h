@@ -12,6 +12,8 @@
 #include <cstdint>
 #include <vector>
 #include <type_traits>
+#include <unordered_map>
+#include <cstring>
 
 namespace shogi::strategy {
 
@@ -176,8 +178,9 @@ public:
     unsigned research_mask() const { return research_mask_; }
     void set_efficiency_mask(unsigned mask) { efficiency_mask_ = mask & 15; }
     unsigned efficiency_mask() const { return efficiency_mask_; }
+    void set_next_mask(unsigned mask) { next_mask_ = mask & 15; }
     void set_reuse_mask(unsigned mask) {
-        reuse_mask_ = mask & 7;
+        reuse_mask_ = mask & 15;
         if constexpr (std::is_same_v<Evaluator,FeatureEvaluator>) evaluator_.set_reuse_mask(reuse_mask_);
     }
     unsigned reuse_mask() const { return reuse_mask_; }
@@ -190,6 +193,7 @@ public:
         tt_.new_search();
         qtt_.new_search();
         for (auto& batch : legal_batches_) batch.valid = false;
+        pv_lengths_.fill(0);
         iteration_hints_.clear();
         // The cache contains static evaluations only. A new go must not reuse
         // evaluations from a previous position, weight set or search session.
@@ -252,7 +256,7 @@ public:
             // Deeper searches use the entire ordered history instead.
             // Quiescence can go beyond the shallow repetition-safe horizon.
             board_scores_ = !quiescence_enabled_ && depth <= 3 && !position.has_repeated_history();
-            tt_.new_search();
+            if (!(next_mask_ & 8)) tt_.new_search();
             iteration_hints_.new_search();
             try {
                 check_stop();
@@ -277,7 +281,8 @@ public:
                         candidate.move = move; candidate.score = value;
                         candidate.depth = depth; candidate.has_score = true;
                         candidate.pv = {move};
-                        candidate.pv.insert(candidate.pv.end(), child.pv.begin(), child.pv.end());
+                        const auto tail = pv_materialize(1);
+                        candidate.pv.insert(candidate.pv.end(), tail.begin(), tail.end());
                         tied.push_back(std::move(candidate));
                     }
                 }
@@ -303,7 +308,26 @@ public:
 private:
     static constexpr int Infinity = MateScore + 1000;
     struct Interrupted {};
-    struct Node { int value; std::vector<std::string> pv; };
+    struct Node { int value; };
+    // Per-ply principal variation scratch: eliminate vector allocation at each node.
+    std::array<std::array<std::array<char, 6>, MaxPly + 1>, MaxPly + 1> pv_rows_{};
+    std::array<int, MaxPly + 1> pv_lengths_{};
+    void pv_push(int ply, const std::string& move) {
+        pv_rows_[ply][0].fill(0);
+        std::memcpy(pv_rows_[ply][0].data(), move.data(), std::min<std::size_t>(5, move.size()));
+        const int append = ply < MaxPly ? std::min(pv_lengths_[ply + 1], MaxPly - ply) : 0;
+        for (int i = 0; i < append; ++i) pv_rows_[ply][i + 1] = pv_rows_[ply + 1][i];
+        pv_lengths_[ply] = append + 1;
+    }
+    std::string pv_first(int ply) const {
+        return pv_lengths_[ply] ? std::string(pv_rows_[ply][0].data()) : std::string{};
+    }
+    std::vector<std::string> pv_materialize(int ply) const {
+        std::vector<std::string> out;
+        out.reserve(pv_lengths_[ply]);
+        for (int i = 0; i < pv_lengths_[ply]; ++i) out.emplace_back(pv_rows_[ply][i].data());
+        return out;
+    }
     struct Undo { rules::Position& position; ~Undo() { position.undo(); } };
     using Bound = TranspositionTable::Bound;
 
@@ -372,6 +396,7 @@ private:
         bool tactical_ready = false;
         std::vector<std::string> tactical;
         std::vector<std::size_t> tactical_indexes;
+        std::unordered_map<std::string, std::size_t> token_indexes;
     };
     std::array<LegalBatch, MaxPly + 1> legal_batches_{};
     struct LegalCell {
@@ -404,6 +429,7 @@ private:
             b.tactical_ready = false;
             b.tactical.clear();
             b.tactical_indexes.clear();
+            b.token_indexes.clear();
             b.valid = true;
             ++stats_.legal_batches;
         }
@@ -417,7 +443,10 @@ private:
             // Convert to USI only when this node actually explores its moves.
             if (b.strings.empty() && !b.tokens.empty()) {
                 b.strings.reserve(b.tokens.size());
-                for (const auto& token : b.tokens) b.strings.push_back(p.generated_move_usi(token));
+                for (std::size_t i = 0; i < b.tokens.size(); ++i) {
+                    b.strings.push_back(p.generated_move_usi(b.tokens[i]));
+                    if (next_mask_ & 1) b.token_indexes.emplace(b.strings.back(), i);
+                }
             }
             return b.strings;
         }
@@ -431,6 +460,7 @@ private:
                 if (!p.generated_move_is_capture_or_promotion(b.tokens[i])) continue;
                 b.tactical.push_back(b.strings.empty() ? p.generated_move_usi(b.tokens[i]) : b.strings[i]);
                 b.tactical_indexes.push_back(i);
+                if (next_mask_ & 1) b.token_indexes.emplace(b.tactical.back(), i);
             }
             if (b.strings.empty()) stats_.selective_usi_skipped += b.tokens.size() - b.tactical.size();
             b.tactical_ready = true;
@@ -452,7 +482,11 @@ private:
         if (research_mask_ & GeneratedPlay) {
             const auto& b = batch(position, ply);
             std::size_t index;
-            if (!b.strings.empty()) {
+            if (next_mask_ & 1) {
+                const auto it = b.token_indexes.find(move);
+                if (it == b.token_indexes.end()) throw std::logic_error("move absent from indexed legal batch");
+                index = it->second;
+            } else if (!b.strings.empty()) {
                 const auto it = std::find(b.strings.begin(), b.strings.end(), move);
                 if (it == b.strings.end()) throw std::logic_error("move absent from current legal batch");
                 index = it - b.strings.begin();
@@ -502,6 +536,7 @@ private:
     Node search(rules::Position& p, int depth, int ply, int alpha, int beta,
                 std::uint64_t history) {
         check_stop();
+        pv_lengths_[ply] = 0;
         // No score-TT entries for qsearch: its budget and check extensions are
         // different from full-width depth. Normal ancestors use history keys.
         if (depth == 0 && quiescence_enabled_)
@@ -509,7 +544,7 @@ private:
         const auto status = node_status(p, ply);
         if (status.result != rules::Result::Ongoing) {
             ++stats_.terminal_nodes;
-            return {terminal(p, status, ply), {}};
+            return {terminal(p, status, ply)};
         }
         const int original_alpha = alpha, original_beta = beta;
         const auto score_key = board_scores_ ? p.hash_key() : history;
@@ -522,12 +557,16 @@ private:
             // A PV may be shorter on a cache hit; it is still a legal prefix.
             if (entry->bound == Bound::Exact) {
                 ++stats_.tt_exact_hits;
-                return {value, tt_move.empty() ? std::vector<std::string>{} : std::vector<std::string>{tt_move}};
+                if (!tt_move.empty()) {
+                    if (ply < MaxPly) pv_lengths_[ply + 1] = 0;
+                    pv_push(ply, tt_move);
+                }
+                return {value};
             }
             if ((entry->bound == Bound::Lower && value >= beta)
                 || (entry->bound == Bound::Upper && value < alpha)) {
                 ++stats_.tt_bound_cutoffs;
-                return {value, {}};
+                return {value};
             }
         }
         if (depth == 0) {
@@ -538,11 +577,11 @@ private:
                 : eval_node(p, p.snapshot()));
             ++stats_.tt_store_calls;
             if (tt_.store(score_key, depth, value, Bound::Exact)) ++stats_.tt_replacements;
-            return {value, {}};
+            return {value};
         }
         auto moves = ordered(p, legal(p, ply), tt_move, {}, {}, ply);
         const bool maximizing = ((efficiency_mask_ & LazySnapshot) ? p.turn() : p.snapshot().turn) == root_;
-        Node best{maximizing ? -Infinity : Infinity, {}};
+        Node best{maximizing ? -Infinity : Infinity};
         for (const auto& move : moves) {
             check_stop();
             Node child;
@@ -555,8 +594,8 @@ private:
             }
             const int value = child.value;
             if ((maximizing && value > best.value) || (!maximizing && value < best.value)) {
-                best.value = value; best.pv = {move};
-                best.pv.insert(best.pv.end(), child.pv.begin(), child.pv.end());
+                best.value = value;
+                pv_push(ply, move);
             }
             if (maximizing) alpha = std::max(alpha, value);
             else beta = std::min(beta, value);
@@ -572,14 +611,15 @@ private:
         const auto bound = best.value <= original_alpha ? Bound::Upper
             : best.value >= original_beta ? Bound::Lower : Bound::Exact;
         ++stats_.tt_store_calls;
-        if (tt_.store(score_key, depth, to_table(best.value, ply), bound, best.pv.front()))
+        if (tt_.store(score_key, depth, to_table(best.value, ply), bound, pv_first(ply)))
             ++stats_.tt_replacements;
-        iteration_hints_.store(p.hash_key(), depth, best.pv.front());
+        iteration_hints_.store(p.hash_key(), depth, pv_first(ply));
         return best;
     }
     Node quiescence(rules::Position& p, int ply, int qply, int alpha, int beta) {
         if (!(research_mask_ & QuiescenceReuse)) return quiescence_impl(p, ply, qply, alpha, beta);
         check_stop();
+        pv_lengths_[ply] = 0;
         // Same go, root orientation, ordered history, ply and qply. No board-only scores.
         const auto key = p.history_key() ^ (std::uint64_t(ply + 1) * 0x94d049bb133111ebULL);
         ++stats_.qtt_probes;
@@ -590,24 +630,28 @@ private:
                 || (e->bound == Bound::Upper && value < alpha)) {
                 ++stats_.qtt_cutoffs;
                 const auto move = TranspositionTable::best_move(*e);
-                return {value, e->bound == Bound::Exact && !move.empty()
-                    ? std::vector<std::string>{move} : std::vector<std::string>{}};
+                if (e->bound == Bound::Exact && !move.empty()) {
+                    if (ply < MaxPly) pv_lengths_[ply + 1] = 0;
+                    pv_push(ply, move);
+                }
+                return {value};
             }
         }
         auto result = quiescence_impl(p, ply, qply, alpha, beta);
         const auto bound = result.value <= alpha ? Bound::Upper
             : result.value >= beta ? Bound::Lower : Bound::Exact;
         qtt_.store(key, qply, to_table(result.value, ply), bound,
-                   result.pv.empty() ? "" : result.pv.front());
+                   pv_first(ply));
         return result;
     }
     Node quiescence_impl(rules::Position& p, int ply, int qply, int alpha, int beta) {
         check_stop();
         ++stats_.qnodes; // The normal leaf was already counted by visit().
+        pv_lengths_[ply] = 0;
         const auto status = node_status(p, ply);
         if (status.result != rules::Result::Ongoing) {
             ++stats_.terminal_nodes;
-            return {terminal(p, status, ply), {}};
+            return {terminal(p, status, ply)};
         }
         // Never publish a static score while in check at a safety ceiling.
         // Discard this incomplete iteration just as with stop/time exhaustion.
@@ -621,7 +665,7 @@ private:
         if (!(efficiency_mask_ & LazySnapshot)) get_snapshot();
         const bool maximizing = p.turn() == root_;
         const int original_alpha = alpha, original_beta = beta;
-        Node best{maximizing ? -Infinity : Infinity, {}};
+        Node best{maximizing ? -Infinity : Infinity};
         auto cutoff = [&] {
             return maximizing ? best.value >= original_beta : best.value < original_alpha;
         };
@@ -702,8 +746,7 @@ private:
             }
             if ((maximizing && child.value > best.value) || (!maximizing && child.value < best.value)) {
                 best.value = child.value;
-                best.pv = {move};
-                best.pv.insert(best.pv.end(), child.pv.begin(), child.pv.end());
+                pv_push(ply, move);
             }
             if (maximizing) alpha = std::max(alpha, best.value);
             else beta = std::min(beta, best.value);
@@ -727,7 +770,10 @@ private:
                 auto& b = legal_batches_.at(ply);
                 if (b.strings.empty() && !b.tokens.empty()) {
                     b.strings.reserve(b.tokens.size());
-                    for (const auto& token : b.tokens) b.strings.push_back(p.generated_move_usi(token));
+                    for (std::size_t i = 0; i < b.tokens.size(); ++i) {
+                    b.strings.push_back(p.generated_move_usi(b.tokens[i]));
+                    if (next_mask_ & 1) b.token_indexes.emplace(b.strings.back(), i);
+                }
                 }
                 checks.reserve(moves.size());
                 for (const auto& m : moves) {
@@ -738,7 +784,8 @@ private:
                 }
             }
             return MoveOrder::order(p.snapshot(), moves,
-                checks.empty() ? nullptr : &checks, efficiency_mask_ & OrderingWorkspace);
+                checks.empty() ? nullptr : &checks, efficiency_mask_ & OrderingWorkspace,
+                (next_mask_ & 4) ? 2 : ((next_mask_ & 2) ? 1 : 0), (reuse_mask_ & 8) != 0);
         };
         if (research_mask_ & OrderReuse) {
             const auto key = p.hash_key();
@@ -775,6 +822,7 @@ private:
     unsigned research_mask_ = DefaultSearchResearchMask;
     unsigned efficiency_mask_ = DefaultSearchEfficiencyMask;
     unsigned reuse_mask_ = DefaultSearchReuseMask;
+    unsigned next_mask_ = 4;
     struct OrderCell {
         std::uint64_t key = 0;
         std::uint32_t epoch = 0;

@@ -64,3 +64,8 @@ ChatGPTがGitHub Issueを1件作成し、タイトルを「`[KUMOJI MATCH] 対�
 ## 内部比較の着手アーカイブ
 engine-match.ymlは対局後に実際の着手だけを圧縮し、played-move-archive artifactへ保存する。探索処理は変更しない。
 正本は `docs/rules/R25_着手記録の保存.md`。評価欠損はmanifestに残す。artifactは期限付きであり、永続保存先への自動移送は未実装である。
+
+
+## 2026-10-15 完了研究の整理
+
+探索効率化5分野の速度測定専用workflowは終了し、`docs/archive/workflows/2026-10-15/search-all-efficiency-research.yml` に原形を保管した。研究結果は `research/search-all-20261015/RESULTS.md`。通常対局・正式検査は既存のActive workflowを利用する。

@@ -7,7 +7,8 @@ import shogi
 
 options = {'OpeningRandomNonLance': False, 'MateAssist': False,
            'MateLearning': False, 'AdaptiveLongThink': False,
-           'PositionKnowledge': True, 'EvalProfile': 'material'}
+           'PositionKnowledge': True, 'EvalProfile': 'material',
+           'SearchNextMask': 0}
 cases = [
     ('4r3k/9/9/4p4/9/9/9/4R4/K8 b - 1', 'go searchmoves 5h5d 5h4h depth 2'),
     ('8k/9/9/9/9/9/2P6/9/K8 b - 1', 'go depth 2'),
@@ -41,7 +42,7 @@ try:
     defaults = [run(e, *case) for case in cases]
     assert all(info['reuse_mask'] == 6 for _, info in defaults)
     if expected is not None: assert [sig for sig, _ in defaults] == expected
-    for mask in range(8):
+    for mask in range(16):
         e.send(f'setoption name SearchReuseMask value {mask}')
         observed = []
         for sf, command in cases:
@@ -50,7 +51,7 @@ try:
             observed.append(signature)
         if expected is None: expected = observed
         assert observed == expected, (mask, observed, expected)
-    print('PASS selected research default 6 and all 8 reuse combinations: exact choices/scores/depth/nodes/qnodes/cutoffs/PV and actual mask')
+    print('PASS selected research default 6 and all 16 reuse combinations: exact choices/scores/depth/nodes/qnodes/cutoffs/PV and actual mask')
 finally:
     e.close()
     if reference: reference.close()

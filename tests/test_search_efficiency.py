@@ -7,7 +7,8 @@ import shogi
 
 options = {'OpeningRandomNonLance': False, 'MateAssist': False,
            'MateLearning': False, 'AdaptiveLongThink': False,
-           'PositionKnowledge': True, 'EvalProfile': 'material'}
+           'PositionKnowledge': True, 'EvalProfile': 'material',
+           'SearchNextMask': 0}
 cases = [
     ('4r3k/9/9/4p4/9/9/9/4R4/K8 b - 1', 'go searchmoves 5h5d 5h4h depth 2'),
     ('8k/9/9/9/9/9/2P6/9/K8 b - 1', 'go depth 2'),

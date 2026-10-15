@@ -25,6 +25,7 @@ on:
       - "tests/test_search_research.py"
       - "tests/test_search_efficiency.py"
       - "tests/test_search_reuse.py"
+      - "tests/test_search_next.py"
       - "tests/test_turn_phase_usi.py"
       - "tests/test_position_knowledge_usi.py"
       - "tests/test_eval_usi.py"
@@ -115,6 +116,7 @@ jobs:
           python3 tests/test_search_research.py build/shogi-ai
           python3 tests/test_search_efficiency.py build/shogi-ai
           python3 tests/test_search_reuse.py build/shogi-ai
+          python3 tests/test_search_next.py build/shogi-ai
           python3 tests/test_turn_phase_usi.py build/shogi-ai
           python3 tests/test_position_knowledge_usi.py build/shogi-ai
           python3 tests/test_eval_usi.py build/shogi-ai

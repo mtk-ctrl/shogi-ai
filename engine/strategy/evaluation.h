@@ -109,7 +109,7 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
         return b;
     }
 
-    AttackMap a(s,reuse_mask & GeometryLookup,reuse_mask & OccupiedIndex);
+    AttackMap a(s,reuse_mask & GeometryLookup,reuse_mask & OccupiedIndex, (reuse_mask & 8) != 0);
     for(int c=0;c<2;++c) {
         auto& f=b.raw[c];
         king_safety_features(s,a,c,f);pressure_features(s,a,c,f);
@@ -163,7 +163,7 @@ public:
         :params_(p),reuse_mask_(reuse_mask){params_.validate();}
     int operator()(const rules::Snapshot& s) const {return evaluate(s,params_,reuse_mask_).total;}
     const EvaluationParameters& parameters() const {return params_;}
-    void set_reuse_mask(unsigned mask) { reuse_mask_=mask & 7; }
+    void set_reuse_mask(unsigned mask) { reuse_mask_=mask & 15; }
 private:
     EvaluationParameters params_;
     unsigned reuse_mask_=0;

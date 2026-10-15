@@ -14,6 +14,19 @@ inline constexpr auto SquareDistances = [] {
     }
     return table;
 }();
+// Precomputed next-square steps for all 81 squares and all directions (-2..2).
+// The actual occupied-square ray cutoff remains calculated at runtime.
+inline constexpr auto RayNextSquare = [] {
+    std::array<std::array<std::array<std::uint8_t,5>,5>,81> next{};
+    for (int from = 0; from < 81; ++from) {
+        for (int df = -2; df <= 2; ++df) for (int dr = -2; dr <= 2; ++dr) {
+            const int f = from/9 + df, r = from%9 + dr;
+            next[from][df+2][dr+2] = df == 0 && dr == 0
+                ? 255 : (f>=0 && f<9 && r>=0 && r<9 ? static_cast<std::uint8_t>(f*9+r) : 255);
+        }
+    }
+    return next;
+}();
 inline constexpr auto AllSquares = [] {
     std::array<std::uint8_t,81> squares{};
     for (int i=0;i<81;++i) squares[i]=i;
@@ -32,7 +45,7 @@ struct AttackMap {
     std::array<int, 2> kings{-1, -1};
     std::array<std::array<std::uint8_t,81>,2> occupied{};
     std::array<std::uint8_t,2> occupied_sizes{};
-    bool geometry_lookup=false, occupied_index=false;
+    bool geometry_lookup=false, occupied_index=false, ray_lookup=false;
     struct SquareRange {
         const std::uint8_t* first;
         const std::uint8_t* last;
@@ -53,8 +66,9 @@ struct AttackMap {
         return geometry_lookup ? distance(a,b)<=1 : near(a,b);
     }
 
-    explicit AttackMap(const rules::Snapshot& s, bool geometry=false, bool index=false)
-        : geometry_lookup(geometry),occupied_index(index) {
+    explicit AttackMap(const rules::Snapshot& s, bool geometry=false, bool index=false,
+                       bool ray_table=false)
+        : geometry_lookup(geometry),occupied_index(index),ray_lookup(ray_table) {
         for (auto& row : least) row.fill(NoAttacker);
         for (int from = 0; from < 81; ++from) {
             const auto& p = s.board[from];
@@ -65,8 +79,10 @@ struct AttackMap {
             const int value = p.kind == 8 ? NoAttacker : piece_value(p.kind, p.promoted);
             auto ray = [&](int df, int dr, bool sliding) {
                 bool through_king = false;
-                for (int x=f+df,y=r+dr; x>=0 && x<9 && y>=0 && y<9; x+=df,y+=dr) {
-                    const int to=x*9+y;
+                int x=f+df, y=r+dr;
+                int next_sq = ray_lookup ? int(RayNextSquare[from][df+2][dr+2]) : -1;
+                while (ray_lookup ? next_sq != 255 : (x>=0 && x<9 && y>=0 && y<9)) {
+                    const int to = ray_lookup ? next_sq : x*9+y;
                     const auto& q=s.board[to];
                     if (p.kind != 8) escape_control[side][to]=true;
                     if (!through_king) {
@@ -80,6 +96,8 @@ struct AttackMap {
                         if (!through_king && q.kind==8 && q.color!=p.color) through_king=true;
                         else break;
                     }
+                    if (ray_lookup) next_sq = RayNextSquare[to][df+2][dr+2];
+                    else { x += df; y += dr; }
                 }
             };
             const int fw=side==0 ? -1 : 1;
