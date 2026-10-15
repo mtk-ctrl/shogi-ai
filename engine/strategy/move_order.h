@@ -24,14 +24,57 @@ public:
     static std::vector<std::string> order(const rules::Snapshot& snapshot,
                                           const std::vector<std::string>& moves,
                                           const std::vector<unsigned char>* checks = nullptr,
-                                          bool reuse_workspace = false) {
+                                          bool reuse_workspace = false,
+                                          int tier_mode = 0, bool precomputed_rays = false) {
         if (checks && checks->size() != moves.size())
             throw std::invalid_argument("check flags must match the move list");
         // Source-square danger is the same for every candidate. Build it once
         // per position instead of rescanning the board for every move.
-        const AttackMap before_attacks(snapshot);
+        const AttackMap before_attacks(snapshot, false, false, precomputed_rays);
         std::vector<OrderedMove> scored;
         scored.reserve(moves.size());
+        // Trial-only two-tier ordering; all legal moves are retained and searched.
+        if (tier_mode != 0) {
+            for (std::size_t i = 0; i < moves.size(); ++i) {
+                const auto& m = moves[i];
+                int score = 0;
+                if (m.size() >= 4) {
+                    const int dst = (m[2] - '1') * 9 + m[3] - 'a';
+                    if (dst >= 0 && dst < 81) {
+                        const auto& captured = snapshot.board[dst];
+                        if (captured.kind && captured.kind != 8)
+                            score += 8000000 + 5000 * piece_value(captured.kind, captured.promoted);
+                    }
+                    if (m.size() == 5 && m[4] == '+') score += 100000;
+                    if (m[1] != '*') {
+                        const int src = (m[0] - '1') * 9 + m[1] - 'a';
+                        if (src >= 0 && src < 81
+                            && before_attacks.count[1 - int(snapshot.turn)][src] > 0)
+                            score += 3500000;
+                    }
+                }
+                if (checks && (*checks)[i]) score += 100000000;
+                scored.push_back({m, score, i});
+            }
+            std::stable_sort(scored.begin(), scored.end(), [](const auto& a, const auto& b) {
+                return a.score > b.score;
+            });
+            // Mode 1: full scoring of top 12, Mode 2: top 6 first.
+            const auto full = std::min<std::size_t>(tier_mode == 1 ? 12 : 6, scored.size());
+            rules::Snapshot after = snapshot;
+            for (std::size_t i = 0; i < full; ++i) {
+                const auto index = scored[i].original_index;
+                scored[i].score = score_move(snapshot, after, scored[i].move, before_attacks,
+                                               nullptr, checks ? (*checks)[index] : -1);
+            }
+            std::stable_sort(scored.begin(), scored.begin() + full, [](const auto& a, const auto& b) {
+                return a.score > b.score;
+            });
+            std::vector<std::string> result;
+            result.reserve(scored.size());
+            for (const auto& item : scored) result.push_back(item.move);
+            return result;
+        }
         if (reuse_workspace) {
             rules::Snapshot after = snapshot;
             std::vector<int> occupied;
@@ -61,7 +104,7 @@ public:
     // Public diagnostic/test entry point. The search path uses order(), which
     // reuses one AttackMap across all candidate moves.
     static int score_move(const rules::Snapshot& snapshot, const std::string& move) {
-        const AttackMap before_attacks(snapshot);
+        const AttackMap before_attacks(snapshot, false, false, precomputed_rays);
         return score_move(snapshot, move, before_attacks);
     }
 
