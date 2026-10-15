@@ -623,6 +623,7 @@ int main() {
                         << " reuse_mask " << strategy.reuse_mask()
                         << " legal_cache_hits " << stats.legal_cache_hits
                         << " legal_cache_misses " << stats.legal_cache_misses
+                        << " legal_cache_replacements " << stats.legal_cache_replacements
                         << " efficiency_mask " << strategy.efficiency_mask()
                         << " ordering_rule_checks " << stats.ordering_rule_checks
                         << " eval_cache_hits " << stats.eval_cache_hits

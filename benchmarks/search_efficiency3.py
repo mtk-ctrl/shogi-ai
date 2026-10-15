@@ -67,7 +67,7 @@ def main():
     for key in engines:
         mismatches = [r['position'] for r in fixed if any(
             r['measurements'][key].get(field) != r['measurements']['previous'].get(field)
-            for field in ['move', 'score_cp', 'score_mate', 'depth', 'nodes', 'qnodes', 'cutoffs'])]
+            for field in ['move', 'score_cp', 'score_mate', 'depth', 'nodes', 'qnodes', 'cutoffs', 'pv'])]
         ratios = [r['measurements']['previous']['elapsed_ms'] / r['measurements'][key]['elapsed_ms'] for r in fixed]
         summaries[key] = {
             'fixed_trials': len(fixed), 'fixed_mismatches': mismatches,

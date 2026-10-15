@@ -68,7 +68,7 @@ int main(){try {
         {"8k/9/9/9/9/9/2P6/9/K8 w - 1",{}},
         {rules::Position::start_sfen(),{"7g7f","3g3f"}},
     };
-    std::uint64_t hits=0,misses=0;
+    std::uint64_t hits=0,misses=0,replacements=0;
     for(const auto& entry:cases) {
         require(p.set(entry.first,{},error),"set search case");
         strategy::IterativeSearch baseline;baseline.set_reuse_mask(0);
@@ -88,14 +88,15 @@ int main(){try {
                     throw std::runtime_error("bounded search/PV/nodes differ");
                 }
                 require(p.sfen()==sf && p.history_key()==history,"search changed full root/history");
-                if(mask&1){hits+=search.last_stats().legal_cache_hits;misses+=search.last_stats().legal_cache_misses;}
+                if(mask&1){hits+=search.last_stats().legal_cache_hits;misses+=search.last_stats().legal_cache_misses;
+                    replacements+=search.last_stats().legal_cache_replacements;}
                 else require(search.last_stats().legal_cache_hits==0,"disabled cache used");
                 auto replay=p.clone();for(auto m:actual.pv)require(replay.play(m,error),"PV illegal");
             }
         }
     }
-    require(hits>0 && misses>2048,"test must exercise cache hits and slot replacement");
-    std::cout<<"PASS all 8 masks, repeated go epochs, exact search/PV/nodes and restoration; cache hits "<<hits<<" misses "<<misses<<'\n';
+    require(hits>0 && replacements>0,"test must exercise cache hits and slot replacement");
+    std::cout<<"PASS all 8 masks, repeated go epochs, exact search/PV/nodes and restoration; cache hits "<<hits<<" misses "<<misses<<" replacements "<<replacements<<'\n';
     require(p.set("4k4/9/9/9/9/9/9/9/4K4 b - 1",{},error),"set repetition");
     for(int cycle=0;cycle<2;++cycle)for(auto m:{"5i6i","5a6a","6i5i","6a5a"})require(p.play(m,error),"cycle");
     for(auto m:{"5i6i","5a6a","6i5i"})require(p.play(m,error),"partial cycle");

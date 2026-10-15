@@ -11,6 +11,7 @@
 #include <functional>
 #include <cstdint>
 #include <vector>
+#include <type_traits>
 
 namespace shogi::strategy {
 
@@ -76,6 +77,7 @@ public:
         std::uint64_t ordering_rule_checks = 0, eval_cache_hits = 0, lazy_snapshots = 0;
         std::uint64_t selective_usi_skipped = 0;
         std::uint64_t legal_cache_hits = 0, legal_cache_misses = 0;
+        std::uint64_t legal_cache_replacements = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -86,9 +88,9 @@ public:
     static bool is_mate_score(int value) { return std::abs(value) >= MateScore - MaxPly; }
 
     explicit BasicIterativeSearch(unsigned seed = 5489u, Evaluator evaluator = Evaluator{})
-        : rng_(seed), evaluator_(evaluator) {}
+        : rng_(seed), evaluator_(evaluator) { set_reuse_mask(reuse_mask_); }
     void set_seed(unsigned seed) { rng_.seed(seed); }
-    void set_evaluator(Evaluator e) { evaluator_ = e; }
+    void set_evaluator(Evaluator e) { evaluator_ = e; set_reuse_mask(reuse_mask_); }
     struct DirectResearch {
         std::string move, research_id;
         std::size_t ply_index = 0, pv_length = 0;
@@ -174,7 +176,10 @@ public:
     unsigned research_mask() const { return research_mask_; }
     void set_efficiency_mask(unsigned mask) { efficiency_mask_ = mask & 15; }
     unsigned efficiency_mask() const { return efficiency_mask_; }
-    void set_reuse_mask(unsigned mask) { reuse_mask_ = mask & 7; }
+    void set_reuse_mask(unsigned mask) {
+        reuse_mask_ = mask & 7;
+        if constexpr (std::is_same_v<Evaluator,FeatureEvaluator>) evaluator_.set_reuse_mask(reuse_mask_);
+    }
     unsigned reuse_mask() const { return reuse_mask_; }
 
     SearchResult choose(rules::Position& position, int max_depth, SearchControl& control,
@@ -387,6 +392,7 @@ private:
                     b.tokens = cell.tokens;
                     ++stats_.legal_cache_hits;
                 } else {
+                    if (cell.epoch == eval_epoch_) ++stats_.legal_cache_replacements;
                     b.tokens = p.legal_generated_moves();
                     cell.key = b.key;
                     cell.epoch = eval_epoch_;

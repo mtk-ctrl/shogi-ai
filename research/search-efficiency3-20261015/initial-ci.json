@@ -1,0 +1,13 @@
+{
+  "run": 38675991473,
+  "job": 116229597186,
+  "source": "830a336d4ed46ab259e7545825395cabfae09972",
+  "conclusion": "success",
+  "lines": [
+    "2026-10-15T03:25:35.4163303Z PASS all square pairs and missing-king geometry",
+    "2026-10-15T03:25:35.4164571Z PASS complete evaluation breakdown and attack/index identity: 500 legal positions, four parameter sets",
+    "2026-10-15T03:25:35.4165681Z PASS all 8 masks, repeated go epochs, exact search/PV/nodes and restoration; cache hits 1728 misses 6952",
+    "2026-10-15T03:25:35.4166610Z PASS all 8 masks preserve speculative and real repetition adjudication",
+    "2026-10-15T03:27:17.8789577Z PASS research default 0 and all 8 reuse combinations: exact choices/scores/depth/nodes/qnodes/cutoffs/PV and actual mask"
+  ]
+}

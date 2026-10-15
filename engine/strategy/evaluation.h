@@ -163,6 +163,7 @@ public:
         :params_(p),reuse_mask_(reuse_mask){params_.validate();}
     int operator()(const rules::Snapshot& s) const {return evaluate(s,params_,reuse_mask_).total;}
     const EvaluationParameters& parameters() const {return params_;}
+    void set_reuse_mask(unsigned mask) { reuse_mask_=mask & 7; }
 private:
     EvaluationParameters params_;
     unsigned reuse_mask_=0;
