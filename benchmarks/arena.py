@@ -66,7 +66,6 @@ SEARCH_STAT_NAMES = (
     "knowledge_probes", "knowledge_hits", "knowledge_promotions",
     "knowledge_disabled_repetition",
     "qnodes", "qcutoffs", "qlimit_leaves",
-    "search_threads",
     "research_mask", "generated_plays", "legal_batches", "order_reuse_hits", "qtt_probes", "qtt_hits", "qtt_cutoffs",
     "reuse_mask", "legal_cache_hits", "legal_cache_misses", "legal_cache_replacements",
     "efficiency_mask", "ordering_rule_checks", "eval_cache_hits", "lazy_snapshots", "selective_usi_skipped",
@@ -248,6 +247,11 @@ class Engine:
         self.path = str(Path(path).resolve())
         self.label = label
         self.options = dict(options or {})
+        self.ponder_enabled = usi_value(self.options.get("USI_Ponder", True)).lower() == "true"
+        self.pending_ponder = None
+        self.next_ponder = None
+        self.ponder_hits = 0
+        self.ponder_misses = 0
         self.go_command = go_command
         self.elapsed = []
         self.search_stats = []
@@ -290,18 +294,37 @@ class Engine:
                 return line
 
     def configure_game(self, seed):
+        if getattr(self, "pending_ponder", None):
+            self.send("stop")
+            self.wait_prefix("bestmove ", self.RESPONSE_TIMEOUT)
+            self.pending_ponder = None
         self.send(f"setoption name RandomSeed value {seed}")
         self.send("isready")
         self.wait_prefix("readyok", 10)
         self.send("usinewgame")
+        self.pending_ponder = None
+        self.next_ponder = None
 
     def bestmove(self, moves):
         started = time.monotonic()
-        command = "position startpos"
-        if moves:
-            command += " moves " + " ".join(moves)
-        self.send(command)
-        self.send(self.go_command)
+        prediction = getattr(self, "pending_ponder", None)
+        self.last_ponder_hit = bool(prediction and moves and moves[-1] == prediction)
+        if prediction:
+            self.pending_ponder = None
+            if self.last_ponder_hit:
+                self.ponder_hits = getattr(self, "ponder_hits", 0) + 1
+                self.send("ponderhit")
+            else:
+                self.ponder_misses = getattr(self, "ponder_misses", 0) + 1
+                self.send("stop")
+                # A mismatched speculative position must never supply our real move.
+                self.wait_prefix("bestmove ", self.RESPONSE_TIMEOUT)
+        if not self.last_ponder_hit:
+            command = "position startpos"
+            if moves:
+                command += " moves " + " ".join(moves)
+            self.send(command)
+            self.send(self.go_command)
 
         deadline = time.monotonic() + self.RESPONSE_TIMEOUT
         info = {}
@@ -319,17 +342,34 @@ class Engine:
                 merge_info_line(info, line)
                 continue
             if line.startswith("bestmove "):
-                token = line.split(maxsplit=1)[1].strip()
+                fields = line.split()
+                token = fields[1]
+                self.next_ponder = fields[3] if len(fields) == 4 and fields[2] == "ponder" else None
                 break
 
         elapsed_s = time.monotonic() - started
         self.elapsed.append(elapsed_s)
         self.last_search = dict(info)
         self.last_search["bestmove"] = token
+        self.last_search["ponder_hit"] = self.last_ponder_hit
         self.last_search["elapsed_ms"] = round(elapsed_s * 1000, 3)
         if info:
             self.search_stats.append(info)
         return token
+
+    def begin_ponder(self, moves, board):
+        if not getattr(self, "ponder_enabled", False) or not self.next_ponder:
+            return
+        try:
+            predicted = shogi.Move.from_usi(self.next_ponder)
+        except ValueError:
+            return
+        if predicted not in board.legal_moves:
+            return
+        self.pending_ponder = self.next_ponder
+        self.next_ponder = None
+        self.send("position startpos moves " + " ".join(moves + [self.pending_ponder]))
+        self.send("go ponder" + self.go_command[2:])
 
     def close(self):
         if self.proc.poll() is None:
@@ -406,6 +446,8 @@ def play_game(a, b, game_index, max_plies, seed_base, game_offset=0):
             color, reason = terminal
             winner = None if color is None else (black.label if color == shogi.BLACK else white.label)
             return result(winner, reason)
+        if hasattr(engine, "begin_ponder") and ply + 1 < max_plies:
+            engine.begin_ponder(moves, board)
 
     return result(None, "move_limit")
 
@@ -512,6 +554,8 @@ def main():
         "go_command": args.go_command,
         "response_watchdog_seconds": Engine.RESPONSE_TIMEOUT,
         "timing_note": "wall time includes position reconstruction and USI I/O; depth-limited and timed trials must be interpreted separately",
+        "ponder": {e.label: {"hits": e.ponder_hits, "misses": e.ponder_misses}
+                   for e in (a, b)},
         "games": args.games,
         "wins_a": wins_a,
         "wins_b": wins_b,
