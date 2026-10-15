@@ -1,0 +1,170 @@
+name: KUMOJI Ponder and Risk Research
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/ponder-risk-20261016]
+    paths:
+      - research/ponder-risk-20261016/START
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          path: candidate
+      - uses: actions/checkout@v5
+        with:
+          ref: 8894c0f843f57140e8d6986d4c3d576c68b343f8
+          path: baseline
+      - name: Build pinned baseline and research engine
+        run: |
+          mkdir -p build
+          (cd candidate && python3 scripts/build.py --output "$GITHUB_WORKSPACE/build/candidate")
+          (cd baseline && python3 scripts/build.py --output "$GITHUB_WORKSPACE/build/baseline")
+          cp baseline/position-knowledge-v1.tsv build/position-knowledge-v1.tsv
+          cp baseline/position-knowledge-v1.manifest.json build/position-knowledge-v1.manifest.json
+          test -s build/position-knowledge-v1.tsv
+          sha256sum build/* > build/hashes.txt
+          tar -czf engines.tgz build/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ponder-risk-engines
+          path: engines.tgz
+          if-no-files-found: error
+
+  match:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        mode: [A, B, C, D]
+        lane: [0, 1]
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          path: harness
+      - run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: ponder-risk-engines
+      - run: |
+          tar -xzf engines.tgz
+          chmod +x build/candidate build/baseline
+      - name: Run 25 matched games for one research condition
+        env:
+          MODE: \${{ matrix.mode }}
+          LANE: \${{ matrix.lane }}
+        run: |
+          mkdir -p results
+          A_ENGINE=build/candidate
+          RISK=false
+          PONDER=false
+          case "$MODE" in
+            A) A_ENGINE=build/baseline ;;
+            B) RISK=true ;;
+            C) PONDER=true ;;
+            D) RISK=true; PONDER=true ;;
+            *) exit 1 ;;
+          esac
+          A_OPTIONS="{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"RiskVerify\":$RISK,\"USI_Ponder\":$PONDER}"
+          B_OPTIONS='{"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}'
+          python3 harness/benchmarks/arena.py \
+            --engine-a "$A_ENGINE" --engine-b build/baseline \
+            --options-a "$A_OPTIONS" --options-b "$B_OPTIONS" \
+            --games 25 --game-offset "$((LANE * 25))" \
+            --seed "$((2026101610 + LANE * 100000))" \
+            --max-plies 300 --go-command 'go movetime 200' \
+            --output "results/$MODE-$LANE.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ponder-risk-\${{ matrix.mode }}-\${{ matrix.lane }}
+          path: results/
+          if-no-files-found: error
+
+  aggregate:
+    needs: [build, match]
+    if: always() && needs.match.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          path: harness
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: ponder-risk-[ABCD]-*
+          path: results
+          merge-multiple: true
+      - name: Verify and compare all four conditions
+        run: |
+          python3 - <<'PY'
+          import json, math
+          from pathlib import Path
+          all_results = {}
+          for mode in "ABCD":
+              files = sorted(Path("results").glob(f"{mode}-*.json"))
+              if len(files) != 2:
+                  raise SystemExit(f"{mode}: expected two result shards, got {len(files)}")
+              data = [json.loads(f.read_text()) for f in files]
+              games = sum(d["games"] for d in data)
+              wa = sum(d["wins_a"] for d in data)
+              wb = sum(d["wins_b"] for d in data)
+              draws = sum(d["draws"] for d in data)
+              invalid = sum(d.get("illegal_games", 0) for d in data)
+              if games != 50 or wa + wb + draws != games or invalid:
+                  raise SystemExit(f"{mode}: incorrect counts or illegal games")
+              p = (wa + draws / 2) / games
+              half_width = 1.96 * math.sqrt(max(0, p * (1 - p)) / games)
+              all_results[mode] = {
+                  "games": games, "wins_a": wa, "draws": draws, "wins_b": wb,
+                  "score_a": p, "approx_95pct": [max(0, p-half_width), min(1, p+half_width)],
+                  "illegal_games": invalid,
+                  "ponder_hits": sum(d.get("ponder", {}).get("A", {}).get("hits", 0) for d in data),
+                  "ponder_misses": sum(d.get("ponder", {}).get("A", {}).get("misses", 0) for d in data),
+                  "mean_wall_ms": sum(d["timing_ms"]["A"]["mean"] * d["timing_ms"]["A"]["moves"]
+                      for d in data) / max(1, sum(d["timing_ms"]["A"]["moves"] for d in data)),
+              }
+          Path("aggregate.json").write_text(json.dumps(all_results, ensure_ascii=False, indent=2)+"\n")
+          lines = ["# Ponder / Risk research", "", "| Mode | A wins | draws | B wins | A score | Hits/Misses |", "|---|---:|---:|---:|---:|---:|"]
+          for mode, r in all_results.items():
+              lines.append(f"| {mode} | {r['wins_a']} | {r['draws']} | {r['wins_b']} | {r['score_a']:.1%} | {r['ponder_hits']}/{r['ponder_misses']} |")
+          lines += ["", "A baseline vs baseline; B risky pawn-drop verification; C ponder; D both.", "Pinned baseline commit: 8894c0f843f57140e8d6986d4c3d576c68b343f8."]
+          report = "\n".join(lines) + "\n"
+          Path("RESULTS.md").write_text(report)
+          print(report)
+          PY
+          cat RESULTS.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Archive actual played moves by experimental condition
+        run: |
+          mkdir -p played-archive
+          for MODE in A B C D; do
+            A_REF=research/ponder-risk-20261016
+            if [ "$MODE" = A ]; then A_REF=8894c0f843f57140e8d6986d4c3d576c68b343f8; fi
+            python3 harness/tools/records/archive_played_moves.py \
+              --input results/"$MODE"-*.json \
+              --output-dir "played-archive/$MODE" \
+              --run-id "$GITHUB_RUN_ID" \
+              --ref-a "$A_REF" --ref-b 8894c0f843f57140e8d6986d4c3d576c68b343f8
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ponder-risk-summary
+          path: |
+            aggregate.json
+            RESULTS.md
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ponder-risk-played-archive
+          path: played-archive/
+          retention-days: 90
+          if-no-files-found: error
