@@ -42,6 +42,8 @@ for run in sorted({a['run'] for a in artifacts}):
     records = {(g['source_id'], g['source_game_index']): g for g in archive}
     stats = {side: collections.defaultdict(list) for side in ['A','B']}
     wins = collections.Counter(); blacks = collections.Counter()
+    color_results = {'A_black':collections.Counter(),'A_white':collections.Counter()}
+    score_statuses = collections.Counter()
     plies = 0; games = 0; long_max = 0
     mask = args.efficiency_mask
     assert summary['options_a']['SearchEfficiencyMask'] == mask
@@ -49,6 +51,8 @@ for run in sorted({a['run'] for a in artifacts}):
     binaries = None
     for index, (name, (content, data)) in enumerate(sorted(raw.items())):
         source = sources[name]
+        for key, value in source['metadata'].items(): assert data[key] == value
+        shard_wins = collections.Counter()
         assert hashlib.sha256(content).hexdigest() == source['source_id']
         q, remainder = divmod(100, args.shards)
         expected_games = q + (index < remainder)
@@ -78,15 +82,34 @@ for run in sorted({a['run'] for a in artifacts}):
             assert [m['move'] for m in compressed['moves']] == game['moves']
             assert game['winner'] == compressed['winner'] and game['final_sfen'] == compressed['final_sfen']
             assert len(game['moves']) == game['plies'] == len(game['move_records'])
-            wins[game['winner']] += 1; blacks['A' if game['a_black'] else 'B'] += 1
+            color_results['A_black' if game['a_black'] else 'A_white'][str(game['winner'])] += 1
+            wins[game['winner']] += 1; shard_wins[game['winner']] += 1; blacks['A' if game['a_black'] else 'B'] += 1
             board = shogi.Board(); long = {'A':[], 'B':[]}
             for m, record, saved in zip(game['moves'], game['move_records'], compressed['moves']):
                 assert m == record['move'] == saved['move']
+                for field, value in saved.items():
+                    if field != 'search': assert record.get(field) == value
+                score_statuses[saved['search']['score_status']] += 1
+                original_search = record['search']
+                for field, value in saved['search'].items():
+                    if field == 'score_status':
+                        nscore = sum(original_search.get(f) is not None for f in ['score_cp_stm','score_mate_stm'])
+                        assert value == ('ambiguous' if nscore == 2 else 'recorded' if nscore else 'not_recorded')
+                    else: assert original_search.get(field) == value
+                assert 'pv' not in saved['search']
                 parsed = shogi.Move.from_usi(m)
                 assert board.is_legal(parsed), (run, name, i, m)
+                assert record['ply'] == board.move_number
+                assert record['side_to_move'] == ('black' if board.turn == shogi.BLACK else 'white')
+                assert record['in_check_before'] == board.is_check()
+                assert record['legal_moves_before'] == sum(1 for _ in board.legal_moves)
+                assert record['is_capture'] == (board.piece_at(parsed.to_square) is not None)
+                assert record['is_promotion'] == bool(parsed.promotion)
+                assert record['is_drop'] == (parsed.drop_piece_type is not None)
                 side = record['engine']
                 assert side == ('A' if (board.turn == shogi.BLACK) == game['a_black'] else 'B')
                 board.push(parsed)
+                assert record['gave_check'] == board.is_check()
                 search = record['search']
                 assert search['phase_version'] == 1
                 if 'research_mask' in search: assert search['research_mask'] == 23
@@ -101,6 +124,13 @@ for run in sorted({a['run'] for a in artifacts}):
                 assert seq == list(range(1, len(seq)+1)) and len(seq) <= 10
                 long_max = max(long_max, len(seq))
             plies += game['plies']; games += 1
+        assert shard_wins['A'] == data['wins_a'] and shard_wins['B'] == data['wins_b']
+        assert data['draws'] == data['games'] - shard_wins['A'] - shard_wins['B']
+        assert abs(data['average_plies'] - sum(g['plies'] for g in data['details']) / data['games']) < 1e-8
+    assert score_statuses['recorded'] == manifest['scored_plies']
+    assert score_statuses['ambiguous'] == manifest['ambiguous_score_plies']
+    assert score_statuses['not_recorded'] == manifest['missing_score_plies']
+    assert manifest['phase_recorded_plies'] == manifest['plies'] and manifest['phase_missing_plies'] == 0
     assert games == summary['games'] == manifest['games'] == 100
     assert plies == manifest['plies'] and wins['A'] == summary['wins_a'] and wins['B'] == summary['wins_b']
     assert blacks == {'A':50, 'B':50}
@@ -116,7 +146,7 @@ for run in sorted({a['run'] for a in artifacts}):
                     'games':games,'plies':plies,'a_black':blacks['A'],'illegal_replay':0,
                     'max_long_uses':long_max,'summary':summary,'telemetry':observed,
                     'archive_manifest':{k:v for k,v in manifest.items() if k!='sources'},
-                    'binary_sha256':expected_hashes,
+                    'binary_sha256':expected_hashes,'color_results':color_results,'score_statuses':score_statuses,
                     'artifacts':[{k:v for k,v in a.items() if k!='path'} for a in group]}
     print(run, 'PASS', wins, 'plies', plies, flush=True)
 Path(args.output).write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n')

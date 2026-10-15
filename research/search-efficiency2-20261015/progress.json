@@ -1,5 +1,5 @@
 {
-  "stage": "Selected8 CI successful; single100-game match all9 shards actually started",
+  "stage": "Research completed: selected8 CI, single100 games and full artifact/legal audit passed",
   "official_main": "6445d54f23e7cfffd7cd36b62490fc42f9c142e1",
   "measured_source": "e7f357dc665b55950c5637f54850576945eb686c",
   "research_pr": 263,
@@ -9,11 +9,7 @@
   "median_speedup": 1.8491279976153598,
   "total_speedup": 2.0307807097179915,
   "mismatches": 0,
-  "remaining": [
-    "single100-game independent comparison withseed2026101591",
-    "artifact/raw/archive legality audit",
-    "GitHub/Addness final report"
-  ],
+  "remaining": [],
   "formal_adoption": "Not authorized for this new candidate; official v2.0.14 remains",
   "candidate_source": "115c53d0d508e093ca161ec8d650600a8f421086",
   "request_commit": "e37d5a067101a319eddb872f3d2469ef46d30ed7",
@@ -35,5 +31,22 @@
   "quick_ci": 38670789017,
   "quick_ci_conclusion": "success",
   "document_ci": 38670794115,
-  "document_ci_conclusion": "success"
+  "document_ci_conclusion": "success",
+  "match_conclusion": "success",
+  "games": 100,
+  "wins": 64,
+  "draws": 2,
+  "losses": 34,
+  "score": 0.65,
+  "approx_95pct": [
+    0.5570812236956438,
+    0.7429187763043562
+  ],
+  "plies": 10990,
+  "illegal": 0,
+  "phase_recorded_plies": 10990,
+  "score_missing_plies": 402,
+  "recommendation": "Recommend SelectiveUSI only; new formal adoption is owner decision",
+  "artifacts_expire": "2027-01-13",
+  "long_term_transfer": false
 }
