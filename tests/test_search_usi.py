@@ -174,7 +174,17 @@ try:
     send('isready'); until('readyok', 1)
     send('position startpos moves 7g7f'); send('isready'); until('readyok', 1); no_best()
     send('go searchmoves 3c3d depth 2'); best, _ = until('bestmove ')
-    assert best == 'bestmove 3c3d'; no_best()
+    # USI permits a legal predicted reply after 'bestmove <move>'.
+    tokens = best.split()
+    assert tokens[:2] == ['bestmove', '3c3d'], best
+    assert len(tokens) in (2, 4), best
+    if len(tokens) == 4:
+        assert tokens[2] == 'ponder', best
+        expected = shogi.Board()
+        expected.push_usi('7g7f')
+        expected.push_usi('3c3d')
+        assert shogi.Move.from_usi(tokens[3]) in expected.legal_moves, best
+    no_best()
     print('PASS responsive isready/stop/ponderhit, no duplicate or stale bestmove')
     send('position startpos moves 7g7f 7g7f'); until('info string illegal move')
     send('go'); best, _ = until('bestmove '); assert best == 'bestmove resign'
