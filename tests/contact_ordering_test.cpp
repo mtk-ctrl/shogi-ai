@@ -106,6 +106,11 @@ int main() {
             for (const auto& token : tokens) {
                 moves.push_back(position.generated_move_usi(token));
                 checks.push_back(position.generated_move_gives_check(token));
+                const auto& usi = moves.back();
+                const int dst = (usi[2]-'1')*9 + usi[3]-'a';
+                require(position.generated_move_is_capture_or_promotion(token)
+                        == (snapshot.board[dst].kind != 0 || (usi.size()==5 && usi[4]=='+')),
+                        "token capture/promotion metadata disagrees with independent board/string test");
                 require(position.play_generated_move(token, error), error);
                 require(checks.back() == position.in_check(), "token check query disagrees with played board");
                 bool rejected = false;

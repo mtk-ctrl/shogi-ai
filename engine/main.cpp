@@ -105,7 +105,7 @@ int main() {
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
                       << "option name SearchResearchMask type spin default " << shogi::strategy::DefaultSearchResearchMask << " min 0 max 31\n"
-                      << "option name SearchEfficiencyMask type spin default " << shogi::strategy::DefaultSearchEfficiencyMask << " min 0 max 7\n"
+                      << "option name SearchEfficiencyMask type spin default " << shogi::strategy::DefaultSearchEfficiencyMask << " min 0 max 15\n"
                       << "option name Quiescence type check default true\n"
                       << "option name MateAssist type check default true\n"
                       << "option name MateLearning type check default true\n"
@@ -623,6 +623,7 @@ int main() {
                         << " ordering_rule_checks " << stats.ordering_rule_checks
                         << " eval_cache_hits " << stats.eval_cache_hits
                         << " lazy_snapshots " << stats.lazy_snapshots
+                        << " selective_usi_skipped " << stats.selective_usi_skipped
                         << " generated_plays " << stats.generated_plays
                         << " legal_batches " << stats.legal_batches
                         << " order_reuse_hits " << stats.order_reuse_hits
@@ -675,7 +676,7 @@ int main() {
                     try {
                         std::size_t used = 0;
                         const int mask = std::stoi(value, &used);
-                        if (used == value.size() && mask >= 0 && mask <= 7)
+                        if (used == value.size() && mask >= 0 && mask <= 15)
                             strategy.set_efficiency_mask(static_cast<unsigned>(mask));
                     } catch (const std::exception&) {}
                 } else if (name == "Quiescence") {

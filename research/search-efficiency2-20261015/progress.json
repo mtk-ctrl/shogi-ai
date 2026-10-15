@@ -1,0 +1,21 @@
+{
+  "stage": "SelectiveUSI correctness passed; expanded screening not started",
+  "official_main": "6445d54f23e7cfffd7cd36b62490fc42f9c142e1",
+  "prior_source": "2f9547748ac03030ef8b4ef1fd900936e3583d57",
+  "research_pr": 263,
+  "local_checks": [
+    "400 positions / 16386 legal moves: native check, capture/promotion metadata, ordering identity, stale tokens and history restoration",
+    "All 16 efficiency masks exact to official bounded searches including nodes/qnodes/cutoffs/PV",
+    "Adopted default SearchResearchMask23 and all32 research masks passed",
+    "USI search/time/node/stop/long-think passed",
+    "163 knowledge decisions passed",
+    "turn phase telemetry passed"
+  ],
+  "remaining": [
+    "expanded 16-mask screening",
+    "24-position x3 confirmation for at most3 candidates",
+    "100 games only if median >=1.05 and exact regression",
+    "latest source CI and final evidence"
+  ],
+  "formal_adoption": "Not authorized for this new candidate; official v2.0.14 remains"
+}

@@ -74,6 +74,7 @@ public:
         std::uint64_t generated_plays = 0, legal_batches = 0, order_reuse_hits = 0;
         std::uint64_t qtt_probes = 0, qtt_hits = 0, qtt_cutoffs = 0;
         std::uint64_t ordering_rule_checks = 0, eval_cache_hits = 0, lazy_snapshots = 0;
+        std::uint64_t selective_usi_skipped = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -170,7 +171,7 @@ public:
     const Stats& last_stats() const { return stats_; }
     void set_research_mask(unsigned mask) { research_mask_ = mask & 31; }
     unsigned research_mask() const { return research_mask_; }
-    void set_efficiency_mask(unsigned mask) { efficiency_mask_ = mask & 7; }
+    void set_efficiency_mask(unsigned mask) { efficiency_mask_ = mask & 15; }
     unsigned efficiency_mask() const { return efficiency_mask_; }
 
     SearchResult choose(rules::Position& position, int max_depth, SearchControl& control,
@@ -359,6 +360,9 @@ private:
         std::uint64_t key = 0;
         std::vector<rules::GeneratedMove> tokens;
         std::vector<std::string> strings;
+        bool tactical_ready = false;
+        std::vector<std::string> tactical;
+        std::vector<std::size_t> tactical_indexes;
     };
     std::array<LegalBatch, MaxPly + 1> legal_batches_{};
     const LegalBatch& batch(const rules::Position& p, int ply) {
@@ -368,6 +372,9 @@ private:
             b.key = p.hash_key();
             b.tokens = p.legal_generated_moves();
             b.strings.clear();
+            b.tactical_ready = false;
+            b.tactical.clear();
+            b.tactical_indexes.clear();
             b.valid = true;
             ++stats_.legal_batches;
         }
@@ -387,6 +394,20 @@ private:
         }
         return p.legal_moves();
     }
+    std::vector<std::string> legal_tactical(const rules::Position& p, int ply) {
+        batch(p, ply);
+        auto& b = legal_batches_.at(ply);
+        if (!b.tactical_ready) {
+            for (std::size_t i = 0; i < b.tokens.size(); ++i) {
+                if (!p.generated_move_is_capture_or_promotion(b.tokens[i])) continue;
+                b.tactical.push_back(b.strings.empty() ? p.generated_move_usi(b.tokens[i]) : b.strings[i]);
+                b.tactical_indexes.push_back(i);
+            }
+            if (b.strings.empty()) stats_.selective_usi_skipped += b.tokens.size() - b.tactical.size();
+            b.tactical_ready = true;
+        }
+        return b.tactical;
+    }
     rules::Status node_status(const rules::Position& p, int ply) {
         if (!(research_mask_ & SharedLegal)) return p.status();
         // Repetition remains history-sensitive and is never cached.
@@ -401,9 +422,17 @@ private:
         std::string error;
         if (research_mask_ & GeneratedPlay) {
             const auto& b = batch(position, ply);
-            const auto it = std::find(b.strings.begin(), b.strings.end(), move);
-            if (it == b.strings.end()) throw std::logic_error("move absent from current legal batch");
-            if (!position.play_generated_move(b.tokens[it - b.strings.begin()], error))
+            std::size_t index;
+            if (!b.strings.empty()) {
+                const auto it = std::find(b.strings.begin(), b.strings.end(), move);
+                if (it == b.strings.end()) throw std::logic_error("move absent from current legal batch");
+                index = it - b.strings.begin();
+            } else {
+                const auto it = std::find(b.tactical.begin(), b.tactical.end(), move);
+                if (it == b.tactical.end()) throw std::logic_error("move absent from current tactical batch");
+                index = b.tactical_indexes[it - b.tactical.begin()];
+            }
+            if (!position.play_generated_move(b.tokens[index], error))
                 throw std::logic_error(error);
             ++stats_.generated_plays;
         } else if (!position.play_generated_legal(move, error)) throw std::logic_error(error);
@@ -581,8 +610,9 @@ private:
             if (maximizing) alpha = std::max(alpha, best.value);
             else beta = std::min(beta, best.value);
         }
-        auto moves = legal(p, ply);
-        if (!checked) {
+        const bool selective = !checked && (efficiency_mask_ & SelectiveUSI);
+        auto moves = selective ? legal_tactical(p, ply) : legal(p, ply);
+        if (!checked && !selective) {
             const auto& snapshot = get_snapshot();
             moves.erase(std::remove_if(moves.begin(), moves.end(), [&](const auto& move) {
                 const int dst = (move[2] - '1') * 9 + move[3] - 'a';

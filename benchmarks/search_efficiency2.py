@@ -13,7 +13,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--engine', required=True)
     ap.add_argument('--baseline', required=True)
-    ap.add_argument('--masks', default='0,1,2,3,4,5,6,7')
+    ap.add_argument('--masks', default='0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15')
     ap.add_argument('--positions', type=int, default=24)
     ap.add_argument('--repeats', type=int, default=3)
     ap.add_argument('--depth', type=int, default=2)

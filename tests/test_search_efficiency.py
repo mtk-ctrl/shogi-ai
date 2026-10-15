@@ -38,7 +38,7 @@ e = Engine(sys.argv[1], 'efficiency-regression', options)
 reference = Engine(sys.argv[2], 'official-v2014', options) if len(sys.argv)>2 else None
 try:
     expected = [run(reference, *case)[0] for case in cases] if reference else None
-    for mask in range(8):
+    for mask in range(16):
         e.send(f'setoption name SearchEfficiencyMask value {mask}')
         observed = []
         for sf, command in cases:
@@ -47,7 +47,7 @@ try:
             observed.append(signature)
         if expected is None: expected = observed
         assert observed == expected, (mask, observed, expected)
-    print('PASS all 8 efficiency combinations: exact choices/scores/depth/nodes/qnodes/cutoffs/PV and actual mask')
+    print('PASS all 16 efficiency combinations: exact choices/scores/depth/nodes/qnodes/cutoffs/PV and actual mask')
 finally:
     e.close()
     if reference: reference.close()
