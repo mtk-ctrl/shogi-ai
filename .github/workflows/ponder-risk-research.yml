@@ -44,10 +44,10 @@ jobs:
     timeout-minutes: 90
     strategy:
       fail-fast: false
-      max-parallel: 8
+      max-parallel: 20
       matrix:
         mode: [A, B, C, D]
-        lane: [0, 1]
+        lane: [0, 1, 2, 3, 4]
     steps:
       - uses: actions/checkout@v5
         with:
@@ -59,7 +59,7 @@ jobs:
       - run: |
           tar -xzf engines.tgz
           chmod +x build/candidate build/baseline
-      - name: Run 25 matched games for one research condition
+      - name: Run 10 matched games for one research condition
         env:
           MODE: ${{ matrix.mode }}
           LANE: ${{ matrix.lane }}
@@ -80,7 +80,7 @@ jobs:
           python3 harness/benchmarks/arena.py \
             --engine-a "$A_ENGINE" --engine-b build/baseline \
             --options-a "$A_OPTIONS" --options-b "$B_OPTIONS" \
-            --games 25 --game-offset "$((LANE * 25))" \
+            --games 10 --game-offset "$((LANE * 10))" \
             --seed "$((2026101610 + LANE * 100000))" \
             --max-plies 300 --go-command 'go movetime 200' \
             --output "results/$MODE-$LANE.json"
@@ -112,8 +112,8 @@ jobs:
           all_results = {}
           for mode in "ABCD":
               files = sorted(Path("results").glob(f"{mode}-*.json"))
-              if len(files) != 2:
-                  raise SystemExit(f"{mode}: expected two result shards, got {len(files)}")
+              if len(files) != 5:
+                  raise SystemExit(f"{mode}: expected five result shards, got {len(files)}")
               data = [json.loads(f.read_text()) for f in files]
               games = sum(d["games"] for d in data)
               wa = sum(d["wins_a"] for d in data)
