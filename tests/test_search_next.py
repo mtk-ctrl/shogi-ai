@@ -1,4 +1,4 @@
-"""Candidate-only search efficiency switches: correctness, bounded scores, PV legality."""
+"""Adopted tier-6 ordering and other diagnostic toggles: legality, score, PV."""
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -35,7 +35,7 @@ def run(engine, sfen, command):
         board.push(parsed)
     return move, info
 
-engine = Engine(sys.argv[1], 'next-experimental', options)
+engine = Engine(sys.argv[1], 'next-adopted', {**options, 'SearchNextMask': 0})
 try:
     baseline = [run(engine, *case) for case in cases]
     signature = lambda pair: (
