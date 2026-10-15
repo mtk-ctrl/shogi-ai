@@ -61,8 +61,8 @@ jobs:
           chmod +x build/candidate build/baseline
       - name: Run 25 matched games for one research condition
         env:
-          MODE: \${{ matrix.mode }}
-          LANE: \${{ matrix.lane }}
+          MODE: ${{ matrix.mode }}
+          LANE: ${{ matrix.lane }}
         run: |
           mkdir -p results
           A_ENGINE=build/candidate
@@ -86,7 +86,7 @@ jobs:
             --output "results/$MODE-$LANE.json"
       - uses: actions/upload-artifact@v4
         with:
-          name: ponder-risk-\${{ matrix.mode }}-\${{ matrix.lane }}
+          name: ponder-risk-${{ matrix.mode }}-${{ matrix.lane }}
           path: results/
           if-no-files-found: error
 
