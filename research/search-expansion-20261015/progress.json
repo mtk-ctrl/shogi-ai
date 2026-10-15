@@ -1,6 +1,6 @@
 {
-  "state": "all300-audited-candidate23-ci-pending",
-  "official_engine": "KUMOJI v2.0.13/profile47",
+  "state": "owner-adopted-v2.0.14-integration-in-progress",
+  "official_engine": "KUMOJI v2.0.14/profile47",
   "research_source": "4d8a4b9723c21c6163cad03358ba35e4b93d4687",
   "previous_candidate": "7ab3dab9b909503d340fb1f374da09f8d0e2e209",
   "runs": [
@@ -48,13 +48,25 @@
   "final_request_commit": "17d588778b9102cb8665ecb3dd1d382dd4d8d976",
   "final_games": 100,
   "final_shards": 10,
-  "final_results": [53, 2, 45],
+  "final_results": [
+    53,
+    2,
+    45
+  ],
   "final_score": 0.54,
-  "final_approx95pct": [0.4428151069643876, 0.6371848930356124],
+  "final_approx95pct": [
+    0.4428151069643876,
+    0.6371848930356124
+  ],
   "final_audited_plies": 11492,
   "total_audited_plies": 33580,
   "candidate_default": 23,
   "quick_ci_all32_added": true,
-  "latest_candidate_ci": "pending",
-  "recommendation": "promising efficiency candidate; strength-based adoption on hold; owner decides"
+  "latest_candidate_ci": "success",
+  "recommendation": "owner explicitly adopted selected profile23 on 2026-10-15 after uncertainty was reported",
+  "owner_adoption_quote": "正式版として採用してエンジンを更新してください",
+  "owner_adoption_date": "2026-10-15",
+  "quick_ci_run": 38650963142,
+  "document_ci_run": 38650968240,
+  "production_validation": "local build/default/all32/USI/knowledge/phase/boundary/docs passed; GitHub CI pending"
 }

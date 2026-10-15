@@ -19,8 +19,11 @@ cases = [
      'go searchmoves 5c5b 5i4i depth 3', '5c5b', None),
 ]
 try:
-    for mask in range(32):
-        e.send(f'setoption name SearchResearchMask value {mask}')
+    # First exercise the adopted default without any mask override.
+    for override in [None, *range(32)]:
+        mask = 23 if override is None else override
+        if override is not None:
+            e.send(f'setoption name SearchResearchMask value {mask}')
         for sf, command, expected_move, expected_cp in cases:
             e.configure_game(20261015)
             e.send('position sfen ' + sf)
@@ -41,6 +44,6 @@ try:
             if expected_move: assert move == expected_move, (mask, sf, move)
             if expected_cp is not None: assert info['score_cp'] == expected_cp, (mask, sf, info)
             if '5c5b' in command: assert info['score_mate'] == 3, (mask, info)
-    print('PASS all 32 combinations: poisoned pawn, both-color scores, mate distance, legal PV, actual mask')
+    print('PASS adopted default 23 and all 32 combinations: poisoned pawn, both-color scores, mate distance, legal PV, actual mask')
 finally:
     e.close()
