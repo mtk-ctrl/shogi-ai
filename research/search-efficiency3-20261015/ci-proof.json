@@ -1,0 +1,84 @@
+{
+  "source": "9d1a96d5ffa35bd059a65030c61191a039dcb314",
+  "quick": {
+    "run": 38676478541,
+    "job": 116231142040,
+    "conclusion": "success",
+    "lines": [
+      "2026-10-15T03:31:07.1303551Z PASS all square pairs and missing-king geometry",
+      "2026-10-15T03:31:07.1304767Z PASS complete evaluation breakdown and attack/index identity: 500 legal positions, four parameter sets",
+      "2026-10-15T03:31:07.1306013Z PASS all 8 masks, repeated go epochs, exact search/PV/nodes and restoration; cache hits 1728 misses 6952 replacements 904",
+      "2026-10-15T03:31:07.1307104Z PASS all 8 masks preserve speculative and real repetition adjudication",
+      "2026-10-15T03:32:45.2559829Z PASS adopted default 23 and all 32 combinations: poisoned pawn, both-color scores, mate distance, legal PV, actual mask",
+      "2026-10-15T03:32:45.4917641Z PASS adopted default 8 and all 16 efficiency combinations: exact choices/scores/depth/nodes/qnodes/cutoffs/PV and actual mask",
+      "2026-10-15T03:32:45.6964693Z PASS selected research default 6 and all 8 reuse combinations: exact choices/scores/depth/nodes/qnodes/cutoffs/PV and actual mask"
+    ]
+  },
+  "documents": {
+    "run": 38676482667,
+    "conclusion": "success"
+  },
+  "records": {
+    "run": 38676482575,
+    "conclusion": "success"
+  },
+  "match_build": {
+    "job": 116231772518,
+    "run": 38676667846,
+    "lines": [
+      "2026-10-15T03:31:13.3582380Z   ref: 9d1a96d5ffa35bd059a65030c61191a039dcb314",
+      "2026-10-15T03:31:13.6188412Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin 9d1a96d5ffa35bd059a65030c61191a039dcb314",
+      "2026-10-15T03:31:13.9653891Z  * branch            9d1a96d5ffa35bd059a65030c61191a039dcb314 -> FETCH_HEAD",
+      "2026-10-15T03:31:13.9767441Z [command]/usr/bin/git checkout --progress --force 9d1a96d5ffa35bd059a65030c61191a039dcb314",
+      "2026-10-15T03:31:14.0273993Z Note: switching to '9d1a96d5ffa35bd059a65030c61191a039dcb314'.",
+      "2026-10-15T03:31:14.0295711Z HEAD is now at 9d1a96d research: select geometry and occupied indexing, default reuse mask6",
+      "2026-10-15T03:31:14.0342328Z [command]/usr/bin/git log -1 --format=%H",
+      "2026-10-15T03:31:14.0371146Z 9d1a96d5ffa35bd059a65030c61191a039dcb314",
+      "2026-10-15T03:31:14.0783294Z   ref: d4b46b9a3fed540c84fae3f2183aed454fa62035",
+      "2026-10-15T03:31:14.3039436Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin d4b46b9a3fed540c84fae3f2183aed454fa62035",
+      "2026-10-15T03:31:14.5991220Z  * branch            d4b46b9a3fed540c84fae3f2183aed454fa62035 -> FETCH_HEAD",
+      "2026-10-15T03:31:14.6089029Z [command]/usr/bin/git checkout --progress --force d4b46b9a3fed540c84fae3f2183aed454fa62035",
+      "2026-10-15T03:31:14.6573606Z Note: switching to 'd4b46b9a3fed540c84fae3f2183aed454fa62035'.",
+      "2026-10-15T03:31:14.6597112Z HEAD is now at d4b46b9 KUMOJI v2.0.15: adopt selective tactical USI conversion",
+      "2026-10-15T03:31:14.6628733Z [command]/usr/bin/git log -1 --format=%H",
+      "2026-10-15T03:31:14.6655725Z d4b46b9a3fed540c84fae3f2183aed454fa62035",
+      "2026-10-15T03:31:15.2569596Z HEAD is now at 59567f7 research: request one 100-game mask6 comparison against v2.0.15",
+      "2026-10-15T03:31:15.2600667Z [command]/usr/bin/git log -1 --format=%H",
+      "2026-10-15T03:31:15.2824801Z \u001b[36;1msha256sum build/engine-a build/engine-b\u001b[0m",
+      "2026-10-15T03:31:15.2838373Z \u001b[36;1msha256sum build/position-knowledge-v1.tsv build/position-knowledge-v1.manifest.json\u001b[0m",
+      "2026-10-15T03:31:16.0568048Z HEAD is now at c1b80ea - progress.bin\u306e\u8aad\u307f\u8fbc\u307f\u306b\u5931\u6557\u3057\u305f\u3068\u304d\u306bnn.bin\u306eFileNotFound\u304c\u51fa\u3066\u3044\u305f\u306e\u4fee\u6b63\u3002",
+      "2026-10-15T03:31:41.0823507Z HEAD is now at c1b80ea - progress.bin\u306e\u8aad\u307f\u8fbc\u307f\u306b\u5931\u6557\u3057\u305f\u3068\u304d\u306bnn.bin\u306eFileNotFound\u304c\u51fa\u3066\u3044\u305f\u306e\u4fee\u6b63\u3002",
+      "2026-10-15T03:32:02.5391098Z 6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c  build/position-knowledge-v1.tsv"
+    ]
+  },
+  "formal_diff": [
+    {
+      "path": ".github/match-request.json",
+      "status": "modified"
+    },
+    {
+      "path": "benchmarks/baseline_ref.txt",
+      "status": "modified"
+    },
+    {
+      "path": "docs/decisions/2026-10-15_\u9759\u6b62\u63a2\u7d22\u306e\u5fc5\u8981\u624b\u6587\u5b57\u5217\u5316\u6b63\u5f0f\u63a1\u7528.md",
+      "status": "modified"
+    },
+    {
+      "path": "journal/2026-10-15_03_\u5fc5\u8981\u624b\u6587\u5b57\u5217\u5316\u6b63\u5f0f\u63a1\u7528_v2.0.15.md",
+      "status": "modified"
+    },
+    {
+      "path": "research/search-efficiency2-20261015/ADOPTION-VERIFICATION.json",
+      "status": "added"
+    },
+    {
+      "path": "research/search-efficiency2-20261015/RESULTS.md",
+      "status": "modified"
+    },
+    {
+      "path": "research/search-efficiency2-20261015/progress.json",
+      "status": "modified"
+    }
+  ]
+}

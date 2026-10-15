@@ -1,0 +1,329 @@
+{
+  "38676667846": {
+    "reuse_mask": 6,
+    "efficiency_mask": 8,
+    "research_mask": 23,
+    "candidate_ref": "9d1a96d5ffa35bd059a65030c61191a039dcb314",
+    "baseline_ref": "d4b46b9a3fed540c84fae3f2183aed454fa62035",
+    "wins": 51,
+    "draws": 1,
+    "losses": 48,
+    "score": 0.515,
+    "approx_95pct": [
+      0.4170445555831168,
+      0.6129554444168832
+    ],
+    "games": 100,
+    "plies": 10935,
+    "a_black": 50,
+    "illegal_replay": 0,
+    "max_long_uses": 10,
+    "summary": {
+      "ref_a": "9d1a96d5ffa35bd059a65030c61191a039dcb314",
+      "ref_b": "d4b46b9a3fed540c84fae3f2183aed454fa62035",
+      "go_command": "go movetime 200",
+      "options_a": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+        "OpeningRandomNonLance": true,
+        "SearchResearchMask": 23,
+        "SearchEfficiencyMask": 8,
+        "SearchReuseMask": 6
+      },
+      "options_b": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+        "OpeningRandomNonLance": true,
+        "SearchResearchMask": 23,
+        "SearchEfficiencyMask": 8
+      },
+      "games": 100,
+      "wins_a": 51,
+      "draws": 1,
+      "wins_b": 48,
+      "score_a": 0.515,
+      "score_a_approx_95pct": [
+        0.41704410992696767,
+        0.6129558900730324
+      ],
+      "average_plies": 109.35,
+      "illegal_games": 0,
+      "shards": 9,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      }
+    },
+    "telemetry": {
+      "A": {
+        "elapsed_ms": {
+          "n": 5468,
+          "total": 1785849.719,
+          "mean": 326.6001680687637,
+          "max": 991.623
+        },
+        "depth": {
+          "n": 5266,
+          "total": 14756,
+          "mean": 2.80212685150019,
+          "max": 6
+        },
+        "nodes": {
+          "n": 5316,
+          "total": 300812404,
+          "mean": 56586.23100075244,
+          "max": 313889
+        },
+        "qnodes": {
+          "n": 5266,
+          "total": 292553623,
+          "mean": 55555.18856817319,
+          "max": 313303
+        },
+        "knowledge_probes": {
+          "n": 5266,
+          "total": 5147,
+          "mean": 0.9774022028104823,
+          "max": 1
+        },
+        "knowledge_hits": {
+          "n": 5266,
+          "total": 0,
+          "mean": 0,
+          "max": 0
+        },
+        "knowledge_promotions": {
+          "n": 5266,
+          "total": 0,
+          "mean": 0,
+          "max": 0
+        },
+        "research_mask": {
+          "n": 5266,
+          "total": 121118,
+          "mean": 23,
+          "max": 23
+        },
+        "efficiency_mask": {
+          "n": 5266,
+          "total": 42128,
+          "mean": 8,
+          "max": 8
+        },
+        "selective_usi_skipped": {
+          "n": 5266,
+          "total": 10591725764,
+          "mean": 2011341.770603874,
+          "max": 14323106
+        }
+      },
+      "B": {
+        "depth": {
+          "n": 5276,
+          "total": 14438,
+          "mean": 2.7365428354814254,
+          "max": 6
+        },
+        "nodes": {
+          "n": 5324,
+          "total": 261421691,
+          "mean": 49102.496431254694,
+          "max": 312885
+        },
+        "qnodes": {
+          "n": 5276,
+          "total": 254380587,
+          "mean": 48214.66774071266,
+          "max": 312797
+        },
+        "elapsed_ms": {
+          "n": 5467,
+          "total": 1788579.211,
+          "mean": 327.15917523321747,
+          "max": 991.602
+        },
+        "knowledge_probes": {
+          "n": 5276,
+          "total": 5153,
+          "mean": 0.9766868840030326,
+          "max": 1
+        },
+        "knowledge_hits": {
+          "n": 5276,
+          "total": 0,
+          "mean": 0,
+          "max": 0
+        },
+        "knowledge_promotions": {
+          "n": 5276,
+          "total": 0,
+          "mean": 0,
+          "max": 0
+        },
+        "research_mask": {
+          "n": 5276,
+          "total": 121348,
+          "mean": 23,
+          "max": 23
+        },
+        "efficiency_mask": {
+          "n": 5276,
+          "total": 42208,
+          "mean": 8,
+          "max": 8
+        },
+        "selective_usi_skipped": {
+          "n": 5276,
+          "total": 9350800734,
+          "mean": 1772327.659969674,
+          "max": 14253467
+        }
+      }
+    },
+    "archive_manifest": {
+      "schema_version": 1,
+      "archive": "played-games.jsonl.gz",
+      "archive_sha256": "64bb3eb8eddfd6d7d3a3cc60a8bebcb866f12d0a57bb4211a5932aa460c1143a",
+      "archive_bytes": 648813,
+      "games": 100,
+      "plies": 10935,
+      "scored_plies": 10529,
+      "missing_score_plies": 406,
+      "ambiguous_score_plies": 0,
+      "without_telemetry_plies": 0,
+      "phase_recorded_plies": 10935,
+      "phase_missing_plies": 0,
+      "run_id": "38676667846",
+      "requested_ref_a": "9d1a96d5ffa35bd059a65030c61191a039dcb314",
+      "requested_ref_b": "d4b46b9a3fed540c84fae3f2183aed454fa62035",
+      "scope": "Played moves only; PV, candidate moves and search trees are excluded."
+    },
+    "binary_sha256": {
+      "engine-a": "421720ce7cd217a0d2292ff4e74af419332e42c12558c51ad850211ddd1ccc9a",
+      "engine-b": "bf0956643eda96e3f3acc58647ee1a9521a2cb5716dbb569b39ba687ef84cc68"
+    },
+    "color_results": {
+      "A_black": {
+        "A": 24,
+        "B": 25,
+        "None": 1
+      },
+      "A_white": {
+        "B": 23,
+        "A": 27
+      }
+    },
+    "score_statuses": {
+      "not_recorded": 406,
+      "recorded": 10529
+    },
+    "terminal_reasons": {
+      "checkmate": 99,
+      "move_limit": 1
+    },
+    "artifacts": [
+      {
+        "run": 38676667846,
+        "name": "generic-engine-match-38676667846-1",
+        "id": 11946559211,
+        "digest": "sha256:aaef5682767f8e7c702c26d033caccc4be032eb2e84537cf838175acf67bcafa",
+        "expires_at": "2027-01-13T03:31:01Z",
+        "size_in_bytes": 133019
+      },
+      {
+        "run": 38676667846,
+        "name": "generic-engine-match-38676667846-3",
+        "id": 11946154310,
+        "digest": "sha256:9c030cb84088801b40c37689164377be998b314661ce48bb0bc3774ae506f553",
+        "expires_at": "2027-01-13T03:31:01Z",
+        "size_in_bytes": 120479
+      },
+      {
+        "run": 38676667846,
+        "name": "generic-engine-match-38676667846-2",
+        "id": 11946019413,
+        "digest": "sha256:f96af0df13ba739bd11a42abb1247064c19acf43517711ec6a0000af05ddb77b",
+        "expires_at": "2027-01-13T03:31:01Z",
+        "size_in_bytes": 137475
+      },
+      {
+        "run": 38676667846,
+        "name": "generic-engine-match-38676667846-6",
+        "id": 11945974568,
+        "digest": "sha256:e96347fd2a152c51ef3ce6e01e9610df2f45812643f5b2a294ac17a0b5248889",
+        "expires_at": "2027-01-13T03:31:01Z",
+        "size_in_bytes": 116930
+      },
+      {
+        "run": 38676667846,
+        "name": "generic-engine-match-38676667846-8",
+        "id": 11945964508,
+        "digest": "sha256:551fd1c082a725002d135537a10c9c783e189e57f361e8b7bc2c8d5409d2779e",
+        "expires_at": "2027-01-13T03:31:01Z",
+        "size_in_bytes": 150188
+      },
+      {
+        "run": 38676667846,
+        "name": "generic-engine-match-38676667846-7",
+        "id": 11945819729,
+        "digest": "sha256:98e807601afa60d29f7d0f3b51d7c3961a7e400dae50d9bb166012a73357ca2a",
+        "expires_at": "2027-01-13T03:31:01Z",
+        "size_in_bytes": 121557
+      },
+      {
+        "run": 38676667846,
+        "name": "generic-engine-match-38676667846-4",
+        "id": 11945734976,
+        "digest": "sha256:0c45a3edc2539c18422d73878ab05aa41b1418cb7daf4999538b1f914fc89394",
+        "expires_at": "2027-01-13T03:31:01Z",
+        "size_in_bytes": 143115
+      },
+      {
+        "run": 38676667846,
+        "name": "generic-engine-match-38676667846-5",
+        "id": 11946725140,
+        "digest": "sha256:c9e75c2df0f041ec4b871dcf79579fa04214d66e78bb91f0c91e3d6d759bde83",
+        "expires_at": "2027-01-13T03:31:01Z",
+        "size_in_bytes": 162709
+      },
+      {
+        "run": 38676667846,
+        "name": "generic-engine-match-38676667846-0",
+        "id": 11946429355,
+        "digest": "sha256:b0ccdbe13785932e213575774d2738d94362a5fcceb2849d58ed5b8e3abf0b6f",
+        "expires_at": "2027-01-13T03:31:01Z",
+        "size_in_bytes": 158996
+      },
+      {
+        "run": 38676667846,
+        "name": "generic-engine-match-summary-38676667846",
+        "id": 11946194525,
+        "digest": "sha256:86bfe18a233aef1e8d4a8d10a25a8d49a56d30f613e5bb38ff7cb8a4eea05294",
+        "expires_at": "2027-01-13T03:31:01Z",
+        "size_in_bytes": 626
+      },
+      {
+        "run": 38676667846,
+        "name": "played-move-archive-38676667846",
+        "id": 11946004678,
+        "digest": "sha256:93c11de596a10a9a5d180ddcf25e3702a9d46d8dfe81740bba66c0c2b41e1f9f",
+        "expires_at": "2027-01-13T03:31:01Z",
+        "size_in_bytes": 650444
+      }
+    ]
+  }
+}

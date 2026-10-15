@@ -7,5 +7,15 @@
   "source_files_checked": 34,
   "source_file_mismatches": 0,
   "next": "one independent 100-game match, seed2026101592",
-  "note": "Candidate default is now 6 on research only; formal defaults remain23/8. Setter/evaluator flag synchronization and cache replacement diagnostics added after timing; verify selected build before match."
+  "note": "Candidate default is now 6 on research only; formal defaults remain23/8. Setter/evaluator flag synchronization and cache replacement diagnostics added after timing; verify selected build before match.",
+  "final_build_verification": {
+    "source": "9d1a96d5ffa35bd059a65030c61191a039dcb314",
+    "fixed_trials": 72,
+    "mismatches": 0,
+    "median_speedup": 1.1128804731665882,
+    "total_speedup": 1.1284570800253457,
+    "timed_depth_sum": 184,
+    "baseline_timed_depth_sum": 179,
+    "note": "additional measurement required after default/evaluator synchronization change; selected candidate unchanged; separate sample, do not combine"
+  }
 }

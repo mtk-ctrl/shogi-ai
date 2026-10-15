@@ -43,7 +43,7 @@ for run in sorted({a['run'] for a in artifacts}):
     stats = {side: collections.defaultdict(list) for side in ['A','B']}
     wins = collections.Counter(); blacks = collections.Counter()
     color_results = {'A_black':collections.Counter(),'A_white':collections.Counter()}
-    score_statuses = collections.Counter()
+    score_statuses = collections.Counter(); terminal_reasons = collections.Counter()
     plies = 0; games = 0; long_max = 0
     mask = args.reuse_mask
     assert summary['options_a']['SearchReuseMask'] == mask
@@ -122,6 +122,12 @@ for run in sorted({a['run'] for a in artifacts}):
                     assert search['long_think_base_ms'] == 200 and search['long_think_max_ms'] == 1000
                     long[side].append(search['long_think_used'])
             assert board.sfen() == game['final_sfen']
+            terminal_reasons[game['reason']] += 1
+            if game['reason'] == 'checkmate':
+                assert board.is_checkmate()
+                winner_color = shogi.WHITE if board.turn == shogi.BLACK else shogi.BLACK
+                assert game['winner'] == ('A' if (winner_color == shogi.BLACK) == game['a_black'] else 'B')
+            if game['reason'] in ('max_plies','move_limit'): assert game['plies'] == 300 and game['winner'] is None
             for seq in long.values():
                 assert seq == list(range(1, len(seq)+1)) and len(seq) <= 10
                 long_max = max(long_max, len(seq))
@@ -148,7 +154,7 @@ for run in sorted({a['run'] for a in artifacts}):
                     'games':games,'plies':plies,'a_black':blacks['A'],'illegal_replay':0,
                     'max_long_uses':long_max,'summary':summary,'telemetry':observed,
                     'archive_manifest':{k:v for k,v in manifest.items() if k!='sources'},
-                    'binary_sha256':expected_hashes,'color_results':color_results,'score_statuses':score_statuses,
+                    'binary_sha256':expected_hashes,'color_results':color_results,'score_statuses':score_statuses,'terminal_reasons':terminal_reasons,
                     'artifacts':[{k:v for k,v in a.items() if k!='path'} for a in group]}
     print(run, 'PASS', wins, 'plies', plies, flush=True)
 Path(args.output).write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
