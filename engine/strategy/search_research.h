@@ -7,4 +7,9 @@ enum SearchResearch : unsigned {
     GeneratedPlay = 1, SharedLegal = 2, OrderReuse = 4,
     QuiescenceReuse = 8, EarlyHints = 16,
 };
+// Second-round research only; this default is not an official adoption.
+inline constexpr unsigned DefaultSearchEfficiencyMask = 7;
+enum SearchEfficiency : unsigned {
+    RuleCheckOrdering = 1, OrderingWorkspace = 2, LazySnapshot = 4,
+};
 }

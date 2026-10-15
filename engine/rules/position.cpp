@@ -183,6 +183,11 @@ std::vector<GeneratedMove> Position::checking_generated_moves() const {
 std::string Position::generated_move_usi(const GeneratedMove& move) const {
     return yo::to_usi_string(yo::Move(move.encoded_));
 }
+bool Position::generated_move_gives_check(const GeneratedMove& move) const {
+    if (move.source_key_ != key64(impl_->pos.key()) || !yo::Move(move.encoded_).is_ok())
+        throw std::logic_error("check query requires a current legal move token");
+    return impl_->pos.gives_check(yo::Move(move.encoded_));
+}
 bool Position::play_generated_move(const GeneratedMove& move, std::string& error) {
     // GeneratedMove is opaque and can only be populated by Position. The key
     // check prevents accidentally playing a token after the position changed.
