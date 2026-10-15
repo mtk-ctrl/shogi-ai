@@ -106,7 +106,8 @@ int main() {
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
                       << "option name SearchResearchMask type spin default " << shogi::strategy::DefaultSearchResearchMask << " min 0 max 31\n"
                       << "option name SearchEfficiencyMask type spin default " << shogi::strategy::DefaultSearchEfficiencyMask << " min 0 max 15\n"
-                      << "option name SearchReuseMask type spin default " << shogi::strategy::DefaultSearchReuseMask << " min 0 max 7\n"
+                      << "option name SearchReuseMask type spin default " << shogi::strategy::DefaultSearchReuseMask << " min 0 max 15\n"
+                      << "option name SearchNextMask type spin default 0 min 0 max 15\n"
                       << "option name Quiescence type check default true\n"
                       << "option name MateAssist type check default true\n"
                       << "option name MateLearning type check default true\n"
@@ -688,8 +689,15 @@ int main() {
                     try {
                         std::size_t used=0;
                         const int mask=std::stoi(value,&used);
-                        if(used==value.size() && mask>=0 && mask<=7)
+                        if(used==value.size() && mask>=0 && mask<=15)
                             strategy.set_reuse_mask(static_cast<unsigned>(mask));
+                    } catch(const std::exception&) {}
+                } else if (name == "SearchNextMask") {
+                    try {
+                        std::size_t used=0;
+                        const int mask=std::stoi(value,&used);
+                        if(used==value.size() && mask>=0 && mask<=15)
+                            strategy.set_next_mask(static_cast<unsigned>(mask));
                     } catch(const std::exception&) {}
                 } else if (name == "Quiescence") {
                     if (value == "true" || value == "false") {
