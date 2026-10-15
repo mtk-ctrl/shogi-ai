@@ -1,5 +1,5 @@
 {
-  "state": "owner-adopted-v2.0.14-integration-in-progress",
+  "state": "adopted-v2.0.14-main-verified",
   "official_engine": "KUMOJI v2.0.14/profile47",
   "research_source": "4d8a4b9723c21c6163cad03358ba35e4b93d4687",
   "previous_candidate": "7ab3dab9b909503d340fb1f374da09f8d0e2e209",
@@ -68,7 +68,12 @@
   "owner_adoption_date": "2026-10-15",
   "quick_ci_run": 38650963142,
   "document_ci_run": 38650968240,
-  "production_validation": "local build/default/all32/USI/knowledge/phase/boundary/docs passed; GitHub CI pending",
+  "production_validation": "local and GitHub pre/post-integration CI passed; main read-back verified",
   "production_code_commit": "97d7853d73a8531eb1c5dfbcddd6d986999f349a",
-  "comparison_baseline": "97d7853d73a8531eb1c5dfbcddd6d986999f349a"
+  "comparison_baseline": "97d7853d73a8531eb1c5dfbcddd6d986999f349a",
+  "production_merge_commit": "759a43cef7e996de91f0462215d3d6ebd79a1887",
+  "production_pr_ci": 38659101138,
+  "production_pr_document_ci": 38659105499,
+  "production_main_ci": 38659534578,
+  "production_main_document_ci": 38659534553
 }
