@@ -22,6 +22,7 @@ on:
       - "tests/rules_test.cpp"
       - "tests/generated_move_test.cpp"
       - "tests/test_search_usi.py"
+      - "tests/test_ponder_research.py"
       - "tests/test_search_research.py"
       - "tests/test_search_efficiency.py"
       - "tests/test_search_reuse.py"
@@ -113,6 +114,7 @@ jobs:
         run: |
           python3 -m pip install python-shogi==1.1.1
           python3 tests/test_search_usi.py build/shogi-ai
+          python3 tests/test_ponder_research.py build/shogi-ai
           python3 tests/test_search_research.py build/shogi-ai
           python3 tests/test_search_efficiency.py build/shogi-ai
           python3 tests/test_search_reuse.py build/shogi-ai
