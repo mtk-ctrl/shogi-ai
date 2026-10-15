@@ -8,7 +8,7 @@ enum SearchResearch : unsigned {
     QuiescenceReuse = 8, EarlyHints = 16,
 };
 // Second-round research only; this default is not an official adoption.
-inline constexpr unsigned DefaultSearchEfficiencyMask = 15;
+inline constexpr unsigned DefaultSearchEfficiencyMask = 8;
 enum SearchEfficiency : unsigned {
     RuleCheckOrdering = 1, OrderingWorkspace = 2, LazySnapshot = 4,
     SelectiveUSI = 8,

@@ -1,21 +1,19 @@
 {
-  "stage": "SelectiveUSI correctness passed; expanded screening not started",
+  "stage": "SelectedEfficiencyMask8: confirmation passed; candidate CI and100 games pending",
   "official_main": "6445d54f23e7cfffd7cd36b62490fc42f9c142e1",
-  "prior_source": "2f9547748ac03030ef8b4ef1fd900936e3583d57",
+  "measured_source": "e7f357dc665b55950c5637f54850576945eb686c",
   "research_pr": 263,
-  "local_checks": [
-    "400 positions / 16386 legal moves: native check, capture/promotion metadata, ordering identity, stale tokens and history restoration",
-    "All 16 efficiency masks exact to official bounded searches including nodes/qnodes/cutoffs/PV",
-    "Adopted default SearchResearchMask23 and all32 research masks passed",
-    "USI search/time/node/stop/long-think passed",
-    "163 knowledge decisions passed",
-    "turn phase telemetry passed"
-  ],
+  "selected_efficiency_mask": 8,
+  "adopted_research_mask": 23,
+  "fixed_trials": 72,
+  "median_speedup": 1.8491279976153598,
+  "total_speedup": 2.0307807097179915,
+  "mismatches": 0,
   "remaining": [
-    "expanded 16-mask screening",
-    "24-position x3 confirmation for at most3 candidates",
-    "100 games only if median >=1.05 and exact regression",
-    "latest source CI and final evidence"
+    "selected-default CI/readback",
+    "single100-game independent comparison withseed2026101591",
+    "artifact/raw/archive legality audit",
+    "GitHub/Addness final report"
   ],
   "formal_adoption": "Not authorized for this new candidate; official v2.0.14 remains"
 }

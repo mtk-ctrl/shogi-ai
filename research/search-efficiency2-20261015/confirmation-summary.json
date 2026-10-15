@@ -1,0 +1,77 @@
+{
+  "source_sha256": "18243dca341582e7896c03e3ce8a3ca167cac53781c5efd64f42d76973fd8ed2",
+  "binary_sha256": {
+    "candidate": "e076841132ea1d827d40a714a3a2706014e77a608f2d8c8dd853bfeb5d267d74",
+    "previous": "6507e02b3d04bc7fd1bf40c8249e74035c0eb316ed110227d1a7f010696be494"
+  },
+  "options": {
+    "OpeningRandomNonLance": false,
+    "MateAssist": false,
+    "MateLearning": false,
+    "AdaptiveLongThink": false,
+    "PositionKnowledge": true
+  },
+  "depth": 2,
+  "cases": 24,
+  "repeats": 3,
+  "summaries": {
+    "previous": {
+      "fixed_trials": 72,
+      "fixed_mismatches": [],
+      "median_speedup": 1.0,
+      "total_speedup": 1.0,
+      "timed_depth_sum": 166,
+      "timed_nodes_sum": 1103285,
+      "timed_higher": 0,
+      "timed_lower": 0,
+      "fixed_order_hits": 35631,
+      "fixed_qtt_hits": 0,
+      "timed_elapsed_max_ms": 193.042
+    },
+    "11": {
+      "fixed_trials": 72,
+      "fixed_mismatches": [],
+      "median_speedup": 1.830802310898732,
+      "total_speedup": 2.050174986285068,
+      "timed_depth_sum": 189,
+      "timed_nodes_sum": 1939314,
+      "timed_higher": 23,
+      "timed_lower": 0,
+      "fixed_order_hits": 35631,
+      "fixed_qtt_hits": 0,
+      "timed_elapsed_max_ms": 208.658
+    },
+    "15": {
+      "fixed_trials": 72,
+      "fixed_mismatches": [],
+      "median_speedup": 1.86957349760964,
+      "total_speedup": 2.073813310040674,
+      "timed_depth_sum": 186,
+      "timed_nodes_sum": 1943367,
+      "timed_higher": 20,
+      "timed_lower": 0,
+      "fixed_order_hits": 35631,
+      "fixed_qtt_hits": 0,
+      "timed_elapsed_max_ms": 192.967
+    },
+    "8": {
+      "fixed_trials": 72,
+      "fixed_mismatches": [],
+      "median_speedup": 1.8491279976153598,
+      "total_speedup": 2.0307807097179915,
+      "timed_depth_sum": 190,
+      "timed_nodes_sum": 1906037,
+      "timed_higher": 24,
+      "timed_lower": 0,
+      "fixed_order_hits": 35631,
+      "fixed_qtt_hits": 0,
+      "timed_elapsed_max_ms": 192.647
+    }
+  },
+  "stage": "Confirmation (24 positions x3, fixed depth2 and200ms)",
+  "selected_efficiency_mask": 8,
+  "selected_research_mask": 23,
+  "source_commit": "e7f357dc665b55950c5637f54850576945eb686c",
+  "raw_sha256": "31baf8ef56e8d447f48c3b653c4c4af3b72267fb12ee982af0bef95fecb7f4c4",
+  "tie_rule": "All3 median speeds within3%; fewest enabled bits chooses8. Games do not select candidate."
+}
