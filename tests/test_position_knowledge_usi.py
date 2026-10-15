@@ -2,6 +2,7 @@
 from pathlib import Path
 import json
 import queue
+import re
 import subprocess
 import sys
 import tempfile
@@ -13,7 +14,7 @@ ENGINE = str(Path(sys.argv[1]).resolve())
 
 
 class Usi:
-    def __init__(self, cwd=None):
+    def __init__(self, cwd=None, threads=None):
         self.p = subprocess.Popen(
             [ENGINE], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT, text=True, bufsize=1, cwd=cwd,
@@ -23,6 +24,8 @@ class Usi:
         # Knowledge tests exercise root search, not the adopted random opening.
         # It is disabled explicitly so root knowledge telemetry is observable.
         self.send("setoption name OpeningRandomNonLance value false")
+        if threads is not None:
+            self.send(f"setoption name SearchThreads value {threads}")
 
     def _read(self):
         for line in self.p.stdout:
@@ -51,7 +54,13 @@ class Usi:
             self.p.wait(timeout=3)
 
 
-def run_once(enabled):
+def search_stat(logs, name):
+    line = next(x for x in reversed(logs) if x.startswith("info nodes "))
+    tokens = line.split()
+    return int(tokens[tokens.index(name)+1])
+
+
+def run_once(enabled, threads=None):
     start_key = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b -"
     with tempfile.TemporaryDirectory() as td:
         knowledge = Path(td) / "knowledge.tsv"
@@ -60,10 +69,12 @@ def run_once(enabled):
             + start_key + "\t7g7f\ttest\t2\n",
             encoding="utf-8",
         )
-        u = Usi()
+        u = Usi(threads=threads)
         try:
             u.send("usi")
             _, usi = u.until("usiok")
+            declared = next(x for x in usi if x.startswith("option name SearchThreads "))
+            lanes = threads if threads is not None else int(re.search(r"default (\d+)", declared).group(1))
             assert any("option name PositionKnowledge type check default true" in x for x in usi)
             u.send(f"setoption name PositionKnowledgeFile value {knowledge}")
             u.send(f"setoption name PositionKnowledge value {'true' if enabled else 'false'}")
@@ -78,12 +89,13 @@ def run_once(enabled):
             stat = next((x for x in reversed(lines) if "knowledge_probes" in x), "")
             assert stat, lines
             if enabled:
-                assert "knowledge_probes 1" in stat, stat
-                assert "knowledge_hits 1" in stat, stat
-                assert "knowledge_promotions 1" in stat, stat
+                # Independent lanes each probe; the hint belongs to one lane.
+                assert search_stat(lines, "knowledge_probes") == lanes, stat
+                assert search_stat(lines, "knowledge_hits") == 1, stat
+                assert search_stat(lines, "knowledge_promotions") == 1, stat
             else:
-                assert "knowledge_probes 0" in stat, stat
-                assert "knowledge_hits 0" in stat, stat
+                assert search_stat(lines, "knowledge_probes") == 0, stat
+                assert search_stat(lines, "knowledge_hits") == 0, stat
         finally:
             u.close()
 
@@ -280,7 +292,7 @@ def newer_direct_study_overrides_previous_continuation():
         finally:
             u.close()
 
-def no_forced_research_in_repeated_history():
+def no_forced_research_in_repeated_history(threads):
     """Do not force a stored research move on repetition-sensitive boards."""
     key = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b -"
     with tempfile.TemporaryDirectory() as td:
@@ -291,7 +303,7 @@ def no_forced_research_in_repeated_history():
             "\tresearch_decision\trepeated-test\t7g7f 3c3d 2g2f\t-\n",
             encoding="utf-8",
         )
-        u = Usi()
+        u = Usi(threads=threads)
         try:
             u.send("setoption name PositionKnowledgeFile value " + str(knowledge))
             u.send("isready")
@@ -302,16 +314,18 @@ def no_forced_research_in_repeated_history():
             u.send("go depth 1")
             _, logs = u.until("bestmove ")
             assert not any(x.startswith("info string research_decision ") for x in logs), logs
-            assert any("knowledge_disabled_repetition 1" in x for x in logs), logs
+            assert search_stat(logs, "knowledge_disabled_repetition") == threads, logs
         finally:
             u.close()
 
-run_once(True)
-run_once(False)
+for threads in (None, 1, 2):
+    run_once(True, threads)
+    run_once(False, threads)
 embedded_default_fallback()
 direct_research_line()
 adopted_real_snapshot()
 all_adopted_research_positions()
 newer_direct_study_overrides_previous_continuation()
-no_forced_research_in_repeated_history()
+for threads in (1, 2):
+    no_forced_research_in_repeated_history(threads)
 print(f"PASS position knowledge: {json.loads((Path(__file__).resolve().parents[1] / 'position-knowledge-v1.manifest.json').read_text())['adopted_positions']} direct decisions by matching SFEN, PV continuation, repetition safety and fallback")
