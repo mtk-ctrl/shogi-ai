@@ -1,12 +1,12 @@
 {
-  "request_id": "v217-root2-vs-official-200-20261015",
-  "ref_a": "3cd566957095325287f7043409a866fdbab9ef2e",
+  "request_id": "v217-frozen-nn25-vs-official-200-20261016",
+  "ref_a": "00904045c69c5c76ca78f85b5a47391bfb5c1a86",
   "ref_b": "003f42c66f8e3f2e5deb1898103555466e72016f",
   "games": 200,
-  "shards": 19,
+  "shards": 20,
   "go_command": "go movetime 200",
   "max_plies": 300,
-  "seed": 2026101581,
-  "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"SearchResearchMask\":23,\"SearchEfficiencyMask\":8,\"SearchReuseMask\":6,\"SearchNextMask\":4,\"SearchThreads\":2,\"EvalUpdateMask\":0}",
+  "seed": 2026101682,
+  "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"SearchResearchMask\":23,\"SearchEfficiencyMask\":8,\"SearchReuseMask\":6,\"SearchNextMask\":4,\"SearchThreads\":1,\"EvalUpdateMask\":0,\"EvalNeuralBlend\":25}",
   "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"SearchResearchMask\":23,\"SearchEfficiencyMask\":8,\"SearchReuseMask\":6,\"SearchNextMask\":4}"
 }
