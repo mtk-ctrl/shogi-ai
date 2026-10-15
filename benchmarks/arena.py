@@ -515,6 +515,8 @@ def main():
             raise SystemExit("options must be JSON objects without newlines")
         options.setdefault("PositionKnowledge", "true")
         options.setdefault("PositionKnowledgeFile", "position-knowledge-v1.tsv")
+        options.setdefault("RiskVerify", True)
+        options.setdefault("USI_Ponder", True)
     knowledge_meta = {
         "A": position_knowledge_metadata(options_a),
         "B": position_knowledge_metadata(options_b),
