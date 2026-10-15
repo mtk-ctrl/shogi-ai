@@ -47,6 +47,7 @@ int main() {
     std::string position_knowledge_file = "position-knowledge-v1.tsv";
     int default_depth = 3;
     bool adaptive_long_think_enabled = true;
+    bool usi_ponder_enabled = false;
     int long_think_used = 0;
     bool previous_root_score_valid = false;
     int previous_root_score = 0;
@@ -91,7 +92,9 @@ int main() {
         position_knowledge_loaded = true;
     };
 
-    auto bestmove = [&](const std::string& move) { emit("bestmove " + move + "\n"); };
+    auto bestmove = [&](const std::string& move, const std::string& ponder = "") {
+        emit("bestmove " + move + (ponder.empty() ? "" : " ponder " + ponder) + "\n");
+    };
 
     while (std::getline(std::cin, line)) {
         std::istringstream input(line);
@@ -102,6 +105,7 @@ int main() {
         if (command == "usi") {
             std::cout << "id name KUMOJI v2.0.17\nid author mtk-ctrl + ChatGPT\n"
                       << "option name USI_Ponder type check default false\n"
+                      << "option name RiskVerify type check default false\n"
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
                       << "option name SearchResearchMask type spin default " << shogi::strategy::DefaultSearchResearchMask << " min 0 max 31\n"
@@ -330,7 +334,8 @@ int main() {
                                           allowed = std::move(allowed),
                                           opening_random_choice, opening_seed,
                                           candidates = std::move(candidates),
-                                          p = std::move(search_position)]() mutable {
+                                          ponder_enabled = usi_ponder_enabled,
+                                           p = std::move(search_position)]() mutable {
                 auto info = [&](const shogi::strategy::SearchResult& result) {
                     if (active->suppress.load()) return;
                     const auto ms = (shogi::strategy::SearchControl::now_ns() - started_ns) / 1000000;
@@ -649,7 +654,18 @@ int main() {
                 }
                 { std::unique_lock<std::mutex> lock(active->mutex);
                   active->cv.wait(lock, [&] { return active->release; }); }
-                if (!active->suppress.load()) bestmove(result.move);
+                if (!active->suppress.load()) {
+                    std::string predicted;
+                    if (ponder_enabled && result.pv.size() >= 2
+                        && result.pv.front() == result.move) {
+                        auto verify = p.clone();
+                        std::string error;
+                        if (verify.play(result.move, error)
+                            && verify.play(result.pv[1], error))
+                            predicted = result.pv[1];
+                    }
+                    bestmove(result.move, predicted);
+                }
             });
         } else if (command == "stop") {
             finish_search(false);
@@ -667,7 +683,11 @@ int main() {
             if (part == "name") {
                 while (input >> part && part != "value") { if (!name.empty()) name += ' '; name += part; }
                 if (part == "value") std::getline(input >> std::ws, value);
-                if (name == "SearchDepth") {
+                if (name == "USI_Ponder") {
+                    if (value == "true" || value == "false") usi_ponder_enabled = value == "true";
+                } else if (name == "RiskVerify") {
+                    if (value == "true" || value == "false") strategy.set_risk_verify(value == "true");
+                } else if (name == "SearchDepth") {
                     try { std::size_t used = 0; int depth = std::stoi(value, &used);
                         if (used == value.size() && depth >= 1 && depth <= 64) default_depth = depth;
                     } catch (...) {}
