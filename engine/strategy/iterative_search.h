@@ -557,7 +557,10 @@ private:
             // A PV may be shorter on a cache hit; it is still a legal prefix.
             if (entry->bound == Bound::Exact) {
                 ++stats_.tt_exact_hits;
-                if (!tt_move.empty()) pv_push(ply, tt_move);
+                if (!tt_move.empty()) {
+                    if (ply < MaxPly) pv_lengths_[ply + 1] = 0;
+                    pv_push(ply, tt_move);
+                }
                 return {value};
             }
             if ((entry->bound == Bound::Lower && value >= beta)
@@ -627,7 +630,10 @@ private:
                 || (e->bound == Bound::Upper && value < alpha)) {
                 ++stats_.qtt_cutoffs;
                 const auto move = TranspositionTable::best_move(*e);
-                if (e->bound == Bound::Exact && !move.empty()) pv_push(ply, move);
+                if (e->bound == Bound::Exact && !move.empty()) {
+                    if (ply < MaxPly) pv_lengths_[ply + 1] = 0;
+                    pv_push(ply, move);
+                }
                 return {value};
             }
         }
