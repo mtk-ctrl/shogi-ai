@@ -1,0 +1,140 @@
+{
+  "source_sha256": "18243dca341582e7896c03e3ce8a3ca167cac53781c5efd64f42d76973fd8ed2",
+  "binary_sha256": {
+    "candidate": "2fad76da9f3147b5562ba050e06d7fe472cf58e20370abe6dad7b5f247f08b30",
+    "previous": "6507e02b3d04bc7fd1bf40c8249e74035c0eb316ed110227d1a7f010696be494"
+  },
+  "options": {
+    "OpeningRandomNonLance": false,
+    "MateAssist": false,
+    "MateLearning": false,
+    "AdaptiveLongThink": false,
+    "PositionKnowledge": true
+  },
+  "depth": 2,
+  "cases": 12,
+  "repeats": 1,
+  "summaries": {
+    "previous": {
+      "fixed_trials": 12,
+      "fixed_mismatches": [],
+      "median_speedup": 1.0,
+      "total_speedup": 1.0,
+      "timed_depth_sum": 0,
+      "timed_nodes_sum": 0,
+      "timed_higher": 0,
+      "timed_lower": 0,
+      "fixed_order_hits": 7632,
+      "fixed_qtt_hits": 0,
+      "timed_elapsed_max_ms": 0
+    },
+    "0": {
+      "fixed_trials": 12,
+      "fixed_mismatches": [],
+      "median_speedup": 0.9615552773689635,
+      "total_speedup": 0.9890705283244523,
+      "timed_depth_sum": 0,
+      "timed_nodes_sum": 0,
+      "timed_higher": 0,
+      "timed_lower": 0,
+      "fixed_order_hits": 7632,
+      "fixed_qtt_hits": 0,
+      "timed_elapsed_max_ms": 0
+    },
+    "1": {
+      "fixed_trials": 12,
+      "fixed_mismatches": [],
+      "median_speedup": 1.0129433657415938,
+      "total_speedup": 1.012384460676791,
+      "timed_depth_sum": 0,
+      "timed_nodes_sum": 0,
+      "timed_higher": 0,
+      "timed_lower": 0,
+      "fixed_order_hits": 7632,
+      "fixed_qtt_hits": 0,
+      "timed_elapsed_max_ms": 0
+    },
+    "2": {
+      "fixed_trials": 12,
+      "fixed_mismatches": [],
+      "median_speedup": 1.0003483847984107,
+      "total_speedup": 1.0039938989617023,
+      "timed_depth_sum": 0,
+      "timed_nodes_sum": 0,
+      "timed_higher": 0,
+      "timed_lower": 0,
+      "fixed_order_hits": 7632,
+      "fixed_qtt_hits": 0,
+      "timed_elapsed_max_ms": 0
+    },
+    "3": {
+      "fixed_trials": 12,
+      "fixed_mismatches": [],
+      "median_speedup": 1.0226403741698684,
+      "total_speedup": 1.020703764883687,
+      "timed_depth_sum": 0,
+      "timed_nodes_sum": 0,
+      "timed_higher": 0,
+      "timed_lower": 0,
+      "fixed_order_hits": 7632,
+      "fixed_qtt_hits": 0,
+      "timed_elapsed_max_ms": 0
+    },
+    "4": {
+      "fixed_trials": 12,
+      "fixed_mismatches": [],
+      "median_speedup": 1.0064434156128663,
+      "total_speedup": 1.0151513818806948,
+      "timed_depth_sum": 0,
+      "timed_nodes_sum": 0,
+      "timed_higher": 0,
+      "timed_lower": 0,
+      "fixed_order_hits": 7632,
+      "fixed_qtt_hits": 0,
+      "timed_elapsed_max_ms": 0
+    },
+    "5": {
+      "fixed_trials": 12,
+      "fixed_mismatches": [],
+      "median_speedup": 0.9934178899025834,
+      "total_speedup": 1.0043603730611232,
+      "timed_depth_sum": 0,
+      "timed_nodes_sum": 0,
+      "timed_higher": 0,
+      "timed_lower": 0,
+      "fixed_order_hits": 7632,
+      "fixed_qtt_hits": 0,
+      "timed_elapsed_max_ms": 0
+    },
+    "6": {
+      "fixed_trials": 12,
+      "fixed_mismatches": [],
+      "median_speedup": 1.018814488429011,
+      "total_speedup": 1.0126859952929614,
+      "timed_depth_sum": 0,
+      "timed_nodes_sum": 0,
+      "timed_higher": 0,
+      "timed_lower": 0,
+      "fixed_order_hits": 7632,
+      "fixed_qtt_hits": 0,
+      "timed_elapsed_max_ms": 0
+    },
+    "7": {
+      "fixed_trials": 12,
+      "fixed_mismatches": [],
+      "median_speedup": 0.9759027159681046,
+      "total_speedup": 0.9829799516416753,
+      "timed_depth_sum": 0,
+      "timed_nodes_sum": 0,
+      "timed_higher": 0,
+      "timed_lower": 0,
+      "fixed_order_hits": 7632,
+      "fixed_qtt_hits": 0,
+      "timed_elapsed_max_ms": 0
+    }
+  },
+  "stage": "Initial 3-method screening; NOT evidence for SelectiveUSI",
+  "raw_sha256": "7510325337aac60bb68662cc0948c4330043c6aa1ad263efd01575c278a0b9ee",
+  "raw_rows": 12,
+  "conclusion": "No demonstrated useful gain; preliminary medians about 0.98–1.02 for nonzero masks. Expanded hypothesis documented before its measurement."
+}

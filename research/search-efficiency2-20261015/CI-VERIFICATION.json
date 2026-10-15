@@ -1,0 +1,18 @@
+{
+  "source_commit": "115c53d0d508e093ca161ec8d650600a8f421086",
+  "quick_run": 38670789017,
+  "quick_job": 116213173673,
+  "conclusion": "success",
+  "document_run": 38670794115,
+  "document_conclusion": "success",
+  "verified_pass_lines": [
+    "2026-10-15T02:25:27.8962059Z PASS native checks, workspace/order identity, stale tokens and full-history restoration: 16386 legal moves at 400 positions",
+    "2026-10-15T02:25:45.0799451Z PASS unstable-priority long-think budget, both colors and ten-use cap",
+    "2026-10-15T02:27:07.8809514Z PASS adaptive long-think continues 200ms search to one-second ceiling",
+    "2026-10-15T02:27:07.8810429Z PASS responsive isready/stop/ponderhit, no duplicate or stale bestmove",
+    "2026-10-15T02:27:08.1157022Z PASS adopted default 23 and all 32 combinations: poisoned pawn, both-color scores, mate distance, legal PV, actual mask",
+    "2026-10-15T02:27:08.3044802Z PASS selected default 8 and all 16 efficiency combinations: exact choices/scores/depth/nodes/qnodes/cutoffs/PV and actual mask",
+    "2026-10-15T02:27:08.8999855Z PASS position knowledge: 163 direct decisions by matching SFEN, PV continuation, repetition safety and fallback"
+  ],
+  "match_binary_default_and_all16_local": "PASS against downloaded official binary; API ZIP digest and four file SHA256 verified"
+}

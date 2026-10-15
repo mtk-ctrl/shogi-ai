@@ -73,6 +73,8 @@ public:
         std::uint64_t knowledge_disabled_repetition = 0;
         std::uint64_t generated_plays = 0, legal_batches = 0, order_reuse_hits = 0;
         std::uint64_t qtt_probes = 0, qtt_hits = 0, qtt_cutoffs = 0;
+        std::uint64_t ordering_rule_checks = 0, eval_cache_hits = 0, lazy_snapshots = 0;
+        std::uint64_t selective_usi_skipped = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -169,6 +171,8 @@ public:
     const Stats& last_stats() const { return stats_; }
     void set_research_mask(unsigned mask) { research_mask_ = mask & 31; }
     unsigned research_mask() const { return research_mask_; }
+    void set_efficiency_mask(unsigned mask) { efficiency_mask_ = mask & 15; }
+    unsigned efficiency_mask() const { return efficiency_mask_; }
 
     SearchResult choose(rules::Position& position, int max_depth, SearchControl& control,
                         const std::vector<std::string>& allowed = {},
@@ -196,7 +200,7 @@ public:
                 return std::find(allowed.begin(), allowed.end(), m) == allowed.end();
             }), original.end());
         SearchResult result;
-        root_ = position.snapshot().turn;
+        root_ = (efficiency_mask_ & LazySnapshot) ? position.turn() : position.snapshot().turn;
         const auto status = node_status(position, 0);
         if (status.result != rules::Result::Ongoing) {
             result.score = terminal(position, status, 0);
@@ -228,7 +232,7 @@ public:
         // unsearched partial best score or an illegal move in that case.
         result.move = original.front();
         result.pv = {result.move};
-        root_ = position.snapshot().turn;
+        root_ = (efficiency_mask_ & LazySnapshot) ? position.turn() : position.snapshot().turn;
         const auto root_history = position.history_key();
         const auto initial_rng = rng_;
         for (int depth = 1; depth <= std::clamp(max_depth, 1, MaxDepth); ++depth) {
@@ -356,6 +360,9 @@ private:
         std::uint64_t key = 0;
         std::vector<rules::GeneratedMove> tokens;
         std::vector<std::string> strings;
+        bool tactical_ready = false;
+        std::vector<std::string> tactical;
+        std::vector<std::size_t> tactical_indexes;
     };
     std::array<LegalBatch, MaxPly + 1> legal_batches_{};
     const LegalBatch& batch(const rules::Position& p, int ply) {
@@ -365,6 +372,9 @@ private:
             b.key = p.hash_key();
             b.tokens = p.legal_generated_moves();
             b.strings.clear();
+            b.tactical_ready = false;
+            b.tactical.clear();
+            b.tactical_indexes.clear();
             b.valid = true;
             ++stats_.legal_batches;
         }
@@ -384,6 +394,20 @@ private:
         }
         return p.legal_moves();
     }
+    std::vector<std::string> legal_tactical(const rules::Position& p, int ply) {
+        batch(p, ply);
+        auto& b = legal_batches_.at(ply);
+        if (!b.tactical_ready) {
+            for (std::size_t i = 0; i < b.tokens.size(); ++i) {
+                if (!p.generated_move_is_capture_or_promotion(b.tokens[i])) continue;
+                b.tactical.push_back(b.strings.empty() ? p.generated_move_usi(b.tokens[i]) : b.strings[i]);
+                b.tactical_indexes.push_back(i);
+            }
+            if (b.strings.empty()) stats_.selective_usi_skipped += b.tokens.size() - b.tactical.size();
+            b.tactical_ready = true;
+        }
+        return b.tactical;
+    }
     rules::Status node_status(const rules::Position& p, int ply) {
         if (!(research_mask_ & SharedLegal)) return p.status();
         // Repetition remains history-sensitive and is never cached.
@@ -398,9 +422,17 @@ private:
         std::string error;
         if (research_mask_ & GeneratedPlay) {
             const auto& b = batch(position, ply);
-            const auto it = std::find(b.strings.begin(), b.strings.end(), move);
-            if (it == b.strings.end()) throw std::logic_error("move absent from current legal batch");
-            if (!position.play_generated_move(b.tokens[it - b.strings.begin()], error))
+            std::size_t index;
+            if (!b.strings.empty()) {
+                const auto it = std::find(b.strings.begin(), b.strings.end(), move);
+                if (it == b.strings.end()) throw std::logic_error("move absent from current legal batch");
+                index = it - b.strings.begin();
+            } else {
+                const auto it = std::find(b.tactical.begin(), b.tactical.end(), move);
+                if (it == b.tactical.end()) throw std::logic_error("move absent from current tactical batch");
+                index = b.tactical_indexes[it - b.tactical.begin()];
+            }
+            if (!position.play_generated_move(b.tokens[index], error))
                 throw std::logic_error(error);
             ++stats_.generated_plays;
         } else if (!position.play_generated_legal(move, error)) throw std::logic_error(error);
@@ -410,13 +442,20 @@ private:
     struct EvalCell { std::uint64_t key = 0; int value = 0; std::uint32_t epoch = 0; };
     std::vector<EvalCell> eval_cache_ = std::vector<EvalCell>(1u << 15);
     std::uint32_t eval_epoch_ = 1;
-    int eval_node(const rules::Position& p, const rules::Snapshot& snap) {
+    template<class SnapshotGetter>
+    int eval_cached(const rules::Position& p, SnapshotGetter get_snapshot) {
         const auto key = p.hash_key();
         auto& cell = eval_cache_[key & (eval_cache_.size() - 1)];
-        if (cell.epoch == eval_epoch_ && cell.key == key) return cell.value;
-        const int value = evaluator_(snap);
+        if (cell.epoch == eval_epoch_ && cell.key == key) {
+            ++stats_.eval_cache_hits;
+            return cell.value;
+        }
+        const int value = evaluator_(get_snapshot());
         cell = {key, value, eval_epoch_};
         return value;
+    }
+    int eval_node(const rules::Position& p, const rules::Snapshot& snap) {
+        return eval_cached(p, [&]() -> const rules::Snapshot& { return snap; });
     }
     int terminal(const rules::Position& p, const rules::Status& status, int ply) const {
         if (status.result == rules::Result::Draw) return 0;
@@ -465,13 +504,15 @@ private:
         if (depth == 0) {
             ++stats_.leaf_evals;
             const int sign = root_ == rules::Color::Black ? 1 : -1;
-            const int value = sign * eval_node(p, p.snapshot());
+            const int value = sign * ((efficiency_mask_ & LazySnapshot)
+                ? eval_cached(p, [&] { ++stats_.lazy_snapshots; return p.snapshot(); })
+                : eval_node(p, p.snapshot()));
             ++stats_.tt_store_calls;
             if (tt_.store(score_key, depth, value, Bound::Exact)) ++stats_.tt_replacements;
             return {value, {}};
         }
-        auto moves = ordered(p, legal(p, ply), tt_move);
-        const bool maximizing = p.snapshot().turn == root_;
+        auto moves = ordered(p, legal(p, ply), tt_move, {}, {}, ply);
+        const bool maximizing = ((efficiency_mask_ & LazySnapshot) ? p.turn() : p.snapshot().turn) == root_;
         Node best{maximizing ? -Infinity : Infinity, {}};
         for (const auto& move : moves) {
             check_stop();
@@ -543,8 +584,13 @@ private:
         // Discard this incomplete iteration just as with stop/time exhaustion.
         if (ply >= MaxPly) throw Interrupted{};
         const bool checked = p.in_check();
-        const auto snapshot = p.snapshot();
-        const bool maximizing = snapshot.turn == root_;
+        std::optional<rules::Snapshot> snapshot;
+        auto get_snapshot = [&]() -> const rules::Snapshot& {
+            if (!snapshot) { snapshot = p.snapshot(); ++stats_.lazy_snapshots; }
+            return *snapshot;
+        };
+        if (!(efficiency_mask_ & LazySnapshot)) get_snapshot();
+        const bool maximizing = p.turn() == root_;
         const int original_alpha = alpha, original_beta = beta;
         Node best{maximizing ? -Infinity : Infinity, {}};
         auto cutoff = [&] {
@@ -552,7 +598,9 @@ private:
         };
         if (!checked) {
             ++stats_.leaf_evals;
-            best.value = (root_ == rules::Color::Black ? 1 : -1) * eval_node(p, snapshot);
+            best.value = (root_ == rules::Color::Black ? 1 : -1)
+                * ((efficiency_mask_ & LazySnapshot) ? eval_cached(p, get_snapshot)
+                                                    : eval_node(p, get_snapshot()));
             if (qply >= QuiescenceDepth) {
                 ++stats_.qlimit_leaves;
                 return best;
@@ -562,8 +610,10 @@ private:
             if (maximizing) alpha = std::max(alpha, best.value);
             else beta = std::min(beta, best.value);
         }
-        auto moves = legal(p, ply);
-        if (!checked) {
+        const bool selective = !checked && (efficiency_mask_ & SelectiveUSI);
+        auto moves = selective ? legal_tactical(p, ply) : legal(p, ply);
+        if (!checked && !selective) {
+            const auto& snapshot = get_snapshot();
             moves.erase(std::remove_if(moves.begin(), moves.end(), [&](const auto& move) {
                 const int dst = (move[2] - '1') * 9 + move[3] - 'a';
                 const bool capture = snapshot.board[dst].kind != 0;
@@ -576,8 +626,9 @@ private:
         // full AttackMap-based ordering there and use a cheap MVV-LVA-like order.
         if (!moves.empty()) {
             if (checked) {
-                moves = ordered(p, moves);
+                moves = ordered(p, moves, {}, {}, {}, ply);
             } else {
+                const auto& snapshot = get_snapshot();
                 struct TacticalMove {
                     std::string move;
                     int score = 0;
@@ -635,10 +686,31 @@ private:
                                     const std::vector<std::string>& moves,
                                     const std::string& tt_move = {},
                                     const std::string& previous_root = {},
-                                    const std::string& knowledge_move = {}) {
+                                    const std::string& knowledge_move = {}, int ply = 0) {
         ++stats_.order_calls;
         stats_.ordered_moves += moves.size();
         std::vector<std::string> result;
+        auto sort_moves = [&] {
+            std::vector<unsigned char> checks;
+            if (efficiency_mask_ & RuleCheckOrdering) {
+                // The moves may be a restricted subset of this node's legal batch.
+                batch(p, ply);
+                auto& b = legal_batches_.at(ply);
+                if (b.strings.empty() && !b.tokens.empty()) {
+                    b.strings.reserve(b.tokens.size());
+                    for (const auto& token : b.tokens) b.strings.push_back(p.generated_move_usi(token));
+                }
+                checks.reserve(moves.size());
+                for (const auto& m : moves) {
+                    const auto it = std::find(b.strings.begin(), b.strings.end(), m);
+                    if (it == b.strings.end()) throw std::logic_error("ordering move absent from legal batch");
+                    checks.push_back(p.generated_move_gives_check(b.tokens[it - b.strings.begin()]));
+                    ++stats_.ordering_rule_checks;
+                }
+            }
+            return MoveOrder::order(p.snapshot(), moves,
+                checks.empty() ? nullptr : &checks, efficiency_mask_ & OrderingWorkspace);
+        };
         if (research_mask_ & OrderReuse) {
             const auto key = p.hash_key();
             auto& cell = order_cache_[key & (order_cache_.size() - 1)];
@@ -646,10 +718,10 @@ private:
                 result = cell.ordered;
                 ++stats_.order_reuse_hits;
             } else {
-                result = MoveOrder::order(p.snapshot(), moves);
+                result = sort_moves();
                 cell = {key, eval_epoch_, moves, result};
             }
-        } else result = MoveOrder::order(p.snapshot(), moves);
+        } else result = sort_moves();
         auto promote = [&](const std::string& hint) {
             auto it = std::find(result.begin(), result.end(), hint);
             if (it == result.end()) return false;
@@ -672,6 +744,7 @@ private:
     TranspositionTable tt_;
     TranspositionTable qtt_;
     unsigned research_mask_ = DefaultSearchResearchMask;
+    unsigned efficiency_mask_ = DefaultSearchEfficiencyMask;
     struct OrderCell {
         std::uint64_t key = 0;
         std::uint32_t epoch = 0;

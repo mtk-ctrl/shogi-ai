@@ -32,6 +32,14 @@ def check(root: Path = ROOT) -> tuple[list[str], list[str]]:
     if engine and version and engine.group(1) != version.group(1):
         errors.append(f"{spec_path}: 現行版 {version.group(1)} と実装 {engine.group(1)} が異なる")
 
+    search_defaults = read("engine/strategy/search_research.h")
+    for option, constant in (("SearchResearchMask", "DefaultSearchResearchMask"),
+                             ("SearchEfficiencyMask", "DefaultSearchEfficiencyMask")):
+        actual = re.search(rf"constexpr unsigned {constant}\s*=\s*(\d+)", search_defaults)
+        described = re.search(rf"^\|\s*{option}\s*\|\s*(\d+)\s*\|", spec, re.M)
+        if not actual or not described or actual.group(1) != described.group(1):
+            errors.append(f"{spec_path}: {option} の正式既定値が実装と一致しない")
+
     material = read("engine/strategy/material.h")
     piece_arrays = {}
     for name in ("base", "promoted_values", "hand_values"):

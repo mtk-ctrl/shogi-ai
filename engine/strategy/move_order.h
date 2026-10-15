@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cmath>
 #include <string>
+#include <stdexcept>
 #include <utility>
 #include <vector>
 
@@ -21,14 +22,31 @@ public:
     };
 
     static std::vector<std::string> order(const rules::Snapshot& snapshot,
-                                          const std::vector<std::string>& moves) {
+                                          const std::vector<std::string>& moves,
+                                          const std::vector<unsigned char>* checks = nullptr,
+                                          bool reuse_workspace = false) {
+        if (checks && checks->size() != moves.size())
+            throw std::invalid_argument("check flags must match the move list");
         // Source-square danger is the same for every candidate. Build it once
         // per position instead of rescanning the board for every move.
         const AttackMap before_attacks(snapshot);
         std::vector<OrderedMove> scored;
         scored.reserve(moves.size());
-        for (std::size_t i = 0; i < moves.size(); ++i)
-            scored.push_back({moves[i], score_move(snapshot, moves[i], before_attacks), i});
+        if (reuse_workspace) {
+            rules::Snapshot after = snapshot;
+            std::vector<int> occupied;
+            for (int sq = 0; sq < 81; ++sq)
+                if (snapshot.board[sq].kind) occupied.push_back(sq);
+            for (std::size_t i = 0; i < moves.size(); ++i)
+                scored.push_back({moves[i], score_move(snapshot, after, moves[i], before_attacks,
+                    &occupied, checks ? (*checks)[i] : -1), i});
+        } else {
+            for (std::size_t i = 0; i < moves.size(); ++i) {
+                rules::Snapshot after = snapshot;
+                scored.push_back({moves[i], score_move(snapshot, after, moves[i], before_attacks,
+                    nullptr, checks ? (*checks)[i] : -1), i});
+            }
+        }
 
         std::stable_sort(scored.begin(), scored.end(), [](const auto& a, const auto& b) {
             return a.score > b.score;
@@ -67,11 +85,16 @@ private:
     static int score_move(const rules::Snapshot& snapshot,
                           const std::string& move,
                           const AttackMap& before_attacks) {
+        rules::Snapshot after = snapshot;
+        return score_move(snapshot, after, move, before_attacks, nullptr, -1);
+    }
+    static int score_move(const rules::Snapshot& snapshot, rules::Snapshot& after,
+                          const std::string& move, const AttackMap& before_attacks,
+                          const std::vector<int>* occupied, int known_check) {
         const auto mover = snapshot.turn;
         const auto enemy = other(mover);
         int score = 0;
 
-        rules::Snapshot after = snapshot;
         const auto parsed = apply_to_snapshot(after, move, mover);
         if (!parsed.valid) return score;
 
@@ -79,7 +102,8 @@ private:
             && before_attacks.count[static_cast<int>(enemy)][parsed.source_index] > 0;
         const int enemy_king = before_attacks.kings[static_cast<int>(enemy)];
         const auto tactics = analyze_after(after, parsed.destination_index, mover,
-                                           enemy_king, endangered);
+                                           enemy_king, endangered, occupied, known_check,
+                                           parsed.captured.kind == 0);
 
         // 1. Checks remain the strongest ordinary ordering signal.
         // TT/Experience hints are handled outside this heuristic.
@@ -109,6 +133,11 @@ private:
             score += 100 * std::max(0,
                 piece_value(parsed.moving.kind, true) - piece_value(parsed.moving.kind, false));
 
+        if (occupied) {
+            if (parsed.has_source) after.board[parsed.source_index] = snapshot.board[parsed.source_index];
+            after.board[parsed.destination_index] = snapshot.board[parsed.destination_index];
+            after.turn = snapshot.turn;
+        }
         return score;
     }
 
@@ -255,21 +284,25 @@ private:
                                       int destination,
                                       rules::Color mover,
                                       int enemy_king,
-                                      bool need_destination_attack) {
+                                      bool need_destination_attack,
+                                      const std::vector<int>* occupied = nullptr,
+                                      int known_check = -1,
+                                      bool destination_was_empty = false) {
         AfterTactics out;
+        if (known_check >= 0) out.gives_check = known_check != 0;
         if (destination < 0 || destination >= static_cast<int>(snapshot.board.size()))
             return out;
         const auto enemy = other(mover);
         const auto& moved = snapshot.board[destination];
 
-        for (int i = 0; i < static_cast<int>(snapshot.board.size()); ++i) {
+        auto inspect = [&](int i) {
             const auto& piece = snapshot.board[i];
-            if (piece.kind == 0) continue;
+            if (piece.kind == 0) return;
             if (piece.color == mover) {
-                if (!out.gives_check && enemy_king >= 0
+                if (known_check < 0 && !out.gives_check && enemy_king >= 0
                     && piece_attacks(snapshot, i, piece, enemy_king))
                     out.gives_check = true;
-                continue;
+                return;
             }
 
             if (need_destination_attack && !out.destination_attacked
@@ -280,7 +313,12 @@ private:
                 && piece_attacks(snapshot, destination, moved, i))
                 out.pressured_value = std::max(
                     out.pressured_value, piece_value(piece.kind, piece.promoted));
-        }
+        };
+        if (occupied) {
+            for (int i : *occupied) inspect(i);
+            // A quiet move or drop can occupy a square absent from the index.
+            if (destination_was_empty) inspect(destination);
+        } else for (int i = 0; i < 81; ++i) inspect(i);
         return out;
     }
 };

@@ -69,6 +69,10 @@ public:
     std::vector<GeneratedMove> legal_generated_moves() const;
     std::vector<GeneratedMove> checking_generated_moves() const;
     std::string generated_move_usi(const GeneratedMove& move) const;
+    // A rule-layer check query for a legal token from this exact position.
+    bool generated_move_gives_check(const GeneratedMove& move) const;
+    // Pure move metadata; filtering choices remain in our strategy layer.
+    bool generated_move_is_capture_or_promotion(const GeneratedMove& move) const;
     bool play_generated_move(const GeneratedMove& move, std::string& error);
     bool play(const std::string& move, std::string& error);
     // Fast path for a move obtained from this Position's current legal_moves()

@@ -1,0 +1,23 @@
+{
+  "run": 38670894321,
+  "request_commit": "e37d5a067101a319eddb872f3d2469ef46d30ed7",
+  "candidate_commit": "115c53d0d508e093ca161ec8d650600a8f421086",
+  "baseline_commit": "6445d54f23e7cfffd7cd36b62490fc42f9c142e1",
+  "build_job": 116213539760,
+  "checkout_refs_and_build_sha256_verified": true,
+  "binary_artifact": {
+    "id": 11943607584,
+    "name": "generic-engine-binaries-38670894321",
+    "digest": "sha256:4777c9378d8c2febfd7ff31af5738b4b68a65a1849856e2017f2bd3d365364b6",
+    "size_in_bytes": 4437975,
+    "expires_at": "2027-01-13T02:25:23Z"
+  },
+  "binary_and_knowledge_sha256": {
+    "engine-a": "f926385ca09f67b3002c41962bb1850263e89a887d46965a8b2e221dbbaa787f",
+    "engine-b": "4b081562b14654654c389cf8d7b8ccd8eb294bb259eae53ca2a3fb760dd893b7",
+    "position-knowledge-v1.tsv": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+    "position-knowledge-v1.manifest.json": "683ea43c0a004ba962b9be138c85b3a37e1d1d00b0b1e37ef53287a8c158a864"
+  },
+  "artifact_scope": "All12 ZIP API digests verified, including binary package; per-game raw hashes independently reconciled to archive sources. Actions artifacts expire; no Releases transfer performed.",
+  "matched_binary_regression": "Downloaded candidate default8 and all16 settings match downloaded official binary bounded searches; PASS"
+}

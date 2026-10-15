@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <random>
 
 using namespace shogi;
 
@@ -89,6 +90,49 @@ int main() {
         require(escape_and_pressure > plain_escape,
                 "escape plus counter-pressure must outrank a plain escape");
         std::cout << "PASS combined tactical contact gets cumulative priority\n";
+        rules::Position position;
+        std::mt19937 rng(2026101591);
+        std::string error;
+        std::size_t compared = 0;
+        for (int sample = 0; sample < 400; ++sample) {
+            if (position.status().result != rules::Result::Ongoing || sample % 150 == 0)
+                require(position.set(rules::Position::start_sfen(), {}, error), error);
+            const auto tokens = position.legal_generated_moves();
+            const auto snapshot = position.snapshot();
+            std::vector<std::string> moves;
+            std::vector<unsigned char> checks;
+            const auto before = position.sfen();
+            const auto history = position.history_key();
+            for (const auto& token : tokens) {
+                moves.push_back(position.generated_move_usi(token));
+                checks.push_back(position.generated_move_gives_check(token));
+                const auto& usi = moves.back();
+                const int dst = (usi[2]-'1')*9 + usi[3]-'a';
+                require(position.generated_move_is_capture_or_promotion(token)
+                        == (snapshot.board[dst].kind != 0 || (usi.size()==5 && usi[4]=='+')),
+                        "token capture/promotion metadata disagrees with independent board/string test");
+                require(position.play_generated_move(token, error), error);
+                require(checks.back() == position.in_check(), "token check query disagrees with played board");
+                bool rejected = false;
+                try { position.generated_move_gives_check(token); }
+                catch (const std::logic_error&) { rejected = true; }
+                require(rejected, "stale check token must be rejected");
+                require(position.undo(), "undo after check probe");
+                require(position.sfen() == before && position.history_key() == history,
+                        "check query/probe must preserve full position history");
+                ++compared;
+            }
+            const auto reference = strategy::MoveOrder::order(snapshot, moves);
+            require(strategy::MoveOrder::order(snapshot, moves, &checks, false) == reference,
+                    "native-check ordering differs from original full-board ordering");
+            require(strategy::MoveOrder::order(snapshot, moves, nullptr, true) == reference,
+                    "indexed workspace ordering differs from original full-board ordering");
+            require(strategy::MoveOrder::order(snapshot, moves, &checks, true) == reference,
+                    "combined ordering differs from original full-board ordering");
+            require(position.play_generated_move(tokens[rng() % tokens.size()], error), error);
+        }
+        std::cout << "PASS native checks, workspace/order identity, stale tokens and full-history restoration: "
+                  << compared << " legal moves at 400 positions\n";
     } catch (const std::exception& e) {
         std::cerr << "FAIL " << e.what() << '\n';
         return 1;
