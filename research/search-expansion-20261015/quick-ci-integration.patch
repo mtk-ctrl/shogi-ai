@@ -1,0 +1,20 @@
+diff --git a/.github/workflows/quick-ci.yml b/.github/workflows/quick-ci.yml
+index 5285ab9..16f4da9 100644
+--- a/.github/workflows/quick-ci.yml
++++ b/.github/workflows/quick-ci.yml
+@@ -21,6 +21,7 @@ on:
+       - "tests/rules_test.cpp"
+       - "tests/generated_move_test.cpp"
+       - "tests/test_search_usi.py"
++      - "tests/test_search_research.py"
+       - "tests/test_turn_phase_usi.py"
+       - "tests/test_position_knowledge_usi.py"
+       - "tests/test_eval_usi.py"
+@@ -106,6 +107,7 @@ jobs:
+         run: |
+           python3 -m pip install python-shogi==1.1.1
+           python3 tests/test_search_usi.py build/shogi-ai
++          python3 tests/test_search_research.py build/shogi-ai
+           python3 tests/test_turn_phase_usi.py build/shogi-ai
+           python3 tests/test_position_knowledge_usi.py build/shogi-ai
+           python3 tests/test_eval_usi.py build/shogi-ai

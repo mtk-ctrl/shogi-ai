@@ -1,0 +1,12 @@
+{
+  "request_id": "search-expansion-20261015-final-mask23-main-100",
+  "ref_a": "4d8a4b9723c21c6163cad03358ba35e4b93d4687",
+  "ref_b": "73884f6d7e6a265803bde3e26953d63c7e1b1c58",
+  "games": 100,
+  "shards": 10,
+  "go_command": "go movetime 200",
+  "max_plies": 300,
+  "seed": 2026101580,
+  "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"SearchResearchMask\":23}",
+  "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true}"
+}

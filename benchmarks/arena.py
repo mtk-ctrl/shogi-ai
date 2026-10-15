@@ -66,6 +66,7 @@ SEARCH_STAT_NAMES = (
     "knowledge_probes", "knowledge_hits", "knowledge_promotions",
     "knowledge_disabled_repetition",
     "qnodes", "qcutoffs", "qlimit_leaves",
+    "research_mask", "generated_plays", "legal_batches", "order_reuse_hits", "qtt_probes", "qtt_hits", "qtt_cutoffs",
 )
 
 USI_INFO_INTEGER_NAMES = (
@@ -76,7 +77,7 @@ PER_MOVE_SEARCH_FIELDS = (
     "depth", "seldepth", "time", "nodes", "nps",
     "full_nodes", "cutoffs", "tt_probes", "tt_hits",
     "knowledge_probes", "knowledge_hits", "knowledge_promotions",
-    "qnodes", "qcutoffs",
+    "qnodes", "qcutoffs", "research_mask", "order_reuse_hits", "qtt_probes", "qtt_hits", "qtt_cutoffs",
 )
 
 

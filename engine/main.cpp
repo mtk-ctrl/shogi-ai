@@ -100,10 +100,11 @@ int main() {
         if (command != "isready" && command != "stop" && command != "ponderhit" && command != "quit")
             finish_search(true);
         if (command == "usi") {
-            std::cout << "id name KUMOJI v2.0.13\nid author mtk-ctrl + ChatGPT\n"
+            std::cout << "id name KUMOJI v2.0.14\nid author mtk-ctrl + ChatGPT\n"
                       << "option name USI_Ponder type check default false\n"
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
+                      << "option name SearchResearchMask type spin default " << shogi::strategy::DefaultSearchResearchMask << " min 0 max 31\n"
                       << "option name Quiescence type check default true\n"
                       << "option name MateAssist type check default true\n"
                       << "option name MateLearning type check default true\n"
@@ -616,6 +617,12 @@ int main() {
                         << " tt_bound_cutoffs " << stats.tt_bound_cutoffs << " tt_stores " << stats.tt_store_calls
                         << " tt_replacements " << stats.tt_replacements << " tt_move_first " << stats.tt_move_first
                         << " tt_disabled_repetition " << stats.tt_disabled_repetition
+                        << " research_mask " << strategy.research_mask()
+                        << " generated_plays " << stats.generated_plays
+                        << " legal_batches " << stats.legal_batches
+                        << " order_reuse_hits " << stats.order_reuse_hits
+                        << " qtt_probes " << stats.qtt_probes << " qtt_hits " << stats.qtt_hits
+                        << " qtt_cutoffs " << stats.qtt_cutoffs
                         << " knowledge_probes " << stats.knowledge_probes
                         << " knowledge_hits " << stats.knowledge_hits
                         << " knowledge_promotions " << stats.knowledge_promotions
@@ -652,6 +659,13 @@ int main() {
                     try { std::size_t used = 0; int depth = std::stoi(value, &used);
                         if (used == value.size() && depth >= 1 && depth <= 64) default_depth = depth;
                     } catch (...) {}
+                } else if (name == "SearchResearchMask") {
+                    try {
+                        std::size_t used = 0;
+                        const int mask = std::stoi(value, &used);
+                        if (used == value.size() && mask >= 0 && mask <= 31)
+                            strategy.set_research_mask(static_cast<unsigned>(mask));
+                    } catch (const std::exception&) {}
                 } else if (name == "Quiescence") {
                     if (value == "true" || value == "false") {
                         quiescence_enabled = value == "true";

@@ -1,0 +1,420 @@
+{
+  "38646191420": {
+    "mask": 7,
+    "wins": 49,
+    "draws": 6,
+    "losses": 45,
+    "score": 0.52,
+    "approx_95pct": [
+      0.42458811458320367,
+      0.6154118854167964
+    ],
+    "games": 100,
+    "plies": 11158,
+    "a_black": 50,
+    "illegal_replay": 0,
+    "max_long_uses": 10,
+    "summary": {
+      "ref_a": "4d8a4b9723c21c6163cad03358ba35e4b93d4687",
+      "ref_b": "7ab3dab9b909503d340fb1f374da09f8d0e2e209",
+      "go_command": "go movetime 200",
+      "options_a": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+        "OpeningRandomNonLance": true,
+        "SearchResearchMask": 7
+      },
+      "options_b": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+        "OpeningRandomNonLance": true
+      },
+      "games": 100,
+      "wins_a": 49,
+      "draws": 6,
+      "wins_b": 45,
+      "score_a": 0.52,
+      "score_a_approx_95pct": [
+        0.42207843138511314,
+        0.6179215686148869
+      ],
+      "average_plies": 111.58,
+      "illegal_games": 0,
+      "shards": 5,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      }
+    },
+    "telemetry": {
+      "A": {
+        "elapsed_ms": {
+          "n": 5580,
+          "total": 1823929.222,
+          "mean": 326.86903620071683,
+          "max": 991.19
+        },
+        "depth": {
+          "n": 5388,
+          "total": 12253,
+          "mean": 2.2741276911655532,
+          "max": 5
+        },
+        "nodes": {
+          "n": 5435,
+          "total": 138246824,
+          "mean": 25436.398160073597,
+          "max": 133070
+        },
+        "knowledge_probes": {
+          "n": 5388,
+          "total": 5192,
+          "mean": 0.96362286562732,
+          "max": 1
+        },
+        "knowledge_hits": {
+          "n": 5388,
+          "total": 0,
+          "mean": 0,
+          "max": 0
+        },
+        "knowledge_promotions": {
+          "n": 5388,
+          "total": 0,
+          "mean": 0,
+          "max": 0
+        }
+      },
+      "B": {
+        "depth": {
+          "n": 5405,
+          "total": 11717,
+          "mean": 2.1678075855689176,
+          "max": 5
+        },
+        "nodes": {
+          "n": 5442,
+          "total": 113594755,
+          "mean": 20873.714626975376,
+          "max": 109707
+        },
+        "elapsed_ms": {
+          "n": 5578,
+          "total": 1827844.141,
+          "mean": 327.68808551452133,
+          "max": 991.125
+        },
+        "knowledge_probes": {
+          "n": 5405,
+          "total": 5211,
+          "mean": 0.9641073080481036,
+          "max": 1
+        },
+        "knowledge_hits": {
+          "n": 5405,
+          "total": 0,
+          "mean": 0,
+          "max": 0
+        },
+        "knowledge_promotions": {
+          "n": 5405,
+          "total": 0,
+          "mean": 0,
+          "max": 0
+        }
+      }
+    },
+    "archive_manifest": {
+      "schema_version": 1,
+      "archive": "played-games.jsonl.gz",
+      "archive_sha256": "1a393c82511074cbc2dc6f3fd3c39d5c02d8957a2903196119b16039726aebc2",
+      "archive_bytes": 651305,
+      "games": 100,
+      "plies": 11158,
+      "scored_plies": 10685,
+      "missing_score_plies": 473,
+      "ambiguous_score_plies": 0,
+      "without_telemetry_plies": 0,
+      "phase_recorded_plies": 11158,
+      "phase_missing_plies": 0,
+      "run_id": "38646191420",
+      "requested_ref_a": "4d8a4b9723c21c6163cad03358ba35e4b93d4687",
+      "requested_ref_b": "7ab3dab9b909503d340fb1f374da09f8d0e2e209",
+      "scope": "Played moves only; PV, candidate moves and search trees are excluded."
+    },
+    "artifacts": [
+      {
+        "id": 11933655089,
+        "name": "played-move-archive-38646191420",
+        "digest": "sha256:8487b60bff30a278b2ae7cd694775e59f2f63fd0f641fb57d385b158168d10d0",
+        "run": 38646191420,
+        "expires_at": "2027-01-12T22:14:04Z"
+      },
+      {
+        "id": 11932839073,
+        "name": "generic-engine-match-38646191420-3",
+        "digest": "sha256:a11ed0c2fef601616daa9e2e25a8a0e9598907cd6c1061bf82cc5ef2268cbaaa",
+        "run": 38646191420,
+        "expires_at": "2027-01-12T22:14:04Z"
+      },
+      {
+        "id": 11932768811,
+        "name": "generic-engine-match-38646191420-2",
+        "digest": "sha256:67849c4027f21b767dbc3ffccada6d63ac77b7e74d1636f2e5bd9065678ebfd0",
+        "run": 38646191420,
+        "expires_at": "2027-01-12T22:14:04Z"
+      },
+      {
+        "id": 11932493389,
+        "name": "generic-engine-match-38646191420-4",
+        "digest": "sha256:3d6fc9a280936c4864691118e17c87ab9e72871bbf263482cce6e8f2c7b79913",
+        "run": 38646191420,
+        "expires_at": "2027-01-12T22:14:04Z"
+      },
+      {
+        "id": 11932109564,
+        "name": "generic-engine-match-38646191420-1",
+        "digest": "sha256:abc65b8adcfafe7544a9e376878a5b400e58f81956af1ec2fc734aad5fab5146",
+        "run": 38646191420,
+        "expires_at": "2027-01-12T22:14:04Z"
+      },
+      {
+        "id": 11932094764,
+        "name": "generic-engine-match-38646191420-0",
+        "digest": "sha256:8a429c6ec0c1476f1e5cbd2e79beaec9882c10747018712f65a8c5c0f8a3967c",
+        "run": 38646191420,
+        "expires_at": "2027-01-12T22:14:04Z"
+      },
+      {
+        "id": 11932084794,
+        "name": "generic-engine-match-summary-38646191420",
+        "digest": "sha256:419fbf01f478141a8f4e234c47b4fc28e6ece833e69353347a7d30232c70b577",
+        "run": 38646191420,
+        "expires_at": "2027-01-12T22:14:04Z"
+      }
+    ]
+  },
+  "38646220538": {
+    "mask": 23,
+    "wins": 58,
+    "draws": 1,
+    "losses": 41,
+    "score": 0.585,
+    "approx_95pct": [
+      0.48844099830631627,
+      0.6815590016936837
+    ],
+    "games": 100,
+    "plies": 10930,
+    "a_black": 50,
+    "illegal_replay": 0,
+    "max_long_uses": 10,
+    "summary": {
+      "ref_a": "4d8a4b9723c21c6163cad03358ba35e4b93d4687",
+      "ref_b": "7ab3dab9b909503d340fb1f374da09f8d0e2e209",
+      "go_command": "go movetime 200",
+      "options_a": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+        "OpeningRandomNonLance": true,
+        "SearchResearchMask": 23
+      },
+      "options_b": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+        "OpeningRandomNonLance": true
+      },
+      "games": 100,
+      "wins_a": 58,
+      "draws": 1,
+      "wins_b": 41,
+      "score_a": 0.585,
+      "score_a_approx_95pct": [
+        0.48842648189073773,
+        0.6815735181092621
+      ],
+      "average_plies": 109.3,
+      "illegal_games": 0,
+      "shards": 5,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      }
+    },
+    "telemetry": {
+      "A": {
+        "elapsed_ms": {
+          "n": 5469,
+          "total": 1794673.859,
+          "mean": 328.1539328944963,
+          "max": 991.205
+        },
+        "depth": {
+          "n": 5238,
+          "total": 12488,
+          "mean": 2.384116074837724,
+          "max": 6
+        },
+        "nodes": {
+          "n": 5304,
+          "total": 134131704,
+          "mean": 25288.782805429862,
+          "max": 167367
+        },
+        "knowledge_probes": {
+          "n": 5238,
+          "total": 4978,
+          "mean": 0.9503627338678885,
+          "max": 1
+        },
+        "knowledge_hits": {
+          "n": 5238,
+          "total": 0,
+          "mean": 0,
+          "max": 0
+        },
+        "knowledge_promotions": {
+          "n": 5238,
+          "total": 0,
+          "mean": 0,
+          "max": 0
+        }
+      },
+      "B": {
+        "depth": {
+          "n": 5286,
+          "total": 11649,
+          "mean": 2.2037457434733256,
+          "max": 5
+        },
+        "nodes": {
+          "n": 5331,
+          "total": 111167052,
+          "mean": 20852.945413618458,
+          "max": 123737
+        },
+        "elapsed_ms": {
+          "n": 5461,
+          "total": 1804962.411,
+          "mean": 330.5186616004395,
+          "max": 991.186
+        },
+        "knowledge_probes": {
+          "n": 5286,
+          "total": 5032,
+          "mean": 0.9519485433219826,
+          "max": 1
+        },
+        "knowledge_hits": {
+          "n": 5286,
+          "total": 0,
+          "mean": 0,
+          "max": 0
+        },
+        "knowledge_promotions": {
+          "n": 5286,
+          "total": 0,
+          "mean": 0,
+          "max": 0
+        }
+      }
+    },
+    "archive_manifest": {
+      "schema_version": 1,
+      "archive": "played-games.jsonl.gz",
+      "archive_sha256": "c2c1c2ff1a8164c13f3289209cbad636d3e9f0d4650e5e1f4101caa36eff8cf5",
+      "archive_bytes": 640983,
+      "games": 100,
+      "plies": 10930,
+      "scored_plies": 10385,
+      "missing_score_plies": 545,
+      "ambiguous_score_plies": 0,
+      "without_telemetry_plies": 0,
+      "phase_recorded_plies": 10930,
+      "phase_missing_plies": 0,
+      "run_id": "38646220538",
+      "requested_ref_a": "4d8a4b9723c21c6163cad03358ba35e4b93d4687",
+      "requested_ref_b": "7ab3dab9b909503d340fb1f374da09f8d0e2e209",
+      "scope": "Played moves only; PV, candidate moves and search trees are excluded."
+    },
+    "artifacts": [
+      {
+        "id": 11933620026,
+        "name": "generic-engine-match-38646220538-1",
+        "digest": "sha256:fa55e30c64aec3159e7dd3517fa656412a4dcdc035ad8431bb09a2e02acc9088",
+        "run": 38646220538,
+        "expires_at": "2027-01-12T22:14:18Z"
+      },
+      {
+        "id": 11933386247,
+        "name": "played-move-archive-38646220538",
+        "digest": "sha256:59d5e67ad5c9b4758b47cd079e19e4f31f37a6983806ccaebcbc464b91aad31e",
+        "run": 38646220538,
+        "expires_at": "2027-01-12T22:14:18Z"
+      },
+      {
+        "id": 11933281746,
+        "name": "generic-engine-match-summary-38646220538",
+        "digest": "sha256:bdb3bae4c2aeda88159654a9c7a5badf35a4b933f762cf8577aa5a00067a6b7c",
+        "run": 38646220538,
+        "expires_at": "2027-01-12T22:14:18Z"
+      },
+      {
+        "id": 11933088632,
+        "name": "generic-engine-match-38646220538-0",
+        "digest": "sha256:9719344db8dd3d9379c9147b3550b98cda30342f8d8948a844cd5ec8c55f536b",
+        "run": 38646220538,
+        "expires_at": "2027-01-12T22:14:18Z"
+      },
+      {
+        "id": 11933022945,
+        "name": "generic-engine-match-38646220538-4",
+        "digest": "sha256:e2637351a8b60e084fa6742782b33b5f5118806129f6fdc58805d81706317d81",
+        "run": 38646220538,
+        "expires_at": "2027-01-12T22:14:18Z"
+      },
+      {
+        "id": 11932958536,
+        "name": "generic-engine-match-38646220538-3",
+        "digest": "sha256:e5b7fa456d5fee074973a3b17ca56d8772884cf28f7271ef0912dbe09de78d92",
+        "run": 38646220538,
+        "expires_at": "2027-01-12T22:14:18Z"
+      },
+      {
+        "id": 11932468969,
+        "name": "generic-engine-match-38646220538-2",
+        "digest": "sha256:bc41b3fedef836bef91cc5cb7c2bdf6f2c4c6f2639a4654074ae50abd192b568",
+        "run": 38646220538,
+        "expires_at": "2027-01-12T22:14:18Z"
+      }
+    ]
+  }
+}
