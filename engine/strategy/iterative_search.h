@@ -180,7 +180,7 @@ public:
     unsigned efficiency_mask() const { return efficiency_mask_; }
     void set_next_mask(unsigned mask) { next_mask_ = mask & 15; }
     void set_reuse_mask(unsigned mask) {
-        reuse_mask_ = mask & 7;
+        reuse_mask_ = mask & 15;
         if constexpr (std::is_same_v<Evaluator,FeatureEvaluator>) evaluator_.set_reuse_mask(reuse_mask_);
     }
     unsigned reuse_mask() const { return reuse_mask_; }
@@ -778,7 +778,8 @@ private:
                 }
             }
             return MoveOrder::order(p.snapshot(), moves,
-                checks.empty() ? nullptr : &checks, efficiency_mask_ & OrderingWorkspace);
+                checks.empty() ? nullptr : &checks, efficiency_mask_ & OrderingWorkspace,
+                (next_mask_ & 4) ? 2 : ((next_mask_ & 2) ? 1 : 0), (reuse_mask_ & 8) != 0);
         };
         if (research_mask_ & OrderReuse) {
             const auto key = p.hash_key();
