@@ -35,6 +35,17 @@ def run(engine, sfen, command):
         board.push(parsed)
     return move, info
 
+# Verify the formal default chooses exactly the tested tier-6 setting.
+default_engine = Engine(sys.argv[1], 'next-default', options)
+tier6_engine = Engine(sys.argv[1], 'next-tier6', {**options, 'SearchNextMask': 4})
+try:
+    for case in cases:
+        assert run(default_engine, *case) == run(tier6_engine, *case), (
+            'default must use SearchNextMask=4', case)
+finally:
+    default_engine.close()
+    tier6_engine.close()
+
 engine = Engine(sys.argv[1], 'next-adopted', {**options, 'SearchNextMask': 0})
 try:
     baseline = [run(engine, *case) for case in cases]
