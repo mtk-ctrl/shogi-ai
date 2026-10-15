@@ -1,4 +1,8 @@
-"""Reproducible independent paired speed screening for the v2.0.17 incremental evaluation candidates."""
+"""Paired timing/depth diagnostics for a frozen v2.0.17 learned evaluator.
+
+Changed evaluation scores change pruning and the explored tree. Elapsed ratios
+for neural25 are descriptive; they are not a pure implementation speedup.
+"""
 import hashlib
 import json
 import statistics
@@ -18,9 +22,9 @@ options = {
 }
 config = {'control':0,'neural25':25}
 engines = {'official_v2017': Engine(baseline_binary, 'official_v2017', options)}
-for name, update_mask in config.items():
+for name, blend_percent in config.items():
     engines[name] = Engine(candidate_binary, name,
-        {**options, 'EvalNeuralBlend':update_mask})
+        {**options, 'EvalNeuralBlend':blend_percent})
 measurements = []
 try:
     for mode, command in (('fixed', 'go depth 2'), ('timed', 'go movetime 200')):
@@ -72,8 +76,8 @@ for name in engines:
             mismatches.append((row['repeat'], row['position']))
     summary[name] = {
         'fixed_trials': len(fixed),
-        'median_speedup': statistics.median(speeds),
-        'total_speedup': sum(r['results']['official_v2017']['elapsed_ms'] for r in fixed)
+        'median_elapsed_ratio': statistics.median(speeds),
+        'total_elapsed_ratio': sum(r['results']['official_v2017']['elapsed_ms'] for r in fixed)
           / sum(r['results'][name]['elapsed_ms'] for r in fixed),
         'score_mismatches': score_mismatches,
         'full_mismatches': mismatches,
@@ -91,12 +95,12 @@ result = {
     'baseline_binary_sha256': hashlib.sha256(Path(baseline_binary).read_bytes()).hexdigest(),
     'source_sha256': hashlib.sha256(Path('research/search-efficiency3-20261015/positions.json').read_bytes()).hexdigest(),
     'conditions': {'positions':24,'repeats':3,'fixed':'go depth 2','timed':'go movetime 200','options':options,'config':config},
+    'timing_note':'Neural evaluation changes scores, pruning and tree size; elapsed ratios do not isolate implementation speed.',
     'summary':summary,'rows':measurements,
 }
 Path(output).parent.mkdir(parents=True,exist_ok=True)
 Path(output).write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
 print(json.dumps(summary,indent=2))
-# Bounded full-search scores should not change at fixed depth. PV-only / index / ray
-# changes must also retain node counts and PVs exactly.
+# The disabled control must retain the original search. Neural25 may differ.
 assert not summary['control']['score_mismatches'], 'fixed-depth score drift'
 assert not summary['control']['full_mismatches'], 'pure optimization changes search'

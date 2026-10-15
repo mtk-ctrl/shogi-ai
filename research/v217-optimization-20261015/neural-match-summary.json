@@ -1,0 +1,56 @@
+{
+  "ref_a": "00904045c69c5c76ca78f85b5a47391bfb5c1a86",
+  "ref_b": "003f42c66f8e3f2e5deb1898103555466e72016f",
+  "go_command": "go movetime 200",
+  "options_a": {
+    "AdaptiveLongThink": true,
+    "PositionKnowledge": true,
+    "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+    "OpeningRandomNonLance": true,
+    "SearchResearchMask": 23,
+    "SearchEfficiencyMask": 8,
+    "SearchReuseMask": 6,
+    "SearchNextMask": 4,
+    "SearchThreads": 1,
+    "EvalUpdateMask": 0,
+    "EvalNeuralBlend": 25
+  },
+  "options_b": {
+    "AdaptiveLongThink": true,
+    "PositionKnowledge": true,
+    "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+    "OpeningRandomNonLance": true,
+    "SearchResearchMask": 23,
+    "SearchEfficiencyMask": 8,
+    "SearchReuseMask": 6,
+    "SearchNextMask": 4
+  },
+  "games": 200,
+  "wins_a": 35,
+  "draws": 0,
+  "wins_b": 165,
+  "score_a": 0.175,
+  "score_a_approx_95pct": [
+    0.12233924611249852,
+    0.22766075388750145
+  ],
+  "average_plies": 99.005,
+  "illegal_games": 0,
+  "shards": 20,
+  "position_knowledge": {
+    "A": {
+      "enabled": true,
+      "file": "build/position-knowledge-v1.tsv",
+      "available": true,
+      "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+      "positions": 163
+    },
+    "B": {
+      "enabled": true,
+      "file": "build/position-knowledge-v1.tsv",
+      "available": true,
+      "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+      "positions": 163
+    }
+  }
+}
