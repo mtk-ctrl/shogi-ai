@@ -1,0 +1,7 @@
+Research start request (2026-10-16 JST)
+Fixed baseline: 8894c0f843f57140e8d6986d4c3d576c68b343f8
+A=control, B=RiskVerify, C=USI_Ponder, D=both.
+Each 50 games, 5 lanes * 10 games = 200 games total / 20 lanes.
+go movetime 200; AdaptiveLongThink=true; adopted knowledge 163.
+Quick CI success: https://github.com/mtk-ctrl/shogi-ai/actions/runs/38805647757
+Official main remains unchanged.
