@@ -1,5 +1,6 @@
 #pragma once
 #include "strategy/attack_map.h"
+#include "strategy/incremental_evaluation.h"
 #include "strategy/search_research.h"
 #include "strategy/evaluation_params.h"
 #include "strategy/evaluation_v2_features.h"
@@ -84,14 +85,16 @@ inline void danger_features(const rules::Snapshot& s, const AttackMap& a,
 
 inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
                                      const EvaluationParameters& p=EvaluationParameters{},
-                                     unsigned reuse_mask=0) {
+                                     unsigned reuse_mask=0,
+                                     const AttackMap* prepared_map=nullptr,
+                                     const MaterialTotals* prepared_material=nullptr) {
     EvaluationBreakdown b;
-    b.material=material_black(s);
+    b.material=prepared_material ? prepared_material->board+prepared_material->hand : material_black(s);
     // Distinguish pieces on board from pieces in hand: their strategic
     // values need not follow the same maturity trajectory. Reference 100
     // reproduces earlier fixed-M material evaluation when used directly.
-    int hand_material=0;
-    for (int color=0; color<2; ++color)
+    int hand_material=prepared_material ? prepared_material->hand : 0;
+    if(!prepared_material)for (int color=0; color<2; ++color)
         for (int kind=1; kind<=7; ++kind)
             hand_material += (color==0 ? 1 : -1) * s.hands[color][kind-1]
                              * hand_piece_value(kind);
@@ -109,7 +112,9 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
         return b;
     }
 
-    AttackMap a(s,reuse_mask & GeometryLookup,reuse_mask & OccupiedIndex, (reuse_mask & 8) != 0);
+    std::optional<AttackMap> fresh;
+    if(!prepared_map)fresh.emplace(s,reuse_mask & GeometryLookup,reuse_mask & OccupiedIndex, (reuse_mask & 8) != 0);
+    const AttackMap& a=prepared_map ? *prepared_map : *fresh;
     for(int c=0;c<2;++c) {
         auto& f=b.raw[c];
         king_safety_features(s,a,c,f);pressure_features(s,a,c,f);
@@ -161,11 +166,20 @@ class FeatureEvaluator {
 public:
     explicit FeatureEvaluator(EvaluationParameters p={},unsigned reuse_mask=0)
         :params_(p),reuse_mask_(reuse_mask){params_.validate();}
-    int operator()(const rules::Snapshot& s) const {return evaluate(s,params_,reuse_mask_).total;}
+    int operator()(const rules::Snapshot& s) const {
+        const auto* material=(update_mask_ & 1) ? &material_.update(s) : nullptr;
+        const auto* attacks=(update_mask_ & 2) ? &attacks_.update(s,reuse_mask_) : nullptr;
+        return evaluate(s,params_,reuse_mask_,attacks,material).total;
+    }
+    void set_update_mask(unsigned mask) {
+        update_mask_=mask & 3; material_=IncrementalMaterial{}; attacks_=IncrementalAttackMap{};
+    }
     const EvaluationParameters& parameters() const {return params_;}
     void set_reuse_mask(unsigned mask) { reuse_mask_=mask & 15; }
 private:
     EvaluationParameters params_;
-    unsigned reuse_mask_=0;
+    unsigned reuse_mask_=0, update_mask_=0;
+    mutable IncrementalMaterial material_;
+    mutable IncrementalAttackMap attacks_;
 };
 } // namespace shogi::strategy

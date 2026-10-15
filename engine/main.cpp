@@ -108,6 +108,8 @@ int main() {
                       << "option name SearchEfficiencyMask type spin default " << shogi::strategy::DefaultSearchEfficiencyMask << " min 0 max 15\n"
                       << "option name SearchReuseMask type spin default " << shogi::strategy::DefaultSearchReuseMask << " min 0 max 15\n"
                       << "option name SearchNextMask type spin default 4 min 0 max 15\n"
+                      << "option name EvalUpdateMask type spin default 0 min 0 max 3\n"
+                      << "option name SearchThreads type spin default 1 min 1 max 2\n"
                       << "option name Quiescence type check default true\n"
                       << "option name MateAssist type check default true\n"
                       << "option name MateLearning type check default true\n"
@@ -621,6 +623,8 @@ int main() {
                         << " tt_replacements " << stats.tt_replacements << " tt_move_first " << stats.tt_move_first
                         << " tt_disabled_repetition " << stats.tt_disabled_repetition
                         << " research_mask " << strategy.research_mask()
+                        << " search_threads " << strategy.threads()
+                        << " eval_update_mask " << strategy.eval_update_mask()
                         << " reuse_mask " << strategy.reuse_mask()
                         << " legal_cache_hits " << stats.legal_cache_hits
                         << " legal_cache_misses " << stats.legal_cache_misses
@@ -698,6 +702,18 @@ int main() {
                         const int mask=std::stoi(value,&used);
                         if(used==value.size() && mask>=0 && mask<=15)
                             strategy.set_next_mask(static_cast<unsigned>(mask));
+                    } catch(const std::exception&) {}
+                } else if (name == "EvalUpdateMask") {
+                    try {
+                        std::size_t used=0; const int mask=std::stoi(value,&used);
+                        if(used==value.size() && mask>=0 && mask<=3)
+                            strategy.set_eval_update_mask(static_cast<unsigned>(mask));
+                    } catch(const std::exception&) {}
+                } else if (name == "SearchThreads") {
+                    try {
+                        std::size_t used=0; const int count=std::stoi(value,&used);
+                        if(used==value.size() && count>=1 && count<=2)
+                            strategy.set_threads(static_cast<unsigned>(count));
                     } catch(const std::exception&) {}
                 } else if (name == "Quiescence") {
                     if (value == "true" || value == "false") {

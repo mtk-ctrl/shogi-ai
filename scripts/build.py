@@ -22,9 +22,11 @@ tests.add_argument("--quiescence-test", action="store_true")
 tests.add_argument("--ordering-test", action="store_true")
 tests.add_argument("--contact-ordering-test", action="store_true")
 tests.add_argument("--evaluation-test", action="store_true")
+tests.add_argument("--incremental-evaluation-test", action="store_true")
 tests.add_argument("--evaluation-probe", action="store_true")
 tests.add_argument("--kifu-validator", action="store_true")
 tests.add_argument("--phase-probe", action="store_true")
+tests.add_argument("--parallel-probe", action="store_true")
 parser.add_argument("--sanitize", action="store_true")
 parser.add_argument("--android", action="store_true")
 args = parser.parse_args()
@@ -89,9 +91,11 @@ test_source = ("tests/rules_test.cpp" if args.test else
                "tests/ordering_test.cpp" if args.ordering_test else
                "tests/contact_ordering_test.cpp" if args.contact_ordering_test else
                "tests/evaluation_test.cpp" if args.evaluation_test else
+               "tests/incremental_evaluation_test.cpp" if args.incremental_evaluation_test else
                "benchmarks/evaluation_probe.cpp" if args.evaluation_probe else
                "tools/kifu/validate_games.cpp" if args.kifu_validator else
                "tools/phase/phase_probe.cpp" if args.phase_probe else
+               "benchmarks/parallel_probe.cpp" if args.parallel_probe else
                "engine/main.cpp")
 own = [ROOT / "engine/rules/upstream_support.cpp", ROOT / "engine/rules/position.cpp", ROOT / test_source]
 command = [args.cxx, *flags, *map(str, upstream + own), "-o", str(out)]

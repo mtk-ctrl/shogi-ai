@@ -14,6 +14,10 @@
 #include <type_traits>
 #include <unordered_map>
 #include <cstring>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <memory>
 
 namespace shogi::strategy {
 
@@ -92,7 +96,7 @@ public:
     explicit BasicIterativeSearch(unsigned seed = 5489u, Evaluator evaluator = Evaluator{})
         : rng_(seed), evaluator_(evaluator) { set_reuse_mask(reuse_mask_); }
     void set_seed(unsigned seed) { rng_.seed(seed); }
-    void set_evaluator(Evaluator e) { evaluator_ = e; set_reuse_mask(reuse_mask_); }
+    void set_evaluator(Evaluator e) { evaluator_ = e; set_reuse_mask(reuse_mask_); set_eval_update_mask(eval_update_mask_); }
     struct DirectResearch {
         std::string move, research_id;
         std::size_t ply_index = 0, pv_length = 0;
@@ -184,10 +188,31 @@ public:
         if constexpr (std::is_same_v<Evaluator,FeatureEvaluator>) evaluator_.set_reuse_mask(reuse_mask_);
     }
     unsigned reuse_mask() const { return reuse_mask_; }
+    void set_eval_update_mask(unsigned mask) {
+        eval_update_mask_=mask & 3;
+        if constexpr (std::is_same_v<Evaluator,FeatureEvaluator>) evaluator_.set_update_mask(eval_update_mask_);
+    }
+    unsigned eval_update_mask() const { return eval_update_mask_; }
+    void set_threads(unsigned count) { threads_=std::clamp(count,1u,2u); }
+    unsigned threads() const { return threads_; }
 
     SearchResult choose(rules::Position& position, int max_depth, SearchControl& control,
                         const std::vector<std::string>& allowed = {},
                         const std::function<void(const SearchResult&)>& completed = {}) {
+        if(threads_==2 && !control.node_limit) {
+            auto moves=position.legal_moves();
+            if(!allowed.empty())moves.erase(std::remove_if(moves.begin(),moves.end(),[&](const auto& m){
+                return std::find(allowed.begin(),allowed.end(),m)==allowed.end();}),moves.end());
+            if(moves.size()>1 && position.status().result==rules::Result::Ongoing)
+                return choose_parallel(position,max_depth,control,moves,completed);
+        }
+        return choose_serial(position,max_depth,control,allowed,completed);
+    }
+
+private:
+    SearchResult choose_serial(rules::Position& position, int max_depth, SearchControl& control,
+                        const std::vector<std::string>& allowed,
+                        const std::function<void(const SearchResult&)>& completed) {
         stats_ = {};
         control_ = &control;
         tt_.new_search();
@@ -293,6 +318,7 @@ public:
                 auto choice_rng = initial_rng;
                 result = tied[std::uniform_int_distribution<std::size_t>(0, tied.size() - 1)(choice_rng)];
                 rng_ = choice_rng; // consume one tie draw, not one per iteration
+                if(capture_root_ties_)root_ties_=tied;
                 previous_completed_ = last_completed_;
                 has_previous_completed_ = has_last_completed_;
                 last_completed_ = result;
@@ -305,7 +331,118 @@ public:
         return result;
     }
 
-private:
+    static Stats combine_stats(const Stats& a,const Stats& b) {
+        Stats out;
+#define SUM_STAT(x) out.x=a.x+b.x
+        SUM_STAT(nodes);SUM_STAT(cutoffs);SUM_STAT(min_cutoffs);SUM_STAT(max_cutoffs);
+        SUM_STAT(leaf_evals);SUM_STAT(terminal_nodes);SUM_STAT(order_calls);SUM_STAT(ordered_moves);
+        SUM_STAT(tt_probes);SUM_STAT(tt_hits);SUM_STAT(tt_exact_hits);SUM_STAT(tt_bound_cutoffs);
+        SUM_STAT(tt_store_calls);SUM_STAT(tt_replacements);SUM_STAT(tt_move_first);SUM_STAT(tt_disabled_repetition);
+        SUM_STAT(qnodes);SUM_STAT(qcutoffs);SUM_STAT(qlimit_leaves);
+        SUM_STAT(knowledge_probes);SUM_STAT(knowledge_hits);SUM_STAT(knowledge_promotions);
+        SUM_STAT(knowledge_disabled_repetition);SUM_STAT(generated_plays);SUM_STAT(legal_batches);
+        SUM_STAT(order_reuse_hits);SUM_STAT(qtt_probes);SUM_STAT(qtt_hits);SUM_STAT(qtt_cutoffs);
+        SUM_STAT(ordering_rule_checks);SUM_STAT(eval_cache_hits);SUM_STAT(lazy_snapshots);
+        SUM_STAT(selective_usi_skipped);SUM_STAT(legal_cache_hits);SUM_STAT(legal_cache_misses);
+        SUM_STAT(legal_cache_replacements);
+#undef SUM_STAT
+        for(int i=0;i<4;++i)out.nodes_by_ply[i]=a.nodes_by_ply[i]+b.nodes_by_ply[i];
+        out.seldepth=std::max(a.seldepth,b.seldepth);
+        const auto& k=a.knowledge_score_kind.empty() ? b : a;
+        out.knowledge_research_ms=k.knowledge_research_ms;out.knowledge_research_nodes=k.knowledge_research_nodes;
+        out.knowledge_stable_ms=k.knowledge_stable_ms;out.knowledge_research_depth=k.knowledge_research_depth;
+        out.knowledge_score_kind=k.knowledge_score_kind;out.knowledge_score_value=k.knowledge_score_value;
+        return out;
+    }
+    SearchResult choose_parallel(rules::Position& position,int max_depth,SearchControl& control,
+                                 const std::vector<std::string>& original,
+                                 const std::function<void(const SearchResult&)>& completed) {
+        stats_={};control_=&control;root_in_check_=position.in_check();
+        has_previous_completed_=has_last_completed_=false;
+        SearchResult result;result.move=original.front();result.pv={result.move};
+        const auto initial_rng=rng_;
+        std::array<std::vector<std::string>,2> groups;
+        for(std::size_t i=0;i<original.size();++i)groups[i%2].push_back(original[i]);
+        for(int i=0;i<2;++i) {
+            if(!parallel_lanes_[i])parallel_lanes_[i]=std::make_unique<BasicIterativeSearch>();
+            auto& lane=*parallel_lanes_[i];lane.rng_=initial_rng;lane.set_evaluator(evaluator_);
+            lane.set_research_mask(research_mask_);lane.set_efficiency_mask(efficiency_mask_);
+            lane.set_reuse_mask(reuse_mask_);lane.set_next_mask(next_mask_);
+            lane.set_quiescence_enabled(quiescence_enabled_);
+            lane.set_eval_update_mask(eval_update_mask_);lane.set_threads(1);
+            lane.position_knowledge_=position_knowledge_;lane.position_knowledge_enabled_=position_knowledge_enabled_;
+            lane.capture_root_ties_=true;
+        }
+        std::array<SearchControl,2> controls;
+        for(auto& c:controls)c.deadline_ns.store(control.adaptive_long_think && control.hard_deadline_ns
+            ? control.hard_deadline_ns : control.deadline_ns.load());
+        std::array<std::array<std::vector<SearchResult>,MaxDepth+1>,2> roots;
+        std::array<Stats,2> observed;
+        std::array<bool,2> done{};
+        std::array<std::exception_ptr,2> errors{};
+        std::mutex mutex;std::condition_variable cv;
+        std::array<std::thread,2> workers;
+        auto stop_join=[&] {
+            for(auto& c:controls)c.stop.store(true);
+            for(auto& worker:workers)if(worker.joinable())worker.join();
+        };
+        try {
+            for(int i=0;i<2;++i) {
+                auto fork=position.clone();
+                workers[i]=std::thread([&,i,p=std::move(fork)]()mutable{
+                    try {
+                        parallel_lanes_[i]->choose_serial(p,max_depth,controls[i],groups[i],[&](const auto& r){
+                            {std::lock_guard<std::mutex> lock(mutex);
+                                roots[i][r.depth]=parallel_lanes_[i]->root_ties_;
+                                observed[i]=parallel_lanes_[i]->last_stats();}
+                            cv.notify_one();
+                        });
+                    }catch(...){errors[i]=std::current_exception();}
+                    {std::lock_guard<std::mutex> lock(mutex);done[i]=true;}
+                    cv.notify_one();
+                });
+            }
+            int next_depth=1;
+            for(;;) {
+                std::vector<SearchResult> newly_completed;
+                bool all_done;
+                {
+                    std::unique_lock<std::mutex> lock(mutex);
+                    while(next_depth<=std::clamp(max_depth,1,MaxDepth)
+                        && !roots[0][next_depth].empty() && !roots[1][next_depth].empty()) {
+                        auto tied=roots[0][next_depth];
+                        tied.insert(tied.end(),roots[1][next_depth].begin(),roots[1][next_depth].end());
+                        int best=-Infinity;for(const auto& r:tied)best=std::max(best,r.score);
+                        tied.erase(std::remove_if(tied.begin(),tied.end(),[&](const auto& r){return r.score!=best;}),tied.end());
+                        std::sort(tied.begin(),tied.end(),[&](const auto& a,const auto& b){
+                            return std::find(original.begin(),original.end(),a.move)<std::find(original.begin(),original.end(),b.move);});
+                        auto choice_rng=initial_rng;
+                        newly_completed.push_back(tied[std::uniform_int_distribution<std::size_t>(0,tied.size()-1)(choice_rng)]);
+                        rng_=choice_rng;++next_depth;
+                    }
+                    stats_=combine_stats(observed[0],observed[1]);all_done=done[0] && done[1];
+                    if(newly_completed.empty() && !all_done)cv.wait_for(lock,std::chrono::milliseconds(1));
+                }
+                for(const auto& r:newly_completed) {
+                    result=r;previous_completed_=last_completed_;has_previous_completed_=has_last_completed_;
+                    last_completed_=r;has_last_completed_=true;
+                    if(completed)completed(r);
+                }
+                if(all_done)break;
+                if(control.stop.load())break;
+                const auto deadline=control.deadline_ns.load();
+                if(deadline) {
+                    const auto now=SearchControl::now_ns();
+                    if(now>=deadline && !maybe_extend_deadline(now))break;
+                }
+            }
+        }catch(...){stop_join();throw;}
+        stop_join();
+        stats_=combine_stats(parallel_lanes_[0]->last_stats(),parallel_lanes_[1]->last_stats());
+        for(const auto& error:errors)if(error)std::rethrow_exception(error);
+        return result;
+    }
+
     static constexpr int Infinity = MateScore + 1000;
     struct Interrupted {};
     struct Node { int value; };
@@ -822,6 +959,11 @@ private:
     unsigned research_mask_ = DefaultSearchResearchMask;
     unsigned efficiency_mask_ = DefaultSearchEfficiencyMask;
     unsigned reuse_mask_ = DefaultSearchReuseMask;
+    unsigned eval_update_mask_ = 0;
+    unsigned threads_=1;
+    bool capture_root_ties_=false;
+    std::vector<SearchResult> root_ties_;
+    std::array<std::unique_ptr<BasicIterativeSearch>,2> parallel_lanes_;
     unsigned next_mask_ = 4;
     struct OrderCell {
         std::uint64_t key = 0;
