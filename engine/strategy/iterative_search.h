@@ -822,7 +822,7 @@ private:
     unsigned research_mask_ = DefaultSearchResearchMask;
     unsigned efficiency_mask_ = DefaultSearchEfficiencyMask;
     unsigned reuse_mask_ = DefaultSearchReuseMask;
-    unsigned next_mask_ = 0;
+    unsigned next_mask_ = 4;
     struct OrderCell {
         std::uint64_t key = 0;
         std::uint32_t epoch = 0;
