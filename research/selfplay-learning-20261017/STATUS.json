@@ -1,6 +1,7 @@
 {
-  "state": "selected_scale10_pending_audit_then_one_200_game_confirmation",
+  "state": "independent_confirmation_running",
   "formal_adoption": false,
+  "selection_commit": "92a193185d6bdf905012415ae2b545f9fb041599",
   "selection": {
     "prespecified": "Highest score over all 100 scheduled games, minimum 50%; one 200-game confirmation; no retraining.",
     "scores": {
@@ -17,9 +18,13 @@
     "confirmation_games": 200,
     "formal_adoption": false
   },
-  "screening_runs": [
-    38946175603,
-    38946985753,
-    38947702135
-  ]
+  "confirmation": {
+    "launcher": 38948686343,
+    "run": 38948701892,
+    "request_commit": "cf430cdbefb86831d970a3faf7c67e9b12db4e3d",
+    "games": 200,
+    "shards": 20,
+    "seed": 2040101701,
+    "started": "build"
+  }
 }
