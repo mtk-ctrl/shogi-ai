@@ -108,7 +108,7 @@ int main() {
                       << "option name RiskVerify type check default true\n"
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
-                      << "option name SearchResearchMask type spin default " << shogi::strategy::DefaultSearchResearchMask << " min 0 max 31\n"
+                      << "option name SearchResearchMask type spin default " << shogi::strategy::DefaultSearchResearchMask << " min 0 max 63\n"
                       << "option name SearchEfficiencyMask type spin default " << shogi::strategy::DefaultSearchEfficiencyMask << " min 0 max 15\n"
                       << "option name SearchReuseMask type spin default " << shogi::strategy::DefaultSearchReuseMask << " min 0 max 15\n"
                       << "option name SearchNextMask type spin default 4 min 0 max 15\n"
@@ -706,7 +706,7 @@ int main() {
                     try {
                         std::size_t used = 0;
                         const int mask = std::stoi(value, &used);
-                        if (used == value.size() && mask >= 0 && mask <= 31)
+                        if (used == value.size() && mask >= 0 && mask <= 63)
                             strategy.set_research_mask(static_cast<unsigned>(mask));
                     } catch (const std::exception&) {}
                 } else if (name == "SearchEfficiencyMask") {
