@@ -1,68 +1,68 @@
 {
   "dataset_sha256": "a093cf34623ba559c8f11768dc0d00af0503c90a380402708d690348a79af603",
-  "model_sha256": "b71885acf92e750ed65cada9b831d5bd66a83717f8db28aa02c21b63f35d51a1",
+  "model_sha256": "5ae222cbffd56d7ed1876a71cf826ee2b45f77a53d5d4fd73f37bf626f80daf5",
   "temperature_train_only": 3500,
   "selection": "validation only; independent fresh matches are final strength evidence",
   "candidates": [
     {
       "hidden": 4,
-      "cap": 150,
+      "cap": 600,
       "l2": 0.001,
-      "epoch": 5,
+      "epoch": 35,
       "validation": {
-        "brier": 0.20034251767892394,
-        "cross_entropy": 0.5875464292297533,
+        "brier": 0.19997425732316487,
+        "cross_entropy": 0.5863736491904142,
         "samples": 1646,
-        "mean_absolute_correction": 1.5103802402503699
+        "mean_absolute_correction": 103.35010635108036
       }
     },
     {
       "hidden": 4,
-      "cap": 150,
+      "cap": 600,
       "l2": 0.01,
-      "epoch": 1,
+      "epoch": 3,
       "validation": {
-        "brier": 0.20034733762754267,
-        "cross_entropy": 0.5875599620716749,
+        "brier": 0.200329310998801,
+        "cross_entropy": 0.587502892572776,
         "samples": 1646,
-        "mean_absolute_correction": 0.6500810517044282
+        "mean_absolute_correction": 5.001559659676542
       }
     },
     {
       "hidden": 8,
-      "cap": 150,
+      "cap": 600,
       "l2": 0.001,
-      "epoch": 5,
+      "epoch": 29,
       "validation": {
-        "brier": 0.2003357097423471,
-        "cross_entropy": 0.5875247560662938,
+        "brier": 0.19995854114777056,
+        "cross_entropy": 0.5863119240778252,
         "samples": 1646,
-        "mean_absolute_correction": 2.972264856355765
+        "mean_absolute_correction": 111.06670133618185
       }
     },
     {
       "hidden": 8,
-      "cap": 150,
+      "cap": 600,
       "l2": 0.01,
-      "epoch": 1,
+      "epoch": 3,
       "validation": {
-        "brier": 0.20034489649745657,
-        "cross_entropy": 0.5875529188748282,
+        "brier": 0.20031487068774287,
+        "cross_entropy": 0.5874580805362141,
         "samples": 1646,
-        "mean_absolute_correction": 1.096839452034257
+        "mean_absolute_correction": 8.070508892262136
       }
     }
   ],
   "selected": {
     "hidden": 8,
-    "cap": 150,
+    "cap": 600,
     "l2": 0.001,
-    "epoch": 5,
+    "epoch": 29,
     "validation": {
-      "brier": 0.2003357097423471,
-      "cross_entropy": 0.5875247560662938,
+      "brier": 0.19995854114777056,
+      "cross_entropy": 0.5863119240778252,
       "samples": 1646,
-      "mean_absolute_correction": 2.972264856355765
+      "mean_absolute_correction": 111.06670133618185
     }
   },
   "baseline": {
@@ -87,22 +87,22 @@
   },
   "learned": {
     "train": {
-      "brier": 0.20418276336236493,
-      "cross_entropy": 0.5938225600803282,
+      "brier": 0.20378694052181176,
+      "cross_entropy": 0.5928289380045393,
       "samples": 8172,
-      "mean_absolute_correction": 2.8974547234459136
+      "mean_absolute_correction": 108.04246206558982
     },
     "validation": {
-      "brier": 0.2003357097423471,
-      "cross_entropy": 0.5875247560662938,
+      "brier": 0.19995854114777056,
+      "cross_entropy": 0.5863119240778252,
       "samples": 1646,
-      "mean_absolute_correction": 2.972264856355765
+      "mean_absolute_correction": 111.06670133618185
     },
     "test": {
-      "brier": 0.20830892375944646,
-      "cross_entropy": 0.5963454920198495,
+      "brier": 0.20820668624901112,
+      "cross_entropy": 0.5957561136949563,
       "samples": 1497,
-      "mean_absolute_correction": 3.112878787878788
+      "mean_absolute_correction": 114.93835074886798
     }
   },
   "validation_pass": true,
@@ -112,7 +112,7 @@
     "random_vectors": 1001,
     "turn_invariant": true,
     "color_odd": true,
-    "max_abs_correction": 43,
+    "max_abs_correction": 558,
     "material_monotone_grid": 241
   },
   "learner_code_commit": "20b2b21be25bc3bd56fe423935eb36e78a9a7cd4",
