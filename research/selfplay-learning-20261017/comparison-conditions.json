@@ -1,0 +1,11 @@
+{
+  "baseline_ref": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
+  "baseline_version": "v2.0.21",
+  "SearchProbeMask": 7,
+  "scale": 10,
+  "screen_games": 100,
+  "screen_seed": 2030101701,
+  "confirmation_games": 200,
+  "confirmation_seed": 2040101701,
+  "formal_adoption": false
+}

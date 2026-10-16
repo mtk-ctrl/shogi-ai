@@ -38,7 +38,7 @@ def audit(directory, candidate_ref, baseline_ref):
     assert aggregate['games'] in (100,200) and aggregate['illegal_games'] == 0
     assert aggregate['ref_a'] == candidate_ref
     assert aggregate['ref_b'] == baseline_ref
-    assert aggregate['options_a']['SearchProbeMask'] == 3
+    assert aggregate['options_a']['SearchProbeMask'] == 7
     assert aggregate['options_b']['SearchProbeMask'] == 3
     assert aggregate['options_a']['SelfPlayEval'] is True
     assert aggregate['options_a']['SelfPlayEvalScale'] in (10,100)
