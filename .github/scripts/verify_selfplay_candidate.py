@@ -118,7 +118,7 @@ def main():
         files['measurements.json']=OUT/'measurements.json'
     else:
         source=restore_match(d['match_run'])
-        run(['python3',candidate/'research/selfplay-learning-20261016/audit_match.py',source,
+        run(['python3',ROOT/'research/selfplay-learning-20261016/audit_match.py',source,
              '--candidate-ref',d['candidate_ref'],'--baseline-ref',d['baseline_ref'],'--output',OUT/'audit.json'])
         result=json.loads((OUT/'audit.json').read_text());result['mode']='audit'
         repo=os.environ['GITHUB_REPOSITORY']
@@ -134,6 +134,8 @@ def main():
             binary=source/'binaries/build'/('engine-'+side)
             if len(expected)!=1 or sha(binary)!=expected[0]:raise ValueError('match binary proof')
             provenance['binary_sha256_'+side]=expected[0]
+        provenance['audit_source_sha256']=sha(ROOT/'research/selfplay-learning-20261016/audit_match.py')
+        provenance['verification_ref']=os.environ['GITHUB_SHA']
         result['provenance']=provenance
         pub=json.loads((candidate/'research/selfplay-learning-20261016/publication.json').read_text())
         original=next(x for x in pub['assets'] if x['name'].startswith('selfplay-source-'))
