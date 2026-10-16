@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
   "cycle_id": "postgame-pilot-20261017",
-  "status": "design_ready",
-  "phase": "prepare",
+  "status": "implementation_in_progress",
+  "phase": "reader_verified",
   "generation": 0,
   "formal_adoption": false,
   "controller_implemented": false,
-  "research_branch": null,
-  "parent_engine_ref": null,
+  "research_branch": "research/postgame-cycle-pilot-20261017",
+  "parent_engine_ref": "efcfa0f80d218c3dbcc3162f5bee3366f6a835cf",
   "design_refs": [
     "DESIGN.md",
     "CONTROL.md",
@@ -41,11 +41,53 @@
     "stop_after_verified_report": true
   },
   "actions": [],
-  "evidence": [],
-  "next_action": "Read current rules and source publication, implement full-history postgame reanalysis input; freeze operational PLAN before heavy work",
+  "evidence": [
+    {
+      "kind": "document_CI",
+      "run_id": 38980359447,
+      "commit": "efcfa0f80d218c3dbcc3162f5bee3366f6a835cf",
+      "conclusion": "success"
+    },
+    {
+      "kind": "local_unit_tests",
+      "postgame": 9,
+      "existing_archive": 3,
+      "arena": "pass",
+      "python_shogi": "1.1.1"
+    },
+    {
+      "kind": "reader_smoke",
+      "source_match_run": 38948701892,
+      "source_audit_run": 38950067410,
+      "verified_games": 200,
+      "verified_plies": 21825,
+      "selected_cases": 96,
+      "selected_actor": {
+        "A": 48,
+        "B": 48
+      },
+      "selected_cases_sha256": "df6c50cbdb3fb40cc03babb79a00a05ca666be436ae4b48645a4a33213c754a2",
+      "analysis_status": "not_run",
+      "report_ref": "dc5c6dce4a0d3fce448514546e794470ed35e8b5",
+      "report_path": "research/selfplay-postgame-20261017/reader-smoke.json",
+      "cli_regeneration_byte_equal": true
+    }
+  ],
+  "next_action": "Read the research PLAN and reader; restore remaining G1 inputs, implement fixed own-analyzer calls with complete history, select diagnosis cases and classify uncertainty before any training.",
   "limitations": [
-    "New postgame reanalysis, paired training, candidate comparison, and controller execution have not completed.",
-    "No automatic formal adoption.",
-    "One pilot only; no indefinite training or automatic second optimization generation."
-  ]
+    "The reader is implemented on the research branch; actual reanalysis, paired training, candidate matches, knowledge distribution and full controller remain unimplemented.",
+    "Local tests passed; the new reader has not been run in GitHub CI.",
+    "The 96 mechanically sampled reader-smoke cases are not the pilot triage/training set.",
+    "No automatic formal adoption; no second optimization generation."
+  ],
+  "research_commit": "dc5c6dce4a0d3fce448514546e794470ed35e8b5",
+  "components": {
+    "played_archive_reader": "implemented_and_smoke_verified_on_research_branch",
+    "full_history_case_input": "implemented_and_smoke_verified_on_research_branch",
+    "analyzer_execution": "not_implemented",
+    "cause_routing": "not_implemented",
+    "paired_learning": "not_implemented",
+    "candidate_knowledge_distribution": "not_connected",
+    "generation_controller": "not_implemented"
+  }
 }
