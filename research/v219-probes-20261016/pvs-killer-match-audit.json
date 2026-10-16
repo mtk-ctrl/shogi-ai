@@ -1,0 +1,138 @@
+{
+  "run_id": "38830850051",
+  "requested_ref_a": "f34ffd4745836b81d5e8eb80f9c53a9c681bc2ed",
+  "requested_ref_b": "8d19b5453173d2fb7489aefe07fbbd018f30a5ad",
+  "go_command": "go movetime 200",
+  "options_a": {
+    "AdaptiveLongThink": true,
+    "PositionKnowledge": true,
+    "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+    "OpeningRandomNonLance": true,
+    "SearchResearchMask": 23,
+    "SearchEfficiencyMask": 8,
+    "SearchReuseMask": 6,
+    "SearchNextMask": 4,
+    "SearchThreads": 2,
+    "RiskVerify": true,
+    "USI_Ponder": true,
+    "SearchProbeMask": 3
+  },
+  "options_b": {
+    "AdaptiveLongThink": true,
+    "PositionKnowledge": true,
+    "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+    "OpeningRandomNonLance": true,
+    "SearchResearchMask": 23,
+    "SearchEfficiencyMask": 8,
+    "SearchReuseMask": 6,
+    "SearchNextMask": 4,
+    "SearchThreads": 2,
+    "RiskVerify": true,
+    "USI_Ponder": true
+  },
+  "shards": 20,
+  "archive_sha256": "007cb04327ee927b9cad3ca4209a1ba28c8863e4f433141cc458c9073f7a974d",
+  "archive_bytes": 1351937,
+  "games": 200,
+  "plies": 21102,
+  "wins_a": 120,
+  "draws": 3,
+  "wins_b": 77,
+  "score_a": 0.6075,
+  "score_a_approx_95_interval": [
+    0.5398240991932874,
+    0.6751759008067126
+  ],
+  "color_assignment": {
+    "A_black": {
+      "games": 100,
+      "wins": 65,
+      "losses": 35
+    },
+    "A_white": {
+      "games": 100,
+      "wins": 55,
+      "losses": 42
+    }
+  },
+  "all_moves_legal_and_final_positions_verified": true,
+  "termination_reasons": {
+    "checkmate": 197,
+    "move_limit": 2,
+    "fourfold_repetition": 1
+  },
+  "duplicate_complete_move_sequences": 4,
+  "binary_sha256": {
+    "A": [
+      "f6fb3cfa0d1abecddc621b5f515b1e7c3e91abc5266ef0292394a3acc2ca968f"
+    ],
+    "B": [
+      "ed171f50e1aefe1ab1808a9ca720f775d2004b3e9750d3afde200fb9c3d6432d"
+    ]
+  },
+  "position_knowledge": {
+    "A": {
+      "enabled": true,
+      "file": "build/position-knowledge-v1.tsv",
+      "available": true,
+      "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+      "positions": 163
+    },
+    "B": {
+      "enabled": true,
+      "file": "build/position-knowledge-v1.tsv",
+      "available": true,
+      "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+      "positions": 163
+    }
+  },
+  "observed": {
+    "A": {
+      "played_moves": 10562,
+      "depth_recorded_moves": 10289,
+      "mean_completed_depth_on_recorded_moves": 3.147536203712703,
+      "nodes_total": 995515198,
+      "wall_ms_median": 191.919,
+      "wall_ms_p95": 993.238,
+      "wall_ms_max": 1002.987,
+      "wall_over_1100ms": 0,
+      "long_think_moves": 1536,
+      "maximum_long_thinks_per_game": 10,
+      "knowledge_probes": 19974,
+      "knowledge_hits": 0,
+      "knowledge_promotions": 0
+    },
+    "B": {
+      "played_moves": 10540,
+      "depth_recorded_moves": 10320,
+      "mean_completed_depth_on_recorded_moves": 2.919573643410853,
+      "nodes_total": 1038952497,
+      "wall_ms_median": 192.068,
+      "wall_ms_p95": 993.227,
+      "wall_ms_max": 999.152,
+      "wall_over_1100ms": 0,
+      "long_think_moves": 1698,
+      "maximum_long_thinks_per_game": 10,
+      "knowledge_probes": 19977,
+      "knowledge_hits": 0,
+      "knowledge_promotions": 0
+    }
+  },
+  "ponder": {
+    "A": {
+      "hits": 6898,
+      "misses": 3173,
+      "hit_rate_when_prediction_available": 0.6849369476715321
+    },
+    "B": {
+      "hits": 5978,
+      "misses": 3891,
+      "hit_rate_when_prediction_available": 0.6057351302056946
+    }
+  },
+  "resource_note": "Both engines use two search threads and USI pondering; up to four search threads may run concurrently on a lane. CPU-seconds and energy were not measured. This is not a single-thread or ponder-disabled comparison.",
+  "missing_score_plies": 502,
+  "phase_missing_plies": 0,
+  "timing_note": "Wall time includes reconstruction and USI I/O; depths/nodes in different game positions are descriptive, not controlled speed comparisons.",
+  "storage": "Actions artifacts expire after 90 days; not permanent Release storage."
+}

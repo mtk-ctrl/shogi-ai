@@ -86,6 +86,7 @@ def audit(directory):
     signatures = collections.Counter()
     for g in games:
         board = shogi.Board()
+        assert 0 <= g['plies'] <= 300
         positions = [' '.join(board.sfen().split()[:3])]
         checks = []
         counts = collections.Counter()
@@ -111,6 +112,8 @@ def audit(directory):
             assert board.is_checkmate()
             winning_color = board.turn ^ 1
             assert g['winner'] == ('A' if (winning_color == shogi.BLACK) == g['a_black'] else 'B')
+        if g['reason'] == 'move_limit':
+            assert g['plies'] == 300 and g['winner'] is None
         if g['reason'] in ('fourfold_repetition', 'perpetual_check'):
             occurrences = [i for i, key in enumerate(positions) if key == positions[-1]]
             assert len(occurrences) >= 4
@@ -154,6 +157,10 @@ def audit(directory):
         'run_id': manifest['run_id'],
         'requested_ref_a': manifest['requested_ref_a'],
         'requested_ref_b': manifest['requested_ref_b'],
+        'go_command': aggregate['go_command'],
+        'options_a': aggregate['options_a'],
+        'options_b': aggregate['options_b'],
+        'shards': aggregate['shards'],
         'archive_sha256': digest,
         'archive_bytes': archive.stat().st_size,
         'games': len(games), 'plies': manifest['plies'],

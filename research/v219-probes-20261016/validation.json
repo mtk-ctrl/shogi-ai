@@ -81,5 +81,16 @@
     "run_id": 38829813458,
     "commit": "f34ffd4745836b81d5e8eb80f9c53a9c681bc2ed",
     "conclusion": "success"
+  },
+  "actual_matches": {
+    "runs": [
+      38829912194,
+      38830850051
+    ],
+    "games": 400,
+    "legal_plies_verified": 43307,
+    "illegal_games": 0,
+    "both_workflow_conclusions": "success",
+    "all_long_think_counts_within_ten_per_game": true
   }
 }
