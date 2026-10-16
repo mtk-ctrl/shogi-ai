@@ -21,6 +21,7 @@ jobs:
       - uses: actions/checkout@v5
       - name: Check external harness and workflow inventory
         run: |
+          python3 -m pip install python-shogi==1.1.1
           python3 tests/test_external_match.py
           python3 scripts/check_match_workflows.py
           python3 scripts/check_workflow_inventory.py --strict
