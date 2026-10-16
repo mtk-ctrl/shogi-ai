@@ -1,5 +1,5 @@
 {
-  "request_id": "20261017-precision-search-history-200",
+  "request_id": "20261017-precision-eval-threat-200",
   "ref_a": "b03e403b337c7de301bf73f9db8a1658e18fb42e",
   "ref_b": "b03e403b337c7de301bf73f9db8a1658e18fb42e",
   "games": 200,
@@ -7,6 +7,6 @@
   "go_command": "go movetime 200",
   "max_plies": 300,
   "seed": 2026101710,
-  "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"USI_Ponder\":true,\"SearchThreads\":2,\"SearchProbeMask\":7}",
-  "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"USI_Ponder\":true,\"SearchThreads\":2,\"SearchProbeMask\":3}"
+  "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"USI_Ponder\":true,\"SearchThreads\":2,\"EvalThreat\":80}",
+  "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"USI_Ponder\":true,\"SearchThreads\":2,\"EvalThreat\":20}"
 }
