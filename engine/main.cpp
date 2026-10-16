@@ -103,7 +103,7 @@ int main() {
         if (command != "isready" && command != "stop" && command != "ponderhit" && command != "quit")
             finish_search(true);
         if (command == "usi") {
-            std::cout << "id name KUMOJI v2.0.19\nid author mtk-ctrl + ChatGPT\n"
+            std::cout << "id name KUMOJI v2.0.20\nid author mtk-ctrl + ChatGPT\n"
                       << "option name USI_Ponder type check default true\n"
                       << "option name RiskVerify type check default true\n"
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
@@ -113,6 +113,7 @@ int main() {
                       << "option name SearchReuseMask type spin default " << shogi::strategy::DefaultSearchReuseMask << " min 0 max 15\n"
                       << "option name SearchNextMask type spin default 4 min 0 max 15\n"
                       << "option name SearchThreads type spin default 2 min 1 max 2\n"
+                      << "option name SearchProbeMask type spin default " << shogi::strategy::DefaultSearchProbeMask << " min 0 max 7\n"
                       << "option name Quiescence type check default true\n"
                       << "option name MateAssist type check default true\n"
                       << "option name MateLearning type check default true\n"
@@ -628,6 +629,11 @@ int main() {
                         << " tt_disabled_repetition " << stats.tt_disabled_repetition
                         << " research_mask " << strategy.research_mask()
                         << " search_threads " << strategy.threads()
+                        << " probe_mask " << strategy.probe_mask()
+                        << " pvs_probes " << stats.pvs_probes << " pvs_researches " << stats.pvs_researches
+                        << " killer_priorities " << stats.killer_priorities
+                        << " history_priorities " << stats.history_priorities
+                        << " ordering_updates " << stats.ordering_updates
                         << " reuse_mask " << strategy.reuse_mask()
                         << " legal_cache_hits " << stats.legal_cache_hits
                         << " legal_cache_misses " << stats.legal_cache_misses
@@ -723,6 +729,12 @@ int main() {
                         const int mask=std::stoi(value,&used);
                         if(used==value.size() && mask>=0 && mask<=15)
                             strategy.set_next_mask(static_cast<unsigned>(mask));
+                    } catch(const std::exception&) {}
+                } else if (name == "SearchProbeMask") {
+                    try {
+                        std::size_t used=0; const int mask=std::stoi(value,&used);
+                        if(used==value.size() && mask>=0 && mask<=7)
+                            strategy.set_probe_mask(static_cast<unsigned>(mask));
                     } catch(const std::exception&) {}
                 } else if (name == "SearchThreads") {
                     try {

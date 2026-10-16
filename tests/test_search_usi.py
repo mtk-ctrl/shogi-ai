@@ -46,6 +46,8 @@ try:
     send('usi'); until('usiok')
     if len(sys.argv)>2:
         send('setoption name SearchThreads value ' + str(int(sys.argv[2])))
+    if len(sys.argv)>3:
+        send('setoption name SearchProbeMask value ' + str(int(sys.argv[3])))
     send('isready'); until('readyok')
     # Standard opening is randomized since v2.0.7; search-depth regression
     # intentionally disables that separate adopted feature.

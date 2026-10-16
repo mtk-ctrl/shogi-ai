@@ -84,6 +84,8 @@ public:
         std::uint64_t selective_usi_skipped = 0;
         std::uint64_t legal_cache_hits = 0, legal_cache_misses = 0;
         std::uint64_t legal_cache_replacements = 0;
+        std::uint64_t pvs_probes = 0, pvs_researches = 0;
+        std::uint64_t killer_priorities = 0, history_priorities = 0, ordering_updates = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -193,6 +195,8 @@ public:
     unsigned reuse_mask() const { return reuse_mask_; }
     void set_threads(unsigned count) { threads_=std::clamp(count,1u,2u); }
     unsigned threads() const { return threads_; }
+    void set_probe_mask(unsigned mask) { probe_mask_ = mask & 7u; }
+    unsigned probe_mask() const { return probe_mask_; }
 
     SearchResult choose(rules::Position& position, int max_depth, SearchControl& control,
                         const std::vector<std::string>& allowed = {},
@@ -212,6 +216,8 @@ private:
                         const std::vector<std::string>& allowed,
                         const std::function<void(const SearchResult&)>& completed) {
         stats_ = {};
+        if (probe_mask_ & 2) for (auto& row : killers_) for (auto& move : row) move.clear();
+        if (probe_mask_ & 4) for (auto& side : history_scores_) side.fill(0);
         control_ = &control;
         tt_.new_search();
         qtt_.new_search();
@@ -308,8 +314,18 @@ private:
                                 }
                             }
                         }
-                        child = search(position, child_depth, 1, best, Infinity,
-                                       next_history(root_history, position.hash_key()));
+                        const auto child_history = next_history(root_history, position.hash_key());
+                        if ((probe_mask_ & 1) && best > -Infinity) {
+                            ++stats_.pvs_probes;
+                            child = search(position, child_depth, 1, best, best + 1, child_history);
+                            // Equality remains exact under the strict minimizing
+                            // cutoff, preserving all root tie candidates.
+                            if (child.value > best) {
+                                ++stats_.pvs_researches;
+                                visit(1);
+                                child = search(position, child_depth, 1, best, Infinity, child_history);
+                            }
+                        } else child = search(position, child_depth, 1, best, Infinity, child_history);
                     }
                     const int value = child.value;
                     if (value > best) { best = value; tied.clear(); }
@@ -357,6 +373,8 @@ private:
         SUM_STAT(ordering_rule_checks);SUM_STAT(eval_cache_hits);SUM_STAT(lazy_snapshots);
         SUM_STAT(selective_usi_skipped);SUM_STAT(legal_cache_hits);SUM_STAT(legal_cache_misses);
         SUM_STAT(legal_cache_replacements);
+        SUM_STAT(pvs_probes);SUM_STAT(pvs_researches);SUM_STAT(killer_priorities);
+        SUM_STAT(history_priorities);SUM_STAT(ordering_updates);
 #undef SUM_STAT
         for(int i=0;i<4;++i)out.nodes_by_ply[i]=a.nodes_by_ply[i]+b.nodes_by_ply[i];
         out.seldepth=std::max(a.seldepth,b.seldepth);
@@ -381,6 +399,7 @@ private:
             lane.set_research_mask(research_mask_);lane.set_efficiency_mask(efficiency_mask_);
             lane.set_reuse_mask(reuse_mask_);lane.set_next_mask(next_mask_);
             lane.set_risk_verify(risk_verify_enabled_);
+            lane.set_probe_mask(probe_mask_);
             lane.set_quiescence_enabled(quiescence_enabled_);
             lane.set_threads(1);
             lane.position_knowledge_=position_knowledge_;lane.position_knowledge_enabled_=position_knowledge_enabled_;
@@ -735,6 +754,7 @@ private:
         auto moves = ordered(p, legal(p, ply), tt_move, {}, {}, ply);
         const bool maximizing = ((efficiency_mask_ & LazySnapshot) ? p.turn() : p.snapshot().turn) == root_;
         Node best{maximizing ? -Infinity : Infinity};
+        bool searched = false;
         for (const auto& move : moves) {
             check_stop();
             Node child;
@@ -742,9 +762,23 @@ private:
                 make(p, move, ply);
                 Undo undo{p};
                 visit(ply + 1);
-                child = search(p, depth - 1, ply + 1, alpha, beta,
-                               next_history(history, p.hash_key()));
+                const auto child_history = next_history(history, p.hash_key());
+                if ((probe_mask_ & 1) && searched && beta - alpha > 1) {
+                    ++stats_.pvs_probes;
+                    child = maximizing
+                        ? search(p, depth - 1, ply + 1, alpha, alpha + 1, child_history)
+                        : search(p, depth - 1, ply + 1, beta - 1, beta, child_history);
+                    const bool improve = maximizing
+                        ? child.value > alpha && child.value < beta
+                        : child.value < beta && child.value >= alpha;
+                    if (improve) {
+                        ++stats_.pvs_researches;
+                        visit(ply + 1);
+                        child = search(p, depth - 1, ply + 1, alpha, beta, child_history);
+                    }
+                } else child = search(p, depth - 1, ply + 1, alpha, beta, child_history);
             }
+            searched = true;
             const int value = child.value;
             if ((maximizing && value > best.value) || (!maximizing && value < best.value)) {
                 best.value = value;
@@ -758,6 +792,7 @@ private:
                 || (!maximizing && best.value < original_alpha)) {
                 ++stats_.cutoffs;
                 if (maximizing) ++stats_.max_cutoffs; else ++stats_.min_cutoffs;
+                if (probe_mask_ & 6) record_order_cutoff(p, move, depth, ply);
                 break;
             }
         }
@@ -907,6 +942,32 @@ private:
         }
         return best;
     }
+    static int quiet_key(const rules::Snapshot& s, const std::string& move) {
+        if (move.size() != 4) return -1;
+        const int to = (move[2] - '1') * 9 + move[3] - 'a';
+        if (s.board[to].kind) return -1;
+        int from;
+        if (move[1] == '*') {
+            const auto piece = std::string("PLNSGBR").find(move[0]);
+            if (piece == std::string::npos) return -1;
+            from = 81 + static_cast<int>(piece);
+        } else from = (move[0] - '1') * 9 + move[1] - 'a';
+        return from * 81 + to;
+    }
+    void record_order_cutoff(const rules::Position& p, const std::string& move, int depth, int ply) {
+        const auto snapshot = p.snapshot();
+        const int key = quiet_key(snapshot, move);
+        if (key < 0) return;
+        ++stats_.ordering_updates;
+        if ((probe_mask_ & 2) && killers_[ply][0] != move) {
+            killers_[ply][1] = killers_[ply][0];
+            killers_[ply][0] = move;
+        }
+        if (probe_mask_ & 4) {
+            auto& score = history_scores_[static_cast<int>(snapshot.turn)][key];
+            score = std::min(1000000, score + depth * depth);
+        }
+    }
     std::vector<std::string> ordered(const rules::Position& p,
                                     const std::vector<std::string>& moves,
                                     const std::string& tt_move = {},
@@ -951,6 +1012,29 @@ private:
                 cell = {key, eval_epoch_, moves, result};
             }
         } else result = sort_moves();
+        if (probe_mask_ & 6) {
+            const auto snapshot = p.snapshot();
+            struct Quiet { std::string move; int killer, history; };
+            std::vector<std::size_t> slots;
+            std::vector<Quiet> quiet;
+            for (std::size_t i = 0; i < result.size(); ++i) {
+                const int key = quiet_key(snapshot, result[i]);
+                if (key < 0) continue;
+                const int killer = !(probe_mask_ & 2) ? 0
+                    : result[i] == killers_[ply][0] ? 2 : result[i] == killers_[ply][1] ? 1 : 0;
+                const int history = (probe_mask_ & 4)
+                    ? history_scores_[static_cast<int>(snapshot.turn)][key] : 0;
+                stats_.killer_priorities += killer > 0;
+                stats_.history_priorities += history > 0;
+                slots.push_back(i);quiet.push_back({result[i], killer, history});
+            }
+            // Captures/promotions keep their slots; TT/PV/knowledge priority
+            // is applied afterwards and continues to outrank learned hints.
+            std::stable_sort(quiet.begin(), quiet.end(), [](const auto& a, const auto& b) {
+                return a.killer != b.killer ? a.killer > b.killer : a.history > b.history;
+            });
+            for (std::size_t i = 0; i < slots.size(); ++i) result[slots[i]] = std::move(quiet[i].move);
+        }
         auto promote = [&](const std::string& hint) {
             auto it = std::find(result.begin(), result.end(), hint);
             if (it == result.end()) return false;
@@ -976,6 +1060,9 @@ private:
     unsigned efficiency_mask_ = DefaultSearchEfficiencyMask;
     unsigned reuse_mask_ = DefaultSearchReuseMask;
     unsigned threads_=2;
+    unsigned probe_mask_=DefaultSearchProbeMask;
+    std::array<std::array<std::string, 2>, MaxPly + 1> killers_{};
+    std::array<std::array<int, 88 * 81>, 2> history_scores_{};
     bool capture_root_ties_=false;
     std::vector<SearchResult> root_ties_;
     std::array<std::unique_ptr<BasicIterativeSearch>,2> parallel_lanes_;

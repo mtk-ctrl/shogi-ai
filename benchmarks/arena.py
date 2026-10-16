@@ -67,6 +67,7 @@ SEARCH_STAT_NAMES = (
     "knowledge_disabled_repetition",
     "qnodes", "qcutoffs", "qlimit_leaves",
     "search_threads",
+    "probe_mask", "pvs_probes", "pvs_researches", "killer_priorities", "history_priorities", "ordering_updates",
     "research_mask", "generated_plays", "legal_batches", "order_reuse_hits", "qtt_probes", "qtt_hits", "qtt_cutoffs",
     "reuse_mask", "legal_cache_hits", "legal_cache_misses", "legal_cache_replacements",
     "efficiency_mask", "ordering_rule_checks", "eval_cache_hits", "lazy_snapshots", "selective_usi_skipped",
