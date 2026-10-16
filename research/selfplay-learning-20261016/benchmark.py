@@ -16,7 +16,7 @@ assert len({tuple(row['moves']) for row in cases}) == 48
 options = {
     'OpeningRandomNonLance': False,
     'MateAssist': False, 'MateLearning': False, 'AdaptiveLongThink': False,
-    'PositionKnowledge': True, 'USI_Ponder':False, 'SearchThreads':2,
+    'PositionKnowledge': True, 'USI_Ponder':False, 'SearchThreads':2,'SearchProbeMask':7,
 }
 config = json.loads(sys.argv[4]) if len(sys.argv)>4 else {'control':0,'learned100':100}
 engines = {'official_v2020': Engine(baseline_binary, 'official_v2020', options)}
