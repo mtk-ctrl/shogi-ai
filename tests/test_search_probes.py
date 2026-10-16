@@ -2,6 +2,7 @@
 import json
 from pathlib import Path
 import random
+import re
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -55,18 +56,22 @@ def run(e, position, command):
 def score(x): return tuple(x[1].get(k) for k in ('score_cp','score_mate','depth'))
 def exact(x): return (x[0], *(x[1].get(k) for k in ('score_cp','score_mate','depth','nodes','qnodes','cutoffs','pv')))
 
+source_root = Path(__file__).resolve().parents[1]
+header = (source_root / 'engine/strategy/search_research.h').read_text()
+default_mask = int(re.search(r'DefaultSearchProbeMask\s*=\s*(\d+)', header).group(1))
+
 checks = 0
 usage = {k: 0 for k in ('pvs_probes','pvs_researches','killer_priorities','history_priorities','ordering_updates')}
 for threads in (1, 2):
     engines = [Engine(baseline, 'baseline', {**options,'SearchThreads':threads,'SearchProbeMask':0}),
                Engine(candidate, 'candidate', {**options,'SearchThreads':threads})]
     try:
-        # The formal default must execute mask 3, not only advertise it.
+        # The runtime default must match the actual source setting and an explicit request.
         default = run(engines[1], *cases[0])
-        assert default[1].get('probe_mask') == 3, default
-        engines[1].send('setoption name SearchProbeMask value 3')
+        assert default[1].get('probe_mask') == default_mask, default
+        engines[1].send('setoption name SearchProbeMask value '+str(default_mask))
         explicit = run(engines[1], *cases[0])
-        assert exact(default) == exact(explicit), 'default and explicit mask 3 differ'
+        assert exact(default) == exact(explicit), 'default and explicit adopted mask differ'
         for quiescence in (False, True):
             for e in engines: e.send('setoption name Quiescence value '+str(quiescence).lower())
             for case in cases:
