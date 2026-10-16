@@ -16,8 +16,8 @@ enum SearchEfficiency : unsigned {
 // Formally adopted in v2.0.16: geometry distance table + occupied-square evaluation scanning.
 // LegalTokenCache=OFF; the previously adopted 23/8 defaults above stay unchanged.
 inline constexpr unsigned DefaultSearchReuseMask = 6;
-// v2.0.20: PVS + quiet cutoff killers. History remains diagnostic/OFF.
-inline constexpr unsigned DefaultSearchProbeMask = 3;
+// v2.0.20: PVS + quiet cutoff killers. History ordering formally adopted in v2.0.21.
+inline constexpr unsigned DefaultSearchProbeMask = 7;
 enum SearchReuse : unsigned {
     LegalTokenCache = 1, GeometryLookup = 2, OccupiedIndex = 4,
 };
