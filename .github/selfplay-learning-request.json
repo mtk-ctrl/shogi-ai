@@ -1,6 +1,6 @@
 {
-  "request_id": "v220-selfplay-generation0-train-20261016",
-  "code_ref": "c0d286d327cfe05b45987eb6f3f1af21df13a63e",
+  "request_id": "v220-selfplay-generation0-train-20261016-restore-fix",
+  "code_ref": "d553ec8e385ffcdd79bae4416fab76b01b2e2c8b",
   "source_ref": "79f463c0e024c1d0e893caad7153aa44240c2a4b",
   "source_run": 38853046638
 }
