@@ -18,6 +18,13 @@ spec=importlib.util.spec_from_file_location('selfplay_learn',ROOT/'research/self
 learn=importlib.util.module_from_spec(spec);spec.loader.exec_module(learn)
 
 class LearningTests(unittest.TestCase):
+    def test_build_log_is_data_without_terminal_controls(self):
+        spec=importlib.util.spec_from_file_location('restore',ROOT/'research/selfplay-learning-20261016/restore.py')
+        restore=importlib.util.module_from_spec(spec);spec.loader.exec_module(restore)
+        text='\x1b[31mhash\x1b[0m\n\x1b]0;unsafe title\x07ref\x00\r'
+        cleaned=restore.clean_log(text)
+        self.assertEqual(cleaned,'hash\nref')
+        self.assertNotIn('\x1b',cleaned)
     def test_split_is_deterministic_and_isolates_shards(self):
         for n in (6,10,19,20):
             s=[learn.split_for_shard(i,n) for i in range(n)]

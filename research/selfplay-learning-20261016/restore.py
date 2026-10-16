@@ -3,14 +3,41 @@
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import shutil
 import subprocess
 import tarfile
+import urllib.error
+import urllib.parse
+import urllib.request
 
 def gh(*args):return subprocess.check_output(['gh',*args],text=True)
 def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+def clean_log(text):
+    # Parse logs as data, never render terminal instructions from API content.
+    text=re.sub(r'\x1b\][^\x07\x1b]*(?:\x07|\x1b\\)','',text)
+    text=re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]','',text)
+    return ''.join(c for c in text if ord(c)>=32 or c in '\n\t')
+
+def read_job_log(repository,job):
+    class NoRedirect(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self,*args,**kwargs):return None
+    request=urllib.request.Request(f'https://api.github.com/repos/{repository}/actions/jobs/{job}/logs',
+        headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],
+                 'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'})
+    try:
+        with urllib.request.build_opener(NoRedirect).open(request,timeout=60) as response:data=response.read()
+    except urllib.error.HTTPError as error:
+        if error.code!=302:raise
+        target=error.headers['Location']
+        parsed=urllib.parse.urlparse(target)
+        if parsed.scheme!='https' or parsed.username or parsed.password:raise ValueError('invalid log redirect')
+        # A signed storage URL needs no GitHub credential; never forward Authorization.
+        with urllib.request.urlopen(target,timeout=60) as response:data=response.read()
+    return clean_log(data.decode('utf-8',errors='replace'))
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--run',required=True,type=int)
@@ -32,7 +59,7 @@ def main():
     jobs=json.loads(gh('api',f'repos/{a.repository}/actions/runs/{a.run}/jobs?per_page=100'))['jobs']
     build=[j for j in jobs if j['name']=='build' and j['conclusion']=='success']
     if len(build)!=1:raise ValueError('ambiguous source build')
-    log=gh('api',f"repos/{a.repository}/actions/jobs/{build[0]['id']}/logs")
+    log=read_job_log(a.repository,build[0]['id'])
     if len(re.findall(r'git checkout --progress --force '+a.source_ref,log))<2:
         raise ValueError('both actual source checkouts not proven')
     proof={'run_id':a.run,'job_id':build[0]['id'],'observed_ref_a':a.source_ref,'observed_ref_b':a.source_ref}
