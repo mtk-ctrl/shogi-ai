@@ -1,12 +1,12 @@
 {
-  "request_id": "v219-pvs-vs-official-200-20261016",
+  "request_id": "v219-pvs-killer-vs-official-200-20261016",
   "ref_a": "f34ffd4745836b81d5e8eb80f9c53a9c681bc2ed",
   "ref_b": "8d19b5453173d2fb7489aefe07fbbd018f30a5ad",
   "games": 200,
-  "shards": 19,
+  "shards": 20,
   "go_command": "go movetime 200",
   "max_plies": 300,
-  "seed": 2026101691,
-  "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"SearchResearchMask\":23,\"SearchEfficiencyMask\":8,\"SearchReuseMask\":6,\"SearchNextMask\":4,\"SearchThreads\":2,\"RiskVerify\":true,\"USI_Ponder\":true,\"SearchProbeMask\":1}",
+  "seed": 2026101692,
+  "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"SearchResearchMask\":23,\"SearchEfficiencyMask\":8,\"SearchReuseMask\":6,\"SearchNextMask\":4,\"SearchThreads\":2,\"RiskVerify\":true,\"USI_Ponder\":true,\"SearchProbeMask\":3}",
   "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"SearchResearchMask\":23,\"SearchEfficiencyMask\":8,\"SearchReuseMask\":6,\"SearchNextMask\":4,\"SearchThreads\":2,\"RiskVerify\":true,\"USI_Ponder\":true}"
 }
