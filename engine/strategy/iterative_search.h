@@ -86,6 +86,7 @@ public:
         std::uint64_t legal_cache_replacements = 0;
         std::uint64_t pvs_probes = 0, pvs_researches = 0;
         std::uint64_t killer_priorities = 0, history_priorities = 0, ordering_updates = 0;
+        std::uint64_t root_window_probes = 0, root_window_fail_low = 0, root_window_fail_high = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -197,6 +198,8 @@ public:
     unsigned threads() const { return threads_; }
     void set_probe_mask(unsigned mask) { probe_mask_ = mask & 7u; }
     unsigned probe_mask() const { return probe_mask_; }
+    void set_root_window(unsigned width) { root_window_ = std::min(width, 2000u); }
+    unsigned root_window() const { return root_window_; }
 
     SearchResult choose(rules::Position& position, int max_depth, SearchControl& control,
                         const std::vector<std::string>& allowed = {},
@@ -325,6 +328,21 @@ private:
                                 visit(1);
                                 child = search(position, child_depth, 1, best, Infinity, child_history);
                             }
+                        } else if (root_window_ && best == -Infinity && result.has_score
+                                   && !is_mate_score(result.score)) {
+                            // The prior iteration only supplies a tentative window.
+                            // A fail-low/high must be retried with the original full
+                            // window before this root candidate can be published.
+                            const int low = std::max(-Infinity, result.score - static_cast<int>(root_window_));
+                            const int high = std::min(Infinity, result.score + static_cast<int>(root_window_));
+                            ++stats_.root_window_probes;
+                            child = search(position, child_depth, 1, low, high, child_history);
+                            if (child.value < low || child.value >= high) {
+                                stats_.root_window_fail_low += child.value < low;
+                                stats_.root_window_fail_high += child.value >= high;
+                                visit(1);
+                                child = search(position, child_depth, 1, best, Infinity, child_history);
+                            }
                         } else child = search(position, child_depth, 1, best, Infinity, child_history);
                     }
                     const int value = child.value;
@@ -375,6 +393,7 @@ private:
         SUM_STAT(legal_cache_replacements);
         SUM_STAT(pvs_probes);SUM_STAT(pvs_researches);SUM_STAT(killer_priorities);
         SUM_STAT(history_priorities);SUM_STAT(ordering_updates);
+        SUM_STAT(root_window_probes);SUM_STAT(root_window_fail_low);SUM_STAT(root_window_fail_high);
 #undef SUM_STAT
         for(int i=0;i<4;++i)out.nodes_by_ply[i]=a.nodes_by_ply[i]+b.nodes_by_ply[i];
         out.seldepth=std::max(a.seldepth,b.seldepth);
@@ -400,6 +419,7 @@ private:
             lane.set_reuse_mask(reuse_mask_);lane.set_next_mask(next_mask_);
             lane.set_risk_verify(risk_verify_enabled_);
             lane.set_probe_mask(probe_mask_);
+            lane.set_root_window(root_window_);
             lane.set_quiescence_enabled(quiescence_enabled_);
             lane.set_threads(1);
             lane.position_knowledge_=position_knowledge_;lane.position_knowledge_enabled_=position_knowledge_enabled_;
@@ -1061,6 +1081,7 @@ private:
     unsigned reuse_mask_ = DefaultSearchReuseMask;
     unsigned threads_=2;
     unsigned probe_mask_=DefaultSearchProbeMask;
+    unsigned root_window_=0;
     std::array<std::array<std::string, 2>, MaxPly + 1> killers_{};
     std::array<std::array<int, 88 * 81>, 2> history_scores_{};
     bool capture_root_ties_=false;
