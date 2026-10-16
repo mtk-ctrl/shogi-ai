@@ -30,5 +30,10 @@
   "match_launched": false,
   "gate_failure": "lazy total speedup 1.0036689033 does not exceed 1.02; no selective rerun or match",
   "standalone_ordering_asan_ubsan_cases": 20000,
-  "standalone_sanitizer_result": "PASS; ASAN_OPTIONS=detect_leaks=0"
+  "standalone_sanitizer_result": "PASS; ASAN_OPTIONS=detect_leaks=0",
+  "github_quick_ci": {
+    "run_id": 38837084753,
+    "source_commit": "7e77199bf8dbc4db9a6dc0bfcbb91f70c60cc7c0",
+    "conclusion": "success"
+  }
 }
