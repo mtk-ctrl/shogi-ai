@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "cycle_id": "postgame-pilot-20261017",
+  "status": "design_ready",
+  "phase": "prepare",
+  "generation": 0,
+  "formal_adoption": false,
+  "controller_implemented": false,
+  "research_branch": null,
+  "parent_engine_ref": null,
+  "design_refs": [
+    "DESIGN.md",
+    "CONTROL.md",
+    "REWARD.md"
+  ],
+  "source_runs": [
+    38946175603,
+    38946985753,
+    38947702135,
+    38948701892
+  ],
+  "budget": {
+    "max_selected_positions": 96,
+    "max_positions_per_game": 4,
+    "max_screen_candidates": 3,
+    "screen_games_per_candidate": 100,
+    "confirmation_games": 200,
+    "next_source_games_if_pass": 100,
+    "max_new_games": 600
+  },
+  "used": {
+    "new_games": 0,
+    "selected_positions": 0
+  },
+  "automation": {
+    "id": "6ad2af67c6788191b5702c4537d90052",
+    "enabled": true,
+    "timezone": "Asia/Tokyo",
+    "cadence": "hourly",
+    "purpose": "implementation_and_one_generation_pilot",
+    "stop_after_verified_report": true
+  },
+  "actions": [],
+  "evidence": [],
+  "next_action": "Read current rules and source publication, implement full-history postgame reanalysis input; freeze operational PLAN before heavy work",
+  "limitations": [
+    "New postgame reanalysis, paired training, candidate comparison, and controller execution have not completed.",
+    "No automatic formal adoption.",
+    "One pilot only; no indefinite training or automatic second optimization generation."
+  ]
+}
