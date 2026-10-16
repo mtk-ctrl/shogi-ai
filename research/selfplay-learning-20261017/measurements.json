@@ -1,0 +1,649 @@
+{
+  "schema": 1,
+  "baseline_ref": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
+  "candidate_refs": {
+    "no-turn150": {
+      "ref": "8f847c08678681af1a7eace7630bc251d98b1df6",
+      "branch": "research/v220-selfplay-g1-20261017",
+      "core_ci_parent": "89ed026d35a6b553ecab7508b4ae18abe798e33e",
+      "scale": 100,
+      "tree": "f1fe676965a733ce08d6345936c027797aa69865"
+    },
+    "no-turn600": {
+      "ref": "c238d50facdec7cd3d44e645b495eb46125d8f26",
+      "branch": "research/v220-selfplay-g1-no-turn600",
+      "core_ci_parent": "b1c8ccc2885f5c10dfe23875551f4d84dfb5fbe9",
+      "scale": 100,
+      "tree": "dcf6773869ee96019510a643898a4b07bc36115a"
+    },
+    "scale10": {
+      "ref": "a15530f625b4ceb3b77d0ce45889d4c2e2d90909",
+      "branch": "research/v220-selfplay-g1-scale10",
+      "core_ci_parent": "cccd4ecd48ce0660acb7e6dffa5278bb678c4fcd",
+      "scale": 10,
+      "tree": "f23d2bdd43435e719218795995202a5230796013"
+    }
+  },
+  "source_corpus_run": 38853046638,
+  "training_run": 38942816009,
+  "comparison": {
+    "go_command": "go movetime 200",
+    "max_plies": 300,
+    "common_options": {
+      "AdaptiveLongThink": true,
+      "PositionKnowledge": true,
+      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+      "OpeningRandomNonLance": true,
+      "SearchResearchMask": 23,
+      "SearchEfficiencyMask": 8,
+      "SearchReuseMask": 6,
+      "SearchNextMask": 4,
+      "SearchProbeMask": 7,
+      "SearchThreads": 2,
+      "RiskVerify": true,
+      "USI_Ponder": true
+    },
+    "screen_seed": 2030101701,
+    "confirmation_seed": 2040101701
+  },
+  "selection": {
+    "prespecified": "Highest score over all 100 scheduled games, minimum 50%; one 200-game confirmation; no retraining.",
+    "scores": {
+      "no-turn150": 0.475,
+      "no-turn600": 0.52,
+      "scale10": 0.605
+    },
+    "selected": "scale10",
+    "candidate_ref": "a15530f625b4ceb3b77d0ce45889d4c2e2d90909",
+    "scale": 10,
+    "model_sha256": "b1f77841ba03f860081313847af71402f7c0e2c763e740fb95a7ad25076d7f96",
+    "baseline_ref": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
+    "confirmation_seed": 2040101701,
+    "confirmation_games": 200,
+    "formal_adoption": false
+  },
+  "benchmarks": {
+    "no-turn150": {
+      "mode": "benchmark",
+      "provenance": {
+        "candidate_ref": "8f847c08678681af1a7eace7630bc251d98b1df6",
+        "baseline_ref": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
+        "model_sha256": "b71885acf92e750ed65cada9b831d5bd66a83717f8db28aa02c21b63f35d51a1",
+        "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+        "binary_sha256_a": "6400c2d04f0450acce1c0f8fae0c62aad0f04bad700f40d20b59f9c66bbab649",
+        "binary_sha256_b": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36"
+      },
+      "conditions": {
+        "positions": 48,
+        "repeats": 3,
+        "fixed": "go depth 2",
+        "timed": "go movetime 200",
+        "options": {
+          "OpeningRandomNonLance": false,
+          "MateAssist": false,
+          "MateLearning": false,
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "USI_Ponder": false,
+          "SearchThreads": 2,
+          "SearchProbeMask": 7
+        },
+        "config": {
+          "control": 0,
+          "learned100": 100
+        }
+      },
+      "summary": {
+        "official_v2020": {
+          "fixed_trials": 144,
+          "fixed_nodes_sum": 1182549,
+          "fixed_qnodes_sum": 1164639,
+          "median_speedup": 1,
+          "total_speedup": 1,
+          "timed_depth_sum": 447,
+          "timed_nodes_sum": 8730923,
+          "timed_deeper": 0,
+          "timed_shallower": 0,
+          "timed_max_ms": 191.598
+        },
+        "control": {
+          "fixed_trials": 144,
+          "fixed_nodes_sum": 1182549,
+          "fixed_qnodes_sum": 1164639,
+          "median_speedup": 1.0058063913561925,
+          "total_speedup": 1.0055969081283505,
+          "timed_depth_sum": 447,
+          "timed_nodes_sum": 8662653,
+          "timed_deeper": 0,
+          "timed_shallower": 0,
+          "timed_max_ms": 191.571
+        },
+        "learned100": {
+          "fixed_trials": 144,
+          "fixed_nodes_sum": 1179930,
+          "fixed_qnodes_sum": 1162020,
+          "median_speedup": 0.9822466051833594,
+          "total_speedup": 0.9802242484813932,
+          "timed_depth_sum": 447,
+          "timed_nodes_sum": 8463948,
+          "timed_deeper": 0,
+          "timed_shallower": 0,
+          "timed_max_ms": 191.629
+        }
+      },
+      "off_exact": true,
+      "timed_depth_ratio": 1,
+      "comparison_gate_pass": true,
+      "discarded_local_measurement": "Unconfirmed local timing was discarded after exec-server transport loss; only this complete single-runner comparison is used.",
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "selfplay-benchmark-38945591315.tgz",
+        "sha256": "aa747c8e70db57ecc1f2aea04d5eee814be0eee09cc8408a10ccd214946e57c6",
+        "bytes": 26935,
+        "readback_verified": true
+      }
+    },
+    "no-turn600": {
+      "mode": "benchmark",
+      "provenance": {
+        "candidate_ref": "c238d50facdec7cd3d44e645b495eb46125d8f26",
+        "baseline_ref": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
+        "model_sha256": "5ae222cbffd56d7ed1876a71cf826ee2b45f77a53d5d4fd73f37bf626f80daf5",
+        "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+        "binary_sha256_a": "23319ffbb317af978b316dedc43d4ad4a7a3167b99bd6bd7d2f7b6603f908659",
+        "binary_sha256_b": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36"
+      },
+      "conditions": {
+        "positions": 48,
+        "repeats": 3,
+        "fixed": "go depth 2",
+        "timed": "go movetime 200",
+        "options": {
+          "OpeningRandomNonLance": false,
+          "MateAssist": false,
+          "MateLearning": false,
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "USI_Ponder": false,
+          "SearchThreads": 2,
+          "SearchProbeMask": 7
+        },
+        "config": {
+          "control": 0,
+          "learned100": 100
+        }
+      },
+      "summary": {
+        "official_v2020": {
+          "fixed_trials": 144,
+          "fixed_nodes_sum": 1182549,
+          "fixed_qnodes_sum": 1164639,
+          "median_speedup": 1,
+          "total_speedup": 1,
+          "timed_depth_sum": 429,
+          "timed_nodes_sum": 6853383,
+          "timed_deeper": 0,
+          "timed_shallower": 0,
+          "timed_max_ms": 191.835
+        },
+        "control": {
+          "fixed_trials": 144,
+          "fixed_nodes_sum": 1182549,
+          "fixed_qnodes_sum": 1164639,
+          "median_speedup": 1.0067210711359746,
+          "total_speedup": 1.0149226156878584,
+          "timed_depth_sum": 430,
+          "timed_nodes_sum": 6922441,
+          "timed_deeper": 2,
+          "timed_shallower": 1,
+          "timed_max_ms": 192.059
+        },
+        "learned100": {
+          "fixed_trials": 144,
+          "fixed_nodes_sum": 1189899,
+          "fixed_qnodes_sum": 1172013,
+          "median_speedup": 0.9838812522571325,
+          "total_speedup": 0.9880334050387528,
+          "timed_depth_sum": 420,
+          "timed_nodes_sum": 6748100,
+          "timed_deeper": 0,
+          "timed_shallower": 9,
+          "timed_max_ms": 191.826
+        }
+      },
+      "off_exact": true,
+      "timed_depth_ratio": 0.9790209790209791,
+      "comparison_gate_pass": true,
+      "discarded_local_measurement": "Unconfirmed local timing was discarded after exec-server transport loss; only this complete single-runner comparison is used.",
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "selfplay-benchmark-38946068185.tgz",
+        "sha256": "e28c75e26897575d51ef97e24953c872bdaff5389a270c632d20e28b378e7b0a",
+        "bytes": 28107,
+        "readback_verified": true
+      }
+    },
+    "scale10": {
+      "mode": "benchmark",
+      "provenance": {
+        "candidate_ref": "a15530f625b4ceb3b77d0ce45889d4c2e2d90909",
+        "baseline_ref": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
+        "model_sha256": "b1f77841ba03f860081313847af71402f7c0e2c763e740fb95a7ad25076d7f96",
+        "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+        "binary_sha256_a": "42039de17779be3d716933bb3d6e38bb1858c2b8b4bae271a1f21914a736b023",
+        "binary_sha256_b": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36"
+      },
+      "conditions": {
+        "positions": 48,
+        "repeats": 3,
+        "fixed": "go depth 2",
+        "timed": "go movetime 200",
+        "options": {
+          "OpeningRandomNonLance": false,
+          "MateAssist": false,
+          "MateLearning": false,
+          "AdaptiveLongThink": false,
+          "PositionKnowledge": true,
+          "USI_Ponder": false,
+          "SearchThreads": 2,
+          "SearchProbeMask": 7
+        },
+        "config": {
+          "control": 0,
+          "learned100": 10
+        }
+      },
+      "summary": {
+        "official_v2020": {
+          "fixed_trials": 144,
+          "fixed_nodes_sum": 1182549,
+          "fixed_qnodes_sum": 1164639,
+          "median_speedup": 1,
+          "total_speedup": 1,
+          "timed_depth_sum": 422,
+          "timed_nodes_sum": 6802630,
+          "timed_deeper": 0,
+          "timed_shallower": 0,
+          "timed_max_ms": 191.978
+        },
+        "control": {
+          "fixed_trials": 144,
+          "fixed_nodes_sum": 1182549,
+          "fixed_qnodes_sum": 1164639,
+          "median_speedup": 1.002448967133501,
+          "total_speedup": 1.0055176776176113,
+          "timed_depth_sum": 424,
+          "timed_nodes_sum": 6787865,
+          "timed_deeper": 5,
+          "timed_shallower": 3,
+          "timed_max_ms": 191.914
+        },
+        "learned100": {
+          "fixed_trials": 144,
+          "fixed_nodes_sum": 960138,
+          "fixed_qnodes_sum": 944667,
+          "median_speedup": 1.0083437582264838,
+          "total_speedup": 1.1287294374933783,
+          "timed_depth_sum": 424,
+          "timed_nodes_sum": 6543730,
+          "timed_deeper": 11,
+          "timed_shallower": 9,
+          "timed_max_ms": 191.978
+        }
+      },
+      "off_exact": true,
+      "timed_depth_ratio": 1.004739336492891,
+      "comparison_gate_pass": true,
+      "discarded_local_measurement": "Unconfirmed local timing was discarded after exec-server transport loss; only this complete single-runner comparison is used.",
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "selfplay-benchmark-38946797040.tgz",
+        "sha256": "cb80d34d5b7632d8764b73f136789252b79393f9ff5b41045f94b735489deccd",
+        "bytes": 28623,
+        "readback_verified": true
+      }
+    }
+  },
+  "screening": {
+    "no-turn150": {
+      "match": 38946175603,
+      "audit": 38947455452,
+      "aggregate": {
+        "ref_a": "8f847c08678681af1a7eace7630bc251d98b1df6",
+        "ref_b": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
+        "go_command": "go movetime 200",
+        "options_a": {
+          "AdaptiveLongThink": true,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+          "OpeningRandomNonLance": true,
+          "SearchResearchMask": 23,
+          "SearchEfficiencyMask": 8,
+          "SearchReuseMask": 6,
+          "SearchNextMask": 4,
+          "SearchProbeMask": 7,
+          "SearchThreads": 2,
+          "RiskVerify": true,
+          "USI_Ponder": true,
+          "SelfPlayEval": true,
+          "SelfPlayEvalScale": 100,
+          "SelfPlayEvalFile": "embedded"
+        },
+        "options_b": {
+          "AdaptiveLongThink": true,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+          "OpeningRandomNonLance": true,
+          "SearchResearchMask": 23,
+          "SearchEfficiencyMask": 8,
+          "SearchReuseMask": 6,
+          "SearchNextMask": 4,
+          "SearchProbeMask": 7,
+          "SearchThreads": 2,
+          "RiskVerify": true,
+          "USI_Ponder": true
+        },
+        "games": 100,
+        "wins_a": 47,
+        "draws": 1,
+        "wins_b": 52,
+        "score_a": 0.475,
+        "score_a_approx_95pct": [
+          0.3771225766583529,
+          0.572877423341647
+        ],
+        "average_plies": 115.63,
+        "illegal_games": 0,
+        "shards": 18,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        }
+      }
+    },
+    "no-turn600": {
+      "match": 38946985753,
+      "audit": 38947742788,
+      "aggregate": {
+        "ref_a": "c238d50facdec7cd3d44e645b495eb46125d8f26",
+        "ref_b": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
+        "go_command": "go movetime 200",
+        "options_a": {
+          "AdaptiveLongThink": true,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+          "OpeningRandomNonLance": true,
+          "SearchResearchMask": 23,
+          "SearchEfficiencyMask": 8,
+          "SearchReuseMask": 6,
+          "SearchNextMask": 4,
+          "SearchProbeMask": 7,
+          "SearchThreads": 2,
+          "RiskVerify": true,
+          "USI_Ponder": true,
+          "SelfPlayEval": true,
+          "SelfPlayEvalScale": 100,
+          "SelfPlayEvalFile": "embedded"
+        },
+        "options_b": {
+          "AdaptiveLongThink": true,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+          "OpeningRandomNonLance": true,
+          "SearchResearchMask": 23,
+          "SearchEfficiencyMask": 8,
+          "SearchReuseMask": 6,
+          "SearchNextMask": 4,
+          "SearchProbeMask": 7,
+          "SearchThreads": 2,
+          "RiskVerify": true,
+          "USI_Ponder": true
+        },
+        "games": 100,
+        "wins_a": 52,
+        "draws": 0,
+        "wins_b": 48,
+        "score_a": 0.52,
+        "score_a_approx_95pct": [
+          0.42207843138511314,
+          0.6179215686148869
+        ],
+        "average_plies": 106.3,
+        "illegal_games": 0,
+        "shards": 19,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        }
+      }
+    },
+    "scale10": {
+      "match": 38947702135,
+      "audit": 38948491634,
+      "aggregate": {
+        "ref_a": "a15530f625b4ceb3b77d0ce45889d4c2e2d90909",
+        "ref_b": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
+        "go_command": "go movetime 200",
+        "options_a": {
+          "AdaptiveLongThink": true,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+          "OpeningRandomNonLance": true,
+          "SearchResearchMask": 23,
+          "SearchEfficiencyMask": 8,
+          "SearchReuseMask": 6,
+          "SearchNextMask": 4,
+          "SearchProbeMask": 7,
+          "SearchThreads": 2,
+          "RiskVerify": true,
+          "USI_Ponder": true,
+          "SelfPlayEval": true,
+          "SelfPlayEvalScale": 10,
+          "SelfPlayEvalFile": "embedded"
+        },
+        "options_b": {
+          "AdaptiveLongThink": true,
+          "PositionKnowledge": true,
+          "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+          "OpeningRandomNonLance": true,
+          "SearchResearchMask": 23,
+          "SearchEfficiencyMask": 8,
+          "SearchReuseMask": 6,
+          "SearchNextMask": 4,
+          "SearchProbeMask": 7,
+          "SearchThreads": 2,
+          "RiskVerify": true,
+          "USI_Ponder": true
+        },
+        "games": 100,
+        "wins_a": 59,
+        "draws": 3,
+        "wins_b": 38,
+        "score_a": 0.605,
+        "score_a_approx_95pct": [
+          0.5091852641813379,
+          0.700814735818662
+        ],
+        "average_plies": 108.03,
+        "illegal_games": 0,
+        "shards": 19,
+        "position_knowledge": {
+          "A": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          },
+          "B": {
+            "enabled": true,
+            "file": "build/position-knowledge-v1.tsv",
+            "available": true,
+            "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "positions": 163
+          }
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Old held-out split has been reused for diagnostics; not untouched confirmation.",
+    "Different shard counts mean the same base seed does not produce strictly paired openings.",
+    "A fresh seed does not guarantee a complete move sequence absent from the training corpus; audited separately.",
+    "Depth and node averages from different game positions are descriptive; controlled speed comes from the 48-position benchmark.",
+    "No CPU-seconds, energy or device-wide portability measurement."
+  ],
+  "confirmation": {
+    "match": 38948701892,
+    "aggregate": {
+      "ref_a": "a15530f625b4ceb3b77d0ce45889d4c2e2d90909",
+      "ref_b": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
+      "go_command": "go movetime 200",
+      "options_a": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+        "OpeningRandomNonLance": true,
+        "SearchResearchMask": 23,
+        "SearchEfficiencyMask": 8,
+        "SearchReuseMask": 6,
+        "SearchNextMask": 4,
+        "SearchProbeMask": 7,
+        "SearchThreads": 2,
+        "RiskVerify": true,
+        "USI_Ponder": true,
+        "SelfPlayEval": true,
+        "SelfPlayEvalScale": 10,
+        "SelfPlayEvalFile": "embedded"
+      },
+      "options_b": {
+        "AdaptiveLongThink": true,
+        "PositionKnowledge": true,
+        "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+        "OpeningRandomNonLance": true,
+        "SearchResearchMask": 23,
+        "SearchEfficiencyMask": 8,
+        "SearchReuseMask": 6,
+        "SearchNextMask": 4,
+        "SearchProbeMask": 7,
+        "SearchThreads": 2,
+        "RiskVerify": true,
+        "USI_Ponder": true
+      },
+      "games": 200,
+      "wins_a": 98,
+      "draws": 1,
+      "wins_b": 101,
+      "score_a": 0.4925,
+      "score_a_approx_95pct": [
+        0.42321133173454695,
+        0.561788668265453
+      ],
+      "average_plies": 109.125,
+      "illegal_games": 0,
+      "shards": 20,
+      "position_knowledge": {
+        "A": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        },
+        "B": {
+          "enabled": true,
+          "file": "build/position-knowledge-v1.tsv",
+          "available": true,
+          "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "positions": 163
+        }
+      }
+    },
+    "audit_pending": null,
+    "audit": 38950067410,
+    "audit_report": "confirmation-audit.json"
+  },
+  "outcome": "No independently confirmed strength improvement; formal v2.0.21 retained.",
+  "screening_cross_overlap": {
+    "no_turn150_vs_no_turn600": [
+      "19ec9916378ff80385f34aae8604cddc52614f49d8f33125fcc1b20c17fe3d9f"
+    ],
+    "no_turn150_vs_scale10": [],
+    "no_turn600_vs_scale10": []
+  },
+  "confirmation_sensitivity": {
+    "definition": "Post hoc descriptive sensitivity only; primary result remains all 200 scheduled confirmation games. Excludes all original-corpus sequences, any screening sequence, and repeated complete sequences within confirmation.",
+    "original_corpus_overlap": 0,
+    "screening_overlap": 2,
+    "duplicate_confirmation_sequences": 0,
+    "unique_after_exclusion": {
+      "games": 198,
+      "wins_a": 96,
+      "wins_b": 101,
+      "draws": 1,
+      "score_a": 0.48737373737373735,
+      "score_a_approx_95_interval": [
+        0.4177503797142135,
+        0.5569970950332612
+      ],
+      "A_black": 99,
+      "A_white": 99
+    },
+    "excluded": [
+      {
+        "game_id": "b63b6e414d20818aa971b7bcdb90d89cff18fba75b9124864f4e864a1e8c93b7:0",
+        "sha256": "ccd966a8f57a661071ea4fb17dba5f135cfce39dd4f8234c7adeab3a6a0132b3",
+        "winner": "A",
+        "a_black": true,
+        "in_original_corpus": false,
+        "in_original_train_shards": false
+      },
+      {
+        "game_id": "5382e806734d5e0e96a46fb8c590ab11f53faeabbb986d5f5d74cdec9b6b0d13:7",
+        "sha256": "d4ba2281db8fcb73d7f48466df7082ce965b99993fa3c96b0aa1cf0e72cd4255",
+        "winner": "A",
+        "a_black": false,
+        "in_original_corpus": false,
+        "in_original_train_shards": false
+      }
+    ]
+  },
+  "totals": {
+    "games": 500,
+    "plies": 54821,
+    "all_moves_legal": true,
+    "active_model_moves_A": 27414,
+    "phase_missing": 0,
+    "missing_search_scores": 1359,
+    "maximum_observed_wall_ms": 1076.492,
+    "wall_over_1100ms": 0,
+    "maximum_long_thinks_per_game": 10,
+    "knowledge_probes": 103754,
+    "knowledge_hits": 0
+  },
+  "formal_adoption": false
+}

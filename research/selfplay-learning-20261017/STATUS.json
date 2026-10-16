@@ -1,30 +1,14 @@
 {
-  "state": "independent_confirmation_running",
+  "state": "completed_unadopted",
   "formal_adoption": false,
-  "selection_commit": "92a193185d6bdf905012415ae2b545f9fb041599",
-  "selection": {
-    "prespecified": "Highest score over all 100 scheduled games, minimum 50%; one 200-game confirmation; no retraining.",
-    "scores": {
-      "no-turn150": 0.475,
-      "no-turn600": 0.52,
-      "scale10": 0.605
-    },
-    "selected": "scale10",
-    "candidate_ref": "a15530f625b4ceb3b77d0ce45889d4c2e2d90909",
-    "scale": 10,
-    "model_sha256": "b1f77841ba03f860081313847af71402f7c0e2c763e740fb95a7ad25076d7f96",
-    "baseline_ref": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
-    "confirmation_seed": 2040101701,
-    "confirmation_games": 200,
-    "formal_adoption": false
-  },
   "confirmation": {
-    "launcher": 38948686343,
     "run": 38948701892,
-    "request_commit": "cf430cdbefb86831d970a3faf7c67e9b12db4e3d",
+    "audit": 38950067410,
     "games": 200,
-    "shards": 20,
-    "seed": 2040101701,
-    "started": "build"
-  }
+    "wins": 98,
+    "losses": 101,
+    "draws": 1,
+    "score": 0.4925
+  },
+  "next": "Owner decision required for adoption; next research hypotheses saved, no additional match or training started."
 }

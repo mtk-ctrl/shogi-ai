@@ -1,0 +1,37 @@
+{
+  "definition": "Post hoc descriptive sensitivity only; primary result remains all 200 scheduled confirmation games. Excludes all original-corpus sequences, any screening sequence, and repeated complete sequences within confirmation.",
+  "original_corpus_overlap": 0,
+  "screening_overlap": 2,
+  "duplicate_confirmation_sequences": 0,
+  "unique_after_exclusion": {
+    "games": 198,
+    "wins_a": 96,
+    "wins_b": 101,
+    "draws": 1,
+    "score_a": 0.48737373737373735,
+    "score_a_approx_95_interval": [
+      0.4177503797142135,
+      0.5569970950332612
+    ],
+    "A_black": 99,
+    "A_white": 99
+  },
+  "excluded": [
+    {
+      "game_id": "b63b6e414d20818aa971b7bcdb90d89cff18fba75b9124864f4e864a1e8c93b7:0",
+      "sha256": "ccd966a8f57a661071ea4fb17dba5f135cfce39dd4f8234c7adeab3a6a0132b3",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "5382e806734d5e0e96a46fb8c590ab11f53faeabbb986d5f5d74cdec9b6b0d13:7",
+      "sha256": "d4ba2281db8fcb73d7f48466df7082ce965b99993fa3c96b0aa1cf0e72cd4255",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    }
+  ]
+}

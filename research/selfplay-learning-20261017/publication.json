@@ -3,6 +3,7 @@
   "url": "https://github.com/mtk-ctrl/shogi-ai/releases/tag/records-2026-10-01",
   "source_run": 38853046638,
   "training_run": 38942816009,
+  "original_model_training_run": 38856315577,
   "assets": [
     {
       "name": "selfplay-source-38853046638.tgz",
@@ -15,7 +16,86 @@
       "sha256": "31af9e3effc547dde3d36a4776675ce44393b50d4cceb4e37946e21e93b2c2a6",
       "bytes": 754432,
       "readback_verified": true
+    },
+    {
+      "name": "selfplay-model-38853046638-38856315577.tgz",
+      "sha256": "d3cab8bce0be911133c5402860b243a0c8aac62b40b73ccf54a7ce0a84fef64a",
+      "bytes": 673542,
+      "readback_verified": true
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-benchmark-38945591315.tgz",
+      "sha256": "aa747c8e70db57ecc1f2aea04d5eee814be0eee09cc8408a10ccd214946e57c6",
+      "bytes": 26935,
+      "readback_verified": true
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-benchmark-38946068185.tgz",
+      "sha256": "e28c75e26897575d51ef97e24953c872bdaff5389a270c632d20e28b378e7b0a",
+      "bytes": 28107,
+      "readback_verified": true
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-benchmark-38946797040.tgz",
+      "sha256": "cb80d34d5b7632d8764b73f136789252b79393f9ff5b41045f94b735489deccd",
+      "bytes": 28623,
+      "readback_verified": true
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-audit-38947026619.tgz",
+      "sha256": "263a84c8209113d6fda3fabb0800330d44f94948d99ff8e59e292fea674883c1",
+      "bytes": 6027384,
+      "readback_verified": true
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-audit-38947455452.tgz",
+      "sha256": "ad2e3b2413f0ba2bff553cc2a38089b8d36a5cc752b0f1068a2317643d7d5b03",
+      "bytes": 6032950,
+      "readback_verified": true
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-audit-38947742788.tgz",
+      "sha256": "a680b884e1b17abb6231a39457c718d73b9f56448adfd9216efde9b060a0ec3b",
+      "bytes": 5983542,
+      "readback_verified": true
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-audit-38948491634.tgz",
+      "sha256": "bbebce04baea7a1aeafb96f709f7f2772b91eccaa507b9a58821c7a1fd683965",
+      "bytes": 5992255,
+      "readback_verified": true
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-audit-38949832647.tgz",
+      "sha256": "4d4ee5fe5ba6f48a2d9a4745b8420554c2992b3c0d297018bbd4ba6b443d0a2a",
+      "bytes": 6716690,
+      "readback_verified": true
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-audit-38950067410.tgz",
+      "sha256": "ad8e1ce5f873ebe34107ef45d9ebe48b6e95bcd250f7df6279eca015c38ec87f",
+      "bytes": 6716687,
+      "readback_verified": true
     }
   ],
-  "note": "Data release only; no engine or knowledge adoption; raw PVs are not published."
+  "confirmation_pending": false,
+  "notes": [
+    "All listed packages were downloaded again and SHA256-verified by their publishing workflow.",
+    "Actual played moves only; Raw/PV and unplayed search trees remain temporary artifacts.",
+    "The original source and original model are reused; they were not regenerated or silently replaced."
+  ],
+  "final_audit_run": 38950067410,
+  "release_inventory": {
+    "assets": 25,
+    "bytes": 53264629
+  }
 }
