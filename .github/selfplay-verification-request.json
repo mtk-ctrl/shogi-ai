@@ -1,7 +1,7 @@
 {
-  "request_id": "g1-v221-no-turn600-audit100-20261017",
+  "request_id": "g1-v221-scale10-audit100-20261017",
   "mode": "audit",
-  "candidate_ref": "c238d50facdec7cd3d44e645b495eb46125d8f26",
+  "candidate_ref": "a15530f625b4ceb3b77d0ce45889d4c2e2d90909",
   "baseline_ref": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
-  "match_run": 38946985753
+  "match_run": 38947702135
 }
