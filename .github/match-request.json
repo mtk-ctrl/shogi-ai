@@ -1,12 +1,12 @@
 {
-  "request_id": "nnue-diagnosis-safety-danger-double-20261016",
+  "request_id": "nnue-diagnosis-opening-random-ab-20261016",
   "ref_a": "8621ed479aa1ebbf6f45e10dd04763fe99348aa8",
   "ref_b": "8621ed479aa1ebbf6f45e10dd04763fe99348aa8",
   "games": 200,
   "shards": 20,
   "go_command": "go movetime 200",
   "max_plies": 300,
-  "seed": 2026101690,
-  "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"USI_Ponder\":true,\"SearchThreads\":2,\"EvalSafety\":960,\"EvalDanger\":300}",
+  "seed": 2026101790,
+  "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":false,\"USI_Ponder\":true,\"SearchThreads\":2}",
   "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"USI_Ponder\":true,\"SearchThreads\":2}"
 }
