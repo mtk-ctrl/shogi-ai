@@ -1,0 +1,48 @@
+{
+  "baseline_source_commit": "8d19b5453173d2fb7489aefe07fbbd018f30a5ad",
+  "candidate_binary_sha256": "c26f41c72d5bf25276f2194af4de449b85e0b762bf225ec0a00f1ceec4a79b67",
+  "independent_cpp_minimax_masks_passed": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "differential": {
+    "cases": 15,
+    "checks": 480,
+    "threads": [
+      1,
+      2
+    ],
+    "quiescence": [
+      false,
+      true
+    ],
+    "masks": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "all_scores_equal": true,
+    "disabled_full_signature_equal": true,
+    "all_pv_legal": true
+  },
+  "protocol": {
+    "threads": 2,
+    "mask": 7,
+    "score_pv_and_mate": true,
+    "movetime_byoyomi_node_zero": true,
+    "adaptive_long_think_and_ten_use_cap": true,
+    "stop_ponderhit_ready_quit_eof": true
+  },
+  "external_engine_code_boundary": "PASS four upstream rule translation units; no upstream search/evaluation/TT/book/mate/USI/null-move symbols"
+}
