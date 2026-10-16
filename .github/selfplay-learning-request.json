@@ -1,6 +1,6 @@
 {
-  "request_id": "v220-selfplay-generation0-train-20261016-restore-fix",
-  "code_ref": "d553ec8e385ffcdd79bae4416fab76b01b2e2c8b",
+  "request_id": "v220-selfplay-turn-invariance-g1-20261017",
+  "code_ref": "20b2b21be25bc3bd56fe423935eb36e78a9a7cd4",
   "source_ref": "79f463c0e024c1d0e893caad7153aa44240c2a4b",
   "source_run": 38853046638
 }
