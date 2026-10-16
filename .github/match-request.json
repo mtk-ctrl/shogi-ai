@@ -1,9 +1,9 @@
 {
-  "request_id": "g1-v221-no-turn150-screen100-20261017",
-  "ref_a": "8f847c08678681af1a7eace7630bc251d98b1df6",
+  "request_id": "g1-v221-no-turn600-screen100-20261017",
+  "ref_a": "c238d50facdec7cd3d44e645b495eb46125d8f26",
   "ref_b": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
   "games": 100,
-  "shards": 18,
+  "shards": 19,
   "go_command": "go movetime 200",
   "max_plies": 300,
   "seed": 2030101701,
