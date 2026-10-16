@@ -1,0 +1,80 @@
+{
+  "mode": "benchmark",
+  "provenance": {
+    "candidate_ref": "a15530f625b4ceb3b77d0ce45889d4c2e2d90909",
+    "baseline_ref": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
+    "model_sha256": "b1f77841ba03f860081313847af71402f7c0e2c763e740fb95a7ad25076d7f96",
+    "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "binary_sha256_a": "42039de17779be3d716933bb3d6e38bb1858c2b8b4bae271a1f21914a736b023",
+    "binary_sha256_b": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36"
+  },
+  "conditions": {
+    "positions": 48,
+    "repeats": 3,
+    "fixed": "go depth 2",
+    "timed": "go movetime 200",
+    "options": {
+      "OpeningRandomNonLance": false,
+      "MateAssist": false,
+      "MateLearning": false,
+      "AdaptiveLongThink": false,
+      "PositionKnowledge": true,
+      "USI_Ponder": false,
+      "SearchThreads": 2,
+      "SearchProbeMask": 7
+    },
+    "config": {
+      "control": 0,
+      "learned100": 10
+    }
+  },
+  "summary": {
+    "official_v2020": {
+      "fixed_trials": 144,
+      "fixed_nodes_sum": 1182549,
+      "fixed_qnodes_sum": 1164639,
+      "median_speedup": 1,
+      "total_speedup": 1,
+      "timed_depth_sum": 422,
+      "timed_nodes_sum": 6802630,
+      "timed_deeper": 0,
+      "timed_shallower": 0,
+      "timed_max_ms": 191.978
+    },
+    "control": {
+      "fixed_trials": 144,
+      "fixed_nodes_sum": 1182549,
+      "fixed_qnodes_sum": 1164639,
+      "median_speedup": 1.002448967133501,
+      "total_speedup": 1.0055176776176113,
+      "timed_depth_sum": 424,
+      "timed_nodes_sum": 6787865,
+      "timed_deeper": 5,
+      "timed_shallower": 3,
+      "timed_max_ms": 191.914
+    },
+    "learned100": {
+      "fixed_trials": 144,
+      "fixed_nodes_sum": 960138,
+      "fixed_qnodes_sum": 944667,
+      "median_speedup": 1.0083437582264838,
+      "total_speedup": 1.1287294374933783,
+      "timed_depth_sum": 424,
+      "timed_nodes_sum": 6543730,
+      "timed_deeper": 11,
+      "timed_shallower": 9,
+      "timed_max_ms": 191.978
+    }
+  },
+  "off_exact": true,
+  "timed_depth_ratio": 1.004739336492891,
+  "comparison_gate_pass": true,
+  "discarded_local_measurement": "Unconfirmed local timing was discarded after exec-server transport loss; only this complete single-runner comparison is used.",
+  "publication": {
+    "release": "records-2026-10-01",
+    "name": "selfplay-benchmark-38946797040.tgz",
+    "sha256": "cb80d34d5b7632d8764b73f136789252b79393f9ff5b41045f94b735489deccd",
+    "bytes": 28623,
+    "readback_verified": true
+  }
+}

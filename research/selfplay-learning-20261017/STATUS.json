@@ -1,12 +1,44 @@
 {
-  "phase": "learning_and_preflight_passed",
-  "learning_run": 38942816009,
-  "code_ref": "20b2b21be25bc3bd56fe423935eb36e78a9a7cd4",
-  "model_no_turn150": "b71885acf92e750ed65cada9b831d5bd66a83717f8db28aa02c21b63f35d51a1",
-  "model_no_turn600": "5ae222cbffd56d7ed1876a71cf826ee2b45f77a53d5d4fd73f37bf626f80daf5",
-  "old_model_scale": 10,
-  "planned_screen_games_each": 100,
-  "screen_seed": 2030101701,
-  "confirmation_seed": 2040101701,
-  "formal_adoption": false
+  "state": "screening_in_progress",
+  "training_run": 38942816009,
+  "baseline_ref": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
+  "frozen_candidates": {
+    "no-turn150": {
+      "ref": "8f847c08678681af1a7eace7630bc251d98b1df6",
+      "branch": "research/v220-selfplay-g1-20261017",
+      "core_ci_parent": "89ed026d35a6b553ecab7508b4ae18abe798e33e",
+      "scale": 100,
+      "tree": "f1fe676965a733ce08d6345936c027797aa69865"
+    },
+    "no-turn600": {
+      "ref": "c238d50facdec7cd3d44e645b495eb46125d8f26",
+      "branch": "research/v220-selfplay-g1-no-turn600",
+      "core_ci_parent": "b1c8ccc2885f5c10dfe23875551f4d84dfb5fbe9",
+      "scale": 100,
+      "tree": "dcf6773869ee96019510a643898a4b07bc36115a"
+    },
+    "scale10": {
+      "ref": "a15530f625b4ceb3b77d0ce45889d4c2e2d90909",
+      "branch": "research/v220-selfplay-g1-scale10",
+      "core_ci_parent": "cccd4ecd48ce0660acb7e6dffa5278bb678c4fcd",
+      "scale": 10,
+      "tree": "f23d2bdd43435e719218795995202a5230796013"
+    }
+  },
+  "screening": {
+    "no_turn150": {
+      "run": 38946175603,
+      "score": 0.475,
+      "audit": 38947026619
+    },
+    "no_turn600": {
+      "run": 38946985753,
+      "status": "running"
+    },
+    "scale10": {
+      "status": "speed_passed_match_pending"
+    }
+  },
+  "formal_adoption": false,
+  "audit_note": "Frozen candidate auditor incorrectly retained Probe3 for B. Main auditor 4d76c35429591ef57c3cc9e07c2b99325f898f03 validates Probe7 on both sides and records audit code hash. Candidate engine and actual games unchanged."
 }
