@@ -1,89 +1,82 @@
 {
+  "release": "records-2026-10-01",
+  "inventory": {
+    "assets": 26,
+    "bytes": 59981316
+  },
   "checks": [
     {
       "name": "selfplay-source-38853046638.tgz",
-      "exists": true,
       "bytes_match": true,
       "sha256_match": true,
       "readback": true
     },
     {
       "name": "selfplay-model-38853046638-38942816009.tgz",
-      "exists": true,
       "bytes_match": true,
       "sha256_match": true,
       "readback": true
     },
     {
       "name": "selfplay-model-38853046638-38856315577.tgz",
-      "exists": true,
       "bytes_match": true,
       "sha256_match": true,
       "readback": true
     },
     {
       "name": "selfplay-benchmark-38945591315.tgz",
-      "exists": true,
       "bytes_match": true,
       "sha256_match": true,
       "readback": true
     },
     {
       "name": "selfplay-benchmark-38946068185.tgz",
-      "exists": true,
       "bytes_match": true,
       "sha256_match": true,
       "readback": true
     },
     {
       "name": "selfplay-benchmark-38946797040.tgz",
-      "exists": true,
       "bytes_match": true,
       "sha256_match": true,
       "readback": true
     },
     {
       "name": "selfplay-audit-38947026619.tgz",
-      "exists": true,
       "bytes_match": true,
       "sha256_match": true,
       "readback": true
     },
     {
       "name": "selfplay-audit-38947455452.tgz",
-      "exists": true,
       "bytes_match": true,
       "sha256_match": true,
       "readback": true
     },
     {
       "name": "selfplay-audit-38947742788.tgz",
-      "exists": true,
       "bytes_match": true,
       "sha256_match": true,
       "readback": true
     },
     {
       "name": "selfplay-audit-38948491634.tgz",
-      "exists": true,
       "bytes_match": true,
       "sha256_match": true,
       "readback": true
     },
     {
       "name": "selfplay-audit-38949832647.tgz",
-      "exists": true,
+      "bytes_match": true,
+      "sha256_match": true,
+      "readback": true
+    },
+    {
+      "name": "selfplay-audit-38950067410.tgz",
       "bytes_match": true,
       "sha256_match": true,
       "readback": true
     }
   ],
-  "additional_final_asset": {
-    "release": "records-2026-10-01",
-    "name": "selfplay-audit-38950067410.tgz",
-    "sha256": "ad8e1ce5f873ebe34107ef45d9ebe48b6e95bcd250f7df6279eca015c38ec87f",
-    "bytes": 6716687,
-    "readback_verified": true
-  },
   "all_readback_verified": true
 }
