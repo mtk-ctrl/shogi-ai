@@ -1,7 +1,7 @@
 {
-  "request_id": "g1-v221-scale10-speed-20261017",
-  "mode": "benchmark",
-  "candidate_ref": "a15530f625b4ceb3b77d0ce45889d4c2e2d90909",
+  "request_id": "g1-v221-no-turn150-audit100-20261017",
+  "mode": "audit",
+  "candidate_ref": "8f847c08678681af1a7eace7630bc251d98b1df6",
   "baseline_ref": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
-  "match_run": 0
+  "match_run": 38946175603
 }
