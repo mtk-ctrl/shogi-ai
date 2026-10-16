@@ -35,6 +35,9 @@ def main():
     with compressed.open('wb') as f:
         with gzip.GzipFile(filename='',fileobj=f,mode='wb',mtime=0) as g:g.write(samples.read_bytes())
     model_files['samples.jsonl.gz']=compressed
+    for extra in sorted((a.cycle/'followup').rglob('*')):
+        if extra.is_file() and extra.suffix in ('.json','.txt','.h'):
+            model_files[str(extra.relative_to(a.cycle))]=extra
     asset=out/f'selfplay-model-{a.run}-{a.training_run}.tgz';pack(asset,model_files)
     receipts=[]
     for path in (corpus,asset):

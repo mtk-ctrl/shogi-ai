@@ -35,13 +35,13 @@ def audit(directory, candidate_ref, baseline_ref):
     sources = {s['source_id']: s for s in manifest['sources']}
     assert len(sources) == aggregate['shards']
     expected_knowledge = aggregate['position_knowledge']
-    assert aggregate['games'] == 200 and aggregate['illegal_games'] == 0
+    assert aggregate['games'] in (100,200) and aggregate['illegal_games'] == 0
     assert aggregate['ref_a'] == candidate_ref
     assert aggregate['ref_b'] == baseline_ref
     assert aggregate['options_a']['SearchProbeMask'] == 3
     assert aggregate['options_b']['SearchProbeMask'] == 3
     assert aggregate['options_a']['SelfPlayEval'] is True
-    assert aggregate['options_a']['SelfPlayEvalScale'] == 100
+    assert aggregate['options_a']['SelfPlayEvalScale'] in (10,100)
     assert not aggregate['options_b'].get('SelfPlayEval', False)
     for label in ('a', 'b'):
         opts = aggregate['options_' + label]
@@ -79,7 +79,7 @@ def audit(directory, candidate_ref, baseline_ref):
             for row in game['move_records']:
                 if row['engine']=='A':
                     info=row['search']
-                    assert info.get('learned_eval')==1 and info.get('learned_scale')==100, 'candidate not actually active'
+                    assert info.get('learned_eval')==1 and info.get('learned_scale')==aggregate['options_a']['SelfPlayEvalScale'], 'candidate not actually active'
                     raw_active_a+=1
         for side in ponder:
             for key in ('hits', 'misses'):

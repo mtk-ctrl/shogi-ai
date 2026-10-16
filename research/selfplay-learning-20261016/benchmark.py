@@ -42,7 +42,7 @@ try:
                     move = engine.bestmove(row['moves'])
                     info = dict(engine.last_search)
                     if name=='learned100':
-                        assert info.get('learned_eval')==1 and info.get('learned_scale')==100, 'model not active'
+                        assert info.get('learned_eval')==1 and info.get('learned_scale')==config[name], 'model not active'
                     board = shogi.Board()
                     for m in row['moves']: board.push_usi(m)
                     assert shogi.Move.from_usi(move) in board.legal_moves, (name, case_idx, move)

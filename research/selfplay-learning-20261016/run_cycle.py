@@ -21,7 +21,12 @@ def main():
     p.add_argument('--baseline',required=True,type=Path)
     p.add_argument('--output-dir',default='build/selfplay-cycle',type=Path)
     p.add_argument('--build-candidate',action='store_true')
-    a=p.parse_args();out=a.output_dir.resolve();out.mkdir(parents=True,exist_ok=True)
+    a=p.parse_args()
+    sys.path.insert(0,str(ROOT/'research/selfplay-learning-20261017'))
+    from followup import cycle
+    cycle(a)
+    return
+    out=a.output_dir.resolve();out.mkdir(parents=True,exist_ok=True)
     dataset=out/'samples.jsonl'
     inventory=prepare(a.archive_dir,dataset,a.baseline,a.provenance)
     report=train(dataset,out)
