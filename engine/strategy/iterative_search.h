@@ -18,6 +18,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <memory>
+#include <utility>
 
 namespace shogi::strategy {
 
@@ -86,6 +87,8 @@ public:
         std::uint64_t legal_cache_replacements = 0;
         std::uint64_t pvs_probes = 0, pvs_researches = 0;
         std::uint64_t killer_priorities = 0, history_priorities = 0, ordering_updates = 0;
+        std::uint64_t balance_probes = 0, balance_load0 = 0, balance_load1 = 0;
+        std::uint64_t lane0_nodes = 0, lane1_nodes = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -197,6 +200,8 @@ public:
     unsigned threads() const { return threads_; }
     void set_probe_mask(unsigned mask) { probe_mask_ = mask & 7u; }
     unsigned probe_mask() const { return probe_mask_; }
+    void set_root_balance(unsigned mode) { root_balance_ = std::min(mode, 2u); }
+    unsigned root_balance() const { return root_balance_; }
 
     SearchResult choose(rules::Position& position, int max_depth, SearchControl& control,
                         const std::vector<std::string>& allowed = {},
@@ -392,7 +397,39 @@ private:
         SearchResult result;result.move=original.front();result.pv={result.move};
         const auto initial_rng=rng_;
         std::array<std::vector<std::string>,2> groups;
-        for(std::size_t i=0;i<original.size();++i)groups[i%2].push_back(original[i]);
+        std::array<std::uint64_t,2> loads{};
+        std::uint64_t balance_probes = 0;
+        if (root_balance_) {
+            legal_batches_[0].valid=false;
+            // make() requires the root's full token/string mapping, not just
+            // an unmaterialized tactical-only batch.
+            (void)legal(position,0);
+            std::vector<std::pair<std::uint64_t,std::size_t>> costs;
+            costs.reserve(original.size());
+            for (std::size_t i=0;i<original.size();++i) {
+                const auto deadline=control.deadline_ns.load();
+                if (control.stop.load() || (deadline && SearchControl::now_ns()>=deadline)) {
+                    stats_.balance_probes=balance_probes;
+                    return result; // Estimation obeys the same deadline; root is restored.
+                }
+                make(position,original[i],0);
+                Undo undo{position};
+                const auto replies=position.legal_generated_moves();
+                std::uint64_t tactical=0;
+                if (root_balance_==2) for (const auto& reply:replies)
+                    tactical += position.generated_move_is_capture_or_promotion(reply);
+                costs.push_back({1+replies.size()+4*tactical,i});
+                ++balance_probes;
+            }
+            std::stable_sort(costs.begin(),costs.end(),[](const auto& a,const auto& b){
+                return a.first>b.first;
+            });
+            for (const auto& item:costs) {
+                const int lane=loads[0]<=loads[1] ? 0 : 1;
+                groups[lane].push_back(original[item.second]);
+                loads[lane]+=item.first;
+            }
+        } else for(std::size_t i=0;i<original.size();++i)groups[i%2].push_back(original[i]);
         for(int i=0;i<2;++i) {
             if(!parallel_lanes_[i])parallel_lanes_[i]=std::make_unique<BasicIterativeSearch>();
             auto& lane=*parallel_lanes_[i];lane.rng_=initial_rng;lane.set_evaluator(evaluator_);
@@ -474,6 +511,9 @@ private:
         }catch(...){stop_join();throw;}
         stop_join();
         stats_=combine_stats(parallel_lanes_[0]->last_stats(),parallel_lanes_[1]->last_stats());
+        stats_.balance_probes=balance_probes;stats_.balance_load0=loads[0];stats_.balance_load1=loads[1];
+        stats_.lane0_nodes=parallel_lanes_[0]->last_stats().nodes;
+        stats_.lane1_nodes=parallel_lanes_[1]->last_stats().nodes;
         for(const auto& error:errors)if(error)std::rethrow_exception(error);
         return result;
     }
@@ -1061,6 +1101,7 @@ private:
     unsigned reuse_mask_ = DefaultSearchReuseMask;
     unsigned threads_=2;
     unsigned probe_mask_=DefaultSearchProbeMask;
+    unsigned root_balance_=0;
     std::array<std::array<std::string, 2>, MaxPly + 1> killers_{};
     std::array<std::array<int, 88 * 81>, 2> history_scores_{};
     bool capture_root_ties_=false;

@@ -114,6 +114,7 @@ int main() {
                       << "option name SearchNextMask type spin default 4 min 0 max 15\n"
                       << "option name SearchThreads type spin default 2 min 1 max 2\n"
                       << "option name SearchProbeMask type spin default " << shogi::strategy::DefaultSearchProbeMask << " min 0 max 7\n"
+                      << "option name SearchRootBalance type spin default 0 min 0 max 2\n"
                       << "option name Quiescence type check default true\n"
                       << "option name MateAssist type check default true\n"
                       << "option name MateLearning type check default true\n"
@@ -634,6 +635,10 @@ int main() {
                         << " killer_priorities " << stats.killer_priorities
                         << " history_priorities " << stats.history_priorities
                         << " ordering_updates " << stats.ordering_updates
+                        << " root_balance " << strategy.root_balance()
+                        << " balance_probes " << stats.balance_probes
+                        << " balance_load0 " << stats.balance_load0 << " balance_load1 " << stats.balance_load1
+                        << " lane0_nodes " << stats.lane0_nodes << " lane1_nodes " << stats.lane1_nodes
                         << " reuse_mask " << strategy.reuse_mask()
                         << " legal_cache_hits " << stats.legal_cache_hits
                         << " legal_cache_misses " << stats.legal_cache_misses
@@ -729,6 +734,12 @@ int main() {
                         const int mask=std::stoi(value,&used);
                         if(used==value.size() && mask>=0 && mask<=15)
                             strategy.set_next_mask(static_cast<unsigned>(mask));
+                    } catch(const std::exception&) {}
+                } else if (name == "SearchRootBalance") {
+                    try {
+                        std::size_t used=0; const int mode=std::stoi(value,&used);
+                        if(used==value.size() && mode>=0 && mode<=2)
+                            strategy.set_root_balance(static_cast<unsigned>(mode));
                     } catch(const std::exception&) {}
                 } else if (name == "SearchProbeMask") {
                     try {

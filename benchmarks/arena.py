@@ -68,6 +68,7 @@ SEARCH_STAT_NAMES = (
     "qnodes", "qcutoffs", "qlimit_leaves",
     "search_threads",
     "probe_mask", "pvs_probes", "pvs_researches", "killer_priorities", "history_priorities", "ordering_updates",
+    "root_balance", "balance_probes", "balance_load0", "balance_load1", "lane0_nodes", "lane1_nodes",
     "research_mask", "generated_plays", "legal_batches", "order_reuse_hits", "qtt_probes", "qtt_hits", "qtt_cutoffs",
     "reuse_mask", "legal_cache_hits", "legal_cache_misses", "legal_cache_replacements",
     "efficiency_mask", "ordering_rule_checks", "eval_cache_hits", "lazy_snapshots", "selective_usi_skipped",

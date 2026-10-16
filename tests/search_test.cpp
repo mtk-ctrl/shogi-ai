@@ -50,6 +50,7 @@ void validate_pv(rules::Position& root, const strategy::SearchResult& result) {
 }
 int main(int argc, char** argv) {
     const unsigned probe_mask = argc > 1 ? static_cast<unsigned>(std::stoi(argv[1])) : 0u;
+    const unsigned root_balance = argc > 2 ? static_cast<unsigned>(std::stoi(argv[2])) : 0u;
     try {
         using Budget = strategy::LongThinkBudget;
         require(!Budget::available(23, 0) && Budget::available(24, 0), "long-think opening boundary");
@@ -73,6 +74,7 @@ int main(int argc, char** argv) {
         std::cout << "PASS unstable-priority long-think budget, both colors and ten-use cap\n";
         strategy::BasicIterativeSearch<strategy::MaterialEvaluator> search;
         search.set_probe_mask(probe_mask);
+        search.set_root_balance(root_balance);
         search.set_quiescence_enabled(false); // Fixed-horizon oracle/legacy regression.
         auto p = fixture({{"9i","K"},{"1a","k"},{"7g","P"},{"3c","p"}});
         for (int sample = 0; sample < 2; ++sample) {
@@ -101,6 +103,7 @@ int main(int argc, char** argv) {
         strategy::FeatureAlphaBeta3TT fixed;
         strategy::IterativeSearch features;
         features.set_probe_mask(probe_mask);
+        features.set_root_balance(root_balance);
         features.set_quiescence_enabled(false);
         p = rules::Position();
         for (unsigned sample = 0; sample < 6; ++sample) {
