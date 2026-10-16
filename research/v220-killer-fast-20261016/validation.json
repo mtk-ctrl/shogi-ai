@@ -1,0 +1,29 @@
+{
+  "formal_baseline_commit": "a17980ebd65c960a3c486989e348f5853a098b7d",
+  "candidate_binary_sha256": "5aafc3349dd557dbf703abb34323f6b80c2dd6112cb34f96a18cb23dfb490e32",
+  "standalone_ordering_cases": 20000,
+  "engine_exact_fingerprint_checks": 1200,
+  "cases": 15,
+  "threads": [
+    1,
+    2
+  ],
+  "quiescence": [
+    false,
+    true
+  ],
+  "masks": [
+    0,
+    1,
+    2,
+    3,
+    7
+  ],
+  "both_fast_and_lazy_on_off": true,
+  "all_scores_moves_pvs_nodes_and_original_counters_equal": true,
+  "fast_calls": 8410,
+  "lazy_calls": 4205,
+  "lazy_snapshots": 2089,
+  "usi_time_longthink_stop_ponderhit_ready_eof": "PASS fast=true, lazy=true, threads=2, mask=3",
+  "boundary": "PASS four upstream rule translation units only"
+}

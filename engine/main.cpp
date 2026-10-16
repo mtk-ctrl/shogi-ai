@@ -115,6 +115,7 @@ int main() {
                       << "option name SearchThreads type spin default 2 min 1 max 2\n"
                       << "option name SearchProbeMask type spin default " << shogi::strategy::DefaultSearchProbeMask << " min 0 max 7\n"
                       << "option name SearchOrderingFast type check default false\n"
+                      << "option name SearchOrderingLazySnapshot type check default false\n"
                       << "option name Quiescence type check default true\n"
                       << "option name MateAssist type check default true\n"
                       << "option name MateLearning type check default true\n"
@@ -636,6 +637,7 @@ int main() {
                         << " history_priorities " << stats.history_priorities
                         << " ordering_updates " << stats.ordering_updates
                         << " killer_fast_calls " << stats.killer_fast_calls
+                        << " killer_lazy_snapshots " << stats.killer_lazy_snapshots
                         << " reuse_mask " << strategy.reuse_mask()
                         << " legal_cache_hits " << stats.legal_cache_hits
                         << " legal_cache_misses " << stats.legal_cache_misses
@@ -732,6 +734,9 @@ int main() {
                         if(used==value.size() && mask>=0 && mask<=15)
                             strategy.set_next_mask(static_cast<unsigned>(mask));
                     } catch(const std::exception&) {}
+                } else if (name == "SearchOrderingLazySnapshot") {
+                    if (value == "true" || value == "false")
+                        strategy.set_ordering_lazy_snapshot(value == "true");
                 } else if (name == "SearchOrderingFast") {
                     if (value == "true" || value == "false")
                         strategy.set_ordering_fast(value == "true");

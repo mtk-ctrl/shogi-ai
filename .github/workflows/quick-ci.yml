@@ -125,7 +125,7 @@ jobs:
           python3 tests/test_parallel_search.py build/shogi-ai
           python3 tests/test_search_probes.py build/shogi-ai build/shogi-ai
           python3 tests/test_search_killer_fast.py build/shogi-ai build/shogi-ai
-          python3 tests/test_search_usi.py build/shogi-ai 2 3 true
+          python3 tests/test_search_usi.py build/shogi-ai 2 3 true true
           python3 tests/test_search_usi.py build/shogi-ai 2 7
           python3 tests/test_search_research.py build/shogi-ai
           python3 tests/test_search_efficiency.py build/shogi-ai

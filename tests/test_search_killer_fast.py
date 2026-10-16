@@ -57,6 +57,8 @@ def exact(x): return (x[0], *(x[1].get(k) for k in ('score_cp','score_mate','dep
 
 checks = 0
 fast_calls = 0
+lazy_calls = 0
+lazy_snapshots = 0
 for threads in (1, 2):
     engines = [Engine(baseline, 'formal-v220', {**options,'SearchThreads':threads}),
                Engine(candidate, 'ordering-candidate', {**options,'SearchThreads':threads})]
@@ -69,19 +71,28 @@ for threads in (1, 2):
                 for case in cases:
                     expected = run(engines[0], *case)
                     for enabled in (False, True):
-                        engines[1].send('setoption name SearchOrderingFast value '+str(enabled).lower())
-                        actual = run(engines[1], *case)
-                        assert exact(actual) == exact(expected), (threads,quiescence,mask,enabled,case,'search drift')
-                        counters = ('seldepth','tt_probes','tt_hits','knowledge_probes','knowledge_hits',
-                                    'knowledge_promotions','pvs_probes','pvs_researches',
-                                    'killer_priorities','history_priorities','ordering_updates')
-                        assert all(actual[1].get(k) == expected[1].get(k) for k in counters), (mask,case,'counter drift')
-                        calls = actual[1].get('killer_fast_calls',0)
-                        if not enabled or mask not in (2,3): assert calls == 0
-                        fast_calls += calls
-                        checks += 1
+                        for lazy in (False, True):
+                            engines[1].send('setoption name SearchOrderingFast value '+str(enabled).lower())
+                            engines[1].send('setoption name SearchOrderingLazySnapshot value '+str(lazy).lower())
+                            actual = run(engines[1], *case)
+                            assert exact(actual) == exact(expected), (threads,quiescence,mask,enabled,lazy,case,'search drift')
+                            counters = ('seldepth','tt_probes','tt_hits','knowledge_probes','knowledge_hits',
+                                        'knowledge_promotions','pvs_probes','pvs_researches',
+                                        'killer_priorities','history_priorities','ordering_updates')
+                            assert all(actual[1].get(k) == expected[1].get(k) for k in counters), (mask,case,'counter drift')
+                            calls = actual[1].get('killer_fast_calls',0)
+                            copies = actual[1].get('killer_lazy_snapshots',0)
+                            if not enabled or mask not in (2,3): assert calls == 0
+                            if not enabled or not lazy or mask not in (2,3): assert copies == 0
+                            assert copies <= calls
+                            if lazy:
+                                lazy_calls += calls
+                                lazy_snapshots += copies
+                            fast_calls += calls
+                            checks += 1
     finally:
         for e in engines: e.close()
 assert fast_calls > 0
+assert 0 < lazy_snapshots < lazy_calls
 print(json.dumps(dict(checks=checks,cases=len(cases),all_fingerprints_equal=True,
-                     both_threads=True,all_pv_legal=True,fast_calls=fast_calls)))
+                     both_threads=True,all_pv_legal=True,fast_calls=fast_calls,lazy_calls=lazy_calls,lazy_snapshots=lazy_snapshots)))

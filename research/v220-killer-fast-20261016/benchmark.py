@@ -16,11 +16,11 @@ options = {
     'MateAssist': False, 'MateLearning': False, 'AdaptiveLongThink': False,
     'PositionKnowledge': True, 'USI_Ponder':False, 'SearchThreads':2,
 }
-config = json.loads(sys.argv[4]) if len(sys.argv)>4 else {'control':False,'fast':True}
+config = json.loads(sys.argv[4]) if len(sys.argv)>4 else {'control':{'SearchOrderingFast':False},'fast':{'SearchOrderingFast':True},'lazy':{'SearchOrderingFast':True,'SearchOrderingLazySnapshot':True}}
 engines = {'official_v2020': Engine(baseline_binary, 'official_v2020', options)}
 for name, update_mask in config.items():
     engines[name] = Engine(candidate_binary, name,
-        {**options, 'SearchOrderingFast':update_mask})
+        {**options, **update_mask})
 measurements = []
 try:
     for mode, command in (('fixed', 'go depth 2'), ('timed', 'go movetime 200')):
@@ -93,7 +93,7 @@ result = {
     'baseline_binary_sha256': hashlib.sha256(Path(baseline_binary).read_bytes()).hexdigest(),
     'source_sha256': hashlib.sha256(Path('research/search-efficiency3-20261015/positions.json').read_bytes()).hexdigest(),
     'conditions': {'positions':24,'repeats':3,'fixed':'go depth 2','timed':'go movetime 200','options':options,'config':config},
-    'summary':summary,'rows':[{**r,'results':{name:{k:v for k,v in result.items() if k in ('elapsed_ms','depth','nodes','qnodes','cutoffs','score_cp','score_mate','pvs_probes','pvs_researches','killer_priorities','history_priorities','ordering_updates','killer_fast_calls')} for name,result in r['results'].items()}} for r in measurements],
+    'summary':summary,'rows':[{**r,'results':{name:{k:v for k,v in result.items() if k in ('elapsed_ms','depth','nodes','qnodes','cutoffs','score_cp','score_mate','pvs_probes','pvs_researches','killer_priorities','history_priorities','ordering_updates','killer_fast_calls','killer_lazy_snapshots')} for name,result in r['results'].items()}} for r in measurements],
 }
 Path(output).parent.mkdir(parents=True,exist_ok=True)
 Path(output).write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')

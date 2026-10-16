@@ -88,6 +88,7 @@ public:
         std::uint64_t pvs_probes = 0, pvs_researches = 0;
         std::uint64_t killer_priorities = 0, history_priorities = 0, ordering_updates = 0;
         std::uint64_t killer_fast_calls = 0;
+        std::uint64_t killer_lazy_snapshots = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -201,6 +202,7 @@ public:
     unsigned probe_mask() const { return probe_mask_; }
     void set_ordering_fast(bool enabled) { ordering_fast_ = enabled; }
     bool ordering_fast() const { return ordering_fast_; }
+    void set_ordering_lazy_snapshot(bool enabled) { ordering_lazy_snapshot_ = enabled; }
 
     SearchResult choose(rules::Position& position, int max_depth, SearchControl& control,
                         const std::vector<std::string>& allowed = {},
@@ -380,6 +382,7 @@ private:
         SUM_STAT(pvs_probes);SUM_STAT(pvs_researches);SUM_STAT(killer_priorities);
         SUM_STAT(history_priorities);SUM_STAT(ordering_updates);
         SUM_STAT(killer_fast_calls);
+        SUM_STAT(killer_lazy_snapshots);
 #undef SUM_STAT
         for(int i=0;i<4;++i)out.nodes_by_ply[i]=a.nodes_by_ply[i]+b.nodes_by_ply[i];
         out.seldepth=std::max(a.seldepth,b.seldepth);
@@ -406,6 +409,7 @@ private:
             lane.set_risk_verify(risk_verify_enabled_);
             lane.set_probe_mask(probe_mask_);
             lane.set_ordering_fast(ordering_fast_);
+            lane.set_ordering_lazy_snapshot(ordering_lazy_snapshot_);
             lane.set_quiescence_enabled(quiescence_enabled_);
             lane.set_threads(1);
             lane.position_knowledge_=position_knowledge_;lane.position_knowledge_enabled_=position_knowledge_enabled_;
@@ -1020,9 +1024,18 @@ private:
         } else result = sort_moves();
         if (ordering_fast_ && (probe_mask_ & 6) == 2) {
             ++stats_.killer_fast_calls;
-            const auto snapshot = p.snapshot();
-            stats_.killer_priorities += prioritize_quiet_killers(result, killers_[ply],
-                [&](const auto& move) { return quiet_key(snapshot, move) >= 0; });
+            if (ordering_lazy_snapshot_) {
+                std::optional<rules::Snapshot> snapshot;
+                stats_.killer_priorities += prioritize_quiet_killers(result, killers_[ply],
+                    [&](const auto& move) {
+                        if (!snapshot) { snapshot = p.snapshot(); ++stats_.killer_lazy_snapshots; }
+                        return quiet_key(*snapshot, move) >= 0;
+                    });
+            } else {
+                const auto snapshot = p.snapshot();
+                stats_.killer_priorities += prioritize_quiet_killers(result, killers_[ply],
+                    [&](const auto& move) { return quiet_key(snapshot, move) >= 0; });
+            }
         } else if (probe_mask_ & 6) {
             const auto snapshot = p.snapshot();
             struct Quiet { std::string move; int killer, history; };
@@ -1073,6 +1086,7 @@ private:
     unsigned threads_=2;
     unsigned probe_mask_=DefaultSearchProbeMask;
     bool ordering_fast_=false;
+    bool ordering_lazy_snapshot_=false;
     std::array<std::array<std::string, 2>, MaxPly + 1> killers_{};
     std::array<std::array<int, 88 * 81>, 2> history_scores_{};
     bool capture_root_ties_=false;
