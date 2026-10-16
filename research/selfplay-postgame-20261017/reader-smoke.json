@@ -1,0 +1,52 @@
+{
+  "scope": "input adapter smoke; reanalysis/training/matches not run",
+  "source_match_run": 38948701892,
+  "source_audit_run": 38950067410,
+  "source_package": "selfplay-audit-38950067410.tgz",
+  "source_package_sha256": "ad8e1ce5f873ebe34107ef45d9ebe48b6e95bcd250f7df6279eca015c38ec87f",
+  "archive_sha256": "b5907e4f69b65696752c453de32d70072b98d2fd744e792f212ec550e97103d7",
+  "manifest_sha256": "bf35b0c79bdebfceba423ee14231a2ad180c61753971a555caf0e5b053deddd5",
+  "verified_games": 200,
+  "verified_plies": 21825,
+  "termination_reasons": {
+    "checkmate": 198,
+    "fourfold_repetition": 1,
+    "declare_win": 1
+  },
+  "outcome_status": {
+    "verified_win_loss": 199,
+    "verified_draw": 1
+  },
+  "selected_cases": 96,
+  "selected_games": 24,
+  "selected_actor": {
+    "A": 48,
+    "B": 48
+  },
+  "selected_terminal_reward_stm": {
+    "1": 48,
+    "-1": 48
+  },
+  "selection_recipe": "12 evenly spaced eligible A-win games and 12 B-win games in archive order; plies 1,2,mid,mid+1; engineering smoke, not the pilot triage/training selection",
+  "selection_sha256": "11b70d8f4449da622319794f8ea8188b44612115608ace126970aa34fcdd848c",
+  "selected_cases_sha256": "df6c50cbdb3fb40cc03babb79a00a05ca666be436ae4b48645a4a33213c754a2",
+  "analysis_status": "not_run",
+  "seconds": 3.471,
+  "validation": {
+    "postgame_unit_tests": 9,
+    "existing_archive_tests": 3,
+    "existing_arena_tests": "pass",
+    "doc_checks": [
+      "check_doc_router.py",
+      "check_workflow_inventory.py",
+      "check_match_workflows.py",
+      "check_current_claims.py"
+    ],
+    "cli_regeneration_byte_equal": true,
+    "execution": "local, python-shogi==1.1.1"
+  },
+  "code_sha256": {
+    "tools/research/postgame_cases.py": "05994c31f05896d056a1338d3b6aa6cee0ff173a95b9f2d4b980f7a4645df434",
+    "tests/test_postgame_cases.py": "704e80f79325d62a3a7bcefec831109cf19dc1289c7d877d63c1cab1dcb17800"
+  }
+}
