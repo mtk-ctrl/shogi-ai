@@ -1,0 +1,108 @@
+{
+  "run_id": "38829912194",
+  "requested_ref_a": "f34ffd4745836b81d5e8eb80f9c53a9c681bc2ed",
+  "requested_ref_b": "8d19b5453173d2fb7489aefe07fbbd018f30a5ad",
+  "archive_sha256": "ce588d5360bc2fc7e8e34d9f38dc39947b657bdd149d7712d7c475a6450b3684",
+  "archive_bytes": 1413275,
+  "games": 200,
+  "plies": 22205,
+  "wins_a": 104,
+  "draws": 1,
+  "wins_b": 95,
+  "score_a": 0.5225,
+  "score_a_approx_95_interval": [
+    0.45327373366994284,
+    0.5917262663300571
+  ],
+  "color_assignment": {
+    "A_black": {
+      "games": 100,
+      "wins": 54,
+      "losses": 46
+    },
+    "A_white": {
+      "games": 100,
+      "wins": 50,
+      "losses": 49
+    }
+  },
+  "all_moves_legal_and_final_positions_verified": true,
+  "termination_reasons": {
+    "checkmate": 199,
+    "fourfold_repetition": 1
+  },
+  "duplicate_complete_move_sequences": 2,
+  "binary_sha256": {
+    "A": [
+      "f6fb3cfa0d1abecddc621b5f515b1e7c3e91abc5266ef0292394a3acc2ca968f"
+    ],
+    "B": [
+      "ed171f50e1aefe1ab1808a9ca720f775d2004b3e9750d3afde200fb9c3d6432d"
+    ]
+  },
+  "position_knowledge": {
+    "A": {
+      "enabled": true,
+      "file": "build/position-knowledge-v1.tsv",
+      "available": true,
+      "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+      "positions": 163
+    },
+    "B": {
+      "enabled": true,
+      "file": "build/position-knowledge-v1.tsv",
+      "available": true,
+      "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+      "positions": 163
+    }
+  },
+  "observed": {
+    "A": {
+      "played_moves": 11105,
+      "depth_recorded_moves": 10842,
+      "mean_completed_depth_on_recorded_moves": 3.066961815163254,
+      "nodes_total": 1157049678,
+      "wall_ms_median": 191.965,
+      "wall_ms_p95": 993.284,
+      "wall_ms_max": 1064.816,
+      "wall_over_1100ms": 0,
+      "long_think_moves": 1590,
+      "maximum_long_thinks_per_game": 10,
+      "knowledge_probes": 21234,
+      "knowledge_hits": 0,
+      "knowledge_promotions": 0
+    },
+    "B": {
+      "played_moves": 11100,
+      "depth_recorded_moves": 10849,
+      "mean_completed_depth_on_recorded_moves": 2.9045073278643194,
+      "nodes_total": 1142381149,
+      "wall_ms_median": 192.06,
+      "wall_ms_p95": 993.217,
+      "wall_ms_max": 1000.867,
+      "wall_over_1100ms": 0,
+      "long_think_moves": 1666,
+      "maximum_long_thinks_per_game": 10,
+      "knowledge_probes": 21193,
+      "knowledge_hits": 0,
+      "knowledge_promotions": 0
+    }
+  },
+  "ponder": {
+    "A": {
+      "hits": 7063,
+      "misses": 3471,
+      "hit_rate_when_prediction_available": 0.6704955382570723
+    },
+    "B": {
+      "hits": 6546,
+      "misses": 3796,
+      "hit_rate_when_prediction_available": 0.6329530071552891
+    }
+  },
+  "resource_note": "Both engines use two search threads and USI pondering; up to four search threads may run concurrently on a lane. CPU-seconds and energy were not measured. This is not a single-thread or ponder-disabled comparison.",
+  "missing_score_plies": 532,
+  "phase_missing_plies": 0,
+  "timing_note": "Wall time includes reconstruction and USI I/O; depths/nodes in different game positions are descriptive, not controlled speed comparisons.",
+  "storage": "Actions artifacts expire after 90 days; not permanent Release storage."
+}

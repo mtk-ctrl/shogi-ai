@@ -44,5 +44,42 @@
     "adaptive_long_think_and_ten_use_cap": true,
     "stop_ponderhit_ready_quit_eof": true
   },
-  "external_engine_code_boundary": "PASS four upstream rule translation units; no upstream search/evaluation/TT/book/mate/USI/null-move symbols"
+  "external_engine_code_boundary": "PASS four upstream rule translation units; no upstream search/evaluation/TT/book/mate/USI/null-move symbols",
+  "address_undefined_sanitizers_mask7": "PASS independent minimax, restoration, stop, repetition and mate checks; ASAN_OPTIONS=detect_leaks=0",
+  "arena_integration_smoke": {
+    "games": 2,
+    "wins_a": 1,
+    "draws": 0,
+    "wins_b": 1,
+    "illegal_games": 0,
+    "ponder": {
+      "A": {
+        "hits": 72,
+        "misses": 25
+      },
+      "B": {
+        "hits": 52,
+        "misses": 38
+      }
+    },
+    "timing_ms": {
+      "A": {
+        "moves": 108,
+        "mean": 46.598,
+        "max": 53.029
+      },
+      "B": {
+        "moves": 108,
+        "mean": 46.287,
+        "max": 60.272
+      }
+    },
+    "go_command": "go movetime 50",
+    "note": "Two-game integration check with ponder and RiskVerify ON; not strength evidence."
+  },
+  "github_quick_ci": {
+    "run_id": 38829813458,
+    "commit": "f34ffd4745836b81d5e8eb80f9c53a9c681bc2ed",
+    "conclusion": "success"
+  }
 }
