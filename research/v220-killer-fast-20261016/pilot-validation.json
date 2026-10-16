@@ -1,0 +1,26 @@
+{
+  "formal_baseline_commit": "a17980ebd65c960a3c486989e348f5853a098b7d",
+  "candidate_binary_sha256": "140d7f08349b3a6223e3252b85ec520ef2a57b16d65d7163812a32a675a9fee7",
+  "standalone_ordering_cases": 20000,
+  "engine_exact_fingerprint_checks": 600,
+  "cases": 15,
+  "threads": [
+    1,
+    2
+  ],
+  "quiescence": [
+    false,
+    true
+  ],
+  "masks": [
+    0,
+    1,
+    2,
+    3,
+    7
+  ],
+  "all_scores_moves_pvs_nodes_and_counters_equal": true,
+  "fast_calls": 4205,
+  "gate_passed": false,
+  "reason": "72 timed depth total 205 versus formal 206; no match launched for this pilot"
+}

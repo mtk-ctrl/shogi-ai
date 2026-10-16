@@ -1,0 +1,6982 @@
+{
+  "candidate_binary_sha256": "140d7f08349b3a6223e3252b85ec520ef2a57b16d65d7163812a32a675a9fee7",
+  "baseline_binary_sha256": "ae585419c0dcb52fac733ca420969e1de33bdfb25a391887940b2d61ee07c04f",
+  "source_sha256": "bd5d9e02f97bf6882b9c8115fda29cc811bc901e6c5531f83ac369f660b1b84d",
+  "conditions": {
+    "positions": 24,
+    "repeats": 3,
+    "fixed": "go depth 2",
+    "timed": "go movetime 200",
+    "options": {
+      "OpeningRandomNonLance": false,
+      "MateAssist": false,
+      "MateLearning": false,
+      "AdaptiveLongThink": false,
+      "PositionKnowledge": true,
+      "USI_Ponder": false,
+      "SearchThreads": 2
+    },
+    "config": {
+      "control": false,
+      "fast": true
+    }
+  },
+  "summary": {
+    "official_v2020": {
+      "fixed_trials": 72,
+      "fixed_nodes_sum": 608256,
+      "fixed_qnodes_sum": 597510,
+      "median_speedup": 1.0,
+      "total_speedup": 1.0,
+      "score_mismatches": [],
+      "full_mismatches": [],
+      "timed_depth_sum": 206,
+      "timed_nodes_sum": 3333546,
+      "timed_deeper": 0,
+      "timed_shallower": 0,
+      "timed_max_ms": 193.102
+    },
+    "control": {
+      "fixed_trials": 72,
+      "fixed_nodes_sum": 608256,
+      "fixed_qnodes_sum": 597510,
+      "median_speedup": 1.017784080685046,
+      "total_speedup": 1.0064432094842697,
+      "score_mismatches": [],
+      "full_mismatches": [],
+      "timed_depth_sum": 208,
+      "timed_nodes_sum": 3338141,
+      "timed_deeper": 4,
+      "timed_shallower": 2,
+      "timed_max_ms": 197.512
+    },
+    "fast": {
+      "fixed_trials": 72,
+      "fixed_nodes_sum": 608256,
+      "fixed_qnodes_sum": 597510,
+      "median_speedup": 1.0535682597816616,
+      "total_speedup": 1.0504602301553427,
+      "score_mismatches": [],
+      "full_mismatches": [],
+      "timed_depth_sum": 205,
+      "timed_nodes_sum": 3409928,
+      "timed_deeper": 3,
+      "timed_shallower": 4,
+      "timed_max_ms": 195.118
+    }
+  },
+  "rows": [
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 0,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 887,
+          "score_cp": -330,
+          "cutoffs": 40,
+          "qnodes": 839,
+          "pvs_probes": 208,
+          "pvs_researches": 16,
+          "killer_priorities": 28,
+          "history_priorities": 0,
+          "ordering_updates": 2,
+          "elapsed_ms": 14.611
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 887,
+          "score_cp": -330,
+          "cutoffs": 40,
+          "qnodes": 839,
+          "pvs_probes": 208,
+          "pvs_researches": 16,
+          "killer_priorities": 28,
+          "history_priorities": 0,
+          "ordering_updates": 2,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 12.907
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 887,
+          "score_cp": -330,
+          "cutoffs": 40,
+          "qnodes": 839,
+          "pvs_probes": 208,
+          "pvs_researches": 16,
+          "killer_priorities": 28,
+          "history_priorities": 0,
+          "ordering_updates": 2,
+          "killer_fast_calls": 101,
+          "elapsed_ms": 14.252
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 1,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 3181,
+          "score_cp": 781,
+          "cutoffs": 36,
+          "qnodes": 3143,
+          "pvs_probes": 113,
+          "pvs_researches": 4,
+          "killer_priorities": 13,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "elapsed_ms": 10.03
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 3181,
+          "score_cp": 781,
+          "cutoffs": 36,
+          "qnodes": 3143,
+          "pvs_probes": 113,
+          "pvs_researches": 4,
+          "killer_priorities": 13,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 617,
+          "elapsed_ms": 9.542
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 3181,
+          "score_cp": 781,
+          "cutoffs": 36,
+          "qnodes": 3143,
+          "pvs_probes": 113,
+          "pvs_researches": 4,
+          "killer_priorities": 13,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 10.303
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 2,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 7613,
+          "score_cp": -3353,
+          "cutoffs": 66,
+          "qnodes": 7535,
+          "pvs_probes": 1122,
+          "pvs_researches": 26,
+          "killer_priorities": 101,
+          "history_priorities": 0,
+          "ordering_updates": 37,
+          "killer_fast_calls": 866,
+          "elapsed_ms": 27.105
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 7613,
+          "score_cp": -3353,
+          "cutoffs": 66,
+          "qnodes": 7535,
+          "pvs_probes": 1122,
+          "pvs_researches": 26,
+          "killer_priorities": 101,
+          "history_priorities": 0,
+          "ordering_updates": 37,
+          "elapsed_ms": 29.728
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 7613,
+          "score_cp": -3353,
+          "cutoffs": 66,
+          "qnodes": 7535,
+          "pvs_probes": 1122,
+          "pvs_researches": 26,
+          "killer_priorities": 101,
+          "history_priorities": 0,
+          "ordering_updates": 37,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 27.247
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 3,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 3851,
+          "score_cp": 1414,
+          "cutoffs": 122,
+          "qnodes": 3719,
+          "pvs_probes": 421,
+          "pvs_researches": 6,
+          "killer_priorities": 25,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 292,
+          "elapsed_ms": 17.68
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 3851,
+          "score_cp": 1414,
+          "cutoffs": 122,
+          "qnodes": 3719,
+          "pvs_probes": 421,
+          "pvs_researches": 6,
+          "killer_priorities": 25,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 17.149
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 3851,
+          "score_cp": 1414,
+          "cutoffs": 122,
+          "qnodes": 3719,
+          "pvs_probes": 421,
+          "pvs_researches": 6,
+          "killer_priorities": 25,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "elapsed_ms": 18.466
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 4,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 15967,
+          "score_cp": 5205,
+          "cutoffs": 186,
+          "qnodes": 15741,
+          "pvs_probes": 523,
+          "pvs_researches": 15,
+          "killer_priorities": 209,
+          "history_priorities": 0,
+          "ordering_updates": 13,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 71.597
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 15967,
+          "score_cp": 5205,
+          "cutoffs": 186,
+          "qnodes": 15741,
+          "pvs_probes": 523,
+          "pvs_researches": 15,
+          "killer_priorities": 209,
+          "history_priorities": 0,
+          "ordering_updates": 13,
+          "killer_fast_calls": 2655,
+          "elapsed_ms": 57.421
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 15967,
+          "score_cp": 5205,
+          "cutoffs": 186,
+          "qnodes": 15741,
+          "pvs_probes": 523,
+          "pvs_researches": 15,
+          "killer_priorities": 209,
+          "history_priorities": 0,
+          "ordering_updates": 13,
+          "elapsed_ms": 70.025
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 5,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 19855,
+          "score_cp": 5415,
+          "cutoffs": 285,
+          "qnodes": 19439,
+          "pvs_probes": 1018,
+          "pvs_researches": 35,
+          "killer_priorities": 509,
+          "history_priorities": 0,
+          "ordering_updates": 84,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 85.437
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 19855,
+          "score_cp": 5415,
+          "cutoffs": 285,
+          "qnodes": 19439,
+          "pvs_probes": 1018,
+          "pvs_researches": 35,
+          "killer_priorities": 509,
+          "history_priorities": 0,
+          "ordering_updates": 84,
+          "elapsed_ms": 79.969
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 19855,
+          "score_cp": 5415,
+          "cutoffs": 285,
+          "qnodes": 19439,
+          "pvs_probes": 1018,
+          "pvs_researches": 35,
+          "killer_priorities": 509,
+          "history_priorities": 0,
+          "ordering_updates": 84,
+          "killer_fast_calls": 1160,
+          "elapsed_ms": 85.016
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 6,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 11503,
+          "score_cp": 1619,
+          "cutoffs": 111,
+          "qnodes": 11380,
+          "pvs_probes": 399,
+          "pvs_researches": 5,
+          "killer_priorities": 109,
+          "history_priorities": 0,
+          "ordering_updates": 12,
+          "elapsed_ms": 66.961
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 11503,
+          "score_cp": 1619,
+          "cutoffs": 111,
+          "qnodes": 11380,
+          "pvs_probes": 399,
+          "pvs_researches": 5,
+          "killer_priorities": 109,
+          "history_priorities": 0,
+          "ordering_updates": 12,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 63.429
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 11503,
+          "score_cp": 1619,
+          "cutoffs": 111,
+          "qnodes": 11380,
+          "pvs_probes": 399,
+          "pvs_researches": 5,
+          "killer_priorities": 109,
+          "history_priorities": 0,
+          "ordering_updates": 12,
+          "killer_fast_calls": 1773,
+          "elapsed_ms": 65.386
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 7,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 6606,
+          "score_cp": -280,
+          "cutoffs": 281,
+          "qnodes": 6236,
+          "pvs_probes": 1020,
+          "pvs_researches": 42,
+          "killer_priorities": 389,
+          "history_priorities": 0,
+          "ordering_updates": 123,
+          "elapsed_ms": 31.19
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 6606,
+          "score_cp": -280,
+          "cutoffs": 281,
+          "qnodes": 6236,
+          "pvs_probes": 1020,
+          "pvs_researches": 42,
+          "killer_priorities": 389,
+          "history_priorities": 0,
+          "ordering_updates": 123,
+          "killer_fast_calls": 335,
+          "elapsed_ms": 33.227
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 6606,
+          "score_cp": -280,
+          "cutoffs": 281,
+          "qnodes": 6236,
+          "pvs_probes": 1020,
+          "pvs_researches": 42,
+          "killer_priorities": 389,
+          "history_priorities": 0,
+          "ordering_updates": 123,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 35.761
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 8,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 68336,
+          "score_cp": -5266,
+          "cutoffs": 644,
+          "qnodes": 67471,
+          "pvs_probes": 2199,
+          "pvs_researches": 47,
+          "killer_priorities": 1244,
+          "history_priorities": 0,
+          "ordering_updates": 430,
+          "killer_fast_calls": 8779,
+          "elapsed_ms": 264.007
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 68336,
+          "score_cp": -5266,
+          "cutoffs": 644,
+          "qnodes": 67471,
+          "pvs_probes": 2199,
+          "pvs_researches": 47,
+          "killer_priorities": 1244,
+          "history_priorities": 0,
+          "ordering_updates": 430,
+          "elapsed_ms": 273.844
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 68336,
+          "score_cp": -5266,
+          "cutoffs": 644,
+          "qnodes": 67471,
+          "pvs_probes": 2199,
+          "pvs_researches": 47,
+          "killer_priorities": 1244,
+          "history_priorities": 0,
+          "ordering_updates": 430,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 284.591
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 9,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 897,
+          "score_cp": -24,
+          "cutoffs": 73,
+          "qnodes": 820,
+          "pvs_probes": 364,
+          "pvs_researches": 10,
+          "killer_priorities": 112,
+          "history_priorities": 0,
+          "ordering_updates": 46,
+          "killer_fast_calls": 105,
+          "elapsed_ms": 5.591
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 897,
+          "score_cp": -24,
+          "cutoffs": 73,
+          "qnodes": 820,
+          "pvs_probes": 364,
+          "pvs_researches": 10,
+          "killer_priorities": 112,
+          "history_priorities": 0,
+          "ordering_updates": 46,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 5.041
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 897,
+          "score_cp": -24,
+          "cutoffs": 73,
+          "qnodes": 820,
+          "pvs_probes": 364,
+          "pvs_researches": 10,
+          "killer_priorities": 112,
+          "history_priorities": 0,
+          "ordering_updates": 46,
+          "elapsed_ms": 4.807
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 10,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 4611,
+          "score_cp": -682,
+          "cutoffs": 70,
+          "qnodes": 4533,
+          "pvs_probes": 713,
+          "pvs_researches": 15,
+          "killer_priorities": 55,
+          "history_priorities": 0,
+          "ordering_updates": 10,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 26.548
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 4611,
+          "score_cp": -682,
+          "cutoffs": 70,
+          "qnodes": 4533,
+          "pvs_probes": 713,
+          "pvs_researches": 15,
+          "killer_priorities": 55,
+          "history_priorities": 0,
+          "ordering_updates": 10,
+          "killer_fast_calls": 544,
+          "elapsed_ms": 19.344
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 4611,
+          "score_cp": -682,
+          "cutoffs": 70,
+          "qnodes": 4533,
+          "pvs_probes": 713,
+          "pvs_researches": 15,
+          "killer_priorities": 55,
+          "history_priorities": 0,
+          "ordering_updates": 10,
+          "elapsed_ms": 23.533
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 11,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 1558,
+          "score_cp": -830,
+          "cutoffs": 2,
+          "qnodes": 1554,
+          "pvs_probes": 180,
+          "pvs_researches": 5,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 6.241
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 1558,
+          "score_cp": -830,
+          "cutoffs": 2,
+          "qnodes": 1554,
+          "pvs_probes": 180,
+          "pvs_researches": 5,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "elapsed_ms": 7.805
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 1558,
+          "score_cp": -830,
+          "cutoffs": 2,
+          "qnodes": 1554,
+          "pvs_probes": 180,
+          "pvs_researches": 5,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 197,
+          "elapsed_ms": 6.694
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 12,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 688,
+          "score_cp": -760,
+          "cutoffs": 69,
+          "qnodes": 617,
+          "pvs_probes": 204,
+          "pvs_researches": 2,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "elapsed_ms": 3.577
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 688,
+          "score_cp": -760,
+          "cutoffs": 69,
+          "qnodes": 617,
+          "pvs_probes": 204,
+          "pvs_researches": 2,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 3.964
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 688,
+          "score_cp": -760,
+          "cutoffs": 69,
+          "qnodes": 617,
+          "pvs_probes": 204,
+          "pvs_researches": 2,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 92,
+          "elapsed_ms": 3.772
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 13,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 6345,
+          "score_cp": 1738,
+          "cutoffs": 87,
+          "qnodes": 6252,
+          "pvs_probes": 491,
+          "pvs_researches": 10,
+          "killer_priorities": 76,
+          "history_priorities": 0,
+          "ordering_updates": 6,
+          "elapsed_ms": 33.327
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 6345,
+          "score_cp": 1738,
+          "cutoffs": 87,
+          "qnodes": 6252,
+          "pvs_probes": 491,
+          "pvs_researches": 10,
+          "killer_priorities": 76,
+          "history_priorities": 0,
+          "ordering_updates": 6,
+          "killer_fast_calls": 1059,
+          "elapsed_ms": 28.095
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 6345,
+          "score_cp": 1738,
+          "cutoffs": 87,
+          "qnodes": 6252,
+          "pvs_probes": 491,
+          "pvs_researches": 10,
+          "killer_priorities": 76,
+          "history_priorities": 0,
+          "ordering_updates": 6,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 26.38
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 14,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 7228,
+          "score_cp": -5726,
+          "cutoffs": 62,
+          "qnodes": 7162,
+          "pvs_probes": 631,
+          "pvs_researches": 18,
+          "killer_priorities": 69,
+          "history_priorities": 0,
+          "ordering_updates": 12,
+          "killer_fast_calls": 1041,
+          "elapsed_ms": 31.494
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 7228,
+          "score_cp": -5726,
+          "cutoffs": 62,
+          "qnodes": 7162,
+          "pvs_probes": 631,
+          "pvs_researches": 18,
+          "killer_priorities": 69,
+          "history_priorities": 0,
+          "ordering_updates": 12,
+          "elapsed_ms": 35.033
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 7228,
+          "score_cp": -5726,
+          "cutoffs": 62,
+          "qnodes": 7162,
+          "pvs_probes": 631,
+          "pvs_researches": 18,
+          "killer_priorities": 69,
+          "history_priorities": 0,
+          "ordering_updates": 12,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 30.861
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 15,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 5444,
+          "score_cp": -681,
+          "cutoffs": 217,
+          "qnodes": 5201,
+          "pvs_probes": 1225,
+          "pvs_researches": 26,
+          "killer_priorities": 334,
+          "history_priorities": 0,
+          "ordering_updates": 75,
+          "killer_fast_calls": 558,
+          "elapsed_ms": 21.574
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 5444,
+          "score_cp": -681,
+          "cutoffs": 217,
+          "qnodes": 5201,
+          "pvs_probes": 1225,
+          "pvs_researches": 26,
+          "killer_priorities": 334,
+          "history_priorities": 0,
+          "ordering_updates": 75,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 20.597
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 5444,
+          "score_cp": -681,
+          "cutoffs": 217,
+          "qnodes": 5201,
+          "pvs_probes": 1225,
+          "pvs_researches": 26,
+          "killer_priorities": 334,
+          "history_priorities": 0,
+          "ordering_updates": 75,
+          "elapsed_ms": 22.069
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 16,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 3499,
+          "score_cp": -2256,
+          "cutoffs": 197,
+          "qnodes": 3193,
+          "pvs_probes": 564,
+          "pvs_researches": 9,
+          "killer_priorities": 147,
+          "history_priorities": 0,
+          "ordering_updates": 8,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 20.578
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 3499,
+          "score_cp": -2256,
+          "cutoffs": 197,
+          "qnodes": 3193,
+          "pvs_probes": 564,
+          "pvs_researches": 9,
+          "killer_priorities": 147,
+          "history_priorities": 0,
+          "ordering_updates": 8,
+          "killer_fast_calls": 312,
+          "elapsed_ms": 21.636
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 3499,
+          "score_cp": -2256,
+          "cutoffs": 197,
+          "qnodes": 3193,
+          "pvs_probes": 564,
+          "pvs_researches": 9,
+          "killer_priorities": 147,
+          "history_priorities": 0,
+          "ordering_updates": 8,
+          "elapsed_ms": 22.834
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 17,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 11122,
+          "score_cp": -1604,
+          "cutoffs": 1,
+          "qnodes": 11119,
+          "pvs_probes": 285,
+          "pvs_researches": 3,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 43.658
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 11122,
+          "score_cp": -1604,
+          "cutoffs": 1,
+          "qnodes": 11119,
+          "pvs_probes": 285,
+          "pvs_researches": 3,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "elapsed_ms": 48.215
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 11122,
+          "score_cp": -1604,
+          "cutoffs": 1,
+          "qnodes": 11119,
+          "pvs_probes": 285,
+          "pvs_researches": 3,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 2453,
+          "elapsed_ms": 40.05
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 18,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 2542,
+          "score_cp": -71,
+          "cutoffs": 44,
+          "qnodes": 2488,
+          "pvs_probes": 316,
+          "pvs_researches": 19,
+          "killer_priorities": 58,
+          "history_priorities": 0,
+          "ordering_updates": 25,
+          "elapsed_ms": 11.126
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 2542,
+          "score_cp": -71,
+          "cutoffs": 44,
+          "qnodes": 2488,
+          "pvs_probes": 316,
+          "pvs_researches": 19,
+          "killer_priorities": 58,
+          "history_priorities": 0,
+          "ordering_updates": 25,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 11.978
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 2542,
+          "score_cp": -71,
+          "cutoffs": 44,
+          "qnodes": 2488,
+          "pvs_probes": 316,
+          "pvs_researches": 19,
+          "killer_priorities": 58,
+          "history_priorities": 0,
+          "ordering_updates": 25,
+          "killer_fast_calls": 240,
+          "elapsed_ms": 11.592
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 19,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 7801,
+          "score_cp": -2905,
+          "cutoffs": 117,
+          "qnodes": 7676,
+          "pvs_probes": 894,
+          "pvs_researches": 22,
+          "killer_priorities": 208,
+          "history_priorities": 0,
+          "ordering_updates": 55,
+          "elapsed_ms": 43.799
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 7801,
+          "score_cp": -2905,
+          "cutoffs": 117,
+          "qnodes": 7676,
+          "pvs_probes": 894,
+          "pvs_researches": 22,
+          "killer_priorities": 208,
+          "history_priorities": 0,
+          "ordering_updates": 55,
+          "killer_fast_calls": 867,
+          "elapsed_ms": 34.673
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 7801,
+          "score_cp": -2905,
+          "cutoffs": 117,
+          "qnodes": 7676,
+          "pvs_probes": 894,
+          "pvs_researches": 22,
+          "killer_priorities": 208,
+          "history_priorities": 0,
+          "ordering_updates": 55,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 36.768
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 20,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 119,
+          "score_cp": 3051,
+          "cutoffs": 0,
+          "qnodes": 118,
+          "pvs_probes": 102,
+          "pvs_researches": 0,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 9,
+          "elapsed_ms": 2.163
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 119,
+          "score_cp": 3051,
+          "cutoffs": 0,
+          "qnodes": 118,
+          "pvs_probes": 102,
+          "pvs_researches": 0,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "elapsed_ms": 2.318
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 119,
+          "score_cp": 3051,
+          "cutoffs": 0,
+          "qnodes": 118,
+          "pvs_probes": 102,
+          "pvs_researches": 0,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 2.294
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 21,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 1520,
+          "score_cp": -1544,
+          "cutoffs": 26,
+          "qnodes": 1490,
+          "pvs_probes": 203,
+          "pvs_researches": 11,
+          "killer_priorities": 21,
+          "history_priorities": 0,
+          "ordering_updates": 18,
+          "killer_fast_calls": 51,
+          "elapsed_ms": 7.219
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 1520,
+          "score_cp": -1544,
+          "cutoffs": 26,
+          "qnodes": 1490,
+          "pvs_probes": 203,
+          "pvs_researches": 11,
+          "killer_priorities": 21,
+          "history_priorities": 0,
+          "ordering_updates": 18,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 11.685
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 1520,
+          "score_cp": -1544,
+          "cutoffs": 26,
+          "qnodes": 1490,
+          "pvs_probes": 203,
+          "pvs_researches": 11,
+          "killer_priorities": 21,
+          "history_priorities": 0,
+          "ordering_updates": 18,
+          "elapsed_ms": 11.664
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 22,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 1001,
+          "score_cp": -2978,
+          "cutoffs": 34,
+          "qnodes": 965,
+          "pvs_probes": 349,
+          "pvs_researches": 4,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 9.294
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 1001,
+          "score_cp": -2978,
+          "cutoffs": 34,
+          "qnodes": 965,
+          "pvs_probes": 349,
+          "pvs_researches": 4,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 57,
+          "elapsed_ms": 6.941
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 1001,
+          "score_cp": -2978,
+          "cutoffs": 34,
+          "qnodes": 965,
+          "pvs_probes": 349,
+          "pvs_researches": 4,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "elapsed_ms": 7.293
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 0,
+      "position": 23,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 10578,
+          "score_cp": 10458,
+          "cutoffs": 82,
+          "qnodes": 10479,
+          "pvs_probes": 243,
+          "pvs_researches": 1,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 51.832
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 10578,
+          "score_cp": 10458,
+          "cutoffs": 82,
+          "qnodes": 10479,
+          "pvs_probes": 243,
+          "pvs_researches": 1,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "elapsed_ms": 50.386
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 10578,
+          "score_cp": 10458,
+          "cutoffs": 82,
+          "qnodes": 10479,
+          "pvs_probes": 243,
+          "pvs_researches": 1,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 971,
+          "elapsed_ms": 49.792
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 0,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 887,
+          "score_cp": -330,
+          "cutoffs": 40,
+          "qnodes": 839,
+          "pvs_probes": 208,
+          "pvs_researches": 16,
+          "killer_priorities": 28,
+          "history_priorities": 0,
+          "ordering_updates": 2,
+          "elapsed_ms": 5.695
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 887,
+          "score_cp": -330,
+          "cutoffs": 40,
+          "qnodes": 839,
+          "pvs_probes": 208,
+          "pvs_researches": 16,
+          "killer_priorities": 28,
+          "history_priorities": 0,
+          "ordering_updates": 2,
+          "killer_fast_calls": 101,
+          "elapsed_ms": 4.904
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 887,
+          "score_cp": -330,
+          "cutoffs": 40,
+          "qnodes": 839,
+          "pvs_probes": 208,
+          "pvs_researches": 16,
+          "killer_priorities": 28,
+          "history_priorities": 0,
+          "ordering_updates": 2,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 6.525
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 1,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 3181,
+          "score_cp": 781,
+          "cutoffs": 36,
+          "qnodes": 3143,
+          "pvs_probes": 113,
+          "pvs_researches": 4,
+          "killer_priorities": 13,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 617,
+          "elapsed_ms": 10.059
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 3181,
+          "score_cp": 781,
+          "cutoffs": 36,
+          "qnodes": 3143,
+          "pvs_probes": 113,
+          "pvs_researches": 4,
+          "killer_priorities": 13,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "elapsed_ms": 11.841
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 3181,
+          "score_cp": 781,
+          "cutoffs": 36,
+          "qnodes": 3143,
+          "pvs_probes": 113,
+          "pvs_researches": 4,
+          "killer_priorities": 13,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 12.84
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 2,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 7613,
+          "score_cp": -3353,
+          "cutoffs": 66,
+          "qnodes": 7535,
+          "pvs_probes": 1122,
+          "pvs_researches": 26,
+          "killer_priorities": 101,
+          "history_priorities": 0,
+          "ordering_updates": 37,
+          "killer_fast_calls": 866,
+          "elapsed_ms": 30.293
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 7613,
+          "score_cp": -3353,
+          "cutoffs": 66,
+          "qnodes": 7535,
+          "pvs_probes": 1122,
+          "pvs_researches": 26,
+          "killer_priorities": 101,
+          "history_priorities": 0,
+          "ordering_updates": 37,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 28.164
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 7613,
+          "score_cp": -3353,
+          "cutoffs": 66,
+          "qnodes": 7535,
+          "pvs_probes": 1122,
+          "pvs_researches": 26,
+          "killer_priorities": 101,
+          "history_priorities": 0,
+          "ordering_updates": 37,
+          "elapsed_ms": 28.855
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 3,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 3851,
+          "score_cp": 1414,
+          "cutoffs": 122,
+          "qnodes": 3719,
+          "pvs_probes": 421,
+          "pvs_researches": 6,
+          "killer_priorities": 25,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 21.81
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 3851,
+          "score_cp": 1414,
+          "cutoffs": 122,
+          "qnodes": 3719,
+          "pvs_probes": 421,
+          "pvs_researches": 6,
+          "killer_priorities": 25,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 292,
+          "elapsed_ms": 19.714
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 3851,
+          "score_cp": 1414,
+          "cutoffs": 122,
+          "qnodes": 3719,
+          "pvs_probes": 421,
+          "pvs_researches": 6,
+          "killer_priorities": 25,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "elapsed_ms": 18.492
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 4,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 15967,
+          "score_cp": 5205,
+          "cutoffs": 186,
+          "qnodes": 15741,
+          "pvs_probes": 523,
+          "pvs_researches": 15,
+          "killer_priorities": 209,
+          "history_priorities": 0,
+          "ordering_updates": 13,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 74.856
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 15967,
+          "score_cp": 5205,
+          "cutoffs": 186,
+          "qnodes": 15741,
+          "pvs_probes": 523,
+          "pvs_researches": 15,
+          "killer_priorities": 209,
+          "history_priorities": 0,
+          "ordering_updates": 13,
+          "elapsed_ms": 61.232
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 15967,
+          "score_cp": 5205,
+          "cutoffs": 186,
+          "qnodes": 15741,
+          "pvs_probes": 523,
+          "pvs_researches": 15,
+          "killer_priorities": 209,
+          "history_priorities": 0,
+          "ordering_updates": 13,
+          "killer_fast_calls": 2655,
+          "elapsed_ms": 71.446
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 5,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 19855,
+          "score_cp": 5415,
+          "cutoffs": 285,
+          "qnodes": 19439,
+          "pvs_probes": 1018,
+          "pvs_researches": 35,
+          "killer_priorities": 509,
+          "history_priorities": 0,
+          "ordering_updates": 84,
+          "elapsed_ms": 79.807
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 19855,
+          "score_cp": 5415,
+          "cutoffs": 285,
+          "qnodes": 19439,
+          "pvs_probes": 1018,
+          "pvs_researches": 35,
+          "killer_priorities": 509,
+          "history_priorities": 0,
+          "ordering_updates": 84,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 93.388
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 19855,
+          "score_cp": 5415,
+          "cutoffs": 285,
+          "qnodes": 19439,
+          "pvs_probes": 1018,
+          "pvs_researches": 35,
+          "killer_priorities": 509,
+          "history_priorities": 0,
+          "ordering_updates": 84,
+          "killer_fast_calls": 1160,
+          "elapsed_ms": 87.118
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 6,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 11503,
+          "score_cp": 1619,
+          "cutoffs": 111,
+          "qnodes": 11380,
+          "pvs_probes": 399,
+          "pvs_researches": 5,
+          "killer_priorities": 109,
+          "history_priorities": 0,
+          "ordering_updates": 12,
+          "elapsed_ms": 72.591
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 11503,
+          "score_cp": 1619,
+          "cutoffs": 111,
+          "qnodes": 11380,
+          "pvs_probes": 399,
+          "pvs_researches": 5,
+          "killer_priorities": 109,
+          "history_priorities": 0,
+          "ordering_updates": 12,
+          "killer_fast_calls": 1773,
+          "elapsed_ms": 72.958
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 11503,
+          "score_cp": 1619,
+          "cutoffs": 111,
+          "qnodes": 11380,
+          "pvs_probes": 399,
+          "pvs_researches": 5,
+          "killer_priorities": 109,
+          "history_priorities": 0,
+          "ordering_updates": 12,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 60.186
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 7,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 6606,
+          "score_cp": -280,
+          "cutoffs": 281,
+          "qnodes": 6236,
+          "pvs_probes": 1020,
+          "pvs_researches": 42,
+          "killer_priorities": 389,
+          "history_priorities": 0,
+          "ordering_updates": 123,
+          "killer_fast_calls": 335,
+          "elapsed_ms": 33.191
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 6606,
+          "score_cp": -280,
+          "cutoffs": 281,
+          "qnodes": 6236,
+          "pvs_probes": 1020,
+          "pvs_researches": 42,
+          "killer_priorities": 389,
+          "history_priorities": 0,
+          "ordering_updates": 123,
+          "elapsed_ms": 35.458
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 6606,
+          "score_cp": -280,
+          "cutoffs": 281,
+          "qnodes": 6236,
+          "pvs_probes": 1020,
+          "pvs_researches": 42,
+          "killer_priorities": 389,
+          "history_priorities": 0,
+          "ordering_updates": 123,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 39.327
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 8,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 68336,
+          "score_cp": -5266,
+          "cutoffs": 644,
+          "qnodes": 67471,
+          "pvs_probes": 2199,
+          "pvs_researches": 47,
+          "killer_priorities": 1244,
+          "history_priorities": 0,
+          "ordering_updates": 430,
+          "killer_fast_calls": 8779,
+          "elapsed_ms": 306.766
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 68336,
+          "score_cp": -5266,
+          "cutoffs": 644,
+          "qnodes": 67471,
+          "pvs_probes": 2199,
+          "pvs_researches": 47,
+          "killer_priorities": 1244,
+          "history_priorities": 0,
+          "ordering_updates": 430,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 319.125
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 68336,
+          "score_cp": -5266,
+          "cutoffs": 644,
+          "qnodes": 67471,
+          "pvs_probes": 2199,
+          "pvs_researches": 47,
+          "killer_priorities": 1244,
+          "history_priorities": 0,
+          "ordering_updates": 430,
+          "elapsed_ms": 322.646
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 9,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 897,
+          "score_cp": -24,
+          "cutoffs": 73,
+          "qnodes": 820,
+          "pvs_probes": 364,
+          "pvs_researches": 10,
+          "killer_priorities": 112,
+          "history_priorities": 0,
+          "ordering_updates": 46,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 5.991
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 897,
+          "score_cp": -24,
+          "cutoffs": 73,
+          "qnodes": 820,
+          "pvs_probes": 364,
+          "pvs_researches": 10,
+          "killer_priorities": 112,
+          "history_priorities": 0,
+          "ordering_updates": 46,
+          "killer_fast_calls": 105,
+          "elapsed_ms": 5.184
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 897,
+          "score_cp": -24,
+          "cutoffs": 73,
+          "qnodes": 820,
+          "pvs_probes": 364,
+          "pvs_researches": 10,
+          "killer_priorities": 112,
+          "history_priorities": 0,
+          "ordering_updates": 46,
+          "elapsed_ms": 14.136
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 10,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 4611,
+          "score_cp": -682,
+          "cutoffs": 70,
+          "qnodes": 4533,
+          "pvs_probes": 713,
+          "pvs_researches": 15,
+          "killer_priorities": 55,
+          "history_priorities": 0,
+          "ordering_updates": 10,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 25.713
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 4611,
+          "score_cp": -682,
+          "cutoffs": 70,
+          "qnodes": 4533,
+          "pvs_probes": 713,
+          "pvs_researches": 15,
+          "killer_priorities": 55,
+          "history_priorities": 0,
+          "ordering_updates": 10,
+          "elapsed_ms": 21.342
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 4611,
+          "score_cp": -682,
+          "cutoffs": 70,
+          "qnodes": 4533,
+          "pvs_probes": 713,
+          "pvs_researches": 15,
+          "killer_priorities": 55,
+          "history_priorities": 0,
+          "ordering_updates": 10,
+          "killer_fast_calls": 544,
+          "elapsed_ms": 22.347
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 11,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 1558,
+          "score_cp": -830,
+          "cutoffs": 2,
+          "qnodes": 1554,
+          "pvs_probes": 180,
+          "pvs_researches": 5,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "elapsed_ms": 6.852
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 1558,
+          "score_cp": -830,
+          "cutoffs": 2,
+          "qnodes": 1554,
+          "pvs_probes": 180,
+          "pvs_researches": 5,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 6.604
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 1558,
+          "score_cp": -830,
+          "cutoffs": 2,
+          "qnodes": 1554,
+          "pvs_probes": 180,
+          "pvs_researches": 5,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 197,
+          "elapsed_ms": 6.338
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 12,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 688,
+          "score_cp": -760,
+          "cutoffs": 69,
+          "qnodes": 617,
+          "pvs_probes": 204,
+          "pvs_researches": 2,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "elapsed_ms": 3.905
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 688,
+          "score_cp": -760,
+          "cutoffs": 69,
+          "qnodes": 617,
+          "pvs_probes": 204,
+          "pvs_researches": 2,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 92,
+          "elapsed_ms": 3.443
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 688,
+          "score_cp": -760,
+          "cutoffs": 69,
+          "qnodes": 617,
+          "pvs_probes": 204,
+          "pvs_researches": 2,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 4.055
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 13,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 6345,
+          "score_cp": 1738,
+          "cutoffs": 87,
+          "qnodes": 6252,
+          "pvs_probes": 491,
+          "pvs_researches": 10,
+          "killer_priorities": 76,
+          "history_priorities": 0,
+          "ordering_updates": 6,
+          "killer_fast_calls": 1059,
+          "elapsed_ms": 25.069
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 6345,
+          "score_cp": 1738,
+          "cutoffs": 87,
+          "qnodes": 6252,
+          "pvs_probes": 491,
+          "pvs_researches": 10,
+          "killer_priorities": 76,
+          "history_priorities": 0,
+          "ordering_updates": 6,
+          "elapsed_ms": 31.964
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 6345,
+          "score_cp": 1738,
+          "cutoffs": 87,
+          "qnodes": 6252,
+          "pvs_probes": 491,
+          "pvs_researches": 10,
+          "killer_priorities": 76,
+          "history_priorities": 0,
+          "ordering_updates": 6,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 29.107
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 14,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 7228,
+          "score_cp": -5726,
+          "cutoffs": 62,
+          "qnodes": 7162,
+          "pvs_probes": 631,
+          "pvs_researches": 18,
+          "killer_priorities": 69,
+          "history_priorities": 0,
+          "ordering_updates": 12,
+          "killer_fast_calls": 1041,
+          "elapsed_ms": 34.436
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 7228,
+          "score_cp": -5726,
+          "cutoffs": 62,
+          "qnodes": 7162,
+          "pvs_probes": 631,
+          "pvs_researches": 18,
+          "killer_priorities": 69,
+          "history_priorities": 0,
+          "ordering_updates": 12,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 27.873
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 7228,
+          "score_cp": -5726,
+          "cutoffs": 62,
+          "qnodes": 7162,
+          "pvs_probes": 631,
+          "pvs_researches": 18,
+          "killer_priorities": 69,
+          "history_priorities": 0,
+          "ordering_updates": 12,
+          "elapsed_ms": 32.082
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 15,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 5444,
+          "score_cp": -681,
+          "cutoffs": 217,
+          "qnodes": 5201,
+          "pvs_probes": 1225,
+          "pvs_researches": 26,
+          "killer_priorities": 334,
+          "history_priorities": 0,
+          "ordering_updates": 75,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 21.885
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 5444,
+          "score_cp": -681,
+          "cutoffs": 217,
+          "qnodes": 5201,
+          "pvs_probes": 1225,
+          "pvs_researches": 26,
+          "killer_priorities": 334,
+          "history_priorities": 0,
+          "ordering_updates": 75,
+          "killer_fast_calls": 558,
+          "elapsed_ms": 20.529
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 5444,
+          "score_cp": -681,
+          "cutoffs": 217,
+          "qnodes": 5201,
+          "pvs_probes": 1225,
+          "pvs_researches": 26,
+          "killer_priorities": 334,
+          "history_priorities": 0,
+          "ordering_updates": 75,
+          "elapsed_ms": 27.046
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 16,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 3499,
+          "score_cp": -2256,
+          "cutoffs": 197,
+          "qnodes": 3193,
+          "pvs_probes": 564,
+          "pvs_researches": 9,
+          "killer_priorities": 147,
+          "history_priorities": 0,
+          "ordering_updates": 8,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 20.201
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 3499,
+          "score_cp": -2256,
+          "cutoffs": 197,
+          "qnodes": 3193,
+          "pvs_probes": 564,
+          "pvs_researches": 9,
+          "killer_priorities": 147,
+          "history_priorities": 0,
+          "ordering_updates": 8,
+          "elapsed_ms": 22.38
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 3499,
+          "score_cp": -2256,
+          "cutoffs": 197,
+          "qnodes": 3193,
+          "pvs_probes": 564,
+          "pvs_researches": 9,
+          "killer_priorities": 147,
+          "history_priorities": 0,
+          "ordering_updates": 8,
+          "killer_fast_calls": 312,
+          "elapsed_ms": 18.544
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 17,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 11122,
+          "score_cp": -1604,
+          "cutoffs": 1,
+          "qnodes": 11119,
+          "pvs_probes": 285,
+          "pvs_researches": 3,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "elapsed_ms": 42.472
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 11122,
+          "score_cp": -1604,
+          "cutoffs": 1,
+          "qnodes": 11119,
+          "pvs_probes": 285,
+          "pvs_researches": 3,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 54.016
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 11122,
+          "score_cp": -1604,
+          "cutoffs": 1,
+          "qnodes": 11119,
+          "pvs_probes": 285,
+          "pvs_researches": 3,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 2453,
+          "elapsed_ms": 42.479
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 18,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 2542,
+          "score_cp": -71,
+          "cutoffs": 44,
+          "qnodes": 2488,
+          "pvs_probes": 316,
+          "pvs_researches": 19,
+          "killer_priorities": 58,
+          "history_priorities": 0,
+          "ordering_updates": 25,
+          "elapsed_ms": 11.522
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 2542,
+          "score_cp": -71,
+          "cutoffs": 44,
+          "qnodes": 2488,
+          "pvs_probes": 316,
+          "pvs_researches": 19,
+          "killer_priorities": 58,
+          "history_priorities": 0,
+          "ordering_updates": 25,
+          "killer_fast_calls": 240,
+          "elapsed_ms": 18.151
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 2542,
+          "score_cp": -71,
+          "cutoffs": 44,
+          "qnodes": 2488,
+          "pvs_probes": 316,
+          "pvs_researches": 19,
+          "killer_priorities": 58,
+          "history_priorities": 0,
+          "ordering_updates": 25,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 10.649
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 19,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 7801,
+          "score_cp": -2905,
+          "cutoffs": 117,
+          "qnodes": 7676,
+          "pvs_probes": 894,
+          "pvs_researches": 22,
+          "killer_priorities": 208,
+          "history_priorities": 0,
+          "ordering_updates": 55,
+          "killer_fast_calls": 867,
+          "elapsed_ms": 34.958
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 7801,
+          "score_cp": -2905,
+          "cutoffs": 117,
+          "qnodes": 7676,
+          "pvs_probes": 894,
+          "pvs_researches": 22,
+          "killer_priorities": 208,
+          "history_priorities": 0,
+          "ordering_updates": 55,
+          "elapsed_ms": 31.254
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 7801,
+          "score_cp": -2905,
+          "cutoffs": 117,
+          "qnodes": 7676,
+          "pvs_probes": 894,
+          "pvs_researches": 22,
+          "killer_priorities": 208,
+          "history_priorities": 0,
+          "ordering_updates": 55,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 31.955
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 20,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 119,
+          "score_cp": 3051,
+          "cutoffs": 0,
+          "qnodes": 118,
+          "pvs_probes": 102,
+          "pvs_researches": 0,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 9,
+          "elapsed_ms": 2.24
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 119,
+          "score_cp": 3051,
+          "cutoffs": 0,
+          "qnodes": 118,
+          "pvs_probes": 102,
+          "pvs_researches": 0,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 2.258
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 119,
+          "score_cp": 3051,
+          "cutoffs": 0,
+          "qnodes": 118,
+          "pvs_probes": 102,
+          "pvs_researches": 0,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "elapsed_ms": 2.478
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 21,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 1520,
+          "score_cp": -1544,
+          "cutoffs": 26,
+          "qnodes": 1490,
+          "pvs_probes": 203,
+          "pvs_researches": 11,
+          "killer_priorities": 21,
+          "history_priorities": 0,
+          "ordering_updates": 18,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 8.589
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 1520,
+          "score_cp": -1544,
+          "cutoffs": 26,
+          "qnodes": 1490,
+          "pvs_probes": 203,
+          "pvs_researches": 11,
+          "killer_priorities": 21,
+          "history_priorities": 0,
+          "ordering_updates": 18,
+          "killer_fast_calls": 51,
+          "elapsed_ms": 6.894
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 1520,
+          "score_cp": -1544,
+          "cutoffs": 26,
+          "qnodes": 1490,
+          "pvs_probes": 203,
+          "pvs_researches": 11,
+          "killer_priorities": 21,
+          "history_priorities": 0,
+          "ordering_updates": 18,
+          "elapsed_ms": 6.748
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 22,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 1001,
+          "score_cp": -2978,
+          "cutoffs": 34,
+          "qnodes": 965,
+          "pvs_probes": 349,
+          "pvs_researches": 4,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 7.939
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 1001,
+          "score_cp": -2978,
+          "cutoffs": 34,
+          "qnodes": 965,
+          "pvs_probes": 349,
+          "pvs_researches": 4,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "elapsed_ms": 7.519
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 1001,
+          "score_cp": -2978,
+          "cutoffs": 34,
+          "qnodes": 965,
+          "pvs_probes": 349,
+          "pvs_researches": 4,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 57,
+          "elapsed_ms": 6.39
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 1,
+      "position": 23,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 10578,
+          "score_cp": 10458,
+          "cutoffs": 82,
+          "qnodes": 10479,
+          "pvs_probes": 243,
+          "pvs_researches": 1,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "elapsed_ms": 50.097
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 10578,
+          "score_cp": 10458,
+          "cutoffs": 82,
+          "qnodes": 10479,
+          "pvs_probes": 243,
+          "pvs_researches": 1,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 48.39
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 10578,
+          "score_cp": 10458,
+          "cutoffs": 82,
+          "qnodes": 10479,
+          "pvs_probes": 243,
+          "pvs_researches": 1,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 971,
+          "elapsed_ms": 46.721
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 0,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 887,
+          "score_cp": -330,
+          "cutoffs": 40,
+          "qnodes": 839,
+          "pvs_probes": 208,
+          "pvs_researches": 16,
+          "killer_priorities": 28,
+          "history_priorities": 0,
+          "ordering_updates": 2,
+          "killer_fast_calls": 101,
+          "elapsed_ms": 5.039
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 887,
+          "score_cp": -330,
+          "cutoffs": 40,
+          "qnodes": 839,
+          "pvs_probes": 208,
+          "pvs_researches": 16,
+          "killer_priorities": 28,
+          "history_priorities": 0,
+          "ordering_updates": 2,
+          "elapsed_ms": 4.732
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 887,
+          "score_cp": -330,
+          "cutoffs": 40,
+          "qnodes": 839,
+          "pvs_probes": 208,
+          "pvs_researches": 16,
+          "killer_priorities": 28,
+          "history_priorities": 0,
+          "ordering_updates": 2,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 4.942
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 1,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 3181,
+          "score_cp": 781,
+          "cutoffs": 36,
+          "qnodes": 3143,
+          "pvs_probes": 113,
+          "pvs_researches": 4,
+          "killer_priorities": 13,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 617,
+          "elapsed_ms": 11.812
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 3181,
+          "score_cp": 781,
+          "cutoffs": 36,
+          "qnodes": 3143,
+          "pvs_probes": 113,
+          "pvs_researches": 4,
+          "killer_priorities": 13,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 10.059
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 3181,
+          "score_cp": 781,
+          "cutoffs": 36,
+          "qnodes": 3143,
+          "pvs_probes": 113,
+          "pvs_researches": 4,
+          "killer_priorities": 13,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "elapsed_ms": 11.74
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 2,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 7613,
+          "score_cp": -3353,
+          "cutoffs": 66,
+          "qnodes": 7535,
+          "pvs_probes": 1122,
+          "pvs_researches": 26,
+          "killer_priorities": 101,
+          "history_priorities": 0,
+          "ordering_updates": 37,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 30.132
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 7613,
+          "score_cp": -3353,
+          "cutoffs": 66,
+          "qnodes": 7535,
+          "pvs_probes": 1122,
+          "pvs_researches": 26,
+          "killer_priorities": 101,
+          "history_priorities": 0,
+          "ordering_updates": 37,
+          "killer_fast_calls": 866,
+          "elapsed_ms": 28.192
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 7613,
+          "score_cp": -3353,
+          "cutoffs": 66,
+          "qnodes": 7535,
+          "pvs_probes": 1122,
+          "pvs_researches": 26,
+          "killer_priorities": 101,
+          "history_priorities": 0,
+          "ordering_updates": 37,
+          "elapsed_ms": 29.261
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 3,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 3851,
+          "score_cp": 1414,
+          "cutoffs": 122,
+          "qnodes": 3719,
+          "pvs_probes": 421,
+          "pvs_researches": 6,
+          "killer_priorities": 25,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 18.208
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 3851,
+          "score_cp": 1414,
+          "cutoffs": 122,
+          "qnodes": 3719,
+          "pvs_probes": 421,
+          "pvs_researches": 6,
+          "killer_priorities": 25,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "elapsed_ms": 18.98
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 3851,
+          "score_cp": 1414,
+          "cutoffs": 122,
+          "qnodes": 3719,
+          "pvs_probes": 421,
+          "pvs_researches": 6,
+          "killer_priorities": 25,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 292,
+          "elapsed_ms": 18.736
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 4,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 15967,
+          "score_cp": 5205,
+          "cutoffs": 186,
+          "qnodes": 15741,
+          "pvs_probes": 523,
+          "pvs_researches": 15,
+          "killer_priorities": 209,
+          "history_priorities": 0,
+          "ordering_updates": 13,
+          "elapsed_ms": 66.052
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 15967,
+          "score_cp": 5205,
+          "cutoffs": 186,
+          "qnodes": 15741,
+          "pvs_probes": 523,
+          "pvs_researches": 15,
+          "killer_priorities": 209,
+          "history_priorities": 0,
+          "ordering_updates": 13,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 63.686
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 15967,
+          "score_cp": 5205,
+          "cutoffs": 186,
+          "qnodes": 15741,
+          "pvs_probes": 523,
+          "pvs_researches": 15,
+          "killer_priorities": 209,
+          "history_priorities": 0,
+          "ordering_updates": 13,
+          "killer_fast_calls": 2655,
+          "elapsed_ms": 60.058
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 5,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 19855,
+          "score_cp": 5415,
+          "cutoffs": 285,
+          "qnodes": 19439,
+          "pvs_probes": 1018,
+          "pvs_researches": 35,
+          "killer_priorities": 509,
+          "history_priorities": 0,
+          "ordering_updates": 84,
+          "elapsed_ms": 93.514
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 19855,
+          "score_cp": 5415,
+          "cutoffs": 285,
+          "qnodes": 19439,
+          "pvs_probes": 1018,
+          "pvs_researches": 35,
+          "killer_priorities": 509,
+          "history_priorities": 0,
+          "ordering_updates": 84,
+          "killer_fast_calls": 1160,
+          "elapsed_ms": 84.021
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 19855,
+          "score_cp": 5415,
+          "cutoffs": 285,
+          "qnodes": 19439,
+          "pvs_probes": 1018,
+          "pvs_researches": 35,
+          "killer_priorities": 509,
+          "history_priorities": 0,
+          "ordering_updates": 84,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 94.021
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 6,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 11503,
+          "score_cp": 1619,
+          "cutoffs": 111,
+          "qnodes": 11380,
+          "pvs_probes": 399,
+          "pvs_researches": 5,
+          "killer_priorities": 109,
+          "history_priorities": 0,
+          "ordering_updates": 12,
+          "killer_fast_calls": 1773,
+          "elapsed_ms": 63.811
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 11503,
+          "score_cp": 1619,
+          "cutoffs": 111,
+          "qnodes": 11380,
+          "pvs_probes": 399,
+          "pvs_researches": 5,
+          "killer_priorities": 109,
+          "history_priorities": 0,
+          "ordering_updates": 12,
+          "elapsed_ms": 63.119
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 11503,
+          "score_cp": 1619,
+          "cutoffs": 111,
+          "qnodes": 11380,
+          "pvs_probes": 399,
+          "pvs_researches": 5,
+          "killer_priorities": 109,
+          "history_priorities": 0,
+          "ordering_updates": 12,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 72.078
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 7,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 6606,
+          "score_cp": -280,
+          "cutoffs": 281,
+          "qnodes": 6236,
+          "pvs_probes": 1020,
+          "pvs_researches": 42,
+          "killer_priorities": 389,
+          "history_priorities": 0,
+          "ordering_updates": 123,
+          "killer_fast_calls": 335,
+          "elapsed_ms": 36.261
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 6606,
+          "score_cp": -280,
+          "cutoffs": 281,
+          "qnodes": 6236,
+          "pvs_probes": 1020,
+          "pvs_researches": 42,
+          "killer_priorities": 389,
+          "history_priorities": 0,
+          "ordering_updates": 123,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 37.96
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 6606,
+          "score_cp": -280,
+          "cutoffs": 281,
+          "qnodes": 6236,
+          "pvs_probes": 1020,
+          "pvs_researches": 42,
+          "killer_priorities": 389,
+          "history_priorities": 0,
+          "ordering_updates": 123,
+          "elapsed_ms": 39.18
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 8,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 68336,
+          "score_cp": -5266,
+          "cutoffs": 644,
+          "qnodes": 67471,
+          "pvs_probes": 2199,
+          "pvs_researches": 47,
+          "killer_priorities": 1244,
+          "history_priorities": 0,
+          "ordering_updates": 430,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 348.305
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 68336,
+          "score_cp": -5266,
+          "cutoffs": 644,
+          "qnodes": 67471,
+          "pvs_probes": 2199,
+          "pvs_researches": 47,
+          "killer_priorities": 1244,
+          "history_priorities": 0,
+          "ordering_updates": 430,
+          "killer_fast_calls": 8779,
+          "elapsed_ms": 341.624
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 68336,
+          "score_cp": -5266,
+          "cutoffs": 644,
+          "qnodes": 67471,
+          "pvs_probes": 2199,
+          "pvs_researches": 47,
+          "killer_priorities": 1244,
+          "history_priorities": 0,
+          "ordering_updates": 430,
+          "elapsed_ms": 369.138
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 9,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 897,
+          "score_cp": -24,
+          "cutoffs": 73,
+          "qnodes": 820,
+          "pvs_probes": 364,
+          "pvs_researches": 10,
+          "killer_priorities": 112,
+          "history_priorities": 0,
+          "ordering_updates": 46,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 4.745
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 897,
+          "score_cp": -24,
+          "cutoffs": 73,
+          "qnodes": 820,
+          "pvs_probes": 364,
+          "pvs_researches": 10,
+          "killer_priorities": 112,
+          "history_priorities": 0,
+          "ordering_updates": 46,
+          "elapsed_ms": 5.04
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 897,
+          "score_cp": -24,
+          "cutoffs": 73,
+          "qnodes": 820,
+          "pvs_probes": 364,
+          "pvs_researches": 10,
+          "killer_priorities": 112,
+          "history_priorities": 0,
+          "ordering_updates": 46,
+          "killer_fast_calls": 105,
+          "elapsed_ms": 6.889
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 10,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 4611,
+          "score_cp": -682,
+          "cutoffs": 70,
+          "qnodes": 4533,
+          "pvs_probes": 713,
+          "pvs_researches": 15,
+          "killer_priorities": 55,
+          "history_priorities": 0,
+          "ordering_updates": 10,
+          "elapsed_ms": 21.943
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 4611,
+          "score_cp": -682,
+          "cutoffs": 70,
+          "qnodes": 4533,
+          "pvs_probes": 713,
+          "pvs_researches": 15,
+          "killer_priorities": 55,
+          "history_priorities": 0,
+          "ordering_updates": 10,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 20.931
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 4611,
+          "score_cp": -682,
+          "cutoffs": 70,
+          "qnodes": 4533,
+          "pvs_probes": 713,
+          "pvs_researches": 15,
+          "killer_priorities": 55,
+          "history_priorities": 0,
+          "ordering_updates": 10,
+          "killer_fast_calls": 544,
+          "elapsed_ms": 23.454
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 11,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 1558,
+          "score_cp": -830,
+          "cutoffs": 2,
+          "qnodes": 1554,
+          "pvs_probes": 180,
+          "pvs_researches": 5,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "elapsed_ms": 6.695
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 1558,
+          "score_cp": -830,
+          "cutoffs": 2,
+          "qnodes": 1554,
+          "pvs_probes": 180,
+          "pvs_researches": 5,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 197,
+          "elapsed_ms": 7.58
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 1558,
+          "score_cp": -830,
+          "cutoffs": 2,
+          "qnodes": 1554,
+          "pvs_probes": 180,
+          "pvs_researches": 5,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 7.353
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 12,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 688,
+          "score_cp": -760,
+          "cutoffs": 69,
+          "qnodes": 617,
+          "pvs_probes": 204,
+          "pvs_researches": 2,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 92,
+          "elapsed_ms": 3.149
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 688,
+          "score_cp": -760,
+          "cutoffs": 69,
+          "qnodes": 617,
+          "pvs_probes": 204,
+          "pvs_researches": 2,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "elapsed_ms": 4.041
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 688,
+          "score_cp": -760,
+          "cutoffs": 69,
+          "qnodes": 617,
+          "pvs_probes": 204,
+          "pvs_researches": 2,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 3.744
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 13,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 6345,
+          "score_cp": 1738,
+          "cutoffs": 87,
+          "qnodes": 6252,
+          "pvs_probes": 491,
+          "pvs_researches": 10,
+          "killer_priorities": 76,
+          "history_priorities": 0,
+          "ordering_updates": 6,
+          "killer_fast_calls": 1059,
+          "elapsed_ms": 24.764
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 6345,
+          "score_cp": 1738,
+          "cutoffs": 87,
+          "qnodes": 6252,
+          "pvs_probes": 491,
+          "pvs_researches": 10,
+          "killer_priorities": 76,
+          "history_priorities": 0,
+          "ordering_updates": 6,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 29.38
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 6345,
+          "score_cp": 1738,
+          "cutoffs": 87,
+          "qnodes": 6252,
+          "pvs_probes": 491,
+          "pvs_researches": 10,
+          "killer_priorities": 76,
+          "history_priorities": 0,
+          "ordering_updates": 6,
+          "elapsed_ms": 26.271
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 14,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 7228,
+          "score_cp": -5726,
+          "cutoffs": 62,
+          "qnodes": 7162,
+          "pvs_probes": 631,
+          "pvs_researches": 18,
+          "killer_priorities": 69,
+          "history_priorities": 0,
+          "ordering_updates": 12,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 30.932
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 7228,
+          "score_cp": -5726,
+          "cutoffs": 62,
+          "qnodes": 7162,
+          "pvs_probes": 631,
+          "pvs_researches": 18,
+          "killer_priorities": 69,
+          "history_priorities": 0,
+          "ordering_updates": 12,
+          "killer_fast_calls": 1041,
+          "elapsed_ms": 33.198
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 7228,
+          "score_cp": -5726,
+          "cutoffs": 62,
+          "qnodes": 7162,
+          "pvs_probes": 631,
+          "pvs_researches": 18,
+          "killer_priorities": 69,
+          "history_priorities": 0,
+          "ordering_updates": 12,
+          "elapsed_ms": 38.862
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 15,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 5444,
+          "score_cp": -681,
+          "cutoffs": 217,
+          "qnodes": 5201,
+          "pvs_probes": 1225,
+          "pvs_researches": 26,
+          "killer_priorities": 334,
+          "history_priorities": 0,
+          "ordering_updates": 75,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 24.226
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 5444,
+          "score_cp": -681,
+          "cutoffs": 217,
+          "qnodes": 5201,
+          "pvs_probes": 1225,
+          "pvs_researches": 26,
+          "killer_priorities": 334,
+          "history_priorities": 0,
+          "ordering_updates": 75,
+          "elapsed_ms": 27.755
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 5444,
+          "score_cp": -681,
+          "cutoffs": 217,
+          "qnodes": 5201,
+          "pvs_probes": 1225,
+          "pvs_researches": 26,
+          "killer_priorities": 334,
+          "history_priorities": 0,
+          "ordering_updates": 75,
+          "killer_fast_calls": 558,
+          "elapsed_ms": 24.497
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 16,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 3499,
+          "score_cp": -2256,
+          "cutoffs": 197,
+          "qnodes": 3193,
+          "pvs_probes": 564,
+          "pvs_researches": 9,
+          "killer_priorities": 147,
+          "history_priorities": 0,
+          "ordering_updates": 8,
+          "elapsed_ms": 23.113
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 3499,
+          "score_cp": -2256,
+          "cutoffs": 197,
+          "qnodes": 3193,
+          "pvs_probes": 564,
+          "pvs_researches": 9,
+          "killer_priorities": 147,
+          "history_priorities": 0,
+          "ordering_updates": 8,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 21.074
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 3499,
+          "score_cp": -2256,
+          "cutoffs": 197,
+          "qnodes": 3193,
+          "pvs_probes": 564,
+          "pvs_researches": 9,
+          "killer_priorities": 147,
+          "history_priorities": 0,
+          "ordering_updates": 8,
+          "killer_fast_calls": 312,
+          "elapsed_ms": 18.433
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 17,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 11122,
+          "score_cp": -1604,
+          "cutoffs": 1,
+          "qnodes": 11119,
+          "pvs_probes": 285,
+          "pvs_researches": 3,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "elapsed_ms": 42.007
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 11122,
+          "score_cp": -1604,
+          "cutoffs": 1,
+          "qnodes": 11119,
+          "pvs_probes": 285,
+          "pvs_researches": 3,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 2453,
+          "elapsed_ms": 47.824
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 11122,
+          "score_cp": -1604,
+          "cutoffs": 1,
+          "qnodes": 11119,
+          "pvs_probes": 285,
+          "pvs_researches": 3,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 45.974
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 18,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 2542,
+          "score_cp": -71,
+          "cutoffs": 44,
+          "qnodes": 2488,
+          "pvs_probes": 316,
+          "pvs_researches": 19,
+          "killer_priorities": 58,
+          "history_priorities": 0,
+          "ordering_updates": 25,
+          "killer_fast_calls": 240,
+          "elapsed_ms": 10.387
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 2542,
+          "score_cp": -71,
+          "cutoffs": 44,
+          "qnodes": 2488,
+          "pvs_probes": 316,
+          "pvs_researches": 19,
+          "killer_priorities": 58,
+          "history_priorities": 0,
+          "ordering_updates": 25,
+          "elapsed_ms": 12.317
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 2542,
+          "score_cp": -71,
+          "cutoffs": 44,
+          "qnodes": 2488,
+          "pvs_probes": 316,
+          "pvs_researches": 19,
+          "killer_priorities": 58,
+          "history_priorities": 0,
+          "ordering_updates": 25,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 10.906
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 19,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 7801,
+          "score_cp": -2905,
+          "cutoffs": 117,
+          "qnodes": 7676,
+          "pvs_probes": 894,
+          "pvs_researches": 22,
+          "killer_priorities": 208,
+          "history_priorities": 0,
+          "ordering_updates": 55,
+          "killer_fast_calls": 867,
+          "elapsed_ms": 27.128
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 7801,
+          "score_cp": -2905,
+          "cutoffs": 117,
+          "qnodes": 7676,
+          "pvs_probes": 894,
+          "pvs_researches": 22,
+          "killer_priorities": 208,
+          "history_priorities": 0,
+          "ordering_updates": 55,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 31.927
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 7801,
+          "score_cp": -2905,
+          "cutoffs": 117,
+          "qnodes": 7676,
+          "pvs_probes": 894,
+          "pvs_researches": 22,
+          "killer_priorities": 208,
+          "history_priorities": 0,
+          "ordering_updates": 55,
+          "elapsed_ms": 29.508
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 20,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 119,
+          "score_cp": 3051,
+          "cutoffs": 0,
+          "qnodes": 118,
+          "pvs_probes": 102,
+          "pvs_researches": 0,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 2.15
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 119,
+          "score_cp": 3051,
+          "cutoffs": 0,
+          "qnodes": 118,
+          "pvs_probes": 102,
+          "pvs_researches": 0,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 9,
+          "elapsed_ms": 3.083
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 119,
+          "score_cp": 3051,
+          "cutoffs": 0,
+          "qnodes": 118,
+          "pvs_probes": 102,
+          "pvs_researches": 0,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "elapsed_ms": 2.536
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 21,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 1520,
+          "score_cp": -1544,
+          "cutoffs": 26,
+          "qnodes": 1490,
+          "pvs_probes": 203,
+          "pvs_researches": 11,
+          "killer_priorities": 21,
+          "history_priorities": 0,
+          "ordering_updates": 18,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 7.374
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 1520,
+          "score_cp": -1544,
+          "cutoffs": 26,
+          "qnodes": 1490,
+          "pvs_probes": 203,
+          "pvs_researches": 11,
+          "killer_priorities": 21,
+          "history_priorities": 0,
+          "ordering_updates": 18,
+          "elapsed_ms": 6.551
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 1520,
+          "score_cp": -1544,
+          "cutoffs": 26,
+          "qnodes": 1490,
+          "pvs_probes": 203,
+          "pvs_researches": 11,
+          "killer_priorities": 21,
+          "history_priorities": 0,
+          "ordering_updates": 18,
+          "killer_fast_calls": 51,
+          "elapsed_ms": 6.198
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 22,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 1001,
+          "score_cp": -2978,
+          "cutoffs": 34,
+          "qnodes": 965,
+          "pvs_probes": 349,
+          "pvs_researches": 4,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "elapsed_ms": 6.499
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 1001,
+          "score_cp": -2978,
+          "cutoffs": 34,
+          "qnodes": 965,
+          "pvs_probes": 349,
+          "pvs_researches": 4,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 6.784
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 1001,
+          "score_cp": -2978,
+          "cutoffs": 34,
+          "qnodes": 965,
+          "pvs_probes": 349,
+          "pvs_researches": 4,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 57,
+          "elapsed_ms": 6.849
+        }
+      }
+    },
+    {
+      "mode": "fixed",
+      "repeat": 2,
+      "position": 23,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 10578,
+          "score_cp": 10458,
+          "cutoffs": 82,
+          "qnodes": 10479,
+          "pvs_probes": 243,
+          "pvs_researches": 1,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "elapsed_ms": 49.868
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 10578,
+          "score_cp": 10458,
+          "cutoffs": 82,
+          "qnodes": 10479,
+          "pvs_probes": 243,
+          "pvs_researches": 1,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 971,
+          "elapsed_ms": 44.469
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 10578,
+          "score_cp": 10458,
+          "cutoffs": 82,
+          "qnodes": 10479,
+          "pvs_probes": 243,
+          "pvs_researches": 1,
+          "killer_priorities": 0,
+          "history_priorities": 0,
+          "ordering_updates": 0,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 46.897
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 0,
+      "results": {
+        "official_v2020": {
+          "depth": 4,
+          "nodes": 40449,
+          "score_cp": 1126,
+          "cutoffs": 4510,
+          "qnodes": 35393,
+          "pvs_probes": 1453,
+          "pvs_researches": 47,
+          "killer_priorities": 6343,
+          "history_priorities": 0,
+          "ordering_updates": 688,
+          "elapsed_ms": 191.15
+        },
+        "control": {
+          "depth": 4,
+          "nodes": 42659,
+          "score_cp": 1126,
+          "cutoffs": 4642,
+          "qnodes": 37421,
+          "pvs_probes": 1456,
+          "pvs_researches": 47,
+          "killer_priorities": 6581,
+          "history_priorities": 0,
+          "ordering_updates": 691,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.986
+        },
+        "fast": {
+          "depth": 4,
+          "nodes": 53532,
+          "score_cp": 1126,
+          "cutoffs": 4963,
+          "qnodes": 47743,
+          "pvs_probes": 1464,
+          "pvs_researches": 47,
+          "killer_priorities": 7232,
+          "history_priorities": 0,
+          "ordering_updates": 741,
+          "killer_fast_calls": 7442,
+          "elapsed_ms": 190.998
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 1,
+      "results": {
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 49877,
+          "score_cp": 736,
+          "cutoffs": 1791,
+          "qnodes": 47928,
+          "pvs_probes": 1009,
+          "pvs_researches": 18,
+          "killer_priorities": 1372,
+          "history_priorities": 0,
+          "ordering_updates": 33,
+          "elapsed_ms": 191.064
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 52689,
+          "score_cp": 736,
+          "cutoffs": 1901,
+          "qnodes": 50610,
+          "pvs_probes": 1029,
+          "pvs_researches": 18,
+          "killer_priorities": 1485,
+          "history_priorities": 0,
+          "ordering_updates": 36,
+          "killer_fast_calls": 9173,
+          "elapsed_ms": 191.226
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 50655,
+          "score_cp": 736,
+          "cutoffs": 1838,
+          "qnodes": 48655,
+          "pvs_probes": 1013,
+          "pvs_researches": 18,
+          "killer_priorities": 1415,
+          "history_priorities": 0,
+          "ordering_updates": 35,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.177
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 2,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 39120,
+          "score_cp": -3353,
+          "cutoffs": 1074,
+          "qnodes": 37891,
+          "pvs_probes": 2552,
+          "pvs_researches": 65,
+          "killer_priorities": 1772,
+          "history_priorities": 0,
+          "ordering_updates": 303,
+          "killer_fast_calls": 6106,
+          "elapsed_ms": 191.268
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 44001,
+          "score_cp": -3353,
+          "cutoffs": 1206,
+          "qnodes": 42635,
+          "pvs_probes": 2556,
+          "pvs_researches": 65,
+          "killer_priorities": 1987,
+          "history_priorities": 0,
+          "ordering_updates": 356,
+          "elapsed_ms": 191.096
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 41293,
+          "score_cp": -3353,
+          "cutoffs": 1124,
+          "qnodes": 40014,
+          "pvs_probes": 2552,
+          "pvs_researches": 65,
+          "killer_priorities": 1851,
+          "history_priorities": 0,
+          "ordering_updates": 319,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.965
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 3,
+      "results": {
+        "fast": {
+          "depth": 3,
+          "nodes": 39138,
+          "score_cp": 2023,
+          "cutoffs": 1550,
+          "qnodes": 37314,
+          "pvs_probes": 2362,
+          "pvs_researches": 31,
+          "killer_priorities": 2324,
+          "history_priorities": 0,
+          "ordering_updates": 26,
+          "killer_fast_calls": 4013,
+          "elapsed_ms": 190.793
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 47644,
+          "score_cp": 2023,
+          "cutoffs": 1749,
+          "qnodes": 45412,
+          "pvs_probes": 2575,
+          "pvs_researches": 33,
+          "killer_priorities": 2604,
+          "history_priorities": 0,
+          "ordering_updates": 29,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.885
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 44588,
+          "score_cp": 2023,
+          "cutoffs": 1624,
+          "qnodes": 42503,
+          "pvs_probes": 2554,
+          "pvs_researches": 33,
+          "killer_priorities": 2469,
+          "history_priorities": 0,
+          "ordering_updates": 28,
+          "elapsed_ms": 191.051
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 4,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 46305,
+          "score_cp": 5205,
+          "cutoffs": 592,
+          "qnodes": 45534,
+          "pvs_probes": 1182,
+          "pvs_researches": 23,
+          "killer_priorities": 898,
+          "history_priorities": 0,
+          "ordering_updates": 89,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.2
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 56092,
+          "score_cp": 5205,
+          "cutoffs": 685,
+          "qnodes": 55209,
+          "pvs_probes": 1202,
+          "pvs_researches": 23,
+          "killer_priorities": 1084,
+          "history_priorities": 0,
+          "ordering_updates": 99,
+          "killer_fast_calls": 8475,
+          "elapsed_ms": 191.398
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 42520,
+          "score_cp": 5205,
+          "cutoffs": 535,
+          "qnodes": 41809,
+          "pvs_probes": 1179,
+          "pvs_researches": 23,
+          "killer_priorities": 797,
+          "history_priorities": 0,
+          "ordering_updates": 85,
+          "elapsed_ms": 191.087
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 5,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 43545,
+          "score_cp": 5415,
+          "cutoffs": 536,
+          "qnodes": 42857,
+          "pvs_probes": 1441,
+          "pvs_researches": 45,
+          "killer_priorities": 938,
+          "history_priorities": 0,
+          "ordering_updates": 143,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.32
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 41051,
+          "score_cp": 5415,
+          "cutoffs": 502,
+          "qnodes": 40397,
+          "pvs_probes": 1441,
+          "pvs_researches": 45,
+          "killer_priorities": 872,
+          "history_priorities": 0,
+          "ordering_updates": 130,
+          "elapsed_ms": 191.866
+        },
+        "fast": {
+          "depth": 1,
+          "nodes": 30187,
+          "score_cp": 5416,
+          "cutoffs": 373,
+          "qnodes": 29669,
+          "pvs_probes": 1093,
+          "pvs_researches": 39,
+          "killer_priorities": 679,
+          "history_priorities": 0,
+          "ordering_updates": 117,
+          "killer_fast_calls": 1874,
+          "elapsed_ms": 191.303
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 6,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 37067,
+          "score_cp": 1619,
+          "cutoffs": 513,
+          "qnodes": 36515,
+          "pvs_probes": 774,
+          "pvs_researches": 8,
+          "killer_priorities": 565,
+          "history_priorities": 0,
+          "ordering_updates": 58,
+          "elapsed_ms": 191.411
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 35455,
+          "score_cp": 1619,
+          "cutoffs": 502,
+          "qnodes": 34914,
+          "pvs_probes": 767,
+          "pvs_researches": 8,
+          "killer_priorities": 547,
+          "history_priorities": 0,
+          "ordering_updates": 56,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.243
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 40385,
+          "score_cp": 1619,
+          "cutoffs": 579,
+          "qnodes": 39764,
+          "pvs_probes": 784,
+          "pvs_researches": 8,
+          "killer_priorities": 647,
+          "history_priorities": 0,
+          "ordering_updates": 65,
+          "killer_fast_calls": 6446,
+          "elapsed_ms": 190.92
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 7,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 50724,
+          "score_cp": -280,
+          "cutoffs": 1520,
+          "qnodes": 48619,
+          "pvs_probes": 3507,
+          "pvs_researches": 76,
+          "killer_priorities": 2636,
+          "history_priorities": 0,
+          "ordering_updates": 457,
+          "elapsed_ms": 191.521
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 43570,
+          "score_cp": -280,
+          "cutoffs": 1428,
+          "qnodes": 41642,
+          "pvs_probes": 3422,
+          "pvs_researches": 76,
+          "killer_priorities": 2376,
+          "history_priorities": 0,
+          "ordering_updates": 431,
+          "killer_fast_calls": 1832,
+          "elapsed_ms": 191.575
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 42985,
+          "score_cp": -280,
+          "cutoffs": 1423,
+          "qnodes": 41065,
+          "pvs_probes": 3417,
+          "pvs_researches": 76,
+          "killer_priorities": 2358,
+          "history_priorities": 0,
+          "ordering_updates": 429,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.345
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 8,
+      "results": {
+        "fast": {
+          "depth": 1,
+          "nodes": 46858,
+          "score_cp": -4742,
+          "cutoffs": 393,
+          "qnodes": 46323,
+          "pvs_probes": 1962,
+          "pvs_researches": 45,
+          "killer_priorities": 699,
+          "history_priorities": 0,
+          "ordering_updates": 251,
+          "killer_fast_calls": 6071,
+          "elapsed_ms": 191.931
+        },
+        "official_v2020": {
+          "depth": 1,
+          "nodes": 40961,
+          "score_cp": -4742,
+          "cutoffs": 364,
+          "qnodes": 40465,
+          "pvs_probes": 1588,
+          "pvs_researches": 37,
+          "killer_priorities": 635,
+          "history_priorities": 0,
+          "ordering_updates": 227,
+          "elapsed_ms": 192.011
+        },
+        "control": {
+          "depth": 1,
+          "nodes": 45628,
+          "score_cp": -4742,
+          "cutoffs": 389,
+          "qnodes": 45089,
+          "pvs_probes": 1973,
+          "pvs_researches": 47,
+          "killer_priorities": 693,
+          "history_priorities": 0,
+          "ordering_updates": 248,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.98
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 9,
+      "results": {
+        "fast": {
+          "depth": 3,
+          "nodes": 48336,
+          "score_cp": 35,
+          "cutoffs": 3038,
+          "qnodes": 43774,
+          "pvs_probes": 4972,
+          "pvs_researches": 85,
+          "killer_priorities": 6036,
+          "history_priorities": 0,
+          "ordering_updates": 1715,
+          "killer_fast_calls": 5008,
+          "elapsed_ms": 190.785
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 46833,
+          "score_cp": 35,
+          "cutoffs": 2885,
+          "qnodes": 42571,
+          "pvs_probes": 4753,
+          "pvs_researches": 84,
+          "killer_priorities": 5741,
+          "history_priorities": 0,
+          "ordering_updates": 1622,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 197.512
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 43155,
+          "score_cp": 35,
+          "cutoffs": 2567,
+          "qnodes": 39329,
+          "pvs_probes": 4439,
+          "pvs_researches": 78,
+          "killer_priorities": 5120,
+          "history_priorities": 0,
+          "ordering_updates": 1453,
+          "elapsed_ms": 190.91
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 10,
+      "results": {
+        "control": {
+          "depth": 3,
+          "nodes": 52559,
+          "score_cp": -395,
+          "cutoffs": 1376,
+          "qnodes": 50793,
+          "pvs_probes": 2081,
+          "pvs_researches": 33,
+          "killer_priorities": 1680,
+          "history_priorities": 0,
+          "ordering_updates": 303,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.983
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 47189,
+          "score_cp": -395,
+          "cutoffs": 1143,
+          "qnodes": 45685,
+          "pvs_probes": 2054,
+          "pvs_researches": 33,
+          "killer_priorities": 1486,
+          "history_priorities": 0,
+          "ordering_updates": 280,
+          "killer_fast_calls": 4960,
+          "elapsed_ms": 191.8
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 49755,
+          "score_cp": -395,
+          "cutoffs": 1200,
+          "qnodes": 48183,
+          "pvs_probes": 2064,
+          "pvs_researches": 33,
+          "killer_priorities": 1527,
+          "history_priorities": 0,
+          "ordering_updates": 286,
+          "elapsed_ms": 191.021
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 11,
+      "results": {
+        "control": {
+          "depth": 3,
+          "nodes": 41811,
+          "score_cp": -830,
+          "cutoffs": 1308,
+          "qnodes": 40184,
+          "pvs_probes": 1739,
+          "pvs_researches": 31,
+          "killer_priorities": 1765,
+          "history_priorities": 0,
+          "ordering_updates": 99,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.032
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 40677,
+          "score_cp": -830,
+          "cutoffs": 1301,
+          "qnodes": 39059,
+          "pvs_probes": 1658,
+          "pvs_researches": 30,
+          "killer_priorities": 1747,
+          "history_priorities": 0,
+          "ordering_updates": 99,
+          "elapsed_ms": 191.073
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 44033,
+          "score_cp": -830,
+          "cutoffs": 1452,
+          "qnodes": 42154,
+          "pvs_probes": 1952,
+          "pvs_researches": 31,
+          "killer_priorities": 1798,
+          "history_priorities": 0,
+          "ordering_updates": 99,
+          "killer_fast_calls": 5728,
+          "elapsed_ms": 191.107
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 12,
+      "results": {
+        "official_v2020": {
+          "depth": 4,
+          "nodes": 35006,
+          "score_cp": -760,
+          "cutoffs": 3783,
+          "qnodes": 30870,
+          "pvs_probes": 1523,
+          "pvs_researches": 19,
+          "killer_priorities": 3903,
+          "history_priorities": 0,
+          "ordering_updates": 217,
+          "elapsed_ms": 190.928
+        },
+        "control": {
+          "depth": 4,
+          "nodes": 39920,
+          "score_cp": -760,
+          "cutoffs": 4037,
+          "qnodes": 35471,
+          "pvs_probes": 1579,
+          "pvs_researches": 19,
+          "killer_priorities": 4417,
+          "history_priorities": 0,
+          "ordering_updates": 251,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.006
+        },
+        "fast": {
+          "depth": 4,
+          "nodes": 56736,
+          "score_cp": -760,
+          "cutoffs": 5513,
+          "qnodes": 50763,
+          "pvs_probes": 1619,
+          "pvs_researches": 19,
+          "killer_priorities": 6715,
+          "history_priorities": 0,
+          "ordering_updates": 520,
+          "killer_fast_calls": 7172,
+          "elapsed_ms": 191.265
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 13,
+      "results": {
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 41460,
+          "score_cp": 1919,
+          "cutoffs": 810,
+          "qnodes": 40501,
+          "pvs_probes": 1699,
+          "pvs_researches": 25,
+          "killer_priorities": 954,
+          "history_priorities": 0,
+          "ordering_updates": 129,
+          "elapsed_ms": 191.278
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 41918,
+          "score_cp": 1919,
+          "cutoffs": 823,
+          "qnodes": 40942,
+          "pvs_probes": 1702,
+          "pvs_researches": 25,
+          "killer_priorities": 977,
+          "history_priorities": 0,
+          "ordering_updates": 133,
+          "killer_fast_calls": 7833,
+          "elapsed_ms": 191.104
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 51407,
+          "score_cp": 1919,
+          "cutoffs": 1020,
+          "qnodes": 50045,
+          "pvs_probes": 2216,
+          "pvs_researches": 29,
+          "killer_priorities": 1346,
+          "history_priorities": 0,
+          "ordering_updates": 173,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.202
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 14,
+      "results": {
+        "fast": {
+          "depth": 3,
+          "nodes": 47320,
+          "score_cp": -5726,
+          "cutoffs": 1097,
+          "qnodes": 45653,
+          "pvs_probes": 2101,
+          "pvs_researches": 35,
+          "killer_priorities": 1724,
+          "history_priorities": 0,
+          "ordering_updates": 174,
+          "killer_fast_calls": 6674,
+          "elapsed_ms": 191.491
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 48783,
+          "score_cp": -5726,
+          "cutoffs": 1107,
+          "qnodes": 47096,
+          "pvs_probes": 2111,
+          "pvs_researches": 35,
+          "killer_priorities": 1737,
+          "history_priorities": 0,
+          "ordering_updates": 174,
+          "elapsed_ms": 191.044
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 52630,
+          "score_cp": -5726,
+          "cutoffs": 1239,
+          "qnodes": 50751,
+          "pvs_probes": 2170,
+          "pvs_researches": 35,
+          "killer_priorities": 1921,
+          "history_priorities": 0,
+          "ordering_updates": 178,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.022
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 15,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 51326,
+          "score_cp": -681,
+          "cutoffs": 1522,
+          "qnodes": 49566,
+          "pvs_probes": 3425,
+          "pvs_researches": 62,
+          "killer_priorities": 2582,
+          "history_priorities": 0,
+          "ordering_updates": 634,
+          "killer_fast_calls": 7877,
+          "elapsed_ms": 190.861
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 57130,
+          "score_cp": -406,
+          "cutoffs": 1793,
+          "qnodes": 54973,
+          "pvs_probes": 3885,
+          "pvs_researches": 69,
+          "killer_priorities": 3086,
+          "history_priorities": 0,
+          "ordering_updates": 726,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.842
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 48958,
+          "score_cp": -681,
+          "cutoffs": 1394,
+          "qnodes": 47336,
+          "pvs_probes": 3094,
+          "pvs_researches": 59,
+          "killer_priorities": 2338,
+          "history_priorities": 0,
+          "ordering_updates": 593,
+          "elapsed_ms": 190.834
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 16,
+      "results": {
+        "control": {
+          "depth": 3,
+          "nodes": 46864,
+          "score_cp": -1858,
+          "cutoffs": 1487,
+          "qnodes": 44808,
+          "pvs_probes": 2464,
+          "pvs_researches": 33,
+          "killer_priorities": 2184,
+          "history_priorities": 0,
+          "ordering_updates": 29,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.117
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 53169,
+          "score_cp": -1858,
+          "cutoffs": 1727,
+          "qnodes": 50727,
+          "pvs_probes": 2739,
+          "pvs_researches": 36,
+          "killer_priorities": 2624,
+          "history_priorities": 0,
+          "ordering_updates": 45,
+          "killer_fast_calls": 3136,
+          "elapsed_ms": 191.106
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 51570,
+          "score_cp": -1858,
+          "cutoffs": 1688,
+          "qnodes": 49280,
+          "pvs_probes": 2496,
+          "pvs_researches": 35,
+          "killer_priorities": 2548,
+          "history_priorities": 0,
+          "ordering_updates": 41,
+          "elapsed_ms": 191.249
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 17,
+      "results": {
+        "control": {
+          "depth": 5,
+          "nodes": 49112,
+          "score_cp": -1730,
+          "cutoffs": 2471,
+          "qnodes": 45973,
+          "pvs_probes": 1686,
+          "pvs_researches": 25,
+          "killer_priorities": 342,
+          "history_priorities": 0,
+          "ordering_updates": 22,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.672
+        },
+        "official_v2020": {
+          "depth": 5,
+          "nodes": 50125,
+          "score_cp": -1730,
+          "cutoffs": 2521,
+          "qnodes": 46932,
+          "pvs_probes": 1697,
+          "pvs_researches": 25,
+          "killer_priorities": 378,
+          "history_priorities": 0,
+          "ordering_updates": 27,
+          "elapsed_ms": 191.396
+        },
+        "fast": {
+          "depth": 4,
+          "nodes": 43667,
+          "score_cp": -1604,
+          "cutoffs": 2250,
+          "qnodes": 40773,
+          "pvs_probes": 1511,
+          "pvs_researches": 18,
+          "killer_priorities": 179,
+          "history_priorities": 0,
+          "ordering_updates": 10,
+          "killer_fast_calls": 10888,
+          "elapsed_ms": 190.956
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 18,
+      "results": {
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 53082,
+          "score_cp": -30,
+          "cutoffs": 1884,
+          "qnodes": 50770,
+          "pvs_probes": 1423,
+          "pvs_researches": 53,
+          "killer_priorities": 3611,
+          "history_priorities": 0,
+          "ordering_updates": 836,
+          "elapsed_ms": 190.82
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 50792,
+          "score_cp": -30,
+          "cutoffs": 1807,
+          "qnodes": 48568,
+          "pvs_probes": 1305,
+          "pvs_researches": 44,
+          "killer_priorities": 3472,
+          "history_priorities": 0,
+          "ordering_updates": 793,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.869
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 60899,
+          "score_cp": -30,
+          "cutoffs": 2135,
+          "qnodes": 58240,
+          "pvs_probes": 1658,
+          "pvs_researches": 59,
+          "killer_priorities": 4126,
+          "history_priorities": 0,
+          "ordering_updates": 1008,
+          "killer_fast_calls": 7067,
+          "elapsed_ms": 191.217
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 19,
+      "results": {
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 53322,
+          "score_cp": -2854,
+          "cutoffs": 1202,
+          "qnodes": 51715,
+          "pvs_probes": 3705,
+          "pvs_researches": 69,
+          "killer_priorities": 2293,
+          "history_priorities": 0,
+          "ordering_updates": 444,
+          "elapsed_ms": 190.999
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 50788,
+          "score_cp": -2854,
+          "cutoffs": 1168,
+          "qnodes": 49230,
+          "pvs_probes": 3544,
+          "pvs_researches": 63,
+          "killer_priorities": 2206,
+          "history_priorities": 0,
+          "ordering_updates": 431,
+          "killer_fast_calls": 3488,
+          "elapsed_ms": 191.045
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 58134,
+          "score_cp": -2854,
+          "cutoffs": 1234,
+          "qnodes": 56395,
+          "pvs_probes": 4333,
+          "pvs_researches": 75,
+          "killer_priorities": 2377,
+          "history_priorities": 0,
+          "ordering_updates": 470,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.389
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 20,
+      "results": {
+        "fast": {
+          "depth": 4,
+          "nodes": 20578,
+          "score_cp": 1439,
+          "cutoffs": 1122,
+          "qnodes": 19333,
+          "pvs_probes": 1127,
+          "pvs_researches": 6,
+          "killer_priorities": 960,
+          "history_priorities": 0,
+          "ordering_updates": 43,
+          "killer_fast_calls": 2886,
+          "elapsed_ms": 190.949
+        },
+        "official_v2020": {
+          "depth": 4,
+          "nodes": 19164,
+          "score_cp": 1439,
+          "cutoffs": 966,
+          "qnodes": 18075,
+          "pvs_probes": 1126,
+          "pvs_researches": 6,
+          "killer_priorities": 840,
+          "history_priorities": 0,
+          "ordering_updates": 40,
+          "elapsed_ms": 190.973
+        },
+        "control": {
+          "depth": 4,
+          "nodes": 19003,
+          "score_cp": 1439,
+          "cutoffs": 942,
+          "qnodes": 17937,
+          "pvs_probes": 1126,
+          "pvs_researches": 6,
+          "killer_priorities": 840,
+          "history_priorities": 0,
+          "ordering_updates": 40,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.845
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 21,
+      "results": {
+        "fast": {
+          "depth": 4,
+          "nodes": 55257,
+          "score_cp": -1473,
+          "cutoffs": 2921,
+          "qnodes": 51949,
+          "pvs_probes": 1415,
+          "pvs_researches": 54,
+          "killer_priorities": 3969,
+          "history_priorities": 0,
+          "ordering_updates": 751,
+          "killer_fast_calls": 4595,
+          "elapsed_ms": 190.806
+        },
+        "control": {
+          "depth": 4,
+          "nodes": 50566,
+          "score_cp": -1473,
+          "cutoffs": 2262,
+          "qnodes": 47945,
+          "pvs_probes": 1263,
+          "pvs_researches": 47,
+          "killer_priorities": 3174,
+          "history_priorities": 0,
+          "ordering_updates": 717,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.747
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 47727,
+          "score_cp": -1369,
+          "cutoffs": 1950,
+          "qnodes": 45431,
+          "pvs_probes": 1187,
+          "pvs_researches": 42,
+          "killer_priorities": 2700,
+          "history_priorities": 0,
+          "ordering_updates": 660,
+          "elapsed_ms": 190.951
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 22,
+      "results": {
+        "control": {
+          "depth": 3,
+          "nodes": 43506,
+          "score_cp": -3004,
+          "cutoffs": 834,
+          "qnodes": 42393,
+          "pvs_probes": 1663,
+          "pvs_researches": 16,
+          "killer_priorities": 1192,
+          "history_priorities": 0,
+          "ordering_updates": 260,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.405
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 49457,
+          "score_cp": -3004,
+          "cutoffs": 1013,
+          "qnodes": 48114,
+          "pvs_probes": 1713,
+          "pvs_researches": 16,
+          "killer_priorities": 1575,
+          "history_priorities": 0,
+          "ordering_updates": 334,
+          "killer_fast_calls": 1788,
+          "elapsed_ms": 191.031
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 51262,
+          "score_cp": -3004,
+          "cutoffs": 1120,
+          "qnodes": 49801,
+          "pvs_probes": 1724,
+          "pvs_researches": 16,
+          "killer_priorities": 1795,
+          "history_priorities": 0,
+          "ordering_updates": 378,
+          "elapsed_ms": 191.186
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 0,
+      "position": 23,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 50389,
+          "score_cp": 10458,
+          "cutoffs": 295,
+          "qnodes": 50039,
+          "pvs_probes": 816,
+          "pvs_researches": 11,
+          "killer_priorities": 35,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.56
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 50946,
+          "score_cp": 10458,
+          "cutoffs": 300,
+          "qnodes": 50591,
+          "pvs_probes": 817,
+          "pvs_researches": 11,
+          "killer_priorities": 36,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "elapsed_ms": 191.381
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 51068,
+          "score_cp": 10458,
+          "cutoffs": 296,
+          "qnodes": 50716,
+          "pvs_probes": 821,
+          "pvs_researches": 11,
+          "killer_priorities": 40,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 5725,
+          "elapsed_ms": 191.31
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 0,
+      "results": {
+        "official_v2020": {
+          "depth": 4,
+          "nodes": 41761,
+          "score_cp": 1126,
+          "cutoffs": 4666,
+          "qnodes": 36534,
+          "pvs_probes": 1457,
+          "pvs_researches": 47,
+          "killer_priorities": 6656,
+          "history_priorities": 0,
+          "ordering_updates": 693,
+          "elapsed_ms": 191.456
+        },
+        "fast": {
+          "depth": 4,
+          "nodes": 40245,
+          "score_cp": 1126,
+          "cutoffs": 4458,
+          "qnodes": 35238,
+          "pvs_probes": 1451,
+          "pvs_researches": 47,
+          "killer_priorities": 6248,
+          "history_priorities": 0,
+          "ordering_updates": 685,
+          "killer_fast_calls": 6523,
+          "elapsed_ms": 191.061
+        },
+        "control": {
+          "depth": 4,
+          "nodes": 36004,
+          "score_cp": 1126,
+          "cutoffs": 4216,
+          "qnodes": 31327,
+          "pvs_probes": 1446,
+          "pvs_researches": 47,
+          "killer_priorities": 5853,
+          "history_priorities": 0,
+          "ordering_updates": 652,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.332
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 1,
+      "results": {
+        "fast": {
+          "depth": 3,
+          "nodes": 47744,
+          "score_cp": 736,
+          "cutoffs": 1770,
+          "qnodes": 45825,
+          "pvs_probes": 1000,
+          "pvs_researches": 18,
+          "killer_priorities": 1345,
+          "history_priorities": 0,
+          "ordering_updates": 33,
+          "killer_fast_calls": 8431,
+          "elapsed_ms": 191.244
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 45222,
+          "score_cp": 736,
+          "cutoffs": 1678,
+          "qnodes": 43403,
+          "pvs_probes": 992,
+          "pvs_researches": 18,
+          "killer_priorities": 1319,
+          "history_priorities": 0,
+          "ordering_updates": 32,
+          "elapsed_ms": 191.067
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 43139,
+          "score_cp": 736,
+          "cutoffs": 1552,
+          "qnodes": 41449,
+          "pvs_probes": 858,
+          "pvs_researches": 18,
+          "killer_priorities": 1310,
+          "history_priorities": 0,
+          "ordering_updates": 32,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.383
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 2,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 43821,
+          "score_cp": -3353,
+          "cutoffs": 1178,
+          "qnodes": 42486,
+          "pvs_probes": 2554,
+          "pvs_researches": 65,
+          "killer_priorities": 1958,
+          "history_priorities": 0,
+          "ordering_updates": 355,
+          "killer_fast_calls": 6753,
+          "elapsed_ms": 192.531
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 41330,
+          "score_cp": -3353,
+          "cutoffs": 1112,
+          "qnodes": 40063,
+          "pvs_probes": 2552,
+          "pvs_researches": 65,
+          "killer_priorities": 1830,
+          "history_priorities": 0,
+          "ordering_updates": 317,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.48
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 46854,
+          "score_cp": -3353,
+          "cutoffs": 1261,
+          "qnodes": 45422,
+          "pvs_probes": 2817,
+          "pvs_researches": 70,
+          "killer_priorities": 2105,
+          "history_priorities": 0,
+          "ordering_updates": 391,
+          "elapsed_ms": 191.479
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 3,
+      "results": {
+        "control": {
+          "depth": 3,
+          "nodes": 37886,
+          "score_cp": 2023,
+          "cutoffs": 1550,
+          "qnodes": 36088,
+          "pvs_probes": 1923,
+          "pvs_researches": 25,
+          "killer_priorities": 2311,
+          "history_priorities": 0,
+          "ordering_updates": 26,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.139
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 30808,
+          "score_cp": 1414,
+          "cutoffs": 1219,
+          "qnodes": 29376,
+          "pvs_probes": 1721,
+          "pvs_researches": 24,
+          "killer_priorities": 1698,
+          "history_priorities": 0,
+          "ordering_updates": 19,
+          "killer_fast_calls": 3030,
+          "elapsed_ms": 190.908
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 42108,
+          "score_cp": 2023,
+          "cutoffs": 1602,
+          "qnodes": 40201,
+          "pvs_probes": 2187,
+          "pvs_researches": 28,
+          "killer_priorities": 2413,
+          "history_priorities": 0,
+          "ordering_updates": 27,
+          "elapsed_ms": 190.859
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 4,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 54559,
+          "score_cp": 5205,
+          "cutoffs": 696,
+          "qnodes": 53678,
+          "pvs_probes": 1190,
+          "pvs_researches": 23,
+          "killer_priorities": 1100,
+          "history_priorities": 0,
+          "ordering_updates": 97,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 192.571
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 47639,
+          "score_cp": 5205,
+          "cutoffs": 605,
+          "qnodes": 46855,
+          "pvs_probes": 1183,
+          "pvs_researches": 23,
+          "killer_priorities": 924,
+          "history_priorities": 0,
+          "ordering_updates": 90,
+          "elapsed_ms": 191.062
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 47535,
+          "score_cp": 5205,
+          "cutoffs": 601,
+          "qnodes": 46754,
+          "pvs_probes": 1183,
+          "pvs_researches": 23,
+          "killer_priorities": 916,
+          "history_priorities": 0,
+          "ordering_updates": 90,
+          "killer_fast_calls": 7453,
+          "elapsed_ms": 191.062
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 5,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 42543,
+          "score_cp": 5415,
+          "cutoffs": 520,
+          "qnodes": 41870,
+          "pvs_probes": 1441,
+          "pvs_researches": 45,
+          "killer_priorities": 908,
+          "history_priorities": 0,
+          "ordering_updates": 135,
+          "elapsed_ms": 191.217
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 43927,
+          "score_cp": 5415,
+          "cutoffs": 558,
+          "qnodes": 43217,
+          "pvs_probes": 1441,
+          "pvs_researches": 45,
+          "killer_priorities": 979,
+          "history_priorities": 0,
+          "ordering_updates": 146,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.559
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 43478,
+          "score_cp": 5415,
+          "cutoffs": 544,
+          "qnodes": 42780,
+          "pvs_probes": 1441,
+          "pvs_researches": 45,
+          "killer_priorities": 954,
+          "history_priorities": 0,
+          "ordering_updates": 143,
+          "killer_fast_calls": 3000,
+          "elapsed_ms": 191.231
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 6,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 40555,
+          "score_cp": 1619,
+          "cutoffs": 563,
+          "qnodes": 39953,
+          "pvs_probes": 784,
+          "pvs_researches": 8,
+          "killer_priorities": 624,
+          "history_priorities": 0,
+          "ordering_updates": 63,
+          "elapsed_ms": 190.972
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 42635,
+          "score_cp": 1619,
+          "cutoffs": 609,
+          "qnodes": 41984,
+          "pvs_probes": 801,
+          "pvs_researches": 8,
+          "killer_priorities": 694,
+          "history_priorities": 0,
+          "ordering_updates": 68,
+          "killer_fast_calls": 6852,
+          "elapsed_ms": 191.297
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 39985,
+          "score_cp": 1619,
+          "cutoffs": 564,
+          "qnodes": 39382,
+          "pvs_probes": 788,
+          "pvs_researches": 8,
+          "killer_priorities": 625,
+          "history_priorities": 0,
+          "ordering_updates": 62,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.929
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 7,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 45519,
+          "score_cp": -280,
+          "cutoffs": 1452,
+          "qnodes": 43550,
+          "pvs_probes": 3440,
+          "pvs_researches": 76,
+          "killer_priorities": 2438,
+          "history_priorities": 0,
+          "ordering_updates": 433,
+          "killer_fast_calls": 1875,
+          "elapsed_ms": 191.511
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 38899,
+          "score_cp": -280,
+          "cutoffs": 1340,
+          "qnodes": 37146,
+          "pvs_probes": 3026,
+          "pvs_researches": 71,
+          "killer_priorities": 2192,
+          "history_priorities": 0,
+          "ordering_updates": 423,
+          "elapsed_ms": 192.72
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 38837,
+          "score_cp": -280,
+          "cutoffs": 1334,
+          "qnodes": 37102,
+          "pvs_probes": 3008,
+          "pvs_researches": 71,
+          "killer_priorities": 2181,
+          "history_priorities": 0,
+          "ordering_updates": 417,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.389
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 8,
+      "results": {
+        "fast": {
+          "depth": 1,
+          "nodes": 39321,
+          "score_cp": -4742,
+          "cutoffs": 353,
+          "qnodes": 38943,
+          "pvs_probes": 1180,
+          "pvs_researches": 34,
+          "killer_priorities": 616,
+          "history_priorities": 0,
+          "ordering_updates": 221,
+          "killer_fast_calls": 5383,
+          "elapsed_ms": 191.943
+        },
+        "control": {
+          "depth": 1,
+          "nodes": 37404,
+          "score_cp": -4742,
+          "cutoffs": 334,
+          "qnodes": 37046,
+          "pvs_probes": 1133,
+          "pvs_researches": 30,
+          "killer_priorities": 582,
+          "history_priorities": 0,
+          "ordering_updates": 213,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.868
+        },
+        "official_v2020": {
+          "depth": 1,
+          "nodes": 36768,
+          "score_cp": -4742,
+          "cutoffs": 330,
+          "qnodes": 36414,
+          "pvs_probes": 1133,
+          "pvs_researches": 30,
+          "killer_priorities": 574,
+          "history_priorities": 0,
+          "ordering_updates": 211,
+          "elapsed_ms": 193.102
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 9,
+      "results": {
+        "control": {
+          "depth": 3,
+          "nodes": 42639,
+          "score_cp": 35,
+          "cutoffs": 2499,
+          "qnodes": 38882,
+          "pvs_probes": 4438,
+          "pvs_researches": 78,
+          "killer_priorities": 4994,
+          "history_priorities": 0,
+          "ordering_updates": 1410,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.791
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 44599,
+          "score_cp": 35,
+          "cutoffs": 2673,
+          "qnodes": 40638,
+          "pvs_probes": 4593,
+          "pvs_researches": 83,
+          "killer_priorities": 5329,
+          "history_priorities": 0,
+          "ordering_updates": 1509,
+          "killer_fast_calls": 4388,
+          "elapsed_ms": 190.813
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 41187,
+          "score_cp": 35,
+          "cutoffs": 2286,
+          "qnodes": 37659,
+          "pvs_probes": 4435,
+          "pvs_researches": 78,
+          "killer_priorities": 4667,
+          "history_priorities": 0,
+          "ordering_updates": 1367,
+          "elapsed_ms": 191.181
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 10,
+      "results": {
+        "control": {
+          "depth": 3,
+          "nodes": 42851,
+          "score_cp": -395,
+          "cutoffs": 1058,
+          "qnodes": 41467,
+          "pvs_probes": 2027,
+          "pvs_researches": 33,
+          "killer_priorities": 1343,
+          "history_priorities": 0,
+          "ordering_updates": 251,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.945
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 51332,
+          "score_cp": -395,
+          "cutoffs": 1253,
+          "qnodes": 49707,
+          "pvs_probes": 2064,
+          "pvs_researches": 33,
+          "killer_priorities": 1544,
+          "history_priorities": 0,
+          "ordering_updates": 287,
+          "elapsed_ms": 191.113
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 48169,
+          "score_cp": -395,
+          "cutoffs": 1162,
+          "qnodes": 46642,
+          "pvs_probes": 2058,
+          "pvs_researches": 33,
+          "killer_priorities": 1504,
+          "history_priorities": 0,
+          "ordering_updates": 282,
+          "killer_fast_calls": 5102,
+          "elapsed_ms": 190.908
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 11,
+      "results": {
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 49284,
+          "score_cp": -830,
+          "cutoffs": 1494,
+          "qnodes": 47289,
+          "pvs_probes": 2036,
+          "pvs_researches": 31,
+          "killer_priorities": 1893,
+          "history_priorities": 0,
+          "ordering_updates": 114,
+          "elapsed_ms": 191.343
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 44944,
+          "score_cp": -830,
+          "cutoffs": 1304,
+          "qnodes": 43151,
+          "pvs_probes": 2024,
+          "pvs_researches": 31,
+          "killer_priorities": 1779,
+          "history_priorities": 0,
+          "ordering_updates": 103,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.037
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 46466,
+          "score_cp": -830,
+          "cutoffs": 1746,
+          "qnodes": 44237,
+          "pvs_probes": 2019,
+          "pvs_researches": 31,
+          "killer_priorities": 1891,
+          "history_priorities": 0,
+          "ordering_updates": 101,
+          "killer_fast_calls": 6172,
+          "elapsed_ms": 190.958
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 12,
+      "results": {
+        "official_v2020": {
+          "depth": 4,
+          "nodes": 38000,
+          "score_cp": -760,
+          "cutoffs": 3898,
+          "qnodes": 33720,
+          "pvs_probes": 1548,
+          "pvs_researches": 19,
+          "killer_priorities": 4154,
+          "history_priorities": 0,
+          "ordering_updates": 248,
+          "elapsed_ms": 190.962
+        },
+        "fast": {
+          "depth": 4,
+          "nodes": 47755,
+          "score_cp": -760,
+          "cutoffs": 4773,
+          "qnodes": 42549,
+          "pvs_probes": 1597,
+          "pvs_researches": 19,
+          "killer_priorities": 5595,
+          "history_priorities": 0,
+          "ordering_updates": 418,
+          "killer_fast_calls": 6226,
+          "elapsed_ms": 190.824
+        },
+        "control": {
+          "depth": 4,
+          "nodes": 45489,
+          "score_cp": -760,
+          "cutoffs": 4497,
+          "qnodes": 40567,
+          "pvs_probes": 1590,
+          "pvs_researches": 19,
+          "killer_priorities": 5234,
+          "history_priorities": 0,
+          "ordering_updates": 344,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.841
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 13,
+      "results": {
+        "fast": {
+          "depth": 3,
+          "nodes": 53183,
+          "score_cp": 1919,
+          "cutoffs": 1202,
+          "qnodes": 51628,
+          "pvs_probes": 2226,
+          "pvs_researches": 29,
+          "killer_priorities": 1568,
+          "history_priorities": 0,
+          "ordering_updates": 207,
+          "killer_fast_calls": 8751,
+          "elapsed_ms": 190.87
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 52394,
+          "score_cp": 1919,
+          "cutoffs": 1251,
+          "qnodes": 50802,
+          "pvs_probes": 2213,
+          "pvs_researches": 29,
+          "killer_priorities": 1660,
+          "history_priorities": 0,
+          "ordering_updates": 248,
+          "elapsed_ms": 192.517
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 52368,
+          "score_cp": 1919,
+          "cutoffs": 1191,
+          "qnodes": 50832,
+          "pvs_probes": 2217,
+          "pvs_researches": 29,
+          "killer_priorities": 1547,
+          "history_priorities": 0,
+          "ordering_updates": 206,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.883
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 14,
+      "results": {
+        "fast": {
+          "depth": 3,
+          "nodes": 54294,
+          "score_cp": -5726,
+          "cutoffs": 1251,
+          "qnodes": 52397,
+          "pvs_probes": 2175,
+          "pvs_researches": 35,
+          "killer_priorities": 1944,
+          "history_priorities": 0,
+          "ordering_updates": 179,
+          "killer_fast_calls": 7529,
+          "elapsed_ms": 191.356
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 56909,
+          "score_cp": -5726,
+          "cutoffs": 1478,
+          "qnodes": 54783,
+          "pvs_probes": 2178,
+          "pvs_researches": 35,
+          "killer_priorities": 2315,
+          "history_priorities": 0,
+          "ordering_updates": 180,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.053
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 53470,
+          "score_cp": -5726,
+          "cutoffs": 1346,
+          "qnodes": 51483,
+          "pvs_probes": 2171,
+          "pvs_researches": 35,
+          "killer_priorities": 2130,
+          "history_priorities": 0,
+          "ordering_updates": 179,
+          "elapsed_ms": 191.052
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 15,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 51370,
+          "score_cp": -681,
+          "cutoffs": 1491,
+          "qnodes": 49640,
+          "pvs_probes": 3427,
+          "pvs_researches": 62,
+          "killer_priorities": 2527,
+          "history_priorities": 0,
+          "ordering_updates": 655,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.921
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 57770,
+          "score_cp": -406,
+          "cutoffs": 1827,
+          "qnodes": 55574,
+          "pvs_probes": 3926,
+          "pvs_researches": 69,
+          "killer_priorities": 3114,
+          "history_priorities": 0,
+          "ordering_updates": 723,
+          "killer_fast_calls": 8861,
+          "elapsed_ms": 195.118
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 56297,
+          "score_cp": -406,
+          "cutoffs": 1768,
+          "qnodes": 54166,
+          "pvs_probes": 3890,
+          "pvs_researches": 69,
+          "killer_priorities": 3028,
+          "history_priorities": 0,
+          "ordering_updates": 701,
+          "elapsed_ms": 191.018
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 16,
+      "results": {
+        "control": {
+          "depth": 3,
+          "nodes": 50465,
+          "score_cp": -1858,
+          "cutoffs": 1642,
+          "qnodes": 48230,
+          "pvs_probes": 2487,
+          "pvs_researches": 33,
+          "killer_priorities": 2456,
+          "history_priorities": 0,
+          "ordering_updates": 36,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.204
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 49127,
+          "score_cp": -1858,
+          "cutoffs": 1662,
+          "qnodes": 46885,
+          "pvs_probes": 2474,
+          "pvs_researches": 33,
+          "killer_priorities": 2495,
+          "history_priorities": 0,
+          "ordering_updates": 41,
+          "elapsed_ms": 191.019
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 54605,
+          "score_cp": -1858,
+          "cutoffs": 1789,
+          "qnodes": 52100,
+          "pvs_probes": 2741,
+          "pvs_researches": 36,
+          "killer_priorities": 2741,
+          "history_priorities": 0,
+          "ordering_updates": 49,
+          "killer_fast_calls": 3334,
+          "elapsed_ms": 190.855
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 17,
+      "results": {
+        "official_v2020": {
+          "depth": 4,
+          "nodes": 44995,
+          "score_cp": -1604,
+          "cutoffs": 2327,
+          "qnodes": 42006,
+          "pvs_probes": 1528,
+          "pvs_researches": 18,
+          "killer_priorities": 221,
+          "history_priorities": 0,
+          "ordering_updates": 14,
+          "elapsed_ms": 191.483
+        },
+        "control": {
+          "depth": 5,
+          "nodes": 46900,
+          "score_cp": -1730,
+          "cutoffs": 2375,
+          "qnodes": 43860,
+          "pvs_probes": 1536,
+          "pvs_researches": 22,
+          "killer_priorities": 263,
+          "history_priorities": 0,
+          "ordering_updates": 16,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.541
+        },
+        "fast": {
+          "depth": 5,
+          "nodes": 48953,
+          "score_cp": -1730,
+          "cutoffs": 2466,
+          "qnodes": 45818,
+          "pvs_probes": 1675,
+          "pvs_researches": 25,
+          "killer_priorities": 354,
+          "history_priorities": 0,
+          "ordering_updates": 26,
+          "killer_fast_calls": 12006,
+          "elapsed_ms": 191.348
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 18,
+      "results": {
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 53664,
+          "score_cp": -30,
+          "cutoffs": 1885,
+          "qnodes": 51337,
+          "pvs_probes": 1534,
+          "pvs_researches": 56,
+          "killer_priorities": 3618,
+          "history_priorities": 0,
+          "ordering_updates": 841,
+          "elapsed_ms": 191.408
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 61236,
+          "score_cp": -30,
+          "cutoffs": 2198,
+          "qnodes": 58535,
+          "pvs_probes": 1641,
+          "pvs_researches": 59,
+          "killer_priorities": 4243,
+          "history_priorities": 0,
+          "ordering_updates": 1046,
+          "killer_fast_calls": 7137,
+          "elapsed_ms": 190.815
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 54791,
+          "score_cp": -30,
+          "cutoffs": 1960,
+          "qnodes": 52400,
+          "pvs_probes": 1471,
+          "pvs_researches": 55,
+          "killer_priorities": 3762,
+          "history_priorities": 0,
+          "ordering_updates": 888,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.868
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 19,
+      "results": {
+        "fast": {
+          "depth": 3,
+          "nodes": 49951,
+          "score_cp": -2854,
+          "cutoffs": 1177,
+          "qnodes": 48442,
+          "pvs_probes": 3605,
+          "pvs_researches": 66,
+          "killer_priorities": 2228,
+          "history_priorities": 0,
+          "ordering_updates": 424,
+          "killer_fast_calls": 3515,
+          "elapsed_ms": 191.049
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 56430,
+          "score_cp": -2854,
+          "cutoffs": 1247,
+          "qnodes": 54735,
+          "pvs_probes": 4135,
+          "pvs_researches": 72,
+          "killer_priorities": 2397,
+          "history_priorities": 0,
+          "ordering_updates": 476,
+          "elapsed_ms": 191.084
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 51477,
+          "score_cp": -2854,
+          "cutoffs": 1181,
+          "qnodes": 49956,
+          "pvs_probes": 3726,
+          "pvs_researches": 70,
+          "killer_priorities": 2240,
+          "history_priorities": 0,
+          "ordering_updates": 427,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.882
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 20,
+      "results": {
+        "fast": {
+          "depth": 4,
+          "nodes": 20505,
+          "score_cp": 1439,
+          "cutoffs": 1114,
+          "qnodes": 19267,
+          "pvs_probes": 1127,
+          "pvs_researches": 6,
+          "killer_priorities": 953,
+          "history_priorities": 0,
+          "ordering_updates": 43,
+          "killer_fast_calls": 2876,
+          "elapsed_ms": 191.052
+        },
+        "control": {
+          "depth": 4,
+          "nodes": 19910,
+          "score_cp": 1439,
+          "cutoffs": 1054,
+          "qnodes": 18732,
+          "pvs_probes": 1127,
+          "pvs_researches": 6,
+          "killer_priorities": 897,
+          "history_priorities": 0,
+          "ordering_updates": 42,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.84
+        },
+        "official_v2020": {
+          "depth": 4,
+          "nodes": 18841,
+          "score_cp": 1439,
+          "cutoffs": 919,
+          "qnodes": 17800,
+          "pvs_probes": 1125,
+          "pvs_researches": 6,
+          "killer_priorities": 833,
+          "history_priorities": 0,
+          "ordering_updates": 40,
+          "elapsed_ms": 191.234
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 21,
+      "results": {
+        "control": {
+          "depth": 4,
+          "nodes": 55086,
+          "score_cp": -1473,
+          "cutoffs": 2493,
+          "qnodes": 52167,
+          "pvs_probes": 1455,
+          "pvs_researches": 54,
+          "killer_priorities": 3565,
+          "history_priorities": 0,
+          "ordering_updates": 768,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.964
+        },
+        "fast": {
+          "depth": 4,
+          "nodes": 57441,
+          "score_cp": -1473,
+          "cutoffs": 3593,
+          "qnodes": 53448,
+          "pvs_probes": 1347,
+          "pvs_researches": 49,
+          "killer_priorities": 4591,
+          "history_priorities": 0,
+          "ordering_updates": 732,
+          "killer_fast_calls": 5261,
+          "elapsed_ms": 191.003
+        },
+        "official_v2020": {
+          "depth": 4,
+          "nodes": 49541,
+          "score_cp": -1473,
+          "cutoffs": 2121,
+          "qnodes": 47066,
+          "pvs_probes": 1225,
+          "pvs_researches": 46,
+          "killer_priorities": 3000,
+          "history_priorities": 0,
+          "ordering_updates": 714,
+          "elapsed_ms": 190.777
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 22,
+      "results": {
+        "control": {
+          "depth": 3,
+          "nodes": 45986,
+          "score_cp": -3004,
+          "cutoffs": 858,
+          "qnodes": 44825,
+          "pvs_probes": 1687,
+          "pvs_researches": 16,
+          "killer_priorities": 1259,
+          "history_priorities": 0,
+          "ordering_updates": 267,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.058
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 43454,
+          "score_cp": -3004,
+          "cutoffs": 834,
+          "qnodes": 42342,
+          "pvs_probes": 1663,
+          "pvs_researches": 16,
+          "killer_priorities": 1185,
+          "history_priorities": 0,
+          "ordering_updates": 258,
+          "elapsed_ms": 191.017
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 55243,
+          "score_cp": -3004,
+          "cutoffs": 1556,
+          "qnodes": 53316,
+          "pvs_probes": 1753,
+          "pvs_researches": 16,
+          "killer_priorities": 2628,
+          "history_priorities": 0,
+          "ordering_updates": 410,
+          "killer_fast_calls": 2430,
+          "elapsed_ms": 190.927
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 1,
+      "position": 23,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 61604,
+          "score_cp": 10458,
+          "cutoffs": 393,
+          "qnodes": 61153,
+          "pvs_probes": 848,
+          "pvs_researches": 11,
+          "killer_priorities": 64,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "elapsed_ms": 191.191
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 48886,
+          "score_cp": 10458,
+          "cutoffs": 285,
+          "qnodes": 48545,
+          "pvs_probes": 814,
+          "pvs_researches": 11,
+          "killer_priorities": 33,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.179
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 57919,
+          "score_cp": 10458,
+          "cutoffs": 353,
+          "qnodes": 57509,
+          "pvs_probes": 831,
+          "pvs_researches": 11,
+          "killer_priorities": 47,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 6522,
+          "elapsed_ms": 191.566
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 0,
+      "results": {
+        "fast": {
+          "depth": 4,
+          "nodes": 52044,
+          "score_cp": 1126,
+          "cutoffs": 4913,
+          "qnodes": 46342,
+          "pvs_probes": 1463,
+          "pvs_researches": 47,
+          "killer_priorities": 7137,
+          "history_priorities": 0,
+          "ordering_updates": 730,
+          "killer_fast_calls": 7337,
+          "elapsed_ms": 190.939
+        },
+        "official_v2020": {
+          "depth": 4,
+          "nodes": 50783,
+          "score_cp": 1126,
+          "cutoffs": 4878,
+          "qnodes": 45146,
+          "pvs_probes": 1462,
+          "pvs_researches": 47,
+          "killer_priorities": 7062,
+          "history_priorities": 0,
+          "ordering_updates": 727,
+          "elapsed_ms": 190.815
+        },
+        "control": {
+          "depth": 4,
+          "nodes": 47297,
+          "score_cp": 1126,
+          "cutoffs": 4800,
+          "qnodes": 41815,
+          "pvs_probes": 1461,
+          "pvs_researches": 47,
+          "killer_priorities": 6877,
+          "history_priorities": 0,
+          "ordering_updates": 697,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.611
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 1,
+      "results": {
+        "fast": {
+          "depth": 3,
+          "nodes": 49092,
+          "score_cp": 736,
+          "cutoffs": 1782,
+          "qnodes": 47153,
+          "pvs_probes": 1008,
+          "pvs_researches": 18,
+          "killer_priorities": 1364,
+          "history_priorities": 0,
+          "ordering_updates": 33,
+          "killer_fast_calls": 8639,
+          "elapsed_ms": 190.997
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 50697,
+          "score_cp": 736,
+          "cutoffs": 1858,
+          "qnodes": 48680,
+          "pvs_probes": 1010,
+          "pvs_researches": 18,
+          "killer_priorities": 1430,
+          "history_priorities": 0,
+          "ordering_updates": 35,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.227
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 48019,
+          "score_cp": 736,
+          "cutoffs": 1773,
+          "qnodes": 46096,
+          "pvs_probes": 1002,
+          "pvs_researches": 18,
+          "killer_priorities": 1350,
+          "history_priorities": 0,
+          "ordering_updates": 33,
+          "elapsed_ms": 191.043
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 2,
+      "results": {
+        "control": {
+          "depth": 2,
+          "nodes": 40993,
+          "score_cp": -3353,
+          "cutoffs": 1100,
+          "qnodes": 39737,
+          "pvs_probes": 2552,
+          "pvs_researches": 65,
+          "killer_priorities": 1811,
+          "history_priorities": 0,
+          "ordering_updates": 316,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.238
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 49163,
+          "score_cp": -3268,
+          "cutoffs": 1284,
+          "qnodes": 47695,
+          "pvs_probes": 2766,
+          "pvs_researches": 71,
+          "killer_priorities": 2128,
+          "history_priorities": 0,
+          "ordering_updates": 401,
+          "killer_fast_calls": 7584,
+          "elapsed_ms": 191.098
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 41632,
+          "score_cp": -3353,
+          "cutoffs": 1116,
+          "qnodes": 40360,
+          "pvs_probes": 2552,
+          "pvs_researches": 65,
+          "killer_priorities": 1838,
+          "history_priorities": 0,
+          "ordering_updates": 321,
+          "elapsed_ms": 191.356
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 3,
+      "results": {
+        "control": {
+          "depth": 3,
+          "nodes": 37548,
+          "score_cp": 2023,
+          "cutoffs": 1493,
+          "qnodes": 35809,
+          "pvs_probes": 1922,
+          "pvs_researches": 24,
+          "killer_priorities": 2199,
+          "history_priorities": 0,
+          "ordering_updates": 25,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.768
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 36996,
+          "score_cp": 2023,
+          "cutoffs": 1441,
+          "qnodes": 35312,
+          "pvs_probes": 1919,
+          "pvs_researches": 24,
+          "killer_priorities": 2100,
+          "history_priorities": 0,
+          "ordering_updates": 25,
+          "elapsed_ms": 190.92
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 41450,
+          "score_cp": 2023,
+          "cutoffs": 1583,
+          "qnodes": 39579,
+          "pvs_probes": 2274,
+          "pvs_researches": 30,
+          "killer_priorities": 2383,
+          "history_priorities": 0,
+          "ordering_updates": 26,
+          "killer_fast_calls": 4076,
+          "elapsed_ms": 190.863
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 4,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 47722,
+          "score_cp": 5205,
+          "cutoffs": 609,
+          "qnodes": 46935,
+          "pvs_probes": 1182,
+          "pvs_researches": 23,
+          "killer_priorities": 931,
+          "history_priorities": 0,
+          "ordering_updates": 90,
+          "elapsed_ms": 191.171
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 44417,
+          "score_cp": 5205,
+          "cutoffs": 572,
+          "qnodes": 43668,
+          "pvs_probes": 1179,
+          "pvs_researches": 23,
+          "killer_priorities": 868,
+          "history_priorities": 0,
+          "ordering_updates": 86,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.074
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 45547,
+          "score_cp": 5205,
+          "cutoffs": 580,
+          "qnodes": 44789,
+          "pvs_probes": 1182,
+          "pvs_researches": 23,
+          "killer_priorities": 887,
+          "history_priorities": 0,
+          "ordering_updates": 88,
+          "killer_fast_calls": 7148,
+          "elapsed_ms": 191.146
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 5,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 45933,
+          "score_cp": 5415,
+          "cutoffs": 608,
+          "qnodes": 45173,
+          "pvs_probes": 1441,
+          "pvs_researches": 45,
+          "killer_priorities": 1071,
+          "history_priorities": 0,
+          "ordering_updates": 151,
+          "elapsed_ms": 191.411
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 45260,
+          "score_cp": 5415,
+          "cutoffs": 606,
+          "qnodes": 44502,
+          "pvs_probes": 1441,
+          "pvs_researches": 45,
+          "killer_priorities": 1067,
+          "history_priorities": 0,
+          "ordering_updates": 150,
+          "killer_fast_calls": 3171,
+          "elapsed_ms": 191.574
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 46842,
+          "score_cp": 5415,
+          "cutoffs": 608,
+          "qnodes": 46082,
+          "pvs_probes": 1441,
+          "pvs_researches": 45,
+          "killer_priorities": 1071,
+          "history_priorities": 0,
+          "ordering_updates": 151,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.632
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 6,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 39447,
+          "score_cp": 1619,
+          "cutoffs": 561,
+          "qnodes": 38847,
+          "pvs_probes": 782,
+          "pvs_researches": 8,
+          "killer_priorities": 619,
+          "history_priorities": 0,
+          "ordering_updates": 61,
+          "killer_fast_calls": 6270,
+          "elapsed_ms": 190.969
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 45335,
+          "score_cp": 1619,
+          "cutoffs": 677,
+          "qnodes": 44616,
+          "pvs_probes": 802,
+          "pvs_researches": 8,
+          "killer_priorities": 758,
+          "history_priorities": 0,
+          "ordering_updates": 72,
+          "elapsed_ms": 191.252
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 42769,
+          "score_cp": 1619,
+          "cutoffs": 607,
+          "qnodes": 42120,
+          "pvs_probes": 801,
+          "pvs_researches": 8,
+          "killer_priorities": 692,
+          "history_priorities": 0,
+          "ordering_updates": 68,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.099
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 7,
+      "results": {
+        "fast": {
+          "depth": 2,
+          "nodes": 42801,
+          "score_cp": -280,
+          "cutoffs": 1421,
+          "qnodes": 40886,
+          "pvs_probes": 3415,
+          "pvs_researches": 76,
+          "killer_priorities": 2353,
+          "history_priorities": 0,
+          "ordering_updates": 429,
+          "killer_fast_calls": 1818,
+          "elapsed_ms": 191.525
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 47520,
+          "score_cp": -280,
+          "cutoffs": 1477,
+          "qnodes": 45501,
+          "pvs_probes": 3464,
+          "pvs_researches": 76,
+          "killer_priorities": 2519,
+          "history_priorities": 0,
+          "ordering_updates": 445,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.541
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 49079,
+          "score_cp": -280,
+          "cutoffs": 1495,
+          "qnodes": 47024,
+          "pvs_probes": 3482,
+          "pvs_researches": 76,
+          "killer_priorities": 2551,
+          "history_priorities": 0,
+          "ordering_updates": 451,
+          "elapsed_ms": 191.625
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 8,
+      "results": {
+        "control": {
+          "depth": 1,
+          "nodes": 42857,
+          "score_cp": -4742,
+          "cutoffs": 365,
+          "qnodes": 42351,
+          "pvs_probes": 1949,
+          "pvs_researches": 45,
+          "killer_priorities": 645,
+          "history_priorities": 0,
+          "ordering_updates": 229,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 192.068
+        },
+        "fast": {
+          "depth": 1,
+          "nodes": 45586,
+          "score_cp": -4742,
+          "cutoffs": 389,
+          "qnodes": 45055,
+          "pvs_probes": 1964,
+          "pvs_researches": 45,
+          "killer_priorities": 691,
+          "history_priorities": 0,
+          "ordering_updates": 248,
+          "killer_fast_calls": 5972,
+          "elapsed_ms": 192.361
+        },
+        "official_v2020": {
+          "depth": 1,
+          "nodes": 43575,
+          "score_cp": -4742,
+          "cutoffs": 373,
+          "qnodes": 43061,
+          "pvs_probes": 1958,
+          "pvs_researches": 45,
+          "killer_priorities": 660,
+          "history_priorities": 0,
+          "ordering_updates": 235,
+          "elapsed_ms": 191.974
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 9,
+      "results": {
+        "control": {
+          "depth": 3,
+          "nodes": 45789,
+          "score_cp": 35,
+          "cutoffs": 2768,
+          "qnodes": 41732,
+          "pvs_probes": 4594,
+          "pvs_researches": 83,
+          "killer_priorities": 5508,
+          "history_priorities": 0,
+          "ordering_updates": 1554,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.907
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 53211,
+          "score_cp": 35,
+          "cutoffs": 3619,
+          "qnodes": 48058,
+          "pvs_probes": 4981,
+          "pvs_researches": 85,
+          "killer_priorities": 6959,
+          "history_priorities": 0,
+          "ordering_updates": 2028,
+          "elapsed_ms": 190.925
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 55038,
+          "score_cp": 35,
+          "cutoffs": 3899,
+          "qnodes": 49599,
+          "pvs_probes": 4987,
+          "pvs_researches": 85,
+          "killer_priorities": 7425,
+          "history_priorities": 0,
+          "ordering_updates": 2161,
+          "killer_fast_calls": 6162,
+          "elapsed_ms": 190.835
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 10,
+      "results": {
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 48828,
+          "score_cp": -395,
+          "cutoffs": 1193,
+          "qnodes": 47263,
+          "pvs_probes": 2064,
+          "pvs_researches": 33,
+          "killer_priorities": 1526,
+          "history_priorities": 0,
+          "ordering_updates": 286,
+          "elapsed_ms": 190.993
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 54017,
+          "score_cp": -395,
+          "cutoffs": 1360,
+          "qnodes": 52276,
+          "pvs_probes": 2069,
+          "pvs_researches": 33,
+          "killer_priorities": 1663,
+          "history_priorities": 0,
+          "ordering_updates": 296,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.135
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 56599,
+          "score_cp": -395,
+          "cutoffs": 1505,
+          "qnodes": 54692,
+          "pvs_probes": 2087,
+          "pvs_researches": 33,
+          "killer_priorities": 1938,
+          "history_priorities": 0,
+          "ordering_updates": 308,
+          "killer_fast_calls": 6355,
+          "elapsed_ms": 190.968
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 11,
+      "results": {
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 43793,
+          "score_cp": -830,
+          "cutoffs": 1418,
+          "qnodes": 41966,
+          "pvs_probes": 1932,
+          "pvs_researches": 31,
+          "killer_priorities": 1793,
+          "history_priorities": 0,
+          "ordering_updates": 99,
+          "elapsed_ms": 190.959
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 48265,
+          "score_cp": -830,
+          "cutoffs": 1746,
+          "qnodes": 46025,
+          "pvs_probes": 2029,
+          "pvs_researches": 31,
+          "killer_priorities": 1915,
+          "history_priorities": 0,
+          "ordering_updates": 107,
+          "killer_fast_calls": 6370,
+          "elapsed_ms": 191.128
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 47720,
+          "score_cp": -830,
+          "cutoffs": 1678,
+          "qnodes": 45549,
+          "pvs_probes": 2028,
+          "pvs_researches": 31,
+          "killer_priorities": 1884,
+          "history_priorities": 0,
+          "ordering_updates": 106,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.241
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 12,
+      "results": {
+        "fast": {
+          "depth": 4,
+          "nodes": 43459,
+          "score_cp": -760,
+          "cutoffs": 4391,
+          "qnodes": 38645,
+          "pvs_probes": 1587,
+          "pvs_researches": 19,
+          "killer_priorities": 4972,
+          "history_priorities": 0,
+          "ordering_updates": 335,
+          "killer_fast_calls": 5756,
+          "elapsed_ms": 190.933
+        },
+        "official_v2020": {
+          "depth": 4,
+          "nodes": 46752,
+          "score_cp": -760,
+          "cutoffs": 4659,
+          "qnodes": 41663,
+          "pvs_probes": 1594,
+          "pvs_researches": 19,
+          "killer_priorities": 5480,
+          "history_priorities": 0,
+          "ordering_updates": 414,
+          "elapsed_ms": 191.176
+        },
+        "control": {
+          "depth": 4,
+          "nodes": 43050,
+          "score_cp": -760,
+          "cutoffs": 4292,
+          "qnodes": 38338,
+          "pvs_probes": 1584,
+          "pvs_researches": 19,
+          "killer_priorities": 4854,
+          "history_priorities": 0,
+          "ordering_updates": 323,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.943
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 13,
+      "results": {
+        "fast": {
+          "depth": 3,
+          "nodes": 48291,
+          "score_cp": 1919,
+          "cutoffs": 1081,
+          "qnodes": 46914,
+          "pvs_probes": 2170,
+          "pvs_researches": 29,
+          "killer_priorities": 1346,
+          "history_priorities": 0,
+          "ordering_updates": 175,
+          "killer_fast_calls": 8481,
+          "elapsed_ms": 190.891
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 53282,
+          "score_cp": 1919,
+          "cutoffs": 1114,
+          "qnodes": 51808,
+          "pvs_probes": 2233,
+          "pvs_researches": 29,
+          "killer_priorities": 1450,
+          "history_priorities": 0,
+          "ordering_updates": 175,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.923
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 53369,
+          "score_cp": 1919,
+          "cutoffs": 1236,
+          "qnodes": 51780,
+          "pvs_probes": 2226,
+          "pvs_researches": 29,
+          "killer_priorities": 1633,
+          "history_priorities": 0,
+          "ordering_updates": 231,
+          "elapsed_ms": 190.955
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 14,
+      "results": {
+        "control": {
+          "depth": 3,
+          "nodes": 50902,
+          "score_cp": -5726,
+          "cutoffs": 1214,
+          "qnodes": 49053,
+          "pvs_probes": 2165,
+          "pvs_researches": 35,
+          "killer_priorities": 1884,
+          "history_priorities": 0,
+          "ordering_updates": 175,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.994
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 50917,
+          "score_cp": -5726,
+          "cutoffs": 1212,
+          "qnodes": 49070,
+          "pvs_probes": 2165,
+          "pvs_researches": 35,
+          "killer_priorities": 1882,
+          "history_priorities": 0,
+          "ordering_updates": 175,
+          "killer_fast_calls": 7118,
+          "elapsed_ms": 190.93
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 50887,
+          "score_cp": -5726,
+          "cutoffs": 1262,
+          "qnodes": 48992,
+          "pvs_probes": 2163,
+          "pvs_researches": 35,
+          "killer_priorities": 1967,
+          "history_priorities": 0,
+          "ordering_updates": 179,
+          "elapsed_ms": 191.468
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 15,
+      "results": {
+        "control": {
+          "depth": 3,
+          "nodes": 58738,
+          "score_cp": -406,
+          "cutoffs": 1898,
+          "qnodes": 56470,
+          "pvs_probes": 3934,
+          "pvs_researches": 71,
+          "killer_priorities": 3253,
+          "history_priorities": 0,
+          "ordering_updates": 747,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.761
+        },
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 51059,
+          "score_cp": -681,
+          "cutoffs": 1481,
+          "qnodes": 49338,
+          "pvs_probes": 3428,
+          "pvs_researches": 62,
+          "killer_priorities": 2500,
+          "history_priorities": 0,
+          "ordering_updates": 627,
+          "elapsed_ms": 190.816
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 49718,
+          "score_cp": -681,
+          "cutoffs": 1334,
+          "qnodes": 48151,
+          "pvs_probes": 3381,
+          "pvs_researches": 62,
+          "killer_priorities": 2305,
+          "history_priorities": 0,
+          "ordering_updates": 603,
+          "killer_fast_calls": 7581,
+          "elapsed_ms": 190.924
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 16,
+      "results": {
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 51549,
+          "score_cp": -1858,
+          "cutoffs": 1684,
+          "qnodes": 49161,
+          "pvs_probes": 2730,
+          "pvs_researches": 36,
+          "killer_priorities": 2546,
+          "history_priorities": 0,
+          "ordering_updates": 41,
+          "elapsed_ms": 190.976
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 51935,
+          "score_cp": -1858,
+          "cutoffs": 1700,
+          "qnodes": 49631,
+          "pvs_probes": 2497,
+          "pvs_researches": 33,
+          "killer_priorities": 2571,
+          "history_priorities": 0,
+          "ordering_updates": 35,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.145
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 46784,
+          "score_cp": -1858,
+          "cutoffs": 1498,
+          "qnodes": 44718,
+          "pvs_probes": 2462,
+          "pvs_researches": 33,
+          "killer_priorities": 2208,
+          "history_priorities": 0,
+          "ordering_updates": 29,
+          "killer_fast_calls": 2765,
+          "elapsed_ms": 190.996
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 17,
+      "results": {
+        "official_v2020": {
+          "depth": 5,
+          "nodes": 46249,
+          "score_cp": -1730,
+          "cutoffs": 2317,
+          "qnodes": 43267,
+          "pvs_probes": 1561,
+          "pvs_researches": 24,
+          "killer_priorities": 209,
+          "history_priorities": 0,
+          "ordering_updates": 15,
+          "elapsed_ms": 191.409
+        },
+        "fast": {
+          "depth": 4,
+          "nodes": 42727,
+          "score_cp": -1604,
+          "cutoffs": 2197,
+          "qnodes": 39892,
+          "pvs_probes": 1505,
+          "pvs_researches": 18,
+          "killer_priorities": 142,
+          "history_priorities": 0,
+          "ordering_updates": 10,
+          "killer_fast_calls": 10677,
+          "elapsed_ms": 191.238
+        },
+        "control": {
+          "depth": 4,
+          "nodes": 44253,
+          "score_cp": -1604,
+          "cutoffs": 2262,
+          "qnodes": 41351,
+          "pvs_probes": 1507,
+          "pvs_researches": 18,
+          "killer_priorities": 199,
+          "history_priorities": 0,
+          "ordering_updates": 14,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.425
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 18,
+      "results": {
+        "fast": {
+          "depth": 3,
+          "nodes": 56564,
+          "score_cp": -30,
+          "cutoffs": 1994,
+          "qnodes": 54122,
+          "pvs_probes": 1537,
+          "pvs_researches": 56,
+          "killer_priorities": 3835,
+          "history_priorities": 0,
+          "ordering_updates": 912,
+          "killer_fast_calls": 6571,
+          "elapsed_ms": 190.759
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 56777,
+          "score_cp": -30,
+          "cutoffs": 2000,
+          "qnodes": 54330,
+          "pvs_probes": 1537,
+          "pvs_researches": 56,
+          "killer_priorities": 3846,
+          "history_priorities": 0,
+          "ordering_updates": 917,
+          "elapsed_ms": 190.758
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 61132,
+          "score_cp": -30,
+          "cutoffs": 2159,
+          "qnodes": 58465,
+          "pvs_probes": 1644,
+          "pvs_researches": 59,
+          "killer_priorities": 4170,
+          "history_priorities": 0,
+          "ordering_updates": 1024,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.863
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 19,
+      "results": {
+        "fast": {
+          "depth": 3,
+          "nodes": 50386,
+          "score_cp": -2854,
+          "cutoffs": 1180,
+          "qnodes": 48870,
+          "pvs_probes": 3480,
+          "pvs_researches": 65,
+          "killer_priorities": 2232,
+          "history_priorities": 0,
+          "ordering_updates": 427,
+          "killer_fast_calls": 3515,
+          "elapsed_ms": 190.964
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 51145,
+          "score_cp": -2854,
+          "cutoffs": 1188,
+          "qnodes": 49586,
+          "pvs_probes": 3916,
+          "pvs_researches": 69,
+          "killer_priorities": 2258,
+          "history_priorities": 0,
+          "ordering_updates": 432,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.895
+        },
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 56035,
+          "score_cp": -2854,
+          "cutoffs": 1209,
+          "qnodes": 54380,
+          "pvs_probes": 4225,
+          "pvs_researches": 75,
+          "killer_priorities": 2315,
+          "history_priorities": 0,
+          "ordering_updates": 449,
+          "elapsed_ms": 191.08
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 20,
+      "results": {
+        "control": {
+          "depth": 4,
+          "nodes": 18236,
+          "score_cp": 1439,
+          "cutoffs": 850,
+          "qnodes": 17264,
+          "pvs_probes": 1125,
+          "pvs_researches": 6,
+          "killer_priorities": 766,
+          "history_priorities": 0,
+          "ordering_updates": 37,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.835
+        },
+        "fast": {
+          "depth": 4,
+          "nodes": 20357,
+          "score_cp": 1439,
+          "cutoffs": 1099,
+          "qnodes": 19134,
+          "pvs_probes": 1127,
+          "pvs_researches": 6,
+          "killer_priorities": 940,
+          "history_priorities": 0,
+          "ordering_updates": 43,
+          "killer_fast_calls": 2850,
+          "elapsed_ms": 191.083
+        },
+        "official_v2020": {
+          "depth": 4,
+          "nodes": 18998,
+          "score_cp": 1439,
+          "cutoffs": 942,
+          "qnodes": 17933,
+          "pvs_probes": 1126,
+          "pvs_researches": 6,
+          "killer_priorities": 840,
+          "history_priorities": 0,
+          "ordering_updates": 40,
+          "elapsed_ms": 190.8
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 21,
+      "results": {
+        "control": {
+          "depth": 4,
+          "nodes": 56731,
+          "score_cp": -1473,
+          "cutoffs": 2864,
+          "qnodes": 53432,
+          "pvs_probes": 1464,
+          "pvs_researches": 54,
+          "killer_priorities": 3957,
+          "history_priorities": 0,
+          "ordering_updates": 768,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 190.916
+        },
+        "official_v2020": {
+          "depth": 4,
+          "nodes": 60017,
+          "score_cp": -1473,
+          "cutoffs": 2862,
+          "qnodes": 56664,
+          "pvs_probes": 1576,
+          "pvs_researches": 57,
+          "killer_priorities": 4054,
+          "history_priorities": 0,
+          "ordering_updates": 796,
+          "elapsed_ms": 190.965
+        },
+        "fast": {
+          "depth": 4,
+          "nodes": 62899,
+          "score_cp": -1473,
+          "cutoffs": 3487,
+          "qnodes": 58899,
+          "pvs_probes": 1591,
+          "pvs_researches": 57,
+          "killer_priorities": 4756,
+          "history_priorities": 0,
+          "ordering_updates": 806,
+          "killer_fast_calls": 5387,
+          "elapsed_ms": 191.019
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 22,
+      "results": {
+        "official_v2020": {
+          "depth": 3,
+          "nodes": 53585,
+          "score_cp": -3004,
+          "cutoffs": 1301,
+          "qnodes": 51921,
+          "pvs_probes": 1744,
+          "pvs_researches": 16,
+          "killer_priorities": 2143,
+          "history_priorities": 0,
+          "ordering_updates": 390,
+          "elapsed_ms": 191.103
+        },
+        "control": {
+          "depth": 3,
+          "nodes": 52519,
+          "score_cp": -3004,
+          "cutoffs": 1136,
+          "qnodes": 51026,
+          "pvs_probes": 1739,
+          "pvs_researches": 16,
+          "killer_priorities": 1819,
+          "history_priorities": 0,
+          "ordering_updates": 362,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.151
+        },
+        "fast": {
+          "depth": 3,
+          "nodes": 50032,
+          "score_cp": -3004,
+          "cutoffs": 1127,
+          "qnodes": 48578,
+          "pvs_probes": 1711,
+          "pvs_researches": 16,
+          "killer_priorities": 1782,
+          "history_priorities": 0,
+          "ordering_updates": 366,
+          "killer_fast_calls": 1908,
+          "elapsed_ms": 191.304
+        }
+      }
+    },
+    {
+      "mode": "timed",
+      "repeat": 2,
+      "position": 23,
+      "results": {
+        "official_v2020": {
+          "depth": 2,
+          "nodes": 55164,
+          "score_cp": 10458,
+          "cutoffs": 327,
+          "qnodes": 54781,
+          "pvs_probes": 836,
+          "pvs_researches": 11,
+          "killer_priorities": 54,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "elapsed_ms": 191.503
+        },
+        "fast": {
+          "depth": 2,
+          "nodes": 54995,
+          "score_cp": 10458,
+          "cutoffs": 346,
+          "qnodes": 54592,
+          "pvs_probes": 815,
+          "pvs_researches": 11,
+          "killer_priorities": 32,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 6276,
+          "elapsed_ms": 191.232
+        },
+        "control": {
+          "depth": 2,
+          "nodes": 57785,
+          "score_cp": 10458,
+          "cutoffs": 351,
+          "qnodes": 57377,
+          "pvs_probes": 831,
+          "pvs_researches": 11,
+          "killer_priorities": 47,
+          "history_priorities": 0,
+          "ordering_updates": 1,
+          "killer_fast_calls": 0,
+          "elapsed_ms": 191.118
+        }
+      }
+    }
+  ]
+}

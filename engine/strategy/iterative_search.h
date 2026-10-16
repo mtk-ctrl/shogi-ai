@@ -2,6 +2,7 @@
 
 #include "strategy/alphabeta3_tt.h"
 #include "strategy/search_research.h"
+#include "strategy/quiet_killer_order.h"
 #include "strategy/position_knowledge.h"
 #include <optional>
 #include "strategy/move_hint_cache.h"
@@ -86,6 +87,7 @@ public:
         std::uint64_t legal_cache_replacements = 0;
         std::uint64_t pvs_probes = 0, pvs_researches = 0;
         std::uint64_t killer_priorities = 0, history_priorities = 0, ordering_updates = 0;
+        std::uint64_t killer_fast_calls = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -197,6 +199,8 @@ public:
     unsigned threads() const { return threads_; }
     void set_probe_mask(unsigned mask) { probe_mask_ = mask & 7u; }
     unsigned probe_mask() const { return probe_mask_; }
+    void set_ordering_fast(bool enabled) { ordering_fast_ = enabled; }
+    bool ordering_fast() const { return ordering_fast_; }
 
     SearchResult choose(rules::Position& position, int max_depth, SearchControl& control,
                         const std::vector<std::string>& allowed = {},
@@ -375,6 +379,7 @@ private:
         SUM_STAT(legal_cache_replacements);
         SUM_STAT(pvs_probes);SUM_STAT(pvs_researches);SUM_STAT(killer_priorities);
         SUM_STAT(history_priorities);SUM_STAT(ordering_updates);
+        SUM_STAT(killer_fast_calls);
 #undef SUM_STAT
         for(int i=0;i<4;++i)out.nodes_by_ply[i]=a.nodes_by_ply[i]+b.nodes_by_ply[i];
         out.seldepth=std::max(a.seldepth,b.seldepth);
@@ -400,6 +405,7 @@ private:
             lane.set_reuse_mask(reuse_mask_);lane.set_next_mask(next_mask_);
             lane.set_risk_verify(risk_verify_enabled_);
             lane.set_probe_mask(probe_mask_);
+            lane.set_ordering_fast(ordering_fast_);
             lane.set_quiescence_enabled(quiescence_enabled_);
             lane.set_threads(1);
             lane.position_knowledge_=position_knowledge_;lane.position_knowledge_enabled_=position_knowledge_enabled_;
@@ -1012,7 +1018,12 @@ private:
                 cell = {key, eval_epoch_, moves, result};
             }
         } else result = sort_moves();
-        if (probe_mask_ & 6) {
+        if (ordering_fast_ && (probe_mask_ & 6) == 2) {
+            ++stats_.killer_fast_calls;
+            const auto snapshot = p.snapshot();
+            stats_.killer_priorities += prioritize_quiet_killers(result, killers_[ply],
+                [&](const auto& move) { return quiet_key(snapshot, move) >= 0; });
+        } else if (probe_mask_ & 6) {
             const auto snapshot = p.snapshot();
             struct Quiet { std::string move; int killer, history; };
             std::vector<std::size_t> slots;
@@ -1061,6 +1072,7 @@ private:
     unsigned reuse_mask_ = DefaultSearchReuseMask;
     unsigned threads_=2;
     unsigned probe_mask_=DefaultSearchProbeMask;
+    bool ordering_fast_=false;
     std::array<std::array<std::string, 2>, MaxPly + 1> killers_{};
     std::array<std::array<int, 88 * 81>, 2> history_scores_{};
     bool capture_root_ties_=false;
