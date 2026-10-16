@@ -8,6 +8,9 @@ import json
 import math
 from pathlib import Path
 import statistics
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 import shogi
 
@@ -137,6 +140,11 @@ def audit(directory, candidate_ref, baseline_ref):
                 assert continuous
                 winning_color = continuous[0] ^ 1
                 assert g['winner'] == ('A' if (winning_color == shogi.BLACK) == g['a_black'] else 'B')
+        assert g['reason'] in ('checkmate','move_limit','fourfold_repetition','perpetual_check','declare_win'), 'unverified terminal reason'
+        if g['reason'] == 'declare_win':
+            from benchmarks.arena import can_declare_win
+            assert can_declare_win(board), (g['game_id'], 'invalid entering-king declaration')
+            assert g['winner'] == ('A' if (board.turn == shogi.BLACK) == g['a_black'] else 'B')
         reasons[g['reason']] += 1
         signatures[tuple(row['move'] for row in g['moves'])] += 1
         for side in ('A', 'B'):
@@ -182,6 +190,7 @@ def audit(directory, candidate_ref, baseline_ref):
         'score_a_approx_95_interval': aggregate['score_a_approx_95pct'],
         'color_assignment': color,
         'all_moves_legal_and_final_positions_verified': True,
+        'termination_rules_verified': True,
         'termination_reasons': dict(reasons),
         'duplicate_complete_move_sequences': sum(n-1 for n in signatures.values()),
         'binary_sha256': hashes,
