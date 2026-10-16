@@ -1,7 +1,7 @@
 {
-  "request_id": "v220-selfplay-fixed-model-speed-20261016",
-  "mode": "benchmark",
+  "request_id": "v220-selfplay-200-audit-20261017",
+  "mode": "audit",
   "candidate_ref": "b4b62876ce646d622122e0f2d6d7fd46664c2761",
   "baseline_ref": "79f463c0e024c1d0e893caad7153aa44240c2a4b",
-  "match_run": 0
+  "match_run": 38857839850
 }
