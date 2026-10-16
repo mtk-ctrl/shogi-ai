@@ -1,0 +1,76 @@
+name: Selfplay Outcome Learning Candidate
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/selfplay-learning-request.json"]
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: selfplay-learning-candidate
+  cancel-in-progress: false
+jobs:
+  learn:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GH_TOKEN: ${{ github.token }}
+      OPENBLAS_NUM_THREADS: "2"
+      OMP_NUM_THREADS: "2"
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validate request and existing workflow boundaries
+        id: request
+        run: |
+          python3 scripts/check_match_workflows.py
+          python3 scripts/check_workflow_inventory.py --strict
+          python3 - <<'PY'
+          import json,os,re
+          from pathlib import Path
+          d=json.loads(Path('.github/selfplay-learning-request.json').read_text())
+          assert set(d)=={'request_id','code_ref','source_ref','source_run'}
+          assert all(re.fullmatch('[0-9a-f]{40}',d[k]) for k in ('code_ref','source_ref'))
+          assert type(d['source_run']) is int and d['source_run']>0
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+              for k in ('code_ref','source_ref','source_run'):f.write(f'{k}={d[k]}\n')
+          PY
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ steps.request.outputs.code_ref }}
+          path: learner
+          persist-credentials: false
+      - name: Install and test learning implementation
+        run: |
+          python3 -m pip install numpy==2.3.3 python-shogi==1.1.1
+          python3 learner/tests/test_selfplay_learning.py
+      - name: Restore the fixed selfplay archive and actual build provenance
+        env:
+          SOURCE_RUN: ${{ steps.request.outputs.source_run }}
+          SOURCE_REF: ${{ steps.request.outputs.source_ref }}
+        run: |
+          python3 learner/research/selfplay-learning-20261016/restore.py \
+            --run "$SOURCE_RUN" --source-ref "$SOURCE_REF" \
+            --repository "$GITHUB_REPOSITORY" --output build/source
+      - name: Audit, learn, freeze model, build and verify candidate
+        run: |
+          python3 learner/research/selfplay-learning-20261016/run_cycle.py \
+            --archive-dir build/source --provenance build/source/build-provenance.json \
+            --baseline build/source/binaries/build/engine-a \
+            --output-dir build/cycle --build-candidate
+      - name: Preserve actual played data and models in the existing monthly data release
+        env:
+          SOURCE_RUN: ${{ steps.request.outputs.source_run }}
+        run: |
+          python3 learner/research/selfplay-learning-20261016/persist.py \
+            --source build/source --cycle build/cycle --run "$SOURCE_RUN" \
+            --training-run "$GITHUB_RUN_ID" --repository "$GITHUB_REPOSITORY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: selfplay-learning-${{ github.run_id }}
+          retention-days: 90
+          path: |
+            build/cycle/
+            build/source/build-provenance.json
+          if-no-files-found: warn

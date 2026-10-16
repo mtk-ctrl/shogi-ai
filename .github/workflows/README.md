@@ -9,6 +9,7 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 
 | Workflow | 起動 | 用途 |
 |---|---|---|
+| `.github/workflows/selfplay-learning.yml` | 学習依頼ファイル変更 / 手動 | 完了した同一版自己対局を出所・合法性・分割漏洩検査し、小型の評価補正を学習して候補をビルド。実戦手原本とモデルは月別データReleaseへhash検証付きで保存し、エンジンへの正式採用や次の対局を自動決定しない |
 | `.github/workflows/position10-adopt.yml` | 明示的な10局面採用依頼 / 手動 | 実行38091143128の研究10局面を原本から厳密検査して局面知識153→163件を採用。研究原本を月別Releaseへ保存・照合する |
 | `.github/workflows/timebox80-adopt.yml` | 承認済み80局面の採用依頼 / 手動 | 2026-10-09実施の午前40・午後40局面の長考研究を検査して既存73局面へ追記。153局面をビルド検証し、既存の汎用比較Workflowで知識あり・なし100局を起動する |
 | `.github/workflows/timebox40-long-research.yml` | 研究request更新 / 手動 | 指定した時間枠内で未研究の序盤・中盤・終盤計40局面を各50分研究。最大20runnerを2巡利用し原本はReleasesへ保存。既存研究との重複を除外し、新知識は自動正式採用しない |
