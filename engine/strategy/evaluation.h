@@ -3,7 +3,9 @@
 #include "strategy/search_research.h"
 #include "strategy/evaluation_params.h"
 #include "strategy/evaluation_v2_features.h"
+#include "strategy/selfplay_model.h"
 #include <cstdint>
+#include <memory>
 
 namespace shogi::strategy {
 struct SideFeatures {
@@ -157,15 +159,32 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
 struct MaterialEvaluator {
     int operator()(const rules::Snapshot& s) const {return material_black(s);}
 };
+inline SelfPlayModel::Features selfplay_features(const EvaluationBreakdown& b,int turn) {
+    SelfPlayModel::Features x{};
+    x[0]=b.material_term/3000.0;
+    for(int i=0;i<9;++i) x[i+1]=b.terms[i]/1000.0;
+    x[10]=b.clamp_adjustment/1000.0;
+    x[11]=turn==0 ? 1.0 : -1.0;
+    return x;
+}
 class FeatureEvaluator {
 public:
-    explicit FeatureEvaluator(EvaluationParameters p={},unsigned reuse_mask=0)
-        :params_(p),reuse_mask_(reuse_mask){params_.validate();}
-    int operator()(const rules::Snapshot& s) const {return evaluate(s,params_,reuse_mask_).total;}
+    explicit FeatureEvaluator(EvaluationParameters p={},unsigned reuse_mask=0,
+                              std::shared_ptr<const SelfPlayModel> learned={},int scale=100)
+        :params_(p),reuse_mask_(reuse_mask),learned_(std::move(learned)),scale_(std::clamp(scale,0,100))
+        {params_.validate();}
+    int operator()(const rules::Snapshot& s) const {
+        const auto b=evaluate(s,params_,reuse_mask_);
+        if(!learned_ || scale_==0) return b.total;
+        const int extra=learned_->correction(selfplay_features(b,int(s.turn)))*scale_/100;
+        return std::clamp(b.total+extra,-params_.StaticLimit,params_.StaticLimit);
+    }
     const EvaluationParameters& parameters() const {return params_;}
     void set_reuse_mask(unsigned mask) { reuse_mask_=mask & 15; }
 private:
     EvaluationParameters params_;
     unsigned reuse_mask_=0;
+    std::shared_ptr<const SelfPlayModel> learned_{};
+    int scale_=100;
 };
 } // namespace shogi::strategy

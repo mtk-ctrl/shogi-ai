@@ -12,13 +12,16 @@ import shogi
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from benchmarks.arena import Engine
 
-if len(sys.argv) != 2:
+if len(sys.argv) not in (2,3):
     raise SystemExit("usage: test_ponder_research.py ENGINE")
 engine = Engine(sys.argv[1], "ponder-protocol",
                 {"USI_Ponder": True, "RiskVerify": True,
                  "OpeningRandomNonLance": False,
                  "PositionKnowledge": False}, "go depth 3")
 try:
+    if len(sys.argv)>2:
+        engine.send('setoption name SelfPlayEvalFile value '+sys.argv[2])
+        engine.send('setoption name SelfPlayEval value true')
     engine.configure_game(5489)
     board = shogi.Board()
     first = engine.bestmove([])

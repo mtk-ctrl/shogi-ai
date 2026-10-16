@@ -1,0 +1,12 @@
+{
+  "request_id": "v220-selfplay-learning-generation0-1000-20261016",
+  "ref_a": "79f463c0e024c1d0e893caad7153aa44240c2a4b",
+  "ref_b": "79f463c0e024c1d0e893caad7153aa44240c2a4b",
+  "games": 1000,
+  "shards": 19,
+  "go_command": "go movetime 200",
+  "max_plies": 300,
+  "seed": 2026101695,
+  "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true}",
+  "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true}"
+}

@@ -9,6 +9,7 @@
 #include "strategy/long_think_budget.h"
 #include "strategy/turn_phase.h"
 #include "strategy/phase_weights.h"
+#include "models/selfplay_residual_candidate.h"
 #include <algorithm>
 #include <chrono>
 #include <random>
@@ -29,6 +30,30 @@ int main() {
     shogi::strategy::IterativeSearch strategy;
     shogi::strategy::EvaluationParameters evaluation_parameters;
     bool material_profile = false;
+    bool selfplay_eval_enabled = false;
+    int selfplay_eval_scale = 100;
+    std::string selfplay_eval_file = "embedded";
+    std::shared_ptr<const shogi::strategy::SelfPlayModel> selfplay_model;
+    auto load_selfplay_model = [&]() {
+        auto next=std::make_shared<shogi::strategy::SelfPlayModel>();
+        const bool ok=selfplay_eval_file=="embedded"
+            ? next->load_text(shogi::strategy::detail::SelfPlayModelText)
+            : next->load_file(selfplay_eval_file);
+        selfplay_model=ok ? next : nullptr;
+        return ok;
+    };
+    load_selfplay_model();
+    auto make_feature_evaluator = [&](shogi::strategy::EvaluationParameters p) {
+        return shogi::strategy::FeatureEvaluator(p,strategy.reuse_mask(),
+            selfplay_eval_enabled && !material_profile ? selfplay_model : nullptr,
+            selfplay_eval_scale);
+    };
+    auto learned_correction = [&](const shogi::strategy::EvaluationBreakdown& b,
+                                  const shogi::rules::Snapshot& s) {
+        return selfplay_eval_enabled && selfplay_model && !material_profile
+            ? selfplay_model->correction(shogi::strategy::selfplay_features(b,int(s.turn)))
+                *selfplay_eval_scale/100 : 0;
+    };
     bool quiescence_enabled = true;
     bool mate_assist_enabled = true;
     bool mate_learning_enabled = true;
@@ -106,6 +131,9 @@ int main() {
             std::cout << "id name KUMOJI v2.0.20\nid author mtk-ctrl + ChatGPT\n"
                       << "option name USI_Ponder type check default true\n"
                       << "option name RiskVerify type check default true\n"
+                      << "option name SelfPlayEval type check default false\n"
+                      << "option name SelfPlayEvalScale type spin default 100 min 0 max 100\n"
+                      << "option name SelfPlayEvalFile type string default embedded\n"
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
                       << "option name SearchResearchMask type spin default " << shogi::strategy::DefaultSearchResearchMask << " min 0 max 31\n"
@@ -147,6 +175,8 @@ int main() {
                 : shogi::strategy::phase_turn_parameters(evaluation_parameters, phase.maturity,
                     phase.components.battle, phase.components.king_threat);
             const auto b = shogi::strategy::evaluate(root, params);
+            const int correction=learned_correction(b,root);
+            const int total=std::clamp(b.total+correction,-params.StaticLimit,params.StaticLimit);
             std::cout << "info string evaluation material " << b.material
                       << " material_term " << b.material_term
                       << " safety " << b.terms[0] << " pressure " << b.terms[1]
@@ -155,7 +185,9 @@ int main() {
                       << " coordination " << b.terms[6] << " hand_potential " << b.terms[7]
                       << " threat " << b.terms[8]
                       << " positional_raw " << b.positional_unclamped
-                      << " clamp " << b.clamp_adjustment << " total " << b.total << '\n' << std::flush;
+                      << " clamp " << b.clamp_adjustment << " total " << total << '\n' << std::flush;
+            if(selfplay_eval_enabled)
+                emit("info string learned_correction " + std::to_string(correction) + "\n");
         } else if (command == "isready") {
             if (!session) {
                 ensure_position_knowledge_loaded();
@@ -265,7 +297,7 @@ int main() {
                     ? shogi::strategy::EvaluationParameters::material_only()
                     : shogi::strategy::phase_turn_parameters(evaluation_parameters, phase.maturity,
                     phase.components.battle, phase.components.king_threat);
-                strategy.set_evaluator(shogi::strategy::FeatureEvaluator(active_parameters, strategy.reuse_mask()));
+                strategy.set_evaluator(make_feature_evaluator(active_parameters));
                 const auto eval = shogi::strategy::evaluate(root, active_parameters);
                 std::ostringstream out;
                 out << "info string phase v 1 maturity " << phase.maturity
@@ -275,8 +307,17 @@ int main() {
                     << " invasion " << phase.components.invasion
                     << " king_threat " << phase.components.king_threat
                     << " phase_weight_profile " << shogi::strategy::AdoptedPhaseProfile
-                     << " static_cp_black " << eval.total << '\n';
+                     << " static_cp_black " << std::clamp(eval.total+learned_correction(eval,root),
+                         -active_parameters.StaticLimit,active_parameters.StaticLimit) << '\n';
                 emit(out.str());
+                if(selfplay_eval_enabled) {
+                    std::ostringstream learned;
+                    learned << "info string learned_eval " << (selfplay_model && !material_profile ? 1 : 0)
+                            << " learned_scale " << selfplay_eval_scale
+                            << " model " << (selfplay_eval_file=="embedded"
+                                ? shogi::strategy::detail::SelfPlayModelSha256 : "custom") << '\n';
+                    emit(learned.str());
+                }
             }
             if (!restrict && entering_king && position.can_declare_win()) {
                 bestmove("win"); continue;
@@ -793,17 +834,30 @@ int main() {
                         strategy.clear_position_knowledge();
                         position_knowledge_loaded = false;
                     }
+                } else if (name == "SelfPlayEval") {
+                    if(value=="true" || value=="false") selfplay_eval_enabled = value=="true";
+                    if(selfplay_eval_enabled && !selfplay_model)
+                        emit("info string selfplay_eval model_unavailable\n");
+                } else if (name == "SelfPlayEvalScale") {
+                    try {std::size_t used=0;int n=std::stoi(value,&used);
+                        if(used==value.size() && n>=0 && n<=100) selfplay_eval_scale=n;}
+                    catch(const std::exception&) {}
+                } else if (name == "SelfPlayEvalFile") {
+                    if(!value.empty() && value.find('\n')==std::string::npos && value.find('\r')==std::string::npos) {
+                        selfplay_eval_file=value;
+                        if(!load_selfplay_model()) emit("info string selfplay_eval model_unavailable\n");
+                    }
                 } else if (name == "EvalProfile") {
                     if (value == "features" || value == "material") {
                         material_profile = value == "material";
-                        strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
-                            ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters, strategy.reuse_mask()));
+                        strategy.set_evaluator(make_feature_evaluator(material_profile
+                            ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
                     }
                 } else if (name == "EvalV2") {
                     if (value == "true" || value == "false") {
                         evaluation_parameters.v2_enabled = value == "true";
-                        strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
-                            ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters, strategy.reuse_mask()));
+                        strategy.set_evaluator(make_feature_evaluator(material_profile
+                            ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
                     }
                 } else if (name == "EvalSafety" || name == "EvalPressure" || name == "EvalActivity" || name == "EvalDanger"
                            || name == "EvalMaterialWeight" || name == "EvalInfluence" || name == "EvalPotential"
@@ -825,8 +879,8 @@ int main() {
                             else if (name == "EvalHandPotential") evaluation_parameters.hand_potential_weight = weight;
                             else if (name == "EvalThreat") evaluation_parameters.threat_weight = weight;
                             else evaluation_parameters.positional_cap = weight;
-                            strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
-                                ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters, strategy.reuse_mask()));
+                            strategy.set_evaluator(make_feature_evaluator(material_profile
+                                ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
                         }
                     } catch (const std::exception&) {}
                 } else if (name == "RandomSeed") {

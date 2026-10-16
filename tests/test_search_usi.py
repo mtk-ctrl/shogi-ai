@@ -48,6 +48,9 @@ try:
         send('setoption name SearchThreads value ' + str(int(sys.argv[2])))
     if len(sys.argv)>3:
         send('setoption name SearchProbeMask value ' + str(int(sys.argv[3])))
+    if len(sys.argv)>4:
+        send('setoption name SelfPlayEvalFile value '+sys.argv[4])
+        send('setoption name SelfPlayEval value true')
     send('isready'); until('readyok')
     # Standard opening is randomized since v2.0.7; search-depth regression
     # intentionally disables that separate adopted feature.

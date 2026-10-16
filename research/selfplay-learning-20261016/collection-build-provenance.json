@@ -1,0 +1,28 @@
+{
+  "run_id": 38853046638,
+  "job_id": 116818332600,
+  "observed_ref_a": "79f463c0e024c1d0e893caad7153aa44240c2a4b",
+  "observed_ref_b": "79f463c0e024c1d0e893caad7153aa44240c2a4b",
+  "binary_sha256_a": "cabc38c62642b3caf225809504c6c895aef8b81abc1fd66c356f97ce0b154eb6",
+  "binary_sha256_b": "0340f2f4662a0631efc7c532aaa64f45dcc01f6fbb8a8b0519b5870d7f7ac070",
+  "log_evidence": [
+    "2026-10-16T04:55:00.3563596Z   ref: 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+    "2026-10-16T04:55:00.6733564Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+    "2026-10-16T04:55:01.3465886Z [command]/usr/bin/git checkout --progress --force 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+    "2026-10-16T04:55:01.5828699Z 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+    "2026-10-16T04:55:01.6223420Z   ref: 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+    "2026-10-16T04:55:01.8037273Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+    "2026-10-16T04:55:02.3263622Z [command]/usr/bin/git checkout --progress --force 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+    "2026-10-16T04:55:02.3750217Z 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+    "2026-10-16T04:55:02.3937317Z   ref: 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+    "2026-10-16T04:55:02.5728619Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --filter=blob:none --depth=1 origin 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+    "2026-10-16T04:55:02.7427228Z [command]/usr/bin/git checkout --progress --force 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+    "2026-10-16T04:55:02.8874852Z 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+    "2026-10-16T04:55:45.0392953Z cabc38c62642b3caf225809504c6c895aef8b81abc1fd66c356f97ce0b154eb6  build/engine-a",
+    "2026-10-16T04:55:45.0446952Z 0340f2f4662a0631efc7c532aaa64f45dcc01f6fbb8a8b0519b5870d7f7ac070  build/engine-b"
+  ],
+  "note": "The build job checked out the identical frozen source for both binaries. Debug paths differ between engine-a-src/engine-b-src; binary hashes are recorded separately, never falsely reported as identical.",
+  "executable_text_sha256_b": "fe15b7884db378b3b7bc2c726e42308f655f55fdfa3751f25834d8006d3d1bd6",
+  "executable_text_sha256_a": "fe15b7884db378b3b7bc2c726e42308f655f55fdfa3751f25834d8006d3d1bd6",
+  "executable_text_equal": true
+}

@@ -25,6 +25,9 @@ on:
       - "tests/test_ponder_research.py"
       - "tests/test_parallel_search.py"
       - "tests/test_search_probes.py"
+      - "tests/test_selfplay_learning.py"
+      - "tests/test_selfplay_eval_usi.py"
+      - "research/selfplay-learning-20261016/learn.py"
       - "tests/test_search_research.py"
       - "tests/test_search_efficiency.py"
       - "tests/test_search_reuse.py"
@@ -130,6 +133,18 @@ jobs:
           python3 tests/test_eval_usi.py build/shogi-ai
           python3 tests/test_mate_usi.py build/shogi-ai
           python3 tests/test_mate_adoption_usi.py build/shogi-ai
+
+      - name: Selfplay residual learning and inference tests
+        env:
+          OPENBLAS_NUM_THREADS: "2"
+          OMP_NUM_THREADS: "2"
+        run: |
+          python3 -m pip install numpy==2.3.3
+          python3 tests/test_selfplay_learning.py --fixture build/selfplay-fixture.txt
+          python3 tests/test_selfplay_eval_usi.py build/shogi-ai build/shogi-ai
+          ./build/search-test 3 build/selfplay-fixture.txt
+          python3 tests/test_search_usi.py build/shogi-ai 2 3 build/selfplay-fixture.txt
+          python3 tests/test_ponder_research.py build/shogi-ai build/selfplay-fixture.txt
 
       - name: Phase diagnostics and historical game filter
         run: |

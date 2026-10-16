@@ -25,7 +25,9 @@ rules::Position fixture(const std::map<std::string, std::string>& pieces, const 
     require(p.set(sf + " " + turn + " - 1", {}, error), error); return p;
 }
 // Independent exhaustive minimax: no ordering, TT, iteration or pruning.
-int brute(rules::Position& p, int depth, int ply, rules::Color root) {
+template<class Evaluator=strategy::MaterialEvaluator>
+int brute(rules::Position& p, int depth, int ply, rules::Color root,
+          const Evaluator& evaluator=Evaluator{}) {
     const auto status = p.status();
     if (status.result != rules::Result::Ongoing) {
         if (status.result == rules::Result::Draw) return 0;
@@ -34,11 +36,11 @@ int brute(rules::Position& p, int depth, int ply, rules::Color root) {
             : strategy::IterativeSearch::RuleWinScore;
         return win ? value : -value;
     }
-    if (!depth) return (root == rules::Color::Black ? 1 : -1) * strategy::material_black(p.snapshot());
+    if (!depth) return (root == rules::Color::Black ? 1 : -1) * evaluator(p.snapshot());
     const bool max = p.snapshot().turn == root;
     int value = max ? -100001000 : 100001000;
     for (const auto& move : p.legal_moves()) {
-        play(p, move); int child = brute(p, depth - 1, ply + 1, root); require(p.undo(), "oracle undo");
+        play(p, move); int child = brute(p, depth - 1, ply + 1, root,evaluator); require(p.undo(), "oracle undo");
         value = max ? std::max(value, child) : std::min(value, child);
     }
     return value;
@@ -153,5 +155,26 @@ int main(int argc, char** argv) {
         limits = strategy::parse_go_limits({"movetime","0"}, rules::Color::Black);
         require(limits.budget_ms == 0, "zero clock must not become unlimited");
         std::cout << "PASS repetition contexts, clock parsing and zero-time behavior\n";
+        if(argc>2) {
+            auto model=std::make_shared<strategy::SelfPlayModel>();
+            require(model->load_file(argv[2]),"load independent residual test model");
+            strategy::FeatureEvaluator evaluator({},0,model);
+            strategy::IterativeSearch learned(5489,evaluator);
+            learned.set_quiescence_enabled(false);learned.set_probe_mask(probe_mask);
+            for(const auto& turn : {"b","w"}) for(unsigned threads : {1u,2u}) {
+                auto root=fixture({{"9i","K"},{"1a","k"},{"7g","P"},{"3c","p"}},turn);
+                const auto sf=root.sfen();const auto hk=root.history_key();
+                learned.set_threads(threads);
+                for(int depth=1;depth<=4;++depth) {
+                    const int expected=brute(root,depth,0,root.turn(),evaluator);
+                    strategy::SearchControl control;
+                    const auto actual=learned.choose(root,depth,control);
+                    require(actual.has_score && actual.score==expected,"learned evaluator exhaustive minimax");
+                    require(root.sfen()==sf && root.history_key()==hk,"learned oracle/search restoration");
+                    validate_pv(root,actual);
+                }
+            }
+            std::cout << "PASS learned evaluator independent minimax depths 1..4, both turns/threads, PV/history\n";
+        }
     } catch (const std::exception& error) { std::cerr << "FAIL " << error.what() << '\n'; return 1; }
 }
