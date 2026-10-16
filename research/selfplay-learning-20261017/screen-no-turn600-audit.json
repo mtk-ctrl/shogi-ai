@@ -1,0 +1,1034 @@
+{
+  "run_id": "38946985753",
+  "active_learned_move_count_A": 5316,
+  "requested_ref_a": "c238d50facdec7cd3d44e645b495eb46125d8f26",
+  "requested_ref_b": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
+  "go_command": "go movetime 200",
+  "options_a": {
+    "AdaptiveLongThink": true,
+    "PositionKnowledge": true,
+    "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+    "OpeningRandomNonLance": true,
+    "SearchResearchMask": 23,
+    "SearchEfficiencyMask": 8,
+    "SearchReuseMask": 6,
+    "SearchNextMask": 4,
+    "SearchProbeMask": 7,
+    "SearchThreads": 2,
+    "RiskVerify": true,
+    "USI_Ponder": true,
+    "SelfPlayEval": true,
+    "SelfPlayEvalScale": 100,
+    "SelfPlayEvalFile": "embedded"
+  },
+  "options_b": {
+    "AdaptiveLongThink": true,
+    "PositionKnowledge": true,
+    "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+    "OpeningRandomNonLance": true,
+    "SearchResearchMask": 23,
+    "SearchEfficiencyMask": 8,
+    "SearchReuseMask": 6,
+    "SearchNextMask": 4,
+    "SearchProbeMask": 7,
+    "SearchThreads": 2,
+    "RiskVerify": true,
+    "USI_Ponder": true
+  },
+  "shards": 19,
+  "archive_sha256": "fd19773c8f8dcc9e016790a0b109bcb1befdf2746b1760c5ae088f4789645fc4",
+  "archive_bytes": 703780,
+  "games": 100,
+  "plies": 10630,
+  "wins_a": 52,
+  "draws": 0,
+  "wins_b": 48,
+  "score_a": 0.52,
+  "score_a_approx_95_interval": [
+    0.42207843138511314,
+    0.6179215686148869
+  ],
+  "color_assignment": {
+    "A_black": {
+      "games": 50,
+      "wins": 29,
+      "losses": 21
+    },
+    "A_white": {
+      "games": 50,
+      "wins": 23,
+      "losses": 27
+    }
+  },
+  "all_moves_legal_and_final_positions_verified": true,
+  "termination_reasons": {
+    "checkmate": 100
+  },
+  "duplicate_complete_move_sequences": 0,
+  "binary_sha256": {
+    "A": [
+      "23319ffbb317af978b316dedc43d4ad4a7a3167b99bd6bd7d2f7b6603f908659"
+    ],
+    "B": [
+      "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36"
+    ]
+  },
+  "position_knowledge": {
+    "A": {
+      "enabled": true,
+      "file": "build/position-knowledge-v1.tsv",
+      "available": true,
+      "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+      "positions": 163
+    },
+    "B": {
+      "enabled": true,
+      "file": "build/position-knowledge-v1.tsv",
+      "available": true,
+      "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+      "positions": 163
+    }
+  },
+  "observed": {
+    "A": {
+      "played_moves": 5316,
+      "depth_recorded_moves": 5184,
+      "mean_completed_depth_on_recorded_moves": 3.1572145061728394,
+      "nodes_total": 498987947,
+      "wall_ms_median": 191.989,
+      "wall_ms_p95": 993.37,
+      "wall_ms_max": 998.551,
+      "wall_over_1100ms": 0,
+      "long_think_moves": 835,
+      "maximum_long_thinks_per_game": 10,
+      "knowledge_probes": 10228,
+      "knowledge_hits": 0,
+      "knowledge_promotions": 0
+    },
+    "B": {
+      "played_moves": 5314,
+      "depth_recorded_moves": 5187,
+      "mean_completed_depth_on_recorded_moves": 3.159822633506844,
+      "nodes_total": 496033185,
+      "wall_ms_median": 192.021,
+      "wall_ms_p95": 993.25,
+      "wall_ms_max": 998.458,
+      "wall_over_1100ms": 0,
+      "long_think_moves": 848,
+      "maximum_long_thinks_per_game": 10,
+      "knowledge_probes": 10192,
+      "knowledge_hits": 0,
+      "knowledge_promotions": 0
+    }
+  },
+  "ponder": {
+    "A": {
+      "hits": 3225,
+      "misses": 1800,
+      "hit_rate_when_prediction_available": 0.6417910447761194
+    },
+    "B": {
+      "hits": 3165,
+      "misses": 1881,
+      "hit_rate_when_prediction_available": 0.6272294887039239
+    }
+  },
+  "resource_note": "Both engines use two search threads and USI pondering; up to four search threads may run concurrently on a lane. CPU-seconds and energy were not measured. This is not a single-thread or ponder-disabled comparison.",
+  "missing_score_plies": 263,
+  "phase_missing_plies": 0,
+  "timing_note": "Wall time includes reconstruction and USI I/O; depths/nodes in different game positions are descriptive, not controlled speed comparisons.",
+  "storage": "Actual played archive and binaries/report preserved in the named data Release package with verified readback SHA256; raw PVs remain temporary Actions artifacts.",
+  "wilson_95_interval_a": [
+    0.4231657776522397,
+    0.615354482419481
+  ],
+  "two_sided_binomial_p_equal_strength": 0.7643534344026668,
+  "mode": "audit",
+  "provenance": {
+    "candidate_ref": "c238d50facdec7cd3d44e645b495eb46125d8f26",
+    "baseline_ref": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
+    "model_sha256": "5ae222cbffd56d7ed1876a71cf826ee2b45f77a53d5d4fd73f37bf626f80daf5",
+    "build_job": 117128543820,
+    "binary_sha256_a": "23319ffbb317af978b316dedc43d4ad4a7a3167b99bd6bd7d2f7b6603f908659",
+    "binary_sha256_b": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36",
+    "audit_source_sha256": "b4079105d9ba472c8f1c746b56f104797f559953a8fa8505b5e51b376921bc6f",
+    "verification_ref": "a09a5ddd78f2670e729a90946e5e9da9d18f114f"
+  },
+  "trajectory_outcomes": [
+    {
+      "game_id": "51281c8a865e438f0fc958a1a54a2239e11f991fe082628936d410ba29d301c7:0",
+      "sha256": "aa36ef98cfa4ef69b5f335766a9d4487373656cb6bb00948d7caf4804071d16e",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "51281c8a865e438f0fc958a1a54a2239e11f991fe082628936d410ba29d301c7:1",
+      "sha256": "a8f389a4c71bee17157178b048758eab05a006e0e1262cd5d2001d7ab8b73d2c",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "51281c8a865e438f0fc958a1a54a2239e11f991fe082628936d410ba29d301c7:2",
+      "sha256": "0ebd29c0fc769614f45d700e055404cf0020efd5ed11e26b6a4b5341e529f040",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "51281c8a865e438f0fc958a1a54a2239e11f991fe082628936d410ba29d301c7:3",
+      "sha256": "52c880c6b460ba2bf6e11a5bc1d88c6f731f60a1bdfd2cf2358d3cb83a59d0f0",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "51281c8a865e438f0fc958a1a54a2239e11f991fe082628936d410ba29d301c7:4",
+      "sha256": "159ce1de03ba15b754a15549fd125d0f463732131d89d2b837933f250e6fbe43",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "51281c8a865e438f0fc958a1a54a2239e11f991fe082628936d410ba29d301c7:5",
+      "sha256": "714e619cc4811138773c62e5803643cf65cf6fc9ad0dd880e01266af6ca6b0bc",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "dc1c2d0cd7f260969dcf737564ff7262737d23af5ff80975081c7312f5b3f44b:0",
+      "sha256": "de96728197d694d3c09c85c59a223f102805af09193af6c0d022159687994ce0",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "dc1c2d0cd7f260969dcf737564ff7262737d23af5ff80975081c7312f5b3f44b:1",
+      "sha256": "3f086b40ecca18fc1331d9379cdb627db00b9929238590e97c3ae431f0d21e46",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "dc1c2d0cd7f260969dcf737564ff7262737d23af5ff80975081c7312f5b3f44b:2",
+      "sha256": "d05f2248a1dae3623f3c5a1da54c42e4fe3ee633d0a3f207daf9b184c94bd500",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "dc1c2d0cd7f260969dcf737564ff7262737d23af5ff80975081c7312f5b3f44b:3",
+      "sha256": "db971254893bd6717dc99919d828546bf95557b1e71a007ca8476867d0b987a2",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "dc1c2d0cd7f260969dcf737564ff7262737d23af5ff80975081c7312f5b3f44b:4",
+      "sha256": "b62c86f8db2a3dfb8600fed27036048e7c0d8ce07569699d5574e2a4e812229e",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "dc1c2d0cd7f260969dcf737564ff7262737d23af5ff80975081c7312f5b3f44b:5",
+      "sha256": "19ec9916378ff80385f34aae8604cddc52614f49d8f33125fcc1b20c17fe3d9f",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "787ad7e0d87d4e50f207cd406094227807156c8468d4684efcea6ac57c415cd0:0",
+      "sha256": "7b71050ff6ec60477529a349b6e28921960d6cb1c7cd726bddcc7b40e43d2e1a",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "787ad7e0d87d4e50f207cd406094227807156c8468d4684efcea6ac57c415cd0:1",
+      "sha256": "9d31409e80852be034819ce00974974c0afad91b5b53a381d2d875e1471a5835",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "787ad7e0d87d4e50f207cd406094227807156c8468d4684efcea6ac57c415cd0:2",
+      "sha256": "040ec705676e1d4aa6821863d75df6aed2e0d3d8e2cf35b804a5f9eca27453fa",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "787ad7e0d87d4e50f207cd406094227807156c8468d4684efcea6ac57c415cd0:3",
+      "sha256": "b54bc1ddce47f65dc6db9ae35b5dd081666e4feee1c5c360e9b3d9b98889039e",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "787ad7e0d87d4e50f207cd406094227807156c8468d4684efcea6ac57c415cd0:4",
+      "sha256": "7b9cfa30d03c0ab55fcde2db787cb8eeee54bfa8b7a94d042d7c4a2caa25d4f6",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "f6189300f448bfcc84dc0a283571c25052888c0646ef733fb1731d102fc0a7fc:0",
+      "sha256": "d291e8f66cd528e54fa564c21d087171d02d4e5ceab5e23473a183ef7efdf821",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "f6189300f448bfcc84dc0a283571c25052888c0646ef733fb1731d102fc0a7fc:1",
+      "sha256": "475283fc31c5870297b981052e5439e4f4e0fdb2ed3d6761ee1dc1b939506642",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "f6189300f448bfcc84dc0a283571c25052888c0646ef733fb1731d102fc0a7fc:2",
+      "sha256": "1b6539bde90bbfdccea7643b0060a45b1dc5fd70c5358d3ba1db4e8391650777",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "f6189300f448bfcc84dc0a283571c25052888c0646ef733fb1731d102fc0a7fc:3",
+      "sha256": "209fed2d93aaa1bd6a58ba8b833252a735f7643e4f94555ec51f145f41d60a22",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "f6189300f448bfcc84dc0a283571c25052888c0646ef733fb1731d102fc0a7fc:4",
+      "sha256": "911d25b112064b23954d1d210ed35d3f0c70490a9bc5213130a754b5d93e7306",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "a4b95332556ba70255f025b67e4d3f3353a01fc75b5c5de25f67bb7ee11a38fb:0",
+      "sha256": "2ce8bd1ea87ab29e321b5c80bf8608369e8088ea7bb4d662b5ecb07bf741c63d",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "a4b95332556ba70255f025b67e4d3f3353a01fc75b5c5de25f67bb7ee11a38fb:1",
+      "sha256": "4a8c80d850e7a762490bb72ca0a4c0c50b29df3bdf62b385ff084d839cbd8c33",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "a4b95332556ba70255f025b67e4d3f3353a01fc75b5c5de25f67bb7ee11a38fb:2",
+      "sha256": "2ab8f4bdbe810070571eb42789eb6fe9c7539a357b7eecc1eeaf35aeb9f04048",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "a4b95332556ba70255f025b67e4d3f3353a01fc75b5c5de25f67bb7ee11a38fb:3",
+      "sha256": "08ac10f6a37be02544d8840b76a552f9ec2fce67f311528d7b4e3b25b667e4f4",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "a4b95332556ba70255f025b67e4d3f3353a01fc75b5c5de25f67bb7ee11a38fb:4",
+      "sha256": "4423d71a20fb3cbeeb708e3843715cd80527819c8375d4c982f2fc1c8a975a67",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "216e0faaed89e030fa4c2d00f41a37f026dd1ecdedc8fd326774c24c5579da72:0",
+      "sha256": "223e27621d8f00fa6c5d50531a2600c65c761430be522cb21074202f62eab725",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "216e0faaed89e030fa4c2d00f41a37f026dd1ecdedc8fd326774c24c5579da72:1",
+      "sha256": "59e7635109365a254a469c8114ed8746d7d16a76c0247675be0470a96b4874bc",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "216e0faaed89e030fa4c2d00f41a37f026dd1ecdedc8fd326774c24c5579da72:2",
+      "sha256": "d37172a3e73418752005a0de6437c9dd411367c032898d4d839e8f40d5c6a266",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "216e0faaed89e030fa4c2d00f41a37f026dd1ecdedc8fd326774c24c5579da72:3",
+      "sha256": "2f7acfb40ac1771ce6ee549713e37212d0657f43a7302645068d14a1d2884bd8",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "216e0faaed89e030fa4c2d00f41a37f026dd1ecdedc8fd326774c24c5579da72:4",
+      "sha256": "5627ee62bb510e48f53b9a9ff894ca6bd6c5c543ac5b805f83b727b8d0a09796",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "291b547916b8ee9c86a4ad6f393cb73227a3aa008ad488200e958cdf8699fd2e:0",
+      "sha256": "38c02d96ac73029bc37b220bc7d32412a2a51ee96c299fcb8ed62512148e77fa",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "291b547916b8ee9c86a4ad6f393cb73227a3aa008ad488200e958cdf8699fd2e:1",
+      "sha256": "10353a57168df67f40cd0a9d035ec0711beb779cc5a4d987d8738ad550269f62",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "291b547916b8ee9c86a4ad6f393cb73227a3aa008ad488200e958cdf8699fd2e:2",
+      "sha256": "50f74db4e52d0d43dbc2f29ded2a23feed6ee6c28f81ccebcf5b157f19c657db",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "291b547916b8ee9c86a4ad6f393cb73227a3aa008ad488200e958cdf8699fd2e:3",
+      "sha256": "66fd49b57029d7b767bbe98d79a3d7cb6c54021f892754f4a9bf11a17c593c43",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "291b547916b8ee9c86a4ad6f393cb73227a3aa008ad488200e958cdf8699fd2e:4",
+      "sha256": "7e44e4705fc1092eeac9ba64f7fb8dc6555ef4a113706c9d0e51b4261e5638e6",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "4a558325916329792d322a55ad5a5da26d331dcf9b3ef1b79569c3b019ec45eb:0",
+      "sha256": "7f5abca4809d10300709fe2671ec0dd19695253e2cb9dbb7e7749e78efb5d06f",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "4a558325916329792d322a55ad5a5da26d331dcf9b3ef1b79569c3b019ec45eb:1",
+      "sha256": "7eecfb7b4472ce58545ee9ee083162f787518e0fa7303c1cbf421619a82bc42d",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "4a558325916329792d322a55ad5a5da26d331dcf9b3ef1b79569c3b019ec45eb:2",
+      "sha256": "3536066e58b2e8ba167b044fc4f83dd78c8e37df78af06ea2aad5b0a11390d6c",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "4a558325916329792d322a55ad5a5da26d331dcf9b3ef1b79569c3b019ec45eb:3",
+      "sha256": "722cab8501aed488bb2197395a70420eafcc8dc8d78c45c04eee56ec55286b8b",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "4a558325916329792d322a55ad5a5da26d331dcf9b3ef1b79569c3b019ec45eb:4",
+      "sha256": "183e62c3fa6a99b57f15603db9d40adfd08a913f31cda81b95f54dcc078a6085",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "37d34bbb0313a416350c2a2fa53b2afb17f3827f4cf560a6d3f24a985e34f758:0",
+      "sha256": "31f3ad293226f32897cf5bd7bcde58930dd063ee9dc361afd3f39787b4e55a7b",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "37d34bbb0313a416350c2a2fa53b2afb17f3827f4cf560a6d3f24a985e34f758:1",
+      "sha256": "c5fec7d6d2f450fd395087c40d0d25a6be8bf93d9c2ff734145378e33dd5d902",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "37d34bbb0313a416350c2a2fa53b2afb17f3827f4cf560a6d3f24a985e34f758:2",
+      "sha256": "a9699023f108fe7a0f843ee6e9c77ab9d84d88d64fde373e4e805d09eab62825",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "37d34bbb0313a416350c2a2fa53b2afb17f3827f4cf560a6d3f24a985e34f758:3",
+      "sha256": "b1418aae6b549e2980535f20913f944fd25d23f93378f9bf0cec5d57941704c0",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "37d34bbb0313a416350c2a2fa53b2afb17f3827f4cf560a6d3f24a985e34f758:4",
+      "sha256": "54d186e9fec13108bfca1a9b3a716fdc041bec888a308950f3356eb5369f7014",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "5e539454f295f186c8f1194ac21ecfbcdeea95f84e43de5afba83a73eee7d6c7:0",
+      "sha256": "04070879aa63c92e54840b64ad416970f7b17c38cabc423558838a02083c0abf",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "5e539454f295f186c8f1194ac21ecfbcdeea95f84e43de5afba83a73eee7d6c7:1",
+      "sha256": "cb24e1082ddb7ac602a70f7e1ebd292db37f01e5842b0aea7aacc1f9d8e6b394",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "5e539454f295f186c8f1194ac21ecfbcdeea95f84e43de5afba83a73eee7d6c7:2",
+      "sha256": "f06611815f1abec10352f620fcb04095db3207096f9a963df28875181d8433a2",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "5e539454f295f186c8f1194ac21ecfbcdeea95f84e43de5afba83a73eee7d6c7:3",
+      "sha256": "9b65e1565e78d5c22ae262168eef20fd69c3e3542f5ff991596f42d648d6f548",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "5e539454f295f186c8f1194ac21ecfbcdeea95f84e43de5afba83a73eee7d6c7:4",
+      "sha256": "73c5e1c4acfcd13b9b43c53b019313671145fc3614841e6c8fb7ca3fc1250c8c",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "2e697cdd465388a9573aea0b948930f8fdbf81dafec1148b669138e2694d6b9d:0",
+      "sha256": "8a4bc0be5d78277669e296c634b50f41671e8d5ecce5ce34db8bde3ca43bb4d5",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "2e697cdd465388a9573aea0b948930f8fdbf81dafec1148b669138e2694d6b9d:1",
+      "sha256": "1390ec8bb8d1ee4a0b9ff1493d765002f6a791c948fe8926feac04296c57aaa1",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "2e697cdd465388a9573aea0b948930f8fdbf81dafec1148b669138e2694d6b9d:2",
+      "sha256": "21ba72dd7f9a8760d6aa863346845477133cec7a8c0408f1fbed77fe05a01836",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "2e697cdd465388a9573aea0b948930f8fdbf81dafec1148b669138e2694d6b9d:3",
+      "sha256": "cc963f2583b73c7166b0ec61cfb18a4ed410eb970994804074f8dfaec4bf8c40",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "2e697cdd465388a9573aea0b948930f8fdbf81dafec1148b669138e2694d6b9d:4",
+      "sha256": "7e324f21d8359dee2330356c5dab3e52152eda59c10e3cf195d6e24e1184786c",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "3ffc233b49c67a31e1adb96d8b54cc7b2398dc44c1e85ae7c33ebaba197e2746:0",
+      "sha256": "44b33df63b87180b25c25c37d23b29cc9a6941b9a14af5845f607df7b42e0df6",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "3ffc233b49c67a31e1adb96d8b54cc7b2398dc44c1e85ae7c33ebaba197e2746:1",
+      "sha256": "e12260e6e8c91b546dc1b445e9a081762679e254e07ade6156544c27e24106c1",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "3ffc233b49c67a31e1adb96d8b54cc7b2398dc44c1e85ae7c33ebaba197e2746:2",
+      "sha256": "e160b96066e1fd69c457840a1727e18dc69da59a13c548ae29e7b1cf502da3d8",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "3ffc233b49c67a31e1adb96d8b54cc7b2398dc44c1e85ae7c33ebaba197e2746:3",
+      "sha256": "38924b804f3cff38ef7f84c6f604c759d37db15e738e9cfbe6d82fc8ba25442d",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "3ffc233b49c67a31e1adb96d8b54cc7b2398dc44c1e85ae7c33ebaba197e2746:4",
+      "sha256": "752c7c17480e78e0b27763360c8020d261333ffafb9c9b2c42a0fa31993a08a4",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "3ffc233b49c67a31e1adb96d8b54cc7b2398dc44c1e85ae7c33ebaba197e2746:5",
+      "sha256": "976cc00cd91707051e4304a721d28f6be285e611567f124ac015f503b2e9508a",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "302c164d87def6d79b25430275722be3198e6c9820869e6732c23c9d47cbc301:0",
+      "sha256": "779322c016ce79fde7d3b0250d31357329432e12cc6b996ba41d18e1fdf5ba53",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "302c164d87def6d79b25430275722be3198e6c9820869e6732c23c9d47cbc301:1",
+      "sha256": "831b56bc614ea2956a393dbd2cccc6d163050669944f5cb3f9007c8c98cd3f9a",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "302c164d87def6d79b25430275722be3198e6c9820869e6732c23c9d47cbc301:2",
+      "sha256": "311689949fb5cb6e52bf3cc5ed881f0019229984f9ffaceae0ab25e1dc36460e",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "302c164d87def6d79b25430275722be3198e6c9820869e6732c23c9d47cbc301:3",
+      "sha256": "a5500bc944a9bcb8b07456316c81149f107dbd28ebcce856802a23bbeee43bb8",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "302c164d87def6d79b25430275722be3198e6c9820869e6732c23c9d47cbc301:4",
+      "sha256": "091e990f990db72209c56e68543b3c5b20402cb0add1ae61e4d966ba2e90432f",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "302c164d87def6d79b25430275722be3198e6c9820869e6732c23c9d47cbc301:5",
+      "sha256": "5a14e52644e8876ca43a9884190e018c09964c694f433e9e914f1539e1eee31c",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "3485b6dbf98959c916844bef165456c9c6713c131e999233dfa3f6e0399667ca:0",
+      "sha256": "110a15113b2ab5f31eb5c0e7049fd452acbb3eb7fdf56a2ee083691f5e7be6b5",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "3485b6dbf98959c916844bef165456c9c6713c131e999233dfa3f6e0399667ca:1",
+      "sha256": "36e44218c70c019ae1c2ab63c1d832f3f80ecdd4a7cee9de9c9807726403dcac",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "3485b6dbf98959c916844bef165456c9c6713c131e999233dfa3f6e0399667ca:2",
+      "sha256": "7d06615620caf5fdf6cca05068f31eb32e9ac6c02a1b24255d69c3aec51780b7",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "3485b6dbf98959c916844bef165456c9c6713c131e999233dfa3f6e0399667ca:3",
+      "sha256": "c654940629fa405ef084f5beaac6ace2edf956fa53e7d0b92f61d5569fd89ad8",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "3485b6dbf98959c916844bef165456c9c6713c131e999233dfa3f6e0399667ca:4",
+      "sha256": "01c7e396f788d46e83c2ccb04627b2d2e4fc424afcd69789a69a763302cbe2f6",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "3485b6dbf98959c916844bef165456c9c6713c131e999233dfa3f6e0399667ca:5",
+      "sha256": "00a7b5167f55dadc36b389c63576023545e01eec02d6f8902fac100354fa64ea",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "460fc4fa2e27917e2a3199f43b0311271bc7d1dc67a38819a6e9e86377a7e29f:0",
+      "sha256": "52aa7728eb22e784d8b27ceb3dd62c72abd746804c5adc393386be1c9e3a1810",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "460fc4fa2e27917e2a3199f43b0311271bc7d1dc67a38819a6e9e86377a7e29f:1",
+      "sha256": "6629b2c1752fdcda7f698680ee3d530e3c0787982da8e83d0253ea0c65442bd7",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "460fc4fa2e27917e2a3199f43b0311271bc7d1dc67a38819a6e9e86377a7e29f:2",
+      "sha256": "8a318ff158478b94a643535107d4479a227d79e6e26e38fcf4f6c9ec1e6db79e",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "460fc4fa2e27917e2a3199f43b0311271bc7d1dc67a38819a6e9e86377a7e29f:3",
+      "sha256": "d579ef6734ee1ca46119defda94785338e51a01ac74bce3d902fe53d2111be0c",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "460fc4fa2e27917e2a3199f43b0311271bc7d1dc67a38819a6e9e86377a7e29f:4",
+      "sha256": "8d6bb875490ae0b26fdd0d1e787694d4903ed67d9b2485e2c2b24ead8cfcc80e",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "1849963af23281e5ca799203cb6d4f439aa8a8f086e08c21373e475edaecb604:0",
+      "sha256": "9523f30a58d74d4ccd944a1331c6e6ca1a7419e8b05b8fcc9154c4b061f27d3d",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "1849963af23281e5ca799203cb6d4f439aa8a8f086e08c21373e475edaecb604:1",
+      "sha256": "488331c4e4a25c1a1f0b9bbbf6e7ae533da21aa20e69b89144c52e30165f65fc",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "1849963af23281e5ca799203cb6d4f439aa8a8f086e08c21373e475edaecb604:2",
+      "sha256": "83250a49630568458d4226de8a5bab8984576d7dc131babc7e354716fa37d40f",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "1849963af23281e5ca799203cb6d4f439aa8a8f086e08c21373e475edaecb604:3",
+      "sha256": "554038fa5a7bad056bdfab5f549de08a27b61511081f878c5a44b92cabb30166",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "1849963af23281e5ca799203cb6d4f439aa8a8f086e08c21373e475edaecb604:4",
+      "sha256": "f67dd8a329590de83e0016ae308b9b9d418142d1613be9d95255570603381dcd",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "c1a3dd0c233d242648c8954d2816edfbe431265f648af9e819b966a2c889b393:0",
+      "sha256": "4bd17e95e29ab85d3e985b6992a4e8926fafad1ba897c939dc2fae9279a2932f",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "c1a3dd0c233d242648c8954d2816edfbe431265f648af9e819b966a2c889b393:1",
+      "sha256": "6c03e1af1d57de24ed2e829439819e1c9d74deb2677800cfd2ac9029b2d5ba67",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "c1a3dd0c233d242648c8954d2816edfbe431265f648af9e819b966a2c889b393:2",
+      "sha256": "3d70822caded149a94ee920ac75a1935e306f2b80dd6af5b5f256a5f9dec80f9",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "c1a3dd0c233d242648c8954d2816edfbe431265f648af9e819b966a2c889b393:3",
+      "sha256": "b459a0a5ac2767094d55890859900c82214bfe0cbbc75b74c4b460225d6fa610",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "c1a3dd0c233d242648c8954d2816edfbe431265f648af9e819b966a2c889b393:4",
+      "sha256": "4ced1719a61009a40443468b57b9f56dc313d483f61097557dcf2b0f4e49db07",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "306d2a12aa36588a64bed23fe667cf963cae5270024a4ab2a26b8a89d3d6520e:0",
+      "sha256": "bc708edaab20d0162fe5a7bcc10adb6519d6bb27ce489246684edf38129c22b8",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "306d2a12aa36588a64bed23fe667cf963cae5270024a4ab2a26b8a89d3d6520e:1",
+      "sha256": "4af0ea1dcc8201c349d351762af6555b4641cf8ddc8db687ce7e7112258413ac",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "306d2a12aa36588a64bed23fe667cf963cae5270024a4ab2a26b8a89d3d6520e:2",
+      "sha256": "b870c37cf1bb759370fed49bc9b078ed79bce60904dd3afa3bca5e08b186e9ce",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "306d2a12aa36588a64bed23fe667cf963cae5270024a4ab2a26b8a89d3d6520e:3",
+      "sha256": "e487ee9e9cd44d6fe5746facd03847ac01a05c21946f5e701b47b08af94ce88b",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "306d2a12aa36588a64bed23fe667cf963cae5270024a4ab2a26b8a89d3d6520e:4",
+      "sha256": "c8180cb1dce5e3c6d84662a5057a80b63ba047844f3962e0047648635c01a021",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "b2e2aa35abda521bef45ee331cec519016e4d1a7179053baa39cad875e1df3b8:0",
+      "sha256": "79ffe5578abc9b92cc0ac1d29d473cbdc8312918b0720cb173eeac0313e83252",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "b2e2aa35abda521bef45ee331cec519016e4d1a7179053baa39cad875e1df3b8:1",
+      "sha256": "21f83ab53a8521e48fa79c8125123cbdf4d24070370555038195ead7e0ffb6ce",
+      "winner": "B",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "b2e2aa35abda521bef45ee331cec519016e4d1a7179053baa39cad875e1df3b8:2",
+      "sha256": "a6bcb0ca5e01342db07bb7e5fefe65448c9d2662805d62329f926125dd3d4f7f",
+      "winner": "A",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "b2e2aa35abda521bef45ee331cec519016e4d1a7179053baa39cad875e1df3b8:3",
+      "sha256": "26d0b92f2035c5159ebe295a13d135141843191964f8eaea68f813a91fe26cd0",
+      "winner": "A",
+      "a_black": false,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    },
+    {
+      "game_id": "b2e2aa35abda521bef45ee331cec519016e4d1a7179053baa39cad875e1df3b8:4",
+      "sha256": "8b66b9ffc5cb784fd72e819f50c8645213b788533feac7227a6676580203fda6",
+      "winner": "B",
+      "a_black": true,
+      "in_original_corpus": false,
+      "in_original_train_shards": false
+    }
+  ],
+  "excluding_original_corpus": {
+    "games": 100,
+    "wins_a": 52,
+    "draws": 0,
+    "wins_b": 48,
+    "score_a": 0.52,
+    "note": "Conservative descriptive subset excluding every complete move sequence in the original 1000-game corpus. Does not change prespecified selection on all scheduled games."
+  },
+  "training_game_trajectory_overlap": 0,
+  "source_corpus_trajectory_overlap": 0,
+  "learning_distribution": {
+    "dataset_sha256": "a093cf34623ba559c8f11768dc0d00af0503c90a380402708d690348a79af603",
+    "source_model_package": "selfplay-model-38853046638-38942816009.tgz",
+    "definition": "Average outcome score of the side to move, equal weight per game within each selected subset. Descriptive label audit only, not a causal or strength test.",
+    "by_split": {
+      "test": {
+        "all": {
+          "games": 145,
+          "positions": 1497,
+          "mover_outcome_score": 0.5943678160919541
+        },
+        "excluding_final_move": {
+          "games": 142,
+          "positions": 1354,
+          "mover_outcome_score": 0.5426267199154523
+        },
+        "final_move_only": {
+          "games": 143,
+          "positions": 143,
+          "mover_outcome_score": 1
+        }
+      },
+      "train": {
+        "all": {
+          "games": 681,
+          "positions": 8172,
+          "mover_outcome_score": 0.5680372001957905
+        },
+        "excluding_final_move": {
+          "games": 681,
+          "positions": 7491,
+          "mover_outcome_score": 0.5289680950473902
+        },
+        "final_move_only": {
+          "games": 681,
+          "positions": 681,
+          "mover_outcome_score": 0.9977973568281938
+        }
+      },
+      "validation": {
+        "all": {
+          "games": 154,
+          "positions": 1646,
+          "mover_outcome_score": 0.5795370214201383
+        },
+        "excluding_final_move": {
+          "games": 151,
+          "positions": 1494,
+          "mover_outcome_score": 0.5285905411733226
+        },
+        "final_move_only": {
+          "games": 152,
+          "positions": 152,
+          "mover_outcome_score": 1
+        }
+      }
+    }
+  },
+  "publication": {
+    "release": "records-2026-10-01",
+    "name": "selfplay-audit-38947742788.tgz",
+    "sha256": "a680b884e1b17abb6231a39457c718d73b9f56448adfd9216efde9b060a0ec3b",
+    "bytes": 5983542,
+    "readback_verified": true
+  }
+}

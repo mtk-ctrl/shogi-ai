@@ -1,6 +1,6 @@
 {
-  "state": "screening_in_progress",
-  "training_run": 38942816009,
+  "state": "third_screen_running",
+  "formal_adoption": false,
   "baseline_ref": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
   "frozen_candidates": {
     "no-turn150": {
@@ -27,18 +27,35 @@
   },
   "screening": {
     "no_turn150": {
-      "run": 38946175603,
+      "match": 38946175603,
+      "audit": 38947455452,
       "score": 0.475,
-      "audit": 38947026619
+      "excluding_corpus": {
+        "games": 98,
+        "wins_a": 46,
+        "draws": 1,
+        "wins_b": 51,
+        "score_a": 0.4744897959183674,
+        "note": "Conservative descriptive subset excluding every complete move sequence in the original 1000-game corpus. Does not change prespecified selection on all scheduled games."
+      }
     },
     "no_turn600": {
-      "run": 38946985753,
-      "status": "running"
+      "match": 38946985753,
+      "audit": 38947742788,
+      "score": 0.52,
+      "excluding_corpus": {
+        "games": 100,
+        "wins_a": 52,
+        "draws": 0,
+        "wins_b": 48,
+        "score_a": 0.52,
+        "note": "Conservative descriptive subset excluding every complete move sequence in the original 1000-game corpus. Does not change prespecified selection on all scheduled games."
+      }
     },
     "scale10": {
-      "status": "speed_passed_match_pending"
+      "match": 38947702135,
+      "status": "19_shards_started"
     }
   },
-  "formal_adoption": false,
-  "audit_note": "Frozen candidate auditor incorrectly retained Probe3 for B. Main auditor 4d76c35429591ef57c3cc9e07c2b99325f898f03 validates Probe7 on both sides and records audit code hash. Candidate engine and actual games unchanged."
+  "next": "Finish scale10, audit, select best >=50% for one separate 200-game confirmation seed2040101701. No retraining or formal adoption."
 }

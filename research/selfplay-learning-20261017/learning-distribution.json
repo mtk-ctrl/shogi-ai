@@ -1,0 +1,58 @@
+{
+  "dataset_sha256": "a093cf34623ba559c8f11768dc0d00af0503c90a380402708d690348a79af603",
+  "source_model_package": "selfplay-model-38853046638-38942816009.tgz",
+  "definition": "Average outcome score of the side to move, equal weight per game within each selected subset. Descriptive label audit only, not a causal or strength test.",
+  "by_split": {
+    "test": {
+      "all": {
+        "games": 145,
+        "positions": 1497,
+        "mover_outcome_score": 0.5943678160919541
+      },
+      "excluding_final_move": {
+        "games": 142,
+        "positions": 1354,
+        "mover_outcome_score": 0.5426267199154523
+      },
+      "final_move_only": {
+        "games": 143,
+        "positions": 143,
+        "mover_outcome_score": 1
+      }
+    },
+    "train": {
+      "all": {
+        "games": 681,
+        "positions": 8172,
+        "mover_outcome_score": 0.5680372001957905
+      },
+      "excluding_final_move": {
+        "games": 681,
+        "positions": 7491,
+        "mover_outcome_score": 0.5289680950473902
+      },
+      "final_move_only": {
+        "games": 681,
+        "positions": 681,
+        "mover_outcome_score": 0.9977973568281938
+      }
+    },
+    "validation": {
+      "all": {
+        "games": 154,
+        "positions": 1646,
+        "mover_outcome_score": 0.5795370214201383
+      },
+      "excluding_final_move": {
+        "games": 151,
+        "positions": 1494,
+        "mover_outcome_score": 0.5285905411733226
+      },
+      "final_move_only": {
+        "games": 152,
+        "positions": 152,
+        "mover_outcome_score": 1
+      }
+    }
+  }
+}
