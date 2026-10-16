@@ -1,0 +1,76 @@
+{
+  "state": "complete",
+  "formal_adoption": false,
+  "formal_engine": "KUMOJI v2.0.21",
+  "final_primary": {
+    "run": 38948701892,
+    "score": 0.4925,
+    "games": 200,
+    "wins": 98,
+    "losses": 101,
+    "draws": 1,
+    "approx_95_interval": [
+      0.42321133173454695,
+      0.561788668265453
+    ]
+  },
+  "final_audit": {
+    "run": 38950067410,
+    "termination_rules_verified": true,
+    "source_sha256": "35e29121dc61ed5fa1ee9279fd91c3963306c151967df97f45f238aa0ee812eb"
+  },
+  "totals": {
+    "games": 500,
+    "plies": 54821,
+    "all_moves_legal": true,
+    "active_model_moves_A": 27414,
+    "phase_missing": 0,
+    "missing_search_scores": 1359,
+    "maximum_observed_wall_ms": 1076.492,
+    "wall_over_1100ms": 0,
+    "maximum_long_thinks_per_game": 10,
+    "knowledge_probes": 103754,
+    "knowledge_hits": 0
+  },
+  "records": {
+    "main_commit": "911eb877aaf5f42fd3e3ee68c4d1b2fe539d0139",
+    "journal": "journal/2026-10-17_02_自己対局学習第2回_補正縮小候補の検証.md",
+    "readback": "all four main files matched; research results and JSONs read back"
+  },
+  "documentation_ci": {
+    "run": 38950402836,
+    "conclusion": "success",
+    "required_checks": [
+      "check_doc_router.py",
+      "check_workflow_inventory.py",
+      "check_match_workflows.py",
+      "check_current_claims.py"
+    ],
+    "unit_tests": [
+      19,
+      6,
+      10
+    ]
+  },
+  "core_ci": {
+    "formal": 38945905923,
+    "candidates": [
+      38945093286,
+      38945098853,
+      38945102960
+    ],
+    "conclusion": "success",
+    "engine_changed_after_ci": false
+  },
+  "publication": {
+    "assets_verified": 12,
+    "release_inventory": {
+      "assets": 26,
+      "bytes": 59981316
+    },
+    "readback_sha256_verified": true,
+    "api_digest_bytes_verified": true
+  },
+  "stopping_rule": "One generation, three screenings and one confirmation completed. No additional games, training, formal promotion or new automation.",
+  "next_hypotheses": "NEXT.md"
+}
