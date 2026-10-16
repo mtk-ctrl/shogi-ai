@@ -1,0 +1,100 @@
+{
+  "archive_sha256": "97a81952912db073cece1fa50313fca3e552c34a2cca991600ec7fa469b4d15a",
+  "archive_bytes": 7158962,
+  "run_id": "38853046638",
+  "source_ref": "79f463c0e024c1d0e893caad7153aa44240c2a4b",
+  "binary_hashes": {
+    "A": [
+      "cabc38c62642b3caf225809504c6c895aef8b81abc1fd66c356f97ce0b154eb6"
+    ],
+    "B": [
+      "0340f2f4662a0631efc7c532aaa64f45dcc01f6fbb8a8b0519b5870d7f7ac070"
+    ]
+  },
+  "knowledge": {
+    "A": {
+      "enabled": true,
+      "file": "build/position-knowledge-v1.tsv",
+      "available": true,
+      "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+      "positions": 163
+    },
+    "B": {
+      "enabled": true,
+      "file": "build/position-knowledge-v1.tsv",
+      "available": true,
+      "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+      "positions": 163
+    }
+  },
+  "games": 1000,
+  "legal_plies": 109310,
+  "counts": {
+    "reason/checkmate": 994,
+    "A/knowledge_probes": 103134,
+    "A/knowledge_hits": 0,
+    "A/knowledge_promotions": 0,
+    "A/nodes": 6045118911,
+    "B/knowledge_probes": 103021,
+    "B/knowledge_hits": 0,
+    "B/knowledge_promotions": 0,
+    "B/nodes": 6035420942,
+    "B/long_think_moves": 8307,
+    "A/long_think_moves": 8256,
+    "games/train": 681,
+    "reason/fourfold_repetition": 5,
+    "duplicate_games": 13,
+    "reason/move_limit": 1,
+    "unresolved_games": 1,
+    "games/validation": 154,
+    "games/test": 151,
+    "overlap_removed/validation": 202,
+    "overlap_removed/test": 315,
+    "samples/train": 8172,
+    "effective_games/train": 681,
+    "samples/validation": 1646,
+    "effective_games/validation": 154,
+    "samples/test": 1497,
+    "effective_games/test": 145
+  },
+  "dataset_sha256": "a093cf34623ba559c8f11768dc0d00af0503c90a380402708d690348a79af603",
+  "static_evaluator_sha256": "cabc38c62642b3caf225809504c6c895aef8b81abc1fd66c356f97ce0b154eb6",
+  "split_note": "source shard groups 70/15/15; complete-game dedupe; cross-split position exclusion",
+  "build_proof": {
+    "run_id": 38853046638,
+    "job_id": 116818332600,
+    "observed_ref_a": "79f463c0e024c1d0e893caad7153aa44240c2a4b",
+    "observed_ref_b": "79f463c0e024c1d0e893caad7153aa44240c2a4b",
+    "binary_sha256_a": "cabc38c62642b3caf225809504c6c895aef8b81abc1fd66c356f97ce0b154eb6",
+    "executable_text_sha256_a": "fe15b7884db378b3b7bc2c726e42308f655f55fdfa3751f25834d8006d3d1bd6",
+    "binary_sha256_b": "0340f2f4662a0631efc7c532aaa64f45dcc01f6fbb8a8b0519b5870d7f7ac070",
+    "executable_text_sha256_b": "fe15b7884db378b3b7bc2c726e42308f655f55fdfa3751f25834d8006d3d1bd6",
+    "executable_text_equal": true,
+    "log_evidence": [
+      "2026-10-16T04:55:00.3563596Z   ref: 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+      "2026-10-16T04:55:00.6733564Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+      "2026-10-16T04:55:01.3465886Z [command]/usr/bin/git checkout --progress --force 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+      "2026-10-16T04:55:01.5828699Z 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+      "2026-10-16T04:55:01.6223420Z   ref: 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+      "2026-10-16T04:55:01.8037273Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+      "2026-10-16T04:55:02.3263622Z [command]/usr/bin/git checkout --progress --force 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+      "2026-10-16T04:55:02.3750217Z 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+      "2026-10-16T04:55:02.3937317Z   ref: 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+      "2026-10-16T04:55:02.5728619Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --filter=blob:none --depth=1 origin 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+      "2026-10-16T04:55:02.7427228Z [command]/usr/bin/git checkout --progress --force 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+      "2026-10-16T04:55:02.8874852Z 79f463c0e024c1d0e893caad7153aa44240c2a4b",
+      "2026-10-16T04:55:45.0392953Z cabc38c62642b3caf225809504c6c895aef8b81abc1fd66c356f97ce0b154eb6  build/engine-a",
+      "2026-10-16T04:55:45.0446952Z 0340f2f4662a0631efc7c532aaa64f45dcc01f6fbb8a8b0519b5870d7f7ac070  build/engine-b"
+    ]
+  },
+  "ponder": {
+    "A": {
+      "hits": 33920,
+      "misses": 18230
+    },
+    "B": {
+      "hits": 33728,
+      "misses": 18297
+    }
+  }
+}

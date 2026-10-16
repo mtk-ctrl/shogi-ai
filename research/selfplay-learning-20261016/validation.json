@@ -1,0 +1,35 @@
+{
+  "learner_code": "d553ec8e385ffcdd79bae4416fab76b01b2e2c8b",
+  "model_sha256": "b1f77841ba03f860081313847af71402f7c0e2c763e740fb95a7ad25076d7f96",
+  "collection_run": 38853046638,
+  "training_run": 38856315577,
+  "training_job": 116828459175,
+  "training_conclusion": "success",
+  "unit_tests": 9,
+  "prototype_off_or_zero_exact": 120,
+  "prototype_active_legal": 60,
+  "cpp_python_random_vectors": 1001,
+  "actual_embedded_off_or_zero_exact": 120,
+  "actual_embedded_active_legal": 60,
+  "actual_embedded_cpp_python_static": 30,
+  "actual_model_independent_minimax": {
+    "depths": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "turns": [
+      "black",
+      "white"
+    ],
+    "threads": [
+      1,
+      2
+    ],
+    "passed": true
+  },
+  "usi_time_longthink_stop_ponder_quit_eof": "PASS actual embedded model in training run",
+  "asan_ubsan": "PASS 120 OFF/0 exact + 60 active searches with nonzero numerical fixture",
+  "formal_adoption": false
+}

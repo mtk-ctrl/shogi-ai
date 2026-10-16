@@ -1,0 +1,10 @@
+{
+  "dataset_manifest": "/home/runner/work/shogi-ai/shogi-ai/build/cycle/samples.manifest.json",
+  "training_report": "/home/runner/work/shogi-ai/shogi-ai/build/cycle/training-report.json",
+  "model_sha256": "b1f77841ba03f860081313847af71402f7c0e2c763e740fb95a7ad25076d7f96",
+  "validation_pass": true,
+  "test_improved": true,
+  "candidate_built": true,
+  "formal_adoption": false,
+  "candidate_binary": "/home/runner/work/shogi-ai/shogi-ai/build/cycle/candidate-selfplay"
+}
