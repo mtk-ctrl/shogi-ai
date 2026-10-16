@@ -1,0 +1,54 @@
+name: Selfplay Candidate Verification
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/selfplay-verification-request.json"]
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: selfplay-candidate-verification
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validate entry and workflow boundaries
+        id: plan
+        run: |
+          python3 scripts/check_match_workflows.py
+          python3 scripts/check_workflow_inventory.py --strict
+          python3 .github/scripts/verify_selfplay_candidate.py --plan-only
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ steps.plan.outputs.candidate_ref }}
+          path: engine-a-src
+          persist-credentials: false
+      - uses: actions/checkout@v5
+        if: steps.plan.outputs.mode == 'benchmark'
+        with:
+          ref: ${{ steps.plan.outputs.baseline_ref }}
+          path: engine-b-src
+          persist-credentials: false
+      - name: Install rule replay dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: Verify frozen candidate and preserve evidence
+        run: python3 .github/scripts/verify_selfplay_candidate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: selfplay-verification-${{ github.run_id }}
+          retention-days: 90
+          path: |
+            build/selfplay-verification/report.json
+            build/selfplay-verification/measurements.json
+            build/selfplay-verification/audit.json
+            build/selfplay-verification/build-provenance.json
+            build/selfplay-verification/publication.json
+            build/selfplay-verification/*.tgz
+          if-no-files-found: warn
