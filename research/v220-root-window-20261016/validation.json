@@ -75,5 +75,13 @@
     "conclusion": "success",
     "source_commit": "0719671a543a8cf1df2cffbbfaebf60b4e4d7d7b"
   },
-  "discarded_timing_note": "An initial all-root timing run overlapped the tail of fixed-position verification; the entire timing run is discarded and is not comparison evidence. Timing is rerun after all local verification/builds finish."
+  "discarded_timing_note": "An initial all-root timing run overlapped the tail of fixed-position verification; the entire timing run is discarded and is not comparison evidence. Timing is rerun after all local verification/builds finish.",
+  "asan_ubsan": "PASS independent minimax/restore/stop/mate/repetition with all-root=true, width=1, mask=3; leak detection disabled",
+  "timing_gate_passed": false,
+  "match_launched": false,
+  "github_ci": {
+    "run_id": 38846596088,
+    "source_commit": "7626762919e2f177f6f22f2a6622bad49b090c85",
+    "conclusion": "success"
+  }
 }
