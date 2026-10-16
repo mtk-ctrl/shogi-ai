@@ -52,6 +52,42 @@ def publish(mode,files):
     if sha(package)!=sha(check/name):raise ValueError('release readback mismatch')
     result={'release':tag,'name':name,'sha256':sha(package),'bytes':package.stat().st_size,'readback_verified':True}
     save(OUT/'publication.json',result);return result
+
+def learning_distribution(candidate, publication, original_games):
+    """Measure label/side-to-move association without using it to select a model."""
+    assets=[a for a in publication['assets'] if a['name'].startswith('selfplay-model-')]
+    if not assets:return {'available':False}
+    asset=assets[-1];dest=OUT/'learning-data';dest.mkdir()
+    run(['gh','release','download',publication['release'],'--repo',os.environ['GITHUB_REPOSITORY'],
+         '--pattern',asset['name'],'--dir',dest])
+    package=dest/asset['name']
+    if sha(package)!=asset['sha256']:raise ValueError('learning dataset package hash')
+    with tarfile.open(package) as tar:tar.extractall(dest,filter='data')
+    data=gzip.decompress((dest/'samples.jsonl.gz').read_bytes())
+    training=json.loads((candidate/'research/selfplay-learning-20261016/training-report.json').read_text())
+    if hashlib.sha256(data).hexdigest()!=training['dataset_sha256']:
+        raise ValueError('learning dataset contents hash')
+    lengths={g['game_id']:g['plies'] for g in original_games}
+    grouped={};sample_counts={}
+    for line in data.splitlines():
+        row=json.loads(line);turn=row['x'][11]
+        if turn not in (-1,1) or row['target'] not in (0,.5,1):raise ValueError('invalid saved label/turn')
+        mover_score=row['target'] if turn==1 else 1-row['target']
+        endpoint=row['ply']==lengths[row['game_id']]
+        for selection in ('all','final_move_only' if endpoint else 'excluding_final_move'):
+            key=(row['split'],selection);grouped.setdefault(key,{}).setdefault(row['game_id'],[]).append(mover_score)
+            sample_counts[key]=sample_counts.get(key,0)+1
+    result={'dataset_sha256':training['dataset_sha256'],'source_model_package':asset['name'],
+            'definition':'Average outcome score of the side to move, equal weight per game within each selected subset. Descriptive label audit only, not a causal or strength test.',
+            'by_split':{}}
+    for (split,selection),games in sorted(grouped.items()):
+        means=[sum(values)/len(values) for values in games.values()]
+        result['by_split'].setdefault(split,{})[selection]={
+            'games':len(games),'positions':sample_counts[(split,selection)],
+            'mover_outcome_score':sum(means)/len(means)}
+    save(OUT/'learning-distribution.json',result)
+    return result
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('--plan-only',action='store_true');a=p.parse_args();d=request()
     if a.plan_only:
@@ -108,14 +144,17 @@ def main():
         manifest=json.loads((orig/'manifest.json').read_text())
         index={s['source_id']:int(Path(s['file']).stem.split('-')[-1]) for s in manifest['sources']}
         def signature(g):return hashlib.sha256(('startpos\n'+' '.join(r['move'] for r in g['moves'])).encode()).hexdigest()
-        all_games=set();train_games=set()
+        all_games=set();train_games=set();original_games=[]
         with gzip.open(orig/'played-games.jsonl.gz','rt') as f:
             for line in f:
-                game=json.loads(line);sig=signature(game);all_games.add(sig)
+                game=json.loads(line);original_games.append(game);sig=signature(game);all_games.add(sig)
                 if index[game['source_id']]<13 and game['reason']!='move_limit':train_games.add(sig)
         with gzip.open(source/'played-games.jsonl.gz','rt') as f:signatures=[signature(json.loads(line)) for line in f]
         result['training_game_trajectory_overlap']=sum(s in train_games for s in signatures)
         result['source_corpus_trajectory_overlap']=sum(s in all_games for s in signatures)
+        result['learning_distribution']=learning_distribution(candidate,pub,original_games)
+        if result['learning_distribution'].get('by_split'):
+            files['learning-distribution.json']=OUT/'learning-distribution.json'
         for name in ('aggregate.json','manifest.json','played-games.jsonl.gz','engine-binaries.tgz'):files[name]=source/name
         files['audit.json']=OUT/'audit.json'
     save(OUT/'report.json',result);save(OUT/'build-provenance.json',provenance)
