@@ -18,11 +18,11 @@ options = {
     'MateAssist': False, 'MateLearning': False, 'AdaptiveLongThink': False,
     'PositionKnowledge': True, 'USI_Ponder':False, 'SearchThreads':2,
 }
-config = json.loads(sys.argv[4]) if len(sys.argv)>4 else {'control':0,'width50':50,'width200':200,'width600':600}
+config = json.loads(sys.argv[4]) if len(sys.argv)>4 else {'control':{'SearchRootWindow':0},'first600':{'SearchRootWindow':600},'all200':{'SearchRootWindow':200,'SearchRootWindowAll':True},'all600':{'SearchRootWindow':600,'SearchRootWindowAll':True}}
 engines = {'official_v2020': Engine(baseline_binary, 'official_v2020', options)}
 for name, update_mask in config.items():
     engines[name] = Engine(candidate_binary, name,
-        {**options, 'SearchRootWindow':update_mask})
+        {**options, **update_mask})
 measurements = []
 try:
     for mode, command in (('fixed', 'go depth 2'), ('timed', 'go movetime 200')):

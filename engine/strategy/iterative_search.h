@@ -200,6 +200,8 @@ public:
     unsigned probe_mask() const { return probe_mask_; }
     void set_root_window(unsigned width) { root_window_ = std::min(width, 2000u); }
     unsigned root_window() const { return root_window_; }
+    void set_root_window_all(bool enabled) { root_window_all_ = enabled; }
+    bool root_window_all() const { return root_window_all_; }
 
     SearchResult choose(rules::Position& position, int max_depth, SearchControl& control,
                         const std::vector<std::string>& allowed = {},
@@ -326,24 +328,11 @@ private:
                             if (child.value > best) {
                                 ++stats_.pvs_researches;
                                 visit(1);
-                                child = search(position, child_depth, 1, best, Infinity, child_history);
+                                child = root_full_search(position, child_depth, best, child_history,
+                                                         result, root_window_all_);
                             }
-                        } else if (root_window_ && best == -Infinity && result.has_score
-                                   && !is_mate_score(result.score)) {
-                            // The prior iteration only supplies a tentative window.
-                            // A fail-low/high must be retried with the original full
-                            // window before this root candidate can be published.
-                            const int low = std::max(-Infinity, result.score - static_cast<int>(root_window_));
-                            const int high = std::min(Infinity, result.score + static_cast<int>(root_window_));
-                            ++stats_.root_window_probes;
-                            child = search(position, child_depth, 1, low, high, child_history);
-                            if (child.value < low || child.value >= high) {
-                                stats_.root_window_fail_low += child.value < low;
-                                stats_.root_window_fail_high += child.value >= high;
-                                visit(1);
-                                child = search(position, child_depth, 1, best, Infinity, child_history);
-                            }
-                        } else child = search(position, child_depth, 1, best, Infinity, child_history);
+                        } else child = root_full_search(position, child_depth, best, child_history,
+                                                        result, root_window_all_ || best == -Infinity);
                     }
                     const int value = child.value;
                     if (value > best) { best = value; tied.clear(); }
@@ -420,6 +409,7 @@ private:
             lane.set_risk_verify(risk_verify_enabled_);
             lane.set_probe_mask(probe_mask_);
             lane.set_root_window(root_window_);
+            lane.set_root_window_all(root_window_all_);
             lane.set_quiescence_enabled(quiescence_enabled_);
             lane.set_threads(1);
             lane.position_knowledge_=position_knowledge_;lane.position_knowledge_enabled_=position_knowledge_enabled_;
@@ -724,6 +714,25 @@ private:
     }
     static int from_table(int value, int ply) {
         return is_mate_score(value) ? value - (value > 0 ? ply : -ply) : value;
+    }
+    Node root_full_search(rules::Position& p, int depth, int alpha, std::uint64_t history,
+                          const SearchResult& previous, bool allow_window) {
+        if (root_window_ && allow_window && previous.has_score && !is_mate_score(previous.score)) {
+            const int low = std::max(alpha, std::max(-Infinity,
+                previous.score - static_cast<int>(root_window_)));
+            const int high = std::min(Infinity, previous.score + static_cast<int>(root_window_));
+            if (high > low) {
+                ++stats_.root_window_probes;
+                auto child = search(p, depth, 1, low, high, history);
+                // Both ends are bounds, never a replacement for a full answer.
+                // Equality at low is exact under the strict minimizing cutoff.
+                if (child.value >= low && child.value < high) return child;
+                stats_.root_window_fail_low += child.value < low;
+                stats_.root_window_fail_high += child.value >= high;
+                visit(1);
+            }
+        }
+        return search(p, depth, 1, alpha, Infinity, history);
     }
     Node search(rules::Position& p, int depth, int ply, int alpha, int beta,
                 std::uint64_t history) {
@@ -1082,6 +1091,7 @@ private:
     unsigned threads_=2;
     unsigned probe_mask_=DefaultSearchProbeMask;
     unsigned root_window_=0;
+    bool root_window_all_=false;
     std::array<std::array<std::string, 2>, MaxPly + 1> killers_{};
     std::array<std::array<int, 88 * 81>, 2> history_scores_{};
     bool capture_root_ties_=false;

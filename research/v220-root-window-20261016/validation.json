@@ -1,7 +1,7 @@
 {
   "baseline_commit": "3c107e22e5c1149b661197fe4006b481bde1cb8a",
   "baseline_engine_commit": "a17980ebd65c960a3c486989e348f5853a098b7d",
-  "candidate_binary_sha256": "a8a81b83fa06d40517194f4e0df53007f77a3945f62801195b5d53ef2cbae90a",
+  "candidate_binary_sha256": "0de67f85c378df3e612ac1d8947a64452a8f1c6c7446ad5350b63b241d0b210c",
   "independent_minimax_widths": [
     1,
     50,
@@ -16,7 +16,7 @@
     4
   ],
   "differential": {
-    "checks": 720,
+    "checks": 1440,
     "cases": 15,
     "threads": [
       1,
@@ -41,10 +41,39 @@
     "all_scores_and_root_moves_equal": true,
     "all_pv_legal": true,
     "width_zero_exact_fingerprint_equal": true,
-    "root_window_probes": 1100,
-    "fail_low_retries": 298,
-    "fail_high_retries": 54
+    "root_window_probes": 7353,
+    "fail_low_retries": 5559,
+    "fail_high_retries": 120,
+    "all_root_modes": [
+      false,
+      true
+    ]
   },
-  "protocol": "PASS width 200, 2 threads, mask 3: time, longthink cap/reset, stop, ponderhit, ready, quit/EOF",
-  "code_boundary": "PASS four upstream rule translation units only"
+  "protocol": "PASS all-root=true, width 200, 2 threads, mask 3: time, longthink cap/reset, stop, ponderhit, ready, quit/EOF",
+  "code_boundary": "PASS four upstream rule translation units only",
+  "fixed_position_validation": {
+    "positions": 48,
+    "checks": 1152,
+    "threads": [
+      1,
+      2
+    ],
+    "widths": [
+      0,
+      1,
+      50,
+      200,
+      600,
+      2000
+    ],
+    "both_modes": true,
+    "all_scores_and_moves_equal": true,
+    "width_zero_exact": true
+  },
+  "first_only_github_ci": {
+    "run_id": 38845886815,
+    "conclusion": "success",
+    "source_commit": "0719671a543a8cf1df2cffbbfaebf60b4e4d7d7b"
+  },
+  "discarded_timing_note": "An initial all-root timing run overlapped the tail of fixed-position verification; the entire timing run is discarded and is not comparison evidence. Timing is rerun after all local verification/builds finish."
 }

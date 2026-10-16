@@ -67,17 +67,20 @@ for threads in (1, 2):
                 for e in engines: e.send('setoption name SearchProbeMask value '+str(probe_mask))
                 for case in cases:
                     expected = run(engines[0], *case)
-                    for width in (0, 1, 50, 200, 600, 2000):
-                        engines[1].send('setoption name SearchRootWindow value '+str(width))
-                        actual = run(engines[1], *case)
-                        assert actual[1].get('root_window') == width
-                        assert score(actual) == score(expected), (threads,quiescence,probe_mask,width,case,score(expected),score(actual))
-                        assert actual[0] == expected[0], (threads,quiescence,probe_mask,width,case,'root tie choice drift')
-                        if width == 0:
-                            assert exact(actual) == exact(expected), 'disabled drift'
-                            assert actual[1].get('root_window_probes',0) == 0
-                        for key in usage: usage[key] += actual[1].get(key,0)
-                        checks += 1
+                    for all_roots in (False, True):
+                        engines[1].send('setoption name SearchRootWindowAll value '+str(all_roots).lower())
+                        for width in (0, 1, 50, 200, 600, 2000):
+                            engines[1].send('setoption name SearchRootWindow value '+str(width))
+                            actual = run(engines[1], *case)
+                            assert actual[1].get('root_window') == width
+                            assert actual[1].get('root_window_all') == int(all_roots)
+                            assert score(actual) == score(expected), (threads,quiescence,probe_mask,all_roots,width,case,score(expected),score(actual))
+                            assert actual[0] == expected[0], (threads,quiescence,probe_mask,all_roots,width,case,'root tie choice drift')
+                            if width == 0:
+                                assert exact(actual) == exact(expected), 'disabled drift'
+                                assert actual[1].get('root_window_probes',0) == 0
+                            for key in usage: usage[key] += actual[1].get(key,0)
+                            checks += 1
     finally:
         for e in engines: e.close()
 assert all(usage.values()), usage

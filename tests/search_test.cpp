@@ -51,6 +51,7 @@ void validate_pv(rules::Position& root, const strategy::SearchResult& result) {
 int main(int argc, char** argv) {
     const unsigned probe_mask = argc > 1 ? static_cast<unsigned>(std::stoi(argv[1])) : 0u;
     const unsigned root_window = argc > 2 ? static_cast<unsigned>(std::stoi(argv[2])) : 0u;
+    const bool root_window_all = argc > 3 && std::string(argv[3]) == "true";
     try {
         using Budget = strategy::LongThinkBudget;
         require(!Budget::available(23, 0) && Budget::available(24, 0), "long-think opening boundary");
@@ -75,6 +76,7 @@ int main(int argc, char** argv) {
         strategy::BasicIterativeSearch<strategy::MaterialEvaluator> search;
         search.set_probe_mask(probe_mask);
         search.set_root_window(root_window);
+        search.set_root_window_all(root_window_all);
         search.set_quiescence_enabled(false); // Fixed-horizon oracle/legacy regression.
         auto p = fixture({{"9i","K"},{"1a","k"},{"7g","P"},{"3c","p"}});
         for (int sample = 0; sample < 2; ++sample) {
@@ -104,6 +106,7 @@ int main(int argc, char** argv) {
         strategy::IterativeSearch features;
         features.set_probe_mask(probe_mask);
         features.set_root_window(root_window);
+        features.set_root_window_all(root_window_all);
         features.set_quiescence_enabled(false);
         p = rules::Position();
         for (unsigned sample = 0; sample < 6; ++sample) {

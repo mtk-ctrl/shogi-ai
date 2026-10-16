@@ -115,6 +115,7 @@ int main() {
                       << "option name SearchThreads type spin default 2 min 1 max 2\n"
                       << "option name SearchProbeMask type spin default " << shogi::strategy::DefaultSearchProbeMask << " min 0 max 7\n"
                       << "option name SearchRootWindow type spin default 0 min 0 max 2000\n"
+                      << "option name SearchRootWindowAll type check default false\n"
                       << "option name Quiescence type check default true\n"
                       << "option name MateAssist type check default true\n"
                       << "option name MateLearning type check default true\n"
@@ -636,6 +637,7 @@ int main() {
                         << " history_priorities " << stats.history_priorities
                         << " ordering_updates " << stats.ordering_updates
                         << " root_window " << strategy.root_window()
+                        << " root_window_all " << strategy.root_window_all()
                         << " root_window_probes " << stats.root_window_probes
                         << " root_window_fail_low " << stats.root_window_fail_low
                         << " root_window_fail_high " << stats.root_window_fail_high
@@ -735,6 +737,9 @@ int main() {
                         if(used==value.size() && mask>=0 && mask<=15)
                             strategy.set_next_mask(static_cast<unsigned>(mask));
                     } catch(const std::exception&) {}
+                } else if (name == "SearchRootWindowAll") {
+                    if (value == "true" || value == "false")
+                        strategy.set_root_window_all(value == "true");
                 } else if (name == "SearchRootWindow") {
                     try {
                         std::size_t used=0; const int width=std::stoi(value,&used);

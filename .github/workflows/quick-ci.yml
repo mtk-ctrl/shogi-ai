@@ -92,7 +92,7 @@ jobs:
           python3 scripts/build.py --search-test --output build/search-test
           ./build/search-test
           for mask in 1 2 3 4 5 6 7; do ./build/search-test "$mask"; done
-          for width in 1 50 200 600 2000; do ./build/search-test 3 "$width"; done
+          for width in 1 50 200 600 2000; do ./build/search-test 3 "$width"; ./build/search-test 3 "$width" true; done
           python3 scripts/build.py --search-reuse-test --output build/search-reuse-test
           ./build/search-reuse-test
           python3 scripts/build.py --quiescence-test --output build/quiescence-test
@@ -123,7 +123,7 @@ jobs:
           python3 tests/test_parallel_search.py build/shogi-ai
           python3 tests/test_search_probes.py build/shogi-ai build/shogi-ai
           python3 tests/test_search_root_window.py build/shogi-ai build/shogi-ai
-          python3 tests/test_search_usi.py build/shogi-ai 2 3 200
+          python3 tests/test_search_usi.py build/shogi-ai 2 3 200 true
           python3 tests/test_search_usi.py build/shogi-ai 2 7
           python3 tests/test_search_research.py build/shogi-ai
           python3 tests/test_search_efficiency.py build/shogi-ai

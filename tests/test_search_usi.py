@@ -50,6 +50,8 @@ try:
         send('setoption name SearchProbeMask value ' + str(int(sys.argv[3])))
     if len(sys.argv) > 4:
         send('setoption name SearchRootWindow value ' + str(int(sys.argv[4])))
+    if len(sys.argv) > 5:
+        send('setoption name SearchRootWindowAll value ' + sys.argv[5])
     send('isready'); until('readyok')
     # Standard opening is randomized since v2.0.7; search-depth regression
     # intentionally disables that separate adopted feature.

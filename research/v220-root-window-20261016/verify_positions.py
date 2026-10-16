@@ -65,13 +65,15 @@ for threads in (1,2):
     try:
         for position in positions:
             expected = run(engines[0],position,'go depth 2')
-            for width in (0,1,50,200,600,2000):
-                engines[1].send('setoption name SearchRootWindow value '+str(width))
-                actual = run(engines[1],position,'go depth 2')
-                assert score(actual) == score(expected), 'fixed-position score drift'
-                assert actual[0] == expected[0], 'fixed-position root tie drift'
-                if width == 0: assert exact(actual) == exact(expected), 'fixed-position OFF drift'
-                checks += 1
+            for all_roots in (False,True):
+                engines[1].send('setoption name SearchRootWindowAll value '+str(all_roots).lower())
+                for width in (0,1,50,200,600,2000):
+                    engines[1].send('setoption name SearchRootWindow value '+str(width))
+                    actual = run(engines[1],position,'go depth 2')
+                    assert score(actual) == score(expected), 'fixed-position score drift'
+                    assert actual[0] == expected[0], 'fixed-position root tie drift'
+                    if width == 0: assert exact(actual) == exact(expected), 'fixed-position OFF drift'
+                    checks += 1
     finally:
         for e in engines:e.close()
 print(json.dumps(dict(positions=len(positions),checks=checks,scores_and_root_moves_equal=True,
