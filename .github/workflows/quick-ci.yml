@@ -125,6 +125,7 @@ jobs:
           python3 tests/test_search_efficiency.py build/shogi-ai
           python3 tests/test_search_reuse.py build/shogi-ai
           python3 tests/test_search_next.py build/shogi-ai
+          python3 research/nnue-weakness-20261016/qsort_benchmark.py build/shogi-ai
           python3 tests/test_turn_phase_usi.py build/shogi-ai
           python3 tests/test_position_knowledge_usi.py build/shogi-ai
           python3 tests/test_eval_usi.py build/shogi-ai
