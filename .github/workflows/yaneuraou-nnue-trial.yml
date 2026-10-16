@@ -1,0 +1,214 @@
+name: YaneuraOu NNUE Small Trial
+run-name: "KUMOJI v2.0.20 vs NNUE / 40 games"
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/yaneuraou-nnue-trial-request.json"]
+permissions:
+  contents: read
+env:
+  YANEURAOU_REF: c1b80eaa09fe13d5f12b1599d1ae4d53c224de30
+  NNUE_URL: https://github.com/nodchip/tanuki-/releases/download/tanuki-.halfkp_256x2-32-32.2023-05-08/tanuki-.halfkp_256x2-32-32.2023-05-08.7z
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    outputs:
+      engine_ref: ${{ steps.validate.outputs.engine_ref }}
+      matrix: ${{ steps.validate.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check external harness and workflow inventory
+        run: |
+          python3 tests/test_external_match.py
+          python3 scripts/check_match_workflows.py
+          python3 scripts/check_workflow_inventory.py --strict
+      - name: Validate deliberately small NNUE match
+        id: validate
+        run: |
+          python3 - <<'PY'
+          import json,os,re
+          from pathlib import Path
+          q=json.loads(Path(".github/yaneuraou-nnue-trial-request.json").read_text())
+          assert set(q)=={"engine_ref","series_id","nodes","games_per_node","total_shards"}
+          assert re.fullmatch("[0-9a-f]{40}",q["engine_ref"])
+          assert q["series_id"]=="kumoji-v2020-nnue-small-20261016"
+          assert q["nodes"]==[1000,5000] and q["games_per_node"]==20 and q["total_shards"]==20
+          lanes=[{"shard":i,"nodes":1000 if i<10 else 5000,
+                  "games":2,"offset":2*i,"seed":2026101600+i*1000}
+                  for i in range(20)]
+          with open(os.environ["GITHUB_OUTPUT"],"a") as f:
+              f.write("engine_ref="+q["engine_ref"]+"\n")
+              f.write("matrix="+json.dumps({"include":lanes},separators=(",",":"))+"\n")
+          print("KUMOJI frozen SHA",q["engine_ref"],"NNUE 1000 nodes x20; NNUE 5000 nodes x20")
+          PY
+  build:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.preflight.outputs.engine_ref }}
+      - name: Build frozen KUMOJI and adopted knowledge
+        run: |
+          python3 scripts/build.py --output build/shogi-ai
+          cp position-knowledge-v1.tsv position-knowledge-v1.manifest.json build/
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          m=json.loads(Path("build/position-knowledge-v1.manifest.json").read_text())
+          b=Path("build/position-knowledge-v1.tsv").read_bytes()
+          assert m["adopted_positions"]==163 and hashlib.sha256(b).hexdigest()==m["output_sha256"]
+          print("Adopted knowledge",m["adopted_positions"],m["output_sha256"])
+          PY
+      - name: Build pinned YaneuraOu NNUE binary
+        run: |
+          git clone --filter=blob:none https://github.com/yaneurao/YaneuraOu.git external/YaneuraOu
+          git -C external/YaneuraOu checkout "$YANEURAOU_REF"
+          make -C external/YaneuraOu/source clean COMPILER=g++ TARGET_CPU=SSE42 YANEURAOU_EDITION=YANEURAOU_ENGINE_NNUE
+          make -C external/YaneuraOu/source -j2 tournament COMPILER=g++ TARGET_CPU=SSE42 YANEURAOU_EDITION=YANEURAOU_ENGINE_NNUE
+          test -x external/YaneuraOu/source/YaneuraOu-by-gcc
+      - name: Obtain publicly released trained network
+        run: |
+          python3 -m pip install py7zr==1.0.0
+          curl --fail --location --retry 3 "$NNUE_URL" -o /tmp/nnue.7z
+          test "$(stat -c%s /tmp/nnue.7z)" = "23966109"
+          python3 - <<'PY'
+          import py7zr,hashlib
+          from pathlib import Path
+          archive=Path("/tmp/nnue.7z")
+          print("Evaluation archive sha256",hashlib.sha256(archive.read_bytes()).hexdigest())
+          with py7zr.SevenZipFile(archive) as f:f.extractall(path="/tmp/nnue-extract")
+          nets=list(Path("/tmp/nnue-extract").rglob("nn.bin"))
+          if len(nets)!=1 or nets[0].stat().st_size<1000000:
+              raise SystemExit(f"missing trained NNUE eval: {nets}")
+          p=Path("build/eval/nn.bin")
+          p.parent.mkdir(parents=True,exist_ok=True)
+          p.write_bytes(nets[0].read_bytes())
+          print("Evaluation NNUE sha256",hashlib.sha256(p.read_bytes()).hexdigest())
+          PY
+      - name: Archive binaries and evaluation data for every lane
+        run: |
+          tar -czf nnue-binaries.tgz build/shogi-ai build/eval/nn.bin build/position-knowledge-v1.tsv build/position-knowledge-v1.manifest.json external/YaneuraOu/source/YaneuraOu-by-gcc
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nnue-engine-${{ github.run_id }}
+          path: nnue-binaries.tgz
+          retention-days: 90
+          if-no-files-found: error
+  smoke:
+    needs: [preflight,build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.preflight.outputs.engine_ref }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: nnue-engine-${{ github.run_id }}
+      - name: Validate actual NNUE USI initialization with a sample game
+        run: |
+          tar -xzf nnue-binaries.tgz
+          chmod +x build/shogi-ai external/YaneuraOu/source/YaneuraOu-by-gcc
+          python3 -m pip install python-shogi==1.1.1
+          python3 benchmarks/external_match.py --self-engine build/shogi-ai --opponent-engine external/YaneuraOu/source/YaneuraOu-by-gcc \
+            --self-options '{"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}' \
+            --opponent-options "{\"Threads\":1,\"USI_Hash\":16,\"USI_OwnBook\":false,\"EvalDir\":\"$(realpath build/eval)\"}" \
+            --self-go "go movetime 200" --opponent-go "go nodes 1000" \
+            --games 1 --seed 20261016 --max-plies 60 --output results/smoke.json
+          python3 - <<'PY'
+          import json
+          j=json.load(open("results/smoke.json"))
+          assert j["games"]==1 and j["illegal_games"]==0
+          assert j["opponent_engine"]["go_command"]=="go nodes 1000"
+          print("NNUE opponent handshake verified",j["opponent_engine"]["usi_name"])
+          PY
+  match:
+    needs: [preflight,build,smoke]
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.preflight.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.preflight.outputs.engine_ref }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: nnue-engine-${{ github.run_id }}
+      - name: Play NNUE with 200ms plus adopted long think and knowledge
+        env:
+          NODES: ${{ matrix.nodes }}
+          SEED: ${{ matrix.seed }}
+          OFFSET: ${{ matrix.offset }}
+          SHARD: ${{ matrix.shard }}
+        run: |
+          tar -xzf nnue-binaries.tgz
+          chmod +x build/shogi-ai external/YaneuraOu/source/YaneuraOu-by-gcc
+          python3 -m pip install python-shogi==1.1.1
+          mkdir -p results
+          python3 benchmarks/external_match.py --self-engine build/shogi-ai --opponent-engine external/YaneuraOu/source/YaneuraOu-by-gcc \
+            --self-options '{"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}' \
+            --opponent-options "{\"Threads\":1,\"USI_Hash\":16,\"USI_OwnBook\":false,\"EvalDir\":\"$(realpath build/eval)\"}" \
+            --self-go "go movetime 200" --opponent-go "go nodes $NODES" \
+            --games 2 --game-offset "$OFFSET" --seed "$SEED" --max-plies 300 \
+            --output "results/nnue-$NODES-shard-$SHARD.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nnue-shard-${{ github.run_id }}-${{ matrix.shard }}
+          path: results/nnue-*.json
+          retention-days: 90
+          if-no-files-found: error
+  aggregate:
+    needs: [preflight,match]
+    if: always() && needs.match.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: nnue-shard-${{ github.run_id }}-*
+          path: results
+          merge-multiple: true
+      - name: Verify 40 games, exact options, score and invalid moves
+        env:
+          ENGINE_REF: ${{ needs.preflight.outputs.engine_ref }}
+        run: |
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          paths=list(Path("results").glob("nnue-*.json"))
+          assert len(paths)==20, len(paths)
+          result={"series":"kumoji-v2020-nnue-small-20261016","engine_ref":os.environ["ENGINE_REF"],
+                  "evaluation":"public tanuki HalfKP NNUE 256x2-32-32 2023-05-08",
+                  "note":"node levels are not comparable with Material ladder; external harness does not send go ponder",
+                  "results":{}}
+          for nodes in (1000,5000):
+              rows=[json.loads(p.read_text()) for p in paths if f"nnue-{nodes}-" in p.name]
+              assert len(rows)==10
+              w=d=l=i=g=0
+              for x in rows:
+                  assert x["games"]==2 and x["self_engine"]["go_command"]=="go movetime 200"
+                  assert x["opponent_engine"]["go_command"]==f"go nodes {nodes}"
+                  a=x["self_engine"]["options"]
+                  assert a["AdaptiveLongThink"]=="true" and a["PositionKnowledge"]=="true"
+                  assert a["PositionKnowledgeFile"]=="build/position-knowledge-v1.tsv"
+                  b=x["opponent_engine"]["options"]
+                  assert b["Threads"]=="1" and b["USI_Hash"]=="16" and b["USI_OwnBook"]=="false" and b["EvalDir"]
+                  g+=x["games"];w+=x["wins_self"];d+=x["draws"];l+=x["losses_self"];i+=x["illegal_games"]
+              assert g==20 and w+d+l==20 and i==0,(nodes,g,w,d,l,i)
+              result["results"][str(nodes)]={"games":g,"wins":w,"draws":d,"losses":l,
+                                               "illegal":i,"win_pct":100*w/g,"point_pct":100*(w+.5*d)/g}
+          Path("nnue-trial-summary.json").write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n")
+          print(json.dumps(result,ensure_ascii=False,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nnue-trial-summary-${{ github.run_id }}
+          path: nnue-trial-summary.json
+          retention-days: 90
+          if-no-files-found: error

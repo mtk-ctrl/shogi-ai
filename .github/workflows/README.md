@@ -30,6 +30,7 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 | `.github/workflows/variable-eval-search.yml` | オーナーの `[KUMOJI SEARCH]` Issue / 手動 | 固定した研究commitと配点一覧を使い、多数の新しい組合せを少数局で比較。共通バイナリ1本・最大10runner・標準arena/実戦手保存を再利用。候補の自動採用はしない |
 | `.github/workflows/engine-match-request.yml` | オーナーのIssue作成 / request更新 / 手動 | 対局条件だけを検証し `engine-match.yml` を起動する軽量入口。通常はIssue方式でコードを変更しない。対局処理は持たない |
 | `.github/workflows/position-knowledge-refresh.yml` | 知識更新request / 手動 | 承認した候補データから採用済み局面知識を生成する。新候補を自動採用しない |
+| `.github/workflows/yaneuraou-nnue-trial.yml` | 専用依頼ファイル変更 / 手動 | やねうら王NNUE（公開学習済み評価）の40局対局。固定雲路200ms＋採用済み知識・長考、NNUE各1000/5000節点20局、20runner、結果と実設定・違法対局を集計。Material梯子とは別尺度で正式採用なし |
 | `.github/workflows/yaneuraou-ladder.yml` | 依頼ファイル更新 / 手動 / 条件付き自動進行 | やねうら王Material版で正式棋力測定（雲路200ms・長考ON・局面知識ON）。100局ごとにレベルを1上げ、勝率30%未満で自動停止。レベル別対局記録と集計を保存し、固定エンジンcommitを引き継ぐ |
 | `.github/workflows/external-engine-benchmark.yml` | 関連pushでunit / 手動Benchmark | やねうら王MaterialのCore外部尺度 |
 | `.github/workflows/tsume-benchmark.yml` | 手動 | 固定詰将棋データセットのBenchmark |
