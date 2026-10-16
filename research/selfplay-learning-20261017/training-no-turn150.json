@@ -1,0 +1,120 @@
+{
+  "dataset_sha256": "a093cf34623ba559c8f11768dc0d00af0503c90a380402708d690348a79af603",
+  "model_sha256": "b71885acf92e750ed65cada9b831d5bd66a83717f8db28aa02c21b63f35d51a1",
+  "temperature_train_only": 3500,
+  "selection": "validation only; independent fresh matches are final strength evidence",
+  "candidates": [
+    {
+      "hidden": 4,
+      "cap": 150,
+      "l2": 0.001,
+      "epoch": 5,
+      "validation": {
+        "brier": 0.20034251767892394,
+        "cross_entropy": 0.5875464292297533,
+        "samples": 1646,
+        "mean_absolute_correction": 1.5103802402503699
+      }
+    },
+    {
+      "hidden": 4,
+      "cap": 150,
+      "l2": 0.01,
+      "epoch": 1,
+      "validation": {
+        "brier": 0.20034733762754267,
+        "cross_entropy": 0.5875599620716749,
+        "samples": 1646,
+        "mean_absolute_correction": 0.6500810517044282
+      }
+    },
+    {
+      "hidden": 8,
+      "cap": 150,
+      "l2": 0.001,
+      "epoch": 5,
+      "validation": {
+        "brier": 0.2003357097423471,
+        "cross_entropy": 0.5875247560662938,
+        "samples": 1646,
+        "mean_absolute_correction": 2.972264856355765
+      }
+    },
+    {
+      "hidden": 8,
+      "cap": 150,
+      "l2": 0.01,
+      "epoch": 1,
+      "validation": {
+        "brier": 0.20034489649745657,
+        "cross_entropy": 0.5875529188748282,
+        "samples": 1646,
+        "mean_absolute_correction": 1.096839452034257
+      }
+    }
+  ],
+  "selected": {
+    "hidden": 8,
+    "cap": 150,
+    "l2": 0.001,
+    "epoch": 5,
+    "validation": {
+      "brier": 0.2003357097423471,
+      "cross_entropy": 0.5875247560662938,
+      "samples": 1646,
+      "mean_absolute_correction": 2.972264856355765
+    }
+  },
+  "baseline": {
+    "train": {
+      "brier": 0.20419684014607561,
+      "cross_entropy": 0.5938579624462744,
+      "samples": 8172,
+      "mean_absolute_correction": 0
+    },
+    "validation": {
+      "brier": 0.20035098057313558,
+      "cross_entropy": 0.5875712945851701,
+      "samples": 1646,
+      "mean_absolute_correction": 0
+    },
+    "test": {
+      "brier": 0.20831626006005832,
+      "cross_entropy": 0.5963748810269698,
+      "samples": 1497,
+      "mean_absolute_correction": 0
+    }
+  },
+  "learned": {
+    "train": {
+      "brier": 0.20418276336236493,
+      "cross_entropy": 0.5938225600803282,
+      "samples": 8172,
+      "mean_absolute_correction": 2.8974547234459136
+    },
+    "validation": {
+      "brier": 0.2003357097423471,
+      "cross_entropy": 0.5875247560662938,
+      "samples": 1646,
+      "mean_absolute_correction": 2.972264856355765
+    },
+    "test": {
+      "brier": 0.20830892375944646,
+      "cross_entropy": 0.5963454920198495,
+      "samples": 1497,
+      "mean_absolute_correction": 3.112878787878788
+    }
+  },
+  "validation_pass": true,
+  "test_improved": true,
+  "previous_test_is_reused_diagnostic": true,
+  "invariants": {
+    "random_vectors": 1001,
+    "turn_invariant": true,
+    "color_odd": true,
+    "max_abs_correction": 43,
+    "material_monotone_grid": 241
+  },
+  "learner_code_commit": "20b2b21be25bc3bd56fe423935eb36e78a9a7cd4",
+  "learner_source_sha256": "5404ddee58bb77fe395cbb09ddc9b3101a622ee91348129558753a5c1dfc5e5e"
+}

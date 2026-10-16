@@ -16,7 +16,7 @@ class FollowupTests(unittest.TestCase):
                 self.assertIn(f.shogi.Move.from_usi(f.mirror_move(move)),
                               f.shogi.Board(f.mirror_sfen(sfen)).legal_moves)
     def test_original_model_exposes_turn_bias(self):
-        m=f.learn.Residual.from_text((f.OLD/'model.txt').read_text())
+        m=f.learn.Residual.from_text((ROOT/'research/selfplay-learning-20261017/original-model.txt').read_text())
         x=np.zeros((2,12));x[:,11]=[1,-1]
         self.assertEqual(m.correction(x).tolist(),[520,-520])
     def test_invariance_rejects_a_turn_shortcut(self):

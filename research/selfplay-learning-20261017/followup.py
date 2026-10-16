@@ -65,7 +65,7 @@ def train_models(dataset,out):
             'learner_code_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
             'learner_source_sha256':learn.digest(Path(__file__).read_bytes())}
         learn.save(dest/'training-report.json',report);summary['models'][name]=report
-    old=learn.Residual.from_text((OLD/'model.txt').read_text())
+    old=learn.Residual.from_text((ROOT/'research/selfplay-learning-20261017/original-model.txt').read_text())
     summary['old_scale10']={s:learn.metric(old,d,temp,.1) for s,d in rawdata.items()}
     summary['old_scale10']['validation_pass']=summary['old_scale10']['validation']['brier']<=baseline['validation']['brier']
     learn.save(out/'followup/training-summary.json',summary)

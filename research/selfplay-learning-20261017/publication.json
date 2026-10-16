@@ -1,0 +1,21 @@
+{
+  "release": "records-2026-10-01",
+  "url": "https://github.com/mtk-ctrl/shogi-ai/releases/tag/records-2026-10-01",
+  "source_run": 38853046638,
+  "training_run": 38942816009,
+  "assets": [
+    {
+      "name": "selfplay-source-38853046638.tgz",
+      "sha256": "8069ececf0ce979768e0c093165b2b83dc7b9371aa7d237fb20e8cdf148cc740",
+      "bytes": 12380711,
+      "readback_verified": true
+    },
+    {
+      "name": "selfplay-model-38853046638-38942816009.tgz",
+      "sha256": "31af9e3effc547dde3d36a4776675ce44393b50d4cceb4e37946e21e93b2c2a6",
+      "bytes": 754432,
+      "readback_verified": true
+    }
+  ],
+  "note": "Data release only; no engine or knowledge adoption; raw PVs are not published."
+}

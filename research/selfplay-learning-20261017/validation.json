@@ -1,0 +1,47 @@
+{
+  "training_run": 38942816009,
+  "training_conclusion": "success",
+  "code_ref": "20b2b21be25bc3bd56fe423935eb36e78a9a7cd4",
+  "unit_tests": {
+    "existing": 9,
+    "followup": 4
+  },
+  "actual_primary_embedded_off_or_zero_exact": 120,
+  "actual_primary_active_legal": 60,
+  "actual_primary_python_cpp_static": 30,
+  "usi_time_longthink_stop_ponder": "PASS primary no-turn150",
+  "tactical_trials_per_condition": 96,
+  "old100": {
+    "passes": 60,
+    "failures": 36,
+    "failures_by_case": {
+      "hanging-pawn": 12,
+      "hanging-lance": 24
+    }
+  },
+  "followup": {
+    "no-turn150": {
+      "tactical_pass": true,
+      "validation_brier_pass": true,
+      "timed_depth_ratio": 1,
+      "off_exact": true,
+      "match_gate_pass": true
+    },
+    "no-turn600": {
+      "tactical_pass": true,
+      "validation_brier_pass": true,
+      "timed_depth_ratio": 0.9977426636568849,
+      "off_exact": true,
+      "match_gate_pass": true
+    },
+    "scale10": {
+      "tactical_pass": true,
+      "validation_brier_pass": true,
+      "timed_depth_ratio": 1.009009009009009,
+      "off_exact": true,
+      "match_gate_pass": true
+    }
+  },
+  "formal_adoption": false,
+  "secondary_split": "Previous test reused as diagnostic; fresh seeded matches required"
+}

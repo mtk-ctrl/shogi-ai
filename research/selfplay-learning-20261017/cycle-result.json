@@ -1,0 +1,41 @@
+{
+  "dataset_manifest": "/home/runner/work/shogi-ai/shogi-ai/build/cycle/samples.manifest.json",
+  "training_report": "/home/runner/work/shogi-ai/shogi-ai/build/cycle/training-report.json",
+  "model_sha256": "b71885acf92e750ed65cada9b831d5bd66a83717f8db28aa02c21b63f35d51a1",
+  "validation_pass": true,
+  "test_improved": true,
+  "candidate_built": true,
+  "formal_adoption": false,
+  "followup": {
+    "no-turn150": {
+      "tactical_pass": true,
+      "validation_brier_pass": true,
+      "timed_depth_ratio": 1,
+      "off_exact": true,
+      "match_gate_pass": true
+    },
+    "no-turn600": {
+      "tactical_pass": true,
+      "validation_brier_pass": true,
+      "timed_depth_ratio": 0.9977426636568849,
+      "off_exact": true,
+      "match_gate_pass": true
+    },
+    "scale10": {
+      "tactical_pass": true,
+      "validation_brier_pass": true,
+      "timed_depth_ratio": 1.009009009009009,
+      "off_exact": true,
+      "match_gate_pass": true
+    }
+  },
+  "tactical_original100": {
+    "trials": 96,
+    "passes": 60,
+    "failures_by_case": {
+      "hanging-pawn": 12,
+      "hanging-lance": 24
+    }
+  },
+  "test_split_status": "Reused diagnostic, not untouched test. Fresh seeded matches are required."
+}

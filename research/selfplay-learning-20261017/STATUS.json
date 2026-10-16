@@ -1,0 +1,12 @@
+{
+  "phase": "learning_and_preflight_passed",
+  "learning_run": 38942816009,
+  "code_ref": "20b2b21be25bc3bd56fe423935eb36e78a9a7cd4",
+  "model_no_turn150": "b71885acf92e750ed65cada9b831d5bd66a83717f8db28aa02c21b63f35d51a1",
+  "model_no_turn600": "5ae222cbffd56d7ed1876a71cf826ee2b45f77a53d5d4fd73f37bf626f80daf5",
+  "old_model_scale": 10,
+  "planned_screen_games_each": 100,
+  "screen_seed": 2030101701,
+  "confirmation_seed": 2040101701,
+  "formal_adoption": false
+}
