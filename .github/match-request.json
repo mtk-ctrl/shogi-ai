@@ -1,12 +1,12 @@
 {
-  "request_id": "20261017-precision-eval-threat-200",
-  "ref_a": "b03e403b337c7de301bf73f9db8a1658e18fb42e",
-  "ref_b": "b03e403b337c7de301bf73f9db8a1658e18fb42e",
-  "games": 200,
-  "shards": 10,
+  "request_id": "g1-v221-no-turn150-screen100-20261017",
+  "ref_a": "8f847c08678681af1a7eace7630bc251d98b1df6",
+  "ref_b": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
+  "games": 100,
+  "shards": 18,
   "go_command": "go movetime 200",
   "max_plies": 300,
-  "seed": 2026101710,
-  "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"USI_Ponder\":true,\"SearchThreads\":2,\"EvalThreat\":80}",
-  "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"USI_Ponder\":true,\"SearchThreads\":2,\"EvalThreat\":20}"
+  "seed": 2030101701,
+  "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"SearchResearchMask\":23,\"SearchEfficiencyMask\":8,\"SearchReuseMask\":6,\"SearchNextMask\":4,\"SearchProbeMask\":7,\"SearchThreads\":2,\"RiskVerify\":true,\"USI_Ponder\":true,\"SelfPlayEval\":true,\"SelfPlayEvalScale\":100,\"SelfPlayEvalFile\":\"embedded\"}",
+  "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"SearchResearchMask\":23,\"SearchEfficiencyMask\":8,\"SearchReuseMask\":6,\"SearchNextMask\":4,\"SearchProbeMask\":7,\"SearchThreads\":2,\"RiskVerify\":true,\"USI_Ponder\":true}"
 }
