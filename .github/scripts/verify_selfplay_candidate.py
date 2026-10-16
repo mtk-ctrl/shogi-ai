@@ -151,7 +151,16 @@ def main():
             for line in f:
                 game=json.loads(line);original_games.append(game);sig=signature(game);all_games.add(sig)
                 if index[game['source_id']]<13 and game['reason']!='move_limit':train_games.add(sig)
-        with gzip.open(source/'played-games.jsonl.gz','rt') as f:signatures=[signature(json.loads(line)) for line in f]
+        with gzip.open(source/'played-games.jsonl.gz','rt') as f:played_games=[json.loads(line) for line in f]
+        signatures=[signature(game) for game in played_games]
+        result['trajectory_outcomes']=[{'game_id':g['game_id'],'sha256':s,'winner':g['winner'],'a_black':g['a_black'],
+                                        'in_original_corpus':s in all_games,'in_original_train_shards':s in train_games}
+                                       for g,s in zip(played_games,signatures)]
+        fresh=[g for g,s in zip(played_games,signatures) if s not in all_games]
+        wins=sum(g['winner']=='A' for g in fresh);draws=sum(g['winner'] is None for g in fresh)
+        result['excluding_original_corpus']={'games':len(fresh),'wins_a':wins,'draws':draws,
+            'wins_b':len(fresh)-wins-draws,'score_a':(wins+.5*draws)/len(fresh) if fresh else None,
+            'note':'Conservative descriptive subset excluding every complete move sequence in the original 1000-game corpus. Does not change prespecified selection on all scheduled games.'}
         result['training_game_trajectory_overlap']=sum(s in train_games for s in signatures)
         result['source_corpus_trajectory_overlap']=sum(s in all_games for s in signatures)
         result['learning_distribution']=learning_distribution(candidate,pub,original_games)
@@ -162,6 +171,8 @@ def main():
     save(OUT/'report.json',result);save(OUT/'build-provenance.json',provenance)
     files.update({'report.json':OUT/'report.json','build-provenance.json':OUT/'build-provenance.json'})
     publication=publish(d['mode'],files)
-    result['publication']=publication;save(OUT/'report.json',result)
+    result['publication']=publication
+    result['storage']='Actual played archive and binaries/report preserved in the named data Release package with verified readback SHA256; raw PVs remain temporary Actions artifacts.'
+    save(OUT/'report.json',result)
     print('VALIDATION_RESULT '+json.dumps(result,ensure_ascii=False,separators=(',',':')),flush=True)
 if __name__=='__main__':main()
