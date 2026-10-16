@@ -25,5 +25,10 @@
   "lazy_calls": 4205,
   "lazy_snapshots": 2089,
   "usi_time_longthink_stop_ponderhit_ready_eof": "PASS fast=true, lazy=true, threads=2, mask=3",
-  "boundary": "PASS four upstream rule translation units only"
+  "boundary": "PASS four upstream rule translation units only",
+  "timing_gate_passed": false,
+  "match_launched": false,
+  "gate_failure": "lazy total speedup 1.0036689033 does not exceed 1.02; no selective rerun or match",
+  "standalone_ordering_asan_ubsan_cases": 20000,
+  "standalone_sanitizer_result": "PASS; ASAN_OPTIONS=detect_leaks=0"
 }
