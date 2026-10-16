@@ -1,7 +1,7 @@
 {
-  "request_id": "v220-selfplay-200-audit-20261017",
-  "mode": "audit",
-  "candidate_ref": "b4b62876ce646d622122e0f2d6d7fd46664c2761",
-  "baseline_ref": "79f463c0e024c1d0e893caad7153aa44240c2a4b",
-  "match_run": 38857839850
+  "request_id": "g1-v221-no-turn150-speed-20261017",
+  "mode": "benchmark",
+  "candidate_ref": "8f847c08678681af1a7eace7630bc251d98b1df6",
+  "baseline_ref": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
+  "match_run": 0
 }
