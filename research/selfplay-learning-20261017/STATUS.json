@@ -1,61 +1,25 @@
 {
-  "state": "third_screen_running",
+  "state": "selected_scale10_pending_audit_then_one_200_game_confirmation",
   "formal_adoption": false,
-  "baseline_ref": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
-  "frozen_candidates": {
-    "no-turn150": {
-      "ref": "8f847c08678681af1a7eace7630bc251d98b1df6",
-      "branch": "research/v220-selfplay-g1-20261017",
-      "core_ci_parent": "89ed026d35a6b553ecab7508b4ae18abe798e33e",
-      "scale": 100,
-      "tree": "f1fe676965a733ce08d6345936c027797aa69865"
+  "selection": {
+    "prespecified": "Highest score over all 100 scheduled games, minimum 50%; one 200-game confirmation; no retraining.",
+    "scores": {
+      "no-turn150": 0.475,
+      "no-turn600": 0.52,
+      "scale10": 0.605
     },
-    "no-turn600": {
-      "ref": "c238d50facdec7cd3d44e645b495eb46125d8f26",
-      "branch": "research/v220-selfplay-g1-no-turn600",
-      "core_ci_parent": "b1c8ccc2885f5c10dfe23875551f4d84dfb5fbe9",
-      "scale": 100,
-      "tree": "dcf6773869ee96019510a643898a4b07bc36115a"
-    },
-    "scale10": {
-      "ref": "a15530f625b4ceb3b77d0ce45889d4c2e2d90909",
-      "branch": "research/v220-selfplay-g1-scale10",
-      "core_ci_parent": "cccd4ecd48ce0660acb7e6dffa5278bb678c4fcd",
-      "scale": 10,
-      "tree": "f23d2bdd43435e719218795995202a5230796013"
-    }
+    "selected": "scale10",
+    "candidate_ref": "a15530f625b4ceb3b77d0ce45889d4c2e2d90909",
+    "scale": 10,
+    "model_sha256": "b1f77841ba03f860081313847af71402f7c0e2c763e740fb95a7ad25076d7f96",
+    "baseline_ref": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
+    "confirmation_seed": 2040101701,
+    "confirmation_games": 200,
+    "formal_adoption": false
   },
-  "screening": {
-    "no_turn150": {
-      "match": 38946175603,
-      "audit": 38947455452,
-      "score": 0.475,
-      "excluding_corpus": {
-        "games": 98,
-        "wins_a": 46,
-        "draws": 1,
-        "wins_b": 51,
-        "score_a": 0.4744897959183674,
-        "note": "Conservative descriptive subset excluding every complete move sequence in the original 1000-game corpus. Does not change prespecified selection on all scheduled games."
-      }
-    },
-    "no_turn600": {
-      "match": 38946985753,
-      "audit": 38947742788,
-      "score": 0.52,
-      "excluding_corpus": {
-        "games": 100,
-        "wins_a": 52,
-        "draws": 0,
-        "wins_b": 48,
-        "score_a": 0.52,
-        "note": "Conservative descriptive subset excluding every complete move sequence in the original 1000-game corpus. Does not change prespecified selection on all scheduled games."
-      }
-    },
-    "scale10": {
-      "match": 38947702135,
-      "status": "19_shards_started"
-    }
-  },
-  "next": "Finish scale10, audit, select best >=50% for one separate 200-game confirmation seed2040101701. No retraining or formal adoption."
+  "screening_runs": [
+    38946175603,
+    38946985753,
+    38947702135
+  ]
 }
