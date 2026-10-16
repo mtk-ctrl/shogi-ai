@@ -1,0 +1,69 @@
+{
+  "baseline_commit": "3c107e22e5c1149b661197fe4006b481bde1cb8a",
+  "source_commit": "5c9bc89d37414389b0c1a7f7c7b1e1ae4356f82b",
+  "candidate_binary_sha256": "db44f0e55607a0738d928b0b7dd5efce4f211e422c5302807d940bebc32adf63",
+  "differential": {
+    "checks": 360,
+    "cases": 15,
+    "threads": [
+      1,
+      2
+    ],
+    "quiescence": [
+      false,
+      true
+    ],
+    "probe_masks": [
+      0,
+      3
+    ],
+    "modes": [
+      0,
+      1,
+      2
+    ],
+    "all_scores_and_moves_equal": true,
+    "all_pvs_legal": true,
+    "off_and_serial_exact": true,
+    "balance_probes": 2216,
+    "warm_root_index_option_switch": "PASS"
+  },
+  "fixed_positions": {
+    "positions": 48,
+    "checks": 288,
+    "threads": [
+      1,
+      2
+    ],
+    "modes": [
+      0,
+      1,
+      2
+    ],
+    "all_scores_and_moves_equal": true,
+    "off_and_serial_exact": true,
+    "pv_legal": true
+  },
+  "independent_minimax": {
+    "depths": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "modes": [
+      1,
+      2
+    ],
+    "score_pv_history_restore_stop_mate_repetition": "PASS"
+  },
+  "usi": "PASS time, longthink cap/reset, ready/stop/ponderhit, quit/EOF at balance 2, 2 threads, mask 3",
+  "boundary": "PASS four upstream rule translation units only",
+  "quick_ci": {
+    "run_id": 38848102292,
+    "job_id": 116803072052,
+    "conclusion": "success",
+    "source_commit": "5c9bc89d37414389b0c1a7f7c7b1e1ae4356f82b"
+  },
+  "decision": "HOLD: both modes failed preregistered speed/depth gate; no standard match launched"
+}
