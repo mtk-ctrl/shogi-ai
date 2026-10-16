@@ -89,8 +89,10 @@ class ClaimChecks(unittest.TestCase):
         self.assertTrue(any("SearchThreads" in e for e in errors), errors)
 
     def test_wrong_documented_probe_default_fails(self):
-        self.change("docs/現行エンジン仕様.md", "| SearchProbeMask | 3 |",
-                    "| SearchProbeMask | 0 |")
+        header = (self.root / "engine/strategy/search_research.h").read_text(encoding="utf-8")
+        value = int(re.search(r"DefaultSearchProbeMask\s*=\s*(\d+)", header).group(1))
+        self.change("docs/現行エンジン仕様.md", f"| SearchProbeMask | {value} |",
+                    f"| SearchProbeMask | {value ^ 1} |")
         errors, _ = claims.check(self.root)
         self.assertTrue(any("SearchProbeMask" in e for e in errors), errors)
 
