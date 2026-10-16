@@ -247,6 +247,10 @@ class Residual:
     def predict(self,x):
         h=np.tanh(np.clip(x,-4,4)@self.w1.T)
         return self.cap*np.tanh(h@self.w2)
+    def correction(self,x):
+        raw=self.predict(x)
+        # Match C++ lround: ties away from zero, unlike NumPy's bankers rounding.
+        return (np.sign(raw)*np.floor(abs(raw)+.5)).astype(np.int64)
     def text(self):
         rows=[f'KUMOJI_SELFPLAY_RESIDUAL_V1 {INPUTS} {len(self.w2)} {self.cap}']
         rows += [' '.join(format(w,'.17g') for w in row) for row in self.w1]
@@ -267,7 +271,7 @@ def arrays(rows):
             np.array([r['target'] for r in rows]),np.array([r['weight'] for r in rows]))
 
 def metric(model,data,temp,scale=1):
-    x,base,y,w=data;extra=np.zeros(len(y)) if model is None else model.predict(x)*scale
+    x,base,y,w=data;extra=np.zeros(len(y)) if model is None else np.trunc(model.correction(x)*scale)
     pred=sigmoid((base+extra)/temp)
     return {'brier':float(np.average((pred-y)**2,weights=w)),
             'cross_entropy':float(np.average(-y*np.log(pred+1e-12)-(1-y)*np.log(1-pred+1e-12),weights=w)),
@@ -316,11 +320,12 @@ def train(input_path,output_dir):
     report={'dataset_sha256':digest(path.read_bytes()),'seed':SEED,'temperature_train_only':temp,
             'model_sha256':digest(text.encode()),'selection':'validation Brier only; test consulted once after freeze',
             'candidates':candidates,'selected':candidates[index], 'baseline':baseline,'learned':chosen,
-            'validation_pass':chosen['validation']['brier']<=baseline['validation']['brier'],
+            'validation_pass':chosen['validation']['brier']<=baseline['validation']['brier']
+                and chosen['validation']['mean_absolute_correction']>0,
             'test_improved':chosen['test']['brier']<baseline['test']['brier'],
             'warning':'outcome prediction is not playing strength; no optimal-move labels'}
     test_rows=groups['test'];tx,tbase,ty,tw=data['test']
-    pb=sigmoid(tbase/temp);pl=sigmoid((tbase+model.predict(tx))/temp)
+    pb=sigmoid(tbase/temp);pl=sigmoid((tbase+model.correction(tx))/temp)
     game_errors=collections.defaultdict(list)
     for row,difference in zip(test_rows,(pl-ty)**2-(pb-ty)**2):
         game_errors[row['game_id']].append(float(difference))
@@ -330,6 +335,11 @@ def train(input_path,output_dir):
     report['paired_test_brier_difference']={'learned_minus_baseline':float(diffs.mean()),
         'bootstrap_95_by_game':np.quantile(boot,[.025,.975]).tolist(),
         'independent_game_groups':len(diffs),'resamples':2000}
+    report['prediction_rounding']='C++ lround residual points, then integer scale division'
+    report['runtime']={'numpy':np.__version__,'python':sys.version}
+    root=Path(__file__).resolve().parents[2]
+    report['learner_code_commit']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
+    report['learner_source_sha256']=digest(Path(__file__).read_bytes())
     save(out/'training-report.json',report)
     header=('#pragma once\n#include <string_view>\nnamespace shogi::strategy::detail {\n'
             'inline constexpr std::string_view SelfPlayModelText = R"KUMOJISPLEARN('+text+')KUMOJISPLEARN";\n'

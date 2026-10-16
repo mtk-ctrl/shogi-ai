@@ -12,7 +12,7 @@
 OPENBLAS_NUM_THREADS=2 OMP_NUM_THREADS=2 python3 research/selfplay-learning-20261016/run_cycle.py \
   --archive-dir build/runs/38853046638 \
   --provenance research/selfplay-learning-20261016/collection-build-provenance.json \
-  --baseline /absolute/path/to/pinned-v2020 \
+  --baseline /absolute/path/to/restored-corpus-binary \
   --output-dir build/selfplay-cycle --build-candidate
 ```
 
@@ -23,6 +23,12 @@ OPENBLAS_NUM_THREADS=2 OMP_NUM_THREADS=2 python3 research/selfplay-learning-2026
 
 `samples.manifest.json` は出所・除外/重複・分割数・知識・合法着手数、`training-report.json` は学習候補・選定epoch・検証/試験誤差・対局単位の誤差差95%区間、`model.txt` と生成headerは固定モデル、`cycle-result.json` は処理の到達点を記録する。モデルの補正上限は最大600点、最終静的評価は従来の上限で制限する。詰み/反復のルール点を補正しない。
 
-データ原本のartifactは90日保存を要求する一時受渡しであり、永続保存とは呼ばない。大量の原棋譜・学習局面をソースへcommitしない。継続利用するモデルと小さい検証報告・manifest・出所は研究branchへ保存し、元の実戦原本はR25の期限と移送状況を明示する。未着手候補・PV・探索木を学習用の長期記録へ追加しない。
+データ原本のartifactは90日保存を要求する一時受渡しであり、永続保存とは呼ばない。大量の原棋譜・学習局面をソースへcommitしない。継続利用するモデルと小さい検証報告・manifest・出所は研究branchへ保存する。未着手候補・PV・探索木を学習用の長期記録へ追加しない。
+
+## GitHub上の明示起動と長期保存
+
+`.github/workflows/selfplay-learning.yml` は完了した自己対局runの復元・学習・候補生成を1jobで再現する専用入口。既存の自己対局を再利用し、対局処理の複製・定期対局・正式版の自動更新は行わない。`.github/selfplay-learning-request.json` には研究コードの固定commit、元の対局の固定commit、元run ID、要求IDだけを指定し、mainで明示更新する。モデルを決める前に元データを固定し、自己対局がsuccessになるまで入口を起動しない。
+
+`restore.py` は原本・実バイナリ・build logを照合し、`persist.py` は実際の着手アーカイブ、manifest、元バイナリ、出所を `selfplay-source-RUN.tgz`、学習済みモデル・派生データ・報告を `selfplay-model-SOURCE-TRAINING.tgz` として既存の月別データRelease `records-2026-10-01` に保存する。既存資産を上書きせず、取得し直したhash一致を必須にする。原本とモデルの保存成否は `publication.json` で確認し、workflowを作っただけで保存済みとは報告しない。短期RawのPVや探索木はこの長期packageに含めない。
 
 `tests/test_selfplay_learning.py` が数値一致・汎化/再現性・先後反転・分割漏洩・終局教師の検査、`tests/test_selfplay_eval_usi.py` が補正OFF/0の完全一致・補正ON合法性・C++推論・欠損/復旧・material診断、追加引数付き `tests/search_test.cpp` が学習評価込み独立minimaxを確認する。数値用の合成fixtureと、実対局から学んだモデルは区別する。
