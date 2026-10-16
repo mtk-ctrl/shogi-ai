@@ -31,5 +31,31 @@
   },
   "usi_time_longthink_stop_ponder_quit_eof": "PASS actual embedded model in training run",
   "asan_ubsan": "PASS 120 OFF/0 exact + 60 active searches with nonzero numerical fixture",
-  "formal_adoption": false
+  "formal_adoption": false,
+  "frozen_candidate_ref": "b4b62876ce646d622122e0f2d6d7fd46664c2761",
+  "frozen_candidate_ci": {
+    "run": 38856764944,
+    "conclusion": "success"
+  },
+  "benchmark": {
+    "run": 38857333800,
+    "off_exact": true,
+    "timed_depth_ratio": 0.997624703087886,
+    "comparison_gate_pass": true
+  },
+  "comparison": {
+    "run": 38857839850,
+    "games": 200,
+    "wins": 43,
+    "draws": 1,
+    "losses": 156,
+    "score": 0.2175
+  },
+  "audit": {
+    "run": 38936447590,
+    "conclusion": "success",
+    "all_21192_moves_legal": true,
+    "longterm_readback_verified": true
+  },
+  "assessment": "Outcome prediction improved, but the frozen candidate lost decisively in actual play. Formal adoption is not recommended; owner adoption has not occurred."
 }

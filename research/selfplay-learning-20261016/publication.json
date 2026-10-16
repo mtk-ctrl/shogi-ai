@@ -15,7 +15,24 @@
       "sha256": "d3cab8bce0be911133c5402860b243a0c8aac62b40b73ccf54a7ce0a84fef64a",
       "bytes": 673542,
       "readback_verified": true
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-benchmark-38857333800.tgz",
+      "sha256": "4625df856ab406d52633634899a46bed128da6e0c8532c6ca4da13c4440a4a5c",
+      "bytes": 26791,
+      "readback_verified": true
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-audit-38936447590.tgz",
+      "sha256": "78e3595ca0a8278db091ab99ed6dec39be4ce2c55dddc85be69b4bc232fde443",
+      "bytes": 6690897,
+      "readback_verified": true
     }
   ],
-  "note": "Data release only; no engine or knowledge adoption; raw PVs are not published."
+  "note": "Data release only; no engine or knowledge adoption; raw PVs are not published.",
+  "benchmark_run": 38857333800,
+  "match_run": 38857839850,
+  "audit_run": 38936447590
 }
