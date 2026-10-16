@@ -1,10 +1,10 @@
 {
-  "engine_ref": "8621ed479aa1ebbf6f45e10dd04763fe99348aa8",
   "series_id": "kumoji-v2020-nnue-small-20261016",
+  "engine_ref": "8621ed479aa1ebbf6f45e10dd04763fe99348aa8",
+  "games_per_node": 20,
   "nodes": [
     1000,
     5000
   ],
-  "games_per_node": 20,
   "total_shards": 20
 }
