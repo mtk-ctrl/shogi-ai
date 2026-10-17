@@ -1,0 +1,60 @@
+{
+  "schema": "postgame-core-verification-v1",
+  "observed_at": "2026-10-17T07:09:06.391597+00:00",
+  "checks": [
+    {
+      "command": [
+        "/workspace/scratch/9fe076caaea9/postgame-venv/bin/python",
+        "-m",
+        "unittest",
+        "tests.test_postgame_cases",
+        "tests.test_postgame_analyze",
+        "tests.test_postgame_candidates",
+        "tests.test_postgame_dispatch",
+        "tests.test_postgame_audit",
+        "tests.test_postgame_ranker",
+        "tests.test_postgame_spiral",
+        "tests.test_postgame_cycle"
+      ],
+      "returncode": 0,
+      "output": "......................................................\n----------------------------------------------------------------------\nRan 54 tests in 0.075s\n\nOK"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/check_doc_router.py"
+      ],
+      "returncode": 0,
+      "output": "Document router consistency check OK: 11 active rules, 11 unique rule_ids"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/check_workflow_inventory.py"
+      ],
+      "returncode": 0,
+      "output": "Workflow inventory check OK: 29 ACTIVE workflows, 0 warning(s)"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/check_match_workflows.py"
+      ],
+      "returncode": 0,
+      "output": "Match workflow preflight OK: 29 workflow(s) checked"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/check_current_claims.py"
+      ],
+      "returncode": 0,
+      "output": "Current-claim consistency OK (0 advisory warning(s))"
+    }
+  ],
+  "new_tests": 28,
+  "total_postgame_tests": 54,
+  "new_match_games": 0,
+  "live_multi_generation_verified": false,
+  "formal_engine_changed": false
+}
