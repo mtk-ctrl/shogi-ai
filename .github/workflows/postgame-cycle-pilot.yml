@@ -51,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: python3 -m pip install python-shogi==1.1.1
-      - run: python3 -m unittest tests.test_postgame_cases tests.test_postgame_analyze tests.test_postgame_candidates tests.test_postgame_dispatch tests.test_postgame_audit
+      - run: python3 -m unittest tests.test_postgame_cases tests.test_postgame_analyze tests.test_postgame_candidates tests.test_postgame_dispatch tests.test_postgame_audit tests.test_postgame_ranker tests.test_postgame_spiral tests.test_postgame_cycle
       - run: python3 scripts/check_workflow_inventory.py --strict && python3 scripts/check_match_workflows.py
   launch-request:
     if: github.event_name == 'push'

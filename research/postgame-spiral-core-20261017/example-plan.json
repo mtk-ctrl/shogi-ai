@@ -1,0 +1,23 @@
+{
+  "cycle_id": "spiral-core-example-not-submitted",
+  "max_generations": 2,
+  "max_new_games": 600,
+  "candidate_kind": "evaluation",
+  "parent": {
+    "engine_ref": "efcfa0f80d218c3dbcc3162f5bee3366f6a835cf",
+    "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+    "parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591"
+  },
+  "seeds": [
+    {
+      "screen": 2032101701,
+      "confirm": 2032102701,
+      "source": 2032103701
+    },
+    {
+      "screen": 2032101702,
+      "confirm": 2032102702,
+      "source": 2032103702
+    }
+  ]
+}

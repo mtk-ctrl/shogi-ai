@@ -1,0 +1,67 @@
+[
+  {
+    "file": "real-preparation-v1.json",
+    "sha256": "5783a085dd2a025050db5c3b06d12393424126ace1482a650f27f0d362710c6a",
+    "bytes": 94801,
+    "parent_probes": [
+      {
+        "case_id": "62d2204be34c432d5ab5a1808eeb286a32131e6a48d5eeec5aa39a06976d3b0b",
+        "parent_moves": [
+          "3i4h",
+          "3i4h"
+        ],
+        "research_move": "3i4h",
+        "effect": "already_correct"
+      },
+      {
+        "case_id": "e343ad90ca5ff12c2163d1fe94047a648f2dbc5715067b9948966d09ff2a855b",
+        "parent_moves": [
+          "P*4h",
+          "P*4h"
+        ],
+        "research_move": "8g7g",
+        "effect": "current_parent_miss"
+      }
+    ],
+    "rejected": {
+      "not_stable_evaluation_pair": 94,
+      "already_correct": 1,
+      "no_static_rank_error_search_problem": 1
+    },
+    "parameter_updates": 0,
+    "note": "Development diagnostics, not independent strength trials."
+  },
+  {
+    "file": "real-preparation.json",
+    "sha256": "5843aacb3df438d63e17bd7e680337834fd017382273b2c76861bba612cb82a4",
+    "bytes": 110311,
+    "parent_probes": [
+      {
+        "case_id": "62d2204be34c432d5ab5a1808eeb286a32131e6a48d5eeec5aa39a06976d3b0b",
+        "parent_moves": [
+          "3i4h",
+          "3i4h"
+        ],
+        "research_move": "3i4h",
+        "effect": "already_correct"
+      },
+      {
+        "case_id": "e343ad90ca5ff12c2163d1fe94047a648f2dbc5715067b9948966d09ff2a855b",
+        "parent_moves": [
+          "P*4h",
+          "P*4h"
+        ],
+        "research_move": "8g7g",
+        "effect": "current_parent_miss"
+      }
+    ],
+    "rejected": {
+      "not_stable_evaluation_pair": 94,
+      "already_correct": 1,
+      "knowledge_excluded_validation_or_heldout": 1,
+      "no_static_rank_error_search_problem": 1
+    },
+    "parameter_updates": 0,
+    "note": "Development diagnostics, not independent strength trials."
+  }
+]
