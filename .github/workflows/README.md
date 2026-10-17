@@ -10,6 +10,7 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 | Workflow | 起動 | 用途 |
 |---|---|---|
 | `.github/workflows/selfplay-candidate-verification.yml` | 検証依頼ファイル変更 / 手動 | 固定した学習候補の48局面単独速度診断、完了した100/200局の合法性・終局ルール・長考・知識・実モデル使用・build出所を検証。結果と実戦手原本を月別データReleaseへhash確認付き保存。対局本体は既存汎用Workflowを使い、正式採用はしない |
+| `.github/workflows/postgame-spiral.yml` | 明示request / 手動 / 関連PR軽量検査 | 凍結予算内で自己対局→監査保存→再分析学習→候補検査→既存対局による100/200局比較→研究親の選択→次世代を自動実行。正式採用しない |
 | `.github/workflows/postgame-cycle-pilot.yml` | 手動 | 対局後改善循環の第1世代で固定した研究候補知識K1だけを、正式K0と分離して100局選別し、監査合格かつ得点率50%以上の場合だけ別seed200局を一度確認する。全実戦手・固定資産・監査を月別データReleaseへ保存する。正式採用や第2世代へ自動移行しない |
 | `.github/workflows/selfplay-learning.yml` | 学習依頼ファイル変更 / 手動 | 完了した同一版自己対局を出所・合法性・分割漏洩検査し、小型の評価補正を学習して候補をビルド。実戦手原本とモデルは月別データReleaseへhash検証付きで保存し、エンジンへの正式採用や次の対局を自動決定しない |
 | `.github/workflows/position10-adopt.yml` | 明示的な10局面採用依頼 / 手動 | 実行38091143128の研究10局面を原本から厳密検査して局面知識153→163件を採用。研究原本を月別Releaseへ保存・照合する |
@@ -97,3 +98,13 @@ engine-match.ymlは対局後に実際の着手だけを圧縮し、played-move-a
 既存 `selfplay-candidate-verification.yml` の `postgame-bridge` モードは、明示した完了済み `engine-match.yml` の原本と実バイナリを取り込み、固定親の評価設定で再分析→学習準備→保存receipt→世代台帳への引渡しを行う。通常入口と原対局は再利用し、新しい対局workflowは作らない。入力は既存verification依頼ファイルと、不変candidate_ref内の `bridge-request.json`。完了run・所有者の起動意図・build/バイナリ・知識・全手・終局・設定を照合する。
 
 新規知識の汎用配布や候補の選別/確認を自動dispatchする入口ではない。初回は正式版同士2局のsource試験であり、正式採用・多世代の棋力向上と区別する。
+
+### 予算付きの多世代改善循環
+
+`postgame-spiral.yml`は、`research/postgame-cycles/<cycle_id>/PLAN.json`を不変commitで指定して一度だけ起動する。通常対局本体`engine-match.yml`のBuild/arena/分割/保存を再利用し、既存の手動入力へ9軸の評価設定を渡す。Issue受付の許可項目は変更しない。`.github/postgame-spiral-request.json`は`enabled:false`なら何も起動しない。有効な明示依頼は`cycle_id/plan_ref/repair`の3項目だけ。Workflowファイルの保存そのものでは対局を始めない。
+
+制御は1つの手動runの中で動く。対局中はGitHub CLIの`run watch`で、保存済みIDの本体完了を待つ。毎時scheduleやworkflow_runの連鎖は使わない。各起動時に他runの稼働/待機jobを取得し、制御job自身が占める1枠も除いて、残る空きへ局数を均等配分する。他のrunを停止しない。容量待ちも既知のrun完了を待ってから再取得する。
+
+月別データReleaseへ操作意図→dispatch応答ID→全手監査/原本→再分析/学習→実Engine検査→結果の順に追記し、各保存を再取得hash/API digestで照合する。異なる内容の上書きはしない。HTTP応答が不明なら二重起動せず停止する。障害修正後の`repair:true`は保存済み本体を調べ直すための入口であり、対局の再起動命令ではない。応答ID自体が欠けた操作は明示照合が必要で、自動再送しない。
+
+現在の自動経路は**評価9軸の学習**。候補知識は研究記録へ残すが、正式163件への自動追加や比較用知識の汎用配布は受け付けない。材料不足でも固定親・分割台帳・同じ親の適格例を保持して次の原本へ進む。実Engine検査に不合格の候補は比較せず親保持。100局50%以上の場合だけ固定候補で一度200局を行い、原本との完全棋譜重複除外後も概算95%下限50%超などの条件を満たしたときだけ研究親を更新する。世代数/総局数を増やさず停止し、正式Engine/版/既定値/採用知識/baselineは変更しない。

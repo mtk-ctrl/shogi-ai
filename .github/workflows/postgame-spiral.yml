@@ -1,0 +1,78 @@
+name: Postgame Automatic Spiral
+run-name: "Spiral ${{ inputs.cycle_id || 'launcher' }}"
+on:
+  push:
+    branches: [main]
+    paths: [".github/postgame-spiral-request.json"]
+  pull_request:
+    paths:
+      - "tools/research/postgame_*.py"
+      - "tests/test_postgame_*.py"
+      - ".github/scripts/run_postgame_spiral.py"
+      - ".github/workflows/postgame-spiral.yml"
+  workflow_dispatch:
+    inputs:
+      cycle_id:
+        description: Frozen bounded research cycle identifier
+        type: string
+        required: true
+      plan_ref:
+        description: Immutable commit containing research/postgame-cycles/CYCLE/PLAN.json
+        type: string
+        required: true
+      repair:
+        description: Resume only after investigating a saved failure or audit-only repair
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: postgame-automatic-spiral-controller
+  cancel-in-progress: false
+jobs:
+  code-ci:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - run: python3 -m unittest discover -s tests -p 'test_postgame_*.py'
+      - run: python3 scripts/check_workflow_inventory.py --strict && python3 scripts/check_match_workflows.py
+  launch-request:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions: {contents: read, actions: write}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Dispatch explicit manual controller entry
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: python3 .github/scripts/run_postgame_spiral.py --launch
+  control:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions: {contents: write, actions: write}
+    steps:
+      - uses: actions/checkout@v5
+        with: {ref: main}
+      - run: python3 -m pip install python-shogi==1.1.1
+      - name: Validate workflow inputs before any heavy work
+        run: python3 scripts/check_match_workflows.py
+      - name: Advance enrolled cycle and persist verified receipts
+        env:
+          GH_TOKEN: "${{ github.token }}"
+          CYCLE_ID: "${{ inputs.cycle_id }}"
+          PLAN_REF: "${{ inputs.plan_ref }}"
+          REPAIR: "${{ inputs.repair }}"
+        run: python3 .github/scripts/run_postgame_spiral.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: postgame-spiral-${{ github.run_id }}-a${{ github.run_attempt }}
+          path: |
+            build/postgame-spiral/report.json
+            build/postgame-spiral/latest-state.json
+          if-no-files-found: ignore
+          retention-days: 90
