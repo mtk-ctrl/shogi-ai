@@ -1,0 +1,230 @@
+{
+  "schema": "postgame-practice-measurements-v1",
+  "run": 39074172936,
+  "job": 117517787762,
+  "plan_sha256": "3cd962218749d177096ffe6a815011cb681fb3bd02d2ee3321e947917b15ccdc",
+  "implementation_ref": "a4b409c23fe720e0f7c70ae3082a6730050ec909",
+  "merge_ref": "829851dd68b649567e065864076eae679f4b2aed",
+  "request_ref": "6d49c6f2764c552052b296852676de7c4d336085",
+  "source_games": 4,
+  "source_plies": 474,
+  "source_selected": 16,
+  "source_tasks": 8,
+  "practice_root_positions": 4,
+  "practice_root_sides": {
+    "black": 4
+  },
+  "original_training_groups": 3,
+  "practice": {
+    "games": 16,
+    "new_plies": 253,
+    "replayed_prefix_plies": 1256,
+    "searches": 237,
+    "outcome_status": {
+      "unresolved": 14,
+      "verified_win_loss": 2
+    },
+    "seconds": 22.4
+  },
+  "unique_descendant_positions": 237,
+  "positions_not_in_original_four_games": 220,
+  "duplicate_continuations_within_root_branch": 0,
+  "regular_new_moves_with_phase": 237,
+  "selected_cases": 32,
+  "selected_unique_positions": 16,
+  "training_lineage_groups": 3,
+  "quarantined_games": 0,
+  "analysis_summary": {
+    "source_games": 16,
+    "source_plies": 1509,
+    "unique_static_positions": 525,
+    "selected_cases": 32,
+    "categories": {
+      "frozen_practice_selection": 32
+    },
+    "selected_side": {
+      "black": 32
+    },
+    "selected_reward": {
+      "None": 28,
+      "-1": 2,
+      "1": 2
+    },
+    "routes": {
+      "hold": 11,
+      "search_horizon_candidate": 13,
+      "knowledge_reference_candidate": 8
+    },
+    "verification_pairs": 16,
+    "analyzer_binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+    "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+    "options": {
+      "SearchResearchMask": 23,
+      "SearchEfficiencyMask": 8,
+      "SearchReuseMask": 6,
+      "SearchNextMask": 4,
+      "SearchProbeMask": 7,
+      "SearchThreads": 2,
+      "RiskVerify": true,
+      "PositionKnowledge": true,
+      "AdaptiveLongThink": false,
+      "USI_Ponder": false,
+      "OpeningRandomNonLance": false,
+      "RandomSeed": 2031101701
+    },
+    "evaluation_options": {
+      "EvalSafety": 480,
+      "EvalPressure": 380,
+      "EvalActivity": 410,
+      "EvalDanger": 150,
+      "EvalInfluence": 140,
+      "EvalPotential": 210,
+      "EvalCoordination": 340,
+      "EvalHandPotential": 60,
+      "EvalThreat": 20
+    },
+    "fresh_process_per_search": true,
+    "seconds": 55.793,
+    "environment": {
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "cpu_count": 4
+    },
+    "status": "diagnosis_completed",
+    "learning_status": "not_run",
+    "formal_adoption": false,
+    "limitation": "Provisional own-engine diagnosis; deeper search and fixed-depth pairing do not prove correct play or evaluation causality.",
+    "explicit_selection_sha256": "956909a8fc4d4e06f68930d8c54557e793954afb53817a65c490f7807dbfa7f3"
+  },
+  "candidate_preparation": {
+    "status": "candidate_preparation_completed",
+    "selected_cases": 32,
+    "parameter_updates": 0,
+    "evaluation_status": "needs_data",
+    "knowledge_positions": 0,
+    "independent_groups": {
+      "train": 0,
+      "validation": 0,
+      "heldout": 0
+    },
+    "routes": {
+      "hold": 11,
+      "search_horizon_candidate": 13,
+      "knowledge_reference_candidate": 8
+    },
+    "formal_adoption": false,
+    "strength_improvement_demonstrated": false
+  },
+  "horizon_observations": 13,
+  "horizon_unique_positions": 9,
+  "horizon_short_status": {
+    "missing": 8,
+    "recorded": 5
+  },
+  "progress_statistics": {
+    "source_games": 16,
+    "source_plies": 1509,
+    "analysis_seconds": 55.793,
+    "selected_cases": 32,
+    "diagnosis_routes": {
+      "hold": 11,
+      "search_horizon_candidate": 13,
+      "knowledge_reference_candidate": 8
+    },
+    "fixed_depth_pairs": 16,
+    "research_matches_actual": 16,
+    "decision_reasons": {
+      "not_stable_evaluation_pair": 32
+    },
+    "selection_details": {
+      "short_observation_missing": 12,
+      "actual_move_supported": 8,
+      "improvement_below_150cp": 3,
+      "actual_move_supported_with_search_disagreement": 4,
+      "long_search_only_preference": 5
+    },
+    "new_evaluation_pairs": 0,
+    "reused_evaluation_pairs": 0,
+    "evaluation_bank_pairs": 0,
+    "independent_groups": {
+      "train": 0,
+      "validation": 0,
+      "heldout": 0
+    },
+    "deficits": {
+      "pairs": 32,
+      "train": 8,
+      "validation": 4,
+      "heldout": 4
+    },
+    "observed_selected_yield": 0.0,
+    "limitation": "Selected-case observation, not an independent probability or a forecast of games to learning."
+  },
+  "task_counts": {
+    "repeat_missing_observation": 6,
+    "review_search_stability": 2,
+    "extend_own_analysis": 3
+  },
+  "publication": {
+    "release": "records-2026-10-01",
+    "name": "postgame-practice-20261018-01-a4b409c23fe7.tgz",
+    "sha256": "32260b5c570d8c1f20058f0c66bedc21535d5a6f975ee5805d4b6f3423980641",
+    "bytes": 352760,
+    "readback_verified": true,
+    "api_digest_verified": true,
+    "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-practice-20261018-01-a4b409c23fe7.tgz"
+  },
+  "local_readback": {
+    "all_moves_legal": true,
+    "all_terminations_verified": true,
+    "settings_verified": true,
+    "full_history_verified": true,
+    "raw_archive_reproduced": true,
+    "games": 16,
+    "new_plies": 253,
+    "new_engine_runs": 0,
+    "formal_adoption": false,
+    "strength_improvement_demonstrated": false,
+    "handoff": {
+      "training_selected_cases": 32,
+      "all_lineages_preserved": true,
+      "preparation_reproduced": true,
+      "knowledge_proposal_reproduced": true,
+      "new_engine_runs": 0,
+      "formal_adoption": false,
+      "strength_improvement_demonstrated": false
+    },
+    "source_packages": [
+      {
+        "name": "spiral-spiral-auto-smoke-20261017-01-initial_source-e8181c0b9aa52b1a-39021709686-a1.tgz",
+        "sha256": "8678dbf172bb5233ffe6841e10a69032d483f01740ef68b8dcf0876edaca0823",
+        "bytes": 5208460
+      },
+      {
+        "name": "spiral-spiral-auto-smoke-20261017-01-collect_source-2d6bac99767cdc1a-39021709686-a1.tgz",
+        "sha256": "48c46d92e88fa0604ee796babbfeceb2ad0ce3ca41e7b6289b7fce46117b8e84",
+        "bytes": 5212920
+      }
+    ],
+    "plan_sha256": "3cd962218749d177096ffe6a815011cb681fb3bd02d2ee3321e947917b15ccdc",
+    "result_sha256": "bd9ee1479626552658659ccbf41512920ac974bb6ffc31441da3209b95249240",
+    "publication_sha256": "32260b5c570d8c1f20058f0c66bedc21535d5a6f975ee5805d4b6f3423980641",
+    "publication_bytes": 352760,
+    "publication_retrieved": true
+  },
+  "ci": {
+    "tests": 142,
+    "postgame": 39074029537,
+    "legacy_postgame": 39074029539,
+    "documents_pr": 39074029438,
+    "documents_main": 39074125211
+  },
+  "new_strength_games": 0,
+  "formal_adoption": false,
+  "strength_improvement_demonstrated": false,
+  "limitations": [
+    "16 continuations from four previously used black-to-move roots in three training lineages; not 16 independent full games.",
+    "Novel positions are counted only relative to the original four games, not all historical KUMOJI games.",
+    "Thirteen provisional search-horizon observations include eight without a completed 50ms score; no proof of evaluation causality or strength.",
+    "Automatic practice insertion into ordinary multi-generation control remains unimplemented."
+  ]
+}
