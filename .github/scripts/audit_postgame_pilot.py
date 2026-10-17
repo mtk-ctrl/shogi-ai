@@ -72,20 +72,21 @@ def subset_result(rows):
     n=len(rows);a=sum(r['winner']=='A' for r in rows);b=sum(r['winner']=='B' for r in rows);d=n-a-b
     p=(a+.5*d)/n if n else None;se=math.sqrt(p*(1-p)/n) if n else None
     return dict(games=n,wins_a=a,wins_b=b,draws=d,score_a=p,approx_95pct=[max(0,p-1.96*se),min(1,p+1.96*se)] if n else None)
-def references(out,repo):
-    corpus=set();source=set();receipts=[]
-    for asset in REFERENCE_ASSETS:
+def references(out,repo,include_screen=False):
+    corpus=set();source=set();screen=set();receipts=[]
+    assets=REFERENCE_ASSETS+([{'name':'postgame-screen-39005539549.tgz','sha256':'d7571d8dd991e1d05963a512310d7622d20c26308c6086d894cb86c42bf19665','bytes':6001373}] if include_screen else [])
+    for asset in assets:
         dest=out/asset['name'].removesuffix('.tgz');dest.mkdir()
         subprocess.run(['gh','release','download','records-2026-10-01','--repo',repo,'--pattern',asset['name'],'--dir',str(dest)],check=True)
         package=dest/asset['name'];require(sha(package)==asset['sha256'] and package.stat().st_size==asset['bytes'],'reference package hash/bytes')
         with tarfile.open(package) as tar:
             names=tar.getnames();archives=[n for n in names if Path(n).name=='played-games.jsonl.gz'];require(len(archives)==1,'reference original archive')
             lines=gzip.decompress(tar.extractfile(archives[0]).read()).splitlines()
-        target=corpus if asset['name'].startswith('selfplay-source') else source
+        target=corpus if asset['name'].startswith('selfplay-source') else screen if asset['name'].startswith('postgame-screen') else source
         for line in lines:
             g=json.loads(line);target.add(trajectory(g.get('start_sfen') or shogi.STARTING_SFEN,[m['move'] for m in g['moves']]))
         receipts.append(dict(asset,verified=True,games=len(lines)))
-    return corpus,source,receipts
+    return corpus,source,screen,receipts
 
 def audit(run_id,out,repo):
     out=Path(out);out.mkdir(parents=True,exist_ok=True)
@@ -142,11 +143,12 @@ def audit(run_id,out,repo):
             'score_a':(wins['A']+.5*wins[None])/total_games,'a_black':colors[True],'a_white':colors[False],
             'candidate_research_uses':dict(research),'long_thinks':dict(long),'trajectory_outcomes':trajectories,
             'internal_trajectory_duplicates':len(trajectories)-len({r['sha256'] for r in trajectories})}
-    corpus,source,receipts=references(out,repo)
+    corpus,source,screen,receipts=references(out,repo,total_games==200)
     result['reference_packages']=receipts
     result['overlap_original_1000']=sum(r['sha256'] in corpus for r in trajectories)
     result['overlap_reanalysis_source_500']=sum(r['sha256'] in source for r in trajectories)
-    fresh=[r for r in trajectories if r['sha256'] not in corpus|source]
+    result['overlap_screen_100']=sum(r['sha256'] in screen for r in trajectories)
+    fresh=[r for r in trajectories if r['sha256'] not in corpus|source|screen]
     unique=list({r['sha256']:r for r in fresh}.values())
     result['all_games']=subset_result(trajectories)
     result['excluding_prior_trajectories']=subset_result(fresh)
