@@ -1,0 +1,48 @@
+{
+  "schema": "postgame-cycle-publication-v1",
+  "initial_diagnosis": {
+    "release": "records-2026-10-01",
+    "name": "postgame-diagnosis-20261017-01.tgz",
+    "sha256": "4d439d6cabe207527cb9e7ce2710f4598e1bae07275396bf19a1ac6a69c39dd1",
+    "bytes": 2739607,
+    "readback_verified": true,
+    "api_digest_verified": true,
+    "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-diagnosis-20261017-01.tgz",
+    "release_asset_count": 27,
+    "release_total_bytes": 62720923,
+    "repository_staging_bytes": 2739607,
+    "repository_staging_note": "One initial transfer snapshot; not an ongoing played-game archive. Git history retains this initial snapshot.",
+    "verification_run": 38988026302,
+    "verification_job": 117263933799,
+    "source_code_ref": "f800d2f136128e7b7a003096f91782f2ca49c90c",
+    "source_result_ref": "d4c8ab2affd76835f34061a1b59d09f43990905c",
+    "main_verification_ref": "0e6d7ee38dbd5ec9aa7ea6553b5144a9ad4103d0",
+    "local_additional_readback_verified": true,
+    "document_ci": 38988026303,
+    "github_test_counts": [
+      9,
+      6,
+      4
+    ]
+  },
+  "assets": [
+    {
+      "release": "records-2026-10-01",
+      "name": "postgame-screen-39005539549.tgz",
+      "sha256": "d7571d8dd991e1d05963a512310d7622d20c26308c6086d894cb86c42bf19665",
+      "bytes": 6001373,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-screen-39005539549.tgz"
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "postgame-audit-39005539549-39006135029.tgz",
+      "sha256": "aeb33366a411dbbde6de3c96d91d90a59ea280842d4acc7b91a48f13dd0b5f2a",
+      "bytes": 5961115,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-audit-39005539549-39006135029.tgz"
+    }
+  ]
+}
