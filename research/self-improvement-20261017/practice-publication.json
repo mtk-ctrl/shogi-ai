@@ -1,0 +1,9 @@
+{
+  "release": "records-2026-10-01",
+  "name": "postgame-practice-20261018-01-a4b409c23fe7.tgz",
+  "sha256": "32260b5c570d8c1f20058f0c66bedc21535d5a6f975ee5805d4b6f3423980641",
+  "bytes": 352760,
+  "readback_verified": true,
+  "api_digest_verified": true,
+  "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-practice-20261018-01-a4b409c23fe7.tgz"
+}
