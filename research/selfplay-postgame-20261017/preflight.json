@@ -1,0 +1,199 @@
+{
+  "status": "pass",
+  "binary_sha256": "37439e1ec26c4bce96a4bb2c43316a05ea019906c867c7247ee710f2c13483f8",
+  "base_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+  "candidate_sha256": "afa3fe1248070bc9d2ebc566479da29ace7d4463492a28b8b31a67e2dcf9cacd",
+  "disabled_fixed_depth_cases": [
+    "0543938bdc82804dabd80d128de4fe11830d98bd51475ea15073cf20d14e0a54",
+    "0db5f82d8c68176969fa086f2f3bf67bc9b0b26d59ab82abc1787f99c49ade97",
+    "121a902b425b071558eee1d0f87550a0ae170265695c2fc9f44b7d78ea059049",
+    "149371e19e1c8ca23292abb61dd2ee815df53951e5d2448cd64a2e8bda867bd5",
+    "1b83431ccee1fcf4241f0a961b6dc4660751327db1851ec52219818394d03af9",
+    "228b39bba3eb748b21b0d215e137dbc037cbfcbfc3d9ad8487cf1db72a003aaf",
+    "24772d14ecd84c812859069e93eb132464255554aa528fef8c9f393eff25a579",
+    "25f4c6988e343883bb0b1454d822d5ee66a522e08a669aec139743a3a24cf705"
+  ],
+  "speed_cases": 32,
+  "base_depth_sum": 83,
+  "candidate_depth_sum": 84,
+  "depth_ratio": 1.0120481927710843,
+  "paired_missing_depth": 2,
+  "candidate_direct_checks": [
+    {
+      "case_id": "e343ad90ca5ff12c2163d1fe94047a648f2dbc5715067b9948966d09ff2a855b",
+      "candidate_move": "8g7g",
+      "base_move": "8g7g",
+      "candidate_research_id": "postgame-pilot-g1-k1-e343ad90ca5ff12c",
+      "base_research_id": null
+    },
+    {
+      "case_id": "62d2204be34c432d5ab5a1808eeb286a32131e6a48d5eeec5aa39a06976d3b0b",
+      "candidate_move": "3i4h",
+      "base_move": "3i4h",
+      "candidate_research_id": "postgame-pilot-g1-k1-62d2204be34c432d",
+      "base_research_id": null
+    }
+  ],
+  "speed_rows": [
+    {
+      "case_id": "0543938bdc82804dabd80d128de4fe11830d98bd51475ea15073cf20d14e0a54",
+      "base_depth": 2,
+      "candidate_depth": 2
+    },
+    {
+      "case_id": "0db5f82d8c68176969fa086f2f3bf67bc9b0b26d59ab82abc1787f99c49ade97",
+      "base_depth": 3,
+      "candidate_depth": 3
+    },
+    {
+      "case_id": "121a902b425b071558eee1d0f87550a0ae170265695c2fc9f44b7d78ea059049",
+      "base_depth": 3,
+      "candidate_depth": 3
+    },
+    {
+      "case_id": "149371e19e1c8ca23292abb61dd2ee815df53951e5d2448cd64a2e8bda867bd5",
+      "base_depth": 3,
+      "candidate_depth": 3
+    },
+    {
+      "case_id": "1b83431ccee1fcf4241f0a961b6dc4660751327db1851ec52219818394d03af9",
+      "base_depth": 3,
+      "candidate_depth": 3
+    },
+    {
+      "case_id": "228b39bba3eb748b21b0d215e137dbc037cbfcbfc3d9ad8487cf1db72a003aaf",
+      "base_depth": null,
+      "candidate_depth": null
+    },
+    {
+      "case_id": "24772d14ecd84c812859069e93eb132464255554aa528fef8c9f393eff25a579",
+      "base_depth": 2,
+      "candidate_depth": 2
+    },
+    {
+      "case_id": "25f4c6988e343883bb0b1454d822d5ee66a522e08a669aec139743a3a24cf705",
+      "base_depth": null,
+      "candidate_depth": null
+    },
+    {
+      "case_id": "270520ab15a3796685255419416da332948067d6146f948466c5d82c35cc5453",
+      "base_depth": 2,
+      "candidate_depth": 2
+    },
+    {
+      "case_id": "2788510a45f4d045368bdde24fe453b08d5de57690d7f69dbff4a06cf61d3073",
+      "base_depth": 3,
+      "candidate_depth": 3
+    },
+    {
+      "case_id": "27faef777ed1654cdd95103e7b70a2470d12205406d9dbdcc8e28c2c360b560e",
+      "base_depth": 5,
+      "candidate_depth": 5
+    },
+    {
+      "case_id": "2c80bfd7792350936f1f169123fa0c0a11ae0fbc29c5230995fb35bb47889163",
+      "base_depth": 3,
+      "candidate_depth": 3
+    },
+    {
+      "case_id": "349d3d9fa9bd163a14a1dc6a48b5172d5126870bd4ed181bc00c6310682283b0",
+      "base_depth": 2,
+      "candidate_depth": 2
+    },
+    {
+      "case_id": "367745199152a015d40e8ddb1c8668fe3f7dbf64dd4717a59b45c401ce7ac0e9",
+      "base_depth": 3,
+      "candidate_depth": 3
+    },
+    {
+      "case_id": "3dd5f109f6249b4740be050fcbe4e2e574b9e45414296977d1364cd2cbb3b10a",
+      "base_depth": 3,
+      "candidate_depth": 3
+    },
+    {
+      "case_id": "43a2001c16327b3d9f509b432aa7e99f852cb9d445a5a266e49611c520909f4f",
+      "base_depth": 3,
+      "candidate_depth": 3
+    },
+    {
+      "case_id": "49ce31f410798b7efda8ddf41d9d5baae932999fc7d81a690b069227a5a491df",
+      "base_depth": 2,
+      "candidate_depth": 2
+    },
+    {
+      "case_id": "4a2e2ebe512e0832db601065e37bc7450d7feb15f17d0026fb59bf8dcc5a61e1",
+      "base_depth": 3,
+      "candidate_depth": 3
+    },
+    {
+      "case_id": "4e9920b057d10890230982518ac5ee661b913ab451674c1c200a80d94200ad66",
+      "base_depth": 3,
+      "candidate_depth": 3
+    },
+    {
+      "case_id": "55e15fb7ee0931010cee605ad32ddd6b2c73033cb56a44d8c072c3567172d981",
+      "base_depth": 2,
+      "candidate_depth": 2
+    },
+    {
+      "case_id": "5cac6ca931cf039c6851880eeb1e2317fd4df2e1ee8f0919fb2002a758f1dbac",
+      "base_depth": 4,
+      "candidate_depth": 4
+    },
+    {
+      "case_id": "7d6e58a195ca56a6d0697a1a465b97a6d4f9f86da3725f45481a692996a37848",
+      "base_depth": 4,
+      "candidate_depth": 4
+    },
+    {
+      "case_id": "832f9fdcaefd1870fb77a8120a45a18d390e251e773a7f7426421cd4d9a0e36b",
+      "base_depth": 2,
+      "candidate_depth": 2
+    },
+    {
+      "case_id": "8a28b41d436cda855f5090b77458127308013f5ab48c9ce3afbc67355f2f36b7",
+      "base_depth": 3,
+      "candidate_depth": 3
+    },
+    {
+      "case_id": "8c0a0d5722908414df8779dd337aed26c3f6ddb9abd792442c4da695d217f587",
+      "base_depth": 3,
+      "candidate_depth": 3
+    },
+    {
+      "case_id": "8e8f3a1a4a07d86ccd4287529d4368a105daaf1520d6e1eedf351c2fa8b47577",
+      "base_depth": 3,
+      "candidate_depth": 3
+    },
+    {
+      "case_id": "919d5a196027848d5731a1b17b9691202a5e15b46419d4dcd98068094da25f33",
+      "base_depth": 1,
+      "candidate_depth": 2
+    },
+    {
+      "case_id": "91a7574dff7fd94a870b78f448e743e94eff0fd2cf09cdaaac053e7547e65d41",
+      "base_depth": 2,
+      "candidate_depth": 2
+    },
+    {
+      "case_id": "946d3faaf0bc6f55158b867f06d98fba1762b3abf47df2c710ea46f8cdde2844",
+      "base_depth": 4,
+      "candidate_depth": 4
+    },
+    {
+      "case_id": "97a8e284a80c68c20d784319d04cbdbf0655b14e61cd3000bf410b6faa30bf61",
+      "base_depth": 2,
+      "candidate_depth": 2
+    },
+    {
+      "case_id": "9a2d4fc0751b2db7201005f6535efba6609a562ab35cee84906de71795d201a3",
+      "base_depth": 2,
+      "candidate_depth": 2
+    },
+    {
+      "case_id": "9b29400d7f3d73c5a4fd0ea91b41da8ad119eb61ba0f17d6949c07641ba8e235",
+      "base_depth": 3,
+      "candidate_depth": 3
+    }
+  ]
+}

@@ -36,7 +36,7 @@ def dump(path, value):
 
 class Analyzer:
     """Fresh process per search; no TT, clock or research-line carryover."""
-    def __init__(self, binary, knowledge):
+    def __init__(self, binary, knowledge, expected_positions=163):
         self.proc = subprocess.Popen([str(Path(binary).resolve())], stdin=subprocess.PIPE,
                                      stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                      text=True, bufsize=1)
@@ -57,7 +57,9 @@ class Analyzer:
                 self.send(f'setoption name {key} value {text}')
             self.send('isready')
             ready = self.until('readyok', 15)
-            expected = 'info string position_knowledge loaded 163 positions file '
+            require(type(expected_positions) is int and expected_positions > 0,
+                    'invalid expected knowledge count')
+            expected = f'info string position_knowledge loaded {expected_positions} positions file '
             require(any(s.startswith(expected) for s in ready), 'knowledge load not confirmed')
         except BaseException:
             self.close()
@@ -116,7 +118,10 @@ class Analyzer:
         if chosen not in ('resign', 'win'):
             require(shogi.Move.from_usi(chosen) in board.legal_moves, 'illegal analyzer move')
         result = score_frame(lines, chosen)
+        direct = next((line.split()[4] for line in lines
+                       if line.startswith('info string research_decision id ')), None)
         result.update(bestmove=chosen, requested_ms=ms, requested_depth=depth,
+                      research_decision_id=direct,
                       elapsed_ms=round((time.monotonic()-started)*1000, 3),
                       history_key=sha256(command.encode()), position_command=command)
         return result

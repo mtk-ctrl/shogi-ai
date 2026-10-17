@@ -1,0 +1,62 @@
+{
+  "schema": "postgame-candidate-snapshot-v1",
+  "cycle_id": "postgame-pilot-g1-k1",
+  "formal_adoption": false,
+  "diagnosis_file": "diagnosis.json",
+  "diagnosis_sha256": "b372c14e0d909a3a2116ce7014bb791bec4036099873597eb159868a96924eed",
+  "base_file": "position-knowledge-v1.tsv",
+  "base_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+  "base_positions": 163,
+  "candidate_positions": 2,
+  "combined_positions": 165,
+  "candidate_evidence": [
+    {
+      "research_id": "postgame-pilot-g1-k1-e343ad90ca5ff12c",
+      "case_id": "e343ad90ca5ff12c2163d1fe94047a648f2dbc5715067b9948966d09ff2a855b",
+      "source": {
+        "run_id": "38946985753",
+        "game_id": "a4b95332556ba70255f025b67e4d3f3353a01fc75b5c5de25f67bb7ee11a38fb:2",
+        "ply": 108,
+        "archive_sha256": "fd19773c8f8dcc9e016790a0b109bcb1befdf2746b1760c5ae088f4789645fc4",
+        "manifest_sha256": "5dd01d3f24e37bc5e5e89d5a0eae880849aeb32eb4c0fc4e6acf0193ed85b4e8"
+      },
+      "position_key": "3g2g1l/3sk4/p1ppps+L1p/4+r1p2/1P1P1n3/3+B4P/P+sNGPPP2/2+n3+R2/1+s3K1NL w GPbl4p",
+      "selected_move": "8g7g",
+      "actual_move": "P*4h",
+      "confirmed_improvement_cp": 404,
+      "fixed_depth": 3,
+      "terminal_reward_stm": -1
+    },
+    {
+      "research_id": "postgame-pilot-g1-k1-62d2204be34c432d",
+      "case_id": "62d2204be34c432d5ab5a1808eeb286a32131e6a48d5eeec5aa39a06976d3b0b",
+      "source": {
+        "run_id": "38948701892",
+        "game_id": "b63b6e414d20818aa971b7bcdb90d89cff18fba75b9124864f4e864a1e8c93b7:8",
+        "ply": 9,
+        "archive_sha256": "b5907e4f69b65696752c453de32d70072b98d2fd744e792f212ec550e97103d7",
+        "manifest_sha256": "bf35b0c79bdebfceba423ee14231a2ad180c61753971a555caf0e5b053deddd5"
+      },
+      "position_key": "ln1gkg1nl/1r1s3s1/pppppp1p1/6p1p/9/2P6/PP1PPPPPP/3S2R2/LN1GKGSNL b Bb",
+      "selected_move": "3i4h",
+      "actual_move": "6h7g",
+      "confirmed_improvement_cp": 169,
+      "fixed_depth": 4,
+      "terminal_reward_stm": -1
+    }
+  ],
+  "route_counts": {
+    "hold": 38,
+    "knowledge_reference_candidate": 48,
+    "mixed_or_unstable": 4,
+    "search_horizon_candidate": 4,
+    "stable_research_move_candidate": 2
+  },
+  "evaluation_candidate": {
+    "created": false,
+    "reason": "Only two stable paired examples; no defensible adjustment/selection/unused split."
+  },
+  "output_file": "position-knowledge-g1-k1.tsv",
+  "output_sha256": "afa3fe1248070bc9d2ebc566479da29ace7d4463492a28b8b31a67e2dcf9cacd",
+  "policy": "Research-only K1; does not replace or modify the adopted 163-position K0 snapshot."
+}
