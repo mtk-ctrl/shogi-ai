@@ -12,6 +12,7 @@ from tools.research import postgame_cycle as core
 from tools.research.postgame_bridge import FORMAL_DEFAULTS
 from tools.research.postgame_ranker import POLICY, digest, parent_values, require
 from tools.research.postgame_eval_preflight import POLICY_LIVE
+from tools.research.postgame_knowledge import POLICY_KNOWLEDGE
 import json
 
 
@@ -20,6 +21,9 @@ def initialize(plan, parent_options, controller_sha256):
     require(plan['candidate_kind']=='evaluation', 'automatic route currently supports evaluation candidates only')
     require(plan.get('generate_initial_source') is True, 'automatic cycle starts from fresh selfplay')
     require(plan.get('learning_policy')==POLICY and plan.get('live_policy')==POLICY_LIVE, 'freeze actual implemented learning/live policy')
+    if 'knowledge_policy' in plan:
+        require(plan['knowledge_policy']==POLICY_KNOWLEDGE,'freeze actual research-knowledge policy')
+        require('progress_policy' in plan,'knowledge preparation requires the decision/progress ledger')
     require(type(plan.get('runner_capacity')) is int and 1<=plan['runner_capacity']<=20, 'freeze available hosted runner capacity')
     parent_values(parent_options)
     require(digest(parent_options)==plan['parent']['parameters_sha256'], 'initial parent parameters differ')

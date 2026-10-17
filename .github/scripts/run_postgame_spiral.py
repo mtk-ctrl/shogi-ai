@@ -31,6 +31,7 @@ from tools.research.postgame_ranker import digest, require
 from tools.research.postgame_eval_preflight import run as preflight
 from tools.research.postgame_runtime import initialize, advance
 from tools.research.postgame_progress import describe as describe_progress
+from tools.research.postgame_knowledge import run as prepare_knowledge
 
 
 def gh(*args, payload=None):
@@ -57,7 +58,7 @@ def code_hash():
 def algorithm_hash():
     # Audit/log/publication repairs may change, but not the frozen learning,
     # split rules, candidate gates or generation/selection semantics.
-    names=('ranker','analyze','spiral','cycle','eval_preflight','runtime','candidates','cases','progress')
+    names=('ranker','analyze','spiral','cycle','eval_preflight','runtime','candidates','cases','progress','knowledge')
     return digest({n:sha256((ROOT/f'tools/research/postgame_{n}.py').read_bytes()) for n in names})
 
 def safe_extract(package,dest):
@@ -332,6 +333,10 @@ class Backend:
         data=dict(preparation=report,analysis_summary=summary)
         files={name:folder/name for name in ('preparation.json','eligible-cases.json')}
         files.update({f'analysis/{name}':folder/'analysis'/name for name in ('selected-cases.json','diagnosis.json','summary.json')})
+        if 'knowledge_policy' in env['state']['plan']:
+            data['knowledge_stage']=prepare_knowledge(binary,knowledge,report,diagnosis,context,params,
+                                                       env['state']['plan']['cycle_id'],folder/'knowledge-stage')
+            files.update({p.relative_to(folder).as_posix():p for p in (folder/'knowledge-stage').rglob('*') if p.is_file()})
         return dict(data,publication=self.package(env,data,files))
 
     def preflight(self,env):
@@ -386,6 +391,7 @@ def main():
         plan=json.loads(base64.b64decode(raw['content']))
         require(plan['cycle_id']==ident and plan['controller_sha256']==code_hash(),'frozen plan/controller mismatch')
         require('progress_policy' in plan,'new cycle plans must freeze research-yield and stagnation controls')
+        require('knowledge_policy' in plan,'new cycle plans must freeze research-knowledge preparation policy')
         # New start must not overlap an already active cycle under another name.
         require(backend.load() is None,'another cycle is already active')
         env=initialize(plan,plan['parent_options'],code_hash());env['plan_ref']=ref

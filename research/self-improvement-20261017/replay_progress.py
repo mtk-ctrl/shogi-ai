@@ -29,7 +29,7 @@ PACKAGES = (
 )
 
 
-def replay(directory, download=False):
+def replay(directory, download=False, on_preparation=None):
     directory = Path(directory); directory.mkdir(parents=True, exist_ok=True)
     previous = {}; progress = None; reports = []
     def missing(*_):
@@ -60,6 +60,8 @@ def replay(directory, download=False):
         require({k:v for k,v in report.items() if k != 'case_decisions'} == original,
                 'Original guarded preparation did not reproduce exactly')
         report['progress'] = describe(report, analysis, diagnosis, context)
+        if on_preparation is not None:
+            on_preparation(report,diagnosis,context,generation,folder)
         state = dict(plan=dict(cycle_id='saved-diagnosis-review', progress_policy=POLICY_PROGRESS),
                      generation=generation, parent=context)
         if progress:
