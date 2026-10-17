@@ -51,4 +51,5 @@ jobs:
             build/selfplay-verification/build-provenance.json
             build/selfplay-verification/publication.json
             build/selfplay-verification/*.tgz
+            build/selfplay-verification/postgame-bridge/
           if-no-files-found: warn

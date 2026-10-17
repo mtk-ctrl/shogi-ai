@@ -24,9 +24,9 @@ def module(name,path):
 def request():
     d=json.loads(Path('.github/selfplay-verification-request.json').read_text())
     if set(d)!={'request_id','mode','candidate_ref','baseline_ref','match_run'}:raise ValueError('request keys')
-    if d['mode'] not in ('benchmark','audit','postgame-publish','postgame-audit'):raise ValueError('mode')
+    if d['mode'] not in ('benchmark','audit','postgame-publish','postgame-audit','postgame-bridge'):raise ValueError('mode')
     if not all(re.fullmatch('[0-9a-f]{40}',d[k]) for k in ('candidate_ref','baseline_ref')):raise ValueError('fixed refs required')
-    if type(d['match_run']) is not int or d['match_run']<0 or (d['mode'] in ('audit','postgame-audit') and d['match_run']==0):raise ValueError('match run')
+    if type(d['match_run']) is not int or d['match_run']<0 or (d['mode'] in ('audit','postgame-audit','postgame-bridge') and d['match_run']==0):raise ValueError('match run')
     return d
 def restore_match(run_id):
     info=json.loads(gh('run','view',run_id,'--repo',os.environ['GITHUB_REPOSITORY'],'--json','conclusion,status'))
@@ -98,6 +98,14 @@ def main():
     candidate=ROOT/'engine-a-src';base=ROOT/'engine-b-src'
     actual=subprocess.check_output(['git','rev-parse','HEAD'],cwd=candidate,text=True).strip()
     if actual!=d['candidate_ref']:raise ValueError('candidate checkout mismatch')
+    if d['mode']=='postgame-bridge':
+        run(['python3','-m','unittest','tests.test_postgame_bridge','tests.test_postgame_cycle',
+             'tests.test_postgame_analyze','tests.test_postgame_spiral','tests.test_postgame_ranker'],cwd=candidate)
+        source=restore_match(d['match_run'])
+        run(['python3',candidate/'.github/scripts/run_postgame_bridge.py','--source',source,
+             '--output',OUT/'postgame-bridge','--match-run',str(d['match_run']),
+             '--parent-ref',d['baseline_ref']])
+        return
     if d['mode']=='postgame-audit':
         if d['candidate_ref']!='5a1997043f275d09099c4be67110ed96e2c80c88' or d['baseline_ref']!='efcfa0f80d218c3dbcc3162f5bee3366f6a835cf':raise ValueError('frozen postgame audit refs')
         run(['python3',ROOT/'tests/test_postgame_audit.py'])

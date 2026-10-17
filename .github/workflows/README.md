@@ -91,3 +91,9 @@ engine-match.ymlは対局後に実際の着手だけを圧縮し、played-move-a
 ### 改善循環の中核の検査
 
 `postgame-cycle-pilot.yml`のPR用code-ciは、既存検査に加えて `test_postgame_ranker / test_postgame_spiral / test_postgame_cycle` を実行する。選別・学習提案・世代制御の研究基盤を検査するもので、PRから対局は開始しない。新しい制御ライブラリを既存G1の固定ref起動器へ自動接続したものではない。範囲と残る実行アダプターは[説明](../../research/postgame-spiral-core-20261017/README.md)を参照する。
+
+### 自己対局原本から再分析への実働接続
+
+既存 `selfplay-candidate-verification.yml` の `postgame-bridge` モードは、明示した完了済み `engine-match.yml` の原本と実バイナリを取り込み、固定親の評価設定で再分析→学習準備→保存receipt→世代台帳への引渡しを行う。通常入口と原対局は再利用し、新しい対局workflowは作らない。入力は既存verification依頼ファイルと、不変candidate_ref内の `bridge-request.json`。完了run・所有者の起動意図・build/バイナリ・知識・全手・終局・設定を照合する。
+
+新規知識の汎用配布や候補の選別/確認を自動dispatchする入口ではない。初回は正式版同士2局のsource試験であり、正式採用・多世代の棋力向上と区別する。

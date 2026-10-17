@@ -40,9 +40,14 @@ def start(plan):
     require(all(type(x) is int and 0 < x < 2**31-2000000 for x in seeds), "invalid seed")
     require(len(set(seeds)) == len(seeds), "reuse of a split/confirmation seed")
     require(plan["candidate_kind"] in ("evaluation", "knowledge", "combined"), "unknown candidate kind")
+    source_games = plan.get("source_games", 100)
+    require(type(source_games) is int and 1 <= source_games <= 100, "bounded source size required")
+    if source_games != 100:
+        require(plan.get("purpose") == "integration_smoke", "small source size is an explicit integration test")
     return dict(schema="postgame-cycle-v1", plan=copy.deepcopy(plan), plan_sha256=digest(plan),
                 parent=copy.deepcopy(plan["parent"]), generation=1, revision=0,
-                stage="prepare", used_games=0, pending=None, history=[], formal_adoption=False,
+                stage="initial_source" if plan.get("generate_initial_source") is True else "prepare",
+                used_games=0, pending=None, history=[], formal_adoption=False,
                 result=None, external_execution_adapter="required")
 
 
@@ -55,7 +60,8 @@ def request(state, inputs, expected_revision):
     if stage == "prepare" and state["generation"] > 1:
         require(inputs.get("split_registry_sha256") == state["split_registry_sha256"],
                 "next generation must preserve split/exposure registry")
-    games = {"screen": 100, "confirm": 200, "collect_source": 100}.get(stage, 0)
+    games = {"screen": 100, "confirm": 200, "collect_source": state["plan"].get("source_games", 100),
+             "initial_source": state["plan"].get("source_games", 100)}.get(stage, 0)
     if stage in ("preflight", "screen", "confirm"):
         fixed_parent(inputs["candidate"])
         require(inputs["candidate"] != state["parent"], "candidate is identical to parent")
@@ -70,7 +76,7 @@ def request(state, inputs, expected_revision):
     if stage in ("screen", "confirm"):
         require(inputs["candidate"] == state["candidate"], "candidate changed after preflight")
     require(state["used_games"] + games <= state["plan"]["max_new_games"], "game budget exhausted")
-    seed_key = "source" if stage == "collect_source" else stage
+    seed_key = "source" if stage in ("initial_source", "collect_source") else stage
     seed = state["plan"]["seeds"][state["generation"]-1].get(seed_key)
     payload = dict(cycle=state["plan"]["cycle_id"], generation=state["generation"], stage=stage,
                    policy=state["plan_sha256"], inputs=copy.deepcopy(inputs), games=games, seed=seed)
@@ -188,16 +194,17 @@ def finish(state, operation, evidence):
                 out["parent"] = copy.deepcopy(state["candidate"])  # Research parent ONLY.
             out["result"] = "research_child_validated" if passed else "retain_parent"
             out["stage"] = "collect_source"
-    elif stage == "collect_source":
+    elif stage in ("initial_source", "collect_source"):
         audited_match(evidence, games)
-        require(state["generation"] < state["plan"]["max_generations"], "generation budget exhausted")
-        out["generation"] += 1
+        if stage == "collect_source":
+            require(state["generation"] < state["plan"]["max_generations"], "generation budget exhausted")
+            out["generation"] += 1
         out["stage"] = "prepare"
         out.pop("candidate", None)
     else:
         raise ValueError("unknown stage")
     if out["stage"] == "collect_source" and (out["generation"] >= state["plan"]["max_generations"]
-            or out["used_games"] + 100 > state["plan"]["max_new_games"]):
+            or out["used_games"] + state["plan"].get("source_games", 100) > state["plan"]["max_new_games"]):
         out["stage"] = "complete"
     next_cost = {"screen": 100, "confirm": 200}.get(out["stage"], 0)
     if out["used_games"] + next_cost > state["plan"]["max_new_games"]:
