@@ -23,6 +23,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from tools.research.postgame_ranker import digest, require
+from tools.research.postgame_progress import validate_policy as validate_progress_policy, record as record_progress
 
 
 def fixed_parent(parent):
@@ -33,6 +34,8 @@ def fixed_parent(parent):
 
 def start(plan):
     fixed_parent(plan["parent"])
+    if "progress_policy" in plan:
+        validate_progress_policy(plan["progress_policy"])
     require(type(plan["max_generations"]) is int and 1 <= plan["max_generations"] <= 5, "generation cap required")
     require(type(plan["max_new_games"]) is int and 0 <= plan["max_new_games"] <= 3000, "explicit game budget required")
     require(len(plan["seeds"]) == plan["max_generations"], "freeze seeds for every generation")
@@ -171,6 +174,12 @@ def finish(state, operation, evidence):
         ready = ready_eval if kind == "evaluation" else ready_knowledge if kind == "knowledge" else ready_eval and ready_knowledge
         out["stage"] = "preflight" if ready else "collect_source"
         out["result"] = None if ready else "needs_independent_current_parent_errors"
+        if "progress_policy" in state["plan"]:
+            progress = record_progress(state, report)
+            out["progress_history"] = progress["history"]
+            out["research_followup"] = {k: v for k, v in progress.items() if k != "history"}
+            if not ready and progress["halt_collection"]:
+                out.update(stage="complete", result="research_review_required")
     elif stage == "preflight":
         require(evidence["candidate"] == p["payload"]["inputs"]["candidate"], "preflight candidate mismatch")
         check = evidence["preflight"]
@@ -219,6 +228,10 @@ def finish(state, operation, evidence):
         out.pop("candidate", None)
     else:
         raise ValueError("unknown stage")
+    if (out["stage"] == "collect_source" and "progress_policy" in state["plan"]
+            and out["parent"] == state["parent"]
+            and out.get("research_followup", {}).get("halt_collection")):
+        out.update(stage="complete", result="research_review_required")
     if out["stage"] == "collect_source" and (out["generation"] >= state["plan"]["max_generations"]
             or out["used_games"] + state["plan"].get("source_games", 100) > state["plan"]["max_new_games"]):
         out["stage"] = "complete"

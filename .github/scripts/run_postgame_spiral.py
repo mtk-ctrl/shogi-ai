@@ -8,6 +8,7 @@ workflow_run privilege escalation or chains exceeding GitHub depth limits.
 from __future__ import annotations
 import argparse
 import base64
+import copy
 from datetime import datetime, timezone, timedelta
 import gzip
 import importlib.util
@@ -29,6 +30,7 @@ from tools.research.postgame_spiral import prepare
 from tools.research.postgame_ranker import digest, require
 from tools.research.postgame_eval_preflight import run as preflight
 from tools.research.postgame_runtime import initialize, advance
+from tools.research.postgame_progress import describe as describe_progress
 
 
 def gh(*args, payload=None):
@@ -55,7 +57,7 @@ def code_hash():
 def algorithm_hash():
     # Audit/log/publication repairs may change, but not the frozen learning,
     # split rules, candidate gates or generation/selection semantics.
-    names=('ranker','analyze','spiral','cycle','eval_preflight','runtime','candidates','cases')
+    names=('ranker','analyze','spiral','cycle','eval_preflight','runtime','candidates','cases','progress')
     return digest({n:sha256((ROOT/f'tools/research/postgame_{n}.py').read_bytes()) for n in names})
 
 def safe_extract(package,dest):
@@ -99,6 +101,11 @@ def inherit_predecessor(env,previous):
     env['prior_signatures']=list(previous['prior_signatures'])
     env['predecessor_cycle']=old['plan']['cycle_id']
     env['experiment_seeds']=sorted(old_seeds|new_seeds)
+    if 'progress_policy' in plan:
+        require(old['plan'].get('progress_policy') == plan['progress_policy'],
+                'predecessor progress policy differs; review the saved research queue')
+        for key in ('progress_history','research_followup'):
+            if key in old:env['state'][key]=copy.deepcopy(old[key])
     return env
 
 
@@ -312,12 +319,15 @@ class Backend:
             return pairs
         e=Analyzer(binary,knowledge,evaluation_options=params)
         try:report=prepare(diagnosis,probe,e.static,'spiral-bridge-20261017-v1',registry=previous.get('split_registry'),
-                           parent_options=params,example_bank=bank,parent_context=context)
+                           parent_options=params,example_bank=bank,parent_context=context,
+                           track_decisions='progress_policy' in env['state']['plan'])
         finally:e.close()
         current={r['case']['case_id']:dict(r['case'],research_move=r['research_move']) for r in diagnosis}
         all_cases=dict(old_cases,**current)
         cases=[all_cases[r['case_id']] for r in report['examples']]
         report['invalidated_old_parent_features']=invalidated
+        if 'progress_policy' in env['state']['plan']:
+            report['progress']=describe_progress(report,summary,diagnosis,context)
         dump(folder/'preparation.json',report);dump(folder/'eligible-cases.json',cases)
         data=dict(preparation=report,analysis_summary=summary)
         files={name:folder/name for name in ('preparation.json','eligible-cases.json')}
@@ -375,6 +385,7 @@ def main():
         raw=api(f'repos/{repo}/contents/{path}?ref={ref}')
         plan=json.loads(base64.b64decode(raw['content']))
         require(plan['cycle_id']==ident and plan['controller_sha256']==code_hash(),'frozen plan/controller mismatch')
+        require('progress_policy' in plan,'new cycle plans must freeze research-yield and stagnation controls')
         # New start must not overlap an already active cycle under another name.
         require(backend.load() is None,'another cycle is already active')
         env=initialize(plan,plan['parent_options'],code_hash());env['plan_ref']=ref
@@ -410,6 +421,10 @@ def main():
         report=dict(cycle_id=result['state']['plan']['cycle_id'],stage=result['state']['stage'],generation=result['state']['generation'],
                     used_games=result['state']['used_games'],result=result['state']['result'],research_parent=result['state']['parent'],
                     formal_adoption=False,checkpoint=backend.latest_name)
+        if 'progress_policy' in result['state']['plan']:
+            report.update(progress_history=result['state'].get('progress_history',[]),
+                          research_followup=result['state'].get('research_followup'),
+                          strength_improvement_demonstrated=False)
         dump(backend.output/'report.json',report)
         with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as out:out.write('## 自己対局の改善循環\n\n```json\n'+json.dumps(report,ensure_ascii=False,indent=2)+'\n```\n')
         print('SPIRAL_RESULT '+json.dumps(report,ensure_ascii=False),flush=True)

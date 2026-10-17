@@ -1,0 +1,270 @@
+{
+  "schema": "postgame-progress-saved-replay-v1",
+  "original_cycle": "spiral-auto-smoke-20261017-01",
+  "scope": "Offline assessment of saved diagnoses under the new policy; original execution/result unchanged.",
+  "new_games": 0,
+  "engine_executions": 0,
+  "new_analysis": 0,
+  "parameter_updates": 0,
+  "formal_adoption": false,
+  "strength_improvement_demonstrated": false,
+  "generations": [
+    {
+      "generation": 1,
+      "package": {
+        "name": "spiral-spiral-auto-smoke-20261017-01-prepare-d8afbfefa370b08f-39021709686-a1.tgz",
+        "sha256": "8d849163d928ca5941f2f76a1251d22e3104229b795fcf56853978c26ec46d47",
+        "bytes": 13074,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-spiral-auto-smoke-20261017-01-prepare-d8afbfefa370b08f-39021709686-a1.tgz"
+      },
+      "original_preparation_reproduced": true,
+      "statistics": {
+        "source_games": 2,
+        "source_plies": 200,
+        "analysis_seconds": 7.009,
+        "selected_cases": 8,
+        "diagnosis_routes": {
+          "hold": 5,
+          "knowledge_reference_candidate": 3
+        },
+        "fixed_depth_pairs": 0,
+        "research_matches_actual": 7,
+        "decision_reasons": {
+          "not_stable_evaluation_pair": 8
+        },
+        "selection_details": {
+          "mate_requires_separate_verification": 2,
+          "short_observation_missing": 1,
+          "actual_move_supported_with_search_disagreement": 2,
+          "actual_move_supported": 3
+        },
+        "new_evaluation_pairs": 0,
+        "reused_evaluation_pairs": 0,
+        "evaluation_bank_pairs": 0,
+        "independent_groups": {
+          "train": 0,
+          "validation": 0,
+          "heldout": 0
+        },
+        "deficits": {
+          "pairs": 32,
+          "train": 8,
+          "validation": 4,
+          "heldout": 4
+        },
+        "observed_selected_yield": 0.0,
+        "limitation": "Selected-case observation, not an independent probability or a forecast of games to learning."
+      },
+      "task_counts": {
+        "verify_mate_research": 1,
+        "repeat_missing_observation": 1,
+        "review_search_stability": 1
+      },
+      "halt_collection": false,
+      "next_action": "collect_within_frozen_budget",
+      "reason": null
+    },
+    {
+      "generation": 2,
+      "package": {
+        "name": "spiral-spiral-auto-smoke-20261017-01-prepare-f30c8976c1134849-39021709686-a1.tgz",
+        "sha256": "dee7e019af56fe8b8cc70f3e2bc02fccb8f35b2b1f9b9b6af29d3251cc449b2b",
+        "bytes": 15249,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-spiral-auto-smoke-20261017-01-prepare-f30c8976c1134849-39021709686-a1.tgz"
+      },
+      "original_preparation_reproduced": true,
+      "statistics": {
+        "source_games": 2,
+        "source_plies": 274,
+        "analysis_seconds": 7.523,
+        "selected_cases": 8,
+        "diagnosis_routes": {
+          "hold": 6,
+          "knowledge_reference_candidate": 2
+        },
+        "fixed_depth_pairs": 1,
+        "research_matches_actual": 7,
+        "decision_reasons": {
+          "not_stable_evaluation_pair": 8
+        },
+        "selection_details": {
+          "actual_move_supported_with_search_disagreement": 4,
+          "actual_move_supported": 2,
+          "improvement_below_150cp": 1,
+          "short_observation_missing": 1
+        },
+        "new_evaluation_pairs": 0,
+        "reused_evaluation_pairs": 0,
+        "evaluation_bank_pairs": 0,
+        "independent_groups": {
+          "train": 0,
+          "validation": 0,
+          "heldout": 0
+        },
+        "deficits": {
+          "pairs": 32,
+          "train": 8,
+          "validation": 4,
+          "heldout": 4
+        },
+        "observed_selected_yield": 0.0,
+        "limitation": "Selected-case observation, not an independent probability or a forecast of games to learning."
+      },
+      "task_counts": {
+        "repeat_missing_observation": 1,
+        "review_search_stability": 4
+      },
+      "halt_collection": true,
+      "next_action": "review_data_yield_and_queued_research",
+      "reason": "data_deficits_stagnant"
+    }
+  ],
+  "work_items": [
+    {
+      "task_id": "b6fa7fe4ade8d96854c4468e54a68fb7d33a6ea9812bcc04ab25dae13ee5d023",
+      "kind": "verify_mate_research",
+      "case_id": "d3517f700ab7858ce0fae6c17f62bbdf720a46fbc2025c49715a1e79f536703a",
+      "source": {
+        "run_id": "39021748635",
+        "game_id": "81d11c2605960b720dfd860428c7c845d951edb3cd8d060492f3904d20323c35:0",
+        "ply": 86,
+        "archive_sha256": "0c861fe9f9e9bc36c7a06a60c560da7ebf8b4d1f4646cd212cd3ff3a6bb925d4",
+        "manifest_sha256": "3c7f9bde1a085f7d0c5b846056a11cac5b4984137427bf51f77eef07d7f90e42"
+      },
+      "evidence": {
+        "file": "analysis/diagnosis.json",
+        "case_id": "d3517f700ab7858ce0fae6c17f62bbdf720a46fbc2025c49715a1e79f536703a",
+        "row_sha256": "9f8b2a42cf80a600838dc0efc330ab0bf0f52776789d0a921336369b5185091e"
+      },
+      "status": "requires_bounded_research_plan"
+    },
+    {
+      "task_id": "2f2194f1d66d1f88600894740cc63726bff67eabf088490e3e2ca1a70cdfcf5d",
+      "kind": "repeat_missing_observation",
+      "case_id": "ff1e5492b38664c045aee754b4e5be2aef5e749c5aa4302e00cafaa18ac1f49b",
+      "source": {
+        "run_id": "39021748635",
+        "game_id": "81d11c2605960b720dfd860428c7c845d951edb3cd8d060492f3904d20323c35:0",
+        "ply": 53,
+        "archive_sha256": "0c861fe9f9e9bc36c7a06a60c560da7ebf8b4d1f4646cd212cd3ff3a6bb925d4",
+        "manifest_sha256": "3c7f9bde1a085f7d0c5b846056a11cac5b4984137427bf51f77eef07d7f90e42"
+      },
+      "evidence": {
+        "file": "analysis/diagnosis.json",
+        "case_id": "ff1e5492b38664c045aee754b4e5be2aef5e749c5aa4302e00cafaa18ac1f49b",
+        "row_sha256": "6068a93f756c93f5f89a0218fabab10d44d49b539c44b7258e88309b628bdae3"
+      },
+      "status": "requires_bounded_research_plan"
+    },
+    {
+      "task_id": "4d2af9754d64c6d0c5fc91f3b1d6327629b10f65f981340c5d4fe2b5fe5208f7",
+      "kind": "repeat_missing_observation",
+      "case_id": "e586cc7db1f7b44623f4808cfb3044284656b06ffc6ee39735d93efe94000ce8",
+      "source": {
+        "run_id": "39021983456",
+        "game_id": "9b9e49fedef7f152c2f1f0d84d1642ccb7c3d5024f8c55dd02820f2f15d67781:0",
+        "ply": 113,
+        "archive_sha256": "5f616278fd935c4cb0d527ceaa538b3193fdba9c4123e5b19d5c8c9f93fb4935",
+        "manifest_sha256": "8988947a545d814a628a6bd57da4eb05ed8edd7b7329503c1fe201d415027fda"
+      },
+      "evidence": {
+        "file": "analysis/diagnosis.json",
+        "case_id": "e586cc7db1f7b44623f4808cfb3044284656b06ffc6ee39735d93efe94000ce8",
+        "row_sha256": "617cde0df8585d915a56ec1adc8e320a9472bd62babe45311ea8f7dbdf9a6fe9"
+      },
+      "status": "requires_bounded_research_plan"
+    },
+    {
+      "task_id": "71f20486b181047910b7129abf434fcd820733dc89871390da76a2088dbab82b",
+      "kind": "review_search_stability",
+      "case_id": "e4479495efc3fb8956e57c9ba4cb5a09344175fc73d5f67dfd9a537dc21dda78",
+      "source": {
+        "run_id": "39021983456",
+        "game_id": "064456a4afd5c5338d49a20c8276dae255288503bb6af1f23ec6409b68a65120:0",
+        "ply": 135,
+        "archive_sha256": "5f616278fd935c4cb0d527ceaa538b3193fdba9c4123e5b19d5c8c9f93fb4935",
+        "manifest_sha256": "8988947a545d814a628a6bd57da4eb05ed8edd7b7329503c1fe201d415027fda"
+      },
+      "evidence": {
+        "file": "analysis/diagnosis.json",
+        "case_id": "e4479495efc3fb8956e57c9ba4cb5a09344175fc73d5f67dfd9a537dc21dda78",
+        "row_sha256": "eb0460302d0d6c014b140bfaa4eccbd9c073da588e55b0008a420074a6dedfe9"
+      },
+      "status": "requires_bounded_research_plan"
+    },
+    {
+      "task_id": "8fc12782b3e878b3415c9f32eba00d28607dfc0e5516ea3717c6416dfc84079b",
+      "kind": "review_search_stability",
+      "case_id": "084175221499193d61c8840b1e56489b7fac15454f60734420d8c4fe15def9e0",
+      "source": {
+        "run_id": "39021983456",
+        "game_id": "9b9e49fedef7f152c2f1f0d84d1642ccb7c3d5024f8c55dd02820f2f15d67781:0",
+        "ply": 17,
+        "archive_sha256": "5f616278fd935c4cb0d527ceaa538b3193fdba9c4123e5b19d5c8c9f93fb4935",
+        "manifest_sha256": "8988947a545d814a628a6bd57da4eb05ed8edd7b7329503c1fe201d415027fda"
+      },
+      "evidence": {
+        "file": "analysis/diagnosis.json",
+        "case_id": "084175221499193d61c8840b1e56489b7fac15454f60734420d8c4fe15def9e0",
+        "row_sha256": "de96e527153aaf678b77ebda222eb4654508c4274c7b42f3e097e1432e872bee"
+      },
+      "status": "requires_bounded_research_plan"
+    },
+    {
+      "task_id": "9288788a679ac75cfdfe3a91772cc51958a8efc8f529bd95dd9e22f3fa373093",
+      "kind": "review_search_stability",
+      "case_id": "6a646840f48f51087f9debbf2fab70d9d809294f8e9b0886028bab9700ac4591",
+      "source": {
+        "run_id": "39021983456",
+        "game_id": "064456a4afd5c5338d49a20c8276dae255288503bb6af1f23ec6409b68a65120:0",
+        "ply": 56,
+        "archive_sha256": "5f616278fd935c4cb0d527ceaa538b3193fdba9c4123e5b19d5c8c9f93fb4935",
+        "manifest_sha256": "8988947a545d814a628a6bd57da4eb05ed8edd7b7329503c1fe201d415027fda"
+      },
+      "evidence": {
+        "file": "analysis/diagnosis.json",
+        "case_id": "6a646840f48f51087f9debbf2fab70d9d809294f8e9b0886028bab9700ac4591",
+        "row_sha256": "764950e084acca62026b44ff6637fc5961d28d9dc0070cab64d5230b31d7ab9b"
+      },
+      "status": "requires_bounded_research_plan"
+    },
+    {
+      "task_id": "a5e74daf671b46fcd3b8dced8f0b9a468287d8e49c72e71e2244e65ce165d349",
+      "kind": "review_search_stability",
+      "case_id": "5536799be30442611289b1b1694fef3dd0a97dffcd24f5b50583d566f56ed91d",
+      "source": {
+        "run_id": "39021748635",
+        "game_id": "81d11c2605960b720dfd860428c7c845d951edb3cd8d060492f3904d20323c35:0",
+        "ply": 62,
+        "archive_sha256": "0c861fe9f9e9bc36c7a06a60c560da7ebf8b4d1f4646cd212cd3ff3a6bb925d4",
+        "manifest_sha256": "3c7f9bde1a085f7d0c5b846056a11cac5b4984137427bf51f77eef07d7f90e42"
+      },
+      "evidence": {
+        "file": "analysis/diagnosis.json",
+        "case_id": "5536799be30442611289b1b1694fef3dd0a97dffcd24f5b50583d566f56ed91d",
+        "row_sha256": "7aad904529ea2516f7b6be9f2983b9e634da2dc83bca7e4777bfbffd68e2d958"
+      },
+      "status": "requires_bounded_research_plan"
+    },
+    {
+      "task_id": "af2a5a9eabede3c670fb8eac3cb8c3e51a6f2347d11028c1a2acc34e5694dc4f",
+      "kind": "review_search_stability",
+      "case_id": "a9e885c77f0e97101420b09f4edcec7d3b6d68231b8e271f1c95da35a39a2840",
+      "source": {
+        "run_id": "39021983456",
+        "game_id": "9b9e49fedef7f152c2f1f0d84d1642ccb7c3d5024f8c55dd02820f2f15d67781:0",
+        "ply": 13,
+        "archive_sha256": "5f616278fd935c4cb0d527ceaa538b3193fdba9c4123e5b19d5c8c9f93fb4935",
+        "manifest_sha256": "8988947a545d814a628a6bd57da4eb05ed8edd7b7329503c1fe201d415027fda"
+      },
+      "evidence": {
+        "file": "analysis/diagnosis.json",
+        "case_id": "a9e885c77f0e97101420b09f4edcec7d3b6d68231b8e271f1c95da35a39a2840",
+        "row_sha256": "d43fa9d20d502c57a05fc2ba3122eebb8d6a2902df4352244b7653045dbc7cea"
+      },
+      "status": "requires_bounded_research_plan"
+    }
+  ],
+  "final_next_action": "review_data_yield_and_queued_research",
+  "final_reason": "data_deficits_stagnant"
+}

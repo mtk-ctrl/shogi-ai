@@ -11,6 +11,7 @@ on:
       - ".github/scripts/run_postgame_spiral.py"
       - ".github/scripts/inspect_postgame_spiral.py"
       - ".github/workflows/postgame-spiral.yml"
+      - "research/self-improvement-20261017/replay_progress.py"
   workflow_dispatch:
     inputs:
       cycle_id:
@@ -43,7 +44,14 @@ jobs:
       - uses: actions/checkout@v5
       - run: python3 -m pip install python-shogi==1.1.1
       - run: python3 -m unittest discover -s tests -p 'test_postgame_*.py'
+      - name: Reproduce research yield from immutable saved diagnoses
+        run: python3 research/self-improvement-20261017/replay_progress.py --download --output build/postgame-progress-replay.json
       - run: python3 scripts/check_workflow_inventory.py --strict && python3 scripts/check_match_workflows.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: postgame-progress-replay-${{ github.run_id }}
+          path: build/postgame-progress-replay.json
+          retention-days: 90
   launch-request:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
