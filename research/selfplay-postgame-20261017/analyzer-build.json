@@ -1,0 +1,33 @@
+{
+  "engine_source_commit": "dc5c6dce4a0d3fce448514546e794470ed35e8b5",
+  "formal_parent_engine": "efcfa0f80d218c3dbcc3162f5bee3366f6a835cf",
+  "engine_code_unchanged_from_formal_parent": true,
+  "binary_sha256": "37439e1ec26c4bce96a4bb2c43316a05ea019906c867c7247ee710f2c13483f8",
+  "build": {
+    "command": [
+      "g++",
+      "-std=c++17",
+      "-O2",
+      "-g",
+      "-pthread",
+      "-DSHOGI_RULES_ONLY",
+      "-DUSER_ENGINE",
+      "-DNO_SSE",
+      "-DASSERT_LV=3",
+      "-I/workspace/scratch/9fe076caaea9/postgame-run/build/generated",
+      "-I/workspace/scratch/9fe076caaea9/postgame-run/engine",
+      "-I/workspace/scratch/9fe076caaea9/postgame-run/build/yaneuraou-rules/source",
+      "/workspace/scratch/9fe076caaea9/postgame-run/build/yaneuraou-rules/source/bitboard.cpp",
+      "/workspace/scratch/9fe076caaea9/postgame-run/build/yaneuraou-rules/source/position.cpp",
+      "/workspace/scratch/9fe076caaea9/postgame-run/build/yaneuraou-rules/source/movegen.cpp",
+      "/workspace/scratch/9fe076caaea9/postgame-run/build/yaneuraou-rules/source/types.cpp",
+      "/workspace/scratch/9fe076caaea9/postgame-run/engine/rules/upstream_support.cpp",
+      "/workspace/scratch/9fe076caaea9/postgame-run/engine/rules/position.cpp",
+      "/workspace/scratch/9fe076caaea9/postgame-run/engine/main.cpp",
+      "-o",
+      "/workspace/scratch/9fe076caaea9/postgame-run/build/postgame-analyzer"
+    ]
+  },
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
+}
