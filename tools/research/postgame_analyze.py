@@ -9,16 +9,19 @@ import os
 from pathlib import Path
 import platform
 import queue
+import re
 import subprocess
 import sys
 import threading
 import time
+from types import SimpleNamespace
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 import shogi
 from benchmarks.arena import parse_info_line
 from tools.research.postgame_cases import load_archive, make_case, position_command, require, sha256
+from tools.research.postgame_ranker import BASE, OPTIONS as EVALUATION_OPTIONS, parent_values
 
 OPTIONS = dict(SearchResearchMask=23, SearchEfficiencyMask=8, SearchReuseMask=6,
                SearchNextMask=4, SearchProbeMask=7, SearchThreads=2, RiskVerify=True,
@@ -36,7 +39,7 @@ def dump(path, value):
 
 class Analyzer:
     """Fresh process per search; no TT, clock or research-line carryover."""
-    def __init__(self, binary, knowledge, expected_positions=163):
+    def __init__(self, binary, knowledge, expected_positions=163, evaluation_options=None):
         self.proc = subprocess.Popen([str(Path(binary).resolve())], stdin=subprocess.PIPE,
                                      stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                      text=True, bufsize=1)
@@ -48,8 +51,16 @@ class Analyzer:
             handshake = self.until('usiok', 15)
             names = {s.split(' type ', 1)[0][12:] for s in handshake if s.startswith('option name ')}
             self.name = next(s[8:] for s in handshake if s.startswith('id name '))
+            self.option_defaults = {}
+            for line in handshake:
+                match = re.fullmatch(r'option name (.+?) type \S+ default (.*?)(?: min .*| max .*| var .*|$)', line)
+                if match:
+                    self.option_defaults[match[1]] = match[2]
             require(self.name == 'KUMOJI v2.0.21', 'unexpected analyzer identity: ' + self.name)
             options = dict(OPTIONS, PositionKnowledgeFile=str(Path(knowledge).resolve()))
+            if evaluation_options is not None:
+                parent_values(evaluation_options)
+                options.update(evaluation_options)
             require(set(options) <= names, 'unsupported analyzer options')
             for key, value in options.items():
                 text = str(value).lower() if isinstance(value, bool) else str(value)
@@ -225,18 +236,18 @@ def select_cases(games, static_values):
     return selected
 
 
-def search(binary, knowledge, case, history, ms, depth=None):
-    engine = Analyzer(binary, knowledge)
+def search(binary, knowledge, case, history, ms, depth=None, evaluation_options=None):
+    engine = Analyzer(binary, knowledge, evaluation_options=evaluation_options)
     try:
         return engine.search(case['start_sfen'], tuple(history), ms, depth)
     finally:
         engine.close()
 
 
-def analyze_case(binary, knowledge, case):
+def analyze_case(binary, knowledge, case, evaluation_options=None):
     history = tuple(case['history_moves'])
-    short = search(binary, knowledge, case, history, 50)
-    deep = search(binary, knowledge, case, history, 500)
+    short = search(binary, knowledge, case, history, 50, evaluation_options=evaluation_options)
+    deep = search(binary, knowledge, case, history, 500, evaluation_options=evaluation_options)
     alt = deep['bestmove']
     result = dict(case=case, root_short=short, root_deep=deep, research_move=alt,
                   same_as_actual=alt == case['actual_move'], followup=None)
@@ -246,8 +257,8 @@ def analyze_case(binary, knowledge, case):
         return result
     pairs = {}
     for ms in (50,500):
-        actual = search(binary, knowledge, case, history+(case['actual_move'],), ms)
-        better = search(binary, knowledge, case, history+(alt,), ms)
+        actual = search(binary, knowledge, case, history+(case['actual_move'],), ms, evaluation_options=evaluation_options)
+        better = search(binary, knowledge, case, history+(alt,), ms, evaluation_options=evaluation_options)
         pairs[str(ms)] = dict(actual=actual, research=better, comparison=compare_children(actual, better))
     result['child_pairs'] = pairs
     result['local_comparison'] = pairs['500']['comparison']
@@ -272,13 +283,11 @@ def route_result(result):
     return 'mixed_or_unstable'
 
 
-def main():
-    p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--archive-dirs',type=Path,nargs='+',required=True)
-    p.add_argument('--binary',type=Path,required=True)
-    p.add_argument('--knowledge',type=Path,required=True)
-    p.add_argument('--output-dir',type=Path,required=True)
-    args=p.parse_args()
+def run_analysis(archive_dirs, binary, knowledge, output_dir, evaluation_options=None):
+    evaluation_options = dict(zip(EVALUATION_OPTIONS, BASE)) if evaluation_options is None else evaluation_options
+    parent_values(evaluation_options)
+    args = SimpleNamespace(archive_dirs=archive_dirs, binary=Path(binary), knowledge=Path(knowledge),
+                           output_dir=Path(output_dir))
     require(not args.output_dir.exists(), 'output exists; do not overwrite previous diagnosis')
     require(sha256(args.knowledge.read_bytes())=='6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c','knowledge hash mismatch')
     args.output_dir.mkdir(parents=True)
@@ -288,7 +297,7 @@ def main():
     try:
         games=[]
         for directory in args.archive_dirs:games.extend(load_archive(directory))
-        engine=Analyzer(args.binary,args.knowledge)
+        engine=Analyzer(args.binary,args.knowledge,evaluation_options=evaluation_options)
         values={}
         try:
             for index,g in enumerate(games,1):
@@ -299,11 +308,16 @@ def main():
                     if row is not None:board.push_usi(row['move'])
                 if index%50==0:print(json.dumps({'stage':'static_scan','games':index,'unique_static_positions':len(values)}),flush=True)
         finally:engine.close()
-        cases=select_cases(games,values)
+        try:
+            cases=select_cases(games,values)
+        except ValueError as error:
+            if str(error) != 'no eligible diagnosis cases':
+                raise
+            cases=[]
         dump(args.output_dir/'selected-cases.json',cases)
         results=[]
         for index,case in enumerate(cases,1):
-            result=analyze_case(args.binary,args.knowledge,case)
+            result=analyze_case(args.binary,args.knowledge,case,evaluation_options)
             results.append(result)
             dump(args.output_dir/'checkpoint.json',dict(completed=index,total=len(cases),pid=os.getpid(),results=results))
             print(json.dumps({'stage':'analysis','completed':index,'total':len(cases),'route':result['route']}),flush=True)
@@ -314,8 +328,8 @@ def main():
         for r in pending[:16]:
             depth=min(r['child_pairs']['500'][side]['depth'] for side in ('actual','research'))
             history=tuple(r['case']['history_moves'])
-            a=search(args.binary,args.knowledge,r['case'],history+(r['case']['actual_move'],),5000,depth)
-            b=search(args.binary,args.knowledge,r['case'],history+(r['research_move'],),5000,depth)
+            a=search(args.binary,args.knowledge,r['case'],history+(r['case']['actual_move'],),5000,depth,evaluation_options)
+            b=search(args.binary,args.knowledge,r['case'],history+(r['research_move'],),5000,depth,evaluation_options)
             comp=compare_children(a,b)
             if a.get('depth')!=depth or b.get('depth')!=depth:comp['status']='fixed_depth_incomplete'
             r['followup']=dict(requested_depth=depth,actual=a,research=b,comparison=comp)
@@ -329,14 +343,27 @@ def main():
                      routes=dict(collections.Counter(r['route'] for r in results)),
                      verification_pairs=sum(r['followup'] is not None for r in results),
                      analyzer_binary_sha256=sha256(args.binary.read_bytes()),knowledge_sha256=sha256(args.knowledge.read_bytes()),
-                     options=OPTIONS,fresh_process_per_search=True,
+                     options=OPTIONS,evaluation_options=evaluation_options,fresh_process_per_search=True,
                      seconds=round(time.monotonic()-started,3),environment=dict(platform=platform.platform(),cpu_count=os.cpu_count()),
                      status='diagnosis_completed',learning_status='not_run',formal_adoption=False,
                      limitation='Provisional own-engine diagnosis; deeper search and fixed-depth pairing do not prove correct play or evaluation causality.')
         dump(args.output_dir/'summary.json',summary)
         print(json.dumps(summary),flush=True)
+        return summary
     finally:
         lock.unlink(missing_ok=True)
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--archive-dirs',type=Path,nargs='+',required=True)
+    p.add_argument('--binary',type=Path,required=True)
+    p.add_argument('--knowledge',type=Path,required=True)
+    p.add_argument('--output-dir',type=Path,required=True)
+    p.add_argument('--evaluation-options',type=Path)
+    args=p.parse_args()
+    options=json.loads(args.evaluation_options.read_bytes()) if args.evaluation_options else None
+    run_analysis(args.archive_dirs,args.binary,args.knowledge,args.output_dir,options)
 
 
 if __name__=='__main__':main()

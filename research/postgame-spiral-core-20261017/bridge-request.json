@@ -1,0 +1,31 @@
+{
+  "schema": "postgame-bridge-request-v1",
+  "operation_id": "spiral-core-source-smoke-20261017-01",
+  "match_run": 39013481948,
+  "launcher_run": 39013476413,
+  "issue_number": 275,
+  "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+  "match_request": {
+    "request_id": "spiral-core-source-smoke-20261017-01",
+    "ref_a": "4c038a394501b2f0bc75da90ef20e3e8b9688745",
+    "ref_b": "4c038a394501b2f0bc75da90ef20e3e8b9688745",
+    "games": 2,
+    "shards": 2,
+    "go_command": "go movetime 200",
+    "max_plies": 300,
+    "seed": 2033101701,
+    "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true}",
+    "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true}"
+  },
+  "parent_options": {
+    "EvalSafety": 480,
+    "EvalPressure": 380,
+    "EvalActivity": 410,
+    "EvalDanger": 150,
+    "EvalInfluence": 140,
+    "EvalPotential": 210,
+    "EvalCoordination": 340,
+    "EvalHandPotential": 60,
+    "EvalThreat": 20
+  }
+}

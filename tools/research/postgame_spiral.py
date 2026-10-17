@@ -124,9 +124,9 @@ def parent_effect(moves, research_move):
 
 def prepare(diagnosis, probe, static, split_seed, registry=None, parent_options=None):
     """probe(case)->two results; static(sfen)->fixed-parent breakdown."""
-    require(0 < len(diagnosis) <= 96, "selected-case budget exceeded/empty")
+    require(0 <= len(diagnosis) <= 96, "selected-case budget exceeded")
     counts = collections.Counter((str(r["case"]["source"]["run_id"]), r["case"]["source"]["game_id"]) for r in diagnosis)
-    require(max(counts.values()) <= 4, "per-game case budget exceeded")
+    require(max(counts.values(), default=0) <= 4, "per-game case budget exceeded")
     require(len({r["case"]["case_id"] for r in diagnosis}) == len(diagnosis), "duplicate selected case")
     # Split all selected roots and legal compared children BEFORE inspecting any
     # preference magnitude, terminal reward, current-parent choice or static rank.
