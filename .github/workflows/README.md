@@ -101,7 +101,7 @@ engine-match.ymlは対局後に実際の着手だけを圧縮し、played-move-a
 
 ### 予算付きの多世代改善循環
 
-`postgame-spiral.yml`は、`research/postgame-cycles/<cycle_id>/PLAN.json`を不変commitで指定して一度だけ起動する。通常対局本体`engine-match.yml`のBuild/arena/分割/保存を再利用し、既存の手動入力へ9軸の評価設定を渡す。Issue受付の許可項目は変更しない。`.github/postgame-spiral-request.json`は`enabled:false`なら何も起動しない。有効な明示依頼は`cycle_id/plan_ref/repair`の3項目だけ。Workflowファイルの保存そのものでは対局を始めない。
+`postgame-spiral.yml`は、`research/postgame-cycles/<cycle_id>/PLAN.json`を不変commitで指定して一度だけ起動する。通常対局本体`engine-match.yml`のBuild/arena/分割/保存を再利用し、既存の手動入力へ9軸の評価設定を渡す。Issue受付の許可項目は変更しない。`.github/postgame-spiral-request.json`は`enabled:false`なら何も起動しない。有効な明示依頼は`cycle_id/plan_ref/repair`と任意の`inspect_only`だけ。Workflowファイルの保存そのものでは対局を始めない。
 
 制御は1つの手動runの中で動く。対局中はGitHub CLIの`run watch`で、保存済みIDの本体完了を待つ。毎時scheduleやworkflow_runの連鎖は使わない。各起動時に他runの稼働/待機jobを取得し、制御job自身が占める1枠も除いて、残る空きへ局数を均等配分する。他のrunを停止しない。容量待ちも既知のrun完了を待ってから再取得する。
 
@@ -110,3 +110,5 @@ engine-match.ymlは対局後に実際の着手だけを圧縮し、played-move-a
 現在の自動経路は**評価9軸の学習**。候補知識は研究記録へ残すが、正式163件への自動追加や比較用知識の汎用配布は受け付けない。材料不足でも固定親・分割台帳・同じ親の適格例を保持して次の原本へ進む。実Engine検査に不合格の候補は比較せず親保持。100局50%以上の場合だけ固定候補で一度200局を行い、原本との完全棋譜重複除外後も概算95%下限50%超などの条件を満たしたときだけ研究親を更新する。世代数/総局数を増やさず停止し、正式Engine/版/既定値/採用知識/baselineは変更しない。
 
 多世代制御のrequest launcherも、読み込む研究モジュールに必要な`python-shogi==1.1.1`を導入してから手動入口へ接続する。launcherの成功と本体/対局の開始は別々に確認する。
+
+完了後の`inspect_only:true`は、contents/actions読取り権限だけで全stageのReleaseを再取得し、実戦手/終局/原本hash・保存バイナリ/知識・分割/未使用履歴・操作receiptを照合し、世代制御を最初から再現して最終台帳一致を確認する。対局・再分析・学習・保存上書きは行わない。元Rawからの先読み一致/不一致・時間/探索統計も小さく復元し、欠損は欠損として残す。

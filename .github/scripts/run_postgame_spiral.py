@@ -68,6 +68,40 @@ def safe_extract(package,dest):
         tar.extractall(dest,filter='data')
 
 
+def runtime_statistics(paths):
+    """Preserve compact observed Ponder/timing/search totals, not Raw PVs."""
+    result=[]
+    for path in sorted(paths):
+        raw=Path(path).read_bytes();row=json.loads(raw)
+        ponder=row.get('ponder')
+        require(isinstance(ponder,dict) and set(ponder)=={'A','B'},'missing original Ponder observations')
+        require(all(type(ponder[side].get(k)) is int and ponder[side][k]>=0
+                    for side in ('A','B') for k in ('hits','misses')),'invalid Ponder observations')
+        result.append(dict(shard=Path(path).name,source_sha256=sha256(raw),games=row['games'],
+                           elapsed_seconds=row.get('elapsed_seconds'),ponder=ponder,
+                           timing_ms=row.get('timing_ms'),search=row.get('search')))
+    return result
+
+
+def inherit_predecessor(env,previous):
+    """New explicit budget, preserved research parent/data exposure history."""
+    plan=env['state']['plan'];old=previous['state']
+    require(old['stage']=='complete' and previous.get('blocked') is None,'predecessor is unfinished/blocked')
+    require(previous.get('formal_adoption') is False and old.get('formal_adoption') is False,'not a research predecessor')
+    require(old['parent']==plan['parent'] and previous['parent_options']==env['parent_options'],
+            'new cycle reset/changed the actual research parent')
+    require(old['plan'].get('algorithm_sha256')==plan.get('algorithm_sha256'),'reanalyze old features before changing learning algorithms')
+    old_seeds=set(previous.get('experiment_seeds',[]))|{v for row in old['plan']['seeds'] for v in row.values()}
+    new_seeds={v for row in plan['seeds'] for v in row.values()}
+    require(not old_seeds & new_seeds,'new explicit cycle reused predecessor experimental seeds')
+    require(digest(previous['prior_signatures'])==previous['trajectory_index_sha256'],'predecessor index hash mismatch')
+    env['preparation_publication']=previous['preparation_publication']
+    env['prior_signatures']=list(previous['prior_signatures'])
+    env['predecessor_cycle']=old['plan']['cycle_id']
+    env['experiment_seeds']=sorted(old_seeds|new_seeds)
+    return env
+
+
 class Backend:
     def __init__(self,repo,output):
         require(repo=='mtk-ctrl/shogi-ai','unexpected repository')
@@ -247,7 +281,8 @@ class Backend:
         audit.update(match_run=body,build_job=builds[0]['id'],build_log_sha256=sha256(log.encode()),
                      actual_lane_jobs=[dict(id=j['id'],started_at=j['started_at'],completed_at=j['completed_at']) for j in lanes],
                      audit_code_sha256=code_hash())
-        data=dict(audit=audit,result=result,started_lanes=len(lanes))
+        data=dict(audit=audit,result=result,started_lanes=len(lanes),
+                  runtime_statistics=runtime_statistics((source/'shards').glob('shard-*.json')))
         files={f'played-archive/{name}':source/'verified-archive'/name for name in ('manifest.json','played-games.jsonl.gz')}
         files.update({f'build/{name}':source/'binaries/build'/name for name in ('engine-a','engine-b','position-knowledge-v1.tsv','position-knowledge-v1.manifest.json')})
         dump(folder/'match-request.json',req);files['match-request.json']=folder/'match-request.json'
@@ -314,11 +349,12 @@ class Backend:
 def launch(repo):
     req=json.loads((ROOT/'.github/postgame-spiral-request.json').read_bytes())
     if req==dict(enabled=False):return
-    require(set(req)=={'cycle_id','plan_ref','repair'},'launch request fields')
+    require(set(req) in ({'cycle_id','plan_ref','repair'},{'cycle_id','plan_ref','repair','inspect_only'}),'launch request fields')
+    require(type(req.get('inspect_only',False)) is bool,'invalid inspection flag')
     require(re.fullmatch('[0-9a-f]{40}',req['plan_ref']),'fixed plan ref required')
     require(re.fullmatch('[A-Za-z0-9][A-Za-z0-9-]{0,63}',req['cycle_id']) and type(req['repair']) is bool,'invalid start/resume request')
     response=api(f'repos/{repo}/actions/workflows/postgame-spiral.yml/dispatches',
-                 dict(ref='main',return_run_details=True,inputs=dict(cycle_id=req['cycle_id'],plan_ref=req['plan_ref'],repair=str(req['repair']).lower())))
+                 dict(ref='main',return_run_details=True,inputs=dict(cycle_id=req['cycle_id'],plan_ref=req['plan_ref'],repair=str(req['repair']).lower(),inspect_only=str(req.get('inspect_only',False)).lower())))
     require(type(response.get('workflow_run_id')) is int,'coordinator dispatch ID missing')
     print('SPIRAL_LAUNCH '+json.dumps(response),flush=True)
 
@@ -342,6 +378,10 @@ def main():
         # New start must not overlap an already active cycle under another name.
         require(backend.load() is None,'another cycle is already active')
         env=initialize(plan,plan['parent_options'],code_hash());env['plan_ref']=ref
+        env['experiment_seeds']=sorted(v for row in plan['seeds'] for v in row.values())
+        if plan.get('predecessor_checkpoint'):
+            prior=json.loads(backend.bytes(plan['predecessor_checkpoint']).read_bytes())
+            env=inherit_predecessor(env,prior)
         backend.save(env)
     else:
         if event=='workflow_dispatch':require(os.environ.get('PLAN_REF')==env['plan_ref'],'resume changed frozen plan ref')
@@ -357,7 +397,7 @@ def main():
             'frozen learning/split/gate algorithm changed; audit repair cannot retune it')
     try:
         if env.get('references_verified') is not True:
-            env['prior_signatures']=backend.reference_index(env['state']['plan'])
+            env['prior_signatures']=sorted(set(env['prior_signatures'])|set(backend.reference_index(env['state']['plan'])))
             env['references_verified']=True
             env['reference_index_sha256']=digest(env['prior_signatures'])
             backend.save(env)

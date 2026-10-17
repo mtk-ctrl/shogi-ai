@@ -49,6 +49,42 @@ class BackendTest(unittest.TestCase):
                 b.wait(dict(dispatch={'body_run':456}))
                 self.assertEqual(run.call_args.args[0],['gh','run','watch','456','--repo','mtk-ctrl/shogi-ai','--interval','60'])
 
+    def test_original_runtime_statistics_preserve_missing_fields_and_reject_missing_ponder(self):
+        import json
+        with tempfile.TemporaryDirectory() as td:
+            p=Path(td)/'shard-0.json'
+            row=dict(games=1,ponder={side:dict(hits=2,misses=3) for side in ('A','B')})
+            p.write_text(json.dumps(row))
+            observed=m.runtime_statistics([p])[0]
+            self.assertEqual(observed['ponder'],row['ponder'])
+            self.assertIsNone(observed['timing_ms'])
+            self.assertIsNone(observed['search'])
+            self.assertNotIn('details',observed)
+            self.assertEqual(observed['source_sha256'],m.sha256(p.read_bytes()))
+            row.pop('ponder');p.write_text(json.dumps(row))
+            with self.assertRaises(ValueError):m.runtime_statistics([p])
+
+    def test_new_explicit_cycle_carries_completed_parent_bank_and_exposure_index(self):
+        import copy
+        from tools.research.postgame_ranker import digest
+        parent=dict(engine_ref='a'*40,knowledge_sha256='b'*64,parameters_sha256='c'*64)
+        old=dict(state=dict(stage='complete',formal_adoption=False,parent=parent,
+                           plan=dict(cycle_id='old',algorithm_sha256='same',seeds=[dict(source=1,screen=2,confirm=3)])),
+                 formal_adoption=False,blocked=None,parent_options={'fixed':'fixture'},preparation_publication={'name':'preserved-bank'},
+                 prior_signatures=['trajectory'],trajectory_index_sha256=digest(['trajectory']))
+        new=dict(state=dict(plan=dict(parent=parent,algorithm_sha256='same',seeds=[dict(source=4,screen=5,confirm=6)])),
+                 parent_options={'fixed':'fixture'})
+        inherited=m.inherit_predecessor(copy.deepcopy(new),old)
+        self.assertEqual(inherited['preparation_publication'],old['preparation_publication'])
+        self.assertEqual(inherited['prior_signatures'],old['prior_signatures'])
+        for kind in ('parent','seeds','unfinished','algorithm'):
+            bad=copy.deepcopy(old)
+            if kind=='parent':bad['parent_options']={'reset':'fixture'}
+            elif kind=='seeds':bad['state']['plan']['seeds'][0]['source']=4
+            elif kind=='unfinished':bad['state']['stage']='screen'
+            else:bad['state']['plan']['algorithm_sha256']='changed'
+            with self.assertRaises(ValueError,msg=kind):m.inherit_predecessor(copy.deepcopy(new),bad)
+
     def test_controller_fingerprint_binds_learning_and_executor_code(self):
         value=m.code_hash();self.assertRegex(value,'^[0-9a-f]{64}$')
 
