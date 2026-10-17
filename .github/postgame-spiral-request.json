@@ -1,5 +1,6 @@
 {
   "cycle_id": "spiral-auto-smoke-20261017-01",
   "plan_ref": "bfbf3ee5f891b5b8216d8f5385c616848d30183f",
-  "repair": false
+  "repair": false,
+  "inspect_only": true
 }
