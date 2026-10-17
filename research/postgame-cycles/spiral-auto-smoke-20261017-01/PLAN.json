@@ -110,5 +110,6 @@
       "bytes": 5224606
     }
   ],
-  "controller_sha256": "a0fefbce12a1872f444207077c72e046dd8c78d6619faf6a2865254ab2e0b0ac"
+  "controller_sha256": "d36366acde4f45b029f2fa374af1b4283c4a3924bde7baa28f2c775ba24f138f",
+  "algorithm_sha256": "fcdb9f4b38a09a761663b72d00806ba66ff133bdbc5aa6be78206d32a746bea0"
 }

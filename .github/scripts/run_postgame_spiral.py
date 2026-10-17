@@ -51,6 +51,13 @@ def code_hash():
     return digest({p.relative_to(ROOT).as_posix():sha256(p.read_bytes()) for p in files})
 
 
+
+def algorithm_hash():
+    # Audit/log/publication repairs may change, but not the frozen learning,
+    # split rules, candidate gates or generation/selection semantics.
+    names=('ranker','analyze','spiral','cycle','eval_preflight','runtime','candidates','cases')
+    return digest({n:sha256((ROOT/f'tools/research/postgame_{n}.py').read_bytes()) for n in names})
+
 def safe_extract(package,dest):
     with tarfile.open(package) as tar:
         members=tar.getmembers()
@@ -135,6 +142,7 @@ class Backend:
         # append-only asset is a second collision guard across retries/clients.
         seq=env['sequence']+1
         env['sequence']=seq;env['previous_checkpoint']=self.latest_name
+        if env.get('references_verified') is True:env['trajectory_index_sha256']=digest(env['prior_signatures'])
         name=f"spiral-{env['state']['plan']['cycle_id']}-state-{seq:06}.json"
         path=self.output/name;dump(path,env)
         require(path.stat().st_size<4*1024*1024,'checkpoint size requires review')
@@ -335,7 +343,6 @@ def main():
         require(backend.load() is None,'another cycle is already active')
         env=initialize(plan,plan['parent_options'],code_hash());env['plan_ref']=ref
         backend.save(env)
-        env['prior_signatures']=backend.reference_index(plan);backend.save(env)
     else:
         if event=='workflow_dispatch':require(os.environ.get('PLAN_REF')==env['plan_ref'],'resume changed frozen plan ref')
         changed=env['controller_sha256']!=code_hash()
@@ -346,7 +353,16 @@ def main():
                                                     blocked=env['blocked'],run=backend.run_id))
             env.update(blocked=None,controller_sha256=code_hash());backend.save(env)
     backend.active=env
+    require(env['state']['plan'].get('algorithm_sha256')==algorithm_hash(),
+            'frozen learning/split/gate algorithm changed; audit repair cannot retune it')
     try:
+        if env.get('references_verified') is not True:
+            env['prior_signatures']=backend.reference_index(env['state']['plan'])
+            env['references_verified']=True
+            env['reference_index_sha256']=digest(env['prior_signatures'])
+            backend.save(env)
+        require(digest(env['prior_signatures'])==env.get('trajectory_index_sha256',env['reference_index_sha256']),
+                'saved trajectory index was edited')
         result=env
         while result['state']['stage']!='complete':
             result=advance(result,backend)
