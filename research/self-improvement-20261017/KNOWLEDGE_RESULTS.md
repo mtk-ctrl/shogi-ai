@@ -16,7 +16,7 @@
 
 親163件を保持して候補164件を作り、Aだけへ候補を渡した。実バイナリで、無効時固定深さ一致、12取り合いの退行0、対象の着手変更1、別手順到達、反復局面での通常探索、OFF/再ONを確認した。最終arena配線試験は2局分8手、全手合法、追加研究の利用はA1回/B0回。途中4手で止める動作試験の結果を引分教師や勝率にしない。position_arenaの先読み命令と元loader handshakeの保存はこの試験では未検証として記録した。
 
-[手元の実測](knowledge-wiring-local.json)。CIでも独立にbuildし、同じ動作を検査する。build環境と時刻によるhash/探索深さの違いはそのまま保存し、手元と同じバイナリだったとは扱わない。
+[手元の実測](knowledge-wiring-local.json)と[CIの実測](knowledge-wiring-ci.json)。CIでも独立にbuildして同じ動作検査を通過し、深さ比は1.0だった。build環境と時刻によるhash/探索深さの違いはそのまま保存し、手元と同じバイナリだったとは扱わない。
 
 ## 実データへの適用
 
@@ -26,6 +26,6 @@
 
 ## 検査・次に残る作業
 
-postgame関連121検査と文書4検査がローカルで成功。GitHub CI・artifactの取得検証・main読み戻しはknowledge-completion.jsonへ記録する。
+postgame関連121検査と文書4検査がローカルで成功。GitHubの[postgame CI](https://github.com/mtk-ctrl/shogi-ai/actions/runs/39046998703)、既存postgame CI、PR/main文書CIも成功した。artifactを取得し直してAPI digestを照合し、保存済み実データ結果はローカルとCIでbytes一致。PRの19ファイルと統合mainの19ファイルは読み戻して完全一致した。[完了記録](knowledge-completion.json)へ検査と保存の根拠を残した。
 
 次は、研究待ち8例の追加解析で本当に親と違う有効な研究手が得られるかを調べ、知識候補の通常比較と研究親への引継ぎを接続する。材料がないまま100/200局を起動しない。正式Engine・版・既定値・知識163件・baselineは変更していない。

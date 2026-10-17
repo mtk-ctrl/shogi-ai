@@ -1,0 +1,98 @@
+{
+  "schema": "self-improvement-stage-completion-v1",
+  "overall_status": "in_progress",
+  "completed_stage": "2A",
+  "next_stage": "2B",
+  "scope": "Training-only research move proposal, current-parent checks, actual-engine preflight, separate A/B knowledge staging, prepare publication and readback.",
+  "not_completed": [
+    "Normal 100/200-game automatic comparison for knowledge candidates",
+    "Research-parent knowledge inheritance across generations",
+    "Follow-up analysis of the 8 saved training research tasks"
+  ],
+  "base_ref": "4f7af18b81c9b1e2c26658fcf65d33fbab5f7270",
+  "implementation_ref": "01b8b3c879f0a1c549b6c59e5923c8e64f1ad58b",
+  "merge_ref": "6dc046671bec9c012b399f573b1ffa9552c515e6",
+  "pr": 281,
+  "ci": {
+    "postgame": {
+      "run": 39046998703,
+      "job": 117437601899,
+      "conclusion": "success",
+      "tests": 121,
+      "actual_engine_built": true,
+      "saved_source_review_passed": true,
+      "synthetic_wiring_passed": true
+    },
+    "documents_pr": {
+      "run": 39046998581,
+      "conclusion": "success"
+    },
+    "legacy_postgame": {
+      "run": 39046998718,
+      "conclusion": "success"
+    },
+    "documents_main": {
+      "run": 39047094698,
+      "conclusion": "success"
+    }
+  },
+  "readback": {
+    "implementation_files": 19,
+    "implementation_all_exact": true,
+    "merge_files": 19,
+    "merge_all_exact": true,
+    "artifact_id": 12105719496,
+    "artifact_zip_sha256": "497e4baaf4cc1f5966d3be479f38b95c5db1a92e59934a4f57238035a14a56ef",
+    "artifact_zip_bytes": 4727,
+    "artifact_digest_matches_download": true,
+    "artifact_results": {
+      "postgame-progress-replay.json": {
+        "sha256": "725c39efb85f99fa9a9a63ae39ebd76ba47c3fcd11ad013c4773ad9686a2b116",
+        "bytes": 11338
+      },
+      "postgame-knowledge-wiring.json": {
+        "sha256": "631afb7c4cc55758e2dd2d13b105e64a16ae241d0053df76286df981e78818ba",
+        "bytes": 1375
+      },
+      "postgame-knowledge-saved-review.json": {
+        "sha256": "e22e5ef07f9bcb643922c9f2d995ed0909fb35836808b160e26936f5f4727218",
+        "bytes": 2228
+      }
+    },
+    "saved_progress_result_identical_to_previous_stage": true,
+    "saved_knowledge_review_identical_local_ci": true,
+    "live_builds_compared_as_independent_runs": true
+  },
+  "source_review": {
+    "games": 4,
+    "plies": 474,
+    "cases": 16,
+    "effective_knowledge_tasks": 0,
+    "new_knowledge_positions": 0,
+    "new_analysis": 0,
+    "engine_probes": 0,
+    "report": "knowledge-saved-review.json"
+  },
+  "synthetic_wiring": {
+    "purpose": "integration_smoke",
+    "not_a_training_source": true,
+    "reports": {
+      "local": "knowledge-wiring-local.json",
+      "ci": "knowledge-wiring-ci.json"
+    },
+    "final_partial_games_per_report": 2,
+    "final_plies_per_report": 8,
+    "new_research_uses_A_per_report": 1,
+    "new_research_uses_B_per_report": 0,
+    "ponder_protocol_exercised": false,
+    "original_arena_loader_handshake_retained": false
+  },
+  "new_research_games": 0,
+  "new_strength_comparison_games": 0,
+  "parameter_updates": 0,
+  "formal_adoption": false,
+  "strength_improvement_demonstrated": false,
+  "formal_engine_changed_files": [],
+  "formal_knowledge_changed_files": [],
+  "generic_engine_match_workflow_changed": false
+}
