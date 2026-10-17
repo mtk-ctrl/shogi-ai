@@ -1,7 +1,7 @@
 {
-  "request_id": "g1-v221-scale10-final-terminal-audit200-20261017",
-  "mode": "audit",
-  "candidate_ref": "a15530f625b4ceb3b77d0ce45889d4c2e2d90909",
-  "baseline_ref": "981479316b51ba5cfa81e7cf2d97ecd91129d83f",
-  "match_run": 38948701892
+  "request_id": "postgame-diagnosis-20261017-01-publish",
+  "mode": "postgame-publish",
+  "candidate_ref": "d4c8ab2affd76835f34061a1b59d09f43990905c",
+  "baseline_ref": "efcfa0f80d218c3dbcc3162f5bee3366f6a835cf",
+  "match_run": 0
 }

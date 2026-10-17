@@ -2,7 +2,7 @@
   "schema_version": 1,
   "cycle_id": "postgame-pilot-20261017",
   "status": "implementation_in_progress",
-  "phase": "diagnosis_running",
+  "phase": "initial_diagnosis_publication_pending",
   "generation": 0,
   "formal_adoption": false,
   "controller_implemented": false,
@@ -30,7 +30,7 @@
   },
   "used": {
     "new_games": 0,
-    "selected_positions": 0
+    "selected_positions": 96
   },
   "automation": {
     "id": "6ad2af67c6788191b5702c4537d90052",
@@ -43,17 +43,20 @@
   "actions": [
     {
       "operation_id": "postgame-diagnosis-20261017-01",
-      "status": "running",
+      "status": "publication_pending",
       "executor": "manual_owner_request",
       "started_at_utc": "2026-10-17T00:37:17.849Z",
       "lease_until_utc": "2026-10-17T02:07:17.854Z",
       "workdir": "/workspace/scratch/9fe076caaea9/postgame-run",
       "next": "Implement fixed own-analyzer and run first bounded postgame diagnosis; do not duplicate while this operation is active.",
+      "analysis_completed": true,
+      "source_games": 500,
+      "source_plies": 54821,
+      "selected_cases": 96,
+      "elapsed_seconds": 129.844,
       "code_ref": "f800d2f136128e7b7a003096f91782f2ca49c90c",
-      "session_id": 42510,
-      "output_dir": "/workspace/scratch/9fe076caaea9/postgame-diagnosis-20261017-01",
-      "actual_start_confirmed": true,
-      "pid_namespace_note": "Local process IDs are namespace-local; use session status and checkpoint timestamps rather than PID alone."
+      "result_ref": "d4c8ab2affd76835f34061a1b59d09f43990905c",
+      "publication_request": "postgame-diagnosis-20261017-01-publish"
     }
   ],
   "evidence": [
@@ -86,21 +89,42 @@
       "report_ref": "dc5c6dce4a0d3fce448514546e794470ed35e8b5",
       "report_path": "research/selfplay-postgame-20261017/reader-smoke.json",
       "cli_regeneration_byte_equal": true
+    },
+    {
+      "kind": "initial_postgame_diagnosis",
+      "code_ref": "f800d2f136128e7b7a003096f91782f2ca49c90c",
+      "result_ref": "d4c8ab2affd76835f34061a1b59d09f43990905c",
+      "source_games": 500,
+      "source_plies": 54821,
+      "unique_static_positions": 46457,
+      "cases": 96,
+      "routes": {
+        "knowledge_reference_candidate": 48,
+        "search_horizon_candidate": 4,
+        "stable_research_move_candidate": 2,
+        "mixed_or_unstable": 4,
+        "hold": 38
+      },
+      "followup_pairs": 16,
+      "local_tests": 19,
+      "exact_binary_sha256": "37439e1ec26c4bce96a4bb2c43316a05ea019906c867c7247ee710f2c13483f8",
+      "package_sha256": "4d439d6cabe207527cb9e7ce2710f4598e1bae07275396bf19a1ac6a69c39dd1",
+      "package_bytes": 2739607,
+      "release_readback_verified": false
     }
   ],
-  "next_action": "Read the research PLAN and reader; restore remaining G1 inputs, implement fixed own-analyzer calls with complete history, select diagnosis cases and classify uncertainty before any training.",
+  "next_action": "Verify publication run/readback first; then review attribution and group splits, build regression cases and candidate knowledge; do not train evaluation changes from unresolved search/evaluation confounding.",
   "limitations": [
-    "The reader is implemented on the research branch; actual reanalysis, paired training, candidate matches, knowledge distribution and full controller remain unimplemented.",
-    "Local tests passed; the new reader has not been run in GitHub CI.",
-    "The 96 mechanically sampled reader-smoke cases are not the pilot triage/training set.",
-    "No automatic formal adoption; no second optimization generation."
+    "Full generation controller, paired learning, candidate knowledge delivery and candidate matches remain incomplete.",
+    "The 96-case diagnosis is provisional, includes 20 draw positions and must not be used as a ready-made winner/loser training set.",
+    "Formal Engine and adopted knowledge unchanged; first diagnosis publication pending."
   ],
-  "research_commit": "f800d2f136128e7b7a003096f91782f2ca49c90c",
+  "research_commit": "d4c8ab2affd76835f34061a1b59d09f43990905c",
   "components": {
     "played_archive_reader": "implemented_and_smoke_verified_on_research_branch",
     "full_history_case_input": "implemented_and_smoke_verified_on_research_branch",
-    "analyzer_execution": "implemented_local_run_in_progress",
-    "cause_routing": "provisional_uncertainty_routes_implemented",
+    "analyzer_execution": "implemented_first_local_96_case_run_completed",
+    "cause_routing": "provisional_routes_and_uncertainty_holds_verified_no_causality_proof",
     "paired_learning": "not_implemented",
     "candidate_knowledge_distribution": "not_connected",
     "generation_controller": "not_implemented"

@@ -24,7 +24,7 @@ def module(name,path):
 def request():
     d=json.loads(Path('.github/selfplay-verification-request.json').read_text())
     if set(d)!={'request_id','mode','candidate_ref','baseline_ref','match_run'}:raise ValueError('request keys')
-    if d['mode'] not in ('benchmark','audit'):raise ValueError('mode')
+    if d['mode'] not in ('benchmark','audit','postgame-publish'):raise ValueError('mode')
     if not all(re.fullmatch('[0-9a-f]{40}',d[k]) for k in ('candidate_ref','baseline_ref')):raise ValueError('fixed refs required')
     if type(d['match_run']) is not int or d['match_run']<0 or (d['mode']=='audit' and d['match_run']==0):raise ValueError('match run')
     return d
@@ -98,6 +98,14 @@ def main():
     candidate=ROOT/'engine-a-src';base=ROOT/'engine-b-src'
     actual=subprocess.check_output(['git','rev-parse','HEAD'],cwd=candidate,text=True).strip()
     if actual!=d['candidate_ref']:raise ValueError('candidate checkout mismatch')
+    if d['mode']=='postgame-publish':
+        run(['python3',candidate/'tests/test_postgame_cases.py'])
+        run(['python3',candidate/'tests/test_postgame_analyze.py'])
+        run(['python3',ROOT/'tests/test_postgame_publication.py'])
+        publisher=module('postgame_publication',ROOT/'.github/scripts/publish_postgame.py')
+        result=publisher.publish(candidate,OUT,os.environ['GITHUB_REPOSITORY'])
+        print('VALIDATION_RESULT '+json.dumps(result,ensure_ascii=False,separators=(',',':')),flush=True)
+        return
     training=json.loads((candidate/'research/selfplay-learning-20261016/training-report.json').read_text())
     provenance={'candidate_ref':actual,'baseline_ref':d['baseline_ref'],'model_sha256':training['model_sha256']}
     files={}
