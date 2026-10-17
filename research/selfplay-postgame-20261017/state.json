@@ -2,7 +2,7 @@
   "schema_version": 1,
   "cycle_id": "postgame-pilot-20261017",
   "status": "implementation_in_progress",
-  "phase": "initial_diagnosis_publication_pending",
+  "phase": "attribution_review_ready",
   "generation": 0,
   "formal_adoption": false,
   "controller_implemented": false,
@@ -43,10 +43,9 @@
   "actions": [
     {
       "operation_id": "postgame-diagnosis-20261017-01",
-      "status": "publication_pending",
+      "status": "completed",
       "executor": "manual_owner_request",
       "started_at_utc": "2026-10-17T00:37:17.849Z",
-      "lease_until_utc": "2026-10-17T02:07:17.854Z",
       "workdir": "/workspace/scratch/9fe076caaea9/postgame-run",
       "next": "Implement fixed own-analyzer and run first bounded postgame diagnosis; do not duplicate while this operation is active.",
       "analysis_completed": true,
@@ -56,7 +55,10 @@
       "elapsed_seconds": 129.844,
       "code_ref": "f800d2f136128e7b7a003096f91782f2ca49c90c",
       "result_ref": "d4c8ab2affd76835f34061a1b59d09f43990905c",
-      "publication_request": "postgame-diagnosis-20261017-01-publish"
+      "publication_request": "postgame-diagnosis-20261017-01-publish",
+      "completed_at_utc": "2026-10-17T00:50:24.295Z",
+      "publication_run": 38988026302,
+      "publication_verified": true
     }
   ],
   "evidence": [
@@ -110,21 +112,52 @@
       "exact_binary_sha256": "37439e1ec26c4bce96a4bb2c43316a05ea019906c867c7247ee710f2c13483f8",
       "package_sha256": "4d439d6cabe207527cb9e7ce2710f4598e1bae07275396bf19a1ac6a69c39dd1",
       "package_bytes": 2739607,
-      "release_readback_verified": false
+      "release_readback_verified": true,
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "postgame-diagnosis-20261017-01.tgz",
+        "sha256": "4d439d6cabe207527cb9e7ce2710f4598e1bae07275396bf19a1ac6a69c39dd1",
+        "bytes": 2739607,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-diagnosis-20261017-01.tgz",
+        "release_asset_count": 27,
+        "release_total_bytes": 62720923,
+        "repository_staging_bytes": 2739607,
+        "repository_staging_note": "One initial transfer snapshot; not an ongoing played-game archive. Git history retains this initial snapshot.",
+        "verification_run": 38988026302,
+        "verification_job": 117263933799,
+        "source_code_ref": "f800d2f136128e7b7a003096f91782f2ca49c90c",
+        "source_result_ref": "d4c8ab2affd76835f34061a1b59d09f43990905c",
+        "main_verification_ref": "0e6d7ee38dbd5ec9aa7ea6553b5144a9ad4103d0",
+        "local_additional_readback_verified": true,
+        "document_ci": 38988026303,
+        "github_test_counts": [
+          9,
+          6,
+          4
+        ]
+      },
+      "github_test_counts": [
+        9,
+        6,
+        4
+      ],
+      "document_ci": 38988026303
     }
   ],
-  "next_action": "Verify publication run/readback first; then review attribution and group splits, build regression cases and candidate knowledge; do not train evaluation changes from unresolved search/evaluation confounding.",
+  "next_action": "Use the 96 preserved cases without rerunning or expanding selection. Review group splits and causal uncertainty, implement regression and candidate knowledge delivery; fit evaluation only if sufficient eligible cases exist. Continue bounded one-generation pilot, no automatic formal adoption.",
   "limitations": [
-    "Full generation controller, paired learning, candidate knowledge delivery and candidate matches remain incomplete.",
-    "The 96-case diagnosis is provisional, includes 20 draw positions and must not be used as a ready-made winner/loser training set.",
-    "Formal Engine and adopted knowledge unchanged; first diagnosis publication pending."
+    "Initial diagnosis and exact binary Release publication are complete; the full generation controller, paired learning, candidate knowledge distribution and new candidate matches remain incomplete.",
+    "Routes are provisional; 20 draw positions are overrepresented. Do not treat the 96 cases or five conflicting static-rank examples as proven evaluation teachers.",
+    "No new games or parameter updates have run. Formal Engine and adopted knowledge are unchanged."
   ],
-  "research_commit": "d4c8ab2affd76835f34061a1b59d09f43990905c",
+  "research_commit": "12abc3caa557de4ce00c9e8becb1dfa8b20bac18",
   "components": {
     "played_archive_reader": "implemented_and_smoke_verified_on_research_branch",
     "full_history_case_input": "implemented_and_smoke_verified_on_research_branch",
     "analyzer_execution": "implemented_first_local_96_case_run_completed",
-    "cause_routing": "provisional_routes_and_uncertainty_holds_verified_no_causality_proof",
+    "cause_routing": "first_provisional_diagnosis_and_attribution_review_completed_on_research_branch",
     "paired_learning": "not_implemented",
     "candidate_knowledge_distribution": "not_connected",
     "generation_controller": "not_implemented"
