@@ -12,6 +12,8 @@ on:
       - ".github/scripts/inspect_postgame_spiral.py"
       - ".github/workflows/postgame-spiral.yml"
       - "research/self-improvement-20261017/replay_progress.py"
+      - "research/self-improvement-20261017/knowledge_fixture.py"
+      - "research/self-improvement-20261017/knowledge_saved_review.py"
   workflow_dispatch:
     inputs:
       cycle_id:
@@ -46,11 +48,20 @@ jobs:
       - run: python3 -m unittest discover -s tests -p 'test_postgame_*.py'
       - name: Reproduce research yield from immutable saved diagnoses
         run: python3 research/self-improvement-20261017/replay_progress.py --download --output build/postgame-progress-replay.json
+      - name: Verify knowledge preparation against exact saved source binaries
+        run: python3 research/self-improvement-20261017/knowledge_saved_review.py --directory build/knowledge-saved-review --download --output build/postgame-knowledge-saved-review.json
+      - name: Build actual engine for research-knowledge wiring only
+        run: python3 scripts/build.py --output build/knowledge-test-engine
+      - name: Verify separate A/B knowledge with actual engine and arena
+        run: python3 research/self-improvement-20261017/knowledge_fixture.py --binary build/knowledge-test-engine --directory build/knowledge-fixture --output build/postgame-knowledge-wiring.json
       - run: python3 scripts/check_workflow_inventory.py --strict && python3 scripts/check_match_workflows.py
       - uses: actions/upload-artifact@v4
         with:
           name: postgame-progress-replay-${{ github.run_id }}
-          path: build/postgame-progress-replay.json
+          path: |
+            build/postgame-progress-replay.json
+            build/postgame-knowledge-wiring.json
+            build/postgame-knowledge-saved-review.json
           retention-days: 90
   launch-request:
     if: github.event_name == 'push'

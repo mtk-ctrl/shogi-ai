@@ -20,6 +20,7 @@ from tools.research.postgame_ranker import digest,require,OPTIONS
 from tools.research.postgame_cases import load_archive,sha256
 from tools.research.postgame_bridge import validate_shard,trajectory
 from tools.records.archive_played_moves import archive
+from tools.research.postgame_knowledge import validate_snapshot,staged_options
 
 
 def inspect(backend,env):
@@ -109,6 +110,17 @@ def inspect(backend,env):
                           split_aliases=len(registry),old_aliases_preserved=len(old_registry),bank_pairs_reused=prep['bank_pairs_reused'])
             if 'progress_policy' in plan:
                 report['progress']=prep['progress']
+            if 'knowledge_policy' in plan:
+                knowledge=result['knowledge_stage']
+                require(json.loads((folder/'knowledge-stage/result.json').read_bytes())==knowledge,'knowledge result differs')
+                if 'staging' in knowledge:
+                    target=folder/'knowledge-stage/staged'
+                    require(knowledge['staging']['manifest_sha256']==digest(knowledge['manifest'])
+                            and knowledge['staging']['preflight_sha256']==digest(knowledge['preflight']),
+                            'staged knowledge evidence hash differs')
+                    staged_options(target,knowledge['staging'])
+                    validate_snapshot((target/'B.tsv').read_bytes(),(target/'A.tsv').read_bytes(),knowledge['manifest'])
+                report['knowledge_stage']=knowledge
             previous=prep
         elif stage=='preflight':
             evidence.update(candidate=binding['inputs']['candidate'],preflight=result['preflight'])

@@ -1,0 +1,55 @@
+{
+  "schema": "postgame-knowledge-saved-review-v1",
+  "source_cycle": "spiral-auto-smoke-20261017-01",
+  "generations": [
+    {
+      "generation": 1,
+      "source_package": {
+        "name": "spiral-spiral-auto-smoke-20261017-01-initial_source-e8181c0b9aa52b1a-39021709686-a1.tgz",
+        "sha256": "8678dbf172bb5233ffe6841e10a69032d483f01740ef68b8dcf0876edaca0823",
+        "bytes": 5208460
+      },
+      "binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+      "parent": {
+        "engine_ref": "aea41f166b52b985cfe5cf40fc123520144381eb",
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591"
+      },
+      "status": "no_effective_candidate",
+      "candidate_positions": 0,
+      "rejected": [],
+      "knowledge_tasks": 0,
+      "engine_probes": 0
+    },
+    {
+      "generation": 2,
+      "source_package": {
+        "name": "spiral-spiral-auto-smoke-20261017-01-collect_source-2d6bac99767cdc1a-39021709686-a1.tgz",
+        "sha256": "48c46d92e88fa0604ee796babbfeceb2ad0ce3ca41e7b6289b7fce46117b8e84",
+        "bytes": 5212920
+      },
+      "binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+      "parent": {
+        "engine_ref": "aea41f166b52b985cfe5cf40fc123520144381eb",
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591"
+      },
+      "status": "no_effective_candidate",
+      "candidate_positions": 0,
+      "rejected": [],
+      "knowledge_tasks": 0,
+      "engine_probes": 0
+    }
+  ],
+  "source_games": 4,
+  "source_plies": 474,
+  "selected_cases": 16,
+  "scope": "Research knowledge preparation on exact saved inputs; original experiments unchanged.",
+  "new_games": 0,
+  "new_analysis": 0,
+  "engine_probes": 0,
+  "new_knowledge_positions": 0,
+  "formal_adoption": false,
+  "strength_improvement_demonstrated": false,
+  "next_action": "Investigate queued missing observations and search stability; do not manufacture knowledge or start comparison games."
+}
