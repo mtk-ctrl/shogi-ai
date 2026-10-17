@@ -1,0 +1,947 @@
+{
+  "schema": "postgame-cycle-readback-v1",
+  "cycle_id": "spiral-auto-smoke-20261017-01",
+  "controller_ledger_replayed": true,
+  "all_publication_hash_bytes_api_verified": true,
+  "stage_reports": [
+    {
+      "stage": "initial_source",
+      "generation": 1,
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "spiral-spiral-auto-smoke-20261017-01-initial_source-e8181c0b9aa52b1a-39021709686-a1.tgz",
+        "sha256": "8678dbf172bb5233ffe6841e10a69032d483f01740ef68b8dcf0876edaca0823",
+        "bytes": 5208460,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-spiral-auto-smoke-20261017-01-initial_source-e8181c0b9aa52b1a-39021709686-a1.tgz"
+      },
+      "body_run": 39021748635,
+      "games": 2,
+      "plies": 200,
+      "result": {
+        "wins": 1,
+        "losses": 1,
+        "draws": 0
+      },
+      "runtime_statistics": [
+        {
+          "shard": "shard-0.json",
+          "source_sha256": "81d11c2605960b720dfd860428c7c845d951edb3cd8d060492f3904d20323c35",
+          "games": 1,
+          "elapsed_seconds": 32.865,
+          "ponder": {
+            "A": {
+              "hits": 25,
+              "misses": 18
+            },
+            "B": {
+              "hits": 30,
+              "misses": 14
+            }
+          },
+          "timing_ms": {
+            "A": {
+              "moves": 45,
+              "mean": 365.836,
+              "max": 995.178
+            },
+            "B": {
+              "moves": 45,
+              "mean": 352.075,
+              "max": 994.277
+            }
+          },
+          "search": {
+            "A": {
+              "samples": 44,
+              "nodes_total": 4131567,
+              "cutoffs_total": 143316,
+              "min_cutoffs_total": 85267,
+              "max_cutoffs_total": 58049,
+              "leaves_total": 3590267,
+              "terminals_total": 7618,
+              "ply1_total": 11100,
+              "ply2_total": 59262,
+              "ply3_total": 395370,
+              "order_calls_total": 525307,
+              "ordered_moves_total": 17519505,
+              "tt_probes_total": 169015,
+              "tt_hits_total": 10624,
+              "tt_exact_hits_total": 0,
+              "tt_bound_cutoffs_total": 8721,
+              "tt_stores_total": 160028,
+              "tt_replacements_total": 508,
+              "tt_move_first_total": 1903,
+              "tt_disabled_repetition_total": 0,
+              "knowledge_probes_total": 87,
+              "knowledge_hits_total": 0,
+              "knowledge_promotions_total": 0,
+              "knowledge_disabled_repetition_total": 0,
+              "qnodes_total": 3962544,
+              "qcutoffs_total": 3075102,
+              "qlimit_leaves_total": 200852,
+              "search_threads_total": 88,
+              "probe_mask_total": 308,
+              "pvs_probes_total": 104995,
+              "pvs_researches_total": 1437,
+              "killer_priorities_total": 205627,
+              "history_priorities_total": 631607,
+              "ordering_updates_total": 33221,
+              "research_mask_total": 1012,
+              "generated_plays_total": 4130130,
+              "legal_batches_total": 3984008,
+              "order_reuse_hits_total": 137316,
+              "qtt_probes_total": 0,
+              "qtt_hits_total": 0,
+              "qtt_cutoffs_total": 0,
+              "reuse_mask_total": 264,
+              "legal_cache_hits_total": 0,
+              "legal_cache_misses_total": 0,
+              "legal_cache_replacements_total": 0,
+              "efficiency_mask_total": 352,
+              "ordering_rule_checks_total": 0,
+              "eval_cache_hits_total": 1171735,
+              "lazy_snapshots_total": 3954932,
+              "selective_usi_skipped_total": 98501350,
+              "tt_hit_rate": 0.0628583261840665,
+              "knowledge_hit_rate": 0.0,
+              "long_think_moves": 10,
+              "long_think_reasons": {
+                "iteration_move_change": 2,
+                "iteration_score_change_150": 2,
+                "score_drop_150": 5,
+                "in_check": 1
+              }
+            },
+            "B": {
+              "samples": 45,
+              "nodes_total": 4450187,
+              "cutoffs_total": 150821,
+              "min_cutoffs_total": 94585,
+              "max_cutoffs_total": 56236,
+              "leaves_total": 3833818,
+              "terminals_total": 8893,
+              "ply1_total": 16204,
+              "ply2_total": 61862,
+              "ply3_total": 498837,
+              "order_calls_total": 595814,
+              "ordered_moves_total": 17622878,
+              "tt_probes_total": 185140,
+              "tt_hits_total": 14978,
+              "tt_exact_hits_total": 0,
+              "tt_bound_cutoffs_total": 12016,
+              "tt_stores_total": 172843,
+              "tt_replacements_total": 526,
+              "tt_move_first_total": 2962,
+              "tt_disabled_repetition_total": 0,
+              "knowledge_probes_total": 90,
+              "knowledge_hits_total": 0,
+              "knowledge_promotions_total": 0,
+              "knowledge_disabled_repetition_total": 0,
+              "qnodes_total": 4265035,
+              "qcutoffs_total": 3296096,
+              "qlimit_leaves_total": 228239,
+              "search_threads_total": 90,
+              "probe_mask_total": 315,
+              "pvs_probes_total": 123835,
+              "pvs_researches_total": 1770,
+              "killer_priorities_total": 230116,
+              "history_priorities_total": 648078,
+              "ordering_updates_total": 40431,
+              "research_mask_total": 1035,
+              "generated_plays_total": 4448417,
+              "legal_batches_total": 4290559,
+              "order_reuse_hits_total": 167001,
+              "qtt_probes_total": 0,
+              "qtt_hits_total": 0,
+              "qtt_cutoffs_total": 0,
+              "reuse_mask_total": 270,
+              "legal_cache_hits_total": 0,
+              "legal_cache_misses_total": 0,
+              "legal_cache_replacements_total": 0,
+              "efficiency_mask_total": 360,
+              "ordering_rule_checks_total": 0,
+              "eval_cache_hits_total": 1279565,
+              "lazy_snapshots_total": 4256146,
+              "selective_usi_skipped_total": 108082164,
+              "tt_hit_rate": 0.08090093982931836,
+              "knowledge_hit_rate": 0.0,
+              "long_think_moves": 9,
+              "long_think_reasons": {
+                "iteration_move_change": 1,
+                "score_drop_150": 8
+              }
+            }
+          }
+        },
+        {
+          "shard": "shard-1.json",
+          "source_sha256": "cbc7b96bb817a9b9f839ea99d36a96727e228b89533432fe1065b5fbd2012d0e",
+          "games": 1,
+          "elapsed_seconds": 36.166,
+          "ponder": {
+            "A": {
+              "hits": 33,
+              "misses": 14
+            },
+            "B": {
+              "hits": 33,
+              "misses": 20
+            }
+          },
+          "timing_ms": {
+            "A": {
+              "moves": 55,
+              "mean": 325.569,
+              "max": 997.036
+            },
+            "B": {
+              "moves": 55,
+              "mean": 319.742,
+              "max": 997.649
+            }
+          },
+          "search": {
+            "A": {
+              "samples": 53,
+              "nodes_total": 4646299,
+              "cutoffs_total": 162415,
+              "min_cutoffs_total": 87800,
+              "max_cutoffs_total": 74615,
+              "leaves_total": 3983866,
+              "terminals_total": 8649,
+              "ply1_total": 15309,
+              "ply2_total": 66260,
+              "ply3_total": 505737,
+              "order_calls_total": 638527,
+              "ordered_moves_total": 18696849,
+              "tt_probes_total": 193965,
+              "tt_hits_total": 10377,
+              "tt_exact_hits_total": 0,
+              "tt_bound_cutoffs_total": 8246,
+              "tt_stores_total": 185411,
+              "tt_replacements_total": 525,
+              "tt_move_first_total": 2131,
+              "tt_disabled_repetition_total": 0,
+              "knowledge_probes_total": 102,
+              "knowledge_hits_total": 0,
+              "knowledge_promotions_total": 0,
+              "knowledge_disabled_repetition_total": 0,
+              "qnodes_total": 4444741,
+              "qcutoffs_total": 3451424,
+              "qlimit_leaves_total": 197438,
+              "search_threads_total": 102,
+              "probe_mask_total": 357,
+              "pvs_probes_total": 122200,
+              "pvs_researches_total": 1837,
+              "killer_priorities_total": 233562,
+              "history_priorities_total": 581703,
+              "ordering_updates_total": 29548,
+              "research_mask_total": 1173,
+              "generated_plays_total": 4637031,
+              "legal_batches_total": 4513024,
+              "order_reuse_hits_total": 189525,
+              "qtt_probes_total": 0,
+              "qtt_hits_total": 0,
+              "qtt_cutoffs_total": 0,
+              "reuse_mask_total": 306,
+              "legal_cache_hits_total": 0,
+              "legal_cache_misses_total": 0,
+              "legal_cache_replacements_total": 0,
+              "efficiency_mask_total": 408,
+              "ordering_rule_checks_total": 0,
+              "eval_cache_hits_total": 1280582,
+              "lazy_snapshots_total": 4436251,
+              "selective_usi_skipped_total": 118377832,
+              "tt_hit_rate": 0.053499342664913775,
+              "knowledge_hit_rate": 0.0,
+              "long_think_moves": 10,
+              "long_think_reasons": {
+                "score_drop_150": 6,
+                "unfinished_depth2": 1,
+                "iteration_score_change_150": 3
+              }
+            },
+            "B": {
+              "samples": 54,
+              "nodes_total": 4914263,
+              "cutoffs_total": 156584,
+              "min_cutoffs_total": 102846,
+              "max_cutoffs_total": 53738,
+              "leaves_total": 4170363,
+              "terminals_total": 12702,
+              "ply1_total": 14641,
+              "ply2_total": 70853,
+              "ply3_total": 433412,
+              "order_calls_total": 725004,
+              "ordered_moves_total": 20036486,
+              "tt_probes_total": 183098,
+              "tt_hits_total": 8395,
+              "tt_exact_hits_total": 0,
+              "tt_bound_cutoffs_total": 6614,
+              "tt_stores_total": 176165,
+              "tt_replacements_total": 544,
+              "tt_move_first_total": 1781,
+              "tt_disabled_repetition_total": 0,
+              "knowledge_probes_total": 105,
+              "knowledge_hits_total": 0,
+              "knowledge_promotions_total": 0,
+              "knowledge_disabled_repetition_total": 0,
+              "qnodes_total": 4730894,
+              "qcutoffs_total": 3673877,
+              "qlimit_leaves_total": 204599,
+              "search_threads_total": 108,
+              "probe_mask_total": 378,
+              "pvs_probes_total": 111929,
+              "pvs_researches_total": 1544,
+              "killer_priorities_total": 223325,
+              "history_priorities_total": 569354,
+              "ordering_updates_total": 26030,
+              "research_mask_total": 1242,
+              "generated_plays_total": 4912719,
+              "legal_batches_total": 4786620,
+              "order_reuse_hits_total": 207098,
+              "qtt_probes_total": 0,
+              "qtt_hits_total": 0,
+              "qtt_cutoffs_total": 0,
+              "reuse_mask_total": 324,
+              "legal_cache_hits_total": 0,
+              "legal_cache_misses_total": 0,
+              "legal_cache_replacements_total": 0,
+              "efficiency_mask_total": 432,
+              "ordering_rule_checks_total": 0,
+              "eval_cache_hits_total": 1323196,
+              "lazy_snapshots_total": 4718457,
+              "selective_usi_skipped_total": 139330309,
+              "tt_hit_rate": 0.045849763514620584,
+              "knowledge_hit_rate": 0.0,
+              "long_think_moves": 9,
+              "long_think_reasons": {
+                "score_drop_150": 5,
+                "iteration_score_change_150": 1,
+                "in_check": 2,
+                "unfinished_depth2": 1
+              }
+            }
+          }
+        }
+      ],
+      "audit": {
+        "schema": "postgame-source-bridge-audit-v1",
+        "games": 2,
+        "plies": 200,
+        "all_moves_legal": true,
+        "all_terminations_verified": true,
+        "conditions_verified": true,
+        "binary_verified": true,
+        "knowledge_snapshot_verified": true,
+        "duplicates_checked": true,
+        "prior_and_internal_duplicates_excluded": {
+          "wins": 1,
+          "losses": 1,
+          "draws": 0
+        },
+        "candidate_knowledge_uses": 0,
+        "parent_ref": "aea41f166b52b985cfe5cf40fc123520144381eb",
+        "binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "actual_binary_sha256": {
+          "A": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+          "B": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36"
+        },
+        "parent_parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591",
+        "internal_duplicates": 0,
+        "prior_trajectory_overlap": 0,
+        "trajectory_outcomes": [
+          {
+            "sha256": "f9b06eed9f20c2db5d7a8a0f4303e4100e4fdfe472cacd05e97848fee1baca00",
+            "winner": "B",
+            "a_black": true,
+            "game_id": "81d11c2605960b720dfd860428c7c845d951edb3cd8d060492f3904d20323c35:0"
+          },
+          {
+            "sha256": "b0616536c5f1879afd66517b62cdcc1404606009c867365b8e2aec3102784ffb",
+            "winner": "A",
+            "a_black": false,
+            "game_id": "cbc7b96bb817a9b9f839ea99d36a96727e228b89533432fe1065b5fbd2012d0e:0"
+          }
+        ],
+        "reward_status": {
+          "verified_win_loss": 2
+        },
+        "loader_reproduced": true,
+        "original_loader_handshake_retained": false,
+        "candidate_parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591",
+        "limitation": "Complete-trajectory sensitivity only; partial-game overlap is not a proof of independence.",
+        "match_run": 39021748635,
+        "build_job": 117364807839,
+        "build_log_sha256": "f5c4476fbf727ec46dfb02e062b2ec5674a0ec9e2333d4d756dbd238ac132311",
+        "actual_lane_jobs": [
+          {
+            "id": 117364996681,
+            "started_at": "2026-10-17T09:37:18Z",
+            "completed_at": "2026-10-17T09:38:05Z"
+          },
+          {
+            "id": 117364996701,
+            "started_at": "2026-10-17T09:37:18Z",
+            "completed_at": "2026-10-17T09:37:59Z"
+          }
+        ],
+        "audit_code_sha256": "88143a68e0bae3a983fea69ccf667a6bbb8f5fcd49bfaf04b70e57a699b25209"
+      }
+    },
+    {
+      "stage": "prepare",
+      "generation": 1,
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "spiral-spiral-auto-smoke-20261017-01-prepare-d8afbfefa370b08f-39021709686-a1.tgz",
+        "sha256": "8d849163d928ca5941f2f76a1251d22e3104229b795fcf56853978c26ec46d47",
+        "bytes": 13074,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-spiral-auto-smoke-20261017-01-prepare-d8afbfefa370b08f-39021709686-a1.tgz"
+      },
+      "analysis": {
+        "source_games": 2,
+        "source_plies": 200,
+        "unique_static_positions": 201,
+        "selected_cases": 8,
+        "categories": {
+          "static_loss": 8
+        },
+        "selected_side": {
+          "black": 5,
+          "white": 3
+        },
+        "selected_reward": {
+          "-1": 5,
+          "1": 3
+        },
+        "routes": {
+          "hold": 5,
+          "knowledge_reference_candidate": 3
+        },
+        "verification_pairs": 0,
+        "analyzer_binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "options": {
+          "SearchResearchMask": 23,
+          "SearchEfficiencyMask": 8,
+          "SearchReuseMask": 6,
+          "SearchNextMask": 4,
+          "SearchProbeMask": 7,
+          "SearchThreads": 2,
+          "RiskVerify": true,
+          "PositionKnowledge": true,
+          "AdaptiveLongThink": false,
+          "USI_Ponder": false,
+          "OpeningRandomNonLance": false,
+          "RandomSeed": 2031101701
+        },
+        "evaluation_options": {
+          "EvalSafety": 480,
+          "EvalPressure": 380,
+          "EvalActivity": 410,
+          "EvalDanger": 150,
+          "EvalInfluence": 140,
+          "EvalPotential": 210,
+          "EvalCoordination": 340,
+          "EvalHandPotential": 60,
+          "EvalThreat": 20
+        },
+        "fresh_process_per_search": true,
+        "seconds": 7.009,
+        "environment": {
+          "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+          "cpu_count": 4
+        },
+        "status": "diagnosis_completed",
+        "learning_status": "not_run",
+        "formal_adoption": false,
+        "limitation": "Provisional own-engine diagnosis; deeper search and fixed-depth pairing do not prove correct play or evaluation causality."
+      },
+      "learning_status": "needs_data",
+      "parameter_updates": 0,
+      "eligible_pairs": 0,
+      "split_aliases": 36,
+      "old_aliases_preserved": 0,
+      "bank_pairs_reused": 0
+    },
+    {
+      "stage": "collect_source",
+      "generation": 1,
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "spiral-spiral-auto-smoke-20261017-01-collect_source-2d6bac99767cdc1a-39021709686-a1.tgz",
+        "sha256": "48c46d92e88fa0604ee796babbfeceb2ad0ce3ca41e7b6289b7fce46117b8e84",
+        "bytes": 5212920,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-spiral-auto-smoke-20261017-01-collect_source-2d6bac99767cdc1a-39021709686-a1.tgz"
+      },
+      "body_run": 39021983456,
+      "games": 2,
+      "plies": 274,
+      "result": {
+        "wins": 1,
+        "losses": 1,
+        "draws": 0
+      },
+      "runtime_statistics": [
+        {
+          "shard": "shard-0.json",
+          "source_sha256": "9b9e49fedef7f152c2f1f0d84d1642ccb7c3d5024f8c55dd02820f2f15d67781",
+          "games": 1,
+          "elapsed_seconds": 39.105,
+          "ponder": {
+            "A": {
+              "hits": 32,
+              "misses": 26
+            },
+            "B": {
+              "hits": 40,
+              "misses": 19
+            }
+          },
+          "timing_ms": {
+            "A": {
+              "moves": 61,
+              "mean": 314.115,
+              "max": 993.884
+            },
+            "B": {
+              "moves": 60,
+              "mean": 325.469,
+              "max": 994.879
+            }
+          },
+          "search": {
+            "A": {
+              "samples": 58,
+              "nodes_total": 6023717,
+              "cutoffs_total": 367985,
+              "min_cutoffs_total": 161691,
+              "max_cutoffs_total": 206294,
+              "leaves_total": 5224907,
+              "terminals_total": 965,
+              "ply1_total": 16241,
+              "ply2_total": 74569,
+              "ply3_total": 559787,
+              "order_calls_total": 775154,
+              "ordered_moves_total": 30367446,
+              "tt_probes_total": 441666,
+              "tt_hits_total": 29032,
+              "tt_exact_hits_total": 0,
+              "tt_bound_cutoffs_total": 23209,
+              "tt_stores_total": 418062,
+              "tt_replacements_total": 2855,
+              "tt_move_first_total": 5823,
+              "tt_disabled_repetition_total": 0,
+              "knowledge_probes_total": 116,
+              "knowledge_hits_total": 0,
+              "knowledge_promotions_total": 0,
+              "knowledge_disabled_repetition_total": 0,
+              "qnodes_total": 5582045,
+              "qcutoffs_total": 4310116,
+              "qlimit_leaves_total": 68933,
+              "search_threads_total": 116,
+              "probe_mask_total": 406,
+              "pvs_probes_total": 158872,
+              "pvs_researches_total": 3056,
+              "killer_priorities_total": 579714,
+              "history_priorities_total": 2019264,
+              "ordering_updates_total": 137947,
+              "research_mask_total": 1334,
+              "generated_plays_total": 6020661,
+              "legal_batches_total": 5864675,
+              "order_reuse_hits_total": 175557,
+              "qtt_probes_total": 0,
+              "qtt_hits_total": 0,
+              "qtt_cutoffs_total": 0,
+              "reuse_mask_total": 348,
+              "legal_cache_hits_total": 0,
+              "legal_cache_misses_total": 0,
+              "legal_cache_replacements_total": 0,
+              "efficiency_mask_total": 464,
+              "ordering_rule_checks_total": 0,
+              "eval_cache_hits_total": 1588628,
+              "lazy_snapshots_total": 5581081,
+              "selective_usi_skipped_total": 119856397,
+              "tt_hit_rate": 0.06573292940819533,
+              "knowledge_hit_rate": 0.0,
+              "long_think_moves": 10,
+              "long_think_reasons": {
+                "iteration_move_change": 7,
+                "score_drop_150": 3
+              }
+            },
+            "B": {
+              "samples": 60,
+              "nodes_total": 6382877,
+              "cutoffs_total": 353448,
+              "min_cutoffs_total": 198071,
+              "max_cutoffs_total": 155377,
+              "leaves_total": 5580797,
+              "terminals_total": 1592,
+              "ply1_total": 15089,
+              "ply2_total": 74381,
+              "ply3_total": 460145,
+              "order_calls_total": 777242,
+              "ordered_moves_total": 31741375,
+              "tt_probes_total": 432326,
+              "tt_hits_total": 30206,
+              "tt_exact_hits_total": 0,
+              "tt_bound_cutoffs_total": 23777,
+              "tt_stores_total": 408126,
+              "tt_replacements_total": 2256,
+              "tt_move_first_total": 6429,
+              "tt_disabled_repetition_total": 0,
+              "knowledge_probes_total": 118,
+              "knowledge_hits_total": 0,
+              "knowledge_promotions_total": 0,
+              "knowledge_disabled_repetition_total": 0,
+              "qnodes_total": 5950492,
+              "qcutoffs_total": 4713607,
+              "qlimit_leaves_total": 86869,
+              "search_threads_total": 120,
+              "probe_mask_total": 420,
+              "pvs_probes_total": 166145,
+              "pvs_researches_total": 3175,
+              "killer_priorities_total": 552353,
+              "history_priorities_total": 1881090,
+              "ordering_updates_total": 131525,
+              "research_mask_total": 1380,
+              "generated_plays_total": 6379702,
+              "legal_batches_total": 6230880,
+              "order_reuse_hits_total": 172675,
+              "qtt_probes_total": 0,
+              "qtt_hits_total": 0,
+              "qtt_cutoffs_total": 0,
+              "reuse_mask_total": 360,
+              "legal_cache_hits_total": 0,
+              "legal_cache_misses_total": 0,
+              "legal_cache_replacements_total": 0,
+              "efficiency_mask_total": 480,
+              "ordering_rule_checks_total": 0,
+              "eval_cache_hits_total": 1672063,
+              "lazy_snapshots_total": 5948951,
+              "selective_usi_skipped_total": 114767333,
+              "tt_hit_rate": 0.06986857140213636,
+              "knowledge_hit_rate": 0.0,
+              "long_think_moves": 10,
+              "long_think_reasons": {
+                "iteration_score_change_150": 1,
+                "iteration_move_change": 4,
+                "score_drop_150": 5
+              }
+            }
+          }
+        },
+        {
+          "shard": "shard-1.json",
+          "source_sha256": "064456a4afd5c5338d49a20c8276dae255288503bb6af1f23ec6409b68a65120",
+          "games": 1,
+          "elapsed_seconds": 46.454,
+          "ponder": {
+            "A": {
+              "hits": 55,
+              "misses": 20
+            },
+            "B": {
+              "hits": 50,
+              "misses": 25
+            }
+          },
+          "timing_ms": {
+            "A": {
+              "moves": 76,
+              "mean": 297.838,
+              "max": 996.465
+            },
+            "B": {
+              "moves": 77,
+              "mean": 293.997,
+              "max": 996.33
+            }
+          },
+          "search": {
+            "A": {
+              "samples": 76,
+              "nodes_total": 5827578,
+              "cutoffs_total": 221727,
+              "min_cutoffs_total": 131228,
+              "max_cutoffs_total": 90499,
+              "leaves_total": 5029013,
+              "terminals_total": 10649,
+              "ply1_total": 20917,
+              "ply2_total": 128820,
+              "ply3_total": 640496,
+              "order_calls_total": 774271,
+              "ordered_moves_total": 29631564,
+              "tt_probes_total": 262119,
+              "tt_hits_total": 18067,
+              "tt_exact_hits_total": 0,
+              "tt_bound_cutoffs_total": 14234,
+              "tt_stores_total": 247419,
+              "tt_replacements_total": 850,
+              "tt_move_first_total": 3833,
+              "tt_disabled_repetition_total": 0,
+              "knowledge_probes_total": 151,
+              "knowledge_hits_total": 0,
+              "knowledge_promotions_total": 0,
+              "knowledge_disabled_repetition_total": 0,
+              "qnodes_total": 5564241,
+              "qcutoffs_total": 4252587,
+              "qlimit_leaves_total": 321923,
+              "search_threads_total": 152,
+              "probe_mask_total": 532,
+              "pvs_probes_total": 195703,
+              "pvs_researches_total": 2450,
+              "killer_priorities_total": 309729,
+              "history_priorities_total": 959076,
+              "ordering_updates_total": 57371,
+              "research_mask_total": 1748,
+              "generated_plays_total": 5825128,
+              "legal_batches_total": 5738041,
+              "order_reuse_hits_total": 163951,
+              "qtt_probes_total": 0,
+              "qtt_hits_total": 0,
+              "qtt_cutoffs_total": 0,
+              "reuse_mask_total": 456,
+              "legal_cache_hits_total": 0,
+              "legal_cache_misses_total": 0,
+              "legal_cache_replacements_total": 0,
+              "efficiency_mask_total": 608,
+              "ordering_rule_checks_total": 0,
+              "eval_cache_hits_total": 1387552,
+              "lazy_snapshots_total": 5554798,
+              "selective_usi_skipped_total": 197898219,
+              "tt_hit_rate": 0.06892670886124241,
+              "knowledge_hit_rate": 0.0,
+              "long_think_moves": 10,
+              "long_think_reasons": {
+                "score_drop_150": 7,
+                "iteration_score_change_150": 1,
+                "in_check": 1,
+                "unfinished_depth2": 1
+              }
+            },
+            "B": {
+              "samples": 76,
+              "nodes_total": 5981984,
+              "cutoffs_total": 223332,
+              "min_cutoffs_total": 150366,
+              "max_cutoffs_total": 72966,
+              "leaves_total": 5157504,
+              "terminals_total": 11280,
+              "ply1_total": 28379,
+              "ply2_total": 97133,
+              "ply3_total": 796796,
+              "order_calls_total": 800413,
+              "ordered_moves_total": 28930029,
+              "tt_probes_total": 262661,
+              "tt_hits_total": 17247,
+              "tt_exact_hits_total": 0,
+              "tt_bound_cutoffs_total": 13376,
+              "tt_stores_total": 248829,
+              "tt_replacements_total": 950,
+              "tt_move_first_total": 3871,
+              "tt_disabled_repetition_total": 0,
+              "knowledge_probes_total": 150,
+              "knowledge_hits_total": 0,
+              "knowledge_promotions_total": 0,
+              "knowledge_disabled_repetition_total": 0,
+              "qnodes_total": 5717624,
+              "qcutoffs_total": 4370053,
+              "qlimit_leaves_total": 339007,
+              "search_threads_total": 152,
+              "probe_mask_total": 532,
+              "pvs_probes_total": 193218,
+              "pvs_researches_total": 2408,
+              "killer_priorities_total": 311498,
+              "history_priorities_total": 850319,
+              "ordering_updates_total": 45758,
+              "research_mask_total": 1748,
+              "generated_plays_total": 5979576,
+              "legal_batches_total": 5897194,
+              "order_reuse_hits_total": 167194,
+              "qtt_probes_total": 0,
+              "qtt_hits_total": 0,
+              "qtt_cutoffs_total": 0,
+              "reuse_mask_total": 456,
+              "legal_cache_hits_total": 0,
+              "legal_cache_misses_total": 0,
+              "legal_cache_replacements_total": 0,
+              "efficiency_mask_total": 608,
+              "ordering_rule_checks_total": 0,
+              "eval_cache_hits_total": 1453306,
+              "lazy_snapshots_total": 5708031,
+              "selective_usi_skipped_total": 210254478,
+              "tt_hit_rate": 0.06566258409128116,
+              "knowledge_hit_rate": 0.0,
+              "long_think_moves": 10,
+              "long_think_reasons": {
+                "score_drop_150": 7,
+                "iteration_score_change_150": 2,
+                "in_check": 1
+              }
+            }
+          }
+        }
+      ],
+      "audit": {
+        "schema": "postgame-source-bridge-audit-v1",
+        "games": 2,
+        "plies": 274,
+        "all_moves_legal": true,
+        "all_terminations_verified": true,
+        "conditions_verified": true,
+        "binary_verified": true,
+        "knowledge_snapshot_verified": true,
+        "duplicates_checked": true,
+        "prior_and_internal_duplicates_excluded": {
+          "wins": 1,
+          "losses": 1,
+          "draws": 0
+        },
+        "candidate_knowledge_uses": 0,
+        "parent_ref": "aea41f166b52b985cfe5cf40fc123520144381eb",
+        "binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "actual_binary_sha256": {
+          "A": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+          "B": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36"
+        },
+        "parent_parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591",
+        "internal_duplicates": 0,
+        "prior_trajectory_overlap": 0,
+        "trajectory_outcomes": [
+          {
+            "sha256": "5a180c57e286eab773d56b1814637b9a47a58b10fcfcf1caec98b96dfd7c45bd",
+            "winner": "A",
+            "a_black": true,
+            "game_id": "9b9e49fedef7f152c2f1f0d84d1642ccb7c3d5024f8c55dd02820f2f15d67781:0"
+          },
+          {
+            "sha256": "fdc59385cd89e890a0b0b57a7736d0c0e6e8be1fbd8ae7d4510b4ed01f7a6182",
+            "winner": "B",
+            "a_black": false,
+            "game_id": "064456a4afd5c5338d49a20c8276dae255288503bb6af1f23ec6409b68a65120:0"
+          }
+        ],
+        "reward_status": {
+          "verified_win_loss": 2
+        },
+        "loader_reproduced": true,
+        "original_loader_handshake_retained": false,
+        "candidate_parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591",
+        "limitation": "Complete-trajectory sensitivity only; partial-game overlap is not a proof of independence.",
+        "match_run": 39021983456,
+        "build_job": 117365477564,
+        "build_log_sha256": "67ad528cc44f7751c521509dd46a19f23d47557140d2ca239b944ebeada4348b",
+        "actual_lane_jobs": [
+          {
+            "id": 117365670692,
+            "started_at": "2026-10-17T09:41:06Z",
+            "completed_at": "2026-10-17T09:41:56Z"
+          },
+          {
+            "id": 117365670722,
+            "started_at": "2026-10-17T09:41:06Z",
+            "completed_at": "2026-10-17T09:42:05Z"
+          }
+        ],
+        "audit_code_sha256": "88143a68e0bae3a983fea69ccf667a6bbb8f5fcd49bfaf04b70e57a699b25209"
+      }
+    },
+    {
+      "stage": "prepare",
+      "generation": 2,
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "spiral-spiral-auto-smoke-20261017-01-prepare-f30c8976c1134849-39021709686-a1.tgz",
+        "sha256": "dee7e019af56fe8b8cc70f3e2bc02fccb8f35b2b1f9b9b6af29d3251cc449b2b",
+        "bytes": 15249,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-spiral-auto-smoke-20261017-01-prepare-f30c8976c1134849-39021709686-a1.tgz"
+      },
+      "analysis": {
+        "source_games": 2,
+        "source_plies": 274,
+        "unique_static_positions": 275,
+        "selected_cases": 8,
+        "categories": {
+          "static_loss": 8
+        },
+        "selected_side": {
+          "black": 5,
+          "white": 3
+        },
+        "selected_reward": {
+          "1": 5,
+          "-1": 3
+        },
+        "routes": {
+          "hold": 6,
+          "knowledge_reference_candidate": 2
+        },
+        "verification_pairs": 1,
+        "analyzer_binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "options": {
+          "SearchResearchMask": 23,
+          "SearchEfficiencyMask": 8,
+          "SearchReuseMask": 6,
+          "SearchNextMask": 4,
+          "SearchProbeMask": 7,
+          "SearchThreads": 2,
+          "RiskVerify": true,
+          "PositionKnowledge": true,
+          "AdaptiveLongThink": false,
+          "USI_Ponder": false,
+          "OpeningRandomNonLance": false,
+          "RandomSeed": 2031101701
+        },
+        "evaluation_options": {
+          "EvalSafety": 480,
+          "EvalPressure": 380,
+          "EvalActivity": 410,
+          "EvalDanger": 150,
+          "EvalInfluence": 140,
+          "EvalPotential": 210,
+          "EvalCoordination": 340,
+          "EvalHandPotential": 60,
+          "EvalThreat": 20
+        },
+        "fresh_process_per_search": true,
+        "seconds": 7.523,
+        "environment": {
+          "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+          "cpu_count": 4
+        },
+        "status": "diagnosis_completed",
+        "learning_status": "not_run",
+        "formal_adoption": false,
+        "limitation": "Provisional own-engine diagnosis; deeper search and fixed-depth pairing do not prove correct play or evaluation causality."
+      },
+      "learning_status": "needs_data",
+      "parameter_updates": 0,
+      "eligible_pairs": 0,
+      "split_aliases": 70,
+      "old_aliases_preserved": 36,
+      "bank_pairs_reused": 0
+    }
+  ],
+  "generation": 2,
+  "used_games": 4,
+  "stage": "complete",
+  "parent_retained": true,
+  "parameter_updates": 0,
+  "final_trajectory_signatures": 1780,
+  "formal_adoption": false,
+  "scope": "Actual bounded cycle; candidate screen/confirm branches are separately tested with synthetic fixtures, not live strength evidence."
+}

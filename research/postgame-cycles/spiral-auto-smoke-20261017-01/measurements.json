@@ -1,0 +1,51 @@
+{
+  "schema": "postgame-auto-cycle-measurements-v1",
+  "controller_run": 39021709686,
+  "launcher_run": 39021700137,
+  "plan_ref": "bfbf3ee5f891b5b8216d8f5385c616848d30183f",
+  "implementation_merge": "c12f68cf7dcdf8d3f6e5011a12e8c13f584cbd22",
+  "readback_implementation_merge": "db88304aa8ebd6bba69a1c3974df803e736fd396",
+  "inspection_run": 39022564114,
+  "status": "complete",
+  "generations": 2,
+  "games": 4,
+  "plies": 474,
+  "selected_cases": 16,
+  "eligible_pairs": 0,
+  "parameter_updates": 0,
+  "comparison_games": 0,
+  "research_parent_changed": false,
+  "formal_adoption": false,
+  "recurring_task_created": false,
+  "tests": {
+    "count": 90,
+    "postgame_ci": 39022506221,
+    "legacy_ci": 39022506181,
+    "documents_ci": 39022506119,
+    "main_documents_ci": 39022554175,
+    "all_success": true
+  },
+  "checkpoint": {
+    "release": "records-2026-10-01",
+    "name": "spiral-spiral-auto-smoke-20261017-01-state-000015.json",
+    "bytes": 140676,
+    "sha256": "8817a8055b85c11380e8b5219f3273a8782110959c2ce3036ca7755594eb9216",
+    "additional_artifact_readback_verified": true
+  },
+  "artifact": {
+    "controller_id": 12097102720,
+    "controller_zip_sha256": "f82d3a5241388a4d0793253ae9fff45c1c7f4f21ebf2c2f7c3553eb486d409cf",
+    "inspection_id": 12097462150,
+    "inspection_zip_sha256": "8bc0915dd5894b78bf73927de038c3e58932e56ce652f483663b566f84963521"
+  },
+  "storage": {
+    "release_assets": 51,
+    "release_bytes": 105633014,
+    "cycle_assets": 19,
+    "cycle_bytes": 12385845,
+    "original_records_and_research_packages": 4,
+    "append_only_checkpoints": 15,
+    "all_new_assets_api_digest_bytes_match": true
+  },
+  "limitation": "Two-generation source/analysis/shortage/stop path was live. Candidate screen/confirm/promotion branches are synthetic tests; no strength improvement is claimed."
+}

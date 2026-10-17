@@ -1,0 +1,104 @@
+{
+  "release": "records-2026-10-01",
+  "assets": [
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-collect_source-2d6bac99767cdc1a-39021709686-a1.tgz",
+      "bytes": 5212920,
+      "sha256": "48c46d92e88fa0604ee796babbfeceb2ad0ce3ca41e7b6289b7fce46117b8e84"
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-initial_source-e8181c0b9aa52b1a-39021709686-a1.tgz",
+      "bytes": 5208460,
+      "sha256": "8678dbf172bb5233ffe6841e10a69032d483f01740ef68b8dcf0876edaca0823"
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-prepare-d8afbfefa370b08f-39021709686-a1.tgz",
+      "bytes": 13074,
+      "sha256": "8d849163d928ca5941f2f76a1251d22e3104229b795fcf56853978c26ec46d47"
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-prepare-f30c8976c1134849-39021709686-a1.tgz",
+      "bytes": 15249,
+      "sha256": "dee7e019af56fe8b8cc70f3e2bc02fccb8f35b2b1f9b9b6af29d3251cc449b2b"
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-state-000001.json",
+      "bytes": 5196,
+      "sha256": "b853f9229ce6f742a6c751a06ed796184eff324c9b640253c28c7e24f8b65f9a"
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-state-000002.json",
+      "bytes": 133346,
+      "sha256": "d0e42ed538c78e9619c4ed64bd4377fe265854cf1e99fdb50b8fe697f91f719e"
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-state-000003.json",
+      "bytes": 134212,
+      "sha256": "6e508caf9cf1afffd726a7e2be72002d82b008a7eedfac45aef49f382d249a7e"
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-state-000004.json",
+      "bytes": 135709,
+      "sha256": "da8c8f14a7cbc96ba1e9e390c209957396c2fc503a075bc7e7835a635b2eec0f"
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-state-000005.json",
+      "bytes": 135716,
+      "sha256": "e113728fcd75a3e67db2d5cb8ef881621cb633dffd9c12596be52921cb7049e8"
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-state-000006.json",
+      "bytes": 136951,
+      "sha256": "271dcb5542024f9b3f04024abea833aacd71231e9e75886bdc44783c4a8bf620"
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-state-000007.json",
+      "bytes": 136329,
+      "sha256": "b2c7995af2c427dac639857597d2bb21e183c5eb7a43d706f1cfc19479331334"
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-state-000008.json",
+      "bytes": 137672,
+      "sha256": "5db9056f1b1ce1b60a540526d84408964d8f59d11a8fe24315fc0d063f49436d"
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-state-000009.json",
+      "bytes": 138538,
+      "sha256": "b05c2349764f4ae33e5ec401e6719c64cbbdd3d8ae40ad287d0814d52a0eb42b"
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-state-000010.json",
+      "bytes": 140007,
+      "sha256": "fd94c4b9ea7848ccbbbd5386ad1a461d2f19d41bc7bbfcba9ccff514d9dda047"
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-state-000011.json",
+      "bytes": 140014,
+      "sha256": "f6d7dea320f0b1b2481fc2a74c074d21d1f7e5d0ea602763d3942fde99f5e3a7"
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-state-000012.json",
+      "bytes": 140759,
+      "sha256": "d6e001afed76b510146c2385eb5cdaaf96aafc9c0350d696ccd01f2525051247"
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-state-000013.json",
+      "bytes": 140341,
+      "sha256": "0b8dcb4a32e9c9cfd19000940d2ceee8a89c04c79a4a9b28791123d50e40b104"
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-state-000014.json",
+      "bytes": 140676,
+      "sha256": "e413ed32fcefbda8d4dff8a1edbcbd8704f3c65fdd525169235373c5fbb223a5"
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-state-000015.json",
+      "bytes": 140676,
+      "sha256": "8817a8055b85c11380e8b5219f3273a8782110959c2ce3036ca7755594eb9216"
+    }
+  ],
+  "bytes": 12385845,
+  "api_digest_and_bytes_verified": true,
+  "stage_packages_verified_by_inspection_run": 39022564114,
+  "all_assets_readback_verified_by_controller_run": 39021709686
+}
