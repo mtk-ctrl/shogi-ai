@@ -52,13 +52,15 @@ def match_request(state, parent_options, free_runners):
 
 
 def validate_shard(row, number, request, binary_sha, knowledge_sha):
+    binaries = binary_sha if isinstance(binary_sha, dict) else dict(A=binary_sha, B=binary_sha)
     n, lanes = request["games"], request["shards"]
     q, r = divmod(n, lanes)
     require(row["games"] == q+(number < r) and len(row["details"]) == row["games"], "shard count")
     require(row["game_offset"] == q*number+min(number, r), "shard offset")
     require(row["seed"] == request["seed"]+number*100000, "shard seed")
     require(row["go_command"] == request["go_command"] and row["max_plies"] == request["max_plies"], "time/ply settings")
-    require(row["illegal_games"] == 0 and row["sha256_a"] == row["sha256_b"] == binary_sha, "illegal/binary mismatch")
+    require(row["illegal_games"] == 0 and row["sha256_a"] == binaries["A"]
+            and row["sha256_b"] == binaries["B"], "illegal/binary mismatch")
     for side in ("a", "b"):
         expected = json.loads(request["options_"+side])
         expected.setdefault("PositionKnowledge", True)
@@ -85,17 +87,17 @@ def verify_source(source, request, parent_options, build_log, expected_knowledge
     source = Path(source)
     build = source/"binaries/build"
     binary, knowledge = build/"engine-a", build/"position-knowledge-v1.tsv"
-    binary_sha = sha256(binary.read_bytes()); knowledge_sha = sha256(knowledge.read_bytes())
+    binaries = {"A": sha256(binary.read_bytes()), "B": sha256((build/"engine-b").read_bytes())}
+    binary_sha = binaries["A"]; knowledge_sha = sha256(knowledge.read_bytes())
     require(knowledge_sha == expected_knowledge_sha256, "source differs from frozen adopted knowledge")
-    require(sha256((build/"engine-b").read_bytes()) == binary_sha, "source generation must use the same engine")
     parent = request["ref_a"]
     require(parent == request["ref_b"] and len(re.findall(r'git checkout --progress --force '+parent, build_log)) >= 2,
             "actual fixed source checkouts not proved")
     for side in ("a", "b"):
         hashes = re.findall(r'([0-9a-f]{64})  build/engine-'+side, build_log)
-        require(len(hashes) == 1 and hashes[0] == binary_sha, "actual source binary not proved")
+        require(len(hashes) == 1 and hashes[0] == binaries[side.upper()], "actual source binary not proved")
     for row in sorted((source/"shards").glob("shard-*.json")):
-        validate_shard(json.loads(row.read_bytes()), int(row.stem.split("-")[-1]), request, binary_sha, knowledge_sha)
+        validate_shard(json.loads(row.read_bytes()), int(row.stem.split("-")[-1]), request, binaries, knowledge_sha)
     rows = sorted((source/"shards").glob("shard-*.json"))
     require(sorted(int(p.stem.split("-")[-1]) for p in rows) == list(range(request["shards"])), "missing/duplicate source lane")
     original = load_archive(source)
@@ -106,14 +108,17 @@ def verify_source(source, request, parent_options, build_log, expected_knowledge
     games = load_archive(rebuilt)
     require([g.row for g in games] == [g.row for g in original], "played archive differs from raw original")
     require(len(games) == request["games"], "source game count mismatch")
-    binary.chmod(0o755)
-    engine = Analyzer(binary, knowledge, evaluation_options=parent_options)
-    try:
-        for name, value in dict(FORMAL_DEFAULTS, **dict(zip(OPTIONS, BASE))).items():
-            expected = str(value).lower() if type(value) is bool else str(value)
-            require(engine.option_defaults.get(name) == expected, "saved engine has unexpected default: "+name)
-    finally:
-        engine.close()
+    # Generic match builds in two source directories; debug paths may make the
+    # bytes differ even for the same fixed commit. Verify each actual artifact.
+    for executable in (binary, build/"engine-b"):
+        executable.chmod(0o755)
+        engine = Analyzer(executable, knowledge, evaluation_options=parent_options)
+        try:
+            for name, value in dict(FORMAL_DEFAULTS, **dict(zip(OPTIONS, BASE))).items():
+                expected = str(value).lower() if type(value) is bool else str(value)
+                require(engine.option_defaults.get(name) == expected, "saved engine has unexpected default: "+name)
+        finally:
+            engine.close()
     signatures = [digest([" ".join(g.start_sfen.split()[:3]), g.moves]) for g in games]
     unique = {}
     for game, signature in zip(games, signatures):
@@ -127,6 +132,7 @@ def verify_source(source, request, parent_options, build_log, expected_knowledge
                  binary_verified=True, knowledge_snapshot_verified=True, duplicates_checked=True,
                  prior_and_internal_duplicates_excluded=counts(unique.values()), candidate_knowledge_uses=0,
                  parent_ref=parent, binary_sha256=binary_sha, knowledge_sha256=knowledge_sha,
+                 actual_binary_sha256=binaries,
                  parent_parameters_sha256=digest(parent_options), internal_duplicates=len(games)-len(unique),
                  reward_status=dict(Counter(g.outcome_status for g in games)),
                  loader_reproduced=True, original_loader_handshake_retained=False,

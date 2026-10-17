@@ -104,6 +104,7 @@ def run(source, output, match_run, parent_ref, repo):
     provenance = dict(match_run=match_run, launcher_run=launcher, build_job=build[0]["id"],
                       match_workflow_ref=info["head_sha"], parent_ref=parent_ref,
                       binary_sha256=checked["audit"]["binary_sha256"],
+                      actual_binary_sha256=checked["audit"]["actual_binary_sha256"],
                       build_log_sha256=sha256(log.encode()), verification_ref=os.environ.get("GITHUB_SHA"),
                       adapter_code_sha256=sha256(Path(__file__).read_bytes()),
                       input_intent_record="BRIDGE_PLAN committed before source Issue; imported into the cycle ledger here.")
@@ -112,6 +113,7 @@ def run(source, output, match_run, parent_ref, repo):
     files = {"source-audit.json": output/"source-audit.json", "preparation.json": output/"preparation.json",
              "build-provenance.json": output/"build-provenance.json", "cycle-plan.json": output/"cycle-plan.json",
              "bridge-request.json": output/"bridge-request.json", "build/engine-a": build_path/"engine-a",
+             "build/engine-b": build_path/"engine-b",
              "build/position-knowledge-v1.tsv": build_path/"position-knowledge-v1.tsv",
              "build/position-knowledge-v1.manifest.json": build_path/"position-knowledge-v1.manifest.json"}
     for name in ("manifest.json", "played-games.jsonl.gz"):

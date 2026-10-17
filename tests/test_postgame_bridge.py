@@ -81,6 +81,11 @@ class BridgeTest(unittest.TestCase):
             self.assertEqual(cls.call_args.kwargs['evaluation_options'],params)
             cls.return_value.search.assert_called_once_with('sfen',('7g7f',),50,None)
 
+    def test_separate_build_paths_preserve_and_check_both_binary_hashes(self):
+        req,data=row();data['sha256_b']='c'*64
+        validate_shard(data,0,req,dict(A='a'*64,B='c'*64),'b'*64)
+        with self.assertRaises(ValueError):validate_shard(data,0,req,dict(A='a'*64,B='a'*64),'b'*64)
+
     def test_early_terminal_batch_with_no_selected_cases_is_material_shortage(self):
         result=prepare([],lambda c: [],lambda s: {},'fixed')
         self.assertEqual(result['learning']['status'],'needs_data')
