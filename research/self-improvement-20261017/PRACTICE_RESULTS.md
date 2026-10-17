@@ -36,7 +36,7 @@
 
 月別Releaseの`postgame-practice-20261018-01-a4b409c23fe7.tgz`は352,760 bytes、SHA256 `32260b5c570d8c1f20058f0c66bedc21535d5a6f975ee5805d4b6f3423980641`。Actionsとローカルの再取得hash、Release API digestが一致。原バイナリは元2資産のhash付き参照から復元し、新packageへ重複収納しない。RawのPV/未着手候補/探索木は保存しない。
 
-ローカルで保存packageを取り直し、練習を再実行せず全手/原本/分割と候補準備/知識提案を完全再現した。最終データのCI読み戻し結果は完了receiptへ追記する。詳細は`practice-measurements.json`と`practice-publication.json`。
+ローカルで保存packageを取り直し、練習を再実行せず全手/原本/分割と候補準備/知識提案を完全再現した。最終データのCI39074575113も成功し、練習/再分析を再実行せず、ローカルと完全に同じ検証JSONを得た。取得したCI artifact7,478bytesもAPI digestと一致。結果PR284→main70af25eb7a9134dfaa5d3bacbf6b00f1f8343010の9ファイルを読み戻し一致、main文書39074712981成功、起動要求の無効化39074713013成功。完了範囲は`practice-completion.json`。詳細は`practice-measurements.json`と`practice-publication.json`。
 
 ## 到達点と次の課題
 

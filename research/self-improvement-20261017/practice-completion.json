@@ -1,0 +1,74 @@
+{
+  "schema": "self-improvement-stage-completion-v1",
+  "overall_status": "in_progress",
+  "completed_stage": "3A",
+  "next_stage": "3B: validate a deeper-move return path, then bounded practice insertion into generation control",
+  "implementation_ref": "a4b409c23fe720e0f7c70ae3082a6730050ec909",
+  "implementation_merge": "829851dd68b649567e065864076eae679f4b2aed",
+  "results_ref": "e9837c9ad46d64f01075857f2dbd6ee17abf0234",
+  "results_merge": "70af25eb7a9134dfaa5d3bacbf6b00f1f8343010",
+  "prs": [
+    283,
+    284
+  ],
+  "run": {
+    "launcher": 39074163857,
+    "body": 39074172936,
+    "job": 117517787762,
+    "conclusion": "success",
+    "practice_games": 16,
+    "new_plies": 253,
+    "new_strength_comparison_games": 0
+  },
+  "ci": {
+    "implementation_tests": 142,
+    "implementation": 39074029537,
+    "documents_implementation": 39074029438,
+    "legacy": 39074029539,
+    "saved_data_readback": 39074575113,
+    "saved_data_job": 117518963870,
+    "documents_results_pr": 39074575091,
+    "documents_results_main": 39074712981
+  },
+  "readback": {
+    "implementation_files": 15,
+    "implementation_exact": true,
+    "implementation_merge_files": 15,
+    "implementation_merge_exact": true,
+    "result_files": 9,
+    "result_files_exact": true,
+    "result_merge_files": 9,
+    "result_merge_exact": true,
+    "local_and_ci_practice_verification_identical": true,
+    "new_practice_games_during_readback": 0,
+    "new_analysis_during_readback": 0,
+    "ci_artifact_id": 12116841229,
+    "ci_artifact_bytes": 7478,
+    "ci_artifact_sha256": "283894cde07de7f839ecb77ad5431d0e36d01115e5b3475d317b06f8f1a09b38",
+    "ci_artifact_download_matches_api_digest": true
+  },
+  "publication": {
+    "release": "records-2026-10-01",
+    "name": "postgame-practice-20261018-01-a4b409c23fe7.tgz",
+    "sha256": "32260b5c570d8c1f20058f0c66bedc21535d5a6f975ee5805d4b6f3423980641",
+    "bytes": 352760,
+    "readback_verified": true,
+    "api_digest_verified": true,
+    "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-practice-20261018-01-a4b409c23fe7.tgz"
+  },
+  "request_disabled": true,
+  "cleanup_launcher": 39074713013,
+  "formal_adoption": false,
+  "strength_improvement_demonstrated": false,
+  "new_knowledge_positions": 0,
+  "parameter_updates": 0,
+  "not_live_verified": [
+    "Automatic insertion of practice into ordinary multi-generation control",
+    "An actual effective knowledge/evaluation update from this practice",
+    "Long-term strength growth across generations"
+  ],
+  "formal_engine_changed_files": [],
+  "formal_knowledge_changed_files": [],
+  "generic_engine_match_workflow_changed": false,
+  "normal_issue_inputs_changed": false
+}

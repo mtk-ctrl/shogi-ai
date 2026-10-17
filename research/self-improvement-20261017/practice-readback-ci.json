@@ -1,0 +1,38 @@
+{
+  "all_moves_legal": true,
+  "all_terminations_verified": true,
+  "settings_verified": true,
+  "full_history_verified": true,
+  "raw_archive_reproduced": true,
+  "games": 16,
+  "new_plies": 253,
+  "new_engine_runs": 0,
+  "formal_adoption": false,
+  "strength_improvement_demonstrated": false,
+  "handoff": {
+    "training_selected_cases": 32,
+    "all_lineages_preserved": true,
+    "preparation_reproduced": true,
+    "knowledge_proposal_reproduced": true,
+    "new_engine_runs": 0,
+    "formal_adoption": false,
+    "strength_improvement_demonstrated": false
+  },
+  "source_packages": [
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-initial_source-e8181c0b9aa52b1a-39021709686-a1.tgz",
+      "sha256": "8678dbf172bb5233ffe6841e10a69032d483f01740ef68b8dcf0876edaca0823",
+      "bytes": 5208460
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-collect_source-2d6bac99767cdc1a-39021709686-a1.tgz",
+      "sha256": "48c46d92e88fa0604ee796babbfeceb2ad0ce3ca41e7b6289b7fce46117b8e84",
+      "bytes": 5212920
+    }
+  ],
+  "plan_sha256": "3cd962218749d177096ffe6a815011cb681fb3bd02d2ee3321e947917b15ccdc",
+  "result_sha256": "bd9ee1479626552658659ccbf41512920ac974bb6ffc31441da3209b95249240",
+  "publication_sha256": "32260b5c570d8c1f20058f0c66bedc21535d5a6f975ee5805d4b6f3423980641",
+  "publication_bytes": 352760,
+  "publication_retrieved": true
+}
