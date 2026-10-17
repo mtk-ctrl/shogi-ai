@@ -35,3 +35,11 @@
 選別ケース・解析結果・追加の静的比較・4原本receipt・build条件・実バイナリをinitial-diagnosis.tgzにまとめた。継続蓄積する通常対局の全PVや探索木は含めない。既存検証workflowのpostgame-publishモードで内容/合法履歴/hashを再検証し、月別Releaseへ移送・再取得hash/API digestを確認する。これは初回の受渡し用snapshotで、全対局の継続Git保存へ拡張しない。Git履歴に初回snapshotが残る物理的重複もpublicationへ明示する。
 
 次は、暫定研究ケースを再発問題・評価原因の適格な対比較・候補知識へ接続する。特に、評価原因を断定できない例を勝敗だけで補正学習に使わず、既存特徴量で何を調整すべきかを点検する。同じ確認タスクで一世代試運転を継続する。
+
+## 保存・検証の完了
+
+既存検証run [38988026302](https://github.com/mtk-ctrl/shogi-ai/actions/runs/38988026302) 成功。GitHub上でも入力器9・解析器6・保存検証4の計19検査を実行し合格した。文書CI [38988026303](https://github.com/mtk-ctrl/shogi-ai/actions/runs/38988026303) も成功。
+
+月別Release `records-2026-10-01` の `postgame-diagnosis-20261017-01.tgz`、2,739,607bytes、SHA256 `4d439d6cabe207527cb9e7ce2710f4598e1bae07275396bf19a1ac6a69c39dd1`。Actions内の再取得、GitHub API digest/bytes、さらに手元へ再取得したhashが一致した。実解析に使ったバイナリをそのまま含む。初回snapshotは最新の研究treeから外すが、過去Git履歴に残る2,739,607bytesを保存容量から消えたとは扱わない。Releaseは27assets・62,720,923bytesだった（この保存時点）。
+
+今回の初回実行は完了。一世代試運転のパラメータ学習・候補知識配布・比較対局は引き続き未完了で、同じ継続確認タスクを維持する。
