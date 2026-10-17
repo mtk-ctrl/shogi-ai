@@ -1,0 +1,176 @@
+name: Postgame Cycle Pilot
+on:
+  pull_request:
+    paths:
+      - "tools/research/postgame_*.py"
+      - "tests/test_postgame_*.py"
+      - "research/selfplay-postgame-20261017/**"
+      - ".github/workflows/postgame-cycle-pilot.yml"
+  workflow_dispatch:
+    inputs:
+      candidate_ref:
+        description: Frozen research ref containing K1
+        required: true
+        default: research/postgame-cycle-pilot-20261017
+        type: string
+      games:
+        description: Frozen screen size (100)
+        required: true
+        default: "100"
+        type: string
+      shards:
+        description: Currently free runners (1-20)
+        required: true
+        default: "1"
+        type: string
+permissions:
+  contents: write
+concurrency:
+  group: postgame-cycle-pilot-20261017-g1-screen
+  cancel-in-progress: false
+env:
+  PARENT_SHA: efcfa0f80d218c3dbcc3162f5bee3366f6a835cf
+  K0_SHA256: 6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c
+  K1_SHA256: afa3fe1248070bc9d2ebc566479da29ace7d4463492a28b8b31a67e2dcf9cacd
+  SEED: "2031101801"
+  RELEASE_TAG: records-2026-10-01
+jobs:
+  code-ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - run: python3 -m unittest tests.test_postgame_cases tests.test_postgame_analyze tests.test_postgame_candidates
+      - run: python3 scripts/check_workflow_inventory.py --strict && python3 scripts/check_match_workflows.py
+  plan:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.make.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v5
+        with: {ref: "${{ inputs.candidate_ref }}"}
+      - id: make
+        env: {GAMES: "${{ inputs.games }}", SHARDS: "${{ inputs.shards }}"}
+        run: |
+          python3 scripts/check_match_workflows.py
+          python3 - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          games=int(os.environ['GAMES']); shards=int(os.environ['SHARDS'])
+          if games!=100 or not 1<=shards<=20: raise SystemExit('frozen screen requires 100 games and 1-20 shards')
+          root=Path('research/selfplay-postgame-20261017'); k1=root/'position-knowledge-g1-k1.tsv'
+          m=json.loads((root/'candidate-manifest.json').read_text()); digest=hashlib.sha256(k1.read_bytes()).hexdigest()
+          if digest!=os.environ['K1_SHA256'] or m['output_sha256']!=digest or m['base_sha256']!=os.environ['K0_SHA256']:
+              raise SystemExit('knowledge hash mismatch')
+          if m['combined_positions']!=165 or m['formal_adoption']: raise SystemExit('candidate boundary mismatch')
+          q,r=divmod(games,shards); offset=0; include=[]
+          for i in range(shards):
+              n=q+(i<r); include.append({'shard':i,'games':n,'offset':offset,'seed':int(os.environ['SEED'])+i*100000}); offset+=n
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('matrix='+json.dumps({'include':include},separators=(',',':'))+'\n')
+          print('distribution',[x['games'] for x in include])
+          PY
+  build:
+    if: github.event_name == 'workflow_dispatch'
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with: {ref: "${{ env.PARENT_SHA }}", path: parent}
+      - uses: actions/checkout@v5
+        with: {ref: "${{ inputs.candidate_ref }}", path: candidate}
+      - name: Build fixed parent and stage K0/K1 separately
+        run: |
+          mkdir build
+          (cd parent && python3 scripts/build.py --output "$GITHUB_WORKSPACE/build/engine-a")
+          cp build/engine-a build/engine-b
+          cp parent/position-knowledge-v1.tsv build/k0.tsv
+          cp candidate/research/selfplay-postgame-20261017/position-knowledge-g1-k1.tsv build/k1.tsv
+          cp candidate/research/selfplay-postgame-20261017/{candidate-manifest.json,preflight.json} build/
+          test "$(sha256sum build/k0.tsv|cut -d' ' -f1)" = "$K0_SHA256"
+          test "$(sha256sum build/k1.tsv|cut -d' ' -f1)" = "$K1_SHA256"
+          test "$(sha256sum build/engine-a|cut -d' ' -f1)" = "$(sha256sum build/engine-b|cut -d' ' -f1)"
+          tar -czf binaries.tgz build/
+      - uses: actions/upload-artifact@v4
+        with: {name: "postgame-binaries-${{ github.run_id }}", path: binaries.tgz, if-no-files-found: error}
+  match:
+    if: github.event_name == 'workflow_dispatch'
+    needs: [plan, build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix: "${{ fromJSON(needs.plan.outputs.matrix) }}"
+    steps:
+      - uses: actions/checkout@v5
+        with: {ref: "${{ env.PARENT_SHA }}", path: harness}
+      - run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with: {name: "postgame-binaries-${{ github.run_id }}"}
+      - run: tar -xzf binaries.tgz && chmod +x build/engine-*
+      - name: Play K1 versus K0
+        run: |
+          mkdir results
+          python3 harness/benchmarks/arena.py --engine-a build/engine-a --engine-b build/engine-b \
+            --options-a '{"SearchResearchMask":23,"SearchEfficiencyMask":8,"SearchReuseMask":6,"SearchNextMask":4,"SearchProbeMask":7,"SearchThreads":2,"RiskVerify":true,"USI_Ponder":true,"OpeningRandomNonLance":true,"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/k1.tsv"}' \
+            --options-b '{"SearchResearchMask":23,"SearchEfficiencyMask":8,"SearchReuseMask":6,"SearchNextMask":4,"SearchProbeMask":7,"SearchThreads":2,"RiskVerify":true,"USI_Ponder":true,"OpeningRandomNonLance":true,"AdaptiveLongThink":true,"PositionKnowledge":true,"PositionKnowledgeFile":"build/k0.tsv"}' \
+            --games "${{ matrix.games }}" --game-offset "${{ matrix.offset }}" --max-plies 300 \
+            --seed "${{ matrix.seed }}" --go-command 'go movetime 200' --output "results/shard-${{ matrix.shard }}.json"
+      - uses: actions/upload-artifact@v4
+        with: {name: "postgame-shard-${{ github.run_id }}-${{ matrix.shard }}", path: "results/shard-${{ matrix.shard }}.json", if-no-files-found: error}
+  aggregate:
+    if: github.event_name == 'workflow_dispatch'
+    needs: [plan, build, match]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with: {ref: "${{ env.PARENT_SHA }}", path: harness}
+      - uses: actions/download-artifact@v4
+        with: {pattern: "postgame-shard-${{ github.run_id }}-*", path: results, merge-multiple: true}
+      - uses: actions/download-artifact@v4
+        with: {name: "postgame-binaries-${{ github.run_id }}"}
+      - name: Audit and aggregate
+        run: |
+          python3 - <<'PY'
+          import json,math,os
+          from pathlib import Path
+          rows=[json.loads(p.read_text()) for p in sorted(Path('results').glob('shard-*.json'))]
+          if not rows or sum(r['games'] for r in rows)!=100 or any(r.get('illegal_games',0) for r in rows):raise SystemExit('game audit failed')
+          for r in rows:
+              k=r['position_knowledge']
+              if (k['A']['sha256'],k['A']['positions'])!=(os.environ['K1_SHA256'],165):raise SystemExit('A K1 audit failed')
+              if (k['B']['sha256'],k['B']['positions'])!=(os.environ['K0_SHA256'],163):raise SystemExit('B K0 audit failed')
+          wa=sum(r['wins_a'] for r in rows);wb=sum(r['wins_b'] for r in rows);d=sum(r['draws'] for r in rows);score=(wa+d*.5)/100
+          se=math.sqrt(score*(1-score)/100)
+          out={'schema':'postgame-screen-result-v1','run_id':int(os.environ['GITHUB_RUN_ID']),'parent_sha':os.environ['PARENT_SHA'],
+               'k1_sha256':os.environ['K1_SHA256'],'k0_sha256':os.environ['K0_SHA256'],'games':100,'wins_a':wa,'draws':d,'wins_b':wb,
+               'score_a':score,'score_a_approx_95pct':[max(0,score-1.96*se),min(1,score+1.96*se)],'shards':len(rows),
+               'knowledge':rows[0]['position_knowledge'],'next':'confirm_200' if score>=.5 else 'retain_parent'}
+          Path('aggregate.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n');print(json.dumps(out,indent=2))
+          PY
+          python3 harness/tools/records/archive_played_moves.py --input results/shard-*.json --output-dir played-archive \
+            --run-id "$GITHUB_RUN_ID" --ref-a "$PARENT_SHA+k1" --ref-b "$PARENT_SHA+k0"
+      - name: Save monthly Release and retrieve hash
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: |
+          tar -xzf binaries.tgz
+          name="postgame-screen-${GITHUB_RUN_ID}.tgz"
+          tar -czf "$name" aggregate.json played-archive build/{candidate-manifest.json,preflight.json,engine-a,engine-b,k0.tsv,k1.tsv}
+          hash=$(sha256sum "$name"|cut -d' ' -f1); bytes=$(stat -c%s "$name")
+          gh release upload "$RELEASE_TAG" "$name" --repo "$GITHUB_REPOSITORY"
+          mkdir verify && gh release download "$RELEASE_TAG" -p "$name" -D verify --repo "$GITHUB_REPOSITORY"
+          test "$hash" = "$(sha256sum verify/$name|cut -d' ' -f1)"; test "$bytes" = "$(stat -c%s verify/$name)"
+          printf '{"asset":"%s","sha256":"%s","bytes":%s}\n' "$name" "$hash" "$bytes" > release-receipt.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: "postgame-screen-result-${{ github.run_id }}"
+          path: |
+            aggregate.json
+            played-archive/
+            release-receipt.json
+          retention-days: 90
+          if-no-files-found: error

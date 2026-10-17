@@ -1,0 +1,386 @@
+[
+  {
+    "game_id": "4823c1dbcad484e364be8832fb4657c3222559d1214e662d84f8a673d102630c:4",
+    "ply": 1
+  },
+  {
+    "game_id": "4823c1dbcad484e364be8832fb4657c3222559d1214e662d84f8a673d102630c:4",
+    "ply": 2
+  },
+  {
+    "game_id": "4823c1dbcad484e364be8832fb4657c3222559d1214e662d84f8a673d102630c:4",
+    "ply": 25
+  },
+  {
+    "game_id": "4823c1dbcad484e364be8832fb4657c3222559d1214e662d84f8a673d102630c:4",
+    "ply": 26
+  },
+  {
+    "game_id": "b63b6e414d20818aa971b7bcdb90d89cff18fba75b9124864f4e864a1e8c93b7:0",
+    "ply": 1
+  },
+  {
+    "game_id": "b63b6e414d20818aa971b7bcdb90d89cff18fba75b9124864f4e864a1e8c93b7:0",
+    "ply": 2
+  },
+  {
+    "game_id": "b63b6e414d20818aa971b7bcdb90d89cff18fba75b9124864f4e864a1e8c93b7:0",
+    "ply": 39
+  },
+  {
+    "game_id": "b63b6e414d20818aa971b7bcdb90d89cff18fba75b9124864f4e864a1e8c93b7:0",
+    "ply": 40
+  },
+  {
+    "game_id": "7efebd6f575d40ffba4f36c87717a06737e6d2b28b485bf47e502dbd45716e0e:6",
+    "ply": 1
+  },
+  {
+    "game_id": "7efebd6f575d40ffba4f36c87717a06737e6d2b28b485bf47e502dbd45716e0e:6",
+    "ply": 2
+  },
+  {
+    "game_id": "7efebd6f575d40ffba4f36c87717a06737e6d2b28b485bf47e502dbd45716e0e:6",
+    "ply": 67
+  },
+  {
+    "game_id": "7efebd6f575d40ffba4f36c87717a06737e6d2b28b485bf47e502dbd45716e0e:6",
+    "ply": 68
+  },
+  {
+    "game_id": "78b3a3f73cfb858e588a817618ba2dffa9a7608595d8acf8b69142ac90e73809:8",
+    "ply": 1
+  },
+  {
+    "game_id": "78b3a3f73cfb858e588a817618ba2dffa9a7608595d8acf8b69142ac90e73809:8",
+    "ply": 2
+  },
+  {
+    "game_id": "78b3a3f73cfb858e588a817618ba2dffa9a7608595d8acf8b69142ac90e73809:8",
+    "ply": 27
+  },
+  {
+    "game_id": "78b3a3f73cfb858e588a817618ba2dffa9a7608595d8acf8b69142ac90e73809:8",
+    "ply": 28
+  },
+  {
+    "game_id": "bcc8c18e5391caa08956130c261f1ecd730b317a2290ea79fc7582f14cca4ee5:3",
+    "ply": 1
+  },
+  {
+    "game_id": "bcc8c18e5391caa08956130c261f1ecd730b317a2290ea79fc7582f14cca4ee5:3",
+    "ply": 2
+  },
+  {
+    "game_id": "bcc8c18e5391caa08956130c261f1ecd730b317a2290ea79fc7582f14cca4ee5:3",
+    "ply": 58
+  },
+  {
+    "game_id": "bcc8c18e5391caa08956130c261f1ecd730b317a2290ea79fc7582f14cca4ee5:3",
+    "ply": 59
+  },
+  {
+    "game_id": "eb23b37c85a5e016b4cfd64284d8acee3e9cba1efbfebf0254ac7165285f8ecb:4",
+    "ply": 1
+  },
+  {
+    "game_id": "eb23b37c85a5e016b4cfd64284d8acee3e9cba1efbfebf0254ac7165285f8ecb:4",
+    "ply": 2
+  },
+  {
+    "game_id": "eb23b37c85a5e016b4cfd64284d8acee3e9cba1efbfebf0254ac7165285f8ecb:4",
+    "ply": 42
+  },
+  {
+    "game_id": "eb23b37c85a5e016b4cfd64284d8acee3e9cba1efbfebf0254ac7165285f8ecb:4",
+    "ply": 43
+  },
+  {
+    "game_id": "b80ac8f61de426e8d6abce5c49041e4709b034baaa85b2482a45fd27b01af6d7:9",
+    "ply": 1
+  },
+  {
+    "game_id": "b80ac8f61de426e8d6abce5c49041e4709b034baaa85b2482a45fd27b01af6d7:9",
+    "ply": 2
+  },
+  {
+    "game_id": "b80ac8f61de426e8d6abce5c49041e4709b034baaa85b2482a45fd27b01af6d7:9",
+    "ply": 37
+  },
+  {
+    "game_id": "b80ac8f61de426e8d6abce5c49041e4709b034baaa85b2482a45fd27b01af6d7:9",
+    "ply": 38
+  },
+  {
+    "game_id": "78e3578942927639cf944000170202d23d05e15922e5e7038cf3d7ffb05d33fb:3",
+    "ply": 1
+  },
+  {
+    "game_id": "78e3578942927639cf944000170202d23d05e15922e5e7038cf3d7ffb05d33fb:3",
+    "ply": 2
+  },
+  {
+    "game_id": "78e3578942927639cf944000170202d23d05e15922e5e7038cf3d7ffb05d33fb:3",
+    "ply": 32
+  },
+  {
+    "game_id": "78e3578942927639cf944000170202d23d05e15922e5e7038cf3d7ffb05d33fb:3",
+    "ply": 33
+  },
+  {
+    "game_id": "095f16ffbd9af2fd22418d200c571b726e7d6580a738d04a4c28877195e87911:6",
+    "ply": 1
+  },
+  {
+    "game_id": "095f16ffbd9af2fd22418d200c571b726e7d6580a738d04a4c28877195e87911:6",
+    "ply": 2
+  },
+  {
+    "game_id": "095f16ffbd9af2fd22418d200c571b726e7d6580a738d04a4c28877195e87911:6",
+    "ply": 121
+  },
+  {
+    "game_id": "095f16ffbd9af2fd22418d200c571b726e7d6580a738d04a4c28877195e87911:6",
+    "ply": 122
+  },
+  {
+    "game_id": "cd2cff1aba687a69197e546d863dcb219bf55f3346e4a971f6b8481a7d52f359:2",
+    "ply": 1
+  },
+  {
+    "game_id": "cd2cff1aba687a69197e546d863dcb219bf55f3346e4a971f6b8481a7d52f359:2",
+    "ply": 2
+  },
+  {
+    "game_id": "cd2cff1aba687a69197e546d863dcb219bf55f3346e4a971f6b8481a7d52f359:2",
+    "ply": 68
+  },
+  {
+    "game_id": "cd2cff1aba687a69197e546d863dcb219bf55f3346e4a971f6b8481a7d52f359:2",
+    "ply": 69
+  },
+  {
+    "game_id": "ceeac3e6a40a87cd87b89b1a0702ab0823a864a40efecfe13db623bdad136c0b:3",
+    "ply": 1
+  },
+  {
+    "game_id": "ceeac3e6a40a87cd87b89b1a0702ab0823a864a40efecfe13db623bdad136c0b:3",
+    "ply": 2
+  },
+  {
+    "game_id": "ceeac3e6a40a87cd87b89b1a0702ab0823a864a40efecfe13db623bdad136c0b:3",
+    "ply": 35
+  },
+  {
+    "game_id": "ceeac3e6a40a87cd87b89b1a0702ab0823a864a40efecfe13db623bdad136c0b:3",
+    "ply": 36
+  },
+  {
+    "game_id": "68fab12b273299013e24455a47c0cc07a572c0b6521b25ff3ab6adccd41a5bd0:3",
+    "ply": 1
+  },
+  {
+    "game_id": "68fab12b273299013e24455a47c0cc07a572c0b6521b25ff3ab6adccd41a5bd0:3",
+    "ply": 2
+  },
+  {
+    "game_id": "68fab12b273299013e24455a47c0cc07a572c0b6521b25ff3ab6adccd41a5bd0:3",
+    "ply": 45
+  },
+  {
+    "game_id": "68fab12b273299013e24455a47c0cc07a572c0b6521b25ff3ab6adccd41a5bd0:3",
+    "ply": 46
+  },
+  {
+    "game_id": "4823c1dbcad484e364be8832fb4657c3222559d1214e662d84f8a673d102630c:0",
+    "ply": 1
+  },
+  {
+    "game_id": "4823c1dbcad484e364be8832fb4657c3222559d1214e662d84f8a673d102630c:0",
+    "ply": 2
+  },
+  {
+    "game_id": "4823c1dbcad484e364be8832fb4657c3222559d1214e662d84f8a673d102630c:0",
+    "ply": 96
+  },
+  {
+    "game_id": "4823c1dbcad484e364be8832fb4657c3222559d1214e662d84f8a673d102630c:0",
+    "ply": 97
+  },
+  {
+    "game_id": "4113dad33f2cc4eb7a0aa1f23b34c970052173d44cdd8f5f1e1fa9f2b6dbf400:2",
+    "ply": 1
+  },
+  {
+    "game_id": "4113dad33f2cc4eb7a0aa1f23b34c970052173d44cdd8f5f1e1fa9f2b6dbf400:2",
+    "ply": 2
+  },
+  {
+    "game_id": "4113dad33f2cc4eb7a0aa1f23b34c970052173d44cdd8f5f1e1fa9f2b6dbf400:2",
+    "ply": 32
+  },
+  {
+    "game_id": "4113dad33f2cc4eb7a0aa1f23b34c970052173d44cdd8f5f1e1fa9f2b6dbf400:2",
+    "ply": 33
+  },
+  {
+    "game_id": "b63b6e414d20818aa971b7bcdb90d89cff18fba75b9124864f4e864a1e8c93b7:8",
+    "ply": 1
+  },
+  {
+    "game_id": "b63b6e414d20818aa971b7bcdb90d89cff18fba75b9124864f4e864a1e8c93b7:8",
+    "ply": 2
+  },
+  {
+    "game_id": "b63b6e414d20818aa971b7bcdb90d89cff18fba75b9124864f4e864a1e8c93b7:8",
+    "ply": 52
+  },
+  {
+    "game_id": "b63b6e414d20818aa971b7bcdb90d89cff18fba75b9124864f4e864a1e8c93b7:8",
+    "ply": 53
+  },
+  {
+    "game_id": "1ad7f280250f973ac217881b12a285e03fd32dd17c7454a5037cde6fafcb78fe:8",
+    "ply": 1
+  },
+  {
+    "game_id": "1ad7f280250f973ac217881b12a285e03fd32dd17c7454a5037cde6fafcb78fe:8",
+    "ply": 2
+  },
+  {
+    "game_id": "1ad7f280250f973ac217881b12a285e03fd32dd17c7454a5037cde6fafcb78fe:8",
+    "ply": 78
+  },
+  {
+    "game_id": "1ad7f280250f973ac217881b12a285e03fd32dd17c7454a5037cde6fafcb78fe:8",
+    "ply": 79
+  },
+  {
+    "game_id": "78b3a3f73cfb858e588a817618ba2dffa9a7608595d8acf8b69142ac90e73809:7",
+    "ply": 1
+  },
+  {
+    "game_id": "78b3a3f73cfb858e588a817618ba2dffa9a7608595d8acf8b69142ac90e73809:7",
+    "ply": 2
+  },
+  {
+    "game_id": "78b3a3f73cfb858e588a817618ba2dffa9a7608595d8acf8b69142ac90e73809:7",
+    "ply": 69
+  },
+  {
+    "game_id": "78b3a3f73cfb858e588a817618ba2dffa9a7608595d8acf8b69142ac90e73809:7",
+    "ply": 70
+  },
+  {
+    "game_id": "bcc8c18e5391caa08956130c261f1ecd730b317a2290ea79fc7582f14cca4ee5:7",
+    "ply": 1
+  },
+  {
+    "game_id": "bcc8c18e5391caa08956130c261f1ecd730b317a2290ea79fc7582f14cca4ee5:7",
+    "ply": 2
+  },
+  {
+    "game_id": "bcc8c18e5391caa08956130c261f1ecd730b317a2290ea79fc7582f14cca4ee5:7",
+    "ply": 101
+  },
+  {
+    "game_id": "bcc8c18e5391caa08956130c261f1ecd730b317a2290ea79fc7582f14cca4ee5:7",
+    "ply": 102
+  },
+  {
+    "game_id": "397d658eb535a54ca79d28894c5aade0ef7547c8dc88024989996af22c87b423:0",
+    "ply": 1
+  },
+  {
+    "game_id": "397d658eb535a54ca79d28894c5aade0ef7547c8dc88024989996af22c87b423:0",
+    "ply": 2
+  },
+  {
+    "game_id": "397d658eb535a54ca79d28894c5aade0ef7547c8dc88024989996af22c87b423:0",
+    "ply": 18
+  },
+  {
+    "game_id": "397d658eb535a54ca79d28894c5aade0ef7547c8dc88024989996af22c87b423:0",
+    "ply": 19
+  },
+  {
+    "game_id": "47af4d9018d02c3f12b7fe0bc34a9ccb920f82ceef03b72c924922aa5154dd7b:4",
+    "ply": 1
+  },
+  {
+    "game_id": "47af4d9018d02c3f12b7fe0bc34a9ccb920f82ceef03b72c924922aa5154dd7b:4",
+    "ply": 2
+  },
+  {
+    "game_id": "47af4d9018d02c3f12b7fe0bc34a9ccb920f82ceef03b72c924922aa5154dd7b:4",
+    "ply": 27
+  },
+  {
+    "game_id": "47af4d9018d02c3f12b7fe0bc34a9ccb920f82ceef03b72c924922aa5154dd7b:4",
+    "ply": 28
+  },
+  {
+    "game_id": "095f16ffbd9af2fd22418d200c571b726e7d6580a738d04a4c28877195e87911:1",
+    "ply": 1
+  },
+  {
+    "game_id": "095f16ffbd9af2fd22418d200c571b726e7d6580a738d04a4c28877195e87911:1",
+    "ply": 2
+  },
+  {
+    "game_id": "095f16ffbd9af2fd22418d200c571b726e7d6580a738d04a4c28877195e87911:1",
+    "ply": 50
+  },
+  {
+    "game_id": "095f16ffbd9af2fd22418d200c571b726e7d6580a738d04a4c28877195e87911:1",
+    "ply": 51
+  },
+  {
+    "game_id": "fd321a90f1ed436dbfe541e6dd2c33281229a27ffdadd05b6bd7dc32054b0276:8",
+    "ply": 1
+  },
+  {
+    "game_id": "fd321a90f1ed436dbfe541e6dd2c33281229a27ffdadd05b6bd7dc32054b0276:8",
+    "ply": 2
+  },
+  {
+    "game_id": "fd321a90f1ed436dbfe541e6dd2c33281229a27ffdadd05b6bd7dc32054b0276:8",
+    "ply": 37
+  },
+  {
+    "game_id": "fd321a90f1ed436dbfe541e6dd2c33281229a27ffdadd05b6bd7dc32054b0276:8",
+    "ply": 38
+  },
+  {
+    "game_id": "cb86253768baccafc43ed5d0a8c93e1b85154cadf52dcd9641a53741fefa62ce:3",
+    "ply": 1
+  },
+  {
+    "game_id": "cb86253768baccafc43ed5d0a8c93e1b85154cadf52dcd9641a53741fefa62ce:3",
+    "ply": 2
+  },
+  {
+    "game_id": "cb86253768baccafc43ed5d0a8c93e1b85154cadf52dcd9641a53741fefa62ce:3",
+    "ply": 55
+  },
+  {
+    "game_id": "cb86253768baccafc43ed5d0a8c93e1b85154cadf52dcd9641a53741fefa62ce:3",
+    "ply": 56
+  },
+  {
+    "game_id": "68fab12b273299013e24455a47c0cc07a572c0b6521b25ff3ab6adccd41a5bd0:1",
+    "ply": 1
+  },
+  {
+    "game_id": "68fab12b273299013e24455a47c0cc07a572c0b6521b25ff3ab6adccd41a5bd0:1",
+    "ply": 2
+  },
+  {
+    "game_id": "68fab12b273299013e24455a47c0cc07a572c0b6521b25ff3ab6adccd41a5bd0:1",
+    "ply": 51
+  },
+  {
+    "game_id": "68fab12b273299013e24455a47c0cc07a572c0b6521b25ff3ab6adccd41a5bd0:1",
+    "ply": 52
+  }
+]

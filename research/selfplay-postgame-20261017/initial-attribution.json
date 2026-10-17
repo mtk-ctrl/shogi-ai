@@ -1,0 +1,522 @@
+[
+  {
+    "case_id": "25f4c6988e343883bb0b1454d822d5ee66a522e08a669aec139743a3a24cf705",
+    "source": {
+      "run_id": "38946985753",
+      "game_id": "291b547916b8ee9c86a4ad6f393cb73227a3aa008ad488200e958cdf8699fd2e:0",
+      "ply": 77,
+      "archive_sha256": "fd19773c8f8dcc9e016790a0b109bcb1befdf2746b1760c5ae088f4789645fc4",
+      "manifest_sha256": "5dd01d3f24e37bc5e5e89d5a0eae880849aeb32eb4c0fc4e6acf0193ed85b4e8"
+    },
+    "actual_move": "R*8a",
+    "research_move": "R*7b",
+    "diagnosis_route": "mixed_or_unstable",
+    "comparison": {
+      "status": "comparable",
+      "improvement_cp": 4941,
+      "actual_depth": 3,
+      "improved_depth": 3
+    },
+    "fixed_static_children": {
+      "actual": {
+        "material_term": 8530,
+        "safety": 192,
+        "pressure": 224,
+        "activity": 78,
+        "danger": -286,
+        "influence": 48,
+        "potential": 17,
+        "coordination": 71,
+        "hand_potential": 6,
+        "threat": -176,
+        "clamp": 0,
+        "total": 8704
+      },
+      "research": {
+        "material_term": 8530,
+        "safety": 192,
+        "pressure": 318,
+        "activity": 56,
+        "danger": 22,
+        "influence": 41,
+        "potential": 35,
+        "coordination": 82,
+        "hand_potential": 6,
+        "threat": -176,
+        "clamp": 0,
+        "total": 9106
+      }
+    },
+    "static_improvement_actor_cp": 402,
+    "working_hypothesis": "search_or_horizon_candidate",
+    "causality_proven": false
+  },
+  {
+    "case_id": "8e8f3a1a4a07d86ccd4287529d4368a105daaf1520d6e1eedf351c2fa8b47577",
+    "source": {
+      "run_id": "38948701892",
+      "game_id": "ceeac3e6a40a87cd87b89b1a0702ab0823a864a40efecfe13db623bdad136c0b:9",
+      "ply": 25,
+      "archive_sha256": "b5907e4f69b65696752c453de32d70072b98d2fd744e792f212ec550e97103d7",
+      "manifest_sha256": "bf35b0c79bdebfceba423ee14231a2ad180c61753971a555caf0e5b053deddd5"
+    },
+    "actual_move": "B*1e",
+    "research_move": "2e1c",
+    "diagnosis_route": "mixed_or_unstable",
+    "comparison": {
+      "status": "comparable",
+      "improvement_cp": 830,
+      "actual_depth": 4,
+      "improved_depth": 4
+    },
+    "fixed_static_children": {
+      "actual": {
+        "material_term": -600,
+        "safety": -9,
+        "pressure": 0,
+        "activity": 27,
+        "danger": -37,
+        "influence": 12,
+        "potential": -45,
+        "coordination": 32,
+        "hand_potential": -7,
+        "threat": 0,
+        "clamp": 0,
+        "total": -627
+      },
+      "research": {
+        "material_term": 300,
+        "safety": -9,
+        "pressure": 0,
+        "activity": 26,
+        "danger": 0,
+        "influence": 22,
+        "potential": -16,
+        "coordination": 19,
+        "hand_potential": 1,
+        "threat": -48,
+        "clamp": 0,
+        "total": 295
+      }
+    },
+    "static_improvement_actor_cp": 922,
+    "working_hypothesis": "search_or_horizon_candidate",
+    "causality_proven": false
+  },
+  {
+    "case_id": "4a2e2ebe512e0832db601065e37bc7450d7feb15f17d0026fb59bf8dcc5a61e1",
+    "source": {
+      "run_id": "38946985753",
+      "game_id": "3485b6dbf98959c916844bef165456c9c6713c131e999233dfa3f6e0399667ca:4",
+      "ply": 48,
+      "archive_sha256": "fd19773c8f8dcc9e016790a0b109bcb1befdf2746b1760c5ae088f4789645fc4",
+      "manifest_sha256": "5dd01d3f24e37bc5e5e89d5a0eae880849aeb32eb4c0fc4e6acf0193ed85b4e8"
+    },
+    "actual_move": "B*6h",
+    "research_move": "6a5a",
+    "diagnosis_route": "mixed_or_unstable",
+    "comparison": {
+      "status": "comparable",
+      "improvement_cp": 3731,
+      "actual_depth": 3,
+      "improved_depth": 3
+    },
+    "fixed_static_children": {
+      "actual": {
+        "material_term": 2850,
+        "safety": 57,
+        "pressure": 166,
+        "activity": 66,
+        "danger": -3,
+        "influence": 27,
+        "potential": 21,
+        "coordination": 18,
+        "hand_potential": 3,
+        "threat": 164,
+        "clamp": 0,
+        "total": 3369
+      },
+      "research": {
+        "material_term": 2250,
+        "safety": 48,
+        "pressure": 112,
+        "activity": 69,
+        "danger": -237,
+        "influence": 41,
+        "potential": 22,
+        "coordination": 19,
+        "hand_potential": -3,
+        "threat": 164,
+        "clamp": 0,
+        "total": 2485
+      }
+    },
+    "static_improvement_actor_cp": 884,
+    "working_hypothesis": "search_or_horizon_candidate",
+    "causality_proven": false
+  },
+  {
+    "case_id": "b852c502b55a188d093a3ad81062259f3c923a3379845939a378057ec4723327",
+    "source": {
+      "run_id": "38946985753",
+      "game_id": "dc1c2d0cd7f260969dcf737564ff7262737d23af5ff80975081c7312f5b3f44b:2",
+      "ply": 52,
+      "archive_sha256": "fd19773c8f8dcc9e016790a0b109bcb1befdf2746b1760c5ae088f4789645fc4",
+      "manifest_sha256": "5dd01d3f24e37bc5e5e89d5a0eae880849aeb32eb4c0fc4e6acf0193ed85b4e8"
+    },
+    "actual_move": "9e6h+",
+    "research_move": "6b6c",
+    "diagnosis_route": "search_horizon_candidate",
+    "comparison": {
+      "status": "comparable",
+      "improvement_cp": 198,
+      "actual_depth": 4,
+      "improved_depth": 4
+    },
+    "fixed_static_children": {
+      "actual": {
+        "material_term": -9990,
+        "safety": -105,
+        "pressure": -209,
+        "activity": -166,
+        "danger": 60,
+        "influence": -43,
+        "potential": -86,
+        "coordination": -82,
+        "hand_potential": -15,
+        "threat": -24,
+        "clamp": 0,
+        "total": -10660
+      },
+      "research": {
+        "material_term": -6330,
+        "safety": -57,
+        "pressure": -104,
+        "activity": -105,
+        "danger": 187,
+        "influence": -43,
+        "potential": -59,
+        "coordination": -58,
+        "hand_potential": -8,
+        "threat": 130,
+        "clamp": 0,
+        "total": -6447
+      }
+    },
+    "static_improvement_actor_cp": -4213,
+    "working_hypothesis": "evaluation_ranking_candidate",
+    "causality_proven": false
+  },
+  {
+    "case_id": "91a7574dff7fd94a870b78f448e743e94eff0fd2cf09cdaaac053e7547e65d41",
+    "source": {
+      "run_id": "38946175603",
+      "game_id": "47a0fdee79b6b6742765866902b8e7f7a2f19d781000d8bfa78ac2f5d9e0bf3f:3",
+      "ply": 117,
+      "archive_sha256": "d19ff0ac447dd8d3a5b24fe39d811a2b89a97c9727a824518607ec8dfabc4a2b",
+      "manifest_sha256": "55969d2a298d8ad798448287c492408c94fcf66eb26abc1ca4679bdcb5b783f2"
+    },
+    "actual_move": "1i1g",
+    "research_move": "P*8d",
+    "diagnosis_route": "search_horizon_candidate",
+    "comparison": {
+      "status": "comparable",
+      "improvement_cp": 211,
+      "actual_depth": 3,
+      "improved_depth": 3
+    },
+    "fixed_static_children": {
+      "actual": {
+        "material_term": -3730,
+        "safety": -19,
+        "pressure": -360,
+        "activity": -76,
+        "danger": -75,
+        "influence": -23,
+        "potential": 38,
+        "coordination": 14,
+        "hand_potential": -8,
+        "threat": 16,
+        "clamp": 0,
+        "total": -4223
+      },
+      "research": {
+        "material_term": -3790,
+        "safety": -19,
+        "pressure": -360,
+        "activity": -66,
+        "danger": -154,
+        "influence": -15,
+        "potential": 21,
+        "coordination": 14,
+        "hand_potential": -9,
+        "threat": 16,
+        "clamp": 0,
+        "total": -4362
+      }
+    },
+    "static_improvement_actor_cp": -139,
+    "working_hypothesis": "evaluation_ranking_candidate",
+    "causality_proven": false
+  },
+  {
+    "case_id": "49ce31f410798b7efda8ddf41d9d5baae932999fc7d81a690b069227a5a491df",
+    "source": {
+      "run_id": "38946175603",
+      "game_id": "4be2cff5ccc2b885dc1bf60ef41a6d48ee78c8a7dfbf2ff117228c5a0ccf12e6:3",
+      "ply": 61,
+      "archive_sha256": "d19ff0ac447dd8d3a5b24fe39d811a2b89a97c9727a824518607ec8dfabc4a2b",
+      "manifest_sha256": "55969d2a298d8ad798448287c492408c94fcf66eb26abc1ca4679bdcb5b783f2"
+    },
+    "actual_move": "5g5f",
+    "research_move": "4g5f",
+    "diagnosis_route": "search_horizon_candidate",
+    "comparison": {
+      "status": "comparable",
+      "improvement_cp": 607,
+      "actual_depth": 2,
+      "improved_depth": 2
+    },
+    "fixed_static_children": {
+      "actual": {
+        "material_term": -1160,
+        "safety": -105,
+        "pressure": -46,
+        "activity": -38,
+        "danger": -79,
+        "influence": -20,
+        "potential": -10,
+        "coordination": -33,
+        "hand_potential": 4,
+        "threat": -124,
+        "clamp": 0,
+        "total": -1611
+      },
+      "research": {
+        "material_term": -1160,
+        "safety": -105,
+        "pressure": -46,
+        "activity": -33,
+        "danger": -79,
+        "influence": -9,
+        "potential": -10,
+        "coordination": -39,
+        "hand_potential": 4,
+        "threat": -148,
+        "clamp": 0,
+        "total": -1625
+      }
+    },
+    "static_improvement_actor_cp": -14,
+    "working_hypothesis": "evaluation_ranking_candidate",
+    "causality_proven": false
+  },
+  {
+    "case_id": "270520ab15a3796685255419416da332948067d6146f948466c5d82c35cc5453",
+    "source": {
+      "run_id": "38946175603",
+      "game_id": "84015206b55face904655dd9cca81afc53f72980a9bad2ca2b4476791651160f:1",
+      "ply": 49,
+      "archive_sha256": "d19ff0ac447dd8d3a5b24fe39d811a2b89a97c9727a824518607ec8dfabc4a2b",
+      "manifest_sha256": "55969d2a298d8ad798448287c492408c94fcf66eb26abc1ca4679bdcb5b783f2"
+    },
+    "actual_move": "2i3g",
+    "research_move": "6h7i",
+    "diagnosis_route": "search_horizon_candidate",
+    "comparison": {
+      "status": "comparable",
+      "improvement_cp": 705,
+      "actual_depth": 3,
+      "improved_depth": 3
+    },
+    "fixed_static_children": {
+      "actual": {
+        "material_term": -960,
+        "safety": 57,
+        "pressure": -45,
+        "activity": -60,
+        "danger": 0,
+        "influence": -62,
+        "potential": -10,
+        "coordination": -13,
+        "hand_potential": 2,
+        "threat": 0,
+        "clamp": 0,
+        "total": -1091
+      },
+      "research": {
+        "material_term": -960,
+        "safety": 9,
+        "pressure": -44,
+        "activity": -75,
+        "danger": 0,
+        "influence": -62,
+        "potential": -10,
+        "coordination": -34,
+        "hand_potential": 2,
+        "threat": 0,
+        "clamp": 0,
+        "total": -1174
+      }
+    },
+    "static_improvement_actor_cp": -83,
+    "working_hypothesis": "evaluation_ranking_candidate",
+    "causality_proven": false
+  },
+  {
+    "case_id": "121a902b425b071558eee1d0f87550a0ae170265695c2fc9f44b7d78ea059049",
+    "source": {
+      "run_id": "38948701892",
+      "game_id": "47af4d9018d02c3f12b7fe0bc34a9ccb920f82ceef03b72c924922aa5154dd7b:9",
+      "ply": 24,
+      "archive_sha256": "b5907e4f69b65696752c453de32d70072b98d2fd744e792f212ec550e97103d7",
+      "manifest_sha256": "bf35b0c79bdebfceba423ee14231a2ad180c61753971a555caf0e5b053deddd5"
+    },
+    "actual_move": "5a6a",
+    "research_move": "8c8d",
+    "diagnosis_route": "mixed_or_unstable",
+    "comparison": {
+      "status": "comparable",
+      "improvement_cp": 191,
+      "actual_depth": 3,
+      "improved_depth": 3
+    },
+    "fixed_static_children": {
+      "actual": {
+        "material_term": 470,
+        "safety": 0,
+        "pressure": 0,
+        "activity": 25,
+        "danger": 0,
+        "influence": -19,
+        "potential": 48,
+        "coordination": 13,
+        "hand_potential": -6,
+        "threat": 0,
+        "clamp": 0,
+        "total": 531
+      },
+      "research": {
+        "material_term": 470,
+        "safety": -48,
+        "pressure": 0,
+        "activity": 70,
+        "danger": -22,
+        "influence": 30,
+        "potential": 48,
+        "coordination": 17,
+        "hand_potential": -6,
+        "threat": 0,
+        "clamp": 0,
+        "total": 559
+      }
+    },
+    "static_improvement_actor_cp": -28,
+    "working_hypothesis": "evaluation_ranking_candidate",
+    "causality_proven": false
+  },
+  {
+    "case_id": "62d2204be34c432d5ab5a1808eeb286a32131e6a48d5eeec5aa39a06976d3b0b",
+    "source": {
+      "run_id": "38948701892",
+      "game_id": "b63b6e414d20818aa971b7bcdb90d89cff18fba75b9124864f4e864a1e8c93b7:8",
+      "ply": 9,
+      "archive_sha256": "b5907e4f69b65696752c453de32d70072b98d2fd744e792f212ec550e97103d7",
+      "manifest_sha256": "bf35b0c79bdebfceba423ee14231a2ad180c61753971a555caf0e5b053deddd5"
+    },
+    "actual_move": "6h7g",
+    "research_move": "3i4h",
+    "diagnosis_route": "stable_research_move_candidate",
+    "comparison": {
+      "status": "comparable",
+      "improvement_cp": 169,
+      "actual_depth": 4,
+      "improved_depth": 4
+    },
+    "fixed_static_children": {
+      "actual": {
+        "material_term": 0,
+        "safety": -48,
+        "pressure": 0,
+        "activity": 5,
+        "danger": 0,
+        "influence": 15,
+        "potential": -40,
+        "coordination": -17,
+        "hand_potential": 0,
+        "threat": 0,
+        "clamp": 0,
+        "total": -85
+      },
+      "research": {
+        "material_term": 0,
+        "safety": 48,
+        "pressure": 0,
+        "activity": -11,
+        "danger": 0,
+        "influence": -8,
+        "potential": -26,
+        "coordination": -4,
+        "hand_potential": 0,
+        "threat": 0,
+        "clamp": 0,
+        "total": -1
+      }
+    },
+    "static_improvement_actor_cp": 84,
+    "working_hypothesis": "search_or_horizon_candidate",
+    "causality_proven": false
+  },
+  {
+    "case_id": "e343ad90ca5ff12c2163d1fe94047a648f2dbc5715067b9948966d09ff2a855b",
+    "source": {
+      "run_id": "38946985753",
+      "game_id": "a4b95332556ba70255f025b67e4d3f3353a01fc75b5c5de25f67bb7ee11a38fb:2",
+      "ply": 108,
+      "archive_sha256": "fd19773c8f8dcc9e016790a0b109bcb1befdf2746b1760c5ae088f4789645fc4",
+      "manifest_sha256": "5dd01d3f24e37bc5e5e89d5a0eae880849aeb32eb4c0fc4e6acf0193ed85b4e8"
+    },
+    "actual_move": "P*4h",
+    "research_move": "8g7g",
+    "diagnosis_route": "stable_research_move_candidate",
+    "comparison": {
+      "status": "comparable",
+      "improvement_cp": 404,
+      "actual_depth": 3,
+      "improved_depth": 3
+    },
+    "fixed_static_children": {
+      "actual": {
+        "material_term": -3260,
+        "safety": -192,
+        "pressure": -19,
+        "activity": 10,
+        "danger": 22,
+        "influence": 8,
+        "potential": 0,
+        "coordination": 19,
+        "hand_potential": -6,
+        "threat": 0,
+        "clamp": 0,
+        "total": -3418
+      },
+      "research": {
+        "material_term": -4390,
+        "safety": -192,
+        "pressure": 97,
+        "activity": 7,
+        "danger": 54,
+        "influence": 9,
+        "potential": 17,
+        "coordination": -7,
+        "hand_potential": -11,
+        "threat": 0,
+        "clamp": 0,
+        "total": -4416
+      }
+    },
+    "static_improvement_actor_cp": 998,
+    "working_hypothesis": "search_or_horizon_candidate",
+    "causality_proven": false
+  }
+]
