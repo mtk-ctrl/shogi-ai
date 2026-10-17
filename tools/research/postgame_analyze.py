@@ -236,18 +236,18 @@ def select_cases(games, static_values):
     return selected
 
 
-def search(binary, knowledge, case, history, ms, depth=None, evaluation_options=None):
-    engine = Analyzer(binary, knowledge, evaluation_options=evaluation_options)
+def search(binary, knowledge, case, history, ms, depth=None, evaluation_options=None, expected_positions=163):
+    engine = Analyzer(binary, knowledge, expected_positions, evaluation_options=evaluation_options)
     try:
         return engine.search(case['start_sfen'], tuple(history), ms, depth)
     finally:
         engine.close()
 
 
-def analyze_case(binary, knowledge, case, evaluation_options=None):
+def analyze_case(binary, knowledge, case, evaluation_options=None, expected_positions=163):
     history = tuple(case['history_moves'])
-    short = search(binary, knowledge, case, history, 50, evaluation_options=evaluation_options)
-    deep = search(binary, knowledge, case, history, 500, evaluation_options=evaluation_options)
+    short = search(binary, knowledge, case, history, 50, evaluation_options=evaluation_options, expected_positions=expected_positions)
+    deep = search(binary, knowledge, case, history, 500, evaluation_options=evaluation_options, expected_positions=expected_positions)
     alt = deep['bestmove']
     result = dict(case=case, root_short=short, root_deep=deep, research_move=alt,
                   same_as_actual=alt == case['actual_move'], followup=None)
@@ -257,8 +257,8 @@ def analyze_case(binary, knowledge, case, evaluation_options=None):
         return result
     pairs = {}
     for ms in (50,500):
-        actual = search(binary, knowledge, case, history+(case['actual_move'],), ms, evaluation_options=evaluation_options)
-        better = search(binary, knowledge, case, history+(alt,), ms, evaluation_options=evaluation_options)
+        actual = search(binary, knowledge, case, history+(case['actual_move'],), ms, evaluation_options=evaluation_options, expected_positions=expected_positions)
+        better = search(binary, knowledge, case, history+(alt,), ms, evaluation_options=evaluation_options, expected_positions=expected_positions)
         pairs[str(ms)] = dict(actual=actual, research=better, comparison=compare_children(actual, better))
     result['child_pairs'] = pairs
     result['local_comparison'] = pairs['500']['comparison']
@@ -283,13 +283,15 @@ def route_result(result):
     return 'mixed_or_unstable'
 
 
-def run_analysis(archive_dirs, binary, knowledge, output_dir, evaluation_options=None):
+def run_analysis(archive_dirs, binary, knowledge, output_dir, evaluation_options=None,
+                 expected_knowledge_sha256='6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c'):
     evaluation_options = dict(zip(EVALUATION_OPTIONS, BASE)) if evaluation_options is None else evaluation_options
     parent_values(evaluation_options)
     args = SimpleNamespace(archive_dirs=archive_dirs, binary=Path(binary), knowledge=Path(knowledge),
                            output_dir=Path(output_dir))
     require(not args.output_dir.exists(), 'output exists; do not overwrite previous diagnosis')
-    require(sha256(args.knowledge.read_bytes())=='6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c','knowledge hash mismatch')
+    require(sha256(args.knowledge.read_bytes())==expected_knowledge_sha256,'knowledge hash mismatch')
+    expected_positions=sum(bool(s) and not s.startswith('#') for s in args.knowledge.read_text().splitlines())
     args.output_dir.mkdir(parents=True)
     lock=args.output_dir/'operation.lock'
     with lock.open('x') as f:f.write(str(os.getpid()))
@@ -297,7 +299,7 @@ def run_analysis(archive_dirs, binary, knowledge, output_dir, evaluation_options
     try:
         games=[]
         for directory in args.archive_dirs:games.extend(load_archive(directory))
-        engine=Analyzer(args.binary,args.knowledge,evaluation_options=evaluation_options)
+        engine=Analyzer(args.binary,args.knowledge,expected_positions,evaluation_options=evaluation_options)
         values={}
         try:
             for index,g in enumerate(games,1):
@@ -317,7 +319,7 @@ def run_analysis(archive_dirs, binary, knowledge, output_dir, evaluation_options
         dump(args.output_dir/'selected-cases.json',cases)
         results=[]
         for index,case in enumerate(cases,1):
-            result=analyze_case(args.binary,args.knowledge,case,evaluation_options)
+            result=analyze_case(args.binary,args.knowledge,case,evaluation_options,expected_positions)
             results.append(result)
             dump(args.output_dir/'checkpoint.json',dict(completed=index,total=len(cases),pid=os.getpid(),results=results))
             print(json.dumps({'stage':'analysis','completed':index,'total':len(cases),'route':result['route']}),flush=True)
@@ -328,8 +330,8 @@ def run_analysis(archive_dirs, binary, knowledge, output_dir, evaluation_options
         for r in pending[:16]:
             depth=min(r['child_pairs']['500'][side]['depth'] for side in ('actual','research'))
             history=tuple(r['case']['history_moves'])
-            a=search(args.binary,args.knowledge,r['case'],history+(r['case']['actual_move'],),5000,depth,evaluation_options)
-            b=search(args.binary,args.knowledge,r['case'],history+(r['research_move'],),5000,depth,evaluation_options)
+            a=search(args.binary,args.knowledge,r['case'],history+(r['case']['actual_move'],),5000,depth,evaluation_options,expected_positions)
+            b=search(args.binary,args.knowledge,r['case'],history+(r['research_move'],),5000,depth,evaluation_options,expected_positions)
             comp=compare_children(a,b)
             if a.get('depth')!=depth or b.get('depth')!=depth:comp['status']='fixed_depth_incomplete'
             r['followup']=dict(requested_depth=depth,actual=a,research=b,comparison=comp)
