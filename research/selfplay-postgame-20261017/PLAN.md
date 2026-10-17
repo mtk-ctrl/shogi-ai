@@ -62,3 +62,7 @@ reader-smoke.jsonに数値と出所、reader-smoke-selection.jsonに選択した
 ## 実行入口の接続記録
 
 候補の重み・知識・seed・評価学習見送りの判断は変更していない。実行基盤をmainへ統合し、同じ手動workflowへ固定依頼JSONから渡す接続を追加した。code-ciをplanの前提とし、候補/ref/局数/操作IDを検査。同じ操作IDの対局を重複起動しない。200局は先行100局監査の成功・50%以上・保存receiptを取得確認してから一度だけ起動する。mainのstate・RESULTSとcycle-measurementsを実行証拠として参照し、古い未実装表示を実行結果へ優先しない。正式採用ではない。
+
+## 事前停止地点への到達
+
+固定候補の100局と一度だけの200局確認・追加監査を完了。確認95%下限は50%以下のため親を保持し、次回用100局へ進まない。今回の選別ケース/モデル/候補/seedを追加・変更せず終了する。RESULTS・cycle-measurements・cycle-publication・NEXTへ結果と限界を保存する。

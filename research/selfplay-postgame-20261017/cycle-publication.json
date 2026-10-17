@@ -33,7 +33,8 @@
       "bytes": 6001373,
       "readback_verified": true,
       "api_digest_verified": true,
-      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-screen-39005539549.tgz"
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-screen-39005539549.tgz",
+      "additional_local_readback": true
     },
     {
       "release": "records-2026-10-01",
@@ -42,7 +43,28 @@
       "bytes": 5961115,
       "readback_verified": true,
       "api_digest_verified": true,
-      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-audit-39005539549-39006135029.tgz"
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-audit-39005539549-39006135029.tgz",
+      "additional_local_readback": true
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "postgame-screen-39006231582.tgz",
+      "sha256": "000899f29ce3b538e5325330396adf56310476c4fa885a3328b4b83912a30ea9",
+      "bytes": 6688120,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "additional_local_readback": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-screen-39006231582.tgz"
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "postgame-audit-39006231582-39006977675.tgz",
+      "sha256": "03e98e7c9ff210c405619c027d794ea9da9d1c867dee8e75022a2072656baf0c",
+      "bytes": 6651032,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-audit-39006231582-39006977675.tgz",
+      "additional_local_readback": true
     }
   ]
 }
