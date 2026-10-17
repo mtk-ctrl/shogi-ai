@@ -1,0 +1,76 @@
+{
+  "schema": "postgame-cycle-v1",
+  "plan": {
+    "cycle_id": "spiral-core-source-smoke-20261017-01",
+    "purpose": "integration_smoke",
+    "source_games": 2,
+    "generate_initial_source": true,
+    "max_generations": 1,
+    "max_new_games": 2,
+    "candidate_kind": "evaluation",
+    "parent": {
+      "engine_ref": "4c038a394501b2f0bc75da90ef20e3e8b9688745",
+      "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+      "parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591"
+    },
+    "seeds": [
+      {
+        "source": 2033101701,
+        "screen": 2033102701,
+        "confirm": 2033103701
+      }
+    ]
+  },
+  "plan_sha256": "a74e32536e596abbaef67878b5abb360caee46a29ae63499d28f75734ac8d587",
+  "parent": {
+    "engine_ref": "4c038a394501b2f0bc75da90ef20e3e8b9688745",
+    "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+    "parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591"
+  },
+  "generation": 1,
+  "revision": 5,
+  "stage": "complete",
+  "used_games": 2,
+  "pending": null,
+  "history": [
+    {
+      "operation_id": "313c68a2668f7d07e5d067306c633d4e42ae36e629f74a5c2d5b330eb3158669",
+      "stage": "initial_source",
+      "evidence_sha256": "81c6c5c858c6c913e4fddc371be286c36ab8b5706569321e76bd83b89ffce23a",
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "postgame-source-bridge-39014782775-a1.tgz",
+        "sha256": "ce65ed25b167ca052f74f95e6a98d1f60d517cbd2bf6f1206fd4a47b0ff5a974",
+        "bytes": 5224606,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-source-bridge-39014782775-a1.tgz",
+        "release_asset_count": 32,
+        "release_total_bytes": 93247169
+      },
+      "body_run": 39013481948
+    },
+    {
+      "operation_id": "680cb547a22ad71f01e0d024d758223c922617ae9593230240ce1e5f0964a796",
+      "stage": "prepare",
+      "evidence_sha256": "2d4dc245b3f7293ff4d836c741ffdc730c9944b1c113b8ac257fc239df36c91a",
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "postgame-source-bridge-39014782775-a1.tgz",
+        "sha256": "ce65ed25b167ca052f74f95e6a98d1f60d517cbd2bf6f1206fd4a47b0ff5a974",
+        "bytes": 5224606,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-source-bridge-39014782775-a1.tgz",
+        "release_asset_count": 32,
+        "release_total_bytes": 93247169
+      },
+      "body_run": null
+    }
+  ],
+  "formal_adoption": false,
+  "result": "needs_independent_current_parent_errors",
+  "external_execution_adapter": "required",
+  "split_registry_sha256": "04e5686fe810e45542d0dcea8b1283912da22b411a57bb110607f2a7c82afd44",
+  "expected_parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591"
+}

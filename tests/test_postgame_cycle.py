@@ -27,6 +27,7 @@ def pending(state):
     inputs = dict(parent=state["parent"])
     if state["stage"] == "prepare" and state["generation"] > 1:
         inputs["split_registry_sha256"] = state["split_registry_sha256"]
+        inputs["example_bank_sha256"] = state["example_bank_sha256"]
     if state["stage"] in ("preflight", "screen", "confirm"):
         inputs["candidate"] = state.get("candidate", candidate(state))
     return request(state, inputs, state["revision"])

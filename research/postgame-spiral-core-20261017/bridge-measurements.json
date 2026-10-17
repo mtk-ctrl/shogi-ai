@@ -1,0 +1,33 @@
+{
+  "mode": "postgame-bridge",
+  "source_match_run": 39013481948,
+  "source_games": 2,
+  "source_plies": 250,
+  "selected_cases": 8,
+  "routes": {
+    "hold": 2,
+    "knowledge_reference_candidate": 6
+  },
+  "preparation_status": "needs_data",
+  "parameter_updates": 0,
+  "cycle_stage": "complete",
+  "cycle_result": "needs_independent_current_parent_errors",
+  "used_games": 2,
+  "publication": {
+    "release": "records-2026-10-01",
+    "name": "postgame-source-bridge-39014782775-a1.tgz",
+    "sha256": "ce65ed25b167ca052f74f95e6a98d1f60d517cbd2bf6f1206fd4a47b0ff5a974",
+    "bytes": 5224606,
+    "readback_verified": true,
+    "api_digest_verified": true,
+    "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-source-bridge-39014782775-a1.tgz",
+    "release_asset_count": 32,
+    "release_total_bytes": 93247169
+  },
+  "formal_adoption": false,
+  "limitation": "Verified one source-to-preparation handoff, not autonomous multi-generation strength improvement.",
+  "verification_run": 39014782775,
+  "source_issue": 275,
+  "launcher_run": 39013476413,
+  "artifact_additional_readback_verified": true
+}

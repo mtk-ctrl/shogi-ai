@@ -1,0 +1,32 @@
+{
+  "schema": "postgame-source-bridge-audit-v1",
+  "games": 2,
+  "plies": 250,
+  "all_moves_legal": true,
+  "all_terminations_verified": true,
+  "conditions_verified": true,
+  "binary_verified": true,
+  "knowledge_snapshot_verified": true,
+  "duplicates_checked": true,
+  "prior_and_internal_duplicates_excluded": {
+    "wins": 1,
+    "losses": 1,
+    "draws": 0
+  },
+  "candidate_knowledge_uses": 0,
+  "parent_ref": "4c038a394501b2f0bc75da90ef20e3e8b9688745",
+  "binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+  "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+  "actual_binary_sha256": {
+    "A": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+    "B": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36"
+  },
+  "parent_parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591",
+  "internal_duplicates": 0,
+  "reward_status": {
+    "verified_win_loss": 2
+  },
+  "loader_reproduced": true,
+  "original_loader_handshake_retained": false,
+  "limitation": "Source generation only. Internal duplicate filtering, not independent strength validation or an audit against every past corpus."
+}

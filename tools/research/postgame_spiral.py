@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import collections
+import copy
 import json
 from pathlib import Path
 import re
@@ -122,7 +123,8 @@ def parent_effect(moves, research_move):
     return "already_correct" if moves[0] == research_move else "current_parent_miss"
 
 
-def prepare(diagnosis, probe, static, split_seed, registry=None, parent_options=None):
+def prepare(diagnosis, probe, static, split_seed, registry=None, parent_options=None,
+            example_bank=None, parent_context=None):
     """probe(case)->two results; static(sfen)->fixed-parent breakdown."""
     require(0 <= len(diagnosis) <= 96, "selected-case budget exceeded")
     counts = collections.Counter((str(r["case"]["source"]["run_id"]), r["case"]["source"]["game_id"]) for r in diagnosis)
@@ -130,7 +132,24 @@ def prepare(diagnosis, probe, static, split_seed, registry=None, parent_options=
     require(len({r["case"]["case_id"] for r in diagnosis}) == len(diagnosis), "duplicate selected case")
     # Split all selected roots and legal compared children BEFORE inspecting any
     # preference magnitude, terminal reward, current-parent choice or static rank.
-    registry = dict(registry or {})
+    registry = copy.deepcopy(registry or {})
+    if parent_context is not None:
+        require(re.fullmatch("[0-9a-f]{40}", parent_context.get("engine_ref", ""))
+                and re.fullmatch("[0-9a-f]{64}", parent_context.get("knowledge_sha256", "")),
+                "fixed parent context required for example accumulation")
+        require(parent_context.get("parameters_sha256") == digest(parent_options or dict(zip(OPTIONS, BASE))),
+                "example bank parent parameter fingerprint mismatch")
+    old_examples = []
+    if example_bank is not None:
+        require(example_bank.get("schema") == "postgame-example-bank-v1", "unknown example bank")
+        require(parent_context is not None and example_bank["parent_context"] == parent_context,
+                "old features belong to a different research parent; reanalyze them")
+        from tools.research.postgame_ranker import validate_rows
+        validate_rows(example_bank["examples"])
+        current_ids = {r["case"]["case_id"] for r in diagnosis}
+        old_examples = copy.deepcopy([r for r in example_bank["examples"] if r["case_id"] not in current_ids])
+        require(len(old_examples) <= 512, "example bank capacity needs review; do not silently truncate")
+        require(registry or not old_examples, "preserve split/exposure registry with example bank")
     split_rows = []
     for row in diagnosis:
         case = row["case"]; board, _ = replay(case)
@@ -145,13 +164,24 @@ def prepare(diagnosis, probe, static, split_seed, registry=None, parent_options=
         split_rows.append(dict(case_id=case["case_id"],
                                game=f'{case["source"]["run_id"]}:{case["source"]["game_id"]}',
                                leakage_keys=sorted(set(keys))))
+    split_rows.extend(copy.deepcopy(old_examples))
     group_rows(split_rows, split_seed, registry)
     split_by_case = {r["case_id"]: r for r in split_rows}
     routes, rejected, examples, knowledge, observations = collections.Counter(), collections.Counter(), [], [], []
+    for old in old_examples:
+        assigned = split_by_case[old["case_id"]]
+        if assigned["split"] == "quarantine":
+            rejected["bank_quarantined"] += 1
+        else:
+            examples.append(assigned)
+    reused = len(examples)
     for row in diagnosis:
         routes[row["route"]] += 1
         if row["route"] != "stable_research_move_candidate":
             rejected["not_stable_evaluation_pair"] += 1
+            continue
+        if not row.get("followup"):
+            rejected["needs_fixed_depth_verification"] += 1
             continue
         board = check_result(row)
         case = row["case"]
@@ -193,6 +223,7 @@ def prepare(diagnosis, probe, static, split_seed, registry=None, parent_options=
             rejected["no_static_rank_error_search_problem"] += 1
             continue
         examples.append(dict(split_row, reward=case["outcome"]["terminal_reward_stm"], **terms))
+    require(len(examples) <= 512, "example bank capacity needs review; keep originals")
     learning = fit(examples, parent_options)
     if learning["status"] != "needs_data":
         exposed = {r["group"] for r in examples if r["split"] == "heldout"}
@@ -201,6 +232,8 @@ def prepare(diagnosis, probe, static, split_seed, registry=None, parent_options=
                 record["heldout_consumed"] = True
     return dict(schema="postgame-spiral-preparation-v1", routes=dict(routes), rejected=dict(rejected),
                 parent_probes=observations, examples=examples, learning=learning,
+                bank_pairs_reused=reused,
+                example_bank=dict(schema="postgame-example-bank-v1",parent_context=parent_context,examples=examples),
                 split_registry=registry,
                 candidate_knowledge=knowledge, formal_adoption=False,
                 next_action="collect_independent_current_parent_errors" if learning["status"] != "requires_engine_validation"
@@ -217,11 +250,12 @@ def main():
     p.add_argument("--generation", type=int, default=1)
     p.add_argument("--split-registry", type=Path, help="Previous generation split_registry JSON; never reset heldout to training")
     p.add_argument("--parent-options", type=Path, help="Complete nine-axis options of the actual research parent")
+    p.add_argument("--previous-preparation", type=Path, help="Preserved preparation with example bank and split/exposure registry")
     p.add_argument("--output", type=Path, required=True)
     args = p.parse_args()
     require(re.fullmatch("[0-9a-f]{40}", args.parent_ref), "fixed parent commit required")
     require(not args.output.exists(), "preserve prior research output")
-    require(args.generation >= 1 and (args.generation == 1 or args.split_registry is not None),
+    require(args.generation >= 1 and (args.generation == 1 or args.split_registry is not None or args.previous_preparation is not None),
             "later generation requires the preserved split registry")
     summary = json.loads(args.summary.read_bytes())
     require(summary["options"] == ANALYSIS_OPTIONS, "diagnosis settings differ")
@@ -230,6 +264,8 @@ def main():
     require(summary["knowledge_sha256"] == knowledge_hash, "adopted knowledge mismatch")
     parent_options = json.loads(args.parent_options.read_bytes()) if args.parent_options else dict(zip(OPTIONS, BASE))
     parent_values(parent_options)
+    parent_context = dict(engine_ref=args.parent_ref, knowledge_sha256=knowledge_hash,
+                          parameters_sha256=digest(parent_options))
     require(summary.get("evaluation_options", dict(zip(OPTIONS, BASE))) == parent_options,
             "diagnosis uses different parent evaluation parameters")
     def configured_engine():
@@ -251,9 +287,12 @@ def main():
         return results
     engine = configured_engine()
     try:
-        registry = json.loads(args.split_registry.read_bytes()) if args.split_registry else {}
+        previous = json.loads(args.previous_preparation.read_bytes()) if args.previous_preparation else {}
+        require(not (args.previous_preparation and args.split_registry), "use one preserved split registry source")
+        registry = json.loads(args.split_registry.read_bytes()) if args.split_registry else previous.get("split_registry", {})
         report = prepare(json.loads(args.diagnosis.read_bytes()), probe, engine.static,
-                         "spiral-core-20261017-v1", registry, parent_options)
+                         "spiral-core-20261017-v1", registry, parent_options,
+                         previous.get("example_bank"), parent_context)
     finally:
         engine.close()
     report["provenance"] = dict(parent_ref=args.parent_ref, binary_sha256=binary_hash,
@@ -265,7 +304,7 @@ def main():
     with args.output.open("x", encoding="utf-8") as f:
         json.dump(report, f, ensure_ascii=False, indent=2, allow_nan=False)
         f.write("\n")
-    print(json.dumps({k: v for k, v in report.items() if k not in ("examples", "split_registry")}, ensure_ascii=False))
+    print(json.dumps({k: v for k, v in report.items() if k not in ("examples", "split_registry", "example_bank")}, ensure_ascii=False))
 
 
 if __name__ == "__main__":
