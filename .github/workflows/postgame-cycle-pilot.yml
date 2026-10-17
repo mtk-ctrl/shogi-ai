@@ -1,13 +1,22 @@
 name: Postgame Cycle Pilot
+run-name: "Postgame ${{ inputs.request_id || 'validation' }}"
 on:
+  push:
+    branches: [main]
+    paths: [".github/postgame-pilot-request.json"]
   pull_request:
     paths:
       - "tools/research/postgame_*.py"
       - "tests/test_postgame_*.py"
       - "research/selfplay-postgame-20261017/**"
       - ".github/workflows/postgame-cycle-pilot.yml"
+      - ".github/scripts/dispatch_postgame_pilot.py"
   workflow_dispatch:
     inputs:
+      request_id:
+        description: Frozen operation identifier
+        default: manual
+        type: string
       candidate_ref:
         description: Frozen research ref containing K1
         required: true
@@ -41,10 +50,24 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: python3 -m pip install python-shogi==1.1.1
-      - run: python3 -m unittest tests.test_postgame_cases tests.test_postgame_analyze tests.test_postgame_candidates
+      - run: python3 -m unittest tests.test_postgame_cases tests.test_postgame_analyze tests.test_postgame_candidates tests.test_postgame_dispatch
       - run: python3 scripts/check_workflow_inventory.py --strict && python3 scripts/check_match_workflows.py
+  launch-request:
+    if: github.event_name == 'push'
+    needs: code-ci
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - uses: actions/checkout@v5
+      - name: Dispatch the existing manual pilot entry
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: python3 .github/scripts/dispatch_postgame_pilot.py
   plan:
     if: github.event_name == 'workflow_dispatch'
+    needs: code-ci
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:

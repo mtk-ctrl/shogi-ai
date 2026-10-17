@@ -2,7 +2,7 @@
   "schema_version": 1,
   "cycle_id": "postgame-pilot-20261017",
   "status": "implementation_in_progress",
-  "phase": "attribution_review_ready",
+  "phase": "candidate_ready_for_screen",
   "generation": 0,
   "formal_adoption": false,
   "controller_implemented": false,
@@ -71,6 +71,14 @@
       "completed_at_utc": "2026-10-17T00:50:24.295Z",
       "publication_run": 38988026302,
       "publication_verified": true
+    },
+    {
+      "operation_id": "postgame-g1-screen-20261017",
+      "status": "preparing_request_adapter",
+      "games": 100,
+      "candidate_ref": "5a1997043f275d09099c4be67110ed96e2c80c88",
+      "seed": 2031101801,
+      "new_games_started": 0
     }
   ],
   "evidence": [
@@ -158,21 +166,21 @@
       "document_ci": 38988026303
     }
   ],
-  "next_action": "Use the 96 preserved cases without rerunning or expanding selection. Review group splits and causal uncertainty, implement regression and candidate knowledge delivery; fit evaluation only if sufficient eligible cases exist. Continue bounded one-generation pilot, no automatic formal adoption.",
+  "next_action": "Verify explicit-request launch adapter, then dispatch frozen K1 versus K0 screen once; observe actual shards and estimate finish. No reanalysis, reselection or evaluation model.",
   "limitations": [
-    "Initial diagnosis and exact binary Release publication are complete; the full generation controller, paired learning, candidate knowledge distribution and new candidate matches remain incomplete.",
+    "Initial diagnosis, preservation, K1 snapshot and preflight are complete. Evaluation fitting is skipped because only two eligible pairs exist. New live candidate games and full generation handoff remain unverified.",
     "Routes are provisional; 20 draw positions are overrepresented. Do not treat the 96 cases or five conflicting static-rank examples as proven evaluation teachers.",
     "No new games or parameter updates have run. Formal Engine and adopted knowledge are unchanged."
   ],
-  "research_commit": "12abc3caa557de4ce00c9e8becb1dfa8b20bac18",
+  "research_commit": "5a1997043f275d09099c4be67110ed96e2c80c88",
   "components": {
     "played_archive_reader": "implemented_and_smoke_verified_on_research_branch",
     "full_history_case_input": "implemented_and_smoke_verified_on_research_branch",
     "analyzer_execution": "implemented_first_local_96_case_run_completed",
     "cause_routing": "first_provisional_diagnosis_and_attribution_review_completed_on_research_branch",
-    "paired_learning": "not_implemented",
-    "candidate_knowledge_distribution": "not_connected",
-    "generation_controller": "not_implemented"
+    "paired_learning": "skipped_this_generation_insufficient_two_eligible_pairs",
+    "candidate_knowledge_distribution": "K1_165_generated_and_preflight_verified_pending_live_match",
+    "generation_controller": "bounded_manual_workflow_with_explicit_request_launcher_under_verification"
   },
   "scheduling_checkpoint": {
     "observed_main_ref": "2601b65151bfa572670ef6023bafb01be3d35b8f",
@@ -184,5 +192,16 @@
     "actions_in_progress": 0,
     "actions_queued": 0,
     "note": "Timer-only correction. Detailed phase/component entries above remain historical progress anchors and must be reconciled with the merged PLAN before launching; they do not override verified newer work."
+  },
+  "candidate": {
+    "ref": "5a1997043f275d09099c4be67110ed96e2c80c88",
+    "kind": "knowledge_only",
+    "knowledge_entries": 165,
+    "knowledge_sha256": "afa3fe1248070bc9d2ebc566479da29ace7d4463492a28b8b31a67e2dcf9cacd",
+    "formal_adoption": false,
+    "screen_games": 100,
+    "screen_seed": 2031101801,
+    "confirmation_games": 200,
+    "confirmation_seed": 2031102801
   }
 }

@@ -58,3 +58,7 @@ reader-smoke.jsonに数値と出所、reader-smoke-selection.jsonに選択した
 今回実装できた条件は候補知識だけの1条件。Aは正式親Engine `efcfa0f80d218c3dbcc3162f5bee3366f6a835cf`＋K1、Bは同じEngine＋K0。Engineコード、23/8/6/4/7、SearchThreads=2、RiskVerify、USI_Ponder、OpeningRandomNonLance、AdaptiveLongThink、200ms、最大300plyを同一にし、知識ファイルだけを分ける。A/Bのsnapshot hash、読込件数、research ID利用数を監査する。
 
 選別は100局、seed `2031101801`。先後は全体通し順で50局ずつ。shard数は起動直前の実空きrunner数へ均等分配し、その数と配分をstateへ保存する。得点率50%以上なら、候補を変えず未使用seed `2031102801` の200局確認を一度だけ行う。50%未満なら確認へ進まない。確認200局の概算95%下限が50%を超え、全監査・保存・回帰が通った場合だけ次回用100局へ進む。結果後の候補追加・再調整・再確認はしない。
+
+## 明示依頼からの起動接続
+
+既存の手動入口を保持し、専用の依頼JSONだけのmain更新から、同じworkflow内の最小権限launcherで手動入口を起動する。候補・親・局数・操作IDを固定し、同一操作の本体があれば再起動しない。code-ciをplanの前提にして、軽量検査が失敗した場合は対局へ進めない。Engine・K0・K1・対局seedや選別規則は変更しない。新しい対局は依頼を別途明示登録してから開始する。

@@ -79,3 +79,5 @@ engine-match.ymlは対局後に実際の着手だけを圧縮し、played-move-a
 既存 `selfplay-candidate-verification.yml` の `.github/selfplay-verification-request.json` は、従来の `benchmark` / `audit` に加えて `postgame-publish` を受け付ける。これは固定research commitに保存した初回の選別研究packageを検証し、月別データReleaseへ保存・再取得hash/API digestを照合するモード。全実戦手の再取得、学習、対局、正式採用は起動しない。固定した候補ref/比較ref、match_run=0、既存5項目の受付を保つ。
 
 保存前に入力器・解析器・保存検証の検査を実行する。packageは許可された7ファイル・上限16MiBに限定し、選択96例以内/各局4以内・完全合法履歴・50/500ms条件・実バイナリhashを照合する。全PV/未着手候補表/探索木を含めず、payload内のバイナリは実行しない。初回のGit受渡しsnapshotが履歴に残る容量もpublicationへ明示する。継続的な全対局のGit保存へ広げない。
+
+自己対局後改善の初回100局は、`.github/postgame-pilot-request.json` の明示更新から同じ `postgame-cycle-pilot.yml` 内の最小権限launcherを経て既存の手動入口を起動できる。固定候補・親SHA・100局・操作ID・1〜20分割以外は拒否し、同じ操作IDの本体runがあれば再起動しない。workflow自身のpushや定期起動では対局を始めない。
