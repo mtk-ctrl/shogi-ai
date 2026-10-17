@@ -46,6 +46,7 @@ jobs:
     permissions: {contents: read, actions: write}
     steps:
       - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
       - name: Dispatch explicit manual controller entry
         env: {GH_TOKEN: "${{ github.token }}"}
         run: python3 .github/scripts/run_postgame_spiral.py --launch
