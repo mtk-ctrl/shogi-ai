@@ -1,0 +1,45 @@
+{
+  "schema": "postgame-auto-cycle-completion-v1",
+  "status": "implemented_and_two_generation_cycle_verified",
+  "implementation_merges": [
+    "c12f68cf7dcdf8d3f6e5011a12e8c13f584cbd22",
+    "db88304aa8ebd6bba69a1c3974df803e736fd396"
+  ],
+  "results_commit": "7f5a0a92669311a52a73cd69c11629fb4cc486fa",
+  "controller_run": 39021709686,
+  "source_runs": [
+    39021748635,
+    39021983456
+  ],
+  "readback_run": 39022564114,
+  "generations": 2,
+  "games": 4,
+  "plies": 474,
+  "selected_cases": 16,
+  "eligible_pairs": 0,
+  "parameter_updates": 0,
+  "live_path": "source -> prepare -> next source -> prepare -> budget stop",
+  "conditional_candidate_paths": "Synthetic tests; actual own-engine preflight adapter also exercised with a diagnostic fixture. No learned candidate strength claim.",
+  "ci": {
+    "tests": 90,
+    "code_run": 39022506221,
+    "documents_run": 39022801360,
+    "disabled_request_launcher_run": 39022801359,
+    "all_success": true
+  },
+  "files_read_back": 27,
+  "all_files_exact": true,
+  "formal_files_changed": [],
+  "formal_adoption": false,
+  "original_published_assets": 19,
+  "all_publication_hash_bytes_api_verified": true,
+  "completed_checkpoint_sha256": "8817a8055b85c11380e8b5219f3273a8782110959c2ce3036ca7755594eb9216",
+  "independent_ledger_replay_exact": true,
+  "split_aliases_preserved": 36,
+  "split_aliases_final": 70,
+  "request_disabled": true,
+  "active_actions_after_completion": 0,
+  "new_recurring_task_created": false,
+  "supported_automatic_route": "Evaluation nine-axis parameter learning; candidate knowledge is retained as research and is not automatically distributed/adopted.",
+  "strength_improvement_demonstrated": false
+}
