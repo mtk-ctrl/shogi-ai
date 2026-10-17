@@ -9,6 +9,11 @@ class AuditTests(unittest.TestCase):
     def row(self):
         games=[dict(a_black=i%2==0,moves=[],move_records=[],winner='A') for i in range(5)]
         return dict(games=5,details=games,game_offset=0,seed=2031101801,go_command='go movetime 200',max_plies=300,illegal_games=0,sha256_a='binary',sha256_b='binary',options_a=m.options('A'),options_b=m.options('B'),position_knowledge={'A':dict(enabled=True,available=True,sha256=m.K1,positions=165),'B':dict(enabled=True,available=True,sha256=m.K0,positions=163)},wins_a=5,wins_b=0,draws=0)
+    def test_trajectory_and_score_sensitivity(self):
+        start='board b - 1'
+        self.assertEqual(m.trajectory(start,['7g7f']),m.trajectory('board b - 50',['7g7f']))
+        self.assertNotEqual(m.trajectory(start,['7g7f']),m.trajectory('board w - 1',['7g7f']))
+        self.assertEqual(m.subset_result([{'winner':'A'},{'winner':'B'},{'winner':None}])['score_a'],.5)
     def test_all_legal_replays_called(self):
         with patch.object(m,'verify_game') as replay:
             m.validate_shard(self.row(),0,'binary');self.assertEqual(replay.call_count,5)

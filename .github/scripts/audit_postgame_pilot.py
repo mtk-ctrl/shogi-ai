@@ -1,6 +1,9 @@
 """Replay the fixed postgame screen and preserve actual played moves/binaries."""
 from collections import Counter
 import hashlib
+import gzip
+import math
+import shogi
 import json
 import os
 from pathlib import Path
@@ -15,6 +18,7 @@ PARENT='efcfa0f80d218c3dbcc3162f5bee3366f6a835cf'
 CANDIDATE='5a1997043f275d09099c4be67110ed96e2c80c88'
 K0='6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c'
 K1='afa3fe1248070bc9d2ebc566479da29ace7d4463492a28b8b31a67e2dcf9cacd'
+REFERENCE_ASSETS=[{'name': 'selfplay-audit-38947455452.tgz', 'sha256': 'ad2e3b2413f0ba2bff553cc2a38089b8d36a5cc752b0f1068a2317643d7d5b03', 'bytes': 6032950}, {'name': 'selfplay-audit-38947742788.tgz', 'sha256': 'a680b884e1b17abb6231a39457c718d73b9f56448adfd9216efde9b060a0ec3b', 'bytes': 5983542}, {'name': 'selfplay-audit-38948491634.tgz', 'sha256': 'bbebce04baea7a1aeafb96f709f7f2772b91eccaa507b9a58821c7a1fd683965', 'bytes': 5992255}, {'name': 'selfplay-audit-38950067410.tgz', 'sha256': 'ad8e1ce5f873ebe34107ef45d9ebe48b6e95bcd250f7df6279eca015c38ec87f', 'bytes': 6716687}, {'name': 'selfplay-source-38853046638.tgz', 'sha256': '8069ececf0ce979768e0c093165b2b83dc7b9371aa7d237fb20e8cdf148cc740', 'bytes': 12380711}]
 
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def require(ok,msg):
@@ -44,6 +48,27 @@ def validate_shard(row,number,binary_sha):
         require(max(long.values(),default=0)<=10,'long-think budget exceeded')
     counts=Counter(g['winner'] for g in row['details'])
     require((counts['A'],counts['B'],counts[None])==(row['wins_a'],row['wins_b'],row['draws']),'outcome totals')
+
+def trajectory(start,moves):
+    return hashlib.sha256((' '.join(start.split()[:3])+'\n'+' '.join(moves)).encode()).hexdigest()
+def subset_result(rows):
+    n=len(rows);a=sum(r['winner']=='A' for r in rows);b=sum(r['winner']=='B' for r in rows);d=n-a-b
+    p=(a+.5*d)/n if n else None;se=math.sqrt(p*(1-p)/n) if n else None
+    return dict(games=n,wins_a=a,wins_b=b,draws=d,score_a=p,approx_95pct=[max(0,p-1.96*se),min(1,p+1.96*se)] if n else None)
+def references(out,repo):
+    corpus=set();source=set();receipts=[]
+    for asset in REFERENCE_ASSETS:
+        dest=out/asset['name'].removesuffix('.tgz');dest.mkdir()
+        subprocess.run(['gh','release','download','records-2026-10-01','--repo',repo,'--pattern',asset['name'],'--dir',str(dest)],check=True)
+        package=dest/asset['name'];require(sha(package)==asset['sha256'] and package.stat().st_size==asset['bytes'],'reference package hash/bytes')
+        with tarfile.open(package) as tar:
+            names=tar.getnames();archives=[n for n in names if Path(n).name=='played-games.jsonl.gz'];require(len(archives)==1,'reference original archive')
+            lines=gzip.decompress(tar.extractfile(archives[0]).read()).splitlines()
+        target=corpus if asset['name'].startswith('selfplay-source') else source
+        for line in lines:
+            g=json.loads(line);target.add(trajectory(g.get('start_sfen') or shogi.STARTING_SFEN,[m['move'] for m in g['moves']]))
+        receipts.append(dict(asset,verified=True,games=len(lines)))
+    return corpus,source,receipts
 
 def audit(run_id,out,repo):
     out=Path(out);out.mkdir(parents=True,exist_ok=True)
@@ -79,7 +104,7 @@ def audit(run_id,out,repo):
     trajectories=[];research=Counter();long=Counter();wins=Counter();colors=Counter();originals_set=set()
     # Only completed full trajectories are compared; prior corpus was already used.
     for g in games:
-        signature=hashlib.sha256((g.start_sfen.split(' ')[0]+' '+g.start_sfen.split(' ')[1]+' '+g.start_sfen.split(' ')[2]+'\n'+' '.join(g.moves)).encode()).hexdigest()
+        signature=trajectory(g.start_sfen,g.moves)
         trajectories.append({'game_id':g.row['game_id'],'sha256':signature,'winner':g.row['winner'],'a_black':g.row['a_black']})
         wins[g.row['winner']]+=1;colors[g.row['a_black']]+=1
         for move in g.row['moves']:
@@ -87,13 +112,27 @@ def audit(run_id,out,repo):
             if s.get('research_id','').startswith('postgame-'):research[move.get('engine','unknown')]+=1
             if s.get('long_think_used'):long[move.get('engine','unknown')]+=1
     require(colors[True]==colors[False]==50,'global color balance')
-    result={'schema':'postgame-match-audit-v1','match_run':run_id,'games':100,'plies':sum(len(g.moves) for g in games),
+    observed={}
+    for side in ('A','B'):
+        moves=[m for g in games for m in g.row['moves'] if m.get('engine')==side]
+        observed[side]={'moves':len(moves),'depth_recorded_moves':sum('depth' in m['search'] for m in moves),'knowledge_probes':sum(m['search'].get('knowledge_probes',0) for m in moves),'knowledge_hits':sum(m['search'].get('knowledge_hits',0) for m in moves),'knowledge_promotions':sum(m['search'].get('knowledge_promotions',0) for m in moves),'ponder_hits':sum(json.loads(p.read_text())['ponder'][side]['hits'] for p in rows),'ponder_misses':sum(json.loads(p.read_text())['ponder'][side]['misses'] for p in rows)}
+    result={'observed':observed,'schema':'postgame-match-audit-v1','match_run':run_id,'games':100,'plies':sum(len(g.moves) for g in games),
             'legal_replay':True,'termination_rules_verified':True,'conditions_verified':True,'binary_sha256':binary,
             'parent_ref':PARENT,'candidate_ref':CANDIDATE,'build_job':builds[0]['id'],'verification_ref':os.environ.get('GITHUB_SHA'),
             'k0_sha256':K0,'k1_sha256':K1,'loader_reproduction':load_proofs,'wins_a':wins['A'],'draws':wins[None],'wins_b':wins['B'],
             'score_a':(wins['A']+.5*wins[None])/100,'a_black':colors[True],'a_white':colors[False],
             'candidate_research_uses':dict(research),'long_thinks':dict(long),'trajectory_outcomes':trajectories,
             'internal_trajectory_duplicates':len(trajectories)-len({r['sha256'] for r in trajectories})}
+    corpus,source,receipts=references(out,repo)
+    result['reference_packages']=receipts
+    result['overlap_original_1000']=sum(r['sha256'] in corpus for r in trajectories)
+    result['overlap_reanalysis_source_500']=sum(r['sha256'] in source for r in trajectories)
+    fresh=[r for r in trajectories if r['sha256'] not in corpus|source]
+    unique=list({r['sha256']:r for r in fresh}.values())
+    result['all_games']=subset_result(trajectories)
+    result['excluding_prior_trajectories']=subset_result(fresh)
+    result['excluding_prior_and_internal_duplicates']=subset_result(unique)
+    result['duplicate_note']='Descriptive sensitivity; prespecified screen selection still uses all 100 scheduled games. No claim that trajectory filtering removes all dependence.'
     save(out/'audit.json',result)
     package=out/f'postgame-audit-{run_id}-{os.environ["GITHUB_RUN_ID"]}.tgz'
     with tarfile.open(package,'w:gz') as t:
