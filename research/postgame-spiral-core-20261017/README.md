@@ -37,3 +37,11 @@
 ## 後続：実働接続の追加
 
 [BRIDGE_PLAN](BRIDGE_PLAN.md)に従い、正式版同士2局を既存入口で生成した（run39013481948、2分割、合計250手）。研究親の9軸をAnalyzerと次のsource入力へ引き継ぐアダプター、原本/終局/バイナリの検査、選別再分析・保存・台帳への受渡しを追加した。既存のverification入口で追加対局を起こさず実働検証する。検証結果は別の保存receiptで確定し、起動だけで完了としない。
+
+## 原本→準備の実働確認と蓄積
+
+[実働結果](BRIDGE_RESULTS.md)と保存receiptを確定した。2局250手→8局面→再分析→学習準備→保存→台帳まで成功し、材料不足で親を保持した。検証run39014782775、package SHA ce65ed25b167ca052f74f95e6a98d1f60d517cbd2bf6f1206fd4a47b0ff5a974。別取得でもhash/API digestを照合した。
+
+`postgame_spiral.py --previous-preparation` で、前回の適格例bankと分割/使用済み台帳を引き継げる。同じ研究親の材料を蓄積し、親が変われば旧特徴を拒否する。既存verificationアダプターは、凍結入力の `previous_publication` があればReleaseのhash/bytes/API digestを確認して読み込む。初回の空bank以前の形式は、安全に空例と確定できる場合だけ移行する。合成bankも含め65検査合格。
+
+実際の評価候補を使う汎用の実Engine検査・比較・次の原本の自動起動と、追加候補知識の汎用配布は残る。台帳だけでこれらが実行されたとは扱わない。

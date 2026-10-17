@@ -140,7 +140,8 @@ def verify_source(source, request, parent_options, build_log, expected_knowledge
     return games, audit, counts(games), binary, knowledge
 
 
-def analyze_source(source, request, parent_options, build_log, output, expected_knowledge_sha256):
+def analyze_source(source, request, parent_options, build_log, output, expected_knowledge_sha256,
+                   previous_preparation=None):
     output = Path(output); output.mkdir(parents=True, exist_ok=True)
     games, audit, outcome, binary, knowledge = verify_source(source, request, parent_options, build_log, expected_knowledge_sha256)
     dump(output/"source-audit.json", audit)
@@ -155,8 +156,13 @@ def analyze_source(source, request, parent_options, build_log, output, expected_
         return results
     e = Analyzer(binary, knowledge, evaluation_options=parent_options)
     try:
+        previous = previous_preparation or {}
+        context = dict(engine_ref=request["ref_a"], knowledge_sha256=expected_knowledge_sha256,
+                       parameters_sha256=digest(parent_options))
         report = prepare(json.loads((analysis/"diagnosis.json").read_bytes()), probe, e.static,
-                         "spiral-bridge-20261017-v1", parent_options=parent_options)
+                         "spiral-bridge-20261017-v1", registry=previous.get("split_registry"),
+                         parent_options=parent_options, example_bank=previous.get("example_bank"),
+                         parent_context=context)
     finally:
         e.close()
     dump(output/"preparation.json", report)

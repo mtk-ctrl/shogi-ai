@@ -93,7 +93,27 @@ def run(source, output, match_run, parent_ref, repo):
     logger = module("postgame_safe_logs", ROOT/".github/scripts/audit_postgame_pilot.py")
     log = logger.sanitized_job_log(repo, build[0]["id"])
     params = frozen["parent_options"]
-    checked = analyze_source(source, req, params, log, output, frozen["knowledge_sha256"])
+    previous = None
+    if frozen.get("previous_publication"):
+        prior = frozen["previous_publication"]
+        previous_dir = output/"previous"; previous_dir.mkdir()
+        gh("release","download",prior["release"],"--repo",repo,"--pattern",prior["name"],"--dir",previous_dir)
+        previous_package = previous_dir/prior["name"]
+        require(previous_package.stat().st_size == prior["bytes"]
+                and sha256(previous_package.read_bytes()) == prior["sha256"], "previous bank publication mismatch")
+        prior_release = json.loads(gh("api",f'repos/{repo}/releases/tags/{prior["release"]}'))
+        asset = next(a for a in prior_release["assets"] if a["name"] == prior["name"])
+        require(asset["size"] == prior["bytes"] and asset.get("digest") == "sha256:"+prior["sha256"], "previous bank API digest mismatch")
+        with tarfile.open(previous_package) as tar:
+            previous = json.load(tar.extractfile("preparation.json"))
+            if previous.get("example_bank") is None:
+                require(previous.get("examples") == [] and previous["learning"]["status"] == "needs_data",
+                        "older nonempty preparation requires explicit migration/reanalysis")
+                old_audit = json.load(tar.extractfile("source-audit.json"))
+                previous["example_bank"] = dict(schema="postgame-example-bank-v1", examples=[],
+                    parent_context=dict(engine_ref=old_audit["parent_ref"],knowledge_sha256=old_audit["knowledge_sha256"],
+                                        parameters_sha256=old_audit["parent_parameters_sha256"]))
+    checked = analyze_source(source, req, params, log, output, frozen["knowledge_sha256"], previous)
     parent = dict(engine_ref=parent_ref, knowledge_sha256=checked["audit"]["knowledge_sha256"],
                   parameters_sha256=digest(params))
     plan = dict(cycle_id=frozen["operation_id"], purpose="integration_smoke", source_games=req["games"],

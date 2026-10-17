@@ -60,6 +60,8 @@ def request(state, inputs, expected_revision):
     if stage == "prepare" and state["generation"] > 1:
         require(inputs.get("split_registry_sha256") == state["split_registry_sha256"],
                 "next generation must preserve split/exposure registry")
+        require(inputs.get("example_bank_sha256") == state.get("example_bank_sha256"),
+                "next generation must preserve the eligible example bank")
     games = {"screen": 100, "confirm": 200, "collect_source": state["plan"].get("source_games", 100),
              "initial_source": state["plan"].get("source_games", 100)}.get(stage, 0)
     if stage in ("preflight", "screen", "confirm"):
@@ -158,6 +160,7 @@ def finish(state, operation, evidence):
         ready_knowledge = bool(report["candidate_knowledge"])
         kind = state["plan"]["candidate_kind"]
         out["split_registry_sha256"] = digest(report["split_registry"])
+        out["example_bank_sha256"] = digest(report.get("example_bank", {}))
         out["expected_parameters_sha256"] = (digest(report["learning"]["options"])
                                               if ready_eval and kind != "knowledge"
                                               else state["parent"]["parameters_sha256"])

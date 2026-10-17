@@ -5,6 +5,8 @@ import shogi
 from tools.research.postgame_spiral import group_rows, parent_effect, prepare, actor_terms
 from tools.research.postgame_cases import position_command, sha256
 from tests.test_postgame_ranker import terms
+from tests.test_postgame_ranker import dataset
+from tools.research.postgame_ranker import BASE, OPTIONS, digest
 
 
 def diagnosis():
@@ -89,6 +91,40 @@ class SpiralTest(unittest.TestCase):
         rows = [dict(case_id="new", game="new-game", leakage_keys=["position:old"])]
         group_rows(rows, "fixed", registry)
         self.assertEqual(rows[0]["split"], "quarantine")
+
+    def bank(self):
+        rows=dataset()
+        registry={}
+        for r in rows:
+            r['leakage_keys']=['position:'+r['case_id']]
+            for key in ['game:'+r['game'],*r['leakage_keys']]:
+                registry[key]=dict(group=r['group'],split=r['split'])
+        context=dict(engine_ref='a'*40,knowledge_sha256='b'*64,parameters_sha256=digest(dict(zip(OPTIONS,BASE))))
+        bank=dict(schema='postgame-example-bank-v1',parent_context=context,examples=rows)
+        return bank,registry
+
+    def test_eligible_examples_survive_batches_and_can_reach_learning_gate(self):
+        bank,registry=self.bank()
+        result=prepare([],lambda c: [],lambda s: {},'fixed',registry=registry,
+                       example_bank=bank,parent_context=bank['parent_context'])
+        self.assertEqual(result['bank_pairs_reused'],32)
+        self.assertEqual(result['learning']['status'],'requires_engine_validation')
+        # Next generation cannot reuse the heldout score it just examined.
+        following=prepare([],lambda c: [],lambda s: {},'fixed',registry=result['split_registry'],
+                          example_bank=result['example_bank'],parent_context=bank['parent_context'])
+        self.assertEqual(following['learning']['status'],'needs_data')
+        self.assertEqual(following['learning']['split_groups']['heldout'],0)
+
+    def test_new_parent_cannot_learn_stale_static_features(self):
+        bank,registry=self.bank()
+        with self.assertRaisesRegex(ValueError,'different research parent'):
+            prepare([],lambda c: [],lambda s: {},'fixed',registry=registry,
+                    example_bank=bank,parent_context=dict(bank['parent_context'],engine_ref='c'*40))
+
+    def test_time_only_pair_is_deferred_instead_of_aborting_the_cycle(self):
+        r=diagnosis();r['followup']=None
+        result=prepare([r],lambda c: self.fail('do not probe unconfirmed pair'),lambda s: {},'fixed')
+        self.assertEqual(result['rejected']['needs_fixed_depth_verification'],1)
 
 
 if __name__ == "__main__": unittest.main()
