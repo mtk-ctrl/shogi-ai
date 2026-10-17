@@ -2,7 +2,7 @@
   "schema_version": 1,
   "cycle_id": "postgame-pilot-20261017",
   "status": "implementation_in_progress",
-  "phase": "reader_verified",
+  "phase": "analyzer_implementation_running",
   "generation": 0,
   "formal_adoption": false,
   "controller_implemented": false,
@@ -40,7 +40,17 @@
     "purpose": "implementation_and_one_generation_pilot",
     "stop_after_verified_report": true
   },
-  "actions": [],
+  "actions": [
+    {
+      "operation_id": "postgame-diagnosis-20261017-01",
+      "status": "implementing",
+      "executor": "manual_owner_request",
+      "started_at_utc": "2026-10-17T00:37:17.849Z",
+      "lease_until_utc": "2026-10-17T02:07:17.854Z",
+      "workdir": "/workspace/scratch/9fe076caaea9/postgame-run",
+      "next": "Implement fixed own-analyzer and run first bounded postgame diagnosis; do not duplicate while this operation is active."
+    }
+  ],
   "evidence": [
     {
       "kind": "document_CI",
