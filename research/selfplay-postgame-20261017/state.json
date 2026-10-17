@@ -2,7 +2,7 @@
   "schema_version": 1,
   "cycle_id": "postgame-pilot-20261017",
   "status": "implementation_in_progress",
-  "phase": "confirmation_running",
+  "phase": "confirmation_audit_requested",
   "generation": 0,
   "formal_adoption": false,
   "controller_implemented": false,
@@ -29,9 +29,9 @@
     "max_new_games": 600
   },
   "used": {
-    "new_games": 100,
+    "new_games": 300,
     "selected_positions": 96,
-    "reserved_new_games": 200
+    "reserved_new_games": 0
   },
   "automation": {
     "id": "6ad2fc16e4288191a7320026a91a35c6",
@@ -142,7 +142,7 @@
     },
     {
       "operation_id": "postgame-g1-confirm-20261017",
-      "status": "running",
+      "status": "completed_pending_additional_audit",
       "games": 200,
       "seed": 2031102801,
       "shards": 20,
@@ -176,7 +176,14 @@
       "started_shards": 20,
       "started_at_utc": "2026-10-17T05:26:42.000Z",
       "estimated_complete_at": "2026-10-17T14:40:00+09:00",
-      "eta_basis": "Screen slowest 5-game shard237s; double for10 games plus aggregation/publication/extra audit."
+      "eta_basis": "Screen slowest 5-game shard237s; double for10 games plus aggregation/publication/extra audit.",
+      "completed_games": 200
+    },
+    {
+      "operation_id": "postgame-confirm-39006231582-audit-01",
+      "status": "requested",
+      "match_run": 39006231582,
+      "run_id": null
     }
   ],
   "evidence": [
@@ -271,7 +278,7 @@
       "commit": "a71d814521f3a512964bccb69cc3eaacdaacf2c1"
     }
   ],
-  "next_action": "Track existing 200-game confirmation39006231582; after completion invoke postgame-audit once and compare full trajectories with original1000, reanalysis500 and screen100. No further selection or repeated confirmation.",
+  "next_action": "Audit completed confirmation39006231582; preserve full results and overlap sensitivity. No repeated confirmation or new evaluation fit.",
   "limitations": [
     "Initial diagnosis, preservation, K1 snapshot and preflight are complete. Evaluation fitting is skipped because only two eligible pairs exist. New live candidate games and full generation handoff remain unverified.",
     "Routes are provisional; 20 draw positions are overrepresented. Do not treat the 96 cases or five conflicting static-rank examples as proven evaluation teachers.",
