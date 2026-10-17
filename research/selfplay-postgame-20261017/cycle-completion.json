@@ -1,0 +1,35 @@
+{
+  "schema": "postgame-cycle-completion-v1",
+  "cycle_id": "postgame-pilot-20261017",
+  "status": "completed",
+  "completed_at": "2026-10-17T05:53:19Z",
+  "result": "retain_parent_strength_improvement_unproven",
+  "main_document_ref": "c438ab8fe37d9f081658656fae7537b74ab76965",
+  "main_document_ci": {
+    "run_id": 39007857135,
+    "conclusion": "success",
+    "url": "https://github.com/mtk-ctrl/shogi-ai/actions/runs/39007857135"
+  },
+  "final_research_result_ref": "7c6eecc5ed3f1cff3ada39fe3f55cdc26fdc0967",
+  "readback": {
+    "main_files": 8,
+    "research_files": 5,
+    "all_exact": true,
+    "release_assets_api_verified": 5,
+    "match_and_audit_packages_retrieved_hash_verified": 4
+  },
+  "total_new_games": 300,
+  "total_audited_plies": 32625,
+  "candidate_research_knowledge_uses": 0,
+  "evaluation_parameter_updates": 0,
+  "formal_adoption": false,
+  "next_source_games_authorized_by_gate": 0,
+  "report_delivered": true,
+  "confirmation_task": {
+    "id": "6ad2fc16e4288191a7320026a91a35c6",
+    "is_enabled": false,
+    "next_run_time": null,
+    "verified": true
+  },
+  "further_execution": "No more games, fitting, reselection or confirmation in this generation. Future hypotheses are recorded only."
+}
