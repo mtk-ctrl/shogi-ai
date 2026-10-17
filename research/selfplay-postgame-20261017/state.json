@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "cycle_id": "postgame-pilot-20261017",
-  "status": "experiment_verified_document_closure_pending",
-  "phase": "retain_parent_document_finish",
+  "status": "completed",
+  "phase": "completed_parent_retained",
   "generation": 1,
   "formal_adoption": false,
   "controller_implemented": false,
@@ -36,23 +36,24 @@
   },
   "automation": {
     "id": "6ad2fc16e4288191a7320026a91a35c6",
-    "enabled": true,
+    "enabled": false,
     "timezone": "Asia/Tokyo",
     "cadence": "one_time_eta",
     "purpose": "implementation_and_one_generation_pilot",
     "stop_after_verified_report": true,
     "timing_mode": "exact_schedule",
     "recurring": false,
-    "next_check_at": "2026-10-17T14:40:00+09:00",
-    "next_check_kind": "document_CI_readback_and_final_report",
-    "next_check_basis": "No Actions run was in progress or queued at scheduling. Candidate K1 preflight and CI are complete; resume the pending launch-path verification. This is not the ETA of an active match.",
+    "next_check_at": null,
+    "next_check_kind": null,
+    "next_check_basis": "Experiment, audits, publication, final document CI and readbacks are complete. Result and limits were reported before disabling this task.",
     "handoff": {
       "previous_id": "6ad2af67c6788191b5702c4537d90052",
       "previous_disabled": true,
       "reason": "Owner requested one-time ETA scheduling. The update interface cannot change an existing condition_watch registration to exact_schedule; replace the registration and retain one active logical task."
     },
     "owner_instruction_date": "2026-10-17",
-    "eta_policy": "After actual match start, calculate finish from same-condition measurements, remaining games, slowest shard and build/queue/aggregation/publication; update this task once. If unfinished, inspect progress and revise ETA. Do not substitute recurring polling."
+    "eta_policy": "After actual match start, calculate finish from same-condition measurements, remaining games, slowest shard and build/queue/aggregation/publication; update this task once. If unfinished, inspect progress and revise ETA. Do not substitute recurring polling.",
+    "disabled_at": "2026-10-17T05:53:19Z"
   },
   "actions": [
     {
@@ -289,14 +290,14 @@
       "commit": "a71d814521f3a512964bccb69cc3eaacdaacf2c1"
     }
   ],
-  "next_action": "Finish document CI/readback and report the scoped pilot result, then disable the same confirmation task. No further games, training, reselection or formal adoption.",
+  "next_action": "This generation is complete. Retain the formal parent; no further games, fitting, reselection or confirmation. Future hypotheses are recorded in research NEXT.md only.",
   "limitations": [
     "Two eligible stable pairs cannot form grouped training/selection/unused sets; no paired evaluator learner or new evaluation parameter update was implemented/run in this generation.",
     "Both stored target moves were already selected by K0 in preflight, and new K1 research use was zero in all300 games; no strength or generalization improvement is demonstrated.",
     "Original engine startup loader handshakes are absent from this arena. Audit reproduced loading with exact saved binaries/snapshots and separately audited actual move observations.",
     "Full-trajectory filtering does not remove all partial-position overlap or game correlation. Approximate intervals are not a proof of independence."
   ],
-  "research_commit": "7c6eecc5ed3f1cff3ada39fe3f55cdc26fdc0967",
+  "research_commit": "6fe55701562625cd51812eb7fc6f9d0e1925efeb",
   "components": {
     "played_archive_reader": "implemented_and_verified",
     "full_history_case_input": "implemented_and_verified",
@@ -307,15 +308,17 @@
     "generation_controller": "bounded_explicit_request_pipeline_verified_AI_controls_phase_handoffs"
   },
   "scheduling_checkpoint": {
-    "observed_main_ref": "2601b65151bfa572670ef6023bafb01be3d35b8f",
-    "candidate_preflight_and_code_ci": 38988386238,
-    "main_document_ci": 38988429090,
-    "candidate_knowledge_entries": 165,
-    "formal_knowledge_entries": 163,
+    "status": "completed",
+    "observed_main_ref": "c438ab8fe37d9f081658656fae7537b74ab76965",
+    "main_document_ci": 39007857135,
+    "screen_match_run": 39005539549,
+    "confirmation_match_run": 39006231582,
+    "screen_audit_run": 39006135029,
+    "confirmation_audit_run": 39006977675,
     "new_match_run": null,
     "actions_in_progress": 0,
     "actions_queued": 0,
-    "note": "Timer-only correction. Detailed phase/component entries above remain historical progress anchors and must be reconciled with the merged PLAN before launching; they do not override verified newer work."
+    "note": "No pending execution. Historical scheduling estimates do not authorize a restart. The one-generation stop gate retained the parent."
   },
   "candidate": {
     "ref": "5a1997043f275d09099c4be67110ed96e2c80c88",
@@ -397,11 +400,36 @@
     "next_source_games": 0
   },
   "closure": {
-    "research_ref": "7c6eecc5ed3f1cff3ada39fe3f55cdc26fdc0967",
-    "main_document_ci": "pending",
-    "report_delivered": false,
-    "timer_stop_pending": true,
+    "schema": "postgame-cycle-completion-v1",
+    "cycle_id": "postgame-pilot-20261017",
+    "status": "completed",
+    "completed_at": "2026-10-17T05:53:19Z",
+    "result": "retain_parent_strength_improvement_unproven",
+    "main_document_ref": "c438ab8fe37d9f081658656fae7537b74ab76965",
+    "main_document_ci": 39007857135,
+    "final_research_result_ref": "7c6eecc5ed3f1cff3ada39fe3f55cdc26fdc0967",
+    "readback": {
+      "main_files": 8,
+      "research_files": 5,
+      "all_exact": true,
+      "release_assets_api_verified": 5,
+      "match_and_audit_packages_retrieved_hash_verified": 4
+    },
+    "total_new_games": 300,
     "total_audited_plies": 32625,
-    "release_assets_verified": 4
+    "candidate_research_knowledge_uses": 0,
+    "evaluation_parameter_updates": 0,
+    "formal_adoption": false,
+    "next_source_games_authorized_by_gate": 0,
+    "report_delivered": true,
+    "confirmation_task": {
+      "id": "6ad2fc16e4288191a7320026a91a35c6",
+      "is_enabled": false,
+      "next_run_time": null,
+      "verified": true
+    },
+    "further_execution": "No more games, fitting, reselection or confirmation in this generation. Future hypotheses are recorded only.",
+    "research_completion_ref": "6fe55701562625cd51812eb7fc6f9d0e1925efeb",
+    "timer_stop_pending": false
   }
 }
