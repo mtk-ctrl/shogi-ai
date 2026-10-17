@@ -129,3 +129,6 @@ engine-match.ymlは対局後に実際の着手だけを圧縮し、played-move-a
 `postgame-spiral.yml`の`publication_only:true`は固定8件の追加解析結果を読み取り専用で照合し、月別Releaseへ保存する入口。依頼ファイルには`cycle_id=saved-followup-20261018-01`、不変`plan_ref`、`repair:false`、`publication_only:true`を明示する。対局・再分析・学習・世代更新を起動しない。PRでは同じ保存観測を再計算して検査するが、追加解析を繰り返さない。
 
 今回の実データは8課題/32探索/詰み1確認、新規知識0。100/200局と知識更新後の実世代は未実行。分岐試験と短い実Engine配線の範囲は[結果](../../research/self-improvement-20261017/FOLLOWUP_RESULTS.md)を参照する。
+
+
+2026-10-18 第3段階A：`postgame-spiral.yml` の明示的 `practice_only` は保存済み学習局面から一度だけ分岐練習する独立モード。固定計画/コードref/原本hash・実バイナリ/知識を照合し、最大4局面×2分岐×2状況・各最大16新規手を記録、群漏洩を隔離して既存診断/候補準備へ渡す。未決着に引分報酬を付けず、強制初手の探索値を作らない。通常の100/200局比較・多世代対局は起動しない。原本/再分析/候補準備を月別Releaseへ保存し再取得hashを確認する。自動世代制御への練習挿入は後続であり、通常の `control` へこのモードを黙って挿入しない。手動本体の重複/attempt再試行を拒否する。参照：[固定条件](../../research/self-improvement-20261017/PRACTICE_PLAN.md)。

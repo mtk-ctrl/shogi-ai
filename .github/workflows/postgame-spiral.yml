@@ -19,6 +19,10 @@ on:
       - "research/self-improvement-20261017/followup-observations.json"
       - ".github/scripts/run_postgame_knowledge_match.py"
       - ".github/scripts/publish_postgame_followup.py"
+      - ".github/scripts/run_postgame_practice.py"
+      - "research/self-improvement-20261017/practice_saved.py"
+      - "research/self-improvement-20261017/verify_practice_publication.py"
+      - "research/self-improvement-20261017/practice-publication.json"
   workflow_dispatch:
     inputs:
       cycle_id:
@@ -31,6 +35,10 @@ on:
         required: true
       publication_only:
         description: Publish and verify the saved eight-case follow-up only (no analysis or games)
+        type: boolean
+        default: false
+      practice_only:
+        description: Execute the frozen saved-position practice trial once, with audit and publication
         type: boolean
         default: false
       inspect_only:
@@ -67,6 +75,8 @@ jobs:
         run: python3 research/self-improvement-20261017/verify_followup_saved.py --inputs build/followup-originals --download --observations research/self-improvement-20261017/followup-observations.json --output build/postgame-followup-readback.json
       - name: Verify normal-arena research knowledge transport and audit
         run: python3 research/self-improvement-20261017/knowledge_route_fixture.py --binary build/knowledge-test-engine --directory build/knowledge-route-fixture --output build/postgame-knowledge-route.json
+      - name: Verify saved practice without new games or engine analysis
+        run: python3 research/self-improvement-20261017/verify_practice_publication.py --directory build/practice-readback --originals build/practice-originals --output build/postgame-practice-readback.json
       - run: python3 scripts/check_workflow_inventory.py --strict && python3 scripts/check_match_workflows.py
       - uses: actions/upload-artifact@v4
         with:
@@ -77,6 +87,7 @@ jobs:
             build/postgame-knowledge-saved-review.json
             build/postgame-followup-readback.json
             build/postgame-knowledge-route.json
+            build/postgame-practice-readback.json
           retention-days: 90
   launch-request:
     if: github.event_name == 'push'
@@ -90,7 +101,7 @@ jobs:
         env: {GH_TOKEN: "${{ github.token }}"}
         run: python3 .github/scripts/run_postgame_spiral.py --launch
   control:
-    if: github.event_name == 'workflow_dispatch' && !inputs.inspect_only && !inputs.publication_only
+    if: github.event_name == 'workflow_dispatch' && !inputs.inspect_only && !inputs.publication_only && !inputs.practice_only
     runs-on: ubuntu-latest
     timeout-minutes: 360
     permissions: {contents: write, actions: write}
@@ -117,7 +128,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 90
   inspect:
-    if: github.event_name == 'workflow_dispatch' && inputs.inspect_only && !inputs.publication_only
+    if: github.event_name == 'workflow_dispatch' && inputs.inspect_only && !inputs.publication_only && !inputs.practice_only
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions: {contents: read, actions: read}
@@ -140,7 +151,7 @@ jobs:
           retention-days: 90
 
   publish-followup:
-    if: github.event_name == 'workflow_dispatch' && inputs.publication_only && !inputs.inspect_only
+    if: github.event_name == 'workflow_dispatch' && inputs.publication_only && !inputs.inspect_only && !inputs.practice_only
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions: {contents: write}
@@ -160,3 +171,27 @@ jobs:
           path: build/followup-publication
           retention-days: 90
           if-no-files-found: error
+
+  practice:
+    if: github.event_name == 'workflow_dispatch' && inputs.practice_only && !inputs.inspect_only && !inputs.publication_only && !inputs.repair
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions: {contents: write, actions: read}
+    steps:
+      - uses: actions/checkout@v5
+        with: {ref: main}
+      - run: python3 -m pip install python-shogi==1.1.1
+      - run: python3 scripts/check_match_workflows.py
+      - name: Play frozen full-history practice, reanalyze and publish
+        env:
+          GH_TOKEN: "${{ github.token }}"
+          CYCLE_ID: "${{ inputs.cycle_id }}"
+          PLAN_REF: "${{ inputs.plan_ref }}"
+        run: python3 .github/scripts/run_postgame_practice.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: postgame-practice-${{ github.run_id }}
+          path: build/practice-trial
+          retention-days: 90
+          if-no-files-found: ignore

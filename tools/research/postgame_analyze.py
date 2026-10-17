@@ -19,7 +19,7 @@ from types import SimpleNamespace
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 import shogi
-from benchmarks.arena import parse_info_line
+from benchmarks.arena import parse_info_line, merge_info_line, compact_search_telemetry
 from tools.research.postgame_cases import load_archive, make_case, position_command, require, sha256
 from tools.research.postgame_ranker import BASE, OPTIONS as EVALUATION_OPTIONS, parent_values
 
@@ -114,7 +114,7 @@ class Analyzer:
         require(set(FEATURES) <= values.keys(), 'missing evaluation terms')
         return {k: values[k] for k in FEATURES}
 
-    def search(self, start_sfen, history, ms, depth=None):
+    def search(self, start_sfen, history, ms, depth=None, include_telemetry=False):
         board = shogi.Board(start_sfen)
         for token in history:
             board.push_usi(token)
@@ -135,6 +135,15 @@ class Analyzer:
                       research_decision_id=direct,
                       elapsed_ms=round((time.monotonic()-started)*1000, 3),
                       history_key=sha256(command.encode()), position_command=command)
+        if include_telemetry:
+            info={}
+            for line in lines:
+                if line.startswith('info '):merge_info_line(info,line)
+            telemetry=compact_search_telemetry(info,board.turn)
+            if result['status']!='recorded':
+                for key in ('score_cp_stm','score_mate_stm','score_black_cp','score_black_mate'):
+                    telemetry.pop(key,None)
+            result['played_telemetry']=telemetry
         return result
 
     def close(self):
@@ -284,7 +293,8 @@ def route_result(result):
 
 
 def run_analysis(archive_dirs, binary, knowledge, output_dir, evaluation_options=None,
-                 expected_knowledge_sha256='6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c'):
+                 expected_knowledge_sha256='6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c',
+                 selection=None):
     evaluation_options = dict(zip(EVALUATION_OPTIONS, BASE)) if evaluation_options is None else evaluation_options
     parent_values(evaluation_options)
     args = SimpleNamespace(archive_dirs=archive_dirs, binary=Path(binary), knowledge=Path(knowledge),
@@ -311,7 +321,11 @@ def run_analysis(archive_dirs, binary, knowledge, output_dir, evaluation_options
                 if index%50==0:print(json.dumps({'stage':'static_scan','games':index,'unique_static_positions':len(values)}),flush=True)
         finally:engine.close()
         try:
-            cases=select_cases(games,values)
+            if selection is None:
+                cases=select_cases(games,values)
+            else:
+                from tools.research.postgame_cases import prepare_cases
+                cases=prepare_cases(games,selection)
         except ValueError as error:
             if str(error) != 'no eligible diagnosis cases':
                 raise
@@ -339,7 +353,7 @@ def run_analysis(archive_dirs, binary, knowledge, output_dir, evaluation_options
         dump(args.output_dir/'diagnosis.json',results)
         summary=dict(source_games=len(games),source_plies=sum(len(g.moves) for g in games),
                      unique_static_positions=len(values),selected_cases=len(cases),
-                     categories=dict(collections.Counter(c['triage']['category'] for c in cases)),
+                     categories=dict(collections.Counter(c.get('triage',{}).get('category','frozen_practice_selection') for c in cases)),
                      selected_side=dict(collections.Counter(c['side_to_move'] for c in cases)),
                      selected_reward=dict(collections.Counter(str(c['outcome']['terminal_reward_stm']) for c in cases)),
                      routes=dict(collections.Counter(r['route'] for r in results)),
@@ -349,6 +363,7 @@ def run_analysis(archive_dirs, binary, knowledge, output_dir, evaluation_options
                      seconds=round(time.monotonic()-started,3),environment=dict(platform=platform.platform(),cpu_count=os.cpu_count()),
                      status='diagnosis_completed',learning_status='not_run',formal_adoption=False,
                      limitation='Provisional own-engine diagnosis; deeper search and fixed-depth pairing do not prove correct play or evaluation causality.')
+        if selection is not None:summary['explicit_selection_sha256']=sha256(json.dumps(selection,sort_keys=True).encode())
         dump(args.output_dir/'summary.json',summary)
         print(json.dumps(summary),flush=True)
         return summary
