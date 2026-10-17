@@ -2,7 +2,7 @@ import copy
 import importlib.util
 from pathlib import Path
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch,MagicMock
 spec=importlib.util.spec_from_file_location('audit_postgame',Path(__file__).parents[1]/'.github/scripts/audit_postgame_pilot.py')
 m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 class AuditTests(unittest.TestCase):
@@ -14,6 +14,14 @@ class AuditTests(unittest.TestCase):
         self.assertEqual(m.trajectory(start,['7g7f']),m.trajectory('board b - 50',['7g7f']))
         self.assertNotEqual(m.trajectory(start,['7g7f']),m.trajectory('board w - 1',['7g7f']))
         self.assertEqual(m.subset_result([{'winner':'A'},{'winner':'B'},{'winner':None}])['score_a'],.5)
+    def test_log_controls_removed_and_redirect_has_no_auth(self):
+        response=MagicMock();response.__enter__.return_value.read.return_value=b'\x1b[31mcommit SHA\x1b[0m'
+        opener=MagicMock();opener.open.return_value=response
+        with patch.dict(m.os.environ,GH_TOKEN='test-token'),patch.object(m,'build_opener',return_value=opener) as build:
+            self.assertEqual(m.sanitized_job_log('owner/repo',1),'commit SHA')
+            request=m.Request('https://api.github.com/a',headers={'Authorization':'Bearer test-token'})
+            redirect=build.call_args.args[0].redirect_request(request,None,302,'',{},'https://example.com/signed-log')
+            self.assertFalse(redirect.has_header('Authorization'))
     def test_all_legal_replays_called(self):
         with patch.object(m,'verify_game') as replay:
             m.validate_shard(self.row(),0,'binary');self.assertEqual(replay.call_count,5)

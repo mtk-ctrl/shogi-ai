@@ -10,7 +10,7 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 | Workflow | 起動 | 用途 |
 |---|---|---|
 | `.github/workflows/selfplay-candidate-verification.yml` | 検証依頼ファイル変更 / 手動 | 固定した学習候補の48局面単独速度診断、完了した100/200局の合法性・終局ルール・長考・知識・実モデル使用・build出所を検証。結果と実戦手原本を月別データReleaseへhash確認付き保存。対局本体は既存汎用Workflowを使い、正式採用はしない |
-| `.github/workflows/postgame-cycle-pilot.yml` | 手動 | 対局後改善循環の第1世代で固定した研究候補知識K1だけを、正式K0と分離して100局選別し、全実戦手・固定資産・監査を月別データReleaseへ保存する。正式採用や第2世代へ自動移行しない |
+| `.github/workflows/postgame-cycle-pilot.yml` | 手動 | 対局後改善循環の第1世代で固定した研究候補知識K1だけを、正式K0と分離して100局選別し、監査合格かつ得点率50%以上の場合だけ別seed200局を一度確認する。全実戦手・固定資産・監査を月別データReleaseへ保存する。正式採用や第2世代へ自動移行しない |
 | `.github/workflows/selfplay-learning.yml` | 学習依頼ファイル変更 / 手動 | 完了した同一版自己対局を出所・合法性・分割漏洩検査し、小型の評価補正を学習して候補をビルド。実戦手原本とモデルは月別データReleaseへhash検証付きで保存し、エンジンへの正式採用や次の対局を自動決定しない |
 | `.github/workflows/position10-adopt.yml` | 明示的な10局面採用依頼 / 手動 | 実行38091143128の研究10局面を原本から厳密検査して局面知識153→163件を採用。研究原本を月別Releaseへ保存・照合する |
 | `.github/workflows/timebox80-adopt.yml` | 承認済み80局面の採用依頼 / 手動 | 2026-10-09実施の午前40・午後40局面の長考研究を検査して既存73局面へ追記。153局面をビルド検証し、既存の汎用比較Workflowで知識あり・なし100局を起動する |
@@ -80,6 +80,8 @@ engine-match.ymlは対局後に実際の着手だけを圧縮し、played-move-a
 
 保存前に入力器・解析器・保存検証の検査を実行する。packageは許可された7ファイル・上限16MiBに限定し、選択96例以内/各局4以内・完全合法履歴・50/500ms条件・実バイナリhashを照合する。全PV/未着手候補表/探索木を含めず、payload内のバイナリは実行しない。初回のGit受渡しsnapshotが履歴に残る容量もpublicationへ明示する。継続的な全対局のGit保存へ広げない。
 
-自己対局後改善の初回100局は、`.github/postgame-pilot-request.json` の明示更新から同じ `postgame-cycle-pilot.yml` 内の最小権限launcherを経て既存の手動入口を起動できる。固定候補・親SHA・100局・操作ID・1〜20分割以外は拒否し、同じ操作IDの本体runがあれば再起動しない。workflow自身のpushや定期起動では対局を始めない。
+自己対局後改善の選別100局と、選別の監査・保存が通った場合の一度だけの200局確認は、`.github/postgame-pilot-request.json` の明示更新から同じ `postgame-cycle-pilot.yml` 内の最小権限launcherを経て既存の手動入口を起動できる。固定候補・親SHA・100/200局・操作ID・1〜20分割以外は拒否し、同じ操作IDの本体runがあれば再起動しない。workflow自身のpushや定期起動では対局を始めない。
 
 自己対局後改善の完了runは、既存selfplay検証入口の `postgame-audit` モードへ、凍結candidate_ref・baseline_ref・実match_runを明示して監査する。全実戦手・終局・設定・先後・実バイナリ・知識hashと保存再取得を照合する。保存バイナリでの知識loader再現は元対局の起動時ログと区別する。監査の修正だけで原対局を再実行しない。
+
+200局の起動前には先行する100局監査runの成功・固定候補・得点率50%以上・合法性/終局検証・Release保存receiptを再取得して照合する。手動入口のplanでも依頼JSON・重複操作・同じ前提を検査する。終局判定や候補は変えず、監査のログ取得では制御文字を表示せず除去し、外部ホストへのredirectに認証を転送しない。

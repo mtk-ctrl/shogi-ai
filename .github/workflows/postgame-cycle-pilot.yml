@@ -23,7 +23,7 @@ on:
         default: research/postgame-cycle-pilot-20261017
         type: string
       games:
-        description: Frozen screen size (100)
+        description: Frozen screen 100 or one confirmation 200
         required: true
         default: "100"
         type: string
@@ -34,6 +34,7 @@ on:
         type: string
 permissions:
   contents: write
+  actions: read
 concurrency:
   group: postgame-cycle-pilot-20261017-g1-screen
   cancel-in-progress: false
@@ -50,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: python3 -m pip install python-shogi==1.1.1
-      - run: python3 -m unittest tests.test_postgame_cases tests.test_postgame_analyze tests.test_postgame_candidates tests.test_postgame_dispatch
+      - run: python3 -m unittest tests.test_postgame_cases tests.test_postgame_analyze tests.test_postgame_candidates tests.test_postgame_dispatch tests.test_postgame_audit
       - run: python3 scripts/check_workflow_inventory.py --strict && python3 scripts/check_match_workflows.py
   launch-request:
     if: github.event_name == 'push'
@@ -74,7 +75,16 @@ jobs:
       matrix: ${{ steps.make.outputs.matrix }}
     steps:
       - uses: actions/checkout@v5
-        with: {ref: "${{ inputs.candidate_ref }}"}
+      - name: Verify one-time operation and audited predecessor
+        env:
+          GH_TOKEN: "${{ github.token }}"
+          CANDIDATE_REF: "${{ inputs.candidate_ref }}"
+          REQUEST_ID: "${{ inputs.request_id }}"
+          GAMES: "${{ inputs.games }}"
+          SHARDS: "${{ inputs.shards }}"
+        run: python3 .github/scripts/dispatch_postgame_pilot.py --plan-only
+      - uses: actions/checkout@v5
+        with: {ref: "${{ inputs.candidate_ref }}", path: candidate}
       - id: make
         env: {GAMES: "${{ inputs.games }}", SHARDS: "${{ inputs.shards }}"}
         run: |
@@ -83,15 +93,15 @@ jobs:
           import hashlib,json,os
           from pathlib import Path
           games=int(os.environ['GAMES']); shards=int(os.environ['SHARDS'])
-          if games!=100 or not 1<=shards<=20: raise SystemExit('frozen screen requires 100 games and 1-20 shards')
-          root=Path('research/selfplay-postgame-20261017'); k1=root/'position-knowledge-g1-k1.tsv'
+          if games not in (100,200) or not 1<=shards<=20: raise SystemExit('frozen pilot requires 100/200 games and 1-20 shards')
+          root=Path('candidate/research/selfplay-postgame-20261017'); k1=root/'position-knowledge-g1-k1.tsv'
           m=json.loads((root/'candidate-manifest.json').read_text()); digest=hashlib.sha256(k1.read_bytes()).hexdigest()
           if digest!=os.environ['K1_SHA256'] or m['output_sha256']!=digest or m['base_sha256']!=os.environ['K0_SHA256']:
               raise SystemExit('knowledge hash mismatch')
           if m['combined_positions']!=165 or m['formal_adoption']: raise SystemExit('candidate boundary mismatch')
           q,r=divmod(games,shards); offset=0; include=[]
           for i in range(shards):
-              n=q+(i<r); include.append({'shard':i,'games':n,'offset':offset,'seed':int(os.environ['SEED'])+i*100000}); offset+=n
+              n=q+(i<r); include.append({'shard':i,'games':n,'offset':offset,'seed':(2031101801 if games==100 else 2031102801)+i*100000}); offset+=n
           with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('matrix='+json.dumps({'include':include},separators=(',',':'))+'\n')
           print('distribution',[x['games'] for x in include])
           PY
@@ -157,22 +167,24 @@ jobs:
       - uses: actions/download-artifact@v4
         with: {name: "postgame-binaries-${{ github.run_id }}"}
       - name: Audit and aggregate
+        env: {EXPECTED_GAMES: "${{ inputs.games }}"}
         run: |
           python3 - <<'PY'
           import json,math,os
           from pathlib import Path
+          n=int(os.environ['EXPECTED_GAMES'])
           rows=[json.loads(p.read_text()) for p in sorted(Path('results').glob('shard-*.json'))]
-          if not rows or sum(r['games'] for r in rows)!=100 or any(r.get('illegal_games',0) for r in rows):raise SystemExit('game audit failed')
+          if not rows or sum(r['games'] for r in rows)!=n or any(r.get('illegal_games',0) for r in rows):raise SystemExit('game audit failed')
           for r in rows:
               k=r['position_knowledge']
               if (k['A']['sha256'],k['A']['positions'])!=(os.environ['K1_SHA256'],165):raise SystemExit('A K1 audit failed')
               if (k['B']['sha256'],k['B']['positions'])!=(os.environ['K0_SHA256'],163):raise SystemExit('B K0 audit failed')
-          wa=sum(r['wins_a'] for r in rows);wb=sum(r['wins_b'] for r in rows);d=sum(r['draws'] for r in rows);score=(wa+d*.5)/100
-          se=math.sqrt(score*(1-score)/100)
+          wa=sum(r['wins_a'] for r in rows);wb=sum(r['wins_b'] for r in rows);d=sum(r['draws'] for r in rows);score=(wa+d*.5)/n
+          se=math.sqrt(score*(1-score)/n)
           out={'schema':'postgame-screen-result-v1','run_id':int(os.environ['GITHUB_RUN_ID']),'parent_sha':os.environ['PARENT_SHA'],
-               'k1_sha256':os.environ['K1_SHA256'],'k0_sha256':os.environ['K0_SHA256'],'games':100,'wins_a':wa,'draws':d,'wins_b':wb,
+               'k1_sha256':os.environ['K1_SHA256'],'k0_sha256':os.environ['K0_SHA256'],'games':n,'wins_a':wa,'draws':d,'wins_b':wb,
                'score_a':score,'score_a_approx_95pct':[max(0,score-1.96*se),min(1,score+1.96*se)],'shards':len(rows),
-               'knowledge':rows[0]['position_knowledge'],'next':'confirm_200' if score>=.5 else 'retain_parent'}
+               'knowledge':rows[0]['position_knowledge'],'next':('confirm_200' if score>=.5 else 'retain_parent') if n==100 else 'confirmation_complete'}
           Path('aggregate.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n');print(json.dumps(out,indent=2))
           PY
           python3 harness/tools/records/archive_played_moves.py --input results/shard-*.json --output-dir played-archive \

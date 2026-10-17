@@ -2,7 +2,7 @@
   "schema_version": 1,
   "cycle_id": "postgame-pilot-20261017",
   "status": "implementation_in_progress",
-  "phase": "screen_audit_requested",
+  "phase": "screen_audit_repair_requested",
   "generation": 0,
   "formal_adoption": false,
   "controller_implemented": false,
@@ -42,7 +42,7 @@
     "stop_after_verified_report": true,
     "timing_mode": "exact_schedule",
     "recurring": false,
-    "next_check_at": "2026-10-17T14:30:00+09:00",
+    "next_check_at": "2026-10-17T14:35:00+09:00",
     "next_check_kind": "screen_audit_and_prespecified_confirmation_gate",
     "next_check_basis": "No Actions run was in progress or queued at scheduling. Candidate K1 preflight and CI are complete; resume the pending launch-path verification. This is not the ETA of an active match.",
     "handoff": {
@@ -118,9 +118,17 @@
     },
     {
       "operation_id": "postgame-screen-39005539549-audit-01",
+      "status": "failed_log_display_protection",
+      "match_run": 39005539549,
+      "run_id": 39005916440,
+      "cause": "gh api refused terminal escape sequences; no game legality or condition failure. Replace direct log display with sanitized HTTPS byte reading; strip authorization on redirected hosts and remove ANSI controls."
+    },
+    {
+      "operation_id": "postgame-screen-39005539549-audit-02",
       "status": "requested",
       "match_run": 39005539549,
-      "run_id": null
+      "run_id": null,
+      "scope": "Audit-only repair; no repeated games"
     }
   ],
   "evidence": [

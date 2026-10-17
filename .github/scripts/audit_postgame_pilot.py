@@ -10,6 +10,9 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+import re
+from urllib.parse import urlparse
+from urllib.request import Request, build_opener, HTTPRedirectHandler
 import tarfile
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]))
 from tools.records.archive_played_moves import archive
@@ -25,11 +28,25 @@ def require(ok,msg):
     if not ok:raise ValueError(msg)
 def save(p,d):Path(p).write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n')
 def gh(*args):return subprocess.check_output(['gh',*map(str,args)],text=True)
+def sanitized_job_log(repo,job_id):
+    # Never render terminal controls or disable the CLI display protection.
+    class PublicRedirect(HTTPRedirectHandler):
+        def redirect_request(self,req,fp,code,msg,headers,newurl):
+            if urlparse(newurl).scheme!='https':raise ValueError('non-HTTPS log redirect')
+            redirected=super().redirect_request(req,fp,code,msg,headers,newurl)
+            if urlparse(newurl).hostname!='api.github.com':redirected.remove_header('Authorization')
+            return redirected
+    request=Request(f'https://api.github.com/repos/{repo}/actions/jobs/{job_id}/logs',headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'})
+    with build_opener(PublicRedirect()).open(request,timeout=45) as response:raw=response.read()
+    return re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]','',raw.decode('utf-8','replace'))
+
 def options(side):
     return dict(SearchResearchMask=23,SearchEfficiencyMask=8,SearchReuseMask=6,SearchNextMask=4,SearchProbeMask=7,SearchThreads=2,RiskVerify=True,USI_Ponder=True,OpeningRandomNonLance=True,AdaptiveLongThink=True,PositionKnowledge=True,PositionKnowledgeFile='build/k1.tsv' if side=='A' else 'build/k0.tsv')
-def validate_shard(row,number,binary_sha):
-    require(row['games']==5 and len(row['details'])==5,'shard games')
-    require(row['game_offset']==number*5 and row['seed']==2031101801+number*100000,'shard offset/seed')
+def validate_shard(row,number,binary_sha,total_games=100,shards=20):
+    q,r=divmod(total_games,shards);count=q+(number<r);offset=q*number+min(number,r)
+    seed=2031101801 if total_games==100 else 2031102801
+    require(row['games']==count and len(row['details'])==count,'shard games')
+    require(row['game_offset']==offset and row['seed']==seed+number*100000,'shard offset/seed')
     require(row['go_command']=='go movetime 200' and row['max_plies']==300 and row['illegal_games']==0,'match conditions')
     require(row['sha256_a']==row['sha256_b']==binary_sha,'binary hash mismatch')
     for side,digest,count in [('A',K1,165),('B',K0,163)]:
@@ -37,7 +54,7 @@ def validate_shard(row,number,binary_sha):
         k=row['position_knowledge'][side]
         require(k.get('enabled') and k.get('available') and k['sha256']==digest and k['positions']==count,'knowledge identity')
     for i,g in enumerate(row['details']):
-        require(g['a_black']==((number*5+i)%2==0),'color assignment')
+        require(g['a_black']==((offset+i)%2==0),'color assignment')
         records=g['move_records']; require(len(records)==len(g['moves']),'telemetry length')
         require([x['move'] for x in records]==g['moves'],'telemetry move correspondence')
         verify_game(dict(g,moves=records),row)
@@ -74,24 +91,26 @@ def audit(run_id,out,repo):
     out=Path(out);out.mkdir(parents=True,exist_ok=True)
     info=json.loads(gh('api',f'repos/{repo}/actions/runs/{run_id}'))
     require(info['status']=='completed' and info['conclusion']=='success','unfinished/failed match')
-    require(info['event']=='workflow_dispatch' and info['display_title']=='Postgame postgame-g1-screen-20261017','operation identity')
+    identities={'Postgame postgame-g1-screen-20261017':100,'Postgame postgame-g1-confirm-20261017':200}
+    require(info['event']=='workflow_dispatch' and info['display_title'] in identities,'operation identity')
+    total_games=identities[info['display_title']]
     download=out/'downloads'
     subprocess.run(['gh','run','download',str(run_id),'--repo',repo,'--dir',str(download)],check=True)
     originals=list(download.rglob('binaries.tgz'));require(len(originals)==1,'binary artifact count')
     with tarfile.open(originals[0]) as t:t.extractall(out/'binaries',filter='data')
     build=out/'binaries/build';binary=sha(build/'engine-a')
     require(binary==sha(build/'engine-b') and sha(build/'k0.tsv')==K0 and sha(build/'k1.tsv')==K1,'preserved assets')
-    rows=sorted(download.rglob('shard-*.json'));require(len(rows)==20,'missing/extra shard')
+    rows=sorted(download.rglob('shard-*.json'));require(1<=len(rows)<=20,'missing/extra shard')
     numbers=[]
     for p in rows:
         number=int(p.stem.split('-')[-1]);numbers.append(number)
-        validate_shard(json.loads(p.read_text()),number,binary)
-    require(sorted(numbers)==list(range(20)),'duplicate shard numbers')
+        validate_shard(json.loads(p.read_text()),number,binary,total_games,len(rows))
+    require(sorted(numbers)==list(range(len(rows))),'duplicate shard numbers')
     dest=out/'played-archive';archive(rows,dest,run_id,PARENT+'+k1',PARENT+'+k0')
-    games=load_archive(dest);require(len(games)==100,'verified games')
+    games=load_archive(dest);require(len(games)==total_games,'verified games')
     jobs=json.loads(gh('api',f'repos/{repo}/actions/runs/{run_id}/jobs?per_page=100'))['jobs']
     builds=[j for j in jobs if j['name']=='build' and j['conclusion']=='success'];require(len(builds)==1,'build proof')
-    log=gh('api',f"repos/{repo}/actions/jobs/{builds[0]['id']}/logs")
+    log=sanitized_job_log(repo,builds[0]['id'])
     require(PARENT in log and CANDIDATE in log,'fixed checkout evidence')
     # Reproduce loader handshake using the preserved exact binaries and snapshots.
     load_proofs={}
@@ -111,16 +130,16 @@ def audit(run_id,out,repo):
             s=move['search']
             if s.get('research_id','').startswith('postgame-'):research[move.get('engine','unknown')]+=1
             if s.get('long_think_used'):long[move.get('engine','unknown')]+=1
-    require(colors[True]==colors[False]==50,'global color balance')
+    require(colors[True]==colors[False]==total_games//2,'global color balance')
     observed={}
     for side in ('A','B'):
         moves=[m for g in games for m in g.row['moves'] if m.get('engine')==side]
         observed[side]={'moves':len(moves),'depth_recorded_moves':sum('depth' in m['search'] for m in moves),'knowledge_probes':sum(m['search'].get('knowledge_probes',0) for m in moves),'knowledge_hits':sum(m['search'].get('knowledge_hits',0) for m in moves),'knowledge_promotions':sum(m['search'].get('knowledge_promotions',0) for m in moves),'ponder_hits':sum(json.loads(p.read_text())['ponder'][side]['hits'] for p in rows),'ponder_misses':sum(json.loads(p.read_text())['ponder'][side]['misses'] for p in rows)}
-    result={'observed':observed,'schema':'postgame-match-audit-v1','match_run':run_id,'games':100,'plies':sum(len(g.moves) for g in games),
+    result={'observed':observed,'schema':'postgame-match-audit-v1','match_run':run_id,'games':total_games,'plies':sum(len(g.moves) for g in games),
             'legal_replay':True,'termination_rules_verified':True,'conditions_verified':True,'binary_sha256':binary,
             'parent_ref':PARENT,'candidate_ref':CANDIDATE,'build_job':builds[0]['id'],'verification_ref':os.environ.get('GITHUB_SHA'),
             'k0_sha256':K0,'k1_sha256':K1,'loader_reproduction':load_proofs,'wins_a':wins['A'],'draws':wins[None],'wins_b':wins['B'],
-            'score_a':(wins['A']+.5*wins[None])/100,'a_black':colors[True],'a_white':colors[False],
+            'score_a':(wins['A']+.5*wins[None])/total_games,'a_black':colors[True],'a_white':colors[False],
             'candidate_research_uses':dict(research),'long_thinks':dict(long),'trajectory_outcomes':trajectories,
             'internal_trajectory_duplicates':len(trajectories)-len({r['sha256'] for r in trajectories})}
     corpus,source,receipts=references(out,repo)
@@ -132,7 +151,7 @@ def audit(run_id,out,repo):
     result['all_games']=subset_result(trajectories)
     result['excluding_prior_trajectories']=subset_result(fresh)
     result['excluding_prior_and_internal_duplicates']=subset_result(unique)
-    result['duplicate_note']='Descriptive sensitivity; prespecified screen selection still uses all 100 scheduled games. No claim that trajectory filtering removes all dependence.'
+    result['duplicate_note']='Descriptive sensitivity; prespecified screen selection uses all scheduled screen games. No claim that trajectory filtering removes all dependence.'
     save(out/'audit.json',result)
     package=out/f'postgame-audit-{run_id}-{os.environ["GITHUB_RUN_ID"]}.tgz'
     with tarfile.open(package,'w:gz') as t:
