@@ -88,5 +88,21 @@ class BackendTest(unittest.TestCase):
     def test_controller_fingerprint_binds_learning_and_executor_code(self):
         value=m.code_hash();self.assertRegex(value,'^[0-9a-f]{64}$')
 
+    def test_new_explicit_cycle_cannot_reset_stagnation_and_research_queue(self):
+        from tools.research.postgame_progress import POLICY_PROGRESS
+        from tools.research.postgame_ranker import digest
+        parent=dict(engine_ref='a'*40,knowledge_sha256='b'*64,parameters_sha256='c'*64)
+        previous=dict(state=dict(stage='complete',formal_adoption=False,parent=parent,
+                                progress_history=[{'preserved':'history'}],research_followup={'preserved':'queue'},
+                                plan=dict(algorithm_sha256='same',progress_policy=POLICY_PROGRESS,
+                                          cycle_id='old',seeds=[dict(source=1,screen=2,confirm=3)])),
+                      blocked=None,formal_adoption=False,parent_options={},preparation_publication={},
+                      prior_signatures=[],trajectory_index_sha256=digest([]))
+        new=dict(state=dict(plan=dict(parent=parent,algorithm_sha256='same',progress_policy=POLICY_PROGRESS,
+                                     seeds=[dict(source=4,screen=5,confirm=6)])),parent_options={})
+        result=m.inherit_predecessor(new,previous)
+        self.assertEqual(result['state']['progress_history'],previous['state']['progress_history'])
+        self.assertEqual(result['state']['research_followup'],previous['state']['research_followup'])
+
 
 if __name__=='__main__':unittest.main()

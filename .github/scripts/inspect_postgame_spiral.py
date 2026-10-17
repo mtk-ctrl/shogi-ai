@@ -107,6 +107,8 @@ def inspect(backend,env):
             report.update(analysis=result['analysis_summary'],learning_status=prep['learning']['status'],
                           parameter_updates=prep['learning']['parameter_updates'],eligible_pairs=len(prep['examples']),
                           split_aliases=len(registry),old_aliases_preserved=len(old_registry),bank_pairs_reused=prep['bank_pairs_reused'])
+            if 'progress_policy' in plan:
+                report['progress']=prep['progress']
             previous=prep
         elif stage=='preflight':
             evidence.update(candidate=binding['inputs']['candidate'],preflight=result['preflight'])

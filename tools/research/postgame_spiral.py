@@ -22,6 +22,7 @@ from tools.research.postgame_analyze import Analyzer, exact_cp, compare_children
 from tools.research.postgame_candidates import accepted_record, replay
 from tools.research.postgame_cases import position_command, sha256
 from tools.research.postgame_ranker import AXES, BASE, OPTIONS, digest, fit, require, validate_terms, parent_values
+from tools.research.postgame_progress import diagnosis_detail
 
 
 def group_rows(rows, seed, registry=None):
@@ -124,7 +125,7 @@ def parent_effect(moves, research_move):
 
 
 def prepare(diagnosis, probe, static, split_seed, registry=None, parent_options=None,
-            example_bank=None, parent_context=None):
+            example_bank=None, parent_context=None, track_decisions=False):
     """probe(case)->two results; static(sfen)->fixed-parent breakdown."""
     require(0 <= len(diagnosis) <= 96, "selected-case budget exceeded")
     counts = collections.Counter((str(r["case"]["source"]["run_id"]), r["case"]["source"]["game_id"]) for r in diagnosis)
@@ -175,19 +176,30 @@ def prepare(diagnosis, probe, static, split_seed, registry=None, parent_options=
         else:
             examples.append(assigned)
     reused = len(examples)
+    decisions = []
+    def note(row, reason):
+        if track_decisions:
+            case = row["case"]
+            decisions.append(dict(case_id=case["case_id"], source=copy.deepcopy(case["source"]),
+                                  route=row["route"], split=split_by_case[case["case_id"]]["split"], reason=reason,
+                                  detail=diagnosis_detail(row),
+                                  research_matches_actual=row["research_move"] == case["actual_move"]))
     for row in diagnosis:
         routes[row["route"]] += 1
         if row["route"] != "stable_research_move_candidate":
             rejected["not_stable_evaluation_pair"] += 1
+            note(row, "not_stable_evaluation_pair")
             continue
         if not row.get("followup"):
             rejected["needs_fixed_depth_verification"] += 1
+            note(row, "needs_fixed_depth_verification")
             continue
         board = check_result(row)
         case = row["case"]
         split_row = split_by_case[case["case_id"]]
         if split_row["split"] == "quarantine":
             rejected["prior_split_collision"] += 1
+            note(row, "prior_split_collision")
             continue
         probes = probe(case)
         require(all(exact_cp(p) for p in probes), "incomplete parent probe")
@@ -198,6 +210,7 @@ def prepare(diagnosis, probe, static, split_seed, registry=None, parent_options=
                                  research_move=row["research_move"], effect=reason))
         if reason != "current_parent_miss":
             rejected[reason] += 1
+            note(row, reason)
             continue
         # Even stable research is provisional. New knowledge is a research asset.
         if split_row["split"] == "train":
@@ -218,11 +231,14 @@ def prepare(diagnosis, probe, static, split_seed, registry=None, parent_options=
             terms = {k: actor_terms(v, sign) for k, v in dict(root=root, **children).items()}
         except ValueError:
             rejected["clamped_static_terms"] += 1
+            note(row, "clamped_static_terms")
             continue
         if terms["research"]["total"] > terms["actual"]["total"]:
             rejected["no_static_rank_error_search_problem"] += 1
+            note(row, "no_static_rank_error_search_problem")
             continue
         examples.append(dict(split_row, reward=case["outcome"]["terminal_reward_stm"], **terms))
+        note(row, "evaluation_eligible")
     require(len(examples) <= 512, "example bank capacity needs review; keep originals")
     learning = fit(examples, parent_options)
     if learning["status"] != "needs_data":
@@ -230,7 +246,7 @@ def prepare(diagnosis, probe, static, split_seed, registry=None, parent_options=
         for record in registry.values():
             if record["group"] in exposed:
                 record["heldout_consumed"] = True
-    return dict(schema="postgame-spiral-preparation-v1", routes=dict(routes), rejected=dict(rejected),
+    report = dict(schema="postgame-spiral-preparation-v1", routes=dict(routes), rejected=dict(rejected),
                 parent_probes=observations, examples=examples, learning=learning,
                 bank_pairs_reused=reused,
                 example_bank=dict(schema="postgame-example-bank-v1",parent_context=parent_context,examples=examples),
@@ -238,6 +254,9 @@ def prepare(diagnosis, probe, static, split_seed, registry=None, parent_options=
                 candidate_knowledge=knowledge, formal_adoption=False,
                 next_action="collect_independent_current_parent_errors" if learning["status"] != "requires_engine_validation"
                     else "validate_live_engine_on_frozen_unused_cases")
+    if track_decisions:
+        report["case_decisions"] = decisions
+    return report
 
 
 def main():
