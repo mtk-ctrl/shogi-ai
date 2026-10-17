@@ -1,0 +1,43 @@
+{
+  "schema": "postgame-spiral-core-completion-v1",
+  "status": "core_implemented_and_verified_execution_adapter_pending",
+  "pr": 274,
+  "source_commit": "d101afab6e60a84a208974d11d693a0063531ccf",
+  "merged_commit": "482ac0ad2b80fc0186969115cf713e03a314340a",
+  "ci": {
+    "postgame_tests": {
+      "run_id": 39012647750,
+      "conclusion": "success",
+      "tests": 54
+    },
+    "pr_documents": {
+      "run_id": 39012647775,
+      "conclusion": "success"
+    },
+    "main_documents": {
+      "run_id": 39012710402,
+      "conclusion": "success"
+    }
+  },
+  "merged_readback": {
+    "files": 19,
+    "all_exact": true
+  },
+  "formal_files_changed": [],
+  "live_check": {
+    "selected_diagnosis_cases": 96,
+    "eligible_evaluation_pairs": 0,
+    "parameter_updates": 0,
+    "candidate_knowledge": 0,
+    "new_match_games": 0
+  },
+  "prototype": {
+    "pair_parameter_learner": true,
+    "group_split_and_exposure_registry": true,
+    "bounded_generation_state_machine": true,
+    "eta_calculation": true,
+    "multi_generation_live_execution": false,
+    "automatic_dispatch_publication_timer_adapter": false
+  },
+  "next_required": "Connect verified execution adapters for source games, parent-aware reanalysis, candidate materialization/preflight, matches, publication/audit receipts and same-task ETA updates. Preserve the completed G1 and formal parent."
+}
