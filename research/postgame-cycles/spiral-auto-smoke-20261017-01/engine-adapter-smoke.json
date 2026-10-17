@@ -1,0 +1,561 @@
+{
+  "schema": "postgame-live-preflight-v1",
+  "completed": true,
+  "disabled_exact": true,
+  "regressions": 0,
+  "heldout_improved": 0,
+  "depth_ratio": 1.0,
+  "depth_sum_parent": 2,
+  "depth_sum_candidate": 2,
+  "missing_depth": 0,
+  "policy": {
+    "fixed_depth": 2,
+    "fixed_timeout_ms": 5000,
+    "probe_ms": 200,
+    "speed_cases": 16,
+    "min_depth_ratio": 0.9,
+    "tactical_cases": 12,
+    "heldout_limit": 96,
+    "trials": 1
+  },
+  "observations": [
+    {
+      "case_id": "capture-10a6b90f7ceb682a",
+      "kind": "tactical",
+      "parent": {
+        "status": "recorded",
+        "kind": "cp",
+        "value_stm": 90000000,
+        "depth": 5,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "5e5c+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 190.828,
+        "history_key": "a0c4572204143e2592134fc4c1a118de3a6cd64bde482b7be8d268b7b6b0b4e5",
+        "position_command": "position sfen 8k/9/4s4/9/4R4/9/9/9/K8 b - 1"
+      },
+      "candidate": {
+        "status": "recorded",
+        "kind": "cp",
+        "value_stm": 90000000,
+        "depth": 6,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "5e5c+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 190.772,
+        "history_key": "a0c4572204143e2592134fc4c1a118de3a6cd64bde482b7be8d268b7b6b0b4e5",
+        "position_command": "position sfen 8k/9/4s4/9/4R4/9/9/9/K8 b - 1"
+      },
+      "correct": [
+        true,
+        true
+      ]
+    },
+    {
+      "case_id": "capture-5795ceab2d927ae2",
+      "kind": "tactical",
+      "parent": {
+        "status": "recorded",
+        "kind": "cp",
+        "value_stm": 90000000,
+        "depth": 6,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "5e5g+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 190.981,
+        "history_key": "ec98286a2f49f617cd4d9be9e167132d7d98d98330e27892821ae3292527682a",
+        "position_command": "position sfen 8k/9/9/9/4r4/9/4S4/9/K8 w - 1"
+      },
+      "candidate": {
+        "status": "recorded",
+        "kind": "cp",
+        "value_stm": 90000000,
+        "depth": 6,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "5e5g+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 190.873,
+        "history_key": "ec98286a2f49f617cd4d9be9e167132d7d98d98330e27892821ae3292527682a",
+        "position_command": "position sfen 8k/9/9/9/4r4/9/4S4/9/K8 w - 1"
+      },
+      "correct": [
+        true,
+        true
+      ]
+    },
+    {
+      "case_id": "capture-df2e9ab52017fc7d",
+      "kind": "tactical",
+      "parent": {
+        "status": "recorded",
+        "kind": "mate",
+        "value_stm": 7,
+        "depth": 6,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "4e4c+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 193.549,
+        "history_key": "4f5d7be78573c6cbdd65eba1693b786293efd918db453237ad664ad7c188bd8d",
+        "position_command": "position sfen 8k/9/5s3/9/5R3/9/9/9/K8 b - 1"
+      },
+      "candidate": {
+        "status": "recorded",
+        "kind": "mate",
+        "value_stm": 7,
+        "depth": 6,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "4e4c+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 190.808,
+        "history_key": "4f5d7be78573c6cbdd65eba1693b786293efd918db453237ad664ad7c188bd8d",
+        "position_command": "position sfen 8k/9/5s3/9/5R3/9/9/9/K8 b - 1"
+      },
+      "correct": [
+        true,
+        true
+      ]
+    },
+    {
+      "case_id": "capture-044da5382145a4ac",
+      "kind": "tactical",
+      "parent": {
+        "status": "recorded",
+        "kind": "mate",
+        "value_stm": 7,
+        "depth": 6,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "6e6g+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 190.865,
+        "history_key": "dc100beb5a72404a44edd5c9e07c727974be4f1c8eb0c1e496568d603503356c",
+        "position_command": "position sfen 8k/9/9/9/3r5/9/3S5/9/K8 w - 1"
+      },
+      "candidate": {
+        "status": "recorded",
+        "kind": "mate",
+        "value_stm": 7,
+        "depth": 6,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "6e6g+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 190.803,
+        "history_key": "dc100beb5a72404a44edd5c9e07c727974be4f1c8eb0c1e496568d603503356c",
+        "position_command": "position sfen 8k/9/9/9/3r5/9/3S5/9/K8 w - 1"
+      },
+      "correct": [
+        true,
+        true
+      ]
+    },
+    {
+      "case_id": "capture-d3d08e01960c229c",
+      "kind": "tactical",
+      "parent": {
+        "status": "recorded",
+        "kind": "mate",
+        "value_stm": 5,
+        "depth": 6,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "5e5c+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 190.908,
+        "history_key": "737d13a3a70987285d973cfb09a95d7f4fed19b1cae5ea30ca10ff470392006e",
+        "position_command": "position sfen 8k/9/4g4/9/4R4/9/9/9/K8 b - 1"
+      },
+      "candidate": {
+        "status": "recorded",
+        "kind": "mate",
+        "value_stm": 5,
+        "depth": 5,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "5e5c+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 192.691,
+        "history_key": "737d13a3a70987285d973cfb09a95d7f4fed19b1cae5ea30ca10ff470392006e",
+        "position_command": "position sfen 8k/9/4g4/9/4R4/9/9/9/K8 b - 1"
+      },
+      "correct": [
+        true,
+        true
+      ]
+    },
+    {
+      "case_id": "capture-875ab811f688a4d4",
+      "kind": "tactical",
+      "parent": {
+        "status": "recorded",
+        "kind": "mate",
+        "value_stm": 5,
+        "depth": 6,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "5e5g+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 190.92,
+        "history_key": "e7bcf26d34154361be3e0e45032a4c0dd59ff4a1668e0a497567010af6a43fea",
+        "position_command": "position sfen 8k/9/9/9/4r4/9/4G4/9/K8 w - 1"
+      },
+      "candidate": {
+        "status": "recorded",
+        "kind": "mate",
+        "value_stm": 5,
+        "depth": 6,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "5e5g+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 191.006,
+        "history_key": "e7bcf26d34154361be3e0e45032a4c0dd59ff4a1668e0a497567010af6a43fea",
+        "position_command": "position sfen 8k/9/9/9/4r4/9/4G4/9/K8 w - 1"
+      },
+      "correct": [
+        true,
+        true
+      ]
+    },
+    {
+      "case_id": "capture-064ee25e6270cb65",
+      "kind": "tactical",
+      "parent": {
+        "status": "recorded",
+        "kind": "mate",
+        "value_stm": 5,
+        "depth": 6,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "4e4c+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 190.93,
+        "history_key": "28a824edea99a639d315335b86b6716ee8b5b9eff740101fd9ce6a5dd62a0385",
+        "position_command": "position sfen 8k/9/5g3/9/5R3/9/9/9/K8 b - 1"
+      },
+      "candidate": {
+        "status": "recorded",
+        "kind": "mate",
+        "value_stm": 5,
+        "depth": 6,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "4e4c+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 192.795,
+        "history_key": "28a824edea99a639d315335b86b6716ee8b5b9eff740101fd9ce6a5dd62a0385",
+        "position_command": "position sfen 8k/9/5g3/9/5R3/9/9/9/K8 b - 1"
+      },
+      "correct": [
+        true,
+        true
+      ]
+    },
+    {
+      "case_id": "capture-1773130f1a05c98f",
+      "kind": "tactical",
+      "parent": {
+        "status": "recorded",
+        "kind": "mate",
+        "value_stm": 5,
+        "depth": 6,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "6e6g+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 191.109,
+        "history_key": "e728dec816c6b413f5d188967d38a748e237774c4f139d739d37171d22f878dd",
+        "position_command": "position sfen 8k/9/9/9/3r5/9/3G5/9/K8 w - 1"
+      },
+      "candidate": {
+        "status": "recorded",
+        "kind": "mate",
+        "value_stm": 5,
+        "depth": 6,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "6e6g+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 190.963,
+        "history_key": "e728dec816c6b413f5d188967d38a748e237774c4f139d739d37171d22f878dd",
+        "position_command": "position sfen 8k/9/9/9/3r5/9/3G5/9/K8 w - 1"
+      },
+      "correct": [
+        true,
+        true
+      ]
+    },
+    {
+      "case_id": "capture-1f4ee9df7105b4c7",
+      "kind": "tactical",
+      "parent": {
+        "status": "recorded",
+        "kind": "cp",
+        "value_stm": 4819,
+        "depth": 5,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "5e5c+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 190.933,
+        "history_key": "5a7721aee15c2556e082b22dff575328f097ab9d9d9edae471badbdf11d1c04e",
+        "position_command": "position sfen 8k/9/4b4/9/4R4/9/9/9/K8 b - 1"
+      },
+      "candidate": {
+        "status": "recorded",
+        "kind": "cp",
+        "value_stm": 4819,
+        "depth": 5,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "5e5c+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 190.877,
+        "history_key": "5a7721aee15c2556e082b22dff575328f097ab9d9d9edae471badbdf11d1c04e",
+        "position_command": "position sfen 8k/9/4b4/9/4R4/9/9/9/K8 b - 1"
+      },
+      "correct": [
+        true,
+        true
+      ]
+    },
+    {
+      "case_id": "capture-336f91dda8c0769c",
+      "kind": "tactical",
+      "parent": {
+        "status": "recorded",
+        "kind": "cp",
+        "value_stm": 4819,
+        "depth": 5,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "5e5g+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 190.835,
+        "history_key": "1453cd847c784e2d58eb23272cd28dda0ec93cbcdad1beb0f5d60fe17ec49929",
+        "position_command": "position sfen 8k/9/9/9/4r4/9/4B4/9/K8 w - 1"
+      },
+      "candidate": {
+        "status": "recorded",
+        "kind": "cp",
+        "value_stm": 4819,
+        "depth": 5,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "5e5g+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 191.071,
+        "history_key": "1453cd847c784e2d58eb23272cd28dda0ec93cbcdad1beb0f5d60fe17ec49929",
+        "position_command": "position sfen 8k/9/9/9/4r4/9/4B4/9/K8 w - 1"
+      },
+      "correct": [
+        true,
+        true
+      ]
+    },
+    {
+      "case_id": "capture-4e3b07de36163ba6",
+      "kind": "tactical",
+      "parent": {
+        "status": "recorded",
+        "kind": "mate",
+        "value_stm": 7,
+        "depth": 6,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "4e4c+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 190.86,
+        "history_key": "a0ab6e22175407ae670eeccd146a5ff7b9b4f7c77975285d24b900f1a6f28e83",
+        "position_command": "position sfen 8k/9/5b3/9/5R3/9/9/9/K8 b - 1"
+      },
+      "candidate": {
+        "status": "recorded",
+        "kind": "mate",
+        "value_stm": 7,
+        "depth": 6,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "4e4c+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 190.931,
+        "history_key": "a0ab6e22175407ae670eeccd146a5ff7b9b4f7c77975285d24b900f1a6f28e83",
+        "position_command": "position sfen 8k/9/5b3/9/5R3/9/9/9/K8 b - 1"
+      },
+      "correct": [
+        true,
+        true
+      ]
+    },
+    {
+      "case_id": "capture-5f0a8ba92edf2974",
+      "kind": "tactical",
+      "parent": {
+        "status": "recorded",
+        "kind": "mate",
+        "value_stm": 7,
+        "depth": 6,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "6e6g+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 190.806,
+        "history_key": "d3d57a85809f7a744e7df62b789dff80cbb3713331e98694f622d13663e0a23b",
+        "position_command": "position sfen 8k/9/9/9/3r5/9/3B5/9/K8 w - 1"
+      },
+      "candidate": {
+        "status": "recorded",
+        "kind": "mate",
+        "value_stm": 7,
+        "depth": 6,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "6e6g+",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 190.682,
+        "history_key": "d3d57a85809f7a744e7df62b789dff80cbb3713331e98694f622d13663e0a23b",
+        "position_command": "position sfen 8k/9/9/9/3r5/9/3B5/9/K8 w - 1"
+      },
+      "correct": [
+        true,
+        true
+      ]
+    },
+    {
+      "case_id": "48e389ee6ad61bd1e7929f7b2fdee19daf31f1140ff6dadead76e4808f8cb7d6",
+      "kind": "heldout",
+      "parent": {
+        "status": "recorded",
+        "kind": "cp",
+        "value_stm": -1284,
+        "depth": 2,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "7d8d",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 191.172,
+        "history_key": "ee3187067eb40c21fc0d081a9c0525b8a1ab73e5d31653611261eb8a1dbe2ece",
+        "position_command": "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 2h4h 3c3d 6i6h 7a6b 7g7f 9c9d 3i2h 8c8d 1g1f 8d8e 8h7g 1c1d 4g4f 9d9e 4f4e 2b7g+ 6h7g 3a4b 4e4d 4a3b 4d4c+ 4b4c 5i6h 2a3c 4h4f 8b8d 4i5h 3b4b 4f4h 4c5b 7g6f 8e8f 6f7e 8d8b 8g8f 8b8f 6h7h 4b4c P*8e 7c7d B*7g B*8g 7h8h 8g7f+ 7g8f 7f8f 7e7d B*6e 8i7g 6e2i+"
+      },
+      "candidate": {
+        "status": "recorded",
+        "kind": "cp",
+        "value_stm": -1284,
+        "depth": 2,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "7d8d",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 191.263,
+        "history_key": "ee3187067eb40c21fc0d081a9c0525b8a1ab73e5d31653611261eb8a1dbe2ece",
+        "position_command": "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 2h4h 3c3d 6i6h 7a6b 7g7f 9c9d 3i2h 8c8d 1g1f 8d8e 8h7g 1c1d 4g4f 9d9e 4f4e 2b7g+ 6h7g 3a4b 4e4d 4a3b 4d4c+ 4b4c 5i6h 2a3c 4h4f 8b8d 4i5h 3b4b 4f4h 4c5b 7g6f 8e8f 6f7e 8d8b 8g8f 8b8f 6h7h 4b4c P*8e 7c7d B*7g B*8g 7h8h 8g7f+ 7g8f 7f8f 7e7d B*6e 8i7g 6e2i+"
+      },
+      "correct": [
+        false,
+        false
+      ]
+    },
+    {
+      "case_id": "fa12908abb1addd955c0eb304fea0aa2a9729e7d9b23547fd999b9c7742b2f44",
+      "kind": "speed",
+      "parent": {
+        "status": "recorded",
+        "kind": "cp",
+        "value_stm": 561,
+        "depth": 2,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "B*6i",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 191.427,
+        "history_key": "dc816a48d2dd8b466ddb0260b7ed6115cfc9d5ac586f81f9f9332c51a4063519",
+        "position_command": "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 4g4f 1c1d 7i6h 3c3d 6i7i 7a6b 3i4h 8c8d 7g7f 8d8e 7i7h 2b8h+ 7h8h 8e8f 8g8f 3a4b 8h8g 2a3c B*2b 1a1b 2b1a+ 1b1c 1a2b B*5e 8i7g 5e4f 4h4g 4f3e 2b2c P*8h P*4e 3c4e 2c3d 3e4d 3d4e 8h8i+ N*2e 8i9i 2e1c+ 1d1e 4e5f 7c7d 5f7d 4d3e 1c1d L*4e 3g3f 3e4d P*4f 4e4f 4g4f P*8h P*4e 4d3c 1d2c 3c1a 2c1b 1a3c L*3e 3c2d 8g8h 8b8f L*2e 8f8h+ 2e2d 8h8i 5i5h P*3d P*8b G*7h 4i5i 8i8b 2d2c+ 3d3e P*8c 8b7a 7d9f 7h6h 5i6h 3e3f B*8b 7a7f 8b9a+ L*6d 5g5f P*2f 9f8e 2f2g+ 2h2g 7f5f 6h5g 5f5d P*5e 5d1d 9a8a P*2f 2g2f P*2e 2c1c 1d1c 1b1c 2e2f 8e8d R*8h P*7h 8h8d+ 8c8b+ 2f2g+ 8b7b 8d8i 7b6a 5a6a N*7c 6a5b 8a7b"
+      },
+      "candidate": {
+        "status": "recorded",
+        "kind": "cp",
+        "value_stm": 561,
+        "depth": 2,
+        "bound": "exact",
+        "pv_head_matches": true,
+        "bestmove": "B*6i",
+        "requested_ms": 200,
+        "requested_depth": null,
+        "research_decision_id": null,
+        "elapsed_ms": 192.05,
+        "history_key": "dc816a48d2dd8b466ddb0260b7ed6115cfc9d5ac586f81f9f9332c51a4063519",
+        "position_command": "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 4g4f 1c1d 7i6h 3c3d 6i7i 7a6b 3i4h 8c8d 7g7f 8d8e 7i7h 2b8h+ 7h8h 8e8f 8g8f 3a4b 8h8g 2a3c B*2b 1a1b 2b1a+ 1b1c 1a2b B*5e 8i7g 5e4f 4h4g 4f3e 2b2c P*8h P*4e 3c4e 2c3d 3e4d 3d4e 8h8i+ N*2e 8i9i 2e1c+ 1d1e 4e5f 7c7d 5f7d 4d3e 1c1d L*4e 3g3f 3e4d P*4f 4e4f 4g4f P*8h P*4e 4d3c 1d2c 3c1a 2c1b 1a3c L*3e 3c2d 8g8h 8b8f L*2e 8f8h+ 2e2d 8h8i 5i5h P*3d P*8b G*7h 4i5i 8i8b 2d2c+ 3d3e P*8c 8b7a 7d9f 7h6h 5i6h 3e3f B*8b 7a7f 8b9a+ L*6d 5g5f P*2f 9f8e 2f2g+ 2h2g 7f5f 6h5g 5f5d P*5e 5d1d 9a8a P*2f 2g2f P*2e 2c1c 1d1c 1b1c 2e2f 8e8d R*8h P*7h 8h8d+ 8c8b+ 2f2g+ 8b7b 8d8i 7b6a 5a6a N*7c 6a5b 8a7b"
+      }
+    }
+  ],
+  "parent_parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591",
+  "candidate_parameters_sha256": "dafa94654d381e250a19c3971184a5572481ec0b575709994998a10a4f231b28",
+  "limitation": "Fixed small regression/selected-case gate, not proof of general strength.",
+  "formal_adoption": false,
+  "purpose": "adapter_smoke_only",
+  "fixture_is_independent_heldout": false,
+  "candidate_is_learned": false,
+  "binary_sha256": "37439e1ec26c4bce96a4bb2c43316a05ea019906c867c7247ee710f2c13483f8",
+  "source_match_run": 39013481948,
+  "source_verification_run": 39014782775
+}

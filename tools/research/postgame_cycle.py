@@ -79,7 +79,11 @@ def request(state, inputs, expected_revision):
         require(inputs["candidate"] == state["candidate"], "candidate changed after preflight")
     require(state["used_games"] + games <= state["plan"]["max_new_games"], "game budget exhausted")
     seed_key = "source" if stage in ("initial_source", "collect_source") else stage
-    seed = state["plan"]["seeds"][state["generation"]-1].get(seed_key)
+    # A post-generation source belongs to the NEXT generation. Reusing the
+    # initial source seed here would silently repeat the same experimental seed.
+    seed_index = state["generation"] if stage == "collect_source" else state["generation"]-1
+    require(seed_index < len(state["plan"]["seeds"]), "generation budget exhausted")
+    seed = state["plan"]["seeds"][seed_index].get(seed_key)
     payload = dict(cycle=state["plan"]["cycle_id"], generation=state["generation"], stage=stage,
                    policy=state["plan_sha256"], inputs=copy.deepcopy(inputs), games=games, seed=seed)
     operation = digest(payload)
@@ -124,9 +128,9 @@ def audited_match(evidence, games):
     actual = score_interval(result["wins"], result["losses"], result["draws"])
     unique = audit["prior_and_internal_duplicates_excluded"]
     unique_n = sum(unique[k] for k in ("wins", "losses", "draws"))
-    require(0 < unique_n <= games and all(unique[k] <= result[k] for k in ("wins", "losses", "draws")),
+    require(0 <= unique_n <= games and all(unique[k] <= result[k] for k in ("wins", "losses", "draws")),
             "invalid duplicate exclusion counts")
-    return actual, score_interval(unique["wins"], unique["losses"], unique["draws"])
+    return actual, score_interval(unique["wins"], unique["losses"], unique["draws"]) if unique_n else None
 
 
 def finish(state, operation, evidence):
@@ -170,19 +174,28 @@ def finish(state, operation, evidence):
     elif stage == "preflight":
         require(evidence["candidate"] == p["payload"]["inputs"]["candidate"], "preflight candidate mismatch")
         check = evidence["preflight"]
-        require(check.get("disabled_exact") is True and check.get("regressions") == 0,
-                "disabled equality/regressions not passed")
+        require(type(check.get("disabled_exact")) is bool and type(check.get("regressions")) is int
+                and check["regressions"] >= 0, "incomplete equality/regression measurements")
         require(type(check.get("depth_ratio")) in (int, float) and math.isfinite(check["depth_ratio"])
-                and check["depth_ratio"] >= .9, "speed gate failed")
+                and check["depth_ratio"] >= 0, "invalid speed measurement")
+        passed = check["disabled_exact"] and check["regressions"] == 0 and check["depth_ratio"] >= .9
         if state["plan"]["candidate_kind"] != "knowledge":
-            require(type(check.get("heldout_improved")) is int and check["heldout_improved"] > 0,
-                    "no real-engine change on unused cases")
+            require(type(check.get("heldout_improved")) is int and check["heldout_improved"] >= 0,
+                    "missing real-engine unused-case measurement")
+            passed &= check["heldout_improved"] > 0
         if state["plan"]["candidate_kind"] != "evaluation":
-            require(type(check.get("targeted_corrections")) is int and check["targeted_corrections"] > 0
-                    and type(check.get("candidate_knowledge_hits")) is int and check["candidate_knowledge_hits"] > 0,
-                    "no verified targeted knowledge correction/use")
-        out["candidate"] = evidence["candidate"]
-        out["stage"] = "screen"
+            require(type(check.get("targeted_corrections")) is int and check["targeted_corrections"] >= 0
+                    and type(check.get("candidate_knowledge_hits")) is int and check["candidate_knowledge_hits"] >= 0,
+                    "missing targeted knowledge measurement")
+            passed &= check["targeted_corrections"] > 0 and check["candidate_knowledge_hits"] > 0
+        # A measured candidate rejection is a normal cycle outcome. Missing or
+        # unexecuted measurements still fail closed instead of masquerading as one.
+        require(passed or check.get("completed") is True, "preflight gates failed without completed measurement")
+        if passed:
+            out["candidate"] = evidence["candidate"]
+            out["stage"] = "screen"
+        else:
+            out.update(stage="collect_source", result="retain_parent_preflight_rejected")
     elif stage in ("screen", "confirm"):
         require(evidence["candidate"] == state["candidate"], "candidate changed in comparison")
         raw, unique = audited_match(evidence, games)
@@ -192,7 +205,7 @@ def finish(state, operation, evidence):
         if stage == "screen" and raw[0] >= .5 and knowledge_effect:
             out["stage"] = "confirm"
         else:
-            passed = stage == "confirm" and raw[1] > .5 and unique[1] > .5 and knowledge_effect
+            passed = stage == "confirm" and raw[1] > .5 and unique is not None and unique[1] > .5 and knowledge_effect
             if passed:
                 out["parent"] = copy.deepcopy(state["candidate"])  # Research parent ONLY.
             out["result"] = "research_child_validated" if passed else "retain_parent"

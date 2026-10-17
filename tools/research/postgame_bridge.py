@@ -83,13 +83,22 @@ def validate_shard(row, number, request, binary_sha, knowledge_sha):
         require(all(v <= 10 for v in long.values()), "long-think cap exceeded")
 
 
-def verify_source(source, request, parent_options, build_log, expected_knowledge_sha256):
+def verify_source(source, request, parent_options, build_log, expected_knowledge_sha256,
+                  candidate_options=None, prior_signatures=None):
     source = Path(source)
     build = source/"binaries/build"
     binary, knowledge = build/"engine-a", build/"position-knowledge-v1.tsv"
     binaries = {"A": sha256(binary.read_bytes()), "B": sha256((build/"engine-b").read_bytes())}
     binary_sha = binaries["A"]; knowledge_sha = sha256(knowledge.read_bytes())
     require(knowledge_sha == expected_knowledge_sha256, "source differs from frozen adopted knowledge")
+    for side, params in (("a", candidate_options or parent_options), ("b", parent_options)):
+        actual = json.loads(request["options_"+side])
+        require(all(actual.get(k, b) == params[k] for k, b in zip(OPTIONS, BASE)),
+                "request uses different evaluation parameters")
+        require(set(actual) <= set(FORMAL_DEFAULTS) | set(OPTIONS) | {"PositionKnowledgeFile"},
+                "unexpected comparison option")
+        for key, value in FORMAL_DEFAULTS.items():
+            require(actual.get(key, value) == value, "comparison changed formal search conditions")
     parent = request["ref_a"]
     require(parent == request["ref_b"] and len(re.findall(r'git checkout --progress --force '+parent, build_log)) >= 2,
             "actual fixed source checkouts not proved")
@@ -110,19 +119,20 @@ def verify_source(source, request, parent_options, build_log, expected_knowledge
     require(len(games) == request["games"], "source game count mismatch")
     # Generic match builds in two source directories; debug paths may make the
     # bytes differ even for the same fixed commit. Verify each actual artifact.
-    for executable in (binary, build/"engine-b"):
+    for executable, params in ((binary, candidate_options or parent_options), (build/"engine-b", parent_options)):
         executable.chmod(0o755)
-        engine = Analyzer(executable, knowledge, evaluation_options=parent_options)
+        engine = Analyzer(executable, knowledge, evaluation_options=params)
         try:
             for name, value in dict(FORMAL_DEFAULTS, **dict(zip(OPTIONS, BASE))).items():
                 expected = str(value).lower() if type(value) is bool else str(value)
                 require(engine.option_defaults.get(name) == expected, "saved engine has unexpected default: "+name)
         finally:
             engine.close()
-    signatures = [digest([" ".join(g.start_sfen.split()[:3]), g.moves]) for g in games]
+    signatures = [trajectory(g.start_sfen, g.moves) for g in games]
     unique = {}
     for game, signature in zip(games, signatures):
-        unique.setdefault(signature, game)
+        if signature not in (prior_signatures or set()):
+            unique.setdefault(signature, game)
     def counts(gs):
         gs = list(gs)
         return dict(wins=sum(g.row["winner"] == "A" for g in gs), losses=sum(g.row["winner"] == "B" for g in gs),
@@ -133,12 +143,20 @@ def verify_source(source, request, parent_options, build_log, expected_knowledge
                  prior_and_internal_duplicates_excluded=counts(unique.values()), candidate_knowledge_uses=0,
                  parent_ref=parent, binary_sha256=binary_sha, knowledge_sha256=knowledge_sha,
                  actual_binary_sha256=binaries,
-                 parent_parameters_sha256=digest(parent_options), internal_duplicates=len(games)-len(unique),
+                 parent_parameters_sha256=digest(parent_options), internal_duplicates=len(games)-len(set(signatures)),
+                 prior_trajectory_overlap=sum(s in (prior_signatures or set()) for s in signatures),
+                 trajectory_outcomes=[dict(sha256=s, winner=g.row["winner"], a_black=g.row["a_black"],
+                                           game_id=g.row["game_id"]) for s, g in zip(signatures, games)],
                  reward_status=dict(Counter(g.outcome_status for g in games)),
                  loader_reproduced=True, original_loader_handshake_retained=False,
-                 limitation="Source generation only. Internal duplicate filtering, not independent strength validation or an audit against every past corpus.")
+                 candidate_parameters_sha256=digest(candidate_options or parent_options),
+                 limitation="Complete-trajectory sensitivity only; partial-game overlap is not a proof of independence.")
     return games, audit, counts(games), binary, knowledge
 
+
+
+def trajectory(start, moves):
+    return sha256((" ".join(start.split()[:3])+"\n"+" ".join(moves)).encode())
 
 def analyze_source(source, request, parent_options, build_log, output, expected_knowledge_sha256,
                    previous_preparation=None):
