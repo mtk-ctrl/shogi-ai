@@ -1,0 +1,39 @@
+{
+  "schema": "kumoji-postgame-publication-v1",
+  "operation_id": "postgame-diagnosis-20261017-01",
+  "code_ref": "f800d2f136128e7b7a003096f91782f2ca49c90c",
+  "payload_path": "research/selfplay-postgame-20261017/initial-diagnosis.tgz",
+  "sha256": "4d439d6cabe207527cb9e7ce2710f4598e1bae07275396bf19a1ac6a69c39dd1",
+  "bytes": 2739607,
+  "files": {
+    "analyzer-build.json": {
+      "sha256": "eb454dcb54036344f4aa7b4d56ab04d8e92372276f799ab2134069bca16cb5ae",
+      "bytes": 1530
+    },
+    "attribution.json": {
+      "sha256": "a64d675fff621a27014583eae13086c91a02b05823b26a4d91d561cac9804f36",
+      "bytes": 14941
+    },
+    "diagnosis.json": {
+      "sha256": "b372c14e0d909a3a2116ce7014bb791bec4036099873597eb159868a96924eed",
+      "bytes": 652605
+    },
+    "input-receipts.json": {
+      "sha256": "918addb1f7c4d94c88f12ff3072390887bb5e0f9f3e9bd82cc3541c9757e2d18",
+      "bytes": 1439
+    },
+    "postgame-analyzer": {
+      "sha256": "37439e1ec26c4bce96a4bb2c43316a05ea019906c867c7247ee710f2c13483f8",
+      "bytes": 8392920
+    },
+    "selected-cases.json": {
+      "sha256": "f5296042655c66a201d41deb541676a8e47cd62f9012299996f8094d283d46f4",
+      "bytes": 355437
+    },
+    "summary.json": {
+      "sha256": "21833c3f38d77a539bf4380f85030f43776222e1dfe957b573e0365e388a2155",
+      "bytes": 1467
+    }
+  },
+  "staging_note": "One initial transfer snapshot for monthly Release publication; no continuing archive of all played games in git."
+}

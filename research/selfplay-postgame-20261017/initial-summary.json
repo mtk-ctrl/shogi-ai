@@ -1,0 +1,54 @@
+{
+  "source_games": 500,
+  "source_plies": 54821,
+  "unique_static_positions": 46457,
+  "selected_cases": 96,
+  "categories": {
+    "static_loss": 32,
+    "static_gain": 32,
+    "quiet": 32
+  },
+  "selected_side": {
+    "black": 50,
+    "white": 46
+  },
+  "selected_reward": {
+    "-1": 39,
+    "1": 37,
+    "0": 20
+  },
+  "routes": {
+    "hold": 38,
+    "mixed_or_unstable": 4,
+    "knowledge_reference_candidate": 48,
+    "search_horizon_candidate": 4,
+    "stable_research_move_candidate": 2
+  },
+  "verification_pairs": 16,
+  "analyzer_binary_sha256": "37439e1ec26c4bce96a4bb2c43316a05ea019906c867c7247ee710f2c13483f8",
+  "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+  "options": {
+    "SearchResearchMask": 23,
+    "SearchEfficiencyMask": 8,
+    "SearchReuseMask": 6,
+    "SearchNextMask": 4,
+    "SearchProbeMask": 7,
+    "SearchThreads": 2,
+    "RiskVerify": true,
+    "PositionKnowledge": true,
+    "AdaptiveLongThink": false,
+    "USI_Ponder": false,
+    "OpeningRandomNonLance": false,
+    "RandomSeed": 2031101701
+  },
+  "fresh_process_per_search": true,
+  "seconds": 129.844,
+  "environment": {
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "cpu_count": 9
+  },
+  "status": "diagnosis_completed",
+  "learning_status": "not_run",
+  "formal_adoption": false,
+  "limitation": "Provisional own-engine diagnosis; deeper search and fixed-depth pairing do not prove correct play or evaluation causality."
+}
