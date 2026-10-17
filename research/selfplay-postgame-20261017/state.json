@@ -2,7 +2,7 @@
   "schema_version": 1,
   "cycle_id": "postgame-pilot-20261017",
   "status": "implementation_in_progress",
-  "phase": "screen_requested",
+  "phase": "screen_running",
   "generation": 0,
   "formal_adoption": false,
   "controller_implemented": false,
@@ -30,7 +30,8 @@
   },
   "used": {
     "new_games": 0,
-    "selected_positions": 96
+    "selected_positions": 96,
+    "reserved_new_games": 100
   },
   "automation": {
     "id": "6ad2fc16e4288191a7320026a91a35c6",
@@ -41,8 +42,8 @@
     "stop_after_verified_report": true,
     "timing_mode": "exact_schedule",
     "recurring": false,
-    "next_check_at": "2026-10-17T14:00:00+09:00",
-    "next_check_kind": "preparation_and_launch_checkpoint",
+    "next_check_at": "2026-10-17T14:23:00+09:00",
+    "next_check_kind": "screen_result_and_audit",
     "next_check_basis": "No Actions run was in progress or queued at scheduling. Candidate K1 preflight and CI are complete; resume the pending launch-path verification. This is not the ETA of an active match.",
     "handoff": {
       "previous_id": "6ad2af67c6788191b5702c4537d90052",
@@ -74,7 +75,7 @@
     },
     {
       "operation_id": "postgame-g1-screen-20261017",
-      "status": "requested",
+      "status": "running",
       "games": 100,
       "candidate_ref": "5a1997043f275d09099c4be67110ed96e2c80c88",
       "seed": 2031101801,
@@ -105,7 +106,13 @@
       ],
       "other_active_runner_jobs": 0,
       "available_runner_jobs": 20,
-      "run_id": null
+      "run_id": 39005539549,
+      "launcher_run": 39005526338,
+      "started_shards": 20,
+      "started_at_utc": "2026-10-17T05:15:22Z",
+      "match_step_started": true,
+      "estimated_match_complete_at": "2026-10-17T14:23:00+09:00",
+      "eta_basis": "5 games/lane; recent ~110 plies and ~325ms/ply => ~3 minutes of play plus setup, variability, aggregation and Release preservation."
     }
   ],
   "evidence": [
@@ -200,7 +207,7 @@
       "commit": "a71d814521f3a512964bccb69cc3eaacdaacf2c1"
     }
   ],
-  "next_action": "Find explicit-request launcher and one manual match run, verify 20 match shards actually start, then calculate finish from actual start and 5 games per lane.",
+  "next_action": "Follow existing screen run 39005539549; audit actual moves and exact artifacts after completion. Never redispatch. Current turn is adding postgame-audit to the existing verification entry; use latest main.",
   "limitations": [
     "Initial diagnosis, preservation, K1 snapshot and preflight are complete. Evaluation fitting is skipped because only two eligible pairs exist. New live candidate games and full generation handoff remain unverified.",
     "Routes are provisional; 20 draw positions are overrepresented. Do not treat the 96 cases or five conflicting static-rank examples as proven evaluation teachers.",
