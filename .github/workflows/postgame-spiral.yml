@@ -14,6 +14,11 @@ on:
       - "research/self-improvement-20261017/replay_progress.py"
       - "research/self-improvement-20261017/knowledge_fixture.py"
       - "research/self-improvement-20261017/knowledge_saved_review.py"
+      - "research/self-improvement-20261017/knowledge_route_fixture.py"
+      - "research/self-improvement-20261017/verify_followup_saved.py"
+      - "research/self-improvement-20261017/followup-observations.json"
+      - ".github/scripts/run_postgame_knowledge_match.py"
+      - ".github/scripts/publish_postgame_followup.py"
   workflow_dispatch:
     inputs:
       cycle_id:
@@ -24,6 +29,10 @@ on:
         description: Immutable commit containing research/postgame-cycles/CYCLE/PLAN.json
         type: string
         required: true
+      publication_only:
+        description: Publish and verify the saved eight-case follow-up only (no analysis or games)
+        type: boolean
+        default: false
       inspect_only:
         description: Read back completed cycle only; no new games or learning
         type: boolean
@@ -54,6 +63,10 @@ jobs:
         run: python3 scripts/build.py --output build/knowledge-test-engine
       - name: Verify separate A/B knowledge with actual engine and arena
         run: python3 research/self-improvement-20261017/knowledge_fixture.py --binary build/knowledge-test-engine --directory build/knowledge-fixture --output build/postgame-knowledge-wiring.json
+      - name: Verify saved follow-up without repeating engine analysis
+        run: python3 research/self-improvement-20261017/verify_followup_saved.py --inputs build/followup-originals --download --observations research/self-improvement-20261017/followup-observations.json --output build/postgame-followup-readback.json
+      - name: Verify normal-arena research knowledge transport and audit
+        run: python3 research/self-improvement-20261017/knowledge_route_fixture.py --binary build/knowledge-test-engine --directory build/knowledge-route-fixture --output build/postgame-knowledge-route.json
       - run: python3 scripts/check_workflow_inventory.py --strict && python3 scripts/check_match_workflows.py
       - uses: actions/upload-artifact@v4
         with:
@@ -62,6 +75,8 @@ jobs:
             build/postgame-progress-replay.json
             build/postgame-knowledge-wiring.json
             build/postgame-knowledge-saved-review.json
+            build/postgame-followup-readback.json
+            build/postgame-knowledge-route.json
           retention-days: 90
   launch-request:
     if: github.event_name == 'push'
@@ -75,7 +90,7 @@ jobs:
         env: {GH_TOKEN: "${{ github.token }}"}
         run: python3 .github/scripts/run_postgame_spiral.py --launch
   control:
-    if: github.event_name == 'workflow_dispatch' && !inputs.inspect_only
+    if: github.event_name == 'workflow_dispatch' && !inputs.inspect_only && !inputs.publication_only
     runs-on: ubuntu-latest
     timeout-minutes: 360
     permissions: {contents: write, actions: write}
@@ -102,7 +117,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 90
   inspect:
-    if: github.event_name == 'workflow_dispatch' && inputs.inspect_only
+    if: github.event_name == 'workflow_dispatch' && inputs.inspect_only && !inputs.publication_only
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions: {contents: read, actions: read}
@@ -123,3 +138,25 @@ jobs:
           path: build/postgame-spiral-inspection/readback.json
           if-no-files-found: ignore
           retention-days: 90
+
+  publish-followup:
+    if: github.event_name == 'workflow_dispatch' && inputs.publication_only && !inputs.inspect_only
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions: {contents: write}
+    steps:
+      - uses: actions/checkout@v5
+        with: {ref: main}
+      - run: python3 -m pip install python-shogi==1.1.1
+      - name: Verify observations and save selected research with retrieved hash
+        env:
+          GH_TOKEN: "${{ github.token }}"
+          CYCLE_ID: "${{ inputs.cycle_id }}"
+          PLAN_REF: "${{ inputs.plan_ref }}"
+        run: python3 .github/scripts/publish_postgame_followup.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: "postgame-followup-publication-${{ github.run_id }}"
+          path: build/followup-publication
+          retention-days: 90
+          if-no-files-found: error

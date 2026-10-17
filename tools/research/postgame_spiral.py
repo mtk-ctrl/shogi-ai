@@ -125,7 +125,7 @@ def parent_effect(moves, research_move):
 
 
 def prepare(diagnosis, probe, static, split_seed, registry=None, parent_options=None,
-            example_bank=None, parent_context=None, track_decisions=False):
+            example_bank=None, parent_context=None, track_decisions=False, evaluation_enabled=True):
     """probe(case)->two results; static(sfen)->fixed-parent breakdown."""
     require(0 <= len(diagnosis) <= 96, "selected-case budget exceeded")
     counts = collections.Counter((str(r["case"]["source"]["run_id"]), r["case"]["source"]["game_id"]) for r in diagnosis)
@@ -240,8 +240,15 @@ def prepare(diagnosis, probe, static, split_seed, registry=None, parent_options=
         examples.append(dict(split_row, reward=case["outcome"]["terminal_reward_stm"], **terms))
         note(row, "evaluation_eligible")
     require(len(examples) <= 512, "example bank capacity needs review; keep originals")
-    learning = fit(examples, parent_options)
-    if learning["status"] != "needs_data":
+    require(type(evaluation_enabled) is bool,'explicit evaluation-learning mode required')
+    if evaluation_enabled:
+        learning = fit(examples, parent_options)
+    else:
+        parent_values(parent_options)
+        learning=dict(schema='postgame-ranker-v1',status='not_requested_knowledge_only',parent_options=parent_options,
+                      options=None,parameter_updates=0,trials=0,formal_adoption=False,dataset_sha256=digest(examples),
+                      split_groups={name:len({r['group'] for r in examples if r['split']==name}) for name in ('train','validation','heldout')})
+    if evaluation_enabled and learning["status"] != "needs_data":
         exposed = {r["group"] for r in examples if r["split"] == "heldout"}
         for record in registry.values():
             if record["group"] in exposed:

@@ -69,8 +69,9 @@ def validate_shard(row, number, request, binary_sha, knowledge_sha):
         expected.setdefault("USI_Ponder", True)
         require(row["options_"+side] == expected, "actual USI request differs")
         meta = row["position_knowledge"][side.upper()]
+        spec=knowledge_sha[side.upper()] if isinstance(knowledge_sha,dict) else dict(sha256=knowledge_sha,positions=163)
         require(meta.get("enabled") is True and meta.get("available") is True
-                and meta["sha256"] == knowledge_sha and meta["positions"] == 163, "adopted knowledge unavailable/different")
+                and meta["sha256"] == spec['sha256'] and meta["positions"] == spec['positions'], "adopted knowledge unavailable/different")
     for i, game in enumerate(row["details"]):
         require(game["a_black"] == ((row["game_offset"]+i) % 2 == 0), "unbalanced color assignment")
         records = game["move_records"]

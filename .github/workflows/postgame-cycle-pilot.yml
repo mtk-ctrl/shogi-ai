@@ -11,8 +11,13 @@ on:
       - "research/selfplay-postgame-20261017/**"
       - ".github/workflows/postgame-cycle-pilot.yml"
       - ".github/scripts/dispatch_postgame_pilot.py"
+      - ".github/scripts/run_postgame_knowledge_match.py"
   workflow_dispatch:
     inputs:
+      spiral_checkpoint:
+        description: Immutable saved cycle checkpoint for research knowledge mode (empty keeps frozen G1)
+        type: string
+        default: ""
       request_id:
         description: Frozen operation identifier
         default: manual
@@ -36,7 +41,7 @@ permissions:
   contents: write
   actions: read
 concurrency:
-  group: postgame-cycle-pilot-20261017-g1-screen
+  group: postgame-cycle-pilot-${{ inputs.spiral_checkpoint && inputs.request_id || '20261017-g1-screen' }}
   cancel-in-progress: false
 env:
   PARENT_SHA: efcfa0f80d218c3dbcc3162f5bee3366f6a835cf
@@ -67,7 +72,7 @@ jobs:
         env: {GH_TOKEN: "${{ github.token }}"}
         run: python3 .github/scripts/dispatch_postgame_pilot.py
   plan:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' && !inputs.spiral_checkpoint
     needs: code-ci
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -106,7 +111,7 @@ jobs:
           print('distribution',[x['games'] for x in include])
           PY
   build:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' && !inputs.spiral_checkpoint
     needs: plan
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -130,7 +135,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with: {name: "postgame-binaries-${{ github.run_id }}", path: binaries.tgz, if-no-files-found: error}
   match:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' && !inputs.spiral_checkpoint
     needs: [plan, build]
     runs-on: ubuntu-latest
     timeout-minutes: 120
@@ -155,7 +160,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with: {name: "postgame-shard-${{ github.run_id }}-${{ matrix.shard }}", path: "results/shard-${{ matrix.shard }}.json", if-no-files-found: error}
   aggregate:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' && !inputs.spiral_checkpoint
     needs: [plan, build, match]
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -209,3 +214,83 @@ jobs:
             release-receipt.json
           retention-days: 90
           if-no-files-found: error
+
+  research-plan:
+    if: github.event_name == 'workflow_dispatch' && inputs.spiral_checkpoint
+    needs: code-ci
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions: {contents: read, actions: read}
+    outputs: {matrix: "${{ steps.make.outputs.matrix }}"}
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - run: python3 scripts/check_match_workflows.py
+      - id: make
+        env:
+          GH_TOKEN: "${{ github.token }}"
+          SPIRAL_CHECKPOINT: "${{ inputs.spiral_checkpoint }}"
+          REQUEST_ID: "${{ inputs.request_id }}"
+          GAMES: "${{ inputs.games }}"
+          SHARDS: "${{ inputs.shards }}"
+        run: python3 .github/scripts/run_postgame_knowledge_match.py plan
+  research-build:
+    if: github.event_name == 'workflow_dispatch' && inputs.spiral_checkpoint
+    needs: research-plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions: {contents: read}
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - name: Materialize exact saved engine and separate research snapshots
+        env:
+          GH_TOKEN: "${{ github.token }}"
+          SPIRAL_CHECKPOINT: "${{ inputs.spiral_checkpoint }}"
+          REQUEST_ID: "${{ inputs.request_id }}"
+          GAMES: "${{ inputs.games }}"
+          SHARDS: "${{ inputs.shards }}"
+        run: python3 .github/scripts/run_postgame_knowledge_match.py materialize
+      - uses: actions/upload-artifact@v4
+        with: {name: "postgame-research-binaries-${{ github.run_id }}", path: research-binaries.tgz, if-no-files-found: error}
+  research-match:
+    if: github.event_name == 'workflow_dispatch' && inputs.spiral_checkpoint
+    needs: [research-plan, research-build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions: {contents: read}
+    strategy:
+      fail-fast: false
+      matrix: "${{ fromJSON(needs.research-plan.outputs.matrix) }}"
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with: {name: "postgame-research-binaries-${{ github.run_id }}"}
+      - run: tar -xzf research-binaries.tgz
+      - name: Play research knowledge
+        env:
+          SHARD: "${{ matrix.shard }}"
+          LANE_GAMES: "${{ matrix.games }}"
+          GAME_OFFSET: "${{ matrix.offset }}"
+          LANE_SEED: "${{ matrix.seed }}"
+        run: python3 .github/scripts/run_postgame_knowledge_match.py play
+      - uses: actions/upload-artifact@v4
+        with: {name: "postgame-research-shard-${{ github.run_id }}-${{ matrix.shard }}", path: "results/shard-${{ matrix.shard }}.json", if-no-files-found: error}
+  research-aggregate:
+    if: github.event_name == 'workflow_dispatch' && inputs.spiral_checkpoint
+    needs: [research-plan, research-build, research-match]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions: {contents: read}
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - uses: actions/download-artifact@v4
+        with: {name: "postgame-research-binaries-${{ github.run_id }}"}
+      - uses: actions/download-artifact@v4
+        with: {pattern: "postgame-research-shard-${{ github.run_id }}-*", path: results, merge-multiple: true}
+      - run: tar -xzf research-binaries.tgz
+      - run: python3 .github/scripts/run_postgame_knowledge_match.py aggregate
+      - uses: actions/upload-artifact@v4
+        with: {name: "postgame-research-result-${{ github.run_id }}", path: research-audit, retention-days: 90, if-no-files-found: error}

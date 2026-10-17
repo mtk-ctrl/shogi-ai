@@ -32,6 +32,7 @@ from tools.research.postgame_eval_preflight import run as preflight
 from tools.research.postgame_runtime import initialize, advance
 from tools.research.postgame_progress import describe as describe_progress
 from tools.research.postgame_knowledge import run as prepare_knowledge
+from tools.research.postgame_followup import run as run_followup
 
 
 def gh(*args, payload=None):
@@ -50,7 +51,8 @@ def module(name,path):
 
 
 def code_hash():
-    files=sorted(ROOT.glob('tools/research/postgame_*.py'))+[Path(__file__),ROOT/'.github/workflows/postgame-spiral.yml']
+    files=sorted(ROOT.glob('tools/research/postgame_*.py'))+[Path(__file__),ROOT/'.github/workflows/postgame-spiral.yml',
+          ROOT/'.github/workflows/postgame-cycle-pilot.yml',ROOT/'.github/scripts/run_postgame_knowledge_match.py']
     return digest({p.relative_to(ROOT).as_posix():sha256(p.read_bytes()) for p in files})
 
 
@@ -58,7 +60,7 @@ def code_hash():
 def algorithm_hash():
     # Audit/log/publication repairs may change, but not the frozen learning,
     # split rules, candidate gates or generation/selection semantics.
-    names=('ranker','analyze','spiral','cycle','eval_preflight','runtime','candidates','cases','progress','knowledge')
+    names=('ranker','analyze','spiral','cycle','eval_preflight','runtime','candidates','cases','progress','knowledge','followup','knowledge_route')
     return digest({n:sha256((ROOT/f'tools/research/postgame_{n}.py').read_bytes()) for n in names})
 
 def safe_extract(package,dest):
@@ -99,6 +101,8 @@ def inherit_predecessor(env,previous):
     require(not old_seeds & new_seeds,'new explicit cycle reused predecessor experimental seeds')
     require(digest(previous['prior_signatures'])==previous['trajectory_index_sha256'],'predecessor index hash mismatch')
     env['preparation_publication']=previous['preparation_publication']
+    for key in ('parent_knowledge_publication','completed_research_tasks','source_publication'):
+        if key in previous:env[key]=copy.deepcopy(previous[key])
     env['prior_signatures']=list(previous['prior_signatures'])
     env['predecessor_cycle']=old['plan']['cycle_id']
     env['experiment_seeds']=sorted(old_seeds|new_seeds)
@@ -132,6 +136,10 @@ class Backend:
         return matches[0]
 
     def bytes(self,publication):
+        require(re.fullmatch(r'records-\d{4}-\d{2}-01',publication.get('release',''))
+                and re.fullmatch(r'[0-9a-f]{64}',publication.get('sha256',''))
+                and type(publication.get('bytes')) is int and 0<publication['bytes']<=256*1024**2,
+                'invalid immutable research publication')
         key=(publication['release'],publication['name'])
         if key in self.cache:return self.cache[key]
         dest=self.output/'downloads'/digest(key)[:16];dest.mkdir(parents=True,exist_ok=True)
@@ -218,6 +226,15 @@ class Backend:
         subprocess.run(['gh','run','watch',str(body),'--repo',self.repo,'--interval','60'],check=True)
 
     def dispatch(self,req):
+        if req.get('execution_route')=='research_knowledge':
+            release=self.release();asset=next(a for a in release['assets'] if a['name']==self.latest_name)
+            checkpoint=self.receipt(asset,self.tag)
+            response=api(f'repos/{self.repo}/actions/workflows/postgame-cycle-pilot.yml/dispatches',
+                         dict(ref='main',return_run_details=True,inputs=dict(spiral_checkpoint=json.dumps(checkpoint),
+                              request_id=self.active['state']['pending']['operation_id'],games=str(req['games']),shards=str(req['shards']))))
+            body=response.get('workflow_run_id');require(type(body) is int and body>0,'research dispatch response lacks body ID; do not retry')
+            print('SPIRAL_KNOWLEDGE_DISPATCH '+json.dumps(dict(body_run=body,request=req)),flush=True)
+            return body
         # Official manual entry supports the nine evaluation options; this is
         # intentionally NOT an expansion/bypass of the narrower owner Issue API.
         k=api(f'repos/{self.repo}/contents/position-knowledge-v1.tsv?ref=main')
@@ -234,7 +251,9 @@ class Backend:
 
     def match_status(self,body):
         run=api(f'repos/{self.repo}/actions/runs/{body}')
-        require(run['event']=='workflow_dispatch' and run['path']=='.github/workflows/engine-match.yml','wrong enrolled body')
+        research=((self.active or {}).get('match_request') or {}).get('execution_route')=='research_knowledge'
+        path='.github/workflows/postgame-cycle-pilot.yml' if research else '.github/workflows/engine-match.yml'
+        require(run['event']=='workflow_dispatch' and run['path']==path,'wrong enrolled body')
         if run['status']!='completed':return 'waiting'
         return 'success' if run['conclusion']=='success' else 'failed'
 
@@ -273,6 +292,7 @@ class Backend:
     def consume_match(self,env):
         existing=self.previous_stage(env)
         if existing:return existing
+        if env['match_request'].get('execution_route')=='research_knowledge':return self.consume_knowledge_match(env)
         folder=self.folder(env);body=env['dispatch']['body_run'];req=env['match_request']
         restore=module('spiral_restore_match',ROOT/'.github/scripts/verify_selfplay_candidate.py');restore.OUT=folder
         source=restore.restore_match(body)
@@ -297,6 +317,34 @@ class Backend:
         pub=self.package(env,data,files)
         return dict(data,publication=pub)
 
+    def consume_knowledge_match(self,env):
+        from tools.research.postgame_knowledge_route import materialize,audit
+        folder=self.folder(env);body=env['dispatch']['body_run'];req=env['match_request']
+        source=folder/'research-match';source.mkdir(exist_ok=True)
+        subprocess.run(['gh','run','download',str(body),'--repo',self.repo,'--name',f'postgame-research-binaries-{body}','--dir',str(source)],check=True)
+        safe_extract(source/'research-binaries.tgz',source)
+        subprocess.run(['gh','run','download',str(body),'--repo',self.repo,'--pattern',f'postgame-research-shard-{body}-*','--dir',str(source/'raw')],check=True)
+        shards=source/'shards';shards.mkdir()
+        for path in (source/'raw').rglob('shard-*.json'):
+            require(not (shards/path.name).exists(),'duplicate downloaded shard');shutil.copyfile(path,shards/path.name)
+        checkenv=copy.deepcopy(env);checkenv['dispatch']['body_run']=None
+        expected=materialize(checkenv,self.unpack,source/'expected-build')
+        require(json.loads((source/'build/provenance.json').read_bytes())==expected,'actual research inputs differ from immutable intent')
+        jobs=api(f'repos/{self.repo}/actions/runs/{body}/jobs?per_page=100')['jobs']
+        builds=[j for j in jobs if j['name']=='research-build' and j['conclusion']=='success']
+        lanes=[j for j in jobs if j['name'].startswith('research-match (') and j['conclusion']=='success']
+        require(len(builds)==1 and len(lanes)==req['shards'],'missing research materialization/lane proof')
+        require(all(any(x['name']=='Play research knowledge' and x['conclusion']=='success' for x in j['steps']) for j in lanes),
+                'actual research match step did not complete')
+        data=audit(source/'build',shards,req,body,source/'audit',set(env['prior_signatures']))
+        data['audit'].update(match_run=body,build_job=builds[0]['id'],audit_code_sha256=code_hash(),
+                 actual_lane_jobs=[dict(id=j['id'],started_at=j['started_at'],completed_at=j['completed_at']) for j in lanes])
+        data['runtime_statistics']=runtime_statistics(shards.glob('shard-*.json'))
+        files={f'played-archive/{p.name}':p for p in (source/'audit/played-archive').iterdir() if p.is_file()}
+        files.update({f'build/{p.name}':p for p in (source/'build').iterdir() if p.is_file()})
+        dump(folder/'match-request.json',req);files['match-request.json']=folder/'match-request.json'
+        return dict(data,publication=self.package(env,data,files))
+
     def prepare(self,env):
         existing=self.previous_stage(env)
         if existing:return existing
@@ -309,19 +357,22 @@ class Backend:
         bank=previous.get('example_bank');invalidated=0
         if bank and bank['parent_context']!=context:
             invalidated=len(bank['examples']);bank=None;old_cases={}
-        summary=run_analysis([source/'played-archive'],binary,knowledge,folder/'analysis',params)
+        count=sum(bool(s) and not s.startswith('#') for s in knowledge.read_text().splitlines())
+        summary=run_analysis([source/'played-archive'],binary,knowledge,folder/'analysis',params,
+                             expected_knowledge_sha256=context['knowledge_sha256'])
         diagnosis=json.loads((folder/'analysis/diagnosis.json').read_bytes())
         def probe(case):
             pairs=[]
             for _ in range(2):
-                e=Analyzer(binary,knowledge,evaluation_options=params)
+                e=Analyzer(binary,knowledge,count,evaluation_options=params)
                 try:pairs.append(e.search(case['start_sfen'],tuple(case['history_moves']),200))
                 finally:e.close()
             return pairs
-        e=Analyzer(binary,knowledge,evaluation_options=params)
+        e=Analyzer(binary,knowledge,count,evaluation_options=params)
         try:report=prepare(diagnosis,probe,e.static,'spiral-bridge-20261017-v1',registry=previous.get('split_registry'),
                            parent_options=params,example_bank=bank,parent_context=context,
-                           track_decisions='progress_policy' in env['state']['plan'])
+                           track_decisions='progress_policy' in env['state']['plan'],
+                           evaluation_enabled=env['state']['plan']['candidate_kind']!='knowledge')
         finally:e.close()
         current={r['case']['case_id']:dict(r['case'],research_move=r['research_move']) for r in diagnosis}
         all_cases=dict(old_cases,**current)
@@ -329,10 +380,37 @@ class Backend:
         report['invalidated_old_parent_features']=invalidated
         if 'progress_policy' in env['state']['plan']:
             report['progress']=describe_progress(report,summary,diagnosis,context)
+        followup=None
+        if 'followup_policy' in env['state']['plan']:
+            dump(folder/'original-preparation.json',report)
+            followup=run_followup(binary,knowledge,report,diagnosis,context,folder/'followup',
+                                  env.get('completed_research_tasks',[]))
+            if followup['diagnosis_updates']:
+                updates={r['case']['case_id']:r for r in followup['diagnosis_updates']}
+                diagnosis=[updates.get(r['case']['case_id'],r) for r in diagnosis]
+                e=Analyzer(binary,knowledge,count,evaluation_options=params)
+                try:report=prepare(diagnosis,probe,e.static,'spiral-bridge-20261017-v1',registry=report['split_registry'],
+                                    parent_options=params,example_bank=report['example_bank'],parent_context=context,track_decisions=True,
+                                    evaluation_enabled=env['state']['plan']['candidate_kind']!='knowledge')
+                finally:e.close()
+                report['invalidated_old_parent_features']=invalidated
+                from collections import Counter
+                summary=dict(summary,routes=dict(Counter(r['route'] for r in diagnosis)),
+                             verification_pairs=sum(r.get('followup') is not None for r in diagnosis),
+                             seconds=summary['seconds']+followup['seconds'],followup_applied=True)
+                report['progress']=describe_progress(report,summary,diagnosis,context)
+                dump(folder/'effective-diagnosis.json',diagnosis)
+        current={r['case']['case_id']:dict(r['case'],research_move=r['research_move']) for r in diagnosis}
+        all_cases=dict(old_cases,**current)
+        cases=[all_cases[r['case_id']] for r in report['examples']]
         dump(folder/'preparation.json',report);dump(folder/'eligible-cases.json',cases)
         data=dict(preparation=report,analysis_summary=summary)
         files={name:folder/name for name in ('preparation.json','eligible-cases.json')}
         files.update({f'analysis/{name}':folder/'analysis'/name for name in ('selected-cases.json','diagnosis.json','summary.json')})
+        if followup is not None:
+            data['followup']=followup;files['original-preparation.json']=folder/'original-preparation.json'
+            if (folder/'effective-diagnosis.json').exists():files['effective-diagnosis.json']=folder/'effective-diagnosis.json'
+            files.update({p.relative_to(folder).as_posix():p for p in (folder/'followup').rglob('*') if p.is_file()})
         if 'knowledge_policy' in env['state']['plan']:
             data['knowledge_stage']=prepare_knowledge(binary,knowledge,report,diagnosis,context,params,
                                                        env['state']['plan']['cycle_id'],folder/'knowledge-stage')
@@ -344,6 +422,11 @@ class Backend:
         if existing:return existing
         source=self.unpack(env['source_publication']);folder=self.unpack(env['preparation_publication'])
         binary=source/'build/engine-a';binary.chmod(0o755)
+        if env['state']['plan']['candidate_kind']=='knowledge':
+            knowledge=json.loads((folder/'knowledge-stage/result.json').read_bytes())
+            require(knowledge==env['knowledge_candidate'],'fixed knowledge proposal changed')
+            result=knowledge['preflight']
+            return dict(preflight=result,publication=self.package(env,dict(preflight=result),{}))
         result=preflight(binary,source/'build/position-knowledge-v1.tsv',env['parent_options'],env['candidate_options'],
                          json.loads((folder/'preparation.json').read_bytes()),json.loads((folder/'eligible-cases.json').read_bytes()))
         data=dict(preflight=result)
@@ -364,12 +447,14 @@ class Backend:
 def launch(repo):
     req=json.loads((ROOT/'.github/postgame-spiral-request.json').read_bytes())
     if req==dict(enabled=False):return
-    require(set(req) in ({'cycle_id','plan_ref','repair'},{'cycle_id','plan_ref','repair','inspect_only'}),'launch request fields')
+    require(set(req) in ({'cycle_id','plan_ref','repair'},{'cycle_id','plan_ref','repair','inspect_only'},
+                        {'cycle_id','plan_ref','repair','publication_only'}),'launch request fields')
     require(type(req.get('inspect_only',False)) is bool,'invalid inspection flag')
+    require(type(req.get('publication_only',False)) is bool,'invalid publication flag')
     require(re.fullmatch('[0-9a-f]{40}',req['plan_ref']),'fixed plan ref required')
     require(re.fullmatch('[A-Za-z0-9][A-Za-z0-9-]{0,63}',req['cycle_id']) and type(req['repair']) is bool,'invalid start/resume request')
     response=api(f'repos/{repo}/actions/workflows/postgame-spiral.yml/dispatches',
-                 dict(ref='main',return_run_details=True,inputs=dict(cycle_id=req['cycle_id'],plan_ref=req['plan_ref'],repair=str(req['repair']).lower(),inspect_only=str(req.get('inspect_only',False)).lower())))
+                 dict(ref='main',return_run_details=True,inputs=dict(cycle_id=req['cycle_id'],plan_ref=req['plan_ref'],repair=str(req['repair']).lower(),inspect_only=str(req.get('inspect_only',False)).lower(),publication_only=str(req.get('publication_only',False)).lower())))
     require(type(response.get('workflow_run_id')) is int,'coordinator dispatch ID missing')
     print('SPIRAL_LAUNCH '+json.dumps(response),flush=True)
 
@@ -392,6 +477,7 @@ def main():
         require(plan['cycle_id']==ident and plan['controller_sha256']==code_hash(),'frozen plan/controller mismatch')
         require('progress_policy' in plan,'new cycle plans must freeze research-yield and stagnation controls')
         require('knowledge_policy' in plan,'new cycle plans must freeze research-knowledge preparation policy')
+        require('followup_policy' in plan,'new cycle plans must freeze bounded follow-up research policy')
         # New start must not overlap an already active cycle under another name.
         require(backend.load() is None,'another cycle is already active')
         env=initialize(plan,plan['parent_options'],code_hash());env['plan_ref']=ref

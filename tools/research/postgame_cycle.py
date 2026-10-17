@@ -75,6 +75,9 @@ def request(state, inputs, expected_revision):
         if state["plan"]["candidate_kind"] == "knowledge":
             require(all(inputs["candidate"][k] == state["parent"][k]
                         for k in ("engine_ref", "parameters_sha256")), "knowledge-only candidate changed engine/evaluation")
+            if 'knowledge_execution_policy' in state['plan']:
+                require(inputs['candidate']['knowledge_sha256']==state['expected_knowledge_sha256'],
+                        'candidate differs from the fixed knowledge proposal')
         elif state["plan"]["candidate_kind"] == "evaluation":
             require(inputs["candidate"]["knowledge_sha256"] == state["parent"]["knowledge_sha256"],
                     "evaluation-only candidate changed knowledge")
@@ -165,6 +168,15 @@ def finish(state, operation, evidence):
         report = evidence["preparation"]
         ready_eval = report["learning"]["status"] == "requires_engine_validation"
         ready_knowledge = bool(report["candidate_knowledge"])
+        if 'knowledge_execution_policy' in state['plan']:
+            knowledge=evidence['knowledge_stage'];manifest=knowledge['manifest']
+            require(manifest['parent']==state['parent'] and manifest['purpose']=='research'
+                    and manifest['production_match_eligible'] is True and manifest['formal_adoption'] is False,
+                    'knowledge preparation is not an eligible research proposal')
+            ready_knowledge=manifest['candidate_positions']>0
+            if ready_knowledge:
+                require(knowledge['preflight']['completed'] is True,'knowledge candidate lacks completed actual preflight')
+                out['expected_knowledge_sha256']=manifest['candidate_sha256']
         kind = state["plan"]["candidate_kind"]
         out["split_registry_sha256"] = digest(report["split_registry"])
         out["example_bank_sha256"] = digest(report.get("example_bank", {}))
@@ -180,6 +192,23 @@ def finish(state, operation, evidence):
             out["research_followup"] = {k: v for k, v in progress.items() if k != "history"}
             if not ready and progress["halt_collection"]:
                 out.update(stage="complete", result="research_review_required")
+        if 'followup_policy' in state['plan']:
+            followup=evidence['followup']
+            require(followup['parent']==state['parent'] and followup['formal_adoption'] is False
+                    and followup['completed_task_ids']==[r['task_id'] for r in followup['results']],
+                    'follow-up receipt identity differs')
+            completed=copy.deepcopy(state.get('research_followup',{}).get('completed',{}))
+            require(all(t in completed for t in followup.get('previously_completed_task_ids',[])),
+                    'skipped research lacks a previous saved result')
+            for result in followup['results']:
+                require(result['parent']==state['parent'] and result['split']=='train' and result['completed'] is True,
+                        'follow-up outcome is not completed training research')
+                require(result['task_id'] not in completed,'same parent task was investigated twice')
+                completed[result['task_id']]=dict(status=result['status'],evidence_sha256=digest(followup))
+            out['research_followup']['completed']=completed
+            for task in out['research_followup']['work_items']:
+                if task['parent']==state['parent'] and task['task_id'] in completed:
+                    task.update(status='investigated_'+completed[task['task_id']]['status'],executor_connected=True)
     elif stage == "preflight":
         require(evidence["candidate"] == p["payload"]["inputs"]["candidate"], "preflight candidate mismatch")
         check = evidence["preflight"]
