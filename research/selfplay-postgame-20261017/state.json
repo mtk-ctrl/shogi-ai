@@ -2,7 +2,7 @@
   "schema_version": 1,
   "cycle_id": "postgame-pilot-20261017",
   "status": "implementation_in_progress",
-  "phase": "analyzer_implementation_running",
+  "phase": "diagnosis_running",
   "generation": 0,
   "formal_adoption": false,
   "controller_implemented": false,
@@ -43,12 +43,17 @@
   "actions": [
     {
       "operation_id": "postgame-diagnosis-20261017-01",
-      "status": "implementing",
+      "status": "running",
       "executor": "manual_owner_request",
       "started_at_utc": "2026-10-17T00:37:17.849Z",
       "lease_until_utc": "2026-10-17T02:07:17.854Z",
       "workdir": "/workspace/scratch/9fe076caaea9/postgame-run",
-      "next": "Implement fixed own-analyzer and run first bounded postgame diagnosis; do not duplicate while this operation is active."
+      "next": "Implement fixed own-analyzer and run first bounded postgame diagnosis; do not duplicate while this operation is active.",
+      "code_ref": "f800d2f136128e7b7a003096f91782f2ca49c90c",
+      "session_id": 42510,
+      "output_dir": "/workspace/scratch/9fe076caaea9/postgame-diagnosis-20261017-01",
+      "actual_start_confirmed": true,
+      "pid_namespace_note": "Local process IDs are namespace-local; use session status and checkpoint timestamps rather than PID alone."
     }
   ],
   "evidence": [
@@ -90,12 +95,12 @@
     "The 96 mechanically sampled reader-smoke cases are not the pilot triage/training set.",
     "No automatic formal adoption; no second optimization generation."
   ],
-  "research_commit": "dc5c6dce4a0d3fce448514546e794470ed35e8b5",
+  "research_commit": "f800d2f136128e7b7a003096f91782f2ca49c90c",
   "components": {
     "played_archive_reader": "implemented_and_smoke_verified_on_research_branch",
     "full_history_case_input": "implemented_and_smoke_verified_on_research_branch",
-    "analyzer_execution": "not_implemented",
-    "cause_routing": "not_implemented",
+    "analyzer_execution": "implemented_local_run_in_progress",
+    "cause_routing": "provisional_uncertainty_routes_implemented",
     "paired_learning": "not_implemented",
     "candidate_knowledge_distribution": "not_connected",
     "generation_controller": "not_implemented"
