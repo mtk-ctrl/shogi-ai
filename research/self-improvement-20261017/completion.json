@@ -1,0 +1,56 @@
+{
+  "schema": "self-improvement-stage-completion-v1",
+  "overall_status": "in_progress",
+  "completed_stage": 1,
+  "next_stage": 2,
+  "scope": "Research yield, per-case decisions, training-only follow-up queue and plateau stop; knowledge delivery executor remains next.",
+  "base_ref": "35f1fd6e0c2f24ab2b7937b2e053a745b909c0e8",
+  "implementation_ref": "8eeb87289080b7c25ca9a701040636e317b2168f",
+  "merge_ref": "ab1b349c9a6fcfeac6f6bfbc63ed81dea0ba571a",
+  "pr": 280,
+  "ci": {
+    "postgame": {
+      "run": 39036998999,
+      "conclusion": "success",
+      "tests": 108
+    },
+    "documents_pr": {
+      "run": 39036998975,
+      "conclusion": "success"
+    },
+    "legacy_postgame": {
+      "run": 39036998963,
+      "conclusion": "success"
+    },
+    "documents_main": {
+      "run": 39037066796,
+      "conclusion": "success"
+    }
+  },
+  "readback": {
+    "files": 18,
+    "all_exact": true,
+    "artifact_id": 12102701106,
+    "artifact_sha256": "3acd84c1a3b086e07ec6aaecbeece24323652816eefd84759cec851a5a9c3088",
+    "result_sha256": "725c39efb85f99fa9a9a63ae39ebd76ba47c3fcd11ad013c4773ad9686a2b116",
+    "local_ci_bytes_identical": true
+  },
+  "source_review": {
+    "games": 4,
+    "plies": 474,
+    "cases": 16,
+    "research_matches_actual": 14,
+    "new_evaluation_pairs": 0,
+    "training_research_tasks": 8,
+    "third_collection_halted": true,
+    "scope": "New policy applied offline to saved diagnoses; original experiment and ledger unchanged."
+  },
+  "new_games": 0,
+  "new_engine_runs": 0,
+  "new_analysis": 0,
+  "parameter_updates": 0,
+  "formal_adoption": false,
+  "strength_improvement_demonstrated": false,
+  "formal_engine_changed_files": [],
+  "generic_engine_match_workflow_changed": false
+}
