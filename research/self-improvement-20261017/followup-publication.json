@@ -1,0 +1,9 @@
+{
+  "release": "records-2026-10-01",
+  "name": "postgame-followup-20261018-01-0038b988b16a.tgz",
+  "sha256": "16ba0715aa6eb150ecf2e926c54e3fd305d04bc840a654fb9a0e47a5f9b6535f",
+  "bytes": 7909,
+  "readback_verified": true,
+  "api_digest_verified": true,
+  "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-followup-20261018-01-0038b988b16a.tgz"
+}

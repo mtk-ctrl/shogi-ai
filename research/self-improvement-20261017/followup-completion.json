@@ -1,0 +1,158 @@
+{
+  "schema": "self-improvement-stage-completion-v1",
+  "overall_status": "in_progress",
+  "completed_stage": "2B",
+  "next_stage": 3,
+  "scope": "Bounded training follow-up execution, saved-observation verification, knowledge-only comparison transport/audit and research-parent snapshot inheritance.",
+  "base_ref": "001fb8173f9c4ad48dce54c8dcbec5fa398234af",
+  "implementation_ref": "0038b988b16a96362d8abdcf3a1d0862a74e1518",
+  "merge_ref": "1a45c607195227f86e074722f84d90a354ac6ed8",
+  "pr": 282,
+  "ci": {
+    "postgame": {
+      "run": 39071997634,
+      "job": 117511344235,
+      "conclusion": "success",
+      "tests": 134
+    },
+    "documents_pr": {
+      "run": 39071997705,
+      "conclusion": "success"
+    },
+    "legacy_postgame": {
+      "run": 39071997655,
+      "conclusion": "success"
+    },
+    "documents_main": {
+      "run": 39072118867,
+      "conclusion": "success"
+    }
+  },
+  "readback": {
+    "implementation_files": 28,
+    "implementation_all_exact": true,
+    "merge_files": 28,
+    "merge_all_exact": true,
+    "artifact_id": 12115726708,
+    "artifact_zip_bytes": 6683,
+    "artifact_zip_sha256": "dfd857a2192c47c0c12686176e988cd28585c2bb28bd5db2f76b75cbad95e415",
+    "artifact_digest_matches_download": true,
+    "artifact_results": {
+      "postgame-progress-replay.json": {
+        "bytes": 11338,
+        "sha256": "725c39efb85f99fa9a9a63ae39ebd76ba47c3fcd11ad013c4773ad9686a2b116"
+      },
+      "postgame-knowledge-wiring.json": {
+        "bytes": 1375,
+        "sha256": "d48708edba5ca3ce2ff0db845039c4b2157e5190abbd59950c3fdf0e626c2cf3"
+      },
+      "postgame-knowledge-saved-review.json": {
+        "bytes": 2228,
+        "sha256": "e22e5ef07f9bcb643922c9f2d995ed0909fb35836808b160e26936f5f4727218"
+      },
+      "postgame-followup-readback.json": {
+        "bytes": 360,
+        "sha256": "4f1dcacd3c8d3a8f67adc9ce79f4423c5602e04f12723ada07e68f561a0ff5d8"
+      },
+      "postgame-knowledge-route.json": {
+        "bytes": 4330,
+        "sha256": "5d6c8180ec6fe14c4829cedf1fc5afdc7bfa8ec37425786e5bc58cb705ca2f7b"
+      }
+    },
+    "saved_progress_and_knowledge_review_identical_to_previous_stage": true,
+    "followup_readback_identical_local_ci": true
+  },
+  "actual_followup": {
+    "source_games": 4,
+    "source_plies": 474,
+    "selected_cases": 16,
+    "training_tasks": 8,
+    "search_probes": 32,
+    "mate_probes": 1,
+    "root_repetitions_per_budget": 2,
+    "budgets_ms": [
+      50,
+      500
+    ],
+    "actual_supported_at_500ms": 7,
+    "ordinary_search_mate_not_proven_by_dedicated_solver": 1,
+    "new_knowledge_ready_cases": 0,
+    "new_parameter_updates": 0,
+    "raw_observations_sha256": "10da10811a725295760e7d5c88e878b3e3631f02840606150cbb554e7906ccca",
+    "raw_observations_bytes": 44997,
+    "result_file": "followup-observations.json",
+    "source_binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8"
+  },
+  "publication": {
+    "launcher_run": 39072139453,
+    "run": 39072146432,
+    "job": 117511796287,
+    "conclusion": "success",
+    "observation_ref": "0038b988b16a96362d8abdcf3a1d0862a74e1518",
+    "receipt": {
+      "release": "records-2026-10-01",
+      "name": "postgame-followup-20261018-01-0038b988b16a.tgz",
+      "sha256": "16ba0715aa6eb150ecf2e926c54e3fd305d04bc840a654fb9a0e47a5f9b6535f",
+      "bytes": 7909,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-followup-20261018-01-0038b988b16a.tgz"
+    },
+    "local_retrieved_sha_bytes_verified": true,
+    "plan_and_observation_bytes_identical": true,
+    "verification_result_identical": true
+  },
+  "source_assets": [
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-initial_source-e8181c0b9aa52b1a-39021709686-a1.tgz",
+      "sha256": "8678dbf172bb5233ffe6841e10a69032d483f01740ef68b8dcf0876edaca0823",
+      "bytes": 5208460,
+      "api_digest_verified": true
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-collect_source-2d6bac99767cdc1a-39021709686-a1.tgz",
+      "sha256": "48c46d92e88fa0604ee796babbfeceb2ad0ce3ca41e7b6289b7fce46117b8e84",
+      "bytes": 5212920,
+      "api_digest_verified": true
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-prepare-d8afbfefa370b08f-39021709686-a1.tgz",
+      "sha256": "8d849163d928ca5941f2f76a1251d22e3104229b795fcf56853978c26ec46d47",
+      "bytes": 13074,
+      "api_digest_verified": true
+    },
+    {
+      "name": "spiral-spiral-auto-smoke-20261017-01-prepare-f30c8976c1134849-39021709686-a1.tgz",
+      "sha256": "dee7e019af56fe8b8cc70f3e2bc02fccb8f35b2b1f9b9b6af29d3251cc449b2b",
+      "bytes": 15249,
+      "api_digest_verified": true
+    }
+  ],
+  "transport_fixture": {
+    "purpose": "integration_smoke",
+    "not_a_training_source": true,
+    "source_provenance_synthetic": true,
+    "local_report": "knowledge-route-local.json",
+    "ci_report": "knowledge-route-ci.json",
+    "per_report_normal_arena_games": 2,
+    "per_report_normal_arena_plies": 8,
+    "per_report_target_position_partial_games": 2,
+    "per_report_target_position_plies": 8,
+    "normal_arena_all_moves_and_terminations_verified": true,
+    "normal_arena_ponder_protocol_exercised": true,
+    "original_loader_handshake_retained": false
+  },
+  "not_live_verified": [
+    "Actual eligible knowledge candidate in a normal 100/200-game comparison",
+    "A live generation after knowledge-parent promotion",
+    "Long-term strength growth across generations"
+  ],
+  "new_research_games": 0,
+  "new_strength_comparison_games": 0,
+  "formal_adoption": false,
+  "strength_improvement_demonstrated": false,
+  "formal_engine_changed_files": [],
+  "formal_knowledge_changed_files": [],
+  "generic_engine_match_workflow_changed": false,
+  "normal_issue_inputs_changed": false
+}

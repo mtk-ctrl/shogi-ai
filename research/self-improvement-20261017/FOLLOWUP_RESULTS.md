@@ -30,4 +30,8 @@
 - 実Engineの[配線試験](knowledge-route-local.json)では、仮の研究証拠を明示した既存対象検査に加え、通常arenaで2局分8手を実行。全手/終了上限/実設定/先後/実ファイル/loader再現を検査し、先読みの一致1・不一致1も観測した。4手で止めた2局は未決着で、引分教師や棋力測定へ使わない。仮の操作と出所はproduction入口で拒否する。
 - 100/200局の知識比較本体、知識を更新してからの実世代循環は、有効な実データ候補がないため今回未実行。コードの接続・分岐検査と、この実働範囲を分ける。
 
-CI・Release再取得・main読み戻しは最終completion記録へ保存する。次の研究対象は、短時間/深い探索の差の原因と、自己対局由来の苦手局面から練習を作る第3段階である。同じ条件の対局を増やすだけで材料不足を解消したことにしない。
+GitHubの[134検査と実Engine試験](https://github.com/mtk-ctrl/shogi-ai/actions/runs/39071997634)、既存postgame CI、PR/main文書CIが成功した。[CIの配線実測](knowledge-route-ci.json)も先読みの一致1/不一致1を観測。保存観測の[CI再計算結果](followup-readback-ci.json)はローカルとbytes一致し、artifactの取得hash/API digestも一致した。実装28ファイルはPRと統合mainの両方で読み戻し一致。
+
+[保存処理39072146432](https://github.com/mtk-ctrl/shogi-ai/actions/runs/39072146432)は追加解析・対局を起動せず、月別Releaseへ7,909bytesの[選別研究package](https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-followup-20261018-01-0038b988b16a.tgz)を保存した。SHA256 `16ba0715aa6eb150ecf2e926c54e3fd305d04bc840a654fb9a0e47a5f9b6535f`をActions/手元の再取得とAPI digestで照合し、PLAN/全観測/検査結果の内容も一致。元4packageのAPI digest/bytesも確認した。[保存receipt](followup-publication.json)と[段階2Bの記録](followup-completion.json)を参照する。
+
+次の研究対象は、短時間/深い探索の差の原因と、自己対局由来の苦手局面から練習を作る第3段階である。同じ条件の対局を増やすだけで材料不足を解消したことにしない。

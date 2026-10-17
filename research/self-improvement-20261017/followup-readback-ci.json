@@ -1,0 +1,11 @@
+{
+  "schema": "postgame-followup-readback-v1",
+  "all_saved_decisions_reproduced": true,
+  "original_sources_reproduced": true,
+  "unique_tasks": 8,
+  "new_engine_runs": 0,
+  "new_games": 0,
+  "source_result_sha256": "fca56cbc6dbf3275a622a660379495f34d80c7daf2be6f607e8bb70e9569af34",
+  "formal_adoption": false,
+  "strength_improvement_demonstrated": false
+}
