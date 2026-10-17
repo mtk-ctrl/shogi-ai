@@ -448,13 +448,14 @@ def launch(repo):
     req=json.loads((ROOT/'.github/postgame-spiral-request.json').read_bytes())
     if req==dict(enabled=False):return
     require(set(req) in ({'cycle_id','plan_ref','repair'},{'cycle_id','plan_ref','repair','inspect_only'},
-                        {'cycle_id','plan_ref','repair','publication_only'}),'launch request fields')
+                        {'cycle_id','plan_ref','repair','publication_only'},{'cycle_id','plan_ref','repair','practice_only'}),'launch request fields')
     require(type(req.get('inspect_only',False)) is bool,'invalid inspection flag')
     require(type(req.get('publication_only',False)) is bool,'invalid publication flag')
+    require(type(req.get('practice_only',False)) is bool,'invalid practice flag')
     require(re.fullmatch('[0-9a-f]{40}',req['plan_ref']),'fixed plan ref required')
     require(re.fullmatch('[A-Za-z0-9][A-Za-z0-9-]{0,63}',req['cycle_id']) and type(req['repair']) is bool,'invalid start/resume request')
     response=api(f'repos/{repo}/actions/workflows/postgame-spiral.yml/dispatches',
-                 dict(ref='main',return_run_details=True,inputs=dict(cycle_id=req['cycle_id'],plan_ref=req['plan_ref'],repair=str(req['repair']).lower(),inspect_only=str(req.get('inspect_only',False)).lower(),publication_only=str(req.get('publication_only',False)).lower())))
+                 dict(ref='main',return_run_details=True,inputs=dict(cycle_id=req['cycle_id'],plan_ref=req['plan_ref'],repair=str(req['repair']).lower(),inspect_only=str(req.get('inspect_only',False)).lower(),publication_only=str(req.get('publication_only',False)).lower(),practice_only=str(req.get('practice_only',False)).lower())))
     require(type(response.get('workflow_run_id')) is int,'coordinator dispatch ID missing')
     print('SPIRAL_LAUNCH '+json.dumps(response),flush=True)
 
