@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "cycle_id": "postgame-pilot-20261017",
-  "status": "implementation_in_progress",
-  "phase": "confirmation_audit_requested",
-  "generation": 0,
+  "status": "experiment_verified_document_closure_pending",
+  "phase": "retain_parent_document_finish",
+  "generation": 1,
   "formal_adoption": false,
   "controller_implemented": false,
   "research_branch": "research/postgame-cycle-pilot-20261017",
@@ -31,7 +31,8 @@
   "used": {
     "new_games": 300,
     "selected_positions": 96,
-    "reserved_new_games": 0
+    "reserved_new_games": 0,
+    "next_source_games": 0
   },
   "automation": {
     "id": "6ad2fc16e4288191a7320026a91a35c6",
@@ -43,7 +44,7 @@
     "timing_mode": "exact_schedule",
     "recurring": false,
     "next_check_at": "2026-10-17T14:40:00+09:00",
-    "next_check_kind": "confirmation_result_and_audit",
+    "next_check_kind": "document_CI_readback_and_final_report",
     "next_check_basis": "No Actions run was in progress or queued at scheduling. Candidate K1 preflight and CI are complete; resume the pending launch-path verification. This is not the ETA of an active match.",
     "handoff": {
       "previous_id": "6ad2af67c6788191b5702c4537d90052",
@@ -75,7 +76,7 @@
     },
     {
       "operation_id": "postgame-g1-screen-20261017",
-      "status": "completed_pending_additional_audit",
+      "status": "completed_and_audited",
       "games": 100,
       "candidate_ref": "5a1997043f275d09099c4be67110ed96e2c80c88",
       "seed": 2031101801,
@@ -142,7 +143,7 @@
     },
     {
       "operation_id": "postgame-g1-confirm-20261017",
-      "status": "completed_pending_additional_audit",
+      "status": "completed_and_audited",
       "games": 200,
       "seed": 2031102801,
       "shards": 20,
@@ -181,9 +182,19 @@
     },
     {
       "operation_id": "postgame-confirm-39006231582-audit-01",
-      "status": "requested",
+      "status": "completed",
       "match_run": 39006231582,
-      "run_id": null
+      "run_id": 39006977675,
+      "legal_plies": 21523,
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "postgame-audit-39006231582-39006977675.tgz",
+        "sha256": "03e98e7c9ff210c405619c027d794ea9da9d1c867dee8e75022a2072656baf0c",
+        "bytes": 6651032,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-audit-39006231582-39006977675.tgz"
+      }
     }
   ],
   "evidence": [
@@ -278,21 +289,22 @@
       "commit": "a71d814521f3a512964bccb69cc3eaacdaacf2c1"
     }
   ],
-  "next_action": "Audit completed confirmation39006231582; preserve full results and overlap sensitivity. No repeated confirmation or new evaluation fit.",
+  "next_action": "Finish document CI/readback and report the scoped pilot result, then disable the same confirmation task. No further games, training, reselection or formal adoption.",
   "limitations": [
-    "Initial diagnosis, preservation, K1 snapshot and preflight are complete. Evaluation fitting is skipped because only two eligible pairs exist. New live candidate games and full generation handoff remain unverified.",
-    "Routes are provisional; 20 draw positions are overrepresented. Do not treat the 96 cases or five conflicting static-rank examples as proven evaluation teachers.",
-    "No new games or parameter updates have run. Formal Engine and adopted knowledge are unchanged."
+    "Two eligible stable pairs cannot form grouped training/selection/unused sets; no paired evaluator learner or new evaluation parameter update was implemented/run in this generation.",
+    "Both stored target moves were already selected by K0 in preflight, and new K1 research use was zero in all300 games; no strength or generalization improvement is demonstrated.",
+    "Original engine startup loader handshakes are absent from this arena. Audit reproduced loading with exact saved binaries/snapshots and separately audited actual move observations.",
+    "Full-trajectory filtering does not remove all partial-position overlap or game correlation. Approximate intervals are not a proof of independence."
   ],
-  "research_commit": "5a1997043f275d09099c4be67110ed96e2c80c88",
+  "research_commit": "7c6eecc5ed3f1cff3ada39fe3f55cdc26fdc0967",
   "components": {
-    "played_archive_reader": "implemented_and_smoke_verified_on_research_branch",
-    "full_history_case_input": "implemented_and_smoke_verified_on_research_branch",
-    "analyzer_execution": "implemented_first_local_96_case_run_completed",
-    "cause_routing": "first_provisional_diagnosis_and_attribution_review_completed_on_research_branch",
-    "paired_learning": "skipped_this_generation_insufficient_two_eligible_pairs",
-    "candidate_knowledge_distribution": "K1_165_generated_and_preflight_verified_pending_live_match",
-    "generation_controller": "bounded_manual_workflow_with_explicit_request_launcher_under_verification"
+    "played_archive_reader": "implemented_and_verified",
+    "full_history_case_input": "implemented_and_verified",
+    "analyzer_execution": "initial_96_case_run_completed",
+    "cause_routing": "implemented_provisional_attribution_not_causal_proof",
+    "paired_learning": "not_implemented_skipped_this_generation_insufficient_eligible_pairs",
+    "candidate_knowledge_distribution": "fixed_K1_preflight_and_live_distribution_verified_new_research_uses_zero",
+    "generation_controller": "bounded_explicit_request_pipeline_verified_AI_controls_phase_handoffs"
   },
   "scheduling_checkpoint": {
     "observed_main_ref": "2601b65151bfa572670ef6023bafb01be3d35b8f",
@@ -337,5 +349,59 @@
       "api_digest_verified": true,
       "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-audit-39005539549-39006135029.tgz"
     }
+  },
+  "parent_retained": true,
+  "orchestration_mode": "AI-assisted explicit requests and bounded workflows; autonomous multi-generation paired learning is not implemented.",
+  "confirmation": {
+    "match_run": 39006231582,
+    "audit_run": 39006977675,
+    "games": 200,
+    "wins_a": 100,
+    "wins_b": 99,
+    "draws": 1,
+    "score_a": 0.5025,
+    "approx_95pct": [
+      0.4332044016549391,
+      0.5717955983450608
+    ],
+    "candidate_research_uses": 0,
+    "overlap_original_1000": 5,
+    "overlap_reanalysis_source_500": 1,
+    "overlap_screen_100": 0,
+    "internal_duplicates": 0,
+    "excluding_prior_and_internal_duplicates": {
+      "games": 195,
+      "wins_a": 98,
+      "wins_b": 96,
+      "draws": 1,
+      "score_a": 0.5051282051282051,
+      "approx_95pct": [
+        0.43495263878612694,
+        0.5753037714702833
+      ]
+    },
+    "publication": {
+      "release": "records-2026-10-01",
+      "name": "postgame-audit-39006231582-39006977675.tgz",
+      "sha256": "03e98e7c9ff210c405619c027d794ea9da9d1c867dee8e75022a2072656baf0c",
+      "bytes": 6651032,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-audit-39006231582-39006977675.tgz"
+    }
+  },
+  "advance_gate": {
+    "pass": false,
+    "confirmation_lower_95": 0.4332044016549391,
+    "deduplicated_lower_95": 0.43495263878612694,
+    "next_source_games": 0
+  },
+  "closure": {
+    "research_ref": "7c6eecc5ed3f1cff3ada39fe3f55cdc26fdc0967",
+    "main_document_ci": "pending",
+    "report_delivered": false,
+    "timer_stop_pending": true,
+    "total_audited_plies": 32625,
+    "release_assets_verified": 4
   }
 }
