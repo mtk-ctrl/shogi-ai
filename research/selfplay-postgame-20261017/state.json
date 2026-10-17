@@ -2,7 +2,7 @@
   "schema_version": 1,
   "cycle_id": "postgame-pilot-20261017",
   "status": "implementation_in_progress",
-  "phase": "candidate_ready_for_screen",
+  "phase": "screen_requested",
   "generation": 0,
   "formal_adoption": false,
   "controller_implemented": false,
@@ -74,11 +74,38 @@
     },
     {
       "operation_id": "postgame-g1-screen-20261017",
-      "status": "preparing_request_adapter",
+      "status": "requested",
       "games": 100,
       "candidate_ref": "5a1997043f275d09099c4be67110ed96e2c80c88",
       "seed": 2031101801,
-      "new_games_started": 0
+      "new_games_started": 0,
+      "launcher_ref": "a71d814521f3a512964bccb69cc3eaacdaacf2c1",
+      "shards": 20,
+      "distribution": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "other_active_runner_jobs": 0,
+      "available_runner_jobs": 20,
+      "run_id": null
     }
   ],
   "evidence": [
@@ -164,9 +191,16 @@
         4
       ],
       "document_ci": 38988026303
+    },
+    {
+      "kind": "request_adapter_local_tests",
+      "count": 20,
+      "conclusion": "success",
+      "document_ci": 39005457831,
+      "commit": "a71d814521f3a512964bccb69cc3eaacdaacf2c1"
     }
   ],
-  "next_action": "Verify explicit-request launch adapter, then dispatch frozen K1 versus K0 screen once; observe actual shards and estimate finish. No reanalysis, reselection or evaluation model.",
+  "next_action": "Find explicit-request launcher and one manual match run, verify 20 match shards actually start, then calculate finish from actual start and 5 games per lane.",
   "limitations": [
     "Initial diagnosis, preservation, K1 snapshot and preflight are complete. Evaluation fitting is skipped because only two eligible pairs exist. New live candidate games and full generation handoff remain unverified.",
     "Routes are provisional; 20 draw positions are overrepresented. Do not treat the 96 cases or five conflicting static-rank examples as proven evaluation teachers.",
