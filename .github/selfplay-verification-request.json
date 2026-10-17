@@ -1,7 +1,7 @@
 {
-  "request_id": "postgame-confirm-39006231582-audit-01",
-  "mode": "postgame-audit",
-  "candidate_ref": "5a1997043f275d09099c4be67110ed96e2c80c88",
-  "baseline_ref": "efcfa0f80d218c3dbcc3162f5bee3366f6a835cf",
-  "match_run": 39006231582
+  "request_id": "spiral-core-source-bridge-20261017-01",
+  "mode": "postgame-bridge",
+  "candidate_ref": "d51a06a5833de787b0527a1166d61420e3c9e508",
+  "baseline_ref": "4c038a394501b2f0bc75da90ef20e3e8b9688745",
+  "match_run": 39013481948
 }
