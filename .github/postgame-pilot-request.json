@@ -1,7 +1,8 @@
 {
-  "request_id": "postgame-g1-screen-20261017",
+  "request_id": "postgame-g1-confirm-20261017",
   "candidate_ref": "5a1997043f275d09099c4be67110ed96e2c80c88",
   "baseline_ref": "efcfa0f80d218c3dbcc3162f5bee3366f6a835cf",
-  "games": 100,
-  "shards": 20
+  "games": 200,
+  "shards": 20,
+  "previous_audit_run": 39006135029
 }

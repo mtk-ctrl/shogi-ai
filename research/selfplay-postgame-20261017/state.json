@@ -2,7 +2,7 @@
   "schema_version": 1,
   "cycle_id": "postgame-pilot-20261017",
   "status": "implementation_in_progress",
-  "phase": "screen_audit_repair_requested",
+  "phase": "confirmation_requested",
   "generation": 0,
   "formal_adoption": false,
   "controller_implemented": false,
@@ -31,7 +31,7 @@
   "used": {
     "new_games": 100,
     "selected_positions": 96,
-    "reserved_new_games": 0
+    "reserved_new_games": 200
   },
   "automation": {
     "id": "6ad2fc16e4288191a7320026a91a35c6",
@@ -125,10 +125,53 @@
     },
     {
       "operation_id": "postgame-screen-39005539549-audit-02",
-      "status": "requested",
+      "status": "completed",
       "match_run": 39005539549,
-      "run_id": null,
-      "scope": "Audit-only repair; no repeated games"
+      "run_id": 39006135029,
+      "scope": "Audit-only repair; no repeated games",
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "postgame-audit-39005539549-39006135029.tgz",
+        "sha256": "aeb33366a411dbbde6de3c96d91d90a59ea280842d4acc7b91a48f13dd0b5f2a",
+        "bytes": 5961115,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-audit-39005539549-39006135029.tgz"
+      },
+      "legal_plies": 11102
+    },
+    {
+      "operation_id": "postgame-g1-confirm-20261017",
+      "status": "requested",
+      "games": 200,
+      "seed": 2031102801,
+      "shards": 20,
+      "distribution": [
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "previous_audit_run": 39006135029,
+      "other_active_runner_jobs": 0,
+      "available_runner_jobs": 20,
+      "run_id": null
     }
   ],
   "evidence": [
@@ -223,7 +266,7 @@
       "commit": "a71d814521f3a512964bccb69cc3eaacdaacf2c1"
     }
   ],
-  "next_action": "Track the one screen audit; do not repeat match. If audit succeeds and screen score >=50%, prepare one fixed 200-game confirmation under seed2031102801; otherwise retain parent and finish pilot.",
+  "next_action": "Track single 200-game confirmation after audited 50% screen; no reselection, learning or repeated confirmation.",
   "limitations": [
     "Initial diagnosis, preservation, K1 snapshot and preflight are complete. Evaluation fitting is skipped because only two eligible pairs exist. New live candidate games and full generation handoff remain unverified.",
     "Routes are provisional; 20 draw positions are overrepresented. Do not treat the 96 cases or five conflicting static-rank examples as proven evaluation teachers.",
@@ -260,5 +303,27 @@
     "screen_seed": 2031101801,
     "confirmation_games": 200,
     "confirmation_seed": 2031102801
+  },
+  "screen": {
+    "match_run": 39005539549,
+    "audit_run": 39006135029,
+    "games": 100,
+    "wins_a": 50,
+    "wins_b": 50,
+    "draws": 0,
+    "score_a": 0.5,
+    "candidate_research_uses": 0,
+    "source_1000_overlap": 1,
+    "source_500_overlap": 2,
+    "internal_duplicates": 0,
+    "publication": {
+      "release": "records-2026-10-01",
+      "name": "postgame-audit-39005539549-39006135029.tgz",
+      "sha256": "aeb33366a411dbbde6de3c96d91d90a59ea280842d4acc7b91a48f13dd0b5f2a",
+      "bytes": 5961115,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-audit-39005539549-39006135029.tgz"
+    }
   }
 }
