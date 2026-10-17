@@ -1,5 +1,11 @@
 name: Postgame Cycle Pilot
 on:
+  pull_request:
+    paths:
+      - "tools/research/postgame_*.py"
+      - "tests/test_postgame_*.py"
+      - "research/selfplay-postgame-20261017/**"
+      - ".github/workflows/postgame-cycle-pilot.yml"
   workflow_dispatch:
     inputs:
       candidate_ref:
@@ -29,7 +35,16 @@ env:
   SEED: "2031101801"
   RELEASE_TAG: records-2026-10-01
 jobs:
+  code-ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 -m pip install python-shogi==1.1.1
+      - run: python3 -m unittest tests.test_postgame_cases tests.test_postgame_analyze tests.test_postgame_candidates
+      - run: python3 scripts/check_workflow_inventory.py --strict && python3 scripts/check_match_workflows.py
   plan:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
@@ -58,6 +73,7 @@ jobs:
           print('distribution',[x['games'] for x in include])
           PY
   build:
+    if: github.event_name == 'workflow_dispatch'
     needs: plan
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -81,6 +97,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with: {name: "postgame-binaries-${{ github.run_id }}", path: binaries.tgz, if-no-files-found: error}
   match:
+    if: github.event_name == 'workflow_dispatch'
     needs: [plan, build]
     runs-on: ubuntu-latest
     timeout-minutes: 120
@@ -105,6 +122,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with: {name: "postgame-shard-${{ github.run_id }}-${{ matrix.shard }}", path: "results/shard-${{ matrix.shard }}.json", if-no-files-found: error}
   aggregate:
+    if: github.event_name == 'workflow_dispatch'
     needs: [plan, build, match]
     runs-on: ubuntu-latest
     timeout-minutes: 15
