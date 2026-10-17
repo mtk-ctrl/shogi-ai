@@ -1,0 +1,11 @@
+{
+  "purpose": "completed-state-import-smoke-only",
+  "games_dispatched": 0,
+  "new_budget_games_used": 0,
+  "predecessor_cycle": "spiral-auto-smoke-20261017-01",
+  "research_parent_preserved": true,
+  "preparation_publication_preserved": true,
+  "trajectory_signatures_preserved": 1780,
+  "ancestor_and_new_seed_count": 12,
+  "formal_adoption": false
+}
