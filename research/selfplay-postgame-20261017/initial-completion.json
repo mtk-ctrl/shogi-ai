@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "initial_execution_completed": true,
+  "learning_cycle_completed": false,
+  "trigger": "本人の「初回実行してください」",
+  "analysis_code_ref": "f800d2f136128e7b7a003096f91782f2ca49c90c",
+  "results_and_publication_ref": "12abc3caa557de4ce00c9e8becb1dfa8b20bac18",
+  "main_records_ref": "3c442e6dea26971a3cb5873d9c8b6bc9c3378807",
+  "final_document_ci": {
+    "run_id": 38988222230,
+    "conclusion": "success"
+  },
+  "evidence_verification_ci": {
+    "run_id": 38988026302,
+    "conclusion": "success",
+    "tests": 19
+  },
+  "publication": {
+    "release": "records-2026-10-01",
+    "name": "postgame-diagnosis-20261017-01.tgz",
+    "sha256": "4d439d6cabe207527cb9e7ce2710f4598e1bae07275396bf19a1ac6a69c39dd1",
+    "bytes": 2739607,
+    "readback_verified": true,
+    "api_digest_verified": true,
+    "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-diagnosis-20261017-01.tgz",
+    "release_asset_count": 27,
+    "release_total_bytes": 62720923,
+    "repository_staging_bytes": 2739607,
+    "repository_staging_note": "One initial transfer snapshot; not an ongoing played-game archive. Git history retains this initial snapshot.",
+    "verification_run": 38988026302,
+    "verification_job": 117263933799,
+    "source_code_ref": "f800d2f136128e7b7a003096f91782f2ca49c90c",
+    "source_result_ref": "d4c8ab2affd76835f34061a1b59d09f43990905c",
+    "main_verification_ref": "0e6d7ee38dbd5ec9aa7ea6553b5144a9ad4103d0",
+    "local_additional_readback_verified": true,
+    "document_ci": 38988026303,
+    "github_test_counts": [
+      9,
+      6,
+      4
+    ]
+  },
+  "source_games": 500,
+  "source_plies": 54821,
+  "selected_cases": 96,
+  "new_games": 0,
+  "parameter_updates": 0,
+  "formal_adoption": false,
+  "next_stage": "attribution_review_ready",
+  "continuation_task": {
+    "id": "6ad2af67c6788191b5702c4537d90052",
+    "enabled": true
+  },
+  "remaining": [
+    "eligible learning-pair assessment and grouped splits",
+    "regression and candidate knowledge generation/delivery",
+    "paired learning if data qualifies",
+    "bounded candidate comparison and next-generation handoff"
+  ]
+}
