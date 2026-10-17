@@ -33,12 +33,24 @@
     "selected_positions": 96
   },
   "automation": {
-    "id": "6ad2af67c6788191b5702c4537d90052",
+    "id": "6ad2fc16e4288191a7320026a91a35c6",
     "enabled": true,
     "timezone": "Asia/Tokyo",
-    "cadence": "hourly",
+    "cadence": "one_time_eta",
     "purpose": "implementation_and_one_generation_pilot",
-    "stop_after_verified_report": true
+    "stop_after_verified_report": true,
+    "timing_mode": "exact_schedule",
+    "recurring": false,
+    "next_check_at": "2026-10-17T14:00:00+09:00",
+    "next_check_kind": "preparation_and_launch_checkpoint",
+    "next_check_basis": "No Actions run was in progress or queued at scheduling. Candidate K1 preflight and CI are complete; resume the pending launch-path verification. This is not the ETA of an active match.",
+    "handoff": {
+      "previous_id": "6ad2af67c6788191b5702c4537d90052",
+      "previous_disabled": true,
+      "reason": "Owner requested one-time ETA scheduling. The update interface cannot change an existing condition_watch registration to exact_schedule; replace the registration and retain one active logical task."
+    },
+    "owner_instruction_date": "2026-10-17",
+    "eta_policy": "After actual match start, calculate finish from same-condition measurements, remaining games, slowest shard and build/queue/aggregation/publication; update this task once. If unfinished, inspect progress and revise ETA. Do not substitute recurring polling."
   },
   "actions": [
     {
@@ -161,5 +173,16 @@
     "paired_learning": "not_implemented",
     "candidate_knowledge_distribution": "not_connected",
     "generation_controller": "not_implemented"
+  },
+  "scheduling_checkpoint": {
+    "observed_main_ref": "2601b65151bfa572670ef6023bafb01be3d35b8f",
+    "candidate_preflight_and_code_ci": 38988386238,
+    "main_document_ci": 38988429090,
+    "candidate_knowledge_entries": 165,
+    "formal_knowledge_entries": 163,
+    "new_match_run": null,
+    "actions_in_progress": 0,
+    "actions_queued": 0,
+    "note": "Timer-only correction. Detailed phase/component entries above remain historical progress anchors and must be reconciled with the merged PLAN before launching; they do not override verified newer work."
   }
 }
