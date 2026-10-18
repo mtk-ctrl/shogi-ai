@@ -1,0 +1,62 @@
+name: Bonus Time Research
+
+on:
+  push:
+    branches:
+      - research/five-long-thinks
+    paths:
+      - ".github/workflows/bonus-time-research.yml"
+      - "benchmarks/bonus_time_match.py"
+      - "benchmarks/analyze_bonus_time.py"
+      - "tests/test_bonus_time.py"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bonus-time-research
+  cancel-in-progress: false
+
+jobs:
+  emergency:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v5
+      - name: Install dependency
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: Build engine
+        run: python3 scripts/build.py --output build/shogi-ai
+      - name: Verify bonus-time runner
+        run: python3 tests/test_bonus_time.py build/shogi-ai
+      - name: Run pre-registered emergency comparison
+        run: |
+          python3 benchmarks/bonus_time_match.py \
+            --engine build/shogi-ai \
+            --policy emergency \
+            --pairs 10 \
+            --workers 4 \
+            --output benchmarks/results/2026-10-06_bonus-time/emergency
+      - name: Validate and analyze
+        run: |
+          python3 benchmarks/analyze_bonus_time.py benchmarks/results/2026-10-06_bonus-time/emergency
+          cat benchmarks/results/2026-10-06_bonus-time/emergency/summary.json
+          cat benchmarks/results/2026-10-06_bonus-time/emergency/analysis.json
+      - name: Write job summary
+        if: always()
+        run: |
+          echo '## 1局5回・最大30秒 emergency 20局' >> "$GITHUB_STEP_SUMMARY"
+          if [[ -f benchmarks/results/2026-10-06_bonus-time/emergency/summary.json ]]; then
+            echo '~~~json' >> "$GITHUB_STEP_SUMMARY"
+            cat benchmarks/results/2026-10-06_bonus-time/emergency/summary.json >> "$GITHUB_STEP_SUMMARY"
+            echo '~~~' >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload experiment records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bonus-time-emergency-${{ github.run_id }}
+          path: benchmarks/results/2026-10-06_bonus-time/emergency
+          retention-days: 30
+          if-no-files-found: warn
