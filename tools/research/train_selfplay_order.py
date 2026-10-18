@@ -16,8 +16,9 @@ def digest(data):
     return hashlib.sha256(data).hexdigest()
 
 
-def collect(inputs, output):
+def collect(inputs, output, parent_sha256s=None):
     import shogi
+    allowed_parents = set(parent_sha256s or ['2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36'])
     seen_games, occupied = set(), set()
     groups = [[], [], []]
     receipts = []
@@ -36,10 +37,10 @@ def collect(inputs, output):
             for line in f:
                 g = json.loads(line)
                 game_hash = digest(' '.join(m['move'] for m in g['moves']).encode())
-                b = shogi.Board()
+                b = shogi.Board(g.get('start_sfen') or shogi.STARTING_SFEN)
                 eligible = []
                 meta = metadata[g['source_id']]
-                if meta['sha256_b'] != '2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36':
+                if meta['sha256_b'] not in allowed_parents:
                     raise ValueError('unrecognized own parent binary')
                 for row in g['moves']:
                     m = shogi.Move.from_usi(row['move'])
@@ -179,9 +180,10 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument('--inputs', nargs='+', required=True)
     p.add_argument('--probe', required=True)
+    p.add_argument('--parent-sha256', action='append', help='Explicit saved own-parent binary digest; repeat for a declared source mixture')
     p.add_argument('--output', type=Path, required=True)
     args = p.parse_args()
-    groups = collect(args.inputs,args.output)
+    groups = collect(args.inputs,args.output,args.parent_sha256)
     train(groups,matrices(groups,args.probe),args.output)
 
 
