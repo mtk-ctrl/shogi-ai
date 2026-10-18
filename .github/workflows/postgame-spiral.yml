@@ -34,6 +34,14 @@ on:
         description: Immutable commit containing research/postgame-cycles/CYCLE/PLAN.json
         type: string
         required: true
+      learn_next_only:
+        description: Replay a confirmed cycle and learn from its saved next generation only
+        type: boolean
+        default: false
+      source_publication:
+        description: Immutable verified cycle Release receipt for next learning
+        type: string
+        default: "{}"
       order_only:
         description: Frozen selfplay order model comparisons and research-parent inheritance
         type: boolean
@@ -208,7 +216,7 @@ jobs:
           if-no-files-found: ignore
 
   selfplay-order:
-    if: github.event_name == 'workflow_dispatch' && inputs.order_only
+    if: github.event_name == 'workflow_dispatch' && inputs.order_only && !inputs.learn_next_only
     runs-on: ubuntu-latest
     timeout-minutes: 180
     permissions: {contents: write, actions: write}
@@ -234,5 +242,34 @@ jobs:
             build/order-cycle/*/dispatch.json
             build/order-cycle/*/audit.json
             build/order-cycle/*/publication.json
+          retention-days: 90
+          if-no-files-found: error
+
+  next-order-learning:
+    if: github.event_name == 'workflow_dispatch' && inputs.order_only && inputs.learn_next_only
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions: {contents: write, actions: read}
+    steps:
+      - uses: actions/checkout@v5
+        with: {ref: '${{ inputs.plan_ref }}'}
+      - run: python3 -m pip install python-shogi==1.1.1 numpy==2.3.5
+      - run: python3 scripts/check_workflow_inventory.py --strict && python3 scripts/check_match_workflows.py
+      - name: Replay inherited selfplay and train the next research proposal
+        env:
+          GH_TOKEN: '${{ github.token }}'
+          PLAN_REF: '${{ inputs.plan_ref }}'
+          SOURCE_PUBLICATION: '${{ inputs.source_publication }}'
+        run: python3 .github/scripts/learn_next_selfplay_order.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: selfplay-order-next-learning-${{ github.run_id }}
+          path: |
+            build/order-next-learning/publication.json
+            build/order-next-learning/learned/lineage.json
+            build/order-next-learning/learned/training/model.json
+            build/order-next-learning/learned/training/inputs.json
+            build/order-next-learning/learned/training/selfplay_order_weights.h
           retention-days: 90
           if-no-files-found: error

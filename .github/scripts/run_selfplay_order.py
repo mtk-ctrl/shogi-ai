@@ -35,14 +35,16 @@ def save(p,obj):
 def launch():
     request=json.loads((ROOT/'.github/selfplay-order-request.json').read_text())
     if request==dict(enabled=False):return
-    if set(request)!={'candidate_ref','request_id'} or len(request['candidate_ref'])!=40:
+    if set(request) not in ({'candidate_ref','request_id'},{'candidate_ref','request_id','learning_only','source_publication'}) or len(request['candidate_ref'])!=40:
         raise ValueError('fixed explicit request required')
     existing=api(f'repos/{REPO}/actions/workflows/postgame-spiral.yml/runs?event=workflow_dispatch&per_page=100')['workflow_runs']
     if any(r['display_title']=='Spiral '+request['request_id'] for r in existing):
         raise ValueError('research body already exists; reconcile instead of retry')
     result=api(f'repos/{REPO}/actions/workflows/postgame-spiral.yml/dispatches',dict(
         ref=os.environ['GITHUB_REF_NAME'],return_run_details=True,inputs=dict(
-        cycle_id=request['request_id'],plan_ref=request['candidate_ref'],order_only='true')))
+        cycle_id=request['request_id'],plan_ref=request['candidate_ref'],order_only='true',
+        learn_next_only=str(request.get('learning_only',False)).lower(),
+        source_publication=json.dumps(request.get('source_publication',{}),sort_keys=True))))
     if type(result.get('workflow_run_id')) is not int:raise ValueError('missing actual body run')
     print('ORDER_LAUNCH '+json.dumps(result),flush=True)
 
