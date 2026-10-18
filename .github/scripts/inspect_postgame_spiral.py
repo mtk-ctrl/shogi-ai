@@ -33,7 +33,7 @@ def inspect(backend,env):
     raw=api(f"repos/{backend.repo}/contents/research/postgame-cycles/{plan['cycle_id']}/PLAN.json?ref={env['plan_ref']}")
     require(json.loads(base64.b64decode(raw['content']))==plan,'immutable original plan differs from saved policy')
     previous={};reports=[];state=core.start(plan)
-    source_publication=None;preparation_publication=None;parent_knowledge_publication=None;knowledge_candidate=None
+    source_publication=plan.get('source_publication');preparation_publication=None;parent_knowledge_publication=None;knowledge_candidate=None
     prior=set(backend.reference_index(plan))
     if plan.get('predecessor_checkpoint'):
         ancestor=json.loads(backend.bytes(plan['predecessor_checkpoint']).read_bytes())
@@ -153,6 +153,17 @@ def inspect(backend,env):
                 verify_followup(original,diagnosis,state['parent'],followup)
                 report['followup']=followup
                 evidence['followup']=followup
+            if plan.get('knowledge_builder')=='horizon':
+                from tools.research.postgame_horizon import verify_saved
+                original=backend.unpack(plan['horizon_input_publication'])/'practice/handoff'
+                oldprep=json.loads((original/'preparation.json').read_bytes())
+                diagnosis=json.loads((original/'analysis/diagnosis.json').read_bytes())
+                source=backend.unpack(source_publication)
+                report['horizon_replay']=verify_saved(folder/'knowledge-stage',
+                    (source/'build/position-knowledge-v1.tsv').read_bytes(),oldprep,diagnosis,
+                    plan['horizon_selection'],knowledge)
+                require(prep['split_registry']==oldprep['split_registry'] and prep['example_bank']==oldprep['example_bank'],
+                        'horizon split/exposure or old examples changed')
             previous=prep
         elif stage=='preflight':
             evidence.update(candidate=binding['inputs']['candidate'],preflight=result['preflight'])

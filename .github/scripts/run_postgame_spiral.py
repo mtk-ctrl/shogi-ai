@@ -60,7 +60,7 @@ def code_hash():
 def algorithm_hash():
     # Audit/log/publication repairs may change, but not the frozen learning,
     # split rules, candidate gates or generation/selection semantics.
-    names=('ranker','analyze','spiral','cycle','eval_preflight','runtime','candidates','cases','progress','knowledge','followup','knowledge_route')
+    names=('ranker','analyze','spiral','cycle','eval_preflight','runtime','candidates','cases','progress','knowledge','followup','knowledge_route','horizon')
     return digest({n:sha256((ROOT/f'tools/research/postgame_{n}.py').read_bytes()) for n in names})
 
 def safe_extract(package,dest):
@@ -345,9 +345,40 @@ class Backend:
         dump(folder/'match-request.json',req);files['match-request.json']=folder/'match-request.json'
         return dict(data,publication=self.package(env,data,files))
 
+    def prepare_horizon(self,env):
+        from tools.research.postgame_horizon import run as horizon_run
+        from tools.research.postgame_cases import load_archive,make_case
+        plan=env['state']['plan'];folder=self.folder(env)
+        source=self.unpack(env['source_publication']);build=source/'build';binary=build/'engine-a';binary.chmod(0o755)
+        original=json.loads((source/'stage-result.json').read_bytes())
+        require(all(original['audit'][k] is True for k in ('all_moves_legal','all_terminations_verified',
+                'conditions_verified','binary_verified','knowledge_snapshot_verified')),'saved source audit is incomplete')
+        require(original['audit']['parent_ref']==plan['parent']['engine_ref']
+                and sha256(binary.read_bytes())==plan['horizon_binary_sha256']==original['audit']['actual_binary_sha256']['A'],
+                'horizon source binary provenance differs')
+        evidence=self.unpack(plan['horizon_input_publication'])/'practice'
+        previous=json.loads((evidence/'handoff/preparation.json').read_bytes())
+        diagnosis=json.loads((evidence/'handoff/analysis/diagnosis.json').read_bytes())
+        games={g.row['game_id']:g for g in load_archive(evidence/'played-archive')}
+        for row in diagnosis:
+            case=row['case'];require(make_case(games[case['source']['game_id']],case['source']['ply'])==case,
+                                      'horizon input differs from archived actual played move')
+        result=horizon_run(binary,build/'position-knowledge-v1.tsv',previous,diagnosis,plan['horizon_selection'],
+                           env['parent_options'],plan['cycle_id'],folder/'knowledge-stage',plan['horizon_binary_sha256'])
+        report=dict(schema='postgame-horizon-preparation-v1',learning=dict(status='knowledge_only',parameter_updates=0,
+                    parent_options=env['parent_options']),examples=[],bank_pairs_reused=0,
+                    split_registry=previous['split_registry'],example_bank=previous['example_bank'],
+                    candidate_knowledge=result['manifest']['accepted'],formal_adoption=False)
+        dump(folder/'preparation.json',report)
+        data=dict(preparation=report,analysis_summary=result['horizon_summary'],knowledge_stage=result)
+        files={'preparation.json':folder/'preparation.json'}
+        files.update({p.relative_to(folder).as_posix():p for p in (folder/'knowledge-stage').rglob('*') if p.is_file()})
+        return dict(data,publication=self.package(env,data,files))
+
     def prepare(self,env):
         existing=self.previous_stage(env)
         if existing:return existing
+        if env['state']['plan'].get('knowledge_builder')=='horizon':return self.prepare_horizon(env)
         folder=self.folder(env);source=self.unpack(env['source_publication']);build=source/'build';binary=build/'engine-a';binary.chmod(0o755)
         knowledge=build/'position-knowledge-v1.tsv';params=env['parent_options'];context=env['state']['parent']
         previous={};old_cases={}
@@ -476,9 +507,10 @@ def main():
         raw=api(f'repos/{repo}/contents/{path}?ref={ref}')
         plan=json.loads(base64.b64decode(raw['content']))
         require(plan['cycle_id']==ident and plan['controller_sha256']==code_hash(),'frozen plan/controller mismatch')
-        require('progress_policy' in plan,'new cycle plans must freeze research-yield and stagnation controls')
+        horizon=plan.get('knowledge_builder')=='horizon'
+        require(horizon or 'progress_policy' in plan,'new cycle plans must freeze research-yield and stagnation controls')
         require('knowledge_policy' in plan,'new cycle plans must freeze research-knowledge preparation policy')
-        require('followup_policy' in plan,'new cycle plans must freeze bounded follow-up research policy')
+        require(horizon or 'followup_policy' in plan,'new cycle plans must freeze bounded follow-up research policy')
         # New start must not overlap an already active cycle under another name.
         require(backend.load() is None,'another cycle is already active')
         env=initialize(plan,plan['parent_options'],code_hash());env['plan_ref']=ref

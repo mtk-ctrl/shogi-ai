@@ -115,7 +115,10 @@ def propose(base, preparation, diagnosis, parent, cycle_id, probe, purpose="rese
 
 
 def validate_snapshot(base, candidate, manifest):
-    require(manifest["formal_adoption"] is False and manifest["policy"] == POLICY_KNOWLEDGE,
+    from tools.research.postgame_horizon import POLICY_HORIZON
+    policies={'postgame-knowledge-proposal-v1':POLICY_KNOWLEDGE,'postgame-horizon-proposal-v1':POLICY_HORIZON}
+    require(manifest['schema'] in policies and manifest["formal_adoption"] is False
+            and manifest["policy"] == policies[manifest['schema']],
             "knowledge policy/adoption boundary differs")
     require(sha256(base) == manifest["base_sha256"] == manifest["parent"]["knowledge_sha256"], "base bytes changed")
     require(sha256(candidate) == manifest["candidate_sha256"] and candidate.startswith(base), "candidate bytes/base preservation differs")
@@ -159,7 +162,7 @@ def preflight(manifest, probe):
         require(all(p["history_key"] == case["history_key"] for p in pair), "target history changed")
         hit=pair[1].get("research_decision_id") == evidence["research_id"] and pair[1]["bestmove"] == target
         require(pair[0].get("research_decision_id") != evidence["research_id"], "new research leaked into base")
-        hits+=int(hit);corrections+=int(hit and pair[0]["bestmove"] == evidence['actual_move'])
+        hits+=int(hit);corrections+=int(hit and pair[0]["bestmove"] == evidence.get('compared_parent_move',evidence['actual_move']))
         observations.append(dict(case_id=case["case_id"],kind="target",disabled=off,parent=pair[0],candidate=pair[1]))
     ratio=depths[1]/depths[0] if depths[0] else 0.
     passed=off_exact and regressions == 0 and ratio >= POLICY_KNOWLEDGE["min_depth_ratio"] and corrections == len(manifest["accepted"]) > 0
