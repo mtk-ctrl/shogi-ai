@@ -180,7 +180,7 @@ public:
     std::size_t position_knowledge_size() const { return position_knowledge_.size(); }
     void set_quiescence_enabled(bool enabled) { quiescence_enabled_ = enabled; }
     const Stats& last_stats() const { return stats_; }
-    void set_research_mask(unsigned mask) { research_mask_ = mask & 31; }
+    void set_research_mask(unsigned mask) { research_mask_ = mask & 63; }
     unsigned research_mask() const { return research_mask_; }
     void set_efficiency_mask(unsigned mask) { efficiency_mask_ = mask & 15; }
     unsigned efficiency_mask() const { return efficiency_mask_; }
@@ -890,13 +890,18 @@ private:
                 moves = ordered(p, moves, {}, {}, {}, ply);
             } else {
                 const auto& snapshot = get_snapshot();
+                // Research bit 32: keep the *same* stable MVV-LVA order without
+                // allocating a TacticalMove vector at every quiescence node.
+                // No pruning, new evaluation terms, or change to the move set.
+                const bool inplace = (research_mask_ & 32u) && moves.size() <= 256;
+                std::array<int, 256> inplace_scores{};
                 struct TacticalMove {
                     std::string move;
                     int score = 0;
                     std::size_t original_index = 0;
                 };
                 std::vector<TacticalMove> scored;
-                scored.reserve(moves.size());
+                if (!inplace) scored.reserve(moves.size());
                 for (std::size_t i = 0; i < moves.size(); ++i) {
                     const auto& move = moves[i];
                     const int dst = (move[2] - '1') * 9 + move[3] - 'a';
@@ -914,13 +919,31 @@ private:
                             piece_value(moving.kind, true)
                             - piece_value(moving.kind, moving.promoted));
                     }
-                    scored.push_back({move, score, i});
+                    if (inplace) inplace_scores[i] = score;
+                    else scored.push_back({move, score, i});
                 }
-                std::stable_sort(scored.begin(), scored.end(), [](const auto& a, const auto& b) {
-                    return a.score > b.score;
-                });
-                for (std::size_t i = 0; i < scored.size(); ++i)
-                    moves[i] = std::move(scored[i].move);
+                if (inplace) {
+                    // Stable insertion sort is cheap for the typically short
+                    // tactical list. Original tie order is deliberately kept.
+                    for (std::size_t i = 1; i < moves.size(); ++i) {
+                        auto move = std::move(moves[i]);
+                        const int score = inplace_scores[i];
+                        auto j = i;
+                        while (j > 0 && score > inplace_scores[j - 1]) {
+                            inplace_scores[j] = inplace_scores[j - 1];
+                            moves[j] = std::move(moves[j - 1]);
+                            --j;
+                        }
+                        inplace_scores[j] = score;
+                        moves[j] = std::move(move);
+                    }
+                } else {
+                    std::stable_sort(scored.begin(), scored.end(), [](const auto& a, const auto& b) {
+                        return a.score > b.score;
+                    });
+                    for (std::size_t i = 0; i < scored.size(); ++i)
+                        moves[i] = std::move(scored[i].move);
+                }
             }
         }
         for (const auto& move : moves) {
