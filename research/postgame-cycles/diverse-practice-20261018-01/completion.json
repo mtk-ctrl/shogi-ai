@@ -1,0 +1,91 @@
+{
+  "schema": "self-improvement-stage-completion-v1",
+  "overall_status": "in_progress",
+  "completed_stage": "4A",
+  "execution_status": "complete",
+  "next_stage": "4B: review observed terminal-loss tasks with current 200ms and integrate bounded diversity/retained controls into ordinary generations under a new plan",
+  "implementation_ref": "cdb07a2fec03ea570b76b662b9185213bb9a908c",
+  "implementation_merge": "4ab3111f2465469d69a35168b3a9f3dfc1d7135d",
+  "implementation_pr": 287,
+  "plan_ref": "cdb07a2fec03ea570b76b662b9185213bb9a908c",
+  "plan_sha256": "b3d395bdff334f2ff12028395e1427c430b8c54ca638380009e0f7aaf557ba5d",
+  "runs": {
+    "launcher": 39115917439,
+    "trial": 39115930867,
+    "all_completed_successfully": true
+  },
+  "result": {
+    "roots": 6,
+    "inherited_source_groups": 3,
+    "opponent_profiles": 3,
+    "games": 30,
+    "new_plies": 450,
+    "replayed_prefix_plies": 1719,
+    "alternative_roots": 4,
+    "reanalyzed_cases": 8,
+    "source_selected_cells": [
+      "opening:black",
+      "opening:white",
+      "middle:black",
+      "middle:white",
+      "end:black",
+      "end:white"
+    ],
+    "opponent_branch_pairs": 20,
+    "observed_sequence_differences": 9,
+    "termination_counts": {
+      "move_limit": 27,
+      "checkmate": 3
+    },
+    "training_practice_games": 30,
+    "quarantined_practice_games": 0,
+    "research_knowledge_candidates": 0,
+    "horizon_roots": 1,
+    "horizon_statuses": {
+      "already_correct": 1
+    },
+    "parameter_updates": 0,
+    "retained_controls_before": 12,
+    "retained_controls_before_passed": 12,
+    "retained_controls_after": 12,
+    "retained_controls_after_passed": 12,
+    "retained_after_is_candidate": false,
+    "requested_analysis_ms": 35100,
+    "analysis_reservation_ms": 600000,
+    "play_seconds": 51.996,
+    "observed_terminal_loss_problems": 1,
+    "terminal_loss_observations": 3,
+    "parent_retained": true,
+    "formal_adoption": false,
+    "strength_improvement_demonstrated": false
+  },
+  "verification": {
+    "local_postgame_tests": 169,
+    "implementation_ci": 39115800177,
+    "legacy_ci": 39115800205,
+    "documents_ci": 39115800234,
+    "main_documents_ci": 39115894195,
+    "local_document_checks_passed": true,
+    "selection_reproduced_from_source_archives": true,
+    "all_histories_moves_terminations_settings_verified": true,
+    "raw_archive_reproduced": true,
+    "all_lineages_and_handoff_reproduced": true,
+    "all_publications_hash_bytes_api_verified": true,
+    "actions_artifact_download_matches_api_digest": true,
+    "local_replay_equals_published_readback": true,
+    "new_games_for_readback": 0,
+    "new_engine_runs_for_readback": 0
+  },
+  "not_live_verified": [
+    "Automatic curriculum insertion in ordinary generation control",
+    "Restored historical engine opponents",
+    "A useful practice-generated candidate and its retained-control rejection or acceptance",
+    "Improved conversion/defense rates on independent positions",
+    "Recovery after an interrupted practice execution",
+    "Quarantine from an actual new descendant contact with protected data",
+    "Long-term strength growth"
+  ],
+  "formal_engine_changed_files": [],
+  "formal_knowledge_changed_files": [],
+  "generic_engine_match_workflow_changed": false
+}

@@ -1,0 +1,156 @@
+{
+  "schema": "postgame-curriculum-verification-v1",
+  "plan_sha256": "b3d395bdff334f2ff12028395e1427c430b8c54ca638380009e0f7aaf557ba5d",
+  "games": 30,
+  "new_plies": 450,
+  "roots": 6,
+  "alternative_roots": 4,
+  "root_cells": [
+    "opening:black",
+    "opening:white",
+    "middle:black",
+    "middle:white",
+    "end:black",
+    "end:white"
+  ],
+  "profiles": [
+    "parent",
+    "pressure",
+    "safety"
+  ],
+  "opponent_branch_pairs": 20,
+  "observed_sequences_differing_from_parent": 9,
+  "inherited_source_groups": 3,
+  "training_practice_games": 30,
+  "quarantined_practice_games": 0,
+  "raw_archive_reproduced": true,
+  "all_histories_moves_terminations_settings_verified": true,
+  "handoff": {
+    "training_selected_cases": 8,
+    "all_lineages_preserved": true,
+    "preparation_reproduced": true,
+    "knowledge_proposal_reproduced": true,
+    "new_engine_runs": 0,
+    "formal_adoption": false,
+    "strength_improvement_demonstrated": false
+  },
+  "retention": {
+    "before": {
+      "cases": 12,
+      "passed": true,
+      "rows": [
+        {
+          "case_id": "capture-10a6b90f7ceb682a",
+          "correct": true
+        },
+        {
+          "case_id": "capture-5795ceab2d927ae2",
+          "correct": true
+        },
+        {
+          "case_id": "capture-df2e9ab52017fc7d",
+          "correct": true
+        },
+        {
+          "case_id": "capture-044da5382145a4ac",
+          "correct": true
+        },
+        {
+          "case_id": "capture-d3d08e01960c229c",
+          "correct": true
+        },
+        {
+          "case_id": "capture-875ab811f688a4d4",
+          "correct": true
+        },
+        {
+          "case_id": "capture-064ee25e6270cb65",
+          "correct": true
+        },
+        {
+          "case_id": "capture-1773130f1a05c98f",
+          "correct": true
+        },
+        {
+          "case_id": "capture-1f4ee9df7105b4c7",
+          "correct": true
+        },
+        {
+          "case_id": "capture-336f91dda8c0769c",
+          "correct": true
+        },
+        {
+          "case_id": "capture-4e3b07de36163ba6",
+          "correct": true
+        },
+        {
+          "case_id": "capture-5f0a8ba92edf2974",
+          "correct": true
+        }
+      ],
+      "limitation": "Own-authored capture controls; no general strength inference."
+    },
+    "after": {
+      "cases": 12,
+      "passed": true,
+      "rows": [
+        {
+          "case_id": "capture-10a6b90f7ceb682a",
+          "correct": true
+        },
+        {
+          "case_id": "capture-5795ceab2d927ae2",
+          "correct": true
+        },
+        {
+          "case_id": "capture-df2e9ab52017fc7d",
+          "correct": true
+        },
+        {
+          "case_id": "capture-044da5382145a4ac",
+          "correct": true
+        },
+        {
+          "case_id": "capture-d3d08e01960c229c",
+          "correct": true
+        },
+        {
+          "case_id": "capture-875ab811f688a4d4",
+          "correct": true
+        },
+        {
+          "case_id": "capture-064ee25e6270cb65",
+          "correct": true
+        },
+        {
+          "case_id": "capture-1773130f1a05c98f",
+          "correct": true
+        },
+        {
+          "case_id": "capture-1f4ee9df7105b4c7",
+          "correct": true
+        },
+        {
+          "case_id": "capture-336f91dda8c0769c",
+          "correct": true
+        },
+        {
+          "case_id": "capture-4e3b07de36163ba6",
+          "correct": true
+        },
+        {
+          "case_id": "capture-5f0a8ba92edf2974",
+          "correct": true
+        }
+      ],
+      "limitation": "Own-authored capture controls; no general strength inference."
+    }
+  },
+  "research_candidate_retention_passed": true,
+  "requested_analysis_ms": 35100,
+  "analysis_reservation_ms": 600000,
+  "new_games_for_readback": 0,
+  "new_engine_runs_for_readback": 0,
+  "formal_adoption": false,
+  "strength_improvement_demonstrated": false
+}

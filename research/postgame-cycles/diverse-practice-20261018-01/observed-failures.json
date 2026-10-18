@@ -1,0 +1,55 @@
+{
+  "schema": "postgame-observed-failures-v1",
+  "source_plan_sha256": "b3d395bdff334f2ff12028395e1427c430b8c54ca638380009e0f7aaf557ba5d",
+  "problems": [
+    {
+      "kind": "observed_terminal_loss",
+      "status": "requires_200ms_and_mate_recheck",
+      "root_history_key": "4462da97879745ff4b9f1519f53ae4fcf54f7e64284524f92a746bd5a591400e",
+      "plan_selection_index": 4,
+      "source": {
+        "run_id": "39097775103",
+        "game_id": "1dd9c61b36ea5836a517b93685da66cc09b3279e274ccb5ed1d186ffa19de612:0",
+        "ply": 125,
+        "archive_sha256": "8bcdde2857d9272724b271b53239d1a0e93c9cc886033b2ed8b762c8d1c0d493",
+        "manifest_sha256": "5938c7a7721f8050981307b36abec7efb8e506452a3d1384af70dda7182faaf5"
+      },
+      "phase": "end",
+      "side": "black",
+      "inherited_group": "4085962e6fb266e853cccad3add425ce64ebf7e6b8ba3c811600cdef0ffa9eeb",
+      "split": "train",
+      "forced_move": "5i4h",
+      "observations": [
+        {
+          "publication_name": "postgame-diverse-practice-20261018-01-cdb07a2fec03.tgz",
+          "raw_file": "practice/games/game-19.json",
+          "raw_sha256": "3e7aa1f48b69e327aaab778c69fad45282247259157f3dded5fe60b1bf67b6f3",
+          "profile": "parent",
+          "new_plies": 6,
+          "terminal_reason": "checkmate"
+        },
+        {
+          "publication_name": "postgame-diverse-practice-20261018-01-cdb07a2fec03.tgz",
+          "raw_file": "practice/games/game-21.json",
+          "raw_sha256": "6cbd83a1a26541431f4c56ea77905dbe97634015ad3f10fe2082cd8a4c33bf4b",
+          "profile": "pressure",
+          "new_plies": 6,
+          "terminal_reason": "checkmate"
+        },
+        {
+          "publication_name": "postgame-diverse-practice-20261018-01-cdb07a2fec03.tgz",
+          "raw_file": "practice/games/game-23.json",
+          "raw_sha256": "5d86cf9dd93ece440548d62d41a5af671b837132260bce438b0ac34591ca6c54",
+          "profile": "safety",
+          "new_plies": 6,
+          "terminal_reason": "checkmate"
+        }
+      ],
+      "correct_move_established": false,
+      "forced_loss_at_root_proved": false,
+      "formal_adoption": false,
+      "limitation": "Observed opponent replies produced a verified terminal loss; this does not prove all replies or an alternative root move."
+    }
+  ],
+  "teacher_labels_created": 0
+}

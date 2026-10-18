@@ -1,0 +1,467 @@
+{
+  "schema": "postgame-curriculum-measurements-v1",
+  "implementation_ref": "cdb07a2fec03ea570b76b662b9185213bb9a908c",
+  "implementation_merge": "4ab3111f2465469d69a35168b3a9f3dfc1d7135d",
+  "implementation_pr": 287,
+  "launcher_run": 39115917439,
+  "trial_run": 39115930867,
+  "summary": {
+    "roots": 6,
+    "inherited_source_groups": 3,
+    "opponent_profiles": 3,
+    "games": 30,
+    "new_plies": 450,
+    "replayed_prefix_plies": 1719,
+    "alternative_roots": 4,
+    "reanalyzed_cases": 8,
+    "source_selected_cells": [
+      "opening:black",
+      "opening:white",
+      "middle:black",
+      "middle:white",
+      "end:black",
+      "end:white"
+    ],
+    "opponent_branch_pairs": 20,
+    "observed_sequence_differences": 9,
+    "termination_counts": {
+      "move_limit": 27,
+      "checkmate": 3
+    },
+    "training_practice_games": 30,
+    "quarantined_practice_games": 0,
+    "research_knowledge_candidates": 0,
+    "horizon_roots": 1,
+    "horizon_statuses": {
+      "already_correct": 1
+    },
+    "parameter_updates": 0,
+    "retained_controls_before": 12,
+    "retained_controls_before_passed": 12,
+    "retained_controls_after": 12,
+    "retained_controls_after_passed": 12,
+    "retained_after_is_candidate": false,
+    "requested_analysis_ms": 35100,
+    "analysis_reservation_ms": 600000,
+    "play_seconds": 51.996,
+    "observed_terminal_loss_problems": 1,
+    "terminal_loss_observations": 3,
+    "parent_retained": true,
+    "formal_adoption": false,
+    "strength_improvement_demonstrated": false
+  },
+  "local_reproduction": {
+    "verification": {
+      "schema": "postgame-curriculum-verification-v1",
+      "plan_sha256": "b3d395bdff334f2ff12028395e1427c430b8c54ca638380009e0f7aaf557ba5d",
+      "games": 30,
+      "new_plies": 450,
+      "roots": 6,
+      "alternative_roots": 4,
+      "root_cells": [
+        "opening:black",
+        "opening:white",
+        "middle:black",
+        "middle:white",
+        "end:black",
+        "end:white"
+      ],
+      "profiles": [
+        "parent",
+        "pressure",
+        "safety"
+      ],
+      "opponent_branch_pairs": 20,
+      "observed_sequences_differing_from_parent": 9,
+      "inherited_source_groups": 3,
+      "training_practice_games": 30,
+      "quarantined_practice_games": 0,
+      "raw_archive_reproduced": true,
+      "all_histories_moves_terminations_settings_verified": true,
+      "handoff": {
+        "training_selected_cases": 8,
+        "all_lineages_preserved": true,
+        "preparation_reproduced": true,
+        "knowledge_proposal_reproduced": true,
+        "new_engine_runs": 0,
+        "formal_adoption": false,
+        "strength_improvement_demonstrated": false
+      },
+      "retention": {
+        "before": {
+          "cases": 12,
+          "passed": true,
+          "rows": [
+            {
+              "case_id": "capture-10a6b90f7ceb682a",
+              "correct": true
+            },
+            {
+              "case_id": "capture-5795ceab2d927ae2",
+              "correct": true
+            },
+            {
+              "case_id": "capture-df2e9ab52017fc7d",
+              "correct": true
+            },
+            {
+              "case_id": "capture-044da5382145a4ac",
+              "correct": true
+            },
+            {
+              "case_id": "capture-d3d08e01960c229c",
+              "correct": true
+            },
+            {
+              "case_id": "capture-875ab811f688a4d4",
+              "correct": true
+            },
+            {
+              "case_id": "capture-064ee25e6270cb65",
+              "correct": true
+            },
+            {
+              "case_id": "capture-1773130f1a05c98f",
+              "correct": true
+            },
+            {
+              "case_id": "capture-1f4ee9df7105b4c7",
+              "correct": true
+            },
+            {
+              "case_id": "capture-336f91dda8c0769c",
+              "correct": true
+            },
+            {
+              "case_id": "capture-4e3b07de36163ba6",
+              "correct": true
+            },
+            {
+              "case_id": "capture-5f0a8ba92edf2974",
+              "correct": true
+            }
+          ],
+          "limitation": "Own-authored capture controls; no general strength inference."
+        },
+        "after": {
+          "cases": 12,
+          "passed": true,
+          "rows": [
+            {
+              "case_id": "capture-10a6b90f7ceb682a",
+              "correct": true
+            },
+            {
+              "case_id": "capture-5795ceab2d927ae2",
+              "correct": true
+            },
+            {
+              "case_id": "capture-df2e9ab52017fc7d",
+              "correct": true
+            },
+            {
+              "case_id": "capture-044da5382145a4ac",
+              "correct": true
+            },
+            {
+              "case_id": "capture-d3d08e01960c229c",
+              "correct": true
+            },
+            {
+              "case_id": "capture-875ab811f688a4d4",
+              "correct": true
+            },
+            {
+              "case_id": "capture-064ee25e6270cb65",
+              "correct": true
+            },
+            {
+              "case_id": "capture-1773130f1a05c98f",
+              "correct": true
+            },
+            {
+              "case_id": "capture-1f4ee9df7105b4c7",
+              "correct": true
+            },
+            {
+              "case_id": "capture-336f91dda8c0769c",
+              "correct": true
+            },
+            {
+              "case_id": "capture-4e3b07de36163ba6",
+              "correct": true
+            },
+            {
+              "case_id": "capture-5f0a8ba92edf2974",
+              "correct": true
+            }
+          ],
+          "limitation": "Own-authored capture controls; no general strength inference."
+        }
+      },
+      "research_candidate_retention_passed": true,
+      "requested_analysis_ms": 35100,
+      "analysis_reservation_ms": 600000,
+      "new_games_for_readback": 0,
+      "new_engine_runs_for_readback": 0,
+      "formal_adoption": false,
+      "strength_improvement_demonstrated": false
+    },
+    "root_reports": [
+      {
+        "phase": "opening",
+        "side": "black",
+        "original_ply": 23,
+        "source_game": "bfbd5ff14f04533990f92c15cf8652b2e9fbbfd232dcee6b1e3966c9996623d9:0",
+        "score_bucket": "balanced",
+        "games": 6,
+        "new_plies": 96,
+        "terminations": {
+          "move_limit": 6
+        }
+      },
+      {
+        "phase": "opening",
+        "side": "white",
+        "original_ply": 24,
+        "source_game": "c0fc536279c680d2f560e239a1f61027b00dd5333109c41239dc35f5a03c3f83:0",
+        "score_bucket": "disadvantage",
+        "games": 3,
+        "new_plies": 48,
+        "terminations": {
+          "move_limit": 3
+        }
+      },
+      {
+        "phase": "middle",
+        "side": "black",
+        "original_ply": 35,
+        "source_game": "1dd9c61b36ea5836a517b93685da66cc09b3279e274ccb5ed1d186ffa19de612:0",
+        "score_bucket": "convert_advantage",
+        "games": 3,
+        "new_plies": 48,
+        "terminations": {
+          "move_limit": 3
+        }
+      },
+      {
+        "phase": "middle",
+        "side": "white",
+        "original_ply": 60,
+        "source_game": "bfbd5ff14f04533990f92c15cf8652b2e9fbbfd232dcee6b1e3966c9996623d9:0",
+        "score_bucket": "balanced",
+        "games": 6,
+        "new_plies": 96,
+        "terminations": {
+          "move_limit": 6
+        }
+      },
+      {
+        "phase": "end",
+        "side": "black",
+        "original_ply": 125,
+        "source_game": "1dd9c61b36ea5836a517b93685da66cc09b3279e274ccb5ed1d186ffa19de612:0",
+        "score_bucket": "disadvantage",
+        "games": 6,
+        "new_plies": 66,
+        "terminations": {
+          "move_limit": 3,
+          "checkmate": 3
+        }
+      },
+      {
+        "phase": "end",
+        "side": "white",
+        "original_ply": 54,
+        "source_game": "c0fc536279c680d2f560e239a1f61027b00dd5333109c41239dc35f5a03c3f83:0",
+        "score_bucket": "disadvantage",
+        "games": 6,
+        "new_plies": 96,
+        "terminations": {
+          "move_limit": 6
+        }
+      }
+    ],
+    "replayed_prefix_plies": 1719,
+    "play_seconds": 51.996,
+    "handoff": {
+      "status": "candidate_preparation_completed",
+      "selected_cases": 8,
+      "parameter_updates": 0,
+      "evaluation_status": "not_requested_knowledge_only",
+      "knowledge_positions": 0,
+      "independent_groups": {
+        "train": 0,
+        "validation": 0,
+        "heldout": 0
+      },
+      "routes": {
+        "knowledge_reference_candidate": 3,
+        "hold": 4,
+        "search_horizon_candidate": 1
+      },
+      "formal_adoption": false,
+      "strength_improvement_demonstrated": false
+    },
+    "diagnosis_routes": {
+      "knowledge_reference_candidate": 3,
+      "hold": 4,
+      "search_horizon_candidate": 1
+    },
+    "decision_details": {
+      "actual_move_supported": 3,
+      "actual_move_supported_with_search_disagreement": 3,
+      "long_search_only_preference": 1,
+      "improvement_below_150cp": 1
+    },
+    "selected_sides": {
+      "white": 4,
+      "black": 4
+    },
+    "selected_phase_observations": {
+      "end": 2,
+      "not_recorded_for_forced_branch": 5,
+      "middle": 1
+    },
+    "termination_counts": {
+      "move_limit": 27,
+      "checkmate": 3
+    },
+    "retention_context": {
+      "binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+      "parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591",
+      "before_knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+      "after_knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+      "after_positions": 163,
+      "after_is_candidate": false
+    },
+    "analysis_summary": {
+      "source_games": 30,
+      "source_plies": 2169,
+      "unique_static_positions": 435,
+      "selected_cases": 8,
+      "categories": {
+        "frozen_practice_selection": 8
+      },
+      "selected_side": {
+        "white": 4,
+        "black": 4
+      },
+      "selected_reward": {
+        "None": 7,
+        "-1": 1
+      },
+      "routes": {
+        "knowledge_reference_candidate": 3,
+        "hold": 4,
+        "search_horizon_candidate": 1
+      },
+      "verification_pairs": 2,
+      "analyzer_binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+      "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+      "options": {
+        "SearchResearchMask": 23,
+        "SearchEfficiencyMask": 8,
+        "SearchReuseMask": 6,
+        "SearchNextMask": 4,
+        "SearchProbeMask": 7,
+        "SearchThreads": 2,
+        "RiskVerify": true,
+        "PositionKnowledge": true,
+        "AdaptiveLongThink": false,
+        "USI_Ponder": false,
+        "OpeningRandomNonLance": false,
+        "RandomSeed": 2031101701
+      },
+      "evaluation_options": {
+        "EvalSafety": 480,
+        "EvalPressure": 380,
+        "EvalActivity": 410,
+        "EvalDanger": 150,
+        "EvalInfluence": 140,
+        "EvalPotential": 210,
+        "EvalCoordination": 340,
+        "EvalHandPotential": 60,
+        "EvalThreat": 20
+      },
+      "fresh_process_per_search": true,
+      "seconds": 9.729,
+      "environment": {
+        "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+        "cpu_count": 4
+      },
+      "status": "diagnosis_completed",
+      "learning_status": "not_run",
+      "formal_adoption": false,
+      "limitation": "Provisional own-engine diagnosis; deeper search and fixed-depth pairing do not prove correct play or evaluation causality.",
+      "explicit_selection_sha256": "93acfb456bf5c9d64f8a9b1cb569ab585c6b56c9f535e04f88627dd908167780"
+    },
+    "knowledge_result": {
+      "schema": "postgame-knowledge-stage-v1",
+      "manifest": {
+        "schema": "postgame-horizon-proposal-v1",
+        "purpose": "research",
+        "cycle_id": "curriculum-b3d395bdff334f2f",
+        "parent": {
+          "engine_ref": "aea41f166b52b985cfe5cf40fc123520144381eb",
+          "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591"
+        },
+        "policy": {
+          "schema": "postgame-horizon-policy-v1",
+          "max_roots": 9,
+          "parent_ms": 200,
+          "parent_repeats": 2,
+          "deeper_ms": [
+            500,
+            2000
+          ],
+          "deeper_repeats": 2,
+          "child_ms": 500,
+          "min_fixed_depth": 2,
+          "max_fixed_depth": 4,
+          "fixed_timeout_ms": 5000,
+          "fixed_repeats": 2,
+          "min_improvement_cp": 150,
+          "attempts_per_parent_root": 1,
+          "automatic_formal_adoption": false
+        },
+        "selection_sha256": "805cef9849342475542da4bf0825da7b9102fe904f3c5b8b7b025d7e9354079e",
+        "observations_sha256": "2b1d4fccc1735915997bfcc0853c1227c6c4e7d7e94a7d48bcfbf24f1ce41daf",
+        "base_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "base_positions": 163,
+        "candidate_positions": 0,
+        "combined_positions": 163,
+        "candidate_sha256": null,
+        "accepted": [],
+        "rejected": [
+          {
+            "case_id": "f0fb5e8bb91eaa8950ce423eb3b3ad6072200f1fdc3944191632dbde8a88e5db",
+            "reason": "already_correct"
+          }
+        ],
+        "status": "no_effective_candidate",
+        "formal_adoption": false,
+        "production_match_eligible": true,
+        "strength_improvement_demonstrated": false
+      },
+      "binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+      "status": "no_effective_candidate",
+      "formal_adoption": false,
+      "strength_improvement_demonstrated": false,
+      "horizon_summary": {
+        "roots": 1,
+        "original_observations": 1,
+        "statuses": {
+          "already_correct": 1
+        },
+        "seconds": 0.558,
+        "independent_strength_test": false,
+        "parameter_updates": 0
+      }
+    },
+    "new_games_for_local_readback": 0,
+    "new_engine_runs_for_local_readback": 0
+  },
+  "scope": "Actual selected own-engine practice, not independent strength comparisons."
+}
