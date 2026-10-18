@@ -2,8 +2,8 @@ name: Postgame Automatic Spiral
 run-name: "Spiral ${{ inputs.cycle_id || 'launcher' }}"
 on:
   push:
-    branches: [main]
-    paths: [".github/postgame-spiral-request.json"]
+    branches: [main, research/value-learning-20261018]
+    paths: [".github/postgame-spiral-request.json", ".github/selfplay-value-request.json"]
   pull_request:
     paths:
       - "tools/research/postgame_*.py"
@@ -34,6 +34,10 @@ on:
         description: Immutable commit containing research/postgame-cycles/CYCLE/PLAN.json
         type: string
         required: true
+      order_only:
+        description: Frozen selfplay value model comparisons and research-parent inheritance
+        type: boolean
+        default: false
       publication_only:
         description: Publish and verify the saved eight-case follow-up only (no analysis or games)
         type: boolean
@@ -100,9 +104,14 @@ jobs:
       - run: python3 -m pip install python-shogi==1.1.1
       - name: Dispatch explicit manual controller entry
         env: {GH_TOKEN: "${{ github.token }}"}
-        run: python3 .github/scripts/run_postgame_spiral.py --launch
+        run: |
+          if [ "$GITHUB_REF_NAME" = "research/value-learning-20261018" ]; then
+            python3 .github/scripts/run_selfplay_value.py --launch
+          else
+            python3 .github/scripts/run_postgame_spiral.py --launch
+          fi
   control:
-    if: github.event_name == 'workflow_dispatch' && !inputs.inspect_only && !inputs.publication_only && !inputs.practice_only
+    if: github.event_name == 'workflow_dispatch' && !inputs.order_only && !inputs.inspect_only && !inputs.publication_only && !inputs.practice_only
     runs-on: ubuntu-latest
     timeout-minutes: 360
     permissions: {contents: write, actions: write}
@@ -130,7 +139,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 90
   inspect:
-    if: github.event_name == 'workflow_dispatch' && inputs.inspect_only && !inputs.publication_only && !inputs.practice_only
+    if: github.event_name == 'workflow_dispatch' && !inputs.order_only && inputs.inspect_only && !inputs.publication_only && !inputs.practice_only
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions: {contents: read, actions: read}
@@ -153,7 +162,7 @@ jobs:
           retention-days: 90
 
   publish-followup:
-    if: github.event_name == 'workflow_dispatch' && inputs.publication_only && !inputs.inspect_only && !inputs.practice_only
+    if: github.event_name == 'workflow_dispatch' && !inputs.order_only && inputs.publication_only && !inputs.inspect_only && !inputs.practice_only
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions: {contents: write}
@@ -175,7 +184,7 @@ jobs:
           if-no-files-found: error
 
   practice:
-    if: github.event_name == 'workflow_dispatch' && inputs.practice_only && !inputs.inspect_only && !inputs.publication_only && !inputs.repair
+    if: github.event_name == 'workflow_dispatch' && !inputs.order_only && inputs.practice_only && !inputs.inspect_only && !inputs.publication_only && !inputs.repair
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions: {contents: write, actions: read}
@@ -197,3 +206,33 @@ jobs:
           path: build/practice-trial
           retention-days: 90
           if-no-files-found: ignore
+
+  selfplay-value:
+    if: github.event_name == 'workflow_dispatch' && inputs.order_only
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    permissions: {contents: write, actions: write}
+    steps:
+      - uses: actions/checkout@v5
+        with: {ref: '${{ inputs.plan_ref }}'}
+      - run: python3 -m pip install python-shogi==1.1.1 numpy==2.3.5
+      - run: python3 scripts/check_workflow_inventory.py --strict && python3 scripts/check_match_workflows.py
+      - name: Compare frozen learned evaluation and inherit only a confirmed research parent
+        env:
+          GH_TOKEN: '${{ github.token }}'
+          PLAN_REF: '${{ inputs.plan_ref }}'
+        run: python3 .github/scripts/run_selfplay_value.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: selfplay-value-cycle-${{ github.run_id }}
+          path: |
+            build/value-cycle/final-publication.json
+            build/value-cycle/result.json
+            build/value-cycle/research-parent.json
+            build/value-cycle/*/request.json
+            build/value-cycle/*/dispatch.json
+            build/value-cycle/*/audit.json
+            build/value-cycle/*/publication.json
+          retention-days: 90
+          if-no-files-found: error

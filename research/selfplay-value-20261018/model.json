@@ -1,0 +1,138 @@
+{
+  "schema": "selfplay-value-v1",
+  "provenance": {
+    "receipts": [
+      {
+        "run_id": "38946175603",
+        "sha256": "d19ff0ac447dd8d3a5b24fe39d811a2b89a97c9727a824518607ec8dfabc4a2b",
+        "bytes": 753301,
+        "games": 100
+      },
+      {
+        "run_id": "38946985753",
+        "sha256": "fd19773c8f8dcc9e016790a0b109bcb1befdf2746b1760c5ae088f4789645fc4",
+        "bytes": 703780,
+        "games": 100
+      },
+      {
+        "run_id": "38947702135",
+        "sha256": "2d0c36230c4109390da6ebcde318b642adcc4677f13f1017d6ae838f7ba074fa",
+        "bytes": 712294,
+        "games": 100
+      },
+      {
+        "run_id": "38948701892",
+        "sha256": "b5907e4f69b65696752c453de32d70072b98d2fd744e792f212ec550e97103d7",
+        "bytes": 1432366,
+        "games": 200
+      }
+    ],
+    "verified_plies": 54821,
+    "unique_resolved_games": 497
+  },
+  "binary_sha256": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36",
+  "samples": {
+    "train": 979,
+    "validation": 238,
+    "test": 215
+  },
+  "base_options": {
+    "EvalSafety": 480,
+    "EvalPressure": 380,
+    "EvalActivity": 410,
+    "EvalDanger": 150,
+    "EvalInfluence": 140,
+    "EvalPotential": 210,
+    "EvalCoordination": 340,
+    "EvalHandPotential": 60,
+    "EvalThreat": 20
+  },
+  "samples_sha256": "4de5e17c070d6c731e092dffb7cbf8ab80365fc4038f381d479bd41d274e0885",
+  "split_games": {
+    "train": 303,
+    "validation": 70,
+    "test": 69
+  },
+  "selected_l2": 0.01,
+  "relative_delta": [
+    0.25,
+    0.05632870844794366,
+    0.05949343083777038,
+    0.08980513303496349,
+    0.044392250070205044,
+    -0.19161406537123815,
+    0.015172417581309834,
+    -0.018813734644503612,
+    0.25
+  ],
+  "validation_choices": [
+    {
+      "l2": 0.001,
+      "loss": 0.6278978074542211
+    },
+    {
+      "l2": 0.01,
+      "loss": 0.6277733799600211
+    },
+    {
+      "l2": 0.1,
+      "loss": 0.6301422753805644
+    }
+  ],
+  "baseline_loss": {
+    "train": 0.6896397075987015,
+    "validation": 0.6310703314600834,
+    "test": 0.6903333704999253
+  },
+  "learned_loss": {
+    "train": 0.6861402672656446,
+    "validation": 0.6277733799600211,
+    "test": 0.6847283269022947
+  },
+  "candidates": [
+    {
+      "fraction": 0.25,
+      "options": {
+        "EvalSafety": 510,
+        "EvalPressure": 385,
+        "EvalActivity": 416,
+        "EvalDanger": 153,
+        "EvalInfluence": 142,
+        "EvalPotential": 200,
+        "EvalCoordination": 341,
+        "EvalHandPotential": 60,
+        "EvalThreat": 21
+      }
+    },
+    {
+      "fraction": 0.5,
+      "options": {
+        "EvalSafety": 540,
+        "EvalPressure": 391,
+        "EvalActivity": 422,
+        "EvalDanger": 157,
+        "EvalInfluence": 143,
+        "EvalPotential": 190,
+        "EvalCoordination": 343,
+        "EvalHandPotential": 59,
+        "EvalThreat": 22
+      }
+    },
+    {
+      "fraction": 1.0,
+      "options": {
+        "EvalSafety": 600,
+        "EvalPressure": 401,
+        "EvalActivity": 434,
+        "EvalDanger": 163,
+        "EvalInfluence": 146,
+        "EvalPotential": 170,
+        "EvalCoordination": 345,
+        "EvalHandPotential": 59,
+        "EvalThreat": 25
+      }
+    }
+  ],
+  "eligible": true,
+  "formal_adoption": false
+}
