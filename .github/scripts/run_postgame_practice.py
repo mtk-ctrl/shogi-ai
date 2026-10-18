@@ -12,6 +12,9 @@ from tools.research.postgame_cases import sha256
 
 
 def main():
+    if os.environ.get('CYCLE_ID')=='diverse-practice-20261018-01':
+        from run_postgame_curriculum import main as run_curriculum
+        return run_curriculum()
     repo=os.environ['GITHUB_REPOSITORY'];ref=os.environ['PLAN_REF'];cycle=os.environ['CYCLE_ID'];run_id=int(os.environ['GITHUB_RUN_ID'])
     require(repo=='mtk-ctrl/shogi-ai' and cycle=='saved-practice-20261018-01' and re.fullmatch('[0-9a-f]{40}',ref),'fixed practice trial identity')
     require(os.environ.get('GITHUB_RUN_ATTEMPT','1')=='1','practice retry needs saved-output reconciliation, not new games')
