@@ -10,7 +10,7 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 | Workflow | 起動 | 用途 |
 |---|---|---|
 | `.github/workflows/selfplay-candidate-verification.yml` | 検証依頼ファイル変更 / 手動 | 固定した学習候補の48局面単独速度診断、完了した100/200局の合法性・終局ルール・長考・知識・実モデル使用・build出所を検証。結果と実戦手原本を月別データReleaseへhash確認付き保存。対局本体は既存汎用Workflowを使い、正式採用はしない |
-| `.github/workflows/postgame-spiral.yml` | 明示request / 手動 / 関連PR軽量検査 | 凍結予算内の評価学習/研究知識循環、理由別の追加研究、保存/検査。PRでは保存観測の再現と実Engine配線試験。正式採用しない |
+| `.github/workflows/postgame-spiral.yml` | 明示request / 手動 / 関連PR軽量検査 | 凍結予算内の評価学習/研究知識循環、追加研究、予算付き分岐練習、保存/検査。PRでは保存観測の再現と実Engine配線試験。正式採用しない |
 | `.github/workflows/postgame-cycle-pilot.yml` | 手動 | 旧G1の固定K0/K1比較を保持。追加の研究モードは保存済み循環checkpointから原本の実バイナリ/別知識を復元し、既存arenaで比較する。監査/長期保存と研究親選択は循環制御が担当。正式採用しない |
 | `.github/workflows/selfplay-learning.yml` | 学習依頼ファイル変更 / 手動 | 完了した同一版自己対局を出所・合法性・分割漏洩検査し、小型の評価補正を学習して候補をビルド。実戦手原本とモデルは月別データReleaseへhash検証付きで保存し、エンジンへの正式採用や次の対局を自動決定しない |
 | `.github/workflows/position10-adopt.yml` | 明示的な10局面採用依頼 / 手動 | 実行38091143128の研究10局面を原本から厳密検査して局面知識153→163件を採用。研究原本を月別Releaseへ保存・照合する |
@@ -132,3 +132,5 @@ engine-match.ymlは対局後に実際の着手だけを圧縮し、played-move-a
 
 
 2026-10-18 第3段階A：`postgame-spiral.yml` の明示的 `practice_only` は保存済み学習局面から一度だけ分岐練習する独立モード。固定計画/コードref/原本hash・実バイナリ/知識を照合し、最大4局面×2分岐×2状況・各最大16新規手を記録、群漏洩を隔離して既存診断/候補準備へ渡す。未決着に引分報酬を付けず、強制初手の探索値を作らない。通常の100/200局比較・多世代対局は起動しない。原本/再分析/候補準備を月別Releaseへ保存し再取得hashを確認する。自動世代制御への練習挿入は後続であり、通常の `control` へこのモードを黙って挿入しない。手動本体の重複/attempt再試行を拒否する。参照：[固定条件](../../research/self-improvement-20261017/PRACTICE_PLAN.md)。
+
+第3段階Cでは、新しいPLANに`practice_cycle_policy`を固定した通常`control`だけで、材料不足時に1局面×2分岐×2状況の練習を挿入できる。通常対局と別に最大2回/8練習局、探索指示時間の予約を管理し、親別の完了IDと検証群の使用履歴を引き継ぐ。再分析・既存の知識生成・読み足し知識経路へ渡し、候補ができた場合だけ既存の検査と通常比較へ進む。実行前の台帳保存後に応答を失った場合は再生成せず保存結果を照合する。失敗時の練習原本も期限付きartifactへ保持する。旧PLAN・独立`practice_only`・正式Engineを変更しない。参照：[固定試験計画](../../research/postgame-cycles/practice-cycle-smoke-20261018-01/PLAN.md)。

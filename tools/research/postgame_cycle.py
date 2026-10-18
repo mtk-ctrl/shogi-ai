@@ -24,6 +24,7 @@ if str(ROOT) not in sys.path:
 
 from tools.research.postgame_ranker import digest, require
 from tools.research.postgame_progress import validate_policy as validate_progress_policy, record as record_progress
+from tools.research.postgame_practice_cycle import validate_policy as validate_practice_policy, available as practice_available, accept as accept_practice
 
 
 def fixed_parent(parent):
@@ -36,10 +37,14 @@ def start(plan):
     fixed_parent(plan["parent"])
     if "progress_policy" in plan:
         validate_progress_policy(plan["progress_policy"])
+    if 'practice_cycle_policy' in plan:
+        validate_practice_policy(plan['practice_cycle_policy'])
+        require('progress_policy' in plan and plan['candidate_kind']=='knowledge','practice cycle requires training decisions and knowledge-only gates')
     require(type(plan["max_generations"]) is int and 1 <= plan["max_generations"] <= 5, "generation cap required")
     require(type(plan["max_new_games"]) is int and 0 <= plan["max_new_games"] <= 3000, "explicit game budget required")
     require(len(plan["seeds"]) == plan["max_generations"], "freeze seeds for every generation")
     seeds = [s[k] for s in plan["seeds"] for k in ("screen", "confirm", "source")]
+    if 'practice_cycle_policy' in plan:seeds += [s['practice'] for s in plan['seeds']]
     require(all(type(x) is int and 0 < x < 2**31-2000000 for x in seeds), "invalid seed")
     require(len(set(seeds)) == len(seeds), "reuse of a split/confirmation seed")
     require(plan["candidate_kind"] in ("evaluation", "knowledge", "combined"), "unknown candidate kind")
@@ -47,11 +52,15 @@ def start(plan):
     require(type(source_games) is int and 1 <= source_games <= 100, "bounded source size required")
     if source_games != 100:
         require(plan.get("purpose") == "integration_smoke", "small source size is an explicit integration test")
-    return dict(schema="postgame-cycle-v1", plan=copy.deepcopy(plan), plan_sha256=digest(plan),
+    result = dict(schema="postgame-cycle-v1", plan=copy.deepcopy(plan), plan_sha256=digest(plan),
                 parent=copy.deepcopy(plan["parent"]), generation=1, revision=0,
                 stage="initial_source" if plan.get("generate_initial_source") is True else "prepare",
                 used_games=0, pending=None, history=[], formal_adoption=False,
                 result=None, external_execution_adapter="required")
+    if 'practice_cycle_policy' in plan:
+        result.update(practice_ledger=[],practice_used_games=0,practice_analysis_reserved_ms=0,
+                      prior_practice_ids=copy.deepcopy(plan.get('training_history',{}).get('completed_practice_ids',[])))
+    return result
 
 
 def request(state, inputs, expected_revision):
@@ -60,6 +69,11 @@ def request(state, inputs, expected_revision):
     require(state["plan_sha256"] == digest(state["plan"]), "frozen policy was edited")
     require(inputs.get("parent") == state["parent"], "execution parent differs from research parent")
     stage = state["stage"]
+    if stage=='practice':
+        ok,reason=practice_available(state,state['practice_offer']);require(ok,reason)
+        require(inputs.get('practice_plan_sha256')==state['practice_offer']['plan']['plan_sha256']
+                and inputs.get('preparation_publication_sha256')==state['practice_preparation_publication_sha256'],
+                'practice request changed frozen plan/source preparation')
     if stage == "prepare" and state["generation"] > 1:
         require(inputs.get("split_registry_sha256") == state["split_registry_sha256"],
                 "next generation must preserve split/exposure registry")
@@ -164,7 +178,13 @@ def finish(state, operation, evidence):
         require(evidence["seed"] == p["payload"]["seed"], "match seed differs from frozen seed")
     out = copy.deepcopy(state)
     out["used_games"] += games
-    if stage == "prepare":
+    if stage=='practice':
+        out=accept_practice(out,evidence['practice'])
+        out.pop('practice_offer',None);out.pop('practice_preparation_publication_sha256',None)
+    if stage=='practice' and not evidence['practice']['handoff_available']:
+        require(evidence['preparation'] is None and evidence['knowledge_stage'] is None,'empty practice created a proposal')
+        out.update(stage='complete',result='research_review_required_no_training_handoff')
+    elif stage in ("prepare",'practice'):
         report = evidence["preparation"]
         ready_eval = report["learning"]["status"] == "requires_engine_validation"
         ready_knowledge = bool(report["candidate_knowledge"])
@@ -194,7 +214,7 @@ def finish(state, operation, evidence):
             out["research_followup"] = {k: v for k, v in progress.items() if k != "history"}
             if not ready and progress["halt_collection"]:
                 out.update(stage="complete", result="research_review_required")
-        if 'followup_policy' in state['plan']:
+        if stage=='prepare' and 'followup_policy' in state['plan']:
             followup=evidence['followup']
             require(followup['parent']==state['parent'] and followup['formal_adoption'] is False
                     and followup['completed_task_ids']==[r['task_id'] for r in followup['results']],
@@ -259,6 +279,12 @@ def finish(state, operation, evidence):
         out.pop("candidate", None)
     else:
         raise ValueError("unknown stage")
+    if stage=='prepare' and 'practice_cycle_policy' in state['plan'] and not ready:
+        offer=evidence['practice_offer'];ok,reason=practice_available(state,offer)
+        out['practice_selection_reason']=reason
+        if ok:
+            out.update(stage='practice',result='practice_before_more_unchanged_selfplay',practice_offer=copy.deepcopy(offer),
+                       practice_preparation_publication_sha256=saved['sha256'])
     if (out["stage"] == "collect_source" and "progress_policy" in state["plan"]
             and out["parent"] == state["parent"]
             and out.get("research_followup", {}).get("halt_collection")):

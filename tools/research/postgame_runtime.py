@@ -15,6 +15,7 @@ from tools.research.postgame_eval_preflight import POLICY_LIVE
 from tools.research.postgame_knowledge import POLICY_KNOWLEDGE
 from tools.research.postgame_followup import POLICY_FOLLOWUP
 from tools.research.postgame_horizon import POLICY_HORIZON
+from tools.research.postgame_practice_cycle import validate_policy as validate_practice_policy
 import json
 
 POLICY_KNOWLEDGE_EXECUTION=dict(schema='postgame-knowledge-execution-v1',screen_games=100,confirm_games=200,
@@ -27,6 +28,19 @@ def initialize(plan, parent_options, controller_sha256):
     if 'knowledge_execution_policy' in plan:
         require(plan['candidate_kind']=='knowledge','knowledge execution policy requires a knowledge-only cycle')
     horizon=plan.get('knowledge_builder')=='horizon'
+    if 'practice_cycle_policy' in plan:
+        validate_practice_policy(plan['practice_cycle_policy'])
+        require(not horizon and plan['candidate_kind']=='knowledge' and 'progress_policy' in plan,
+                'practice stage requires the ordinary knowledge cycle')
+        if plan.get('training_history'):
+            history=plan['training_history'];pub=history['publication'];ids=history['completed_practice_ids']
+            require(history['schema']=='postgame-training-history-v1'
+                    and re.fullmatch('[0-9a-f]{64}',history['preparation_sha256'])
+                    and isinstance(ids,list) and len(ids)==len(set(ids))<=512
+                    and all(re.fullmatch('[0-9a-f]{64}',i) for i in ids),'freeze exposure/completion history')
+            require(pub.get('readback_verified') is True and pub.get('api_digest_verified') is True
+                    and type(pub.get('bytes')) is int and pub['bytes']>0
+                    and re.fullmatch('[0-9a-f]{64}',pub.get('sha256','')),'verified training-history publication required')
     require(plan.get('knowledge_builder') in (None,'horizon'),'unknown knowledge builder')
     policy=POLICY_HORIZON if horizon else POLICY_KNOWLEDGE
     if plan['candidate_kind']=='knowledge':
@@ -67,6 +81,9 @@ def inputs(env):
     s=env['state']; result=dict(parent=s['parent'])
     if s['stage']=='prepare' and s['generation']>1:
         result.update(split_registry_sha256=s['split_registry_sha256'],example_bank_sha256=s['example_bank_sha256'])
+    if s['stage']=='practice':
+        result.update(practice_plan_sha256=s['practice_offer']['plan']['plan_sha256'],
+                      preparation_publication_sha256=env['preparation_publication']['sha256'])
     if s['stage'] in ('preflight','screen','confirm'):
         result['candidate']=dict(s['parent'],parameters_sha256=digest(env['candidate_options']))
         if s['plan']['candidate_kind']=='knowledge':
@@ -106,6 +123,7 @@ def advance(env, backend):
         if s['pending'] is None:
             env['state']=core.request(s,inputs(env),s['revision']); s=env['state']
             env['dispatch']=None; env['match_request']=None
+            env['practice_execution']=None
             backend.save(env)  # Intent ALWAYS precedes any execution/dispatch.
         p=s['pending']; op=p['operation_id']
         if stage in ('initial_source','collect_source','screen','confirm'):
@@ -149,6 +167,7 @@ def advance(env, backend):
             if 'knowledge_execution_policy' in s['plan']:
                 evidence['knowledge_stage']=data['knowledge_stage']
             if 'followup_policy' in s['plan']:evidence['followup']=data['followup']
+            if 'practice_cycle_policy' in s['plan']:evidence['practice_offer']=data['practice_offer']
             env['state']=core.finish(s,op,evidence)
             env['preparation_publication']=data['publication']
             env['candidate_options']=(copy.deepcopy(env['parent_options']) if s['plan']['candidate_kind']=='knowledge'
@@ -156,6 +175,23 @@ def advance(env, backend):
             env['knowledge_candidate']=data.get('knowledge_stage')
             if data.get('followup'):
                 env['completed_research_tasks']=sorted(set(env.get('completed_research_tasks',[]))|set(data['followup']['completed_task_ids']))
+            env['receipts'].append(dict(stage=stage,generation=s['generation'],publication=data['publication']))
+            backend.save(env)
+        elif stage=='practice':
+            fresh=env.get('practice_execution') is None
+            if fresh:
+                env['practice_execution']=dict(attempted=True,plan_sha256=s['practice_offer']['plan']['plan_sha256'],
+                                               controller_run=backend.run_id)
+                backend.save(env)  # Unknown/failed effects must not regenerate practice on resume.
+            data=backend.practice(env,execute=fresh)
+            evidence=dict(input_sha256=p['input_sha256'],parent=s['parent'],publication=data['publication'],
+                          preparation=data['preparation'],knowledge_stage=data['knowledge_stage'],practice=data['practice'])
+            env['state']=core.finish(s,op,evidence)
+            if data['preparation'] is not None:
+                env['preparation_publication']=data['publication']
+                env['knowledge_candidate']=data['knowledge_stage']
+                env['candidate_options']=copy.deepcopy(env['parent_options'])
+            env['prior_signatures']=sorted(set(env['prior_signatures'])|set(data['practice']['trajectory_signatures']))
             env['receipts'].append(dict(stage=stage,generation=s['generation'],publication=data['publication']))
             backend.save(env)
         elif stage=='preflight':
