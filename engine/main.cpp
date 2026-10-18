@@ -29,6 +29,8 @@ int main() {
     shogi::strategy::IterativeSearch strategy;
     shogi::strategy::EvaluationParameters evaluation_parameters;
     bool material_profile = false;
+    bool selfplay_order_enabled = false;
+    int selfplay_order_scale = 100;
     bool quiescence_enabled = true;
     bool mate_assist_enabled = true;
     bool mate_learning_enabled = true;
@@ -105,6 +107,8 @@ int main() {
         if (command == "usi") {
             std::cout << "id name KUMOJI v2.0.21\nid author mtk-ctrl + ChatGPT\n"
                       << "option name USI_Ponder type check default true\n"
+                      << "option name SelfplayOrder type check default false\n"
+                      << "option name SelfplayOrderScale type spin default 100 min 0 max 200\n"
                       << "option name RiskVerify type check default true\n"
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
@@ -629,6 +633,9 @@ int main() {
                         << " tt_disabled_repetition " << stats.tt_disabled_repetition
                         << " research_mask " << strategy.research_mask()
                         << " search_threads " << strategy.threads()
+                        << " selfplay_order_calls " << stats.selfplay_order_calls
+                        << " selfplay_order_moves " << stats.selfplay_order_moves
+                        << " selfplay_order_scale " << strategy.selfplay_order_scale()
                         << " probe_mask " << strategy.probe_mask()
                         << " pvs_probes " << stats.pvs_probes << " pvs_researches " << stats.pvs_researches
                         << " killer_priorities " << stats.killer_priorities
@@ -695,6 +702,19 @@ int main() {
                 if (name == "USI_Ponder") {
                     if (value == "true" || value == "false")
                         usi_ponder_enabled = value == "true";
+                } else if (name == "SelfplayOrder") {
+                    if (value == "true" || value == "false") {
+                        finish_search(true);
+                        selfplay_order_enabled = value == "true";
+                        strategy.set_selfplay_order(selfplay_order_enabled ? selfplay_order_scale : 0);
+                    }
+                } else if (name == "SelfplayOrderScale") {
+                    try { std::size_t used=0; const int v=std::stoi(value,&used);
+                        if(used==value.size() && v>=0 && v<=200) {
+                            finish_search(true);selfplay_order_scale=v;
+                            strategy.set_selfplay_order(selfplay_order_enabled ? v : 0);
+                        }
+                    } catch (...) {}
                 } else if (name == "RiskVerify") {
                     if (value == "true" || value == "false")
                         strategy.set_risk_verify(value == "true");

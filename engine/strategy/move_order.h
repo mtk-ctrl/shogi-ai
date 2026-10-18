@@ -1,6 +1,7 @@
 #pragma once
 
 #include "strategy/attack_map.h"
+#include "strategy/selfplay_order.h"
 #include <algorithm>
 #include <cmath>
 #include <string>
@@ -25,7 +26,7 @@ public:
                                           const std::vector<std::string>& moves,
                                           const std::vector<unsigned char>* checks = nullptr,
                                           bool reuse_workspace = false,
-                                          int tier_mode = 0, bool precomputed_rays = false) {
+                                          int tier_mode = 0, bool precomputed_rays = false, int selfplay_scale = 0) {
         if (checks && checks->size() != moves.size())
             throw std::invalid_argument("check flags must match the move list");
         // Source-square danger is the same for every candidate. Build it once
@@ -54,6 +55,7 @@ public:
                     }
                 }
                 if (checks && (*checks)[i]) score += 100000000;
+                if (selfplay_scale) score += selfplay_order_bonus(snapshot, before_attacks, m, selfplay_scale);
                 scored.push_back({m, score, i});
             }
             std::stable_sort(scored.begin(), scored.end(), [](const auto& a, const auto& b) {
@@ -65,7 +67,8 @@ public:
                 rules::Snapshot after = snapshot;
                 const auto index = scored[i].original_index;
                 scored[i].score = score_move(snapshot, after, scored[i].move, before_attacks,
-                                               nullptr, checks ? (*checks)[index] : -1);
+                                               nullptr, checks ? (*checks)[index] : -1)
+                    + selfplay_order_bonus(snapshot, before_attacks, scored[i].move, selfplay_scale);
             }
             std::stable_sort(scored.begin(), scored.begin() + full, [](const auto& a, const auto& b) {
                 return a.score > b.score;
@@ -91,6 +94,8 @@ public:
             }
         }
 
+        if (selfplay_scale) for (auto& item : scored)
+            item.score += selfplay_order_bonus(snapshot, before_attacks, item.move, selfplay_scale);
         std::stable_sort(scored.begin(), scored.end(), [](const auto& a, const auto& b) {
             return a.score > b.score;
         });

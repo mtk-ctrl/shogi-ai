@@ -11,6 +11,7 @@ from pathlib import Path
 SCHEMA = 1
 SEARCH_FIELDS = (
     "depth", "seldepth", "time", "elapsed_ms", "nodes", "nps",
+    "selfplay_order_calls", "selfplay_order_moves", "selfplay_order_scale",
     "score_cp_stm", "score_black_cp", "score_mate_stm", "score_black_mate",
     "score_lowerbound", "score_upperbound",
     "full_nodes", "cutoffs", "tt_probes", "tt_hits",

@@ -1,0 +1,40 @@
+{
+  "receipts": [
+    {
+      "run_id": "38946175603",
+      "archive_sha256": "d19ff0ac447dd8d3a5b24fe39d811a2b89a97c9727a824518607ec8dfabc4a2b",
+      "archive_bytes": 753301,
+      "games": 100
+    },
+    {
+      "run_id": "38946985753",
+      "archive_sha256": "fd19773c8f8dcc9e016790a0b109bcb1befdf2746b1760c5ae088f4789645fc4",
+      "archive_bytes": 703780,
+      "games": 100
+    },
+    {
+      "run_id": "38947702135",
+      "archive_sha256": "2d0c36230c4109390da6ebcde318b642adcc4677f13f1017d6ae838f7ba074fa",
+      "archive_bytes": 712294,
+      "games": 100
+    },
+    {
+      "run_id": "38948701892",
+      "archive_sha256": "b5907e4f69b65696752c453de32d70072b98d2fd744e792f212ec550e97103d7",
+      "archive_bytes": 1432366,
+      "games": 200
+    }
+  ],
+  "counts": {
+    "games": 497,
+    "duplicate_games": 3,
+    "verified_plies": 54821,
+    "eligible": 25299,
+    "cross_split_positions_removed": 180
+  },
+  "samples": {
+    "train": 2670,
+    "validation": 549,
+    "test": 577
+  }
+}

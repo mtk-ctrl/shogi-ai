@@ -1,0 +1,6283 @@
+{
+  "0029549e8af06ac9e107ee5f0254c9019162029c5020e7cd3ad1d817c2639744": {
+    "selected_plies": [
+      17,
+      127,
+      99,
+      67,
+      73,
+      87,
+      81,
+      29
+    ],
+    "split": "train"
+  },
+  "006461b088f91acfe9c5b316fe80412e5bbc6394581a150659fd9037b9db5313": {
+    "selected_plies": [
+      30,
+      16,
+      20,
+      74,
+      10,
+      62,
+      36
+    ],
+    "split": "train"
+  },
+  "00e56e2173f667aa14bd665bd22f1f7bce0dbb9f570b803a599d8b608f59e098": {
+    "selected_plies": [
+      11,
+      41,
+      3,
+      37,
+      21,
+      13,
+      29,
+      15
+    ],
+    "split": "train"
+  },
+  "01bc73afe3f848c3557194186d7207184d43c6817f33ea21bbde1d6f453614db": {
+    "selected_plies": [
+      28,
+      20,
+      14
+    ],
+    "split": "test"
+  },
+  "023dfba0428c13eda1608c4a2c7933e4406c9f4e782bfaad9dd92f53245871c8": {
+    "selected_plies": [
+      104,
+      106,
+      28,
+      42,
+      72,
+      16,
+      18,
+      30
+    ],
+    "split": "train"
+  },
+  "02443d41a2e81a1c97fe43d845ff436040a696039b94c72d82e9278f380d2556": {
+    "selected_plies": [
+      12,
+      82,
+      106,
+      166,
+      160,
+      18,
+      92,
+      212
+    ],
+    "split": "train"
+  },
+  "02cdb861d96a67ae67443f11e1352b2f48047ce56a4d2c4d3f4eebc56bc6b9c9": {
+    "selected_plies": [
+      82,
+      234,
+      42,
+      146,
+      178,
+      226,
+      88,
+      140
+    ],
+    "split": "train"
+  },
+  "02dc84043bc2660d8ee4afa1ec0ea05891694afb6a5de1ffe0abb47a992431b7": {
+    "selected_plies": [
+      127,
+      21,
+      27,
+      41,
+      117,
+      87,
+      61,
+      29
+    ],
+    "split": "train"
+  },
+  "05bfe64fd7c25c9e8f4239b58ca8dcc78a99cb6c3aae8b551fa7fe898d021fdf": {
+    "selected_plies": [
+      10,
+      100,
+      16,
+      54,
+      76,
+      106,
+      60,
+      18
+    ],
+    "split": "train"
+  },
+  "05ddf760882b999dcf8f870685a5791241c8610747d1a1284a06129481ca4e9e": {
+    "selected_plies": [
+      61,
+      39,
+      9,
+      47,
+      91,
+      87,
+      33,
+      65
+    ],
+    "split": "train"
+  },
+  "062badca33375394094aad68f7fd53c0920cc3fd17c5c8b1eae3a835a7ac6258": {
+    "selected_plies": [
+      63,
+      51,
+      41,
+      59,
+      71,
+      87,
+      73,
+      75
+    ],
+    "split": "train"
+  },
+  "0658529a2444a16b2d2abb36d75ae0dc5b57f7c5ff7ac2589f8c9c9fa9ac1ba2": {
+    "selected_plies": [
+      42,
+      102,
+      64,
+      68,
+      40,
+      70
+    ],
+    "split": "train"
+  },
+  "06f1928dee9fb0529d02d2ed396afb1fe24a4babc5609d11256ef45609587412": {
+    "selected_plies": [
+      69,
+      9,
+      19,
+      17,
+      61,
+      31,
+      65,
+      37
+    ],
+    "split": "test"
+  },
+  "07894c8be6b62d58ca75017d5eead04702c56ca841c04b7bccc12f3c7fd71844": {
+    "selected_plies": [
+      145,
+      151,
+      53,
+      43,
+      57,
+      47,
+      67,
+      141
+    ],
+    "split": "train"
+  },
+  "07eb0a6051bc4f8983bf001a8c3282debef74a037032b294e0b8591e9bdcbf06": {
+    "selected_plies": [
+      12,
+      40,
+      48,
+      54,
+      44,
+      70,
+      52
+    ],
+    "split": "train"
+  },
+  "0800a39e85821d6a1cd50019c021cf1602367692c2ce9f0aed914ad46e4cb57b": {
+    "selected_plies": [
+      21,
+      31,
+      3,
+      7,
+      43
+    ],
+    "split": "train"
+  },
+  "085fb4ff1095d161f5124ce253638b0ec693358e4a7e458dd9a0515a083d701b": {
+    "selected_plies": [
+      13,
+      83,
+      91,
+      81,
+      9,
+      77,
+      55,
+      41
+    ],
+    "split": "validation"
+  },
+  "089d816d69779333a6fdabe1dba0de6207085ac14c1d3994cd5d002bd90b0580": {
+    "selected_plies": [
+      36,
+      46,
+      22,
+      52,
+      24,
+      44,
+      54,
+      48
+    ],
+    "split": "train"
+  },
+  "08c0bc25b15a4d1340226024c49fa670cfd22262a24df208d2e79bb37174f00e": {
+    "selected_plies": [
+      99,
+      101,
+      103,
+      37,
+      67,
+      105,
+      13,
+      97
+    ],
+    "split": "train"
+  },
+  "08f55bc1097d6dfc38968a710633ea68b610bc003de03354bc3f900ea5243a3d": {
+    "selected_plies": [
+      67,
+      37,
+      53,
+      15,
+      35,
+      17,
+      65,
+      55
+    ],
+    "split": "train"
+  },
+  "09530349d29b8bf0a8be17a9ebabec60dceee4380d793be391de1fcf274ed354": {
+    "selected_plies": [
+      85,
+      73,
+      63,
+      53,
+      51,
+      25,
+      23,
+      79
+    ],
+    "split": "validation"
+  },
+  "09bf34282c0e58527160e99d0dbebdcb0c75ade448bd77d5d905fe0727b388c9": {
+    "selected_plies": [
+      36,
+      38,
+      64,
+      26,
+      54,
+      34,
+      22
+    ],
+    "split": "validation"
+  },
+  "09de832ff195ff86d9e4b2e5428ca5119b81f02ddaf10c1fcbb1578c0a734ba6": {
+    "selected_plies": [
+      21,
+      113,
+      159,
+      67,
+      41,
+      93,
+      133,
+      109
+    ],
+    "split": "train"
+  },
+  "0a118240f2634183e52669e6c024e196ad8b86e91dd0b5a2109980a043e5b9f9": {
+    "selected_plies": [
+      51,
+      35,
+      49,
+      57,
+      79,
+      37,
+      39,
+      31
+    ],
+    "split": "train"
+  },
+  "0aad62769651b006c00a95b74988b934518d4dba6af4b9328a9e7150b1f93540": {
+    "selected_plies": [
+      25,
+      51,
+      53,
+      55,
+      37,
+      17,
+      39
+    ],
+    "split": "test"
+  },
+  "0b3ccbf20293afccb9291dc78f399ec29cd2f3cea75b18b552ec8cdc211e5ce6": {
+    "selected_plies": [
+      118,
+      4,
+      180,
+      44,
+      72,
+      190,
+      36,
+      80
+    ],
+    "split": "train"
+  },
+  "0b9aa6bad8051c880475a517a0edda2019bbfd1b0e852d45c36840b54c15939a": {
+    "selected_plies": [
+      55,
+      17,
+      33,
+      39,
+      15,
+      13,
+      25,
+      53
+    ],
+    "split": "train"
+  },
+  "0d1abae42260f8f7983430815e7d7ceef9af1fb1324aa37d5805f29fe88c8efd": {
+    "selected_plies": [
+      8,
+      38,
+      16,
+      34,
+      54,
+      74,
+      26,
+      70
+    ],
+    "split": "test"
+  },
+  "0d3040234dde041c8c9d44d180d2d6c90b8254824617ced01f97cc1c512562aa": {
+    "selected_plies": [
+      89,
+      69,
+      45,
+      65,
+      51,
+      49,
+      29,
+      43
+    ],
+    "split": "train"
+  },
+  "0d30473353df3cb86a553510d667900f6c97837f78de7a64cb9887ad22a6087b": {
+    "selected_plies": [
+      93,
+      15,
+      17,
+      63,
+      117,
+      103,
+      69,
+      39
+    ],
+    "split": "train"
+  },
+  "0ed041031208af9d0a37f6fe04c3d713d127af45719191420ae864d77c209b89": {
+    "selected_plies": [
+      10,
+      88,
+      86,
+      104,
+      64,
+      44,
+      22,
+      20
+    ],
+    "split": "train"
+  },
+  "0fca06c3b9b5ec0c33214073377de302b4d6330ddc5f1f849aa91702389145cb": {
+    "selected_plies": [
+      74,
+      86,
+      4,
+      72,
+      38,
+      14,
+      52,
+      64
+    ],
+    "split": "train"
+  },
+  "0fdb5e6a4e6d29e981a6f18ca2629b453369edd6d408b029ed6314edc4f21a6c": {
+    "selected_plies": [
+      22,
+      18,
+      16,
+      34,
+      52,
+      36,
+      46
+    ],
+    "split": "test"
+  },
+  "11f170cdea49439eb9a91b71d65da2fc235902d214e5c1a7faeae445db58c905": {
+    "selected_plies": [
+      100,
+      56,
+      10,
+      84,
+      108,
+      54,
+      38,
+      92
+    ],
+    "split": "train"
+  },
+  "1213b53a43d167955ca154b9b1cc51b86bf30a7baff33f19d987df0167056cd2": {
+    "selected_plies": [
+      51,
+      129,
+      77,
+      21,
+      117,
+      55,
+      27,
+      35
+    ],
+    "split": "train"
+  },
+  "13343d2fce69c91295a856068a5d158f022d06f49e7652a8679ac672a1a87613": {
+    "selected_plies": [
+      75,
+      41,
+      71,
+      85,
+      77,
+      55,
+      133,
+      29
+    ],
+    "split": "train"
+  },
+  "135b8e49ed08b52da748b0319f606d020b9eeee27495d20c6d2c109402a66c87": {
+    "selected_plies": [
+      9,
+      55,
+      23,
+      27,
+      15,
+      37,
+      43,
+      31
+    ],
+    "split": "train"
+  },
+  "1386d507098d20d15b575004d856a04c6090a61da8c625d40dd9dc11998f0317": {
+    "selected_plies": [
+      100,
+      96,
+      46,
+      122,
+      108,
+      88,
+      34,
+      62
+    ],
+    "split": "train"
+  },
+  "139947ce551008351ce2b40b01ab93ddf4cee7513ea95822e02ff0d2a8ace8ac": {
+    "selected_plies": [
+      98,
+      134,
+      150,
+      92,
+      88,
+      46
+    ],
+    "split": "test"
+  },
+  "13efb3c87faf8448d77a717d5b983c38d2d5170fff98c0859a90bfa10dbe63eb": {
+    "selected_plies": [
+      43,
+      47,
+      51,
+      35,
+      7,
+      15,
+      19,
+      11
+    ],
+    "split": "train"
+  },
+  "141efe3d261e327af5ab84749145a3d38872e78fde17ed13f2cb4c8f5346384c": {
+    "selected_plies": [
+      93,
+      119,
+      39,
+      95,
+      135,
+      149,
+      45,
+      99
+    ],
+    "split": "test"
+  },
+  "147d342a8c25c764defe65ce823c998c1d305828d8c789d924600e762ff43642": {
+    "selected_plies": [
+      25,
+      67,
+      65,
+      27,
+      81,
+      83,
+      29,
+      95
+    ],
+    "split": "validation"
+  },
+  "14a27d4f5e4ec9d51117f79c3cc2daad0d801c927beb7b67c938c58fc7c2f692": {
+    "selected_plies": [
+      17,
+      77,
+      97,
+      51,
+      69,
+      123,
+      115,
+      61
+    ],
+    "split": "train"
+  },
+  "15029f1e7f5f56141578b82c3388bb93732f6c4a2b71c2d1ba2c2183468eeb76": {
+    "selected_plies": [
+      37,
+      147,
+      109,
+      33,
+      31,
+      27,
+      105,
+      103
+    ],
+    "split": "train"
+  },
+  "152773f5a1ed7eda571ad0d45fcc9c0d3b9d1ccae8783bff1ac5da089a76a0f5": {
+    "selected_plies": [
+      34,
+      16,
+      8,
+      40,
+      14,
+      10,
+      36
+    ],
+    "split": "train"
+  },
+  "155c24ba0dfcc5bed561c3166fa48a9542f0d93eeb3d16d68f351102801d42cb": {
+    "selected_plies": [
+      102,
+      46,
+      100,
+      28,
+      18,
+      120,
+      94,
+      48
+    ],
+    "split": "train"
+  },
+  "15853b46bd550f39845b14940e4ea5e5e9d4397a92d1371984e77237ec3c6089": {
+    "selected_plies": [
+      51,
+      45,
+      31,
+      41,
+      47,
+      49,
+      25,
+      27
+    ],
+    "split": "test"
+  },
+  "15aecd4ab37d7d9df84559b9a3544728d271038069b558e74196ce43b64d959d": {
+    "selected_plies": [
+      30,
+      34,
+      84,
+      28,
+      72,
+      98,
+      112,
+      10
+    ],
+    "split": "train"
+  },
+  "15bae287d92b54d318e0d66afaf160d7618f7f0b393467d26df0eedca70bcee3": {
+    "selected_plies": [
+      91,
+      77,
+      35,
+      81,
+      63,
+      53,
+      23,
+      9
+    ],
+    "split": "train"
+  },
+  "1646b4bd15cdbca70fc9161a4e3ce1c0f07c4d3c9fb69e425a3a1854f01cda34": {
+    "selected_plies": [
+      13,
+      47,
+      45,
+      49,
+      29,
+      51,
+      17,
+      31
+    ],
+    "split": "train"
+  },
+  "173d060e5f9cb37647607fadb69ddb5b0da3f8d128abb7a1464ab819fc4cc5c5": {
+    "selected_plies": [
+      72,
+      34,
+      48,
+      68,
+      10,
+      42,
+      36,
+      54
+    ],
+    "split": "train"
+  },
+  "17554518018452dbf5edd43b9e2f47b5bd676d7ac3eabed877fb3868155b6007": {
+    "selected_plies": [
+      54,
+      28,
+      34,
+      42,
+      8,
+      44,
+      24,
+      48
+    ],
+    "split": "train"
+  },
+  "176e6a6e595a4f316292cc58d22c0eb16e1864e86947f2e7899fdae51c34f75e": {
+    "selected_plies": [
+      27,
+      49,
+      65,
+      95,
+      63,
+      83,
+      33,
+      51
+    ],
+    "split": "validation"
+  },
+  "177a9df5893c66ba4fbda90d200ff86c1fe81222ab0a788227d2151e3afb699d": {
+    "selected_plies": [
+      100,
+      134,
+      26,
+      104,
+      86,
+      72,
+      68,
+      116
+    ],
+    "split": "test"
+  },
+  "1785ca2337c168583bcdd7dc198a318c966028df327ddbd7ab815cbada79843d": {
+    "selected_plies": [
+      47,
+      15,
+      27,
+      49,
+      29,
+      31,
+      57,
+      21
+    ],
+    "split": "train"
+  },
+  "1823a4c2136b97f5c1b07f53b0e130c1de90b85cc2c7750f31260a5ff9c14067": {
+    "selected_plies": [
+      39,
+      37,
+      31,
+      23,
+      25,
+      29,
+      7,
+      43
+    ],
+    "split": "train"
+  },
+  "18bb4443534c413ea08c3adb4243d7462bfcb8b5e43d14894cdd183005adc762": {
+    "selected_plies": [
+      17,
+      19,
+      31,
+      29
+    ],
+    "split": "test"
+  },
+  "1983e23df886c816c901fd924a1719ec6fb49aafae30b0225aef2c4949dcbfff": {
+    "selected_plies": [
+      15,
+      51,
+      67,
+      47,
+      7,
+      89,
+      37,
+      55
+    ],
+    "split": "train"
+  },
+  "1a889b77f5908b8f13b33d1e9bd6c6021bbdb5f3eb9f0648f5f3c3b267e4b436": {
+    "selected_plies": [
+      43,
+      79,
+      103,
+      105,
+      121,
+      47,
+      29,
+      107
+    ],
+    "split": "train"
+  },
+  "1aa1a7930f7bf92c967a997bbcc3ea9f72a071f5282c7e4423995de5b060056b": {
+    "selected_plies": [
+      68,
+      44,
+      56,
+      30,
+      78,
+      40,
+      20,
+      16
+    ],
+    "split": "train"
+  },
+  "1ac039dec1e7c65f53767fbc7b147a14ba2ebb53214145c1fab292c8b39e911a": {
+    "selected_plies": [
+      43,
+      89,
+      35,
+      55,
+      47,
+      63,
+      23,
+      79
+    ],
+    "split": "train"
+  },
+  "1b5c0d8420065c2b7d068817709adf1f5a0a54779ea3d1dc37de9c1d258d04de": {
+    "selected_plies": [
+      80,
+      68,
+      6,
+      96,
+      78,
+      60,
+      22,
+      4
+    ],
+    "split": "train"
+  },
+  "1bb5727d383f2f45f6066dbee0dbb72907ac85afd56b6cdc2d2b80bb560275a6": {
+    "selected_plies": [
+      25,
+      55,
+      63,
+      39,
+      31,
+      15,
+      53,
+      23
+    ],
+    "split": "train"
+  },
+  "1c5f613d1f2d41bb723176faa088391903c9f240939eb0dcbd8999789ceafbc1": {
+    "selected_plies": [
+      23,
+      33,
+      19,
+      29,
+      43,
+      41,
+      37
+    ],
+    "split": "train"
+  },
+  "1c63d05c1afd2e1b7ee0e757bf6fba4448d9784c884a6a2dbc0358442a2bf48a": {
+    "selected_plies": [
+      42,
+      54,
+      8,
+      22,
+      36,
+      48,
+      30,
+      46
+    ],
+    "split": "train"
+  },
+  "1e8f581453af8ca0888fb8ff4eb7ee206e122557948fa7ae9b4c9d5c4ede4c08": {
+    "selected_plies": [
+      111,
+      119,
+      95,
+      25,
+      43,
+      51,
+      129
+    ],
+    "split": "validation"
+  },
+  "1e9dbf3983e537ba9e044e3d9114c1c6bb7e1ae1fa6863c55ed049c92df05a94": {
+    "selected_plies": [
+      43,
+      45,
+      41,
+      13,
+      21,
+      9,
+      23
+    ],
+    "split": "test"
+  },
+  "201fadd4aec555c17b5078718a63d85ef6cf309c31cb7e114667bd6007185aa5": {
+    "selected_plies": [
+      73,
+      83,
+      49,
+      25,
+      61,
+      17,
+      37,
+      41
+    ],
+    "split": "train"
+  },
+  "2076a3c2f5c1eb51f51e5085d1d9e2f5b6be8036bb574fa7b918f9304019cd9e": {
+    "selected_plies": [
+      94,
+      66,
+      54,
+      6,
+      46,
+      32,
+      74
+    ],
+    "split": "validation"
+  },
+  "21cc2a44df39bf18b7e00e2531b4496603a234bd6af828630885bd5c0e2ccc0e": {
+    "selected_plies": [
+      116,
+      112,
+      76,
+      66,
+      104,
+      82,
+      62
+    ],
+    "split": "test"
+  },
+  "21fa50fd179188cc41c9e2eee2467d4d3aca55e24a1817c0e911cbfa6468f042": {
+    "selected_plies": [
+      79,
+      37,
+      47,
+      75,
+      31,
+      67,
+      45,
+      81
+    ],
+    "split": "train"
+  },
+  "220cb45dab2124fe15548335a38cbff56f1d925fdf42fffb5e565993e24f85ca": {
+    "selected_plies": [
+      51,
+      67,
+      33,
+      55,
+      61,
+      49,
+      31,
+      107
+    ],
+    "split": "train"
+  },
+  "22241cbd2e324ec79f8dbfb32ba1d6025531026d054cd078fcd8e1eb33b3e4ee": {
+    "selected_plies": [
+      100,
+      78,
+      56,
+      70,
+      36,
+      38,
+      94,
+      16
+    ],
+    "split": "test"
+  },
+  "22406b492a10e612cf7210b6e76d315dfa3c4b6caa3c4e123bcd50219e859860": {
+    "selected_plies": [
+      90,
+      32,
+      34,
+      44,
+      30,
+      4,
+      138,
+      20
+    ],
+    "split": "train"
+  },
+  "2268c16dfc816d32bd9111ea7cc04593f29ec30bb92860f6af6ce681eb1c2a6b": {
+    "selected_plies": [
+      7,
+      17,
+      89,
+      19,
+      93,
+      59,
+      43,
+      37
+    ],
+    "split": "train"
+  },
+  "228409c48611ca0c022b291759e5ebf1bd7ba9a318e792a498e810d4251f3c36": {
+    "selected_plies": [
+      14,
+      36,
+      84,
+      68,
+      46,
+      10,
+      48,
+      26
+    ],
+    "split": "test"
+  },
+  "232ac8685d95258bcf124bdc75701bdd081d094c58fab9523ce53b482f6a0873": {
+    "selected_plies": [
+      91,
+      67,
+      77,
+      65,
+      93,
+      69,
+      83,
+      29
+    ],
+    "split": "validation"
+  },
+  "23e60b1e1ab0bfa3755d7a34728fe5e67aa901dc6298a231b3d0113fb5c2e35b": {
+    "selected_plies": [
+      38,
+      46,
+      88,
+      96,
+      188,
+      30,
+      180
+    ],
+    "split": "test"
+  },
+  "23e90af1a351d435df1cd97bc6110d0dac9bc1f00112bdd71e112a7f1429bf50": {
+    "selected_plies": [
+      39,
+      45,
+      69,
+      5,
+      17,
+      7,
+      51,
+      63
+    ],
+    "split": "train"
+  },
+  "23f4154ad76de4c2373c74e58ace78705422c43cc87722316ca3e2ee61ed96a4": {
+    "selected_plies": [
+      26,
+      50,
+      12,
+      64,
+      70,
+      24,
+      48,
+      38
+    ],
+    "split": "test"
+  },
+  "24a3fda62adf7b2f30325dd9df4de1a6075d950875c92e0642b5b767d4efa4e8": {
+    "selected_plies": [
+      25,
+      69,
+      37,
+      81,
+      61,
+      65,
+      41
+    ],
+    "split": "validation"
+  },
+  "2513f261a0d0a77fe6a71a925a23f85e398e8adad942c799904be91dfef24857": {
+    "selected_plies": [
+      83,
+      91,
+      35,
+      107,
+      149,
+      89,
+      5,
+      33
+    ],
+    "split": "train"
+  },
+  "252c4cdc14f45c8b01de8e0c8817aed990568ee3caede1ea54eb7f766cd5ffba": {
+    "selected_plies": [
+      119,
+      3,
+      23,
+      45,
+      53,
+      31,
+      21,
+      123
+    ],
+    "split": "train"
+  },
+  "259bcf3abb5b26a639811a71548ceecc76bdafc23d8557ad5f510543c9c9bb36": {
+    "selected_plies": [
+      128,
+      116,
+      114,
+      28,
+      118,
+      98,
+      132
+    ],
+    "split": "train"
+  },
+  "272ffc39b27c9416e437bb3cec908f3234316b583176cdb4ea6caf30cd32a03f": {
+    "selected_plies": [
+      92,
+      62,
+      66,
+      94,
+      16,
+      52,
+      42
+    ],
+    "split": "test"
+  },
+  "27a6a91152926e404de9a20fae0072a6d456b1ee102b60a46ad0bd62c2402f50": {
+    "selected_plies": [
+      111,
+      85,
+      119,
+      129,
+      65,
+      103,
+      19,
+      21
+    ],
+    "split": "validation"
+  },
+  "2815392749d0dea7685dcc2fc01f49281dfe49437faee1d2f26f7ee273776144": {
+    "selected_plies": [
+      26,
+      18,
+      122,
+      30,
+      136,
+      88,
+      6,
+      78
+    ],
+    "split": "train"
+  },
+  "29ada77bde616110d034c4df0d1c604fc47b20fd4f30c2eb6edf89fb5fc826ea": {
+    "selected_plies": [
+      26,
+      72,
+      50,
+      40,
+      24,
+      78,
+      94,
+      6
+    ],
+    "split": "train"
+  },
+  "29c6d20b0f88c3436987f69435aacaf19aa738bd2eb159944f129abffaa4d33c": {
+    "selected_plies": [
+      28,
+      70,
+      40,
+      80,
+      2,
+      26,
+      86,
+      50
+    ],
+    "split": "train"
+  },
+  "29d9a95e229025033cec24a6e0d2e4198f30c28f658121c530faca8589ec0c50": {
+    "selected_plies": [
+      17,
+      11,
+      37,
+      25,
+      19,
+      31,
+      43,
+      41
+    ],
+    "split": "train"
+  },
+  "2a29843f3489cdd2735e223f90da3575d4270d5c423633c46d4cfd4dafbb248c": {
+    "selected_plies": [
+      39,
+      51,
+      3,
+      13,
+      41,
+      29,
+      53,
+      57
+    ],
+    "split": "train"
+  },
+  "2a4900fb55bf3449e9bd455a15f801ea66f4672523e438064514482a4e019595": {
+    "selected_plies": [
+      46,
+      48,
+      24,
+      36,
+      8,
+      28,
+      44
+    ],
+    "split": "train"
+  },
+  "2a8c71304c34551bbcb9d6abda4fc7145621b36f583e1065f77adb82d042bab3": {
+    "selected_plies": [
+      18,
+      90,
+      36,
+      84,
+      72,
+      46,
+      42,
+      8
+    ],
+    "split": "test"
+  },
+  "2b0941be83f132d79316b06dcd4bb156c0cc8225e700ba1f03c549bfdf6f3af1": {
+    "selected_plies": [
+      60,
+      38,
+      64,
+      36,
+      56,
+      54,
+      18
+    ],
+    "split": "train"
+  },
+  "2b215ab6973265ef64f604be7b1713ceb248a63bc4b0467a9cc20252b4ab47c3": {
+    "selected_plies": [
+      83,
+      17,
+      89,
+      23,
+      37,
+      69,
+      29
+    ],
+    "split": "test"
+  },
+  "2b358d603e57722652c0858903fad231462f359d2870fc737c3ab46d2bccbf1a": {
+    "selected_plies": [
+      17,
+      21,
+      31,
+      27,
+      9,
+      13,
+      33,
+      15
+    ],
+    "split": "test"
+  },
+  "2c331660c0fc08c95190d937a0a7fff07fb62a5c8c7da6675b19a6b816405247": {
+    "selected_plies": [
+      123,
+      171,
+      33,
+      113,
+      141,
+      119,
+      133
+    ],
+    "split": "train"
+  },
+  "2c432e05b653a53dacca31e4cca532cb63ab04c6b55f6461acd5cbb730c5afac": {
+    "selected_plies": [
+      34,
+      98,
+      30,
+      96,
+      16,
+      78,
+      116,
+      8
+    ],
+    "split": "test"
+  },
+  "2ca22567182a62139b2782cd10b245c53a86231ffd0316eff3fff42b3a3e6105": {
+    "selected_plies": [
+      16,
+      42,
+      20,
+      54,
+      68,
+      28,
+      40,
+      14
+    ],
+    "split": "train"
+  },
+  "2f538998d3d00f910a20758f7512528c810f421efabb9cd750a4bd815d7965cd": {
+    "selected_plies": [
+      155,
+      13,
+      75,
+      95,
+      103,
+      23,
+      81,
+      127
+    ],
+    "split": "train"
+  },
+  "2fd6871fcaa8b19966d5cfc9c0bb68e86d104ddf3e5acf37bad06615eecd1fcd": {
+    "selected_plies": [
+      23,
+      35,
+      9,
+      41,
+      37
+    ],
+    "split": "train"
+  },
+  "3042585711c021e0ece05cb4b1679be16d884fe80a2a3d0394a737691fbbab9d": {
+    "selected_plies": [
+      6,
+      96,
+      76,
+      80,
+      74,
+      82,
+      106,
+      8
+    ],
+    "split": "train"
+  },
+  "30db3d48f6d5eb97951b726779ca06a4bb465fa10a45d32598f8897c0e8aa164": {
+    "selected_plies": [
+      89,
+      87,
+      75,
+      33,
+      69,
+      23,
+      11,
+      67
+    ],
+    "split": "train"
+  },
+  "314f167eef27ebc6e01fbea09bef07e681d26e78f463b685db15d123fe584814": {
+    "selected_plies": [
+      38,
+      12,
+      10,
+      14,
+      36,
+      20
+    ],
+    "split": "test"
+  },
+  "31e4d1a71b320a4279ea88b679142f2b2cb47de2f4f1b0df764cddbc36ce3230": {
+    "selected_plies": [
+      97,
+      71,
+      119,
+      109,
+      77,
+      35,
+      105,
+      15
+    ],
+    "split": "train"
+  },
+  "3397e337c48051898facda879df4f5d21c38f976717f9820615678039ee10c4c": {
+    "selected_plies": [
+      36,
+      90,
+      16,
+      42,
+      76,
+      82,
+      72,
+      84
+    ],
+    "split": "train"
+  },
+  "33d8a9aed31ebc3fd44230be806acf98680810410f3a34bfc861a6d43dd12ca4": {
+    "selected_plies": [
+      10,
+      42,
+      50,
+      56,
+      2,
+      60,
+      58,
+      26
+    ],
+    "split": "train"
+  },
+  "3493c6ce0cc2c06c498f42fdfc66361d2eeda7c8676e9d0ce17efad31785b14e": {
+    "selected_plies": [
+      30,
+      8,
+      6,
+      84,
+      70,
+      26,
+      36
+    ],
+    "split": "train"
+  },
+  "35a6580dcb0c3f957d074a97facfccfdfa120f2e374d17ddfd95d64f1c4dba7e": {
+    "selected_plies": [
+      72,
+      12,
+      54,
+      84,
+      38,
+      10,
+      70,
+      96
+    ],
+    "split": "train"
+  },
+  "3664966cd34488e71cfb614cb2c06d8cef50b8632f1a9e0c664cae9f4893c777": {
+    "selected_plies": [
+      76,
+      162,
+      72,
+      14,
+      148,
+      86,
+      150,
+      40
+    ],
+    "split": "validation"
+  },
+  "368178c0ef3fad54bc2c74423d26abfb036f2e798954d40f4959e8b3c273308b": {
+    "selected_plies": [
+      95,
+      51,
+      107,
+      91,
+      27,
+      43,
+      85,
+      121
+    ],
+    "split": "train"
+  },
+  "36912b39bdc0c70946cc8a6043ccda555990b9f1389c6d681420ed53ac7f54f6": {
+    "selected_plies": [
+      15,
+      115,
+      63,
+      69,
+      67,
+      129,
+      91,
+      25
+    ],
+    "split": "train"
+  },
+  "37208b9287125ee7445575b6cfe4bdcc5bb9cc5f692f5b5f64113368da5d93b6": {
+    "selected_plies": [
+      36,
+      12,
+      14,
+      22,
+      48,
+      20,
+      50,
+      4
+    ],
+    "split": "train"
+  },
+  "37284884fa4f2371547b636163a02c9d935f67a495e6b3ba700be21f54761149": {
+    "selected_plies": [
+      27,
+      125,
+      93,
+      71,
+      17,
+      25,
+      11,
+      41
+    ],
+    "split": "validation"
+  },
+  "375b135174d7f04e6d36075b202ba10c7c585e78ccdc9d61c7ddce83cfa8fa10": {
+    "selected_plies": [
+      43,
+      23,
+      35,
+      15,
+      41
+    ],
+    "split": "train"
+  },
+  "37d29c69c77d737fcc3e7cdbc90a2af732f932a078c25e7c703dd8fd0a779171": {
+    "selected_plies": [
+      7,
+      111,
+      113,
+      101,
+      51
+    ],
+    "split": "validation"
+  },
+  "381a503755948c9377b3890f9f67968116afc77911ed156cc5b04541af260b20": {
+    "selected_plies": [
+      140,
+      152,
+      2,
+      108,
+      34,
+      70,
+      84,
+      134
+    ],
+    "split": "train"
+  },
+  "3832a4ad26e8f038a3c055092ad00f4672ee4eabb159a52a09bcab08b87a7975": {
+    "selected_plies": [
+      91,
+      115,
+      49,
+      25,
+      75,
+      107,
+      9,
+      77
+    ],
+    "split": "train"
+  },
+  "38e35740bb6a2ef92f345e89b7aa4e3736563ee9e9a9eedde88bc8cf31f3353a": {
+    "selected_plies": [
+      37,
+      3,
+      119,
+      97,
+      29,
+      5,
+      85,
+      57
+    ],
+    "split": "train"
+  },
+  "39102d416a4a658bc70e57cefab5e2401dcaf82d1af575ba70851f637980da72": {
+    "selected_plies": [
+      47,
+      27,
+      87,
+      73,
+      71,
+      43,
+      79,
+      83
+    ],
+    "split": "validation"
+  },
+  "3a442f307b1da58ad60f951214795047d5e0cb65138cd04ea0513f5af6250db0": {
+    "selected_plies": [
+      7,
+      59,
+      65,
+      53,
+      61,
+      57,
+      69
+    ],
+    "split": "train"
+  },
+  "3bdce55adc48f48a08f74c7c3532adebc75504cba8cb2ecc9c36e62ee42c07ce": {
+    "selected_plies": [
+      43,
+      39,
+      61,
+      33,
+      51,
+      71,
+      31,
+      47
+    ],
+    "split": "validation"
+  },
+  "3c8a95ca5ccee1ab8654863ad56d97a2a9d59abe4fb1803555f27841df269c93": {
+    "selected_plies": [
+      42,
+      36,
+      30,
+      8,
+      18,
+      58,
+      32
+    ],
+    "split": "validation"
+  },
+  "3d9b487d983f356c42850182145f5d5afe621da26c247af7080fc6e60018b2bb": {
+    "selected_plies": [
+      75,
+      55,
+      25,
+      23,
+      43,
+      51,
+      81,
+      37
+    ],
+    "split": "train"
+  },
+  "3d9cde4c9cb329e506d27687224ecba4296bd6e0a7a8a2ef4c1df84472c8b6dc": {
+    "selected_plies": [
+      20,
+      66,
+      64,
+      72,
+      52,
+      54,
+      10,
+      2
+    ],
+    "split": "train"
+  },
+  "3ecd09915cc64b5d1e8ebc39890d08a116a5b75915484e497917b0f1ea769a4b": {
+    "selected_plies": [
+      18,
+      14,
+      30,
+      32
+    ],
+    "split": "train"
+  },
+  "40a08c0607779ba366d9954dd1bfdef3227552120b064a33ef11d382f9bf8fa2": {
+    "selected_plies": [
+      9,
+      87,
+      81,
+      73,
+      119,
+      109,
+      43,
+      115
+    ],
+    "split": "train"
+  },
+  "40df5cc6fac84b8a62a0ee2ec04c0f8651b58981eef685929ae877baa09df789": {
+    "selected_plies": [
+      9,
+      85,
+      115,
+      59,
+      103,
+      5,
+      57,
+      7
+    ],
+    "split": "train"
+  },
+  "41df7888c647fe27728487e6b08dbdd858b15d323c7be68a4de7a9e15b4c4260": {
+    "selected_plies": [
+      100,
+      14,
+      52,
+      68,
+      30,
+      94,
+      62,
+      104
+    ],
+    "split": "train"
+  },
+  "420e074c53b615936d670710bfd5e5a685bbe92e9001237972a448d291c7ce64": {
+    "selected_plies": [
+      70,
+      58,
+      48,
+      30,
+      36,
+      42,
+      12,
+      24
+    ],
+    "split": "train"
+  },
+  "428fa768d2ee9a3542ee1d4ecba2a7280a02a3f72b83fa5fb9dbb9efbbe604a6": {
+    "selected_plies": [
+      58,
+      32,
+      80,
+      70,
+      88,
+      20,
+      84
+    ],
+    "split": "train"
+  },
+  "434e3734522743c303176aa596a2cb30983b06a79029db0efeb433b20a21c03c": {
+    "selected_plies": [
+      142,
+      38,
+      34,
+      8,
+      2,
+      44,
+      60,
+      90
+    ],
+    "split": "train"
+  },
+  "4393a82bc713e583f2f4d9e4b6ee5496a0ebd38940750c7794a66e538fb4e7d5": {
+    "selected_plies": [
+      48,
+      46,
+      30,
+      28,
+      26,
+      34,
+      24,
+      38
+    ],
+    "split": "train"
+  },
+  "45030e8a1d827680a16b0b1b468ca98a0df6c06d752073d87877e47912ff816c": {
+    "selected_plies": [
+      60,
+      36,
+      56,
+      6,
+      58,
+      74,
+      66,
+      48
+    ],
+    "split": "train"
+  },
+  "4554cf320e3d9786b952e2d5d49da31ecc93130deecdfd3f30abc36980799b0a": {
+    "selected_plies": [
+      37
+    ],
+    "split": "validation"
+  },
+  "4554f5afc6e058ce1da36828c9d40602afb8aa9346decf1315202c4c328bab97": {
+    "selected_plies": [
+      6,
+      56,
+      24,
+      2,
+      58,
+      12,
+      20,
+      32
+    ],
+    "split": "train"
+  },
+  "4573572db25f26ab848efab7967fc260d25b714904ce42f447be70b72b171b95": {
+    "selected_plies": [
+      24,
+      116,
+      50,
+      40,
+      28,
+      120,
+      12,
+      126
+    ],
+    "split": "train"
+  },
+  "45a8e0c0d6e8a4b21f9cbe40f47b5ef33c01fcf8320f0e295f2a9793d62274ca": {
+    "selected_plies": [
+      14,
+      126,
+      118,
+      78,
+      6,
+      86,
+      28,
+      122
+    ],
+    "split": "test"
+  },
+  "45c4809df4b3fde4b0b2ef4ecf22e7ed119f565df55b894cab7646a1be26650b": {
+    "selected_plies": [
+      60,
+      74,
+      38,
+      88,
+      82,
+      56,
+      106
+    ],
+    "split": "test"
+  },
+  "45dd93948e80f6b585adb9b1f94148c22309371950c83086672bc6641a0fe4ef": {
+    "selected_plies": [
+      40,
+      66,
+      98,
+      28,
+      68,
+      54,
+      58,
+      82
+    ],
+    "split": "train"
+  },
+  "45e54be542b1e239b31948caadc9d72e10e2a2d9bb4d03a68c0fdb5a54f7dd40": {
+    "selected_plies": [
+      57,
+      47,
+      45,
+      11,
+      77,
+      9,
+      79,
+      33
+    ],
+    "split": "validation"
+  },
+  "46fcf395f16741520ad9ee26ef1b24ffa3a23bf55bc57a24e2948796faa23675": {
+    "selected_plies": [
+      10,
+      82,
+      66,
+      14,
+      38,
+      62,
+      58,
+      74
+    ],
+    "split": "train"
+  },
+  "471d07ee2223a0991378077276e4c0ea43d9e03b6ccf2ccdd3594ba110cb3b35": {
+    "selected_plies": [
+      8,
+      54,
+      20,
+      36,
+      28,
+      22,
+      16,
+      12
+    ],
+    "split": "train"
+  },
+  "476ba44781e69718144945c8bdc2fc466f5991c9c3f5b21e760a1d673cd12724": {
+    "selected_plies": [
+      43,
+      49,
+      77,
+      29,
+      45,
+      35,
+      83
+    ],
+    "split": "train"
+  },
+  "47bed0f99adcf0a32b1cc934a5a34b4b055460fe4dcc32ed9ffedc7908c5881c": {
+    "selected_plies": [
+      51,
+      59,
+      47,
+      53,
+      17,
+      61,
+      43,
+      45
+    ],
+    "split": "validation"
+  },
+  "482c53380df74b790b52cbf6f0bf4a8bb80828d9826fd1ed93eff7e64e9f01e2": {
+    "selected_plies": [
+      70,
+      86,
+      18,
+      84,
+      50,
+      60,
+      12,
+      80
+    ],
+    "split": "train"
+  },
+  "48389be8b0c07f26549c6d401f21117ed7396d8574c9ee918974e764f17230eb": {
+    "selected_plies": [
+      35,
+      29,
+      43,
+      11,
+      7,
+      23,
+      37,
+      31
+    ],
+    "split": "validation"
+  },
+  "48e0d363c429f798f99b367dc66634dd16828a4691b3b2f9494cbb8e61b9aa69": {
+    "selected_plies": [
+      123,
+      111,
+      121,
+      115,
+      101,
+      127,
+      31
+    ],
+    "split": "train"
+  },
+  "4954dafec2d148da549b159da7d30bff9489a809da2d330f5eca6b306d9e1e95": {
+    "selected_plies": [
+      52,
+      72,
+      80,
+      62,
+      18,
+      28,
+      10
+    ],
+    "split": "train"
+  },
+  "4967c8c5cfe5d4fca61617a98221afe4f9fbaa0d398892486b6a022063b205d8": {
+    "selected_plies": [
+      37,
+      53,
+      105,
+      17,
+      61,
+      85,
+      7
+    ],
+    "split": "validation"
+  },
+  "4a2b8536d9442888b29bc6c6b9722e7e3a69652919dfa080932413a5a8114c28": {
+    "selected_plies": [
+      144,
+      70,
+      96,
+      16,
+      128,
+      74,
+      72
+    ],
+    "split": "train"
+  },
+  "4b68cf6d63654ae39407bdd1a5dd069e2b39fcf1a1831b98dda82085ae456f29": {
+    "selected_plies": [
+      60,
+      88,
+      48,
+      50,
+      86,
+      102,
+      8,
+      38
+    ],
+    "split": "train"
+  },
+  "4c5ed029c823d305bde33e223b1398566d1dd2488c5dbb3b87f7eddf1c70a170": {
+    "selected_plies": [
+      55,
+      51,
+      7,
+      65,
+      9,
+      23
+    ],
+    "split": "test"
+  },
+  "4cf35272b1c2596e6620e5b28ce6288682705bb9a412409d1a90c81ce237a57d": {
+    "selected_plies": [
+      84,
+      8,
+      34,
+      54,
+      28,
+      14,
+      38,
+      88
+    ],
+    "split": "validation"
+  },
+  "4d253528ee1e3e08c40f18fd5d3e1b8d468bec4d8d6e47f6ef36d8496a216ae7": {
+    "selected_plies": [
+      19,
+      43,
+      29,
+      79,
+      67,
+      23,
+      81
+    ],
+    "split": "validation"
+  },
+  "4dc348f4dad1a9a1f9adb70a20724e723e6b0547fe88ec7690c19c19f9ea3173": {
+    "selected_plies": [
+      65,
+      73,
+      43,
+      23,
+      77,
+      9,
+      17
+    ],
+    "split": "train"
+  },
+  "4e692e0755bf53b43649ea6bfedff19a311064781f2b1743dd65be2ab57b90b2": {
+    "selected_plies": [
+      84,
+      46,
+      78,
+      2,
+      22,
+      44,
+      38,
+      60
+    ],
+    "split": "train"
+  },
+  "4e90b3bb874d3f270b45050f06637e13625c6221027d12ec2a0f9b8b31fa5557": {
+    "selected_plies": [
+      37,
+      35,
+      13,
+      5,
+      3,
+      45,
+      11,
+      49
+    ],
+    "split": "train"
+  },
+  "4ef9074143c20a00bb3880459dbd8cce0e5f83d186d2ceb0ea334e5bb8354ce8": {
+    "selected_plies": [
+      111,
+      83,
+      53,
+      75,
+      115,
+      95,
+      59,
+      67
+    ],
+    "split": "train"
+  },
+  "4f34f937becac3786868bace93cbf20d03a7677fe06ddbe77daa2a5a93d1a3ff": {
+    "selected_plies": [
+      45,
+      49,
+      61,
+      59,
+      33,
+      55,
+      31,
+      51
+    ],
+    "split": "train"
+  },
+  "4f593cfe42f7aa2b69eaf74398853a953dd8af025768d69236d54b29614d5a17": {
+    "selected_plies": [
+      118,
+      84,
+      18,
+      12,
+      36,
+      32,
+      98,
+      78
+    ],
+    "split": "validation"
+  },
+  "50b987445d06fef2fbac6a6f78f4a27a176f345196a834d632f527859650eeff": {
+    "selected_plies": [
+      2,
+      24,
+      20,
+      40,
+      48,
+      14,
+      10,
+      44
+    ],
+    "split": "train"
+  },
+  "514aad1ed47c9b0baf8e9af58153d1ba2c85d0811bb2dca1bc1cf70f9ef11757": {
+    "selected_plies": [
+      144,
+      100,
+      108,
+      14,
+      128,
+      78
+    ],
+    "split": "validation"
+  },
+  "51fdee4d1568688e9c14f7d9b1f280867f477a25284518578229ae80562f86b0": {
+    "selected_plies": [
+      14,
+      52,
+      44,
+      68,
+      78,
+      30,
+      122,
+      118
+    ],
+    "split": "train"
+  },
+  "520d573899b0a2068a379d901d8d4f8b31ea6a56d81a971372d80afd04959be7": {
+    "selected_plies": [
+      45,
+      97,
+      111,
+      61,
+      35,
+      91,
+      87,
+      15
+    ],
+    "split": "train"
+  },
+  "533f1a8f2a6ff18346ad3f04289c7417afe2288510c435f6c7170969c42a653f": {
+    "selected_plies": [
+      61,
+      13,
+      79,
+      11,
+      17,
+      67,
+      39,
+      29
+    ],
+    "split": "test"
+  },
+  "53c6a7703b36bccf4100215edd14911794f31b3f37a6917a8b18d745c7699b4a": {
+    "selected_plies": [
+      26,
+      94,
+      22,
+      58,
+      4,
+      84,
+      76,
+      30
+    ],
+    "split": "train"
+  },
+  "554cc9e0a8000b0f01c48f12b66d78493a0f42aa3c37607badfbee0804c6d127": {
+    "selected_plies": [
+      54,
+      12,
+      22,
+      52,
+      48,
+      36,
+      44
+    ],
+    "split": "validation"
+  },
+  "55a8b70f82e08eb258c29c245e10c2ddab3cd388cf2eb66a4b9b5d720a99dce5": {
+    "selected_plies": [
+      22,
+      64,
+      24,
+      70,
+      46,
+      16,
+      18,
+      26
+    ],
+    "split": "validation"
+  },
+  "55e2db54d907e260fde37b77e5d6e45b5ff9fa0e1bb3165607d8ff71ff69db6c": {
+    "selected_plies": [
+      90,
+      64,
+      86,
+      30,
+      12,
+      78,
+      14
+    ],
+    "split": "train"
+  },
+  "561e5a63dae303591beaaea35d86e978bfa876e7cbe433f9563856b04f6c5c2c": {
+    "selected_plies": [
+      53,
+      49,
+      21,
+      103,
+      67,
+      75,
+      83,
+      57
+    ],
+    "split": "test"
+  },
+  "57457e9f82cbc8d5b9c2b7114be236c9a4de182775ef1795194f126237dc723d": {
+    "selected_plies": [
+      147,
+      77,
+      25,
+      175,
+      43,
+      111,
+      69
+    ],
+    "split": "test"
+  },
+  "57f0d889d56756453ea4fa90f02c96ab9ea38dd57a1130d4ed75a9f9c4822885": {
+    "selected_plies": [
+      66,
+      148,
+      26,
+      154,
+      20,
+      108,
+      38,
+      16
+    ],
+    "split": "train"
+  },
+  "57ff0c83649801db623502d1c24ce6a944f30b66502fd4492f1fa5c333efe1f5": {
+    "selected_plies": [
+      37,
+      39,
+      3,
+      33,
+      27,
+      35,
+      11,
+      43
+    ],
+    "split": "validation"
+  },
+  "58a43dc6354b96eb134cd36ce82bdf4031a3b19aab7686ff53f2f0050356b185": {
+    "selected_plies": [
+      161,
+      9,
+      159,
+      3,
+      165,
+      107,
+      93,
+      77
+    ],
+    "split": "train"
+  },
+  "590b87443438aa5b4300a0c2f4ffbff7fd003349be6fc4a43e40bea6ec00e0e0": {
+    "selected_plies": [
+      64,
+      36,
+      34,
+      46,
+      68,
+      32,
+      30,
+      70
+    ],
+    "split": "train"
+  },
+  "59e2337317d55fcf95bf55185e25c7c328947374539039a502b5a14c18798a51": {
+    "selected_plies": [
+      16,
+      108,
+      42,
+      100,
+      122,
+      120,
+      90
+    ],
+    "split": "train"
+  },
+  "5b91bf4e15f33c6a2a7881631112c27ef5945da6a8df5df4100a42e552d1f581": {
+    "selected_plies": [
+      73,
+      65,
+      107,
+      75,
+      97,
+      95,
+      35,
+      5
+    ],
+    "split": "train"
+  },
+  "5bf190c026243c711f01ae516d884891278e829df38036ebfa9ce187ed4a555b": {
+    "selected_plies": [
+      57,
+      63,
+      15,
+      75,
+      11,
+      91,
+      73,
+      45
+    ],
+    "split": "test"
+  },
+  "5d48b0eee176630f20e16f042d6e4f36f63182b761b41512cc673e1aeb84475f": {
+    "selected_plies": [
+      21,
+      53,
+      39,
+      37,
+      19
+    ],
+    "split": "validation"
+  },
+  "5f2948f58ca1a583aca6f4baad6871a7eced4e24ce2884b85160d1b5dd9fd416": {
+    "selected_plies": [
+      71,
+      45,
+      31,
+      53,
+      89,
+      29,
+      37,
+      17
+    ],
+    "split": "validation"
+  },
+  "5f409abceb209dd5937dbfcbd31f3e0ea4fc830579c35ded2845112f8cbf9f8f": {
+    "selected_plies": [
+      126,
+      196,
+      170,
+      68,
+      80,
+      148,
+      108,
+      100
+    ],
+    "split": "train"
+  },
+  "5f7416d363c6a3742ce7d231db7b874a6335a4d6e5f7a9b8e1c304a1a6fbe1f2": {
+    "selected_plies": [
+      10,
+      24,
+      4,
+      60,
+      16,
+      56,
+      34,
+      52
+    ],
+    "split": "train"
+  },
+  "601e355a1cfe3413e29580815ecdbfbfc2193a112f0176bb13618af17ba7e0f4": {
+    "selected_plies": [
+      70,
+      76,
+      6,
+      96,
+      42,
+      32,
+      18
+    ],
+    "split": "validation"
+  },
+  "60371cf8d4d193f3c9eb051f089997147dd819dd1ba154241e352b494adad79c": {
+    "selected_plies": [
+      32,
+      84,
+      44,
+      22,
+      24,
+      40,
+      12,
+      76
+    ],
+    "split": "train"
+  },
+  "60b70c48e184032859650dbfe10492f7f3a1b9deb75b2a7c85c69964e9968eb9": {
+    "selected_plies": [
+      3,
+      73,
+      111,
+      19,
+      89,
+      51,
+      29,
+      35
+    ],
+    "split": "train"
+  },
+  "612d54fd00bf2a7174f8ed81ded5ec6690b42ba4466bfd179c6451ebd28c83e9": {
+    "selected_plies": [
+      32,
+      20,
+      46,
+      14,
+      40,
+      48,
+      8,
+      6
+    ],
+    "split": "train"
+  },
+  "615366c9218e01f13d09244fcaa37337fb615bf5bad641212cef7f5b2eccd6fc": {
+    "selected_plies": [
+      72,
+      126,
+      90,
+      68,
+      100,
+      102,
+      38,
+      22
+    ],
+    "split": "train"
+  },
+  "61663eeba80e721f4b943fe5761114b2e73fef86bce5b013f1e5735bd7fa1943": {
+    "selected_plies": [
+      29,
+      39,
+      7,
+      25,
+      41,
+      37,
+      31,
+      3
+    ],
+    "split": "train"
+  },
+  "623c892baf50d40c1f4d98556167fe874433e21af834700d8426f1c64f06215d": {
+    "selected_plies": [
+      71,
+      27,
+      105,
+      23,
+      39,
+      61,
+      109,
+      89
+    ],
+    "split": "train"
+  },
+  "62bf5218c1b38406526d8509da9ce3131fcf9bcca271453809de2045d8b96566": {
+    "selected_plies": [
+      58,
+      22,
+      92,
+      88,
+      44,
+      56,
+      90,
+      42
+    ],
+    "split": "train"
+  },
+  "6357eff83aabbbbd9d9f689d424a70e8bebe0ab3e2aac7452bd5657c1a3cde01": {
+    "selected_plies": [
+      128,
+      88,
+      102,
+      138,
+      82,
+      32,
+      146,
+      66
+    ],
+    "split": "train"
+  },
+  "64291396c178fdabe5085052be9c28bbf98ddef88bcbb24aa135828a53dd023c": {
+    "selected_plies": [
+      29,
+      37,
+      33,
+      25,
+      61,
+      9,
+      21,
+      59
+    ],
+    "split": "test"
+  },
+  "6484f61c8607c754a73c948a37bcd4e9b9c8e4c2333efdaa2c88513ba370ce6a": {
+    "selected_plies": [
+      53,
+      105,
+      133,
+      83,
+      7,
+      169
+    ],
+    "split": "train"
+  },
+  "658b41bc1622d58e9fd8f12ffca02c4842b7de8d1a65e12ef805c99dd751e974": {
+    "selected_plies": [
+      83,
+      73,
+      21,
+      93,
+      129,
+      67,
+      65
+    ],
+    "split": "train"
+  },
+  "66c8ac02ab9df29ba7a2a58bff97dbfed55a2f56671eadd03877d570388e137e": {
+    "selected_plies": [
+      51,
+      43,
+      33,
+      99,
+      53,
+      129,
+      105
+    ],
+    "split": "train"
+  },
+  "66ebf5fe2c6aeb13809923fc8f0b056741cc886e209666283fafb9207cd7d3d0": {
+    "selected_plies": [
+      45,
+      73,
+      29,
+      37,
+      27,
+      35,
+      25,
+      65
+    ],
+    "split": "train"
+  },
+  "6749d2c784ba5a81f62505106e8ebd27141a8ed0c808c2940d29892ac48c9704": {
+    "selected_plies": [
+      10,
+      20,
+      18,
+      36,
+      28,
+      34
+    ],
+    "split": "train"
+  },
+  "683cf886d8f9a782a27476eb8c76c3fa861e8de97da7c8bb1db4a2625b0da1c4": {
+    "selected_plies": [
+      80,
+      40,
+      24,
+      68,
+      22,
+      110,
+      50
+    ],
+    "split": "train"
+  },
+  "68ce98aee16b09cc66e3097598ce44c6d8de733b77f8e04ee244536f3f5a7f1c": {
+    "selected_plies": [
+      53,
+      31,
+      55,
+      91,
+      85,
+      83,
+      117,
+      43
+    ],
+    "split": "train"
+  },
+  "6a320d453ef20f1ddc6f1070e9a6c2f591e1a47b98a6a51d3e1d528473720ac1": {
+    "selected_plies": [
+      69,
+      47,
+      77,
+      3,
+      61,
+      75,
+      67,
+      13
+    ],
+    "split": "test"
+  },
+  "6a44fe8a758c2e1b936c2b6fefc17ae4681e94e6b84e6eb7778977ea955869a4": {
+    "selected_plies": [
+      46,
+      54,
+      70,
+      20,
+      90,
+      82,
+      78,
+      6
+    ],
+    "split": "train"
+  },
+  "6a878c1194094715f0c1a527512b83c575c492546632c37f61c0cfde53de07f2": {
+    "selected_plies": [
+      71,
+      73,
+      27,
+      13,
+      29,
+      31,
+      43,
+      3
+    ],
+    "split": "train"
+  },
+  "6abb81381e3a2b0fe966a846940643741d868e4f6a7a016a9cd1350e5ab656f3": {
+    "selected_plies": [
+      98,
+      24,
+      66,
+      128,
+      18,
+      16,
+      134,
+      114
+    ],
+    "split": "train"
+  },
+  "6affe163f3e0c47ad7e70b08a601899762493e2c76f27a62fce1f88ccb624676": {
+    "selected_plies": [
+      110,
+      28,
+      66,
+      22,
+      98,
+      120,
+      18,
+      84
+    ],
+    "split": "validation"
+  },
+  "6b0d257b51e0590e99a8ff3023e11436d9b07cfb285cbbf645b2f1dd6c36abb1": {
+    "selected_plies": [
+      116,
+      58,
+      38,
+      82,
+      28,
+      24,
+      84,
+      102
+    ],
+    "split": "validation"
+  },
+  "6ba8d345419dd6bddfc9803cce0adccde98314250d6ab9b9d0229fe17ef1ce0e": {
+    "selected_plies": [
+      110,
+      108,
+      70,
+      48,
+      64,
+      56,
+      28
+    ],
+    "split": "train"
+  },
+  "6c2d37e50da6522c011c46cf6a338210d2dba7ac4fd1f1a4d2fa2f006095127e": {
+    "selected_plies": [
+      33,
+      31,
+      51,
+      101,
+      37,
+      19,
+      83,
+      21
+    ],
+    "split": "train"
+  },
+  "6c57aaa1cc380ad4fc0670954c0ee4ddbf74d663266050f93951519b65b8ee8a": {
+    "selected_plies": [
+      16,
+      20,
+      58,
+      28,
+      22,
+      46,
+      90,
+      44
+    ],
+    "split": "train"
+  },
+  "6cc1502a91531506ba21ae5dbcd900767fa6359721167ba0fe854ff11ea34975": {
+    "selected_plies": [
+      36,
+      34,
+      62,
+      72,
+      76,
+      48,
+      70,
+      14
+    ],
+    "split": "test"
+  },
+  "6d254332704f83a9fb42d1b6c4a3ebedb628a7acb0aa91a3b8f4c2b3d07e7498": {
+    "selected_plies": [
+      43,
+      69,
+      51,
+      95,
+      93,
+      71,
+      19,
+      83
+    ],
+    "split": "validation"
+  },
+  "6d722a6f44086157ce694029b748ba4ba7435d817281e99647af1ecc3cc60923": {
+    "selected_plies": [
+      43,
+      59,
+      57,
+      77,
+      103,
+      89,
+      109,
+      107
+    ],
+    "split": "train"
+  },
+  "6d75a01ddbea91b0800f51d1ccf361881bb03b1d07ac8e6a418f6c97621e96fb": {
+    "selected_plies": [
+      30,
+      44,
+      42,
+      76,
+      74,
+      96,
+      82,
+      68
+    ],
+    "split": "train"
+  },
+  "6d88a130465d9e67d30c2c219814b00d1a5d2ecf60c7398103217667eb5da00c": {
+    "selected_plies": [
+      16,
+      66,
+      68,
+      6,
+      14,
+      8,
+      44,
+      22
+    ],
+    "split": "train"
+  },
+  "6db86b400f9e16eb14ec068ad2a84012893523c5697a5baabe1299c3f4917ede": {
+    "selected_plies": [
+      72,
+      68,
+      20,
+      50,
+      60,
+      44,
+      62,
+      34
+    ],
+    "split": "train"
+  },
+  "6e7acde349bf1a013624aa23ccd7d37848f80e3306de77fa09bcb042c50a423c": {
+    "selected_plies": [
+      27,
+      23,
+      87,
+      47,
+      61,
+      17,
+      91,
+      55
+    ],
+    "split": "train"
+  },
+  "6f37b0bf59cd4e04760fbe1a4377ab2924b2525ee188970601733f1598e978c1": {
+    "selected_plies": [
+      6,
+      36,
+      24,
+      56,
+      40,
+      20,
+      58,
+      50
+    ],
+    "split": "train"
+  },
+  "6f3c0d0a16de3a36221932fdf3d1246631e1dc5a794cec68f81fbd7667faff42": {
+    "selected_plies": [
+      33,
+      45,
+      19,
+      47,
+      67,
+      31,
+      13
+    ],
+    "split": "validation"
+  },
+  "6f49724971fc2562ee3131b68751bab7f04906211f2ac1fc7849ede65308a818": {
+    "selected_plies": [
+      97,
+      111,
+      9,
+      75,
+      103,
+      83,
+      55
+    ],
+    "split": "train"
+  },
+  "6f527857bde096dc49949c1112fdbc3d249a079406b843bc2b261b3be8ec2f5c": {
+    "selected_plies": [
+      70,
+      62,
+      42,
+      56,
+      30,
+      40,
+      52
+    ],
+    "split": "train"
+  },
+  "70ed2dd8af3e7ff8b1a4884308c95028b9943fa2b87b08db779da0a42f95c562": {
+    "selected_plies": [
+      56,
+      28,
+      44,
+      70,
+      52,
+      6,
+      10
+    ],
+    "split": "train"
+  },
+  "71039f99ebf76068c90e111a66107c5e1e015651bb38aa59774c005cbba19d58": {
+    "selected_plies": [
+      25,
+      31,
+      49,
+      27,
+      41,
+      37,
+      11
+    ],
+    "split": "validation"
+  },
+  "71045ad49ae35134b72c20567eece7819de10c22c645c6e6fe9536bc4299373f": {
+    "selected_plies": [
+      48,
+      6,
+      22,
+      8,
+      60,
+      12,
+      26,
+      20
+    ],
+    "split": "train"
+  },
+  "714613000d1a2a73b717302d956c92ff63e296dee9debe1d2d6d3434ef6ddcfd": {
+    "selected_plies": [
+      19,
+      33,
+      95,
+      97,
+      131,
+      47,
+      41,
+      83
+    ],
+    "split": "test"
+  },
+  "71caacc4b11d8fba83a967a72ec9cd10ac9f6a611bcef320bc28851631eae1d9": {
+    "selected_plies": [
+      27,
+      23,
+      13,
+      19,
+      17,
+      11,
+      35,
+      37
+    ],
+    "split": "train"
+  },
+  "7215fca3a2941df821361d765ea20190510e0ad8b67bec7a81ba64271940e5f4": {
+    "selected_plies": [
+      4,
+      22,
+      16,
+      34,
+      48,
+      12,
+      8,
+      14
+    ],
+    "split": "train"
+  },
+  "726055bd890dbb44a24ce7f54daf3fd860bbd9376ec769cf51e3935cfba40f16": {
+    "selected_plies": [
+      29,
+      75,
+      41,
+      11,
+      43,
+      77,
+      61,
+      71
+    ],
+    "split": "train"
+  },
+  "72a506b2b96bb0cd2e21701fa8fe9b070e314048499de9a64b161666b7752c15": {
+    "selected_plies": [
+      53,
+      35,
+      37,
+      43,
+      47,
+      67
+    ],
+    "split": "validation"
+  },
+  "72b93cd613c2ff8c1228236a058abc0a217b6b11be3bbe99642af3927d695c9c": {
+    "selected_plies": [
+      22,
+      106,
+      72,
+      14,
+      52,
+      88,
+      70,
+      96
+    ],
+    "split": "train"
+  },
+  "72d54f05fff7e60e290a395b6f96123aff174dfc0009c2539c4c32f7c7d51754": {
+    "selected_plies": [
+      26,
+      6,
+      62,
+      76,
+      36,
+      4,
+      72,
+      78
+    ],
+    "split": "train"
+  },
+  "745f336af4052d99a1a41b7af9da5b474796522d29ef1db2b8ef1493dd468426": {
+    "selected_plies": [
+      47,
+      17,
+      59,
+      113,
+      41,
+      21,
+      93,
+      99
+    ],
+    "split": "train"
+  },
+  "747240bbbed8b41b8e7b16652018a8f084c3f8daa639e06854a5e7046527eb73": {
+    "selected_plies": [
+      23,
+      33,
+      35,
+      59,
+      43,
+      25,
+      27
+    ],
+    "split": "train"
+  },
+  "74b07cd4176300eea8d64a1d359e4ef41187d1a4c5d9a6d2c6c83d510a04ea12": {
+    "selected_plies": [
+      126,
+      62,
+      24,
+      86,
+      50,
+      38,
+      22,
+      16
+    ],
+    "split": "train"
+  },
+  "750d01b58401f9c333ac1778f9b2a4f31f50659849ed94376386c43fd9123fa9": {
+    "selected_plies": [
+      33,
+      67,
+      83,
+      59,
+      51,
+      39,
+      101,
+      99
+    ],
+    "split": "validation"
+  },
+  "7546b982ebd2e770f97bd2ed787cef4e3c2ae89afe213a375bcd2ef89a1f1dc1": {
+    "selected_plies": [
+      16,
+      14,
+      34,
+      74,
+      72,
+      50,
+      80,
+      88
+    ],
+    "split": "validation"
+  },
+  "75e017fd3ec3d2a03e601544d1b43949293cbc9eff25e2b5561bc019f9ebed71": {
+    "selected_plies": [
+      59,
+      69,
+      51,
+      23,
+      83,
+      61,
+      11,
+      31
+    ],
+    "split": "validation"
+  },
+  "75ed88efefdf29405d8dc4a93054ef805f38da1ffe275a248ae59fef4d2799cd": {
+    "selected_plies": [
+      71,
+      47,
+      23,
+      93,
+      97,
+      51,
+      31
+    ],
+    "split": "train"
+  },
+  "7725091d0d0a9b063905aa24eaf60ae136923e7ae9cc558c7145270c3b62c3eb": {
+    "selected_plies": [
+      33,
+      19,
+      41,
+      37,
+      5,
+      49,
+      11,
+      35
+    ],
+    "split": "train"
+  },
+  "78007a3dcbf49e89dd7b46e3de0e5188e66d7dd7816d4d318254dfc98af59fd3": {
+    "selected_plies": [
+      156,
+      30,
+      28,
+      12,
+      114,
+      146,
+      82,
+      110
+    ],
+    "split": "train"
+  },
+  "7848bfccf0ded693779ec7d105d2d91f562d499f45f094d4448c90a638ae95f4": {
+    "selected_plies": [
+      92,
+      84,
+      18,
+      74,
+      114,
+      76,
+      50,
+      60
+    ],
+    "split": "train"
+  },
+  "78b87948119f4ba92e3be422a662d5ecb455ea584e270624d2846a9c45a482a2": {
+    "selected_plies": [
+      6,
+      8,
+      34,
+      44,
+      4,
+      30,
+      26,
+      14
+    ],
+    "split": "test"
+  },
+  "78ed139c5a0ec38c51d917cf9fd238be32da3b33c4f0cd2d1cf9b9afddd3aba4": {
+    "selected_plies": [
+      40,
+      30,
+      96,
+      82,
+      28,
+      36,
+      8,
+      24
+    ],
+    "split": "validation"
+  },
+  "792d649382fb4deb8ac7d5d1d7d4725712d28861309d626cd42aa6fde3b2dd48": {
+    "selected_plies": [
+      43,
+      37,
+      25,
+      31,
+      3,
+      7,
+      17
+    ],
+    "split": "train"
+  },
+  "79a939d422287be62672cc8debc6a582d2ec326b34055b5a77276d29197fef98": {
+    "selected_plies": [
+      52,
+      90,
+      78,
+      104,
+      44,
+      64,
+      110,
+      34
+    ],
+    "split": "train"
+  },
+  "7a0c67ac97ba07e7bfbb874bd32251f367ded2586b3d88db266333b10721b9d6": {
+    "selected_plies": [
+      35,
+      71,
+      21,
+      77,
+      13,
+      69,
+      95,
+      7
+    ],
+    "split": "train"
+  },
+  "7a0c7b5f5bfcc6ecd8898c7b666077e6f743fdfefdf8ed2099931fab01465829": {
+    "selected_plies": [
+      17,
+      9,
+      25,
+      13,
+      35,
+      29,
+      49,
+      45
+    ],
+    "split": "train"
+  },
+  "7a6f8690e62f5733e29625102d804992dcbcaf9fd59ca7713e76bc1a7877bb0c": {
+    "selected_plies": [
+      115,
+      23,
+      25,
+      49,
+      35,
+      47,
+      59
+    ],
+    "split": "test"
+  },
+  "7bd2c068e88bd311dbac25d2339b2c575510b3c81928c430d33590c5121bb9cc": {
+    "selected_plies": [
+      23,
+      51,
+      47,
+      25,
+      13,
+      49,
+      33,
+      55
+    ],
+    "split": "validation"
+  },
+  "7ce779f501b8af87e0282a449b40a5d52075687cbde26e926d7c18b49b0dc3c8": {
+    "selected_plies": [
+      114,
+      26,
+      48,
+      38,
+      46,
+      106,
+      52,
+      68
+    ],
+    "split": "train"
+  },
+  "7d425ea3db8fe24922fa5fe327b40738113d73523be6b0e73ce998b1313b189d": {
+    "selected_plies": [
+      10,
+      88,
+      76,
+      50,
+      32,
+      90,
+      24,
+      52
+    ],
+    "split": "train"
+  },
+  "7d48aa171f64e3a0410237da250c83030885e7412f9907ef21494340c7a1a805": {
+    "selected_plies": [
+      77,
+      65,
+      5,
+      7,
+      3,
+      23
+    ],
+    "split": "train"
+  },
+  "7ddf5dbdff545a248fe0b82d07485119931d1be82386841c15f1b25c58f7d6d5": {
+    "selected_plies": [
+      97,
+      15,
+      161,
+      39,
+      65,
+      7,
+      3,
+      31
+    ],
+    "split": "train"
+  },
+  "7e94702423263d19b6fc1c4cf09b3146a8450dacae9e4133f7ceb900503f330a": {
+    "selected_plies": [
+      33,
+      45,
+      39,
+      35,
+      17,
+      5,
+      43,
+      57
+    ],
+    "split": "train"
+  },
+  "7fbe9ecab757e41397b1559068584e5f8524089f264350712335708019d4ba11": {
+    "selected_plies": [
+      62,
+      106,
+      110,
+      118,
+      26,
+      100,
+      76,
+      84
+    ],
+    "split": "train"
+  },
+  "8081170e9d78125e6b67936896e5a18287e640b7edf9c2790c358198603c74ca": {
+    "selected_plies": [
+      70,
+      6,
+      88,
+      80,
+      16,
+      68,
+      54,
+      94
+    ],
+    "split": "test"
+  },
+  "80f681f984191c8339ff4af4db4c0ab7be3d8303b32ebbcbc6bdd1914c110d80": {
+    "selected_plies": [
+      9,
+      5,
+      15,
+      11,
+      17,
+      29,
+      25
+    ],
+    "split": "validation"
+  },
+  "810e760077ea34c289c54178cfb6021317b8495adac111104b8e83b6730cb630": {
+    "selected_plies": [
+      13,
+      31,
+      39,
+      29,
+      25,
+      19,
+      21,
+      15
+    ],
+    "split": "validation"
+  },
+  "81a5d707c8b58247bab0baaa8895fd3c06cff807885f081943db8fb348d6840d": {
+    "selected_plies": [
+      63,
+      69,
+      5,
+      53,
+      11,
+      73,
+      39,
+      57
+    ],
+    "split": "train"
+  },
+  "81ed4e803c09c1462c1996c6d945f3a3bed570751856b5c38a69c9cf3e9d6989": {
+    "selected_plies": [
+      118,
+      88,
+      116,
+      112,
+      10,
+      32,
+      114
+    ],
+    "split": "test"
+  },
+  "8207222c0015f223e661f248df1c8b7b9c716522e21a87417fa4b29b2251af23": {
+    "selected_plies": [
+      4,
+      40,
+      82,
+      30,
+      38,
+      18,
+      44,
+      16
+    ],
+    "split": "validation"
+  },
+  "823d6e18fbf2aaf953adfe6ae400a39e8f37a0f7682faac323ec2b4674e757e0": {
+    "selected_plies": [
+      16,
+      36,
+      76,
+      40,
+      126,
+      72,
+      58,
+      18
+    ],
+    "split": "train"
+  },
+  "829854e96f9f3c87845da95597d7527e42a74e29d2ef4be019d05c049457e454": {
+    "selected_plies": [
+      34,
+      38,
+      6,
+      30,
+      72,
+      46,
+      20,
+      56
+    ],
+    "split": "test"
+  },
+  "8308932b13e444964bab0a895a3695cc9c27f0ae3cbb1de4d3722d03f6b344f9": {
+    "selected_plies": [
+      56,
+      36,
+      10,
+      26,
+      72,
+      78,
+      50,
+      74
+    ],
+    "split": "train"
+  },
+  "843671198fda330ef4120a04eccd2493c1e2ac0906c19a8d273c45246cf910e9": {
+    "selected_plies": [
+      32,
+      48,
+      38,
+      8,
+      42,
+      34,
+      22,
+      46
+    ],
+    "split": "train"
+  },
+  "84ff8488ab7a22dca0362bfbb718544e29ea0703d2cdf14a3587810a4350751e": {
+    "selected_plies": [
+      5,
+      49,
+      13,
+      29,
+      25,
+      39,
+      7,
+      33
+    ],
+    "split": "train"
+  },
+  "86964d8302cd3d929c9a2d4f38c3e8799802d05c0124229ec97b87a7d30be263": {
+    "selected_plies": [
+      48,
+      92,
+      16,
+      26,
+      30,
+      12,
+      44,
+      74
+    ],
+    "split": "test"
+  },
+  "86b281eaf90b78d53465277400d59052e93c7f0998036275a454cefde6799421": {
+    "selected_plies": [
+      53,
+      61,
+      99,
+      103,
+      23,
+      105,
+      37
+    ],
+    "split": "train"
+  },
+  "86c02d5af49f28f0faa3a929fe3173f9333827a6e78383bf2ffd43b70fa7bd6a": {
+    "selected_plies": [
+      8,
+      78,
+      92,
+      62,
+      52,
+      114,
+      68,
+      26
+    ],
+    "split": "train"
+  },
+  "86c09ba3d24ba7c24587ef91b069013351f90ff979921bc7627ac8e2ee69ff77": {
+    "selected_plies": [
+      37,
+      39,
+      7,
+      35,
+      43,
+      13,
+      21
+    ],
+    "split": "test"
+  },
+  "86f8d4cfea4d3fb3688cbbf5642a6c61f89657efd49a7ff6e797b14184ad8332": {
+    "selected_plies": [
+      61,
+      79,
+      73,
+      25,
+      99,
+      91,
+      83,
+      15
+    ],
+    "split": "train"
+  },
+  "883a3bb5ad3232f9c6d48867ceb0216dda9362b118018a564a3816e2755b9eb5": {
+    "selected_plies": [
+      34,
+      32,
+      54,
+      100,
+      88,
+      116,
+      56,
+      66
+    ],
+    "split": "train"
+  },
+  "888f64fb91a78caf692c43dfc27d64cbeb2def5079c25fecea29a04e6b7ae941": {
+    "selected_plies": [
+      33,
+      25,
+      11,
+      57,
+      43,
+      37
+    ],
+    "split": "validation"
+  },
+  "88933f0e8570db5ca3dddc87607cdddd719e49d978427bcb55cd9d51bd29072b": {
+    "selected_plies": [
+      2,
+      26,
+      16,
+      22,
+      10,
+      36,
+      28,
+      20
+    ],
+    "split": "train"
+  },
+  "88ad37acd766b5da483a1bca6183f3699141e3b096982b90433f720ba1bdd392": {
+    "selected_plies": [
+      64,
+      82,
+      46,
+      22,
+      38,
+      66,
+      16,
+      26
+    ],
+    "split": "train"
+  },
+  "88f101cc026c9a3201b9168b53ed0ec62ab1afd692560605f7993ef0aa7e7939": {
+    "selected_plies": [
+      62,
+      92,
+      22,
+      8,
+      20,
+      6,
+      60,
+      44
+    ],
+    "split": "train"
+  },
+  "891e0567c09f84bd7372a3ad18a20fbc1da08865a08f03db2ad0c46298c37aa9": {
+    "selected_plies": [
+      6,
+      38,
+      26,
+      28,
+      48,
+      14,
+      2,
+      18
+    ],
+    "split": "train"
+  },
+  "898857c64ae7d88ad02efec569b050a65abf07edd0b6be36072ec1d13833a344": {
+    "selected_plies": [
+      10,
+      130,
+      48,
+      64,
+      40,
+      62,
+      12,
+      34
+    ],
+    "split": "train"
+  },
+  "89916a034d03e568b03e5a22592cb922ea33f04f1165b4ae927953884799c908": {
+    "selected_plies": [
+      117,
+      143,
+      35,
+      63,
+      45,
+      37,
+      41,
+      79
+    ],
+    "split": "train"
+  },
+  "89c9ffcf5d744339d53d46998de719794487cf98af76c1a309e44acaf3b744e1": {
+    "selected_plies": [
+      98,
+      50,
+      4,
+      74,
+      104,
+      78,
+      112,
+      76
+    ],
+    "split": "train"
+  },
+  "89cb83a3417dbf417433ad17a1d1a5a5a2e6681ebaccff638cbd5ffea9e35e2e": {
+    "selected_plies": [
+      52,
+      48,
+      4,
+      34,
+      46,
+      12,
+      42
+    ],
+    "split": "test"
+  },
+  "8aa1d6cff0367c2829e973b09e67a9a1d9d8e590bb61726edc8d3bcbcdec1924": {
+    "selected_plies": [
+      106,
+      16,
+      34,
+      92,
+      112,
+      84,
+      60,
+      40
+    ],
+    "split": "test"
+  },
+  "8b07e6a7700995f346f571c6d588976f84be05c757adb8b3898050d1fad7de2c": {
+    "selected_plies": [
+      5,
+      11,
+      51,
+      3,
+      41,
+      15,
+      17,
+      37
+    ],
+    "split": "train"
+  },
+  "8b50815a302c7dc088eab7ffcd9283ec1e24494f751592c3eeb34de53f5f1050": {
+    "selected_plies": [
+      143,
+      73,
+      147,
+      9,
+      13,
+      43,
+      119
+    ],
+    "split": "train"
+  },
+  "8b722b1bfba68a695dafd0f4ed1d2ca644d381f697fb808220dbe7b34acb6479": {
+    "selected_plies": [
+      38,
+      94,
+      42,
+      8,
+      58,
+      118,
+      22,
+      56
+    ],
+    "split": "train"
+  },
+  "8bfe834ab3001d1418bb4eb56c8d26a7a223819d169b7152e9f12caca5609182": {
+    "selected_plies": [
+      5,
+      73,
+      49,
+      27,
+      37,
+      9,
+      87,
+      69
+    ],
+    "split": "validation"
+  },
+  "8e4783e01311f734113691a828c9e8084d0f87fb585fc7b69f2817aaf0faecf2": {
+    "selected_plies": [
+      73,
+      31,
+      41,
+      51,
+      17,
+      25,
+      3,
+      9
+    ],
+    "split": "test"
+  },
+  "8eb1abc90e7f1c33b15e2c50a338b075dbd29ee64fe04b4daa56fc11d49dd1a5": {
+    "selected_plies": [
+      4,
+      84,
+      30,
+      8,
+      88,
+      52,
+      50,
+      56
+    ],
+    "split": "train"
+  },
+  "8ff724b9d077b3b6d23ffe383969afe68d5b33e478c48438068f829567e57f9d": {
+    "selected_plies": [
+      56,
+      10,
+      76,
+      62,
+      20,
+      2
+    ],
+    "split": "validation"
+  },
+  "90405e3e22068c4f2ece81d1a0f6bfff2a08d3dc5f7e1fb5f6e61f0ad9539fb7": {
+    "selected_plies": [
+      45,
+      47,
+      31,
+      67,
+      15,
+      33,
+      13,
+      17
+    ],
+    "split": "train"
+  },
+  "905998aa78f50c7c12643c0326a7fbf0f1f72bee6bd99e25644f8c51c2dc6a44": {
+    "selected_plies": [
+      20,
+      42,
+      32,
+      14,
+      26,
+      10,
+      16
+    ],
+    "split": "test"
+  },
+  "9084b06daa5a81caa05dbabb44adfb4c08727cd327dd189af8af90909895e716": {
+    "selected_plies": [
+      68,
+      30,
+      16,
+      96,
+      84,
+      98,
+      94,
+      36
+    ],
+    "split": "train"
+  },
+  "90e92d29730fc2ad677b9239570cd60bd3e582aedd4ffc9d5bea6ee7c9d8b0ea": {
+    "selected_plies": [
+      27,
+      97,
+      95,
+      31,
+      37,
+      105,
+      71,
+      19
+    ],
+    "split": "train"
+  },
+  "9129857855bab2108de89bee4e24058056ac021e232c18ab301b433429cf1b46": {
+    "selected_plies": [
+      35,
+      31,
+      19,
+      43,
+      15,
+      47,
+      21,
+      37
+    ],
+    "split": "train"
+  },
+  "925f6d7b93020f2964950f9caa31ae00d263e742ae0617e54aa773ec835c6d13": {
+    "selected_plies": [
+      47,
+      85,
+      65,
+      59,
+      61,
+      19,
+      41,
+      23
+    ],
+    "split": "validation"
+  },
+  "92c1deda5934ce5eeac687c2e6677b4b4af7eef96ba4f22d4e683a035819487f": {
+    "selected_plies": [
+      7,
+      11,
+      61,
+      3,
+      15,
+      47,
+      49,
+      37
+    ],
+    "split": "train"
+  },
+  "93533f979eeaaae26f6088b09ccc2ed490e5c42edf7ec5776a28bedf19b34190": {
+    "selected_plies": [
+      41,
+      45,
+      13,
+      37,
+      55,
+      53
+    ],
+    "split": "train"
+  },
+  "93555e5ed6b1d5c54eb26052cdb55ec1aabe3335de0c6b9e25cacb6b9d3b60c8": {
+    "selected_plies": [
+      84,
+      118,
+      70,
+      56,
+      106,
+      46,
+      110
+    ],
+    "split": "validation"
+  },
+  "948eb6c272d25a285f2668164be6da3aa5d072b1046113a1afdd2a6825e8e224": {
+    "selected_plies": [
+      43,
+      9,
+      21,
+      89,
+      23,
+      25,
+      69,
+      47
+    ],
+    "split": "train"
+  },
+  "94aa18f085777b9511116a01a0b0925edc25dc418187d4652f492fa44b5aa53a": {
+    "selected_plies": [
+      58,
+      102,
+      100,
+      162,
+      188,
+      142,
+      12
+    ],
+    "split": "validation"
+  },
+  "94bce72e9a415580bc7638b660fe3d926badcec20c182e5555637c82ef4037fb": {
+    "selected_plies": [
+      5,
+      65,
+      91,
+      61,
+      55,
+      29,
+      53
+    ],
+    "split": "train"
+  },
+  "951ec14a048bfe6a32a062a49ab0cb515b81b8708a89500c05b7cdf74068699c": {
+    "selected_plies": [
+      66,
+      4,
+      12,
+      68,
+      58,
+      28,
+      74,
+      14
+    ],
+    "split": "train"
+  },
+  "952c3b0b264ac6ab71dc28a0c5d6150e3c9c34b17acdec9aeb727f56e59909ba": {
+    "selected_plies": [
+      38,
+      24,
+      12,
+      14,
+      10,
+      36,
+      44,
+      50
+    ],
+    "split": "validation"
+  },
+  "9564086489e3078601a2caa65988cb18b366e346a4c60d3275af3d56baac61af": {
+    "selected_plies": [
+      12,
+      4,
+      16,
+      30,
+      38,
+      2,
+      44,
+      36
+    ],
+    "split": "train"
+  },
+  "962802f115785fef3788c9bc3fc0c1a3c10cede601e14e993f221d36990161b5": {
+    "selected_plies": [
+      133,
+      13,
+      81,
+      95,
+      129,
+      145,
+      163
+    ],
+    "split": "test"
+  },
+  "96d678583877e8448c7a6769b402b50a0e936e8c2e6ee66da85e87e7ea817c26": {
+    "selected_plies": [
+      18,
+      30,
+      24,
+      22,
+      46,
+      38,
+      6,
+      8
+    ],
+    "split": "train"
+  },
+  "975ed761f015502f34cdb936f699770ef9e15da6822729596ae54af1da559775": {
+    "selected_plies": [
+      47,
+      101,
+      53,
+      51,
+      13,
+      95
+    ],
+    "split": "train"
+  },
+  "99d443ff8eb5b7ba43d85bbba609930e301fc7ba0ec24381793d65db4dc8e7b6": {
+    "selected_plies": [
+      32,
+      52,
+      102,
+      86,
+      78,
+      46,
+      100,
+      12
+    ],
+    "split": "test"
+  },
+  "99de16f33aa4176da32e668eeaee43aa69ff763f2285a1504a6d558251d940ed": {
+    "selected_plies": [
+      86,
+      48,
+      30,
+      14,
+      90,
+      132,
+      116,
+      20
+    ],
+    "split": "train"
+  },
+  "9a8e3fd198101e1230df4cb50aae2db2628ebe37dd30858a617ee7ef8d2019f6": {
+    "selected_plies": [
+      89,
+      131,
+      119,
+      69,
+      93,
+      79,
+      53,
+      127
+    ],
+    "split": "train"
+  },
+  "9a8f2b38ac15d7f37c6e05499d80b5eeb45d0c7de8aabe7a78fe97f0b016e978": {
+    "selected_plies": [
+      123,
+      31,
+      81,
+      79,
+      39,
+      33,
+      111,
+      97
+    ],
+    "split": "validation"
+  },
+  "9ace30ec6d583cbb479cad7f95c02f7796b13e98f1a02face591b2bf5b25e80f": {
+    "selected_plies": [
+      57,
+      65,
+      7,
+      53,
+      27,
+      39,
+      13
+    ],
+    "split": "train"
+  },
+  "9ad096a35e48ece6be36886015af83c5c6c2d1164973c4d590e54cbede427221": {
+    "selected_plies": [
+      74,
+      88,
+      100,
+      64,
+      56,
+      70,
+      76,
+      40
+    ],
+    "split": "train"
+  },
+  "9adbe385a1903de55378b80b5927061edbc94299944845b5ae711138a491964b": {
+    "selected_plies": [
+      10,
+      96,
+      14,
+      130,
+      106,
+      24,
+      72,
+      138
+    ],
+    "split": "test"
+  },
+  "9b414ae0d2848e6cd9b871267b340dc715bc59688fe71f1b4b483410ef09cef4": {
+    "selected_plies": [
+      56,
+      76,
+      74,
+      42,
+      40,
+      30,
+      22,
+      48
+    ],
+    "split": "test"
+  },
+  "9c677b4a23bdec04cb9b15b4ec05e9ee3eacb3fee78268207e7a062bd701e30b": {
+    "selected_plies": [
+      75,
+      57,
+      35,
+      65,
+      45,
+      3,
+      53,
+      25
+    ],
+    "split": "train"
+  },
+  "9dbbef9b0ed83b9ca9aaa15d9951617a50a22ad490402926f4cfa98fba2191fd": {
+    "selected_plies": [
+      100,
+      30,
+      34,
+      32,
+      104,
+      8,
+      98,
+      76
+    ],
+    "split": "validation"
+  },
+  "9dec7ba69dab7e3dfbd73d1b798ff6c59a1ac0d650ae4c65af313c50f0d5ab18": {
+    "selected_plies": [
+      42,
+      46,
+      80,
+      78,
+      92,
+      110,
+      102,
+      104
+    ],
+    "split": "train"
+  },
+  "9e13c810eea26c8cc4cad35d9c15a9207fc43f6d23e9a47a75a2404560029067": {
+    "selected_plies": [
+      7,
+      21,
+      79,
+      93,
+      47,
+      35,
+      5,
+      39
+    ],
+    "split": "train"
+  },
+  "9e49a5c35a5627279044869908a8e2ef0eaa4db3a490af5c2a8f87e9a8b7c744": {
+    "selected_plies": [
+      67,
+      113,
+      31,
+      61,
+      69,
+      77,
+      91,
+      117
+    ],
+    "split": "test"
+  },
+  "9ef692a87bee666ff4b5d3e9069288f9c5dcf0ca9d4646b80c529ef6b5aae260": {
+    "selected_plies": [
+      58,
+      22,
+      24,
+      48,
+      8,
+      6,
+      56,
+      38
+    ],
+    "split": "train"
+  },
+  "a02bb9927d27a0ced3f4f5ec666ee724173195872fa6f397836f3df9d9edacbf": {
+    "selected_plies": [
+      38,
+      56,
+      28,
+      6,
+      26,
+      16,
+      74,
+      62
+    ],
+    "split": "train"
+  },
+  "a0c68ae15ad76e28d7d675d9cc0a8f7f408b1dc0f468ac9bc12fa72c8e0ce6be": {
+    "selected_plies": [
+      109,
+      97,
+      19,
+      87,
+      45,
+      39,
+      117,
+      77
+    ],
+    "split": "train"
+  },
+  "a106084dce016771ccf714ba7c6aa0abedc461ee88d609142cf248f6469ec627": {
+    "selected_plies": [
+      33,
+      63,
+      21,
+      51,
+      31,
+      65,
+      67,
+      19
+    ],
+    "split": "train"
+  },
+  "a1ae6628854b3828f78534027a0ca371623a856eec95ba285259fcb1aaa1ec27": {
+    "selected_plies": [
+      92,
+      16,
+      96,
+      68,
+      40,
+      120,
+      44,
+      60
+    ],
+    "split": "test"
+  },
+  "a1dbcf54e64e897ac35b82c9d5d73f44cf51472744d38086bcd091ee54d7bcf8": {
+    "selected_plies": [
+      111,
+      85,
+      31,
+      145,
+      135,
+      149,
+      137,
+      77
+    ],
+    "split": "train"
+  },
+  "a21e936ae52cbfe02782c525240cef213dc1f14d916ab44e4b36c7c1528153cb": {
+    "selected_plies": [
+      38,
+      48,
+      44,
+      54,
+      28,
+      4,
+      12,
+      34
+    ],
+    "split": "train"
+  },
+  "a27fa08a9039c545e85fb3c8d2f5d2f68b95e24f323ea848463a232e93e5e3c6": {
+    "selected_plies": [
+      23,
+      49,
+      69,
+      55,
+      11,
+      47,
+      17
+    ],
+    "split": "train"
+  },
+  "a35aafee256b50aec74a6252b033d846cbbb8894dccd27262c7d297c91762931": {
+    "selected_plies": [
+      28,
+      142,
+      68,
+      104,
+      46,
+      64,
+      78,
+      30
+    ],
+    "split": "test"
+  },
+  "a45c5f0371bb44d0d0d99bd4d28e2c8d4526caa19d04eaddc93ebfc71786ee0c": {
+    "selected_plies": [
+      58,
+      88,
+      34,
+      12,
+      46,
+      48,
+      28,
+      26
+    ],
+    "split": "train"
+  },
+  "a49baaa290baec087579e33f5e0a06710fd8c8dd9f0e6b0e58d5648abca9f20c": {
+    "selected_plies": [
+      51,
+      117,
+      11,
+      13,
+      87,
+      95,
+      65,
+      47
+    ],
+    "split": "test"
+  },
+  "a4adb8af2cea2bbbe8ae164a995d15084758f96332709a8488794c16f85e2ba6": {
+    "selected_plies": [
+      74,
+      84,
+      52,
+      32,
+      48,
+      70,
+      56,
+      40
+    ],
+    "split": "train"
+  },
+  "a4ed3ac5d86f89b4d720e11742a07d84e837ee8631f9f68690ff76f234b08c93": {
+    "selected_plies": [
+      36,
+      44,
+      72,
+      52,
+      38,
+      48,
+      56,
+      32
+    ],
+    "split": "train"
+  },
+  "a5472406d3088f47417078e15aa5b97e126e7c695026a45f4b76c5e004c7cbe7": {
+    "selected_plies": [
+      32,
+      8,
+      40,
+      4,
+      18,
+      38,
+      2,
+      28
+    ],
+    "split": "train"
+  },
+  "a5507549a3a4ed376ea824f0863c59aac783e1b38b25fa2fe85c391fb6e392f0": {
+    "selected_plies": [
+      87,
+      21,
+      81,
+      65,
+      95,
+      61,
+      59,
+      77
+    ],
+    "split": "train"
+  },
+  "a6f17f4e7da8b5ed49ae0c7d12833504d949dd95f670926c2d3eedcf06c19b57": {
+    "selected_plies": [
+      20,
+      110,
+      66,
+      18,
+      58,
+      78,
+      146,
+      46
+    ],
+    "split": "train"
+  },
+  "a72f2e38698b930a7e46329986e146a497c0e66b1eddce6a7ccb16d0ac2f0b41": {
+    "selected_plies": [
+      101,
+      51,
+      95,
+      93,
+      31,
+      41,
+      83,
+      171
+    ],
+    "split": "test"
+  },
+  "a78f9cc16fed255ec991d9829ec4cff25457fc14a13d4ee8bf561f9ee65e9f49": {
+    "selected_plies": [
+      72,
+      68,
+      66,
+      28,
+      70,
+      80,
+      32,
+      44
+    ],
+    "split": "train"
+  },
+  "a78fce3e2f6b92b11eaef597db8ae7ea7eaf85fdd3e320c59e8919079e2d02bd": {
+    "selected_plies": [
+      27,
+      31,
+      3,
+      81,
+      63,
+      67,
+      29,
+      45
+    ],
+    "split": "train"
+  },
+  "a849049fe8da17823b190f93aa7b26194d2c772d951bc11a70b08fc120528be2": {
+    "selected_plies": [
+      69,
+      73,
+      97,
+      21,
+      71,
+      63,
+      13,
+      89
+    ],
+    "split": "test"
+  },
+  "a8f1a436e13ed8ef2e9e6f0013531d173f815df7dd6247545615aab03959ab65": {
+    "selected_plies": [
+      29,
+      93,
+      83,
+      45,
+      91,
+      51,
+      77,
+      71
+    ],
+    "split": "train"
+  },
+  "a90f7a255a50f7beb86988aaf380c2a2d94318a2e912ab6b5a6964f8d26ab94e": {
+    "selected_plies": [
+      20,
+      122,
+      124,
+      6,
+      34,
+      40,
+      78,
+      68
+    ],
+    "split": "train"
+  },
+  "a911128751028bc8378794c569c9bed7244324c70889d7d9eb56e02a5a61e01c": {
+    "selected_plies": [
+      72,
+      40,
+      52,
+      54,
+      26,
+      6,
+      8,
+      44
+    ],
+    "split": "train"
+  },
+  "a93916023d191c7f90e138e827d764466b0b430a91d6aa15bb52652cd497df9a": {
+    "selected_plies": [
+      63,
+      79,
+      37,
+      19,
+      17,
+      3,
+      33,
+      107
+    ],
+    "split": "test"
+  },
+  "a939d0ed74dea622a602befb7497e0b5b1541104ae3096189b92612f31e4b6cf": {
+    "selected_plies": [
+      39,
+      9,
+      33,
+      27,
+      49,
+      5,
+      15,
+      11
+    ],
+    "split": "train"
+  },
+  "a98ac4a91c27008a96255fef32a89bae3b79ab9d3b860b0abc083d3071faccaf": {
+    "selected_plies": [
+      68,
+      58,
+      82,
+      20,
+      34,
+      86,
+      104,
+      50
+    ],
+    "split": "train"
+  },
+  "a9fd7f50a297ed82f0feb4fefaddc2b85feaaf27c0c832b829798703f837fba4": {
+    "selected_plies": [
+      28,
+      12,
+      22,
+      56,
+      74,
+      42,
+      72,
+      44
+    ],
+    "split": "train"
+  },
+  "aa44bc38306e6ca5439e30000ea73cee649e2eb8df1aee7f798cfc5a78881a92": {
+    "selected_plies": [
+      81,
+      61,
+      65,
+      7,
+      139,
+      57,
+      101,
+      51
+    ],
+    "split": "train"
+  },
+  "abd822f9abadcbfa05beff30bfef8999961bdd086b8b0d743a272417d6843265": {
+    "selected_plies": [
+      48,
+      192,
+      8,
+      108,
+      70,
+      50,
+      144,
+      80
+    ],
+    "split": "train"
+  },
+  "ac7862c8fe6eaed294e136e3b1dea3bf51024c1541ae32f74bab1a13d1550320": {
+    "selected_plies": [
+      18,
+      8,
+      60,
+      88,
+      84,
+      82,
+      14,
+      56
+    ],
+    "split": "train"
+  },
+  "ae05d756da0b0a7c1f341735919c0b16eecfd8c5811aee43156bc8b2a83f90a2": {
+    "selected_plies": [
+      4,
+      20,
+      42,
+      54,
+      8
+    ],
+    "split": "test"
+  },
+  "af097eb8c63015f56507a54109f73d2391c1a2f1cf4e26b98c4b55bcef733b25": {
+    "selected_plies": [
+      29,
+      93,
+      39,
+      85,
+      9,
+      35,
+      7,
+      71
+    ],
+    "split": "train"
+  },
+  "af49396849b1c320a773268b7c9070ef32dea236c76639ceac35dc7475cfddfe": {
+    "selected_plies": [
+      12,
+      58,
+      10,
+      48,
+      20,
+      68,
+      40,
+      28
+    ],
+    "split": "train"
+  },
+  "af571d5f13813cb50c2256e0442781b0727ffb11fcfb9d5be72f05ae0db740ad": {
+    "selected_plies": [
+      17,
+      31,
+      37,
+      15,
+      39,
+      61,
+      23,
+      47
+    ],
+    "split": "train"
+  },
+  "af7d07c2c43dfa318ccd20be8ba709b0815c29a069bbd2a79ef2065c7fdc852e": {
+    "selected_plies": [
+      22,
+      90,
+      20,
+      24,
+      110,
+      106
+    ],
+    "split": "test"
+  },
+  "af87eaabecb2ebbec17b2282121281577f644def3743efcfe1f007076f41f16d": {
+    "selected_plies": [
+      68,
+      14,
+      22,
+      80,
+      6,
+      34,
+      50,
+      20
+    ],
+    "split": "train"
+  },
+  "af8f862aedf4b4ccfbdb9e32075f074d85ec7a046b5c16d5e6aeda44b7c65ade": {
+    "selected_plies": [
+      113,
+      9,
+      39,
+      43,
+      13,
+      17,
+      95,
+      75
+    ],
+    "split": "test"
+  },
+  "afd018d46c647d4c9ae34f345dcc926e01fe0cfc492b37110fa85c9970c87bfc": {
+    "selected_plies": [
+      64,
+      56,
+      70,
+      40,
+      38,
+      54,
+      26,
+      22
+    ],
+    "split": "train"
+  },
+  "afe038aaf4a5f76689952d7670ab20b640338b7ad8ec735771ec088d870ee512": {
+    "selected_plies": [
+      46,
+      64,
+      26,
+      12,
+      54,
+      58,
+      66
+    ],
+    "split": "validation"
+  },
+  "b1a1a9f17843663ca2b5490a24e07206d3e4a76ba9ecdc10c382317cebda1df9": {
+    "selected_plies": [
+      51,
+      59,
+      37,
+      41,
+      83,
+      21,
+      23,
+      33
+    ],
+    "split": "train"
+  },
+  "b20d492de7eae2a58d2601a7467b967ff7bc50237c7ec49b3e63cec1f4a6c60c": {
+    "selected_plies": [
+      98,
+      56,
+      94,
+      88,
+      14,
+      48,
+      38,
+      66
+    ],
+    "split": "train"
+  },
+  "b2c32d2fbe5ec135064049b016aa3a1172a5d71fbb21b11cabf92f44077c7800": {
+    "selected_plies": [
+      54,
+      62,
+      32,
+      88,
+      78,
+      6,
+      14
+    ],
+    "split": "train"
+  },
+  "b354dac8cd7d9e79b81faa96c4b0373bb81f5de241bac94edad13e1be25adaa1": {
+    "selected_plies": [
+      23,
+      13,
+      9,
+      25,
+      5,
+      21
+    ],
+    "split": "test"
+  },
+  "b3e017209a1add266b1f099963f67133b6b6326671e13081fb2becd2e6b4dea3": {
+    "selected_plies": [
+      53,
+      25,
+      65,
+      19,
+      17,
+      27,
+      5
+    ],
+    "split": "train"
+  },
+  "b4e41f45a174fbbd889b771dc07b975e0e8f97ac811e53628985e9b7d32d68cb": {
+    "selected_plies": [
+      26,
+      62,
+      18,
+      64,
+      12,
+      14,
+      58,
+      40
+    ],
+    "split": "test"
+  },
+  "b51c4a6d380456cd1346e3056e747c60689db0a052212b4d373f8aa143dfb643": {
+    "selected_plies": [
+      101,
+      105,
+      65,
+      49,
+      53,
+      5,
+      83,
+      61
+    ],
+    "split": "train"
+  },
+  "b5ce41ec531c1d4f93b186a8dbf439ae814694fffaed95a5ed6e7e34002078e8": {
+    "selected_plies": [
+      112,
+      12,
+      74,
+      16,
+      68,
+      8,
+      32,
+      56
+    ],
+    "split": "test"
+  },
+  "b6a47c0c68883baaa54016f9a211042fcbe0e147e0f8498b1dec8fb2e6545fb5": {
+    "selected_plies": [
+      101,
+      67,
+      131,
+      9,
+      119,
+      69,
+      7,
+      93
+    ],
+    "split": "validation"
+  },
+  "b6ea96a235feea1304cdcfa851b016daa0a1cb89a7f7c570168a8a984524c8ca": {
+    "selected_plies": [
+      185,
+      195,
+      61,
+      157,
+      117,
+      173,
+      3
+    ],
+    "split": "test"
+  },
+  "b7014e84ece68b1acd3ca79d872acc6a4267b6d3a8faed86bf20236a0d5454a7": {
+    "selected_plies": [
+      71,
+      77,
+      111,
+      137,
+      27,
+      33,
+      41,
+      119
+    ],
+    "split": "train"
+  },
+  "b82f537aff92e07bc84999ac61a5bc0b1c2d039d0c333db6b6893ef4bd9db67a": {
+    "selected_plies": [
+      90,
+      8,
+      20,
+      50,
+      76,
+      34,
+      126,
+      4
+    ],
+    "split": "train"
+  },
+  "b94c54cba618901f19ceb2c915d35f4b91db94ac246a4286ea48f12b8c55d402": {
+    "selected_plies": [
+      92,
+      34,
+      98,
+      114,
+      8,
+      104,
+      28,
+      46
+    ],
+    "split": "train"
+  },
+  "bb049dd3ee9807879183471cc251fb52bec49bb9cbac9f7fe8301ad364b44bd3": {
+    "selected_plies": [
+      62,
+      86,
+      76,
+      14,
+      72,
+      90,
+      42
+    ],
+    "split": "train"
+  },
+  "bb24926bb716e2d4addf16851ceabbf9430b50cfe73e5a915e8a12b697358af9": {
+    "selected_plies": [
+      63,
+      37,
+      49,
+      65,
+      25,
+      9,
+      51,
+      45
+    ],
+    "split": "validation"
+  },
+  "bb3e1d645cd32f0e598cbf1e09b301cb0e61b8cca3cccd77d6138200903dd2b0": {
+    "selected_plies": [
+      32,
+      72,
+      22,
+      62,
+      64,
+      2,
+      6,
+      74
+    ],
+    "split": "train"
+  },
+  "bbcd63867a75b24afffeea5b716b02b67b103d5416853b7a850cc1878f0de36c": {
+    "selected_plies": [
+      43,
+      27,
+      29,
+      65,
+      45,
+      17,
+      57,
+      33
+    ],
+    "split": "train"
+  },
+  "bdb6dfa89a36db333b95d1191ed726d6791da523041cce50731ecc76835ad12a": {
+    "selected_plies": [
+      25,
+      53,
+      39,
+      29,
+      35,
+      45,
+      23,
+      47
+    ],
+    "split": "train"
+  },
+  "be7ebe0b9bdaf9b28add5eefcd73b3c88063a07b9556f531544aa542d72037eb": {
+    "selected_plies": [
+      28,
+      80,
+      72,
+      50,
+      54,
+      24,
+      70
+    ],
+    "split": "train"
+  },
+  "bea26f4317ba4456fb41140d844d855a0d8dc70bf430323172ef1fb6a795da60": {
+    "selected_plies": [
+      2,
+      12,
+      18,
+      4,
+      30,
+      46,
+      28,
+      6
+    ],
+    "split": "train"
+  },
+  "bea401a8a6442e742af10df673ff55b253ccd866cdea128472ec9f2036cf9f1f": {
+    "selected_plies": [
+      14,
+      50,
+      34,
+      32,
+      44,
+      58,
+      18,
+      76
+    ],
+    "split": "train"
+  },
+  "bf2be9aeeff8af0dc3d4065bc67ecdd3aa878b2cd770c3b82ac63ff3983b797f": {
+    "selected_plies": [
+      150,
+      90,
+      6,
+      110,
+      108,
+      116,
+      130,
+      96
+    ],
+    "split": "train"
+  },
+  "bf8781e7292a1c4f5c91d7748d67f6d8380ba5c87271fc77b08668e207b9adb0": {
+    "selected_plies": [
+      65,
+      13,
+      19,
+      41,
+      39,
+      31,
+      51,
+      33
+    ],
+    "split": "validation"
+  },
+  "c1b66d632427e7cf7da739e6d7507b1de963f42c4432c3343b31124821e7a368": {
+    "selected_plies": [
+      45,
+      15,
+      55,
+      57,
+      33,
+      29,
+      13,
+      9
+    ],
+    "split": "train"
+  },
+  "c242311f6b62e7935694a65769c5afeeb9cc5ab8330d63dc5dff6c43f667bc3d": {
+    "selected_plies": [
+      87,
+      37,
+      31,
+      49,
+      107,
+      25,
+      93,
+      47
+    ],
+    "split": "train"
+  },
+  "c246008128b219f48310c183805376cf427967ca796eb80ad97dfc31683ba7f0": {
+    "selected_plies": [
+      61,
+      21,
+      137,
+      105,
+      65,
+      47,
+      113,
+      109
+    ],
+    "split": "train"
+  },
+  "c25618e880ec43d697260fb8d12cf486c66b4e769c3a45c0a95681dceb2d3928": {
+    "selected_plies": [
+      18,
+      34,
+      56,
+      66,
+      68,
+      32,
+      64,
+      60
+    ],
+    "split": "validation"
+  },
+  "c2bf35518040efefe14892208198cac4338fb435ad6a397ff551001ba99ddf3f": {
+    "selected_plies": [
+      61,
+      21,
+      83,
+      37,
+      73,
+      11,
+      69,
+      55
+    ],
+    "split": "train"
+  },
+  "c37f030ff660ae10f78e77e19231b8f08fe5b310b7cd4ec750eb938c5ce4df5e": {
+    "selected_plies": [
+      95,
+      19,
+      79,
+      49,
+      91,
+      71
+    ],
+    "split": "validation"
+  },
+  "c3c6666bb9f5d759b9184e989b3032bc55a2fb5de8ebf93e70283ab4e4a34b6a": {
+    "selected_plies": [
+      78,
+      154,
+      112,
+      22,
+      130,
+      102,
+      90,
+      38
+    ],
+    "split": "train"
+  },
+  "c4a4fa5f78e6f1c95e9b7e54fc1cfff4437e154d01e42f8c4adc6b7a65e98414": {
+    "selected_plies": [
+      22,
+      30,
+      100,
+      34,
+      92,
+      76,
+      126,
+      62
+    ],
+    "split": "train"
+  },
+  "c544e5ab875c2f196ed794d361a238d280925dc3003f157f92d257c2bda6f20a": {
+    "selected_plies": [
+      57,
+      37,
+      47,
+      29,
+      41,
+      25,
+      19,
+      21
+    ],
+    "split": "test"
+  },
+  "c585fea9886a85a717acdcc393e1258599ccfd4af9455b72f1dd2b638013a395": {
+    "selected_plies": [
+      85,
+      99,
+      127,
+      179,
+      135,
+      69,
+      53,
+      45
+    ],
+    "split": "train"
+  },
+  "c59b2cdc45a4d62638b1587bf9802ac902c998f841622cd870cc0ed9c2ffb97c": {
+    "selected_plies": [
+      78,
+      136,
+      152,
+      34,
+      66,
+      104,
+      26,
+      84
+    ],
+    "split": "train"
+  },
+  "c5ef2b5a256648642e6f39206709f3a47509469db1ca3fee8be22462dc8ad6b6": {
+    "selected_plies": [
+      31,
+      63,
+      71,
+      57,
+      49,
+      25,
+      15,
+      21
+    ],
+    "split": "train"
+  },
+  "c61625c2da21e6ac255f0fd7253c4291bfbfe35a1e8091c52bd1d9a44a770f91": {
+    "selected_plies": [
+      71,
+      49,
+      25,
+      13,
+      23,
+      83,
+      73,
+      79
+    ],
+    "split": "train"
+  },
+  "c6ea8d00ba14f8e4efe7b115828293d5da9bd454e12965ef2cbad6d2050d4883": {
+    "selected_plies": [
+      82,
+      92,
+      22,
+      100,
+      66,
+      68,
+      34,
+      54
+    ],
+    "split": "test"
+  },
+  "c74e2c5dcf7aa48974418dd8017d449cba7e7eaee3f55c854352db5a219f4151": {
+    "selected_plies": [
+      11,
+      55,
+      31,
+      47,
+      27,
+      71,
+      7,
+      21
+    ],
+    "split": "train"
+  },
+  "c7d7a923b299f7f7577e16eba7385710ebb13349c3c90efb8d1507541d7b4e17": {
+    "selected_plies": [
+      13,
+      85,
+      63,
+      35,
+      21,
+      87,
+      57
+    ],
+    "split": "train"
+  },
+  "c86ad572d7027bca3d5a5d53f222fe65bd72c35cd185fbca5b60e525f7f2d20f": {
+    "selected_plies": [
+      88,
+      92,
+      84,
+      58,
+      62,
+      4,
+      124,
+      98
+    ],
+    "split": "train"
+  },
+  "c87cac7a6669efd0d7250d655e90862e0e520c7c5ea8bca8c4d4232a366aa5ff": {
+    "selected_plies": [
+      154,
+      62,
+      82,
+      78,
+      10,
+      166,
+      14
+    ],
+    "split": "train"
+  },
+  "c8c5c1bcd84e774c3339b700f0f7bc0ba1b7b902ffd7839bc52bdc2b8e0c8fac": {
+    "selected_plies": [
+      50,
+      32,
+      22,
+      66,
+      64,
+      72,
+      2
+    ],
+    "split": "test"
+  },
+  "c9dfca863ba264ddc542a8f25ca591ead961fa9e5f45d99087cc2e7305671959": {
+    "selected_plies": [
+      65,
+      59,
+      31,
+      3,
+      35,
+      13,
+      5,
+      25
+    ],
+    "split": "test"
+  },
+  "ca63aa7626baebd84c2b47992973b219958314a0e20a1dd363efc791b8c7f433": {
+    "selected_plies": [
+      81,
+      33,
+      105,
+      11,
+      23,
+      53,
+      101,
+      79
+    ],
+    "split": "train"
+  },
+  "cbb954b8c291ebb1b26bed97ff9afc431c13a730e17da35c2e5ecfa8606b8cb9": {
+    "selected_plies": [
+      54,
+      18,
+      10,
+      30,
+      80,
+      20,
+      32,
+      74
+    ],
+    "split": "test"
+  },
+  "cbfb663e5ec084f27a12f13809f0c0e2a78f84b8422170dd28e874d80ddcfea2": {
+    "selected_plies": [
+      24,
+      64,
+      18,
+      100,
+      22,
+      52,
+      16,
+      4
+    ],
+    "split": "train"
+  },
+  "cc84df6534aa9f68db99b37a7db980e5e194cfd360067d5d6ca62a3dcd051b7f": {
+    "selected_plies": [
+      70,
+      16,
+      90,
+      102,
+      104,
+      96
+    ],
+    "split": "train"
+  },
+  "cdf516d0652e4bd2da234f43e4bcfc38c2ac25e4de863f71460ddc4e03f56c7b": {
+    "selected_plies": [
+      68,
+      32,
+      44,
+      36,
+      54,
+      64,
+      18,
+      42
+    ],
+    "split": "train"
+  },
+  "cdf9b079b1e96dffa9faf5a81b083ff26494226433e2aea306a023816a787304": {
+    "selected_plies": [
+      67,
+      127,
+      71,
+      147,
+      61,
+      69,
+      99,
+      113
+    ],
+    "split": "train"
+  },
+  "ce1159f36000f819d2b70e9077407b86d401224e2abc95e69c4502b5dd983ce4": {
+    "selected_plies": [
+      80,
+      82,
+      62,
+      64,
+      42,
+      6,
+      54,
+      76
+    ],
+    "split": "train"
+  },
+  "cf575fe7a95662b0f3ad530bba5abdf823112335c16182eb7ab3c96520e67707": {
+    "selected_plies": [
+      56,
+      86,
+      16,
+      50,
+      6,
+      4,
+      10,
+      68
+    ],
+    "split": "test"
+  },
+  "cf814706939e3e76a144356801e4e4e2174f5c72ac5a18efd428a8125b92f1fc": {
+    "selected_plies": [
+      18,
+      154,
+      38,
+      56,
+      34,
+      42,
+      58
+    ],
+    "split": "train"
+  },
+  "cf8478d4c9f0cedc8e54d17e4d90f94e8d2b94e003bb1241876f076d78a5e157": {
+    "selected_plies": [
+      105,
+      45,
+      69,
+      125,
+      65,
+      121,
+      53
+    ],
+    "split": "test"
+  },
+  "d198984dd05df4d860c29fb533608084a8bca29677eac39aff56ac3f16e9c1f9": {
+    "selected_plies": [
+      3,
+      37,
+      71,
+      67,
+      25,
+      51,
+      15,
+      19
+    ],
+    "split": "train"
+  },
+  "d1cb4b9cf6a7b339d318e12d4256aee71158c86bdf63fac961ad194e12b8bcf2": {
+    "selected_plies": [
+      31,
+      45,
+      43,
+      47,
+      51,
+      67,
+      71
+    ],
+    "split": "train"
+  },
+  "d2cdd1774cb46d5c82755eb4b1702d11b70f81493e76be70c0ec6948409728b0": {
+    "selected_plies": [
+      31,
+      65,
+      71,
+      91,
+      41,
+      89,
+      119,
+      113
+    ],
+    "split": "train"
+  },
+  "d34f8054d282d4392159a3f4effd651f87a9c90c45efa20bea77e81dc3755bd4": {
+    "selected_plies": [
+      28,
+      76,
+      58,
+      64,
+      38,
+      46,
+      44
+    ],
+    "split": "validation"
+  },
+  "d3ab5292dee1544e764112384c2296b403085ec3ccd22ffffc4d49c7e9ae0e9f": {
+    "selected_plies": [
+      29,
+      7,
+      47
+    ],
+    "split": "validation"
+  },
+  "d468e85e0aa2af14cec70c3865aac6088db6d3a378e5792cd2f6c047188129ef": {
+    "selected_plies": [
+      46,
+      74,
+      38,
+      28,
+      56,
+      42,
+      116,
+      100
+    ],
+    "split": "train"
+  },
+  "d4705a7bf59d57f4dd5cb5cd8319d5fa2c8eb44337b0c2757cdaa224af4621ae": {
+    "selected_plies": [
+      35,
+      75,
+      43,
+      45,
+      49,
+      73,
+      87,
+      47
+    ],
+    "split": "test"
+  },
+  "d5835f105524af8ac7d5047a6cac0a55c084c4a20c913495bba653b87cab8927": {
+    "selected_plies": [
+      21,
+      117,
+      121,
+      37,
+      115,
+      41,
+      73,
+      49
+    ],
+    "split": "train"
+  },
+  "d5ebfae8a1d69d423c994e157ee435aa77d2b1ace5d750a151dce24b11e25f59": {
+    "selected_plies": [
+      84,
+      98,
+      26,
+      38,
+      68,
+      46,
+      36,
+      22
+    ],
+    "split": "train"
+  },
+  "d6f07375caf89c25b8f400152c206c9ec3060d498265464e8c198e7d00d414c5": {
+    "selected_plies": [
+      74,
+      24,
+      8,
+      30,
+      60,
+      46,
+      4,
+      34
+    ],
+    "split": "train"
+  },
+  "d72c7b13b71c36625d5edddf3253cd987df0b5676acf621913287bde1e10fe59": {
+    "selected_plies": [
+      84,
+      134,
+      80,
+      82,
+      18,
+      120,
+      52,
+      42
+    ],
+    "split": "train"
+  },
+  "d76e19e0323426e6fdb59ab303b66aa1f70c3ddfd4c875e05ddadbca4b47f2e3": {
+    "selected_plies": [
+      89,
+      25,
+      83,
+      13,
+      65,
+      101,
+      23,
+      15
+    ],
+    "split": "train"
+  },
+  "d90b6b14f796a7e237158f0a6cc9e513c2196b4736d52645a5959eef8b072284": {
+    "selected_plies": [
+      92,
+      24,
+      56,
+      4,
+      28,
+      72,
+      100
+    ],
+    "split": "validation"
+  },
+  "d94af0b5c798adf9fdee2a974305208ed175fbab749a757a067d03966f4d0fdd": {
+    "selected_plies": [
+      87,
+      19,
+      95,
+      17,
+      23,
+      101,
+      39,
+      67
+    ],
+    "split": "train"
+  },
+  "d9f852e441a97d479212cdd155fa4953e8da3a800df6efdcb913cb8ec042e3ae": {
+    "selected_plies": [
+      47,
+      45,
+      59,
+      17,
+      27,
+      55,
+      35,
+      3
+    ],
+    "split": "train"
+  },
+  "da6a133a93ecec3a26e5713bfaff49a3092bcc3dc14f36486cbb8066296b600b": {
+    "selected_plies": [
+      52,
+      60,
+      24,
+      96,
+      130,
+      82,
+      146,
+      138
+    ],
+    "split": "train"
+  },
+  "da7cc9396dd9377e5e1927ce2f29c55ff59ac57007b567b1af939b7dbee8ef6c": {
+    "selected_plies": [
+      21,
+      19,
+      41,
+      93,
+      75,
+      29,
+      103,
+      81
+    ],
+    "split": "train"
+  },
+  "dac4974d059cdfb0e672f3124fdc5e46abca71b998d725b88446b2d2675d6333": {
+    "selected_plies": [
+      68,
+      10,
+      114,
+      98,
+      94,
+      8
+    ],
+    "split": "validation"
+  },
+  "dafe3d853dec079457376fc5b9afd30bcae38c0ae1497b11e815f745dec5b6f1": {
+    "selected_plies": [
+      9,
+      49,
+      117,
+      83,
+      29,
+      149,
+      93
+    ],
+    "split": "validation"
+  },
+  "dbc380bed98e4ac25b309d98cd5d5052670078245e9dc9b0a50c5726ae28ccbb": {
+    "selected_plies": [
+      68,
+      42,
+      80,
+      20,
+      114,
+      44,
+      82,
+      96
+    ],
+    "split": "validation"
+  },
+  "dbdcfd3759a8fd77c14332fc8bd3a74414dd307c885c7e91b26c97dc7f05afb5": {
+    "selected_plies": [
+      67,
+      19,
+      65,
+      15,
+      39,
+      41,
+      51,
+      63
+    ],
+    "split": "train"
+  },
+  "dd0f1fd72c9b4ef9fe6cc86b13aeceade84ae871d91909bc098f3f7055b82cb2": {
+    "selected_plies": [
+      4,
+      6,
+      8,
+      26,
+      20,
+      2,
+      28,
+      22
+    ],
+    "split": "train"
+  },
+  "dd2afce1a4bd8c802f87f0249bd6123b94487ee78e56db080fb337028be25ece": {
+    "selected_plies": [
+      87,
+      67,
+      55,
+      83,
+      31,
+      47
+    ],
+    "split": "test"
+  },
+  "ddae7e6dfd3cc8bb741603e163f3d9b51a613b3089f7098bb8db2c716b5c4fb7": {
+    "selected_plies": [
+      48,
+      56,
+      4,
+      24,
+      50
+    ],
+    "split": "train"
+  },
+  "dead53ee3dbdb1b87f5b7bf91ac7fc7f488afd1a4f5468644e025e8fed867853": {
+    "selected_plies": [
+      19,
+      77,
+      57,
+      21,
+      53,
+      67,
+      75,
+      55
+    ],
+    "split": "train"
+  },
+  "df7014fcf5f31fb12bd5d20481bd0ccd19c2ef777c5d4cbe6b77d2593b41c6cf": {
+    "selected_plies": [
+      29,
+      43,
+      49,
+      99,
+      33,
+      95,
+      79,
+      27
+    ],
+    "split": "validation"
+  },
+  "df7a0350134a794e4494cdac9df10258fca544c6e75492b17a7f7f375c4165e5": {
+    "selected_plies": [
+      12,
+      70,
+      48,
+      8,
+      50,
+      30,
+      18,
+      74
+    ],
+    "split": "train"
+  },
+  "dfba13fdaf003ade3d4efbf14c0842e9899cced739ce05052d927f26f35ffc50": {
+    "selected_plies": [
+      9,
+      115,
+      91,
+      35,
+      87,
+      105,
+      55,
+      111
+    ],
+    "split": "validation"
+  },
+  "dfe8e58aef17c03a751475c70b88d3fb7c82063464c91a38ac05de5a98b74cf4": {
+    "selected_plies": [
+      37,
+      69,
+      41,
+      97,
+      15,
+      101,
+      21,
+      93
+    ],
+    "split": "validation"
+  },
+  "e10590db8054a98a667931e00d5087488ce5e56ac7eed7ab85107f6762deed44": {
+    "selected_plies": [
+      105,
+      5,
+      85,
+      23,
+      19,
+      97,
+      41,
+      61
+    ],
+    "split": "train"
+  },
+  "e1d9b24b4eebe2cd715a5cb4748c8345dfeb368f9f34798db0c4c6a47dfdb6fc": {
+    "selected_plies": [
+      37,
+      27,
+      9,
+      45,
+      67,
+      55,
+      31,
+      71
+    ],
+    "split": "train"
+  },
+  "e22962e482a9de800664364efc2e4ae7a26991f4e32aa10054e30480ff9e9f52": {
+    "selected_plies": [
+      24,
+      20,
+      26,
+      6
+    ],
+    "split": "train"
+  },
+  "e28a1eb11ec6bbc4e8fe9ba1ab064fa2f231192d9053bccba5c8135b5fea845e": {
+    "selected_plies": [
+      49,
+      33,
+      79,
+      65,
+      37,
+      15,
+      45,
+      61
+    ],
+    "split": "train"
+  },
+  "e393f894bfd12ac87fff561482057f9cedee22d792ceae5d97f3fb3aa5bd5fcc": {
+    "selected_plies": [
+      67,
+      31,
+      83,
+      127,
+      149,
+      111,
+      79,
+      53
+    ],
+    "split": "train"
+  },
+  "e4122980ccb8249a9d0ff472458ac9946148f828d08d6292b3d655972457d4ce": {
+    "selected_plies": [
+      23,
+      25,
+      27,
+      71,
+      75,
+      33,
+      13,
+      57
+    ],
+    "split": "train"
+  },
+  "e48c3fab8d680c780db527e3f646582341a68d2c9b22599cc2f85ce1a1d7a1ad": {
+    "selected_plies": [
+      16,
+      26,
+      4,
+      6,
+      8,
+      18,
+      12,
+      30
+    ],
+    "split": "test"
+  },
+  "e5f458bffe2b0fbd36b5b9f2ed15c100f63843f79e5f80061494991fc0295b4e": {
+    "selected_plies": [
+      29,
+      15,
+      31,
+      71,
+      51,
+      57,
+      49,
+      17
+    ],
+    "split": "train"
+  },
+  "e79cae4e6aef4886e526a35babb4dc539a0e500d28a083dab3f8521d32b8e185": {
+    "selected_plies": [
+      14,
+      90,
+      78,
+      112,
+      106,
+      92,
+      108,
+      30
+    ],
+    "split": "train"
+  },
+  "e7f5a888a6b2da293daff135cfe90b569ecaaf1be373d428bdecf86b8e5512ea": {
+    "selected_plies": [
+      69,
+      15,
+      109,
+      53,
+      105,
+      83,
+      35,
+      25
+    ],
+    "split": "train"
+  },
+  "e892743477c98513f15f8c64779897ff3a1323ed9424145568a2a9d416bb13ac": {
+    "selected_plies": [
+      72,
+      26,
+      98,
+      6,
+      116,
+      40,
+      10,
+      92
+    ],
+    "split": "train"
+  },
+  "e8da4428e33030857bce4d4ab412d34c1e2c449fdefd2152e2d783de17461722": {
+    "selected_plies": [
+      41,
+      15,
+      51,
+      49
+    ],
+    "split": "train"
+  },
+  "e93a330d1f26a9586f1127944192efd2ccec381a735ae0b72e3f775d667bbbdf": {
+    "selected_plies": [
+      65,
+      33,
+      31,
+      53
+    ],
+    "split": "test"
+  },
+  "e9ca91f22b82a19c3ea9a0430979488081e8e6eb55d711c49b7fd07ffbd65143": {
+    "selected_plies": [
+      128,
+      76,
+      86,
+      162,
+      102,
+      136,
+      134,
+      52
+    ],
+    "split": "train"
+  },
+  "ea27e143624f1d50d7a22770271eff3da0461b928b245e7226c1bbd09997b5a6": {
+    "selected_plies": [
+      46,
+      56,
+      14,
+      62,
+      38,
+      52,
+      58,
+      54
+    ],
+    "split": "train"
+  },
+  "ea664b78ca3b07b43628c13035532153ac3d83d76a785d8d114f14e6b1e900fc": {
+    "selected_plies": [
+      131,
+      13,
+      79,
+      59,
+      21,
+      15,
+      109,
+      95
+    ],
+    "split": "train"
+  },
+  "ea88a2c2db8b3e6d70cab6b6f3f4c495939743aa60645c2a887ef8729e40cf1e": {
+    "selected_plies": [
+      28,
+      56,
+      54,
+      80,
+      76,
+      16,
+      72,
+      60
+    ],
+    "split": "train"
+  },
+  "eade74b8052753c5a131d57c0179cb36d634295b54ada87ec69b318089980137": {
+    "selected_plies": [
+      59,
+      61,
+      65,
+      15,
+      71,
+      37,
+      105,
+      35
+    ],
+    "split": "train"
+  },
+  "eb4cc0cb8083aa4ab2df5e0eb7f2876c7c9abe08be78a22ad84c6e473374dc35": {
+    "selected_plies": [
+      38,
+      58,
+      80,
+      86,
+      62,
+      26,
+      98,
+      60
+    ],
+    "split": "train"
+  },
+  "eb65b027a98a80bb4564222d3d9a249eb044da1304509c54a8f7e2e3adc6fc27": {
+    "selected_plies": [
+      70,
+      34,
+      38,
+      42,
+      36,
+      82,
+      48,
+      40
+    ],
+    "split": "test"
+  },
+  "ebb752a7dd0e8456440cb3279da193c320e1d5a72447677798c82f1e8a9e1ab8": {
+    "selected_plies": [
+      113,
+      15,
+      117,
+      83,
+      65,
+      67,
+      103,
+      81
+    ],
+    "split": "train"
+  },
+  "ecdcf974ab676be3f547a595ad7213970c7bd9401c753c205d8f98a10e84e793": {
+    "selected_plies": [
+      33,
+      27,
+      51,
+      21,
+      75,
+      15,
+      63,
+      29
+    ],
+    "split": "train"
+  },
+  "edbf6b26f559d36eb39a90651178eb5bcba4f27630f2acf38a25354dd9c34301": {
+    "selected_plies": [
+      16,
+      42,
+      32,
+      14,
+      18,
+      56,
+      76
+    ],
+    "split": "test"
+  },
+  "ee1aeca68345f32d07e1c4afaa906b40c5588235a101b276251b038b0b24b894": {
+    "selected_plies": [
+      98,
+      166,
+      22,
+      54,
+      72,
+      114,
+      60,
+      40
+    ],
+    "split": "train"
+  },
+  "eec621fbab72e27592092b2d688fc6d2668667c47b8e263726d276b0f73e1f34": {
+    "selected_plies": [
+      49,
+      29,
+      65,
+      13,
+      61,
+      33,
+      25
+    ],
+    "split": "train"
+  },
+  "eeedfa6b2a8a6bc5295b76bba2c1d1aa6aac9fa773888e7da5bf264285ccb62e": {
+    "selected_plies": [
+      23,
+      83,
+      27,
+      141,
+      119,
+      3,
+      57,
+      99
+    ],
+    "split": "train"
+  },
+  "f016f5b66690303a2dd00fa97b1c01232f4e9455e1371c7e7357b5e760b1fbf5": {
+    "selected_plies": [
+      83,
+      9,
+      67,
+      11,
+      137,
+      105,
+      51,
+      125
+    ],
+    "split": "train"
+  },
+  "f058d5169bf42d33724a03533fe6283a97bc2b107891612aceee270c6d200e61": {
+    "selected_plies": [
+      100,
+      4,
+      36,
+      72,
+      94,
+      24,
+      84,
+      32
+    ],
+    "split": "train"
+  },
+  "f0667d28c3b79efe27fd9d927e91e32138c146fac594d6287cc56bce33cdbb1a": {
+    "selected_plies": [
+      4,
+      12,
+      36,
+      20,
+      42,
+      2,
+      32,
+      28
+    ],
+    "split": "train"
+  },
+  "f149aeb77f6a2642eef83a08e7ea6ad30a08e6275722b9ac1ea45b8d9cd26abe": {
+    "selected_plies": [
+      71,
+      23,
+      47,
+      213,
+      25,
+      59,
+      63,
+      185
+    ],
+    "split": "train"
+  },
+  "f18f87b7d2fd770af697e806da28941c650562b2be407cf64c348930e126152c": {
+    "selected_plies": [
+      48,
+      16,
+      60,
+      64,
+      46,
+      70,
+      32,
+      90
+    ],
+    "split": "train"
+  },
+  "f23cdd04b7aaf8ac1a8702c572a4f5dd46a5ccff524897ff9508c476214f86fd": {
+    "selected_plies": [
+      15,
+      95,
+      23,
+      71,
+      27,
+      133,
+      49,
+      137
+    ],
+    "split": "train"
+  },
+  "f2d0dc3e60bcc2b571ebbe12bffcebe2a5d52ae2d5a3ec10f94cdf45b11d62df": {
+    "selected_plies": [
+      147,
+      51,
+      41,
+      47,
+      93,
+      77,
+      11,
+      113
+    ],
+    "split": "train"
+  },
+  "f366ea163efeddada3afe31edf0a9ec9475525c629a1f5206135281ed359394f": {
+    "selected_plies": [
+      37,
+      31,
+      61,
+      99,
+      85,
+      63,
+      27,
+      9
+    ],
+    "split": "test"
+  },
+  "f4b3c59d16feda349e9db614c095169928ac6a3ff1afbc577b3147e831fae21f": {
+    "selected_plies": [
+      77,
+      105,
+      125,
+      71,
+      113,
+      95,
+      97,
+      45
+    ],
+    "split": "train"
+  },
+  "f4f5284e750e4bb417b6da6deef5f841c868abfe087ddf2ca98451ecc516e88b": {
+    "selected_plies": [
+      11,
+      55,
+      81,
+      67,
+      53,
+      73,
+      43,
+      13
+    ],
+    "split": "train"
+  },
+  "f5589074d509d6f3d55ed3ee96929018e91814288d257d7aa07a8dc9143f3bdd": {
+    "selected_plies": [
+      78,
+      60,
+      16,
+      34,
+      14,
+      48,
+      2
+    ],
+    "split": "train"
+  },
+  "f5b6149a4a9a6d8057c816e924e6fe8a64afa694cf2f5a1b991343254bf13879": {
+    "selected_plies": [
+      38,
+      26,
+      12,
+      14,
+      78,
+      56,
+      10,
+      42
+    ],
+    "split": "train"
+  },
+  "f62bc6706eab98445ce6e528923e3b50e202b0f6fffe945e9ca6637409e109cd": {
+    "selected_plies": [
+      10,
+      56,
+      104,
+      106,
+      16,
+      58,
+      48,
+      14
+    ],
+    "split": "validation"
+  },
+  "f65cd2c784edcde50b475f1ba175ce9880a27d2a6cb448b31a99f3d640230a23": {
+    "selected_plies": [
+      70,
+      62,
+      78,
+      54,
+      66,
+      2,
+      90,
+      58
+    ],
+    "split": "train"
+  },
+  "f677a9c1b8d315d6dd10c506dade04374211f79d7cbc18e77f55114929b8f6ba": {
+    "selected_plies": [
+      94,
+      56,
+      48,
+      12,
+      96,
+      10
+    ],
+    "split": "validation"
+  },
+  "f6c5440966ec5b6dee85aadca4c2e50b1f05888b791b180bd34ab7902d149362": {
+    "selected_plies": [
+      14,
+      52,
+      12,
+      22,
+      42,
+      18,
+      20,
+      38
+    ],
+    "split": "train"
+  },
+  "f72df158f2eebacaa50ff6155c464938cc5e18edb0727263e0e78c590572b650": {
+    "selected_plies": [
+      94,
+      68,
+      54,
+      124,
+      166,
+      128,
+      164,
+      10
+    ],
+    "split": "train"
+  },
+  "f75e1278b9e70dcd361472978d75bbce1b356ce8ee32cd0d87a0bd6a5843c18b": {
+    "selected_plies": [
+      22,
+      118,
+      72,
+      76,
+      60,
+      4,
+      104,
+      108
+    ],
+    "split": "train"
+  },
+  "f7a7fa072f3ef2adb518c5baa7dfa22f3cef7c577ca0fd72c11dd9fe113b8e9e": {
+    "selected_plies": [
+      5,
+      11,
+      3,
+      15,
+      27,
+      23,
+      21,
+      31
+    ],
+    "split": "validation"
+  },
+  "f7f8e93716705f72a89474afd577a76029e34c3533d3c665d0901221d45748b8": {
+    "selected_plies": [
+      15,
+      93,
+      87,
+      49,
+      83,
+      117,
+      91,
+      19
+    ],
+    "split": "validation"
+  },
+  "f8a2f13255739e98a833ec0e1c9b30a040b24fba9fc8a3f85594b2a5c1b76598": {
+    "selected_plies": [
+      71,
+      59,
+      81,
+      47,
+      63,
+      49,
+      19,
+      13
+    ],
+    "split": "train"
+  },
+  "f8b07765e1db201eb00e42d0625f87a82d06e4fa5382acbb17af80bad58aeda2": {
+    "selected_plies": [
+      18,
+      88,
+      98,
+      28,
+      74,
+      100,
+      122,
+      6
+    ],
+    "split": "train"
+  },
+  "fa2aa19b99444220271d0d6a3e14bb731c8c7dbf4f52ec27566ed58b34c98d35": {
+    "selected_plies": [
+      93,
+      113,
+      7,
+      37,
+      67,
+      45,
+      33
+    ],
+    "split": "validation"
+  },
+  "fbd60c8962552f9b3b423ec3c88cccccb252d8dd8d36f6a24e3ce597e940a3cf": {
+    "selected_plies": [
+      83,
+      75,
+      23,
+      91,
+      81,
+      51,
+      101,
+      95
+    ],
+    "split": "train"
+  },
+  "fbd9fc89600a983663f5d3e29683124e7663849d97c25287b85180e4077f2f76": {
+    "selected_plies": [
+      30,
+      32,
+      22,
+      152,
+      58,
+      140,
+      8,
+      78
+    ],
+    "split": "validation"
+  },
+  "fc0125fa202e14fdfadce5dc661131ca1739aea7deaae490da4282df95d4a7b1": {
+    "selected_plies": [
+      74,
+      66,
+      32,
+      16,
+      46,
+      138,
+      24,
+      52
+    ],
+    "split": "test"
+  },
+  "fdb1ba502e3938de5ccbd8de15a5db08a5713a6c5203aea87f833bb43aa4987b": {
+    "selected_plies": [
+      56,
+      42,
+      52,
+      78,
+      28,
+      50,
+      2,
+      74
+    ],
+    "split": "train"
+  },
+  "fdd3a607fa133e30d4b98a2898d61054a5ff05139116bfdb632503b357bc0c60": {
+    "selected_plies": [
+      92,
+      86,
+      66,
+      44,
+      10,
+      48,
+      38,
+      26
+    ],
+    "split": "train"
+  },
+  "ff814d42e7b81bb170dcf906170b8a3bcd3b89a28a990199bda4cb3daad9a83c": {
+    "selected_plies": [
+      72,
+      56,
+      82,
+      100,
+      16,
+      58,
+      102,
+      20
+    ],
+    "split": "train"
+  },
+  "ffaa5a58ec7036a8efe9571f6578535fa8d346230eca40c4d7c10ababa4b00ec": {
+    "selected_plies": [
+      19,
+      45,
+      61,
+      39,
+      7,
+      21,
+      35
+    ],
+    "split": "train"
+  },
+  "ffeb756aef360c0b599060d7230fc96247a84c8ebaff636ed8acfaa663f0ad7f": {
+    "selected_plies": [
+      67,
+      5,
+      15,
+      17,
+      59,
+      73,
+      23,
+      75
+    ],
+    "split": "test"
+  }
+}

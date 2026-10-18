@@ -2,8 +2,8 @@ name: Postgame Automatic Spiral
 run-name: "Spiral ${{ inputs.cycle_id || 'launcher' }}"
 on:
   push:
-    branches: [main]
-    paths: [".github/postgame-spiral-request.json"]
+    branches: [main, research/order-learning-20261018]
+    paths: [".github/postgame-spiral-request.json", ".github/selfplay-order-request.json"]
   pull_request:
     paths:
       - "tools/research/postgame_*.py"
@@ -34,6 +34,10 @@ on:
         description: Immutable commit containing research/postgame-cycles/CYCLE/PLAN.json
         type: string
         required: true
+      order_only:
+        description: Frozen selfplay order model comparisons and research-parent inheritance
+        type: boolean
+        default: false
       publication_only:
         description: Publish and verify the saved eight-case follow-up only (no analysis or games)
         type: boolean
@@ -100,9 +104,14 @@ jobs:
       - run: python3 -m pip install python-shogi==1.1.1
       - name: Dispatch explicit manual controller entry
         env: {GH_TOKEN: "${{ github.token }}"}
-        run: python3 .github/scripts/run_postgame_spiral.py --launch
+        run: |
+          if [ "$GITHUB_REF_NAME" = "research/order-learning-20261018" ]; then
+            python3 .github/scripts/run_selfplay_order.py --launch
+          else
+            python3 .github/scripts/run_postgame_spiral.py --launch
+          fi
   control:
-    if: github.event_name == 'workflow_dispatch' && !inputs.inspect_only && !inputs.publication_only && !inputs.practice_only
+    if: github.event_name == 'workflow_dispatch' && !inputs.order_only && !inputs.inspect_only && !inputs.publication_only && !inputs.practice_only
     runs-on: ubuntu-latest
     timeout-minutes: 360
     permissions: {contents: write, actions: write}
@@ -130,7 +139,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 90
   inspect:
-    if: github.event_name == 'workflow_dispatch' && inputs.inspect_only && !inputs.publication_only && !inputs.practice_only
+    if: github.event_name == 'workflow_dispatch' && !inputs.order_only && inputs.inspect_only && !inputs.publication_only && !inputs.practice_only
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions: {contents: read, actions: read}
@@ -153,7 +162,7 @@ jobs:
           retention-days: 90
 
   publish-followup:
-    if: github.event_name == 'workflow_dispatch' && inputs.publication_only && !inputs.inspect_only && !inputs.practice_only
+    if: github.event_name == 'workflow_dispatch' && !inputs.order_only && inputs.publication_only && !inputs.inspect_only && !inputs.practice_only
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions: {contents: write}
@@ -175,7 +184,7 @@ jobs:
           if-no-files-found: error
 
   practice:
-    if: github.event_name == 'workflow_dispatch' && inputs.practice_only && !inputs.inspect_only && !inputs.publication_only && !inputs.repair
+    if: github.event_name == 'workflow_dispatch' && !inputs.order_only && inputs.practice_only && !inputs.inspect_only && !inputs.publication_only && !inputs.repair
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions: {contents: write, actions: read}
@@ -197,3 +206,33 @@ jobs:
           path: build/practice-trial
           retention-days: 90
           if-no-files-found: ignore
+
+  selfplay-order:
+    if: github.event_name == 'workflow_dispatch' && inputs.order_only
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    permissions: {contents: write, actions: write}
+    steps:
+      - uses: actions/checkout@v5
+        with: {ref: '${{ inputs.plan_ref }}'}
+      - run: python3 -m pip install python-shogi==1.1.1
+      - run: python3 scripts/check_workflow_inventory.py --strict && python3 scripts/check_match_workflows.py
+      - name: Compare frozen learned prior and inherit only a confirmed research parent
+        env:
+          GH_TOKEN: '${{ github.token }}'
+          PLAN_REF: '${{ inputs.plan_ref }}'
+        run: python3 .github/scripts/run_selfplay_order.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: selfplay-order-cycle-${{ github.run_id }}
+          path: |
+            build/order-cycle/final-publication.json
+            build/order-cycle/result.json
+            build/order-cycle/research-parent.json
+            build/order-cycle/*/request.json
+            build/order-cycle/*/dispatch.json
+            build/order-cycle/*/audit.json
+            build/order-cycle/*/publication.json
+          retention-days: 90
+          if-no-files-found: error

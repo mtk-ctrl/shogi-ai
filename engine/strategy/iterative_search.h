@@ -86,6 +86,7 @@ public:
         std::uint64_t legal_cache_replacements = 0;
         std::uint64_t pvs_probes = 0, pvs_researches = 0;
         std::uint64_t killer_priorities = 0, history_priorities = 0, ordering_updates = 0;
+        std::uint64_t selfplay_order_calls = 0, selfplay_order_moves = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -197,6 +198,8 @@ public:
     unsigned threads() const { return threads_; }
     void set_probe_mask(unsigned mask) { probe_mask_ = mask & 7u; }
     unsigned probe_mask() const { return probe_mask_; }
+    void set_selfplay_order(int scale) { selfplay_order_scale_ = std::clamp(scale,0,200); }
+    int selfplay_order_scale() const { return selfplay_order_scale_; }
 
     SearchResult choose(rules::Position& position, int max_depth, SearchControl& control,
                         const std::vector<std::string>& allowed = {},
@@ -375,6 +378,7 @@ private:
         SUM_STAT(legal_cache_replacements);
         SUM_STAT(pvs_probes);SUM_STAT(pvs_researches);SUM_STAT(killer_priorities);
         SUM_STAT(history_priorities);SUM_STAT(ordering_updates);
+        SUM_STAT(selfplay_order_calls);SUM_STAT(selfplay_order_moves);
 #undef SUM_STAT
         for(int i=0;i<4;++i)out.nodes_by_ply[i]=a.nodes_by_ply[i]+b.nodes_by_ply[i];
         out.seldepth=std::max(a.seldepth,b.seldepth);
@@ -400,6 +404,7 @@ private:
             lane.set_reuse_mask(reuse_mask_);lane.set_next_mask(next_mask_);
             lane.set_risk_verify(risk_verify_enabled_);
             lane.set_probe_mask(probe_mask_);
+            lane.set_selfplay_order(selfplay_order_scale_);
             lane.set_quiescence_enabled(quiescence_enabled_);
             lane.set_threads(1);
             lane.position_knowledge_=position_knowledge_;lane.position_knowledge_enabled_=position_knowledge_enabled_;
@@ -997,9 +1002,12 @@ private:
                     ++stats_.ordering_rule_checks;
                 }
             }
+            if (selfplay_order_scale_ && SelfplayOrderReady) {
+                ++stats_.selfplay_order_calls; stats_.selfplay_order_moves += moves.size();
+            }
             return MoveOrder::order(p.snapshot(), moves,
                 checks.empty() ? nullptr : &checks, efficiency_mask_ & OrderingWorkspace,
-                (next_mask_ & 4) ? 2 : ((next_mask_ & 2) ? 1 : 0), (reuse_mask_ & 8) != 0);
+                (next_mask_ & 4) ? 2 : ((next_mask_ & 2) ? 1 : 0), (reuse_mask_ & 8) != 0, selfplay_order_scale_);
         };
         if (research_mask_ & OrderReuse) {
             const auto key = p.hash_key();
@@ -1061,6 +1069,7 @@ private:
     unsigned reuse_mask_ = DefaultSearchReuseMask;
     unsigned threads_=2;
     unsigned probe_mask_=DefaultSearchProbeMask;
+    int selfplay_order_scale_=0;
     std::array<std::array<std::string, 2>, MaxPly + 1> killers_{};
     std::array<std::array<int, 88 * 81>, 2> history_scores_{};
     bool capture_root_ties_=false;
