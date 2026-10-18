@@ -125,6 +125,7 @@ jobs:
           path: |
             build/postgame-spiral/report.json
             build/postgame-spiral/latest-state.json
+            build/postgame-spiral/practice-*/
           if-no-files-found: ignore
           retention-days: 90
   inspect:

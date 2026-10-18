@@ -32,14 +32,18 @@ def inspect(backend,env):
     require(plan['algorithm_sha256']==algorithm_hash(),'frozen learning/gate code differs')
     raw=api(f"repos/{backend.repo}/contents/research/postgame-cycles/{plan['cycle_id']}/PLAN.json?ref={env['plan_ref']}")
     require(json.loads(base64.b64decode(raw['content']))==plan,'immutable original plan differs from saved policy')
-    previous={};reports=[];state=core.start(plan)
+    previous={};previous_cases=[];reports=[];state=core.start(plan)
     source_publication=plan.get('source_publication');preparation_publication=None;parent_knowledge_publication=None;knowledge_candidate=None
+    if plan.get('training_history'):
+        from tools.research.postgame_practice_cycle import training_history
+        spec=plan['training_history'];previous['split_registry']=training_history(backend.unpack(spec['publication']),spec,state['parent'])
     prior=set(backend.reference_index(plan))
     if plan.get('predecessor_checkpoint'):
         ancestor=json.loads(backend.bytes(plan['predecessor_checkpoint']).read_bytes())
         prior.update(ancestor['prior_signatures'])
         old=backend.unpack(ancestor['preparation_publication'])
         previous=json.loads((old/'preparation.json').read_bytes())
+        if (old/'eligible-cases.json').exists():previous_cases=json.loads((old/'eligible-cases.json').read_bytes())
         parent_knowledge_publication=ancestor.get('parent_knowledge_publication')
     for record in saved['history']:
         pub=record['publication'];folder=backend.unpack(pub)
@@ -164,7 +168,31 @@ def inspect(backend,env):
                     plan['horizon_selection'],knowledge)
                 require(prep['split_registry']==oldprep['split_registry'] and prep['example_bank']==oldprep['example_bank'],
                         'horizon split/exposure or old examples changed')
+            if 'practice_cycle_policy' in plan:
+                from tools.research.postgame_practice_cycle import make_offer
+                name='effective-diagnosis.json' if (folder/'effective-diagnosis.json').exists() else 'analysis/diagnosis.json'
+                diagnosis=json.loads((folder/name).read_bytes())
+                offer=make_offer(prep,diagnosis,state['parent'],plan['seeds'][state['generation']-1]['practice'],
+                                 state.get('practice_ledger',[]),state.get('prior_practice_ids',[]))
+                require(offer==result['practice_offer']==json.loads((folder/'practice-offer.json').read_bytes()),
+                        'practice offer selection does not reproduce')
+                evidence['practice_offer']=offer
             previous=prep
+            previous_cases=json.loads((folder/'eligible-cases.json').read_bytes()) if (folder/'eligible-cases.json').exists() else []
+        elif stage=='practice':
+            from tools.research.postgame_practice_cycle import verify_package
+            source=backend.unpack(source_publication);offer=state['practice_offer']
+            require(sha256((source/'build/engine-a').read_bytes())==offer['plan']['binary_sha256'],
+                    'practice original binary changed')
+            verification=verify_package(folder,offer,previous,load_archive(source/'played-archive'),
+                                        source/'build/position-knowledge-v1.tsv',result,previous_cases)
+            evidence.update(practice=result['practice'],preparation=result['preparation'],knowledge_stage=result['knowledge_stage'])
+            report.update(practice=result['practice'],practice_replay=verification)
+            prior.update(result['practice']['trajectory_signatures'])
+            if result['preparation'] is not None:
+                previous=result['preparation'];knowledge_candidate=result['knowledge_stage']
+                previous_cases=json.loads((folder/'eligible-cases.json').read_bytes())
+                preparation_publication=pub
         elif stage=='preflight':
             evidence.update(candidate=binding['inputs']['candidate'],preflight=result['preflight'])
             report['preflight']=result['preflight']

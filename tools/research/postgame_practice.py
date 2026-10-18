@@ -32,7 +32,7 @@ def dump(path,value):
     temporary.write_text(json.dumps(value,ensure_ascii=False,indent=2,allow_nan=False)+'\n');temporary.replace(path)
 
 
-def create_plan(inputs,parent,seed,completed=()):
+def create_plan(inputs,parent,seed,completed=(),for_cycle=False):
     """Select once from original observations, before any new practice results."""
     require(type(seed) is int and 1<=seed<=2_100_000_000,'bounded practice seed required')
     candidates=[];excluded=[];seen=set();last=None
@@ -41,7 +41,7 @@ def create_plan(inputs,parent,seed,completed=()):
         require(preparation['progress']['analysis']['analyzer_binary_sha256']==inputs[0][0]['progress']['analysis']['analyzer_binary_sha256'],
                 'practice inputs need the same archived analyzer')
         last=preparation
-        for task,row in tasks_from(preparation,diagnosis,parent):
+        for task,row in tasks_from(preparation,diagnosis,parent,for_practice=for_cycle):
             require(task['task_id'] not in seen,'duplicate practice input task');seen.add(task['task_id'])
             base=dict(task_id=task['task_id'],case_id=task['case']['case_id'])
             if task['kind']=='verify_mate_research':
@@ -348,7 +348,7 @@ def learning_inputs(plan,report,directory):
                 limitation='Descendants of existing training groups; not new independent games/groups or strength evidence.')
 
 
-def prepare_candidates(plan,report,directory,binary,knowledge,previous):
+def prepare_candidates(plan,report,directory,binary,knowledge,previous,evaluation_enabled=True):
     """Feed verified practice positions through existing diagnosis and gates."""
     from tools.research.postgame_analyze import run_analysis
     from tools.research.postgame_progress import describe
@@ -362,6 +362,7 @@ def prepare_candidates(plan,report,directory,binary,knowledge,previous):
     summary=run_analysis([directory/'played-archive'],binary,knowledge,output/'analysis',params,
                          expected_knowledge_sha256=plan['parent']['knowledge_sha256'],selection=transfer['selection'])
     diagnosis=json.loads((output/'analysis/diagnosis.json').read_bytes());observations=dict(parent_probes={},static={})
+    if not evaluation_enabled:observations['evaluation_enabled']=False
     def probe(case):
         result=[]
         for _ in range(2):
@@ -374,7 +375,8 @@ def prepare_candidates(plan,report,directory,binary,knowledge,previous):
         terms=engine.static(sfen);observations['static'][sfen]=terms;return terms
     try:
         prepared=prepare(diagnosis,probe,static,'spiral-bridge-20261017-v1',registry=transfer['split_registry'],
-            parent_options=params,example_bank=previous['example_bank'],parent_context=plan['parent'],track_decisions=True)
+            parent_options=params,example_bank=previous['example_bank'],parent_context=plan['parent'],track_decisions=True,
+            evaluation_enabled=evaluation_enabled)
     finally:engine.close()
     prepared['progress']=describe(prepared,summary,diagnosis,plan['parent'])
     dump(output/'preparation.json',prepared);dump(output/'prepare-observations.json',observations)
@@ -429,7 +431,7 @@ def verify_handoff(plan,report,directory,previous,base_file):
     def probe(case):return obs['parent_probes'][case['case_id']]
     result=prepare(diagnosis,probe,lambda s:obs['static'][s],'spiral-bridge-20261017-v1',
         registry=transfer['split_registry'],parent_options=plan['parent_options'],example_bank=previous['example_bank'],
-        parent_context=plan['parent'],track_decisions=True)
+        parent_context=plan['parent'],track_decisions=True,evaluation_enabled=obs.get('evaluation_enabled',True))
     from tools.research.postgame_progress import describe
     result['progress']=describe(result,summary,diagnosis,plan['parent'])
     require(result==json.loads((output/'preparation.json').read_bytes()),'practice learning preparation did not reproduce')

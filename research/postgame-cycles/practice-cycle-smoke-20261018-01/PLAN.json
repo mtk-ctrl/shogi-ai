@@ -1,0 +1,216 @@
+{
+  "cycle_id": "practice-cycle-smoke-20261018-01",
+  "purpose": "integration_smoke",
+  "max_generations": 5,
+  "max_new_games": 10,
+  "source_games": 2,
+  "generate_initial_source": true,
+  "candidate_kind": "knowledge",
+  "runner_capacity": 20,
+  "learning_policy": {
+    "epochs": 100,
+    "learning_rate": 0.02,
+    "max_fraction": 0.05,
+    "pair_temperature": 150.0,
+    "reward_temperature": 600.0,
+    "reward_weight": 0.1,
+    "regularization": 0.1,
+    "min_groups": [
+      8,
+      4,
+      4
+    ],
+    "min_pairs": 32
+  },
+  "live_policy": {
+    "fixed_depth": 2,
+    "fixed_timeout_ms": 5000,
+    "probe_ms": 200,
+    "speed_cases": 16,
+    "min_depth_ratio": 0.9,
+    "tactical_cases": 12,
+    "heldout_limit": 96,
+    "trials": 1
+  },
+  "knowledge_policy": {
+    "schema": "postgame-knowledge-policy-v1",
+    "max_tasks": 8,
+    "parent_probe_ms": 200,
+    "parent_repeats": 2,
+    "fixed_depth": 2,
+    "fixed_timeout_ms": 5000,
+    "tactical_controls": 12,
+    "min_depth_ratio": 0.9
+  },
+  "knowledge_execution_policy": {
+    "schema": "postgame-knowledge-execution-v1",
+    "screen_games": 100,
+    "confirm_games": 200,
+    "require_actual_use": true,
+    "automatic_formal_adoption": false
+  },
+  "progress_policy": {
+    "schema": "postgame-progress-policy-v1",
+    "max_stagnant_preparations": 5
+  },
+  "practice_cycle_policy": {
+    "schema": "postgame-practice-cycle-policy-v1",
+    "max_roots_per_attempt": 1,
+    "max_attempts": 2,
+    "max_attempts_per_parent": 2,
+    "max_practice_games": 8,
+    "analysis_reservation_ms_per_attempt": 600000,
+    "max_analysis_reservation_ms": 1200000,
+    "practice_policy": {
+      "schema": "postgame-practice-policy-v1",
+      "max_roots": 4,
+      "max_roots_per_game": 2,
+      "max_new_plies": 16,
+      "max_selected_per_game": 2,
+      "attempts_per_parent_task": 1,
+      "scenarios": [
+        {
+          "name": "balanced",
+          "actor_ms": 50,
+          "reply_ms": 50
+        },
+        {
+          "name": "reply_deeper",
+          "actor_ms": 50,
+          "reply_ms": 200
+        }
+      ],
+      "automatic_formal_adoption": false
+    },
+    "horizon_policy": {
+      "schema": "postgame-horizon-policy-v1",
+      "max_roots": 9,
+      "parent_ms": 200,
+      "parent_repeats": 2,
+      "deeper_ms": [
+        500,
+        2000
+      ],
+      "deeper_repeats": 2,
+      "child_ms": 500,
+      "min_fixed_depth": 2,
+      "max_fixed_depth": 4,
+      "fixed_timeout_ms": 5000,
+      "fixed_repeats": 2,
+      "min_improvement_cp": 150,
+      "attempts_per_parent_root": 1,
+      "automatic_formal_adoption": false
+    },
+    "trigger": "no_candidate_after_prepare",
+    "automatic_formal_adoption": false
+  },
+  "parent": {
+    "engine_ref": "aea41f166b52b985cfe5cf40fc123520144381eb",
+    "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+    "parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591"
+  },
+  "parent_options": {
+    "EvalSafety": 480,
+    "EvalPressure": 380,
+    "EvalActivity": 410,
+    "EvalDanger": 150,
+    "EvalInfluence": 140,
+    "EvalPotential": 210,
+    "EvalCoordination": 340,
+    "EvalHandPotential": 60,
+    "EvalThreat": 20
+  },
+  "training_history": {
+    "schema": "postgame-training-history-v1",
+    "publication": {
+      "release": "records-2026-10-01",
+      "name": "postgame-practice-20261018-01-a4b409c23fe7.tgz",
+      "sha256": "32260b5c570d8c1f20058f0c66bedc21535d5a6f975ee5805d4b6f3423980641",
+      "bytes": 352760,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-practice-20261018-01-a4b409c23fe7.tgz"
+    },
+    "preparation_sha256": "aab11d235953e302231a9b7aa3975b24184a43762c26658a5553ea3ce8b3e19d",
+    "completed_practice_ids": [
+      "5a8dbb53353862a40195608916c70b3bfdbfe3a9f71b035ec770157f689d3a22",
+      "f696ef00b4b4a84f87d7b8adfabb995eef86dc17adf8555aa60a3e987e485715",
+      "eace46fa743a245a2e6be89a24a762ab0a74ba4c4f908e0b19de73e1606f7c2c",
+      "058891e2870c1db0f8816b421a5de68bb122cb9985dbd3562cf27ff534ffcc64"
+    ]
+  },
+  "seeds": [
+    {
+      "source": 451000001,
+      "screen": 453000001,
+      "confirm": 455000001,
+      "practice": 457000001
+    },
+    {
+      "source": 461000001,
+      "screen": 463000001,
+      "confirm": 465000001,
+      "practice": 467000001
+    },
+    {
+      "source": 471000001,
+      "screen": 473000001,
+      "confirm": 475000001,
+      "practice": 477000001
+    },
+    {
+      "source": 481000001,
+      "screen": 483000001,
+      "confirm": 485000001,
+      "practice": 487000001
+    },
+    {
+      "source": 491000001,
+      "screen": 493000001,
+      "confirm": 495000001,
+      "practice": 497000001
+    }
+  ],
+  "reference_publications": [
+    {
+      "release": "records-2026-10-01",
+      "name": "spiral-spiral-auto-smoke-20261017-01-initial_source-e8181c0b9aa52b1a-39021709686-a1.tgz",
+      "sha256": "8678dbf172bb5233ffe6841e10a69032d483f01740ef68b8dcf0876edaca0823",
+      "bytes": 5208460,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-spiral-auto-smoke-20261017-01-initial_source-e8181c0b9aa52b1a-39021709686-a1.tgz"
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "spiral-spiral-auto-smoke-20261017-01-collect_source-2d6bac99767cdc1a-39021709686-a1.tgz",
+      "sha256": "48c46d92e88fa0604ee796babbfeceb2ad0ce3ca41e7b6289b7fce46117b8e84",
+      "bytes": 5212920,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-spiral-auto-smoke-20261017-01-collect_source-2d6bac99767cdc1a-39021709686-a1.tgz"
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "postgame-practice-20261018-01-a4b409c23fe7.tgz",
+      "sha256": "32260b5c570d8c1f20058f0c66bedc21535d5a6f975ee5805d4b6f3423980641",
+      "bytes": 352760,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-practice-20261018-01-a4b409c23fe7.tgz"
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "spiral-horizon-return-20261018-01-screen-6b81342b8db818fe-39095228850-a1.tgz",
+      "bytes": 6016792,
+      "sha256": "7cca90ce73857410477ae15bd8315bef60732787b8be3900d54ee2c2a7479067",
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-horizon-return-20261018-01-screen-6b81342b8db818fe-39095228850-a1.tgz"
+    }
+  ],
+  "controller_sha256": "657e1a454f5a2ed3144e08c44ffb742884df1abaf0b9c4a5437b1ba86967d341",
+  "algorithm_sha256": "7b604893d46d7752717339bba459f16d2f9598e8f75114b17228f5d45f14b4de",
+  "formal_adoption": false,
+  "strength_measurement": false
+}

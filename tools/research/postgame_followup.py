@@ -20,7 +20,7 @@ POLICY_FOLLOWUP=dict(schema='postgame-followup-policy-v1',max_tasks=8,root_ms=[5
                      child_ms=500,fixed_timeout_ms=5000,max_fixed_depth=4,mate_ms=1000,attempts_per_parent_task=1)
 
 
-def tasks_from(preparation,diagnosis,parent):
+def tasks_from(preparation,diagnosis,parent,for_practice=False):
     progress=preparation['progress'];bare={k:v for k,v in preparation.items() if k!='progress'}
     require(progress==describe(bare,progress['analysis'],diagnosis,parent),'follow-up evidence/queue differs')
     params=preparation['learning']['parent_options'];parent_values(params)
@@ -30,9 +30,10 @@ def tasks_from(preparation,diagnosis,parent):
     rows={r['case']['case_id']:r for r in diagnosis};tasks=[]
     for task in progress['work_items']:
         if task['kind']=='validate_research_knowledge':continue
-        require(task['kind'] in ('verify_mate_research','repeat_missing_observation','review_search_stability',
-                                'verify_same_depth','resolve_parent_instability','extend_own_analysis'),
-                'research task needs an unimplemented representation-specific executor; do not substitute more games')
+        supported=task['kind'] in ('verify_mate_research','repeat_missing_observation','review_search_stability',
+                                  'verify_same_depth','resolve_parent_instability','extend_own_analysis')
+        if for_practice and not supported:continue  # Keep representation tasks in the original queue.
+        require(supported,'research task needs an unimplemented representation-specific executor; do not substitute more games')
         row=rows[task['case']['case_id']]
         require(task['split']=='train' and task['parent']==parent and task['case']==row['case']
                 and task['evidence']['row_sha256']==digest(row),'follow-up leaked split or changed evidence')
@@ -41,7 +42,8 @@ def tasks_from(preparation,diagnosis,parent):
         replay(case)
         require(case.get('evidence_purpose')!='synthetic_fixture','synthetic fixture is not follow-up training research')
         tasks.append((copy.deepcopy(task),copy.deepcopy(row)))
-    require(len(tasks)<=POLICY_FOLLOWUP['max_tasks'],'follow-up budget exceeded; review rather than truncate')
+    require(len(tasks)<=(96 if for_practice else POLICY_FOLLOWUP['max_tasks']),
+            'follow-up budget exceeded; review rather than truncate')
     return sorted(tasks,key=lambda pair:(pair[0]['priority'],pair[0]['task_id']))
 
 

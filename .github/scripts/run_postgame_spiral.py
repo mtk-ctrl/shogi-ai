@@ -60,7 +60,7 @@ def code_hash():
 def algorithm_hash():
     # Audit/log/publication repairs may change, but not the frozen learning,
     # split rules, candidate gates or generation/selection semantics.
-    names=('ranker','analyze','spiral','cycle','eval_preflight','runtime','candidates','cases','progress','knowledge','followup','knowledge_route','horizon')
+    names=('ranker','analyze','spiral','cycle','eval_preflight','runtime','candidates','cases','progress','knowledge','followup','knowledge_route','horizon','practice','practice_cycle')
     return digest({n:sha256((ROOT/f'tools/research/postgame_{n}.py').read_bytes()) for n in names})
 
 def safe_extract(package,dest):
@@ -111,6 +111,11 @@ def inherit_predecessor(env,previous):
                 'predecessor progress policy differs; review the saved research queue')
         for key in ('progress_history','research_followup'):
             if key in old:env['state'][key]=copy.deepcopy(old[key])
+    if 'practice_cycle_policy' in plan:
+        require(old['plan'].get('practice_cycle_policy')==plan['practice_cycle_policy'],'predecessor practice limits differ')
+        for key in ('practice_ledger','practice_used_games','practice_analysis_reserved_ms'):
+            env['state'][key]=copy.deepcopy(old[key])
+        env['state']['prior_practice_ids']=sorted(set(env['state'].get('prior_practice_ids',[]))|set(old.get('prior_practice_ids',[])))
     return env
 
 
@@ -384,7 +389,12 @@ class Backend:
         previous={};old_cases={}
         if env['preparation_publication']:
             old=self.unpack(env['preparation_publication']);previous=json.loads((old/'preparation.json').read_bytes())
-            old_cases={r['case_id']:r for r in json.loads((old/'eligible-cases.json').read_bytes())}
+            if (old/'eligible-cases.json').exists():
+                old_cases={r['case_id']:r for r in json.loads((old/'eligible-cases.json').read_bytes())}
+        elif env['state']['plan'].get('training_history'):
+            from tools.research.postgame_practice_cycle import training_history
+            spec=env['state']['plan']['training_history']
+            previous['split_registry']=training_history(self.unpack(spec['publication']),spec,env['state']['parent'])
         bank=previous.get('example_bank');invalidated=0
         if bank and bank['parent_context']!=context:
             invalidated=len(bank['examples']);bank=None;old_cases={}
@@ -446,6 +456,29 @@ class Backend:
             data['knowledge_stage']=prepare_knowledge(binary,knowledge,report,diagnosis,context,params,
                                                        env['state']['plan']['cycle_id'],folder/'knowledge-stage')
             files.update({p.relative_to(folder).as_posix():p for p in (folder/'knowledge-stage').rglob('*') if p.is_file()})
+        if 'practice_cycle_policy' in env['state']['plan']:
+            from tools.research.postgame_practice_cycle import make_offer
+            data['practice_offer']=make_offer(report,diagnosis,context,
+                env['state']['plan']['seeds'][env['state']['generation']-1]['practice'],env['state'].get('practice_ledger',[]),
+                env['state'].get('prior_practice_ids',[]))
+            dump(folder/'practice-offer.json',data['practice_offer']);files['practice-offer.json']=folder/'practice-offer.json'
+        return dict(data,publication=self.package(env,data,files))
+
+    def practice(self,env,execute=False):
+        existing=self.previous_stage(env)
+        if existing:return existing
+        require(execute,'practice execution outcome is unknown; recover saved output, never regenerate it')
+        from tools.research.postgame_practice_cycle import run as run_practice_cycle
+        from tools.research.postgame_cases import load_archive
+        offer=env['state']['practice_offer'];previous_folder=self.unpack(env['preparation_publication'])
+        previous=json.loads((previous_folder/'preparation.json').read_bytes())
+        cases=json.loads((previous_folder/'eligible-cases.json').read_bytes()) if (previous_folder/'eligible-cases.json').exists() else []
+        require(json.loads((previous_folder/'practice-offer.json').read_bytes())==offer,'practice offer differs from saved preparation')
+        source=self.unpack(env['source_publication']);binary=source/'build/engine-a';binary.chmod(0o755)
+        folder=self.folder(env)
+        data=run_practice_cycle(offer,previous,load_archive(source/'played-archive'),binary,
+             source/'build/position-knowledge-v1.tsv',env['state']['plan']['cycle_id'],folder,cases)
+        files={p.relative_to(folder).as_posix():p for p in folder.rglob('*') if p.is_file()}
         return dict(data,publication=self.package(env,data,files))
 
     def preflight(self,env):
@@ -510,7 +543,8 @@ def main():
         horizon=plan.get('knowledge_builder')=='horizon'
         require(horizon or 'progress_policy' in plan,'new cycle plans must freeze research-yield and stagnation controls')
         require('knowledge_policy' in plan,'new cycle plans must freeze research-knowledge preparation policy')
-        require(horizon or 'followup_policy' in plan,'new cycle plans must freeze bounded follow-up research policy')
+        require(horizon or 'followup_policy' in plan or 'practice_cycle_policy' in plan,
+                'new cycle plans must freeze a bounded follow-up or practice research policy')
         # New start must not overlap an already active cycle under another name.
         require(backend.load() is None,'another cycle is already active')
         env=initialize(plan,plan['parent_options'],code_hash());env['plan_ref']=ref
@@ -550,6 +584,10 @@ def main():
             report.update(progress_history=result['state'].get('progress_history',[]),
                           research_followup=result['state'].get('research_followup'),
                           strength_improvement_demonstrated=False)
+        if 'practice_cycle_policy' in result['state']['plan']:
+            report.update(practice_used_games=result['state']['practice_used_games'],
+                          practice_analysis_reserved_ms=result['state']['practice_analysis_reserved_ms'],
+                          practice_ledger=result['state']['practice_ledger'])
         dump(backend.output/'report.json',report)
         with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as out:out.write('## 自己対局の改善循環\n\n```json\n'+json.dumps(report,ensure_ascii=False,indent=2)+'\n```\n')
         print('SPIRAL_RESULT '+json.dumps(report,ensure_ascii=False),flush=True)
