@@ -1,0 +1,105 @@
+{
+  "schema": "postgame-practice-cycle-publication-v1",
+  "publications": [
+    {
+      "stage": "initial_source",
+      "release": "records-2026-10-01",
+      "name": "spiral-practice-cycle-smoke-20261018-01-initial_source-13f1a03112a6b063-39097559646-a1.tgz",
+      "sha256": "f3c54d9d0074ce854435ed573df637ddae6d2632536109c3e7fa0b7e348754bf",
+      "bytes": 5206477,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-practice-cycle-smoke-20261018-01-initial_source-13f1a03112a6b063-39097559646-a1.tgz"
+    },
+    {
+      "stage": "prepare",
+      "release": "records-2026-10-01",
+      "name": "spiral-practice-cycle-smoke-20261018-01-prepare-5015dc92c0641000-39097559646-a1.tgz",
+      "sha256": "241005ef880d576ed3b6f9e3610b6d96a39d100fe1cb63da0a2cdbed559e0784",
+      "bytes": 114809,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-practice-cycle-smoke-20261018-01-prepare-5015dc92c0641000-39097559646-a1.tgz"
+    },
+    {
+      "stage": "practice",
+      "release": "records-2026-10-01",
+      "name": "spiral-practice-cycle-smoke-20261018-01-practice-196b1a7eff9c7848-39097559646-a1.tgz",
+      "sha256": "45a14c542442a53f8c963af2928db3ced34643b8e331d9795e62efb8f4769849",
+      "bytes": 204045,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-practice-cycle-smoke-20261018-01-practice-196b1a7eff9c7848-39097559646-a1.tgz"
+    },
+    {
+      "stage": "collect_source",
+      "release": "records-2026-10-01",
+      "name": "spiral-practice-cycle-smoke-20261018-01-collect_source-6cba0aa53fd7939a-39097559646-a1.tgz",
+      "sha256": "b59f477cb7d071d0b6e69e90c064c50ea2e88c2eaf29d9520ec9bacd4955c3ae",
+      "bytes": 5216616,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-practice-cycle-smoke-20261018-01-collect_source-6cba0aa53fd7939a-39097559646-a1.tgz"
+    },
+    {
+      "stage": "prepare",
+      "release": "records-2026-10-01",
+      "name": "spiral-practice-cycle-smoke-20261018-01-prepare-a946f9cbf5cc0487-39097559646-a1.tgz",
+      "sha256": "94948b82b2ec44f0f3039ab0044ed8f32254376b7cf5d060d9b20efb97ab6c03",
+      "bytes": 137221,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-practice-cycle-smoke-20261018-01-prepare-a946f9cbf5cc0487-39097559646-a1.tgz"
+    },
+    {
+      "stage": "practice",
+      "release": "records-2026-10-01",
+      "name": "spiral-practice-cycle-smoke-20261018-01-practice-dddf47412b6d7fa6-39097559646-a1.tgz",
+      "sha256": "522a939ed7ff74207d3399a15cf7ce04ab29072439f4af8eb975c3e3368d9e01",
+      "bytes": 222228,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-practice-cycle-smoke-20261018-01-practice-dddf47412b6d7fa6-39097559646-a1.tgz"
+    },
+    {
+      "stage": "collect_source",
+      "release": "records-2026-10-01",
+      "name": "spiral-practice-cycle-smoke-20261018-01-collect_source-4078dca410ad289d-39097559646-a1.tgz",
+      "sha256": "3120938ff82cc4588206a517d97f1bc134242b2d4d025901b09fedac49c9aac5",
+      "bytes": 5211520,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-practice-cycle-smoke-20261018-01-collect_source-4078dca410ad289d-39097559646-a1.tgz"
+    },
+    {
+      "stage": "prepare",
+      "release": "records-2026-10-01",
+      "name": "spiral-practice-cycle-smoke-20261018-01-prepare-9958a351e7451eb5-39097559646-a1.tgz",
+      "sha256": "4a7e58d07c2318c41abb8a0633cdee2855a4a14a873356b1827fb408b557c584",
+      "bytes": 161965,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-practice-cycle-smoke-20261018-01-prepare-9958a351e7451eb5-39097559646-a1.tgz"
+    },
+    {
+      "stage": "complete_state",
+      "release": "records-2026-10-01",
+      "name": "spiral-practice-cycle-smoke-20261018-01-state-000027.json",
+      "bytes": 77159,
+      "sha256": "4a576bdd56cd32d44b99524185d4de982dc6d67e60f94f2ee3aa9d9a184f93f0",
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-practice-cycle-smoke-20261018-01-state-000027.json"
+    }
+  ],
+  "inspection": {
+    "run": 39098215539,
+    "artifact_id": 12125502716,
+    "bytes": 16947,
+    "sha256": "872970d2d59a9b87b422d8eaa415662dd1ffb5db4220788319a4e5e55cb554a0",
+    "download_matches_api_digest": true,
+    "readback_bytes": 104262,
+    "readback_sha256": "1813b65ef053f78a24b0825243ec6ca12756d2e9522539931157015a481c695b"
+  },
+  "formal_adoption": false
+}

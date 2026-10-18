@@ -1,0 +1,2700 @@
+{
+  "schema": "postgame-cycle-readback-v1",
+  "cycle_id": "practice-cycle-smoke-20261018-01",
+  "controller_ledger_replayed": true,
+  "all_publication_hash_bytes_api_verified": true,
+  "stage_reports": [
+    {
+      "stage": "initial_source",
+      "generation": 1,
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "spiral-practice-cycle-smoke-20261018-01-initial_source-13f1a03112a6b063-39097559646-a1.tgz",
+        "sha256": "f3c54d9d0074ce854435ed573df637ddae6d2632536109c3e7fa0b7e348754bf",
+        "bytes": 5206477,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-practice-cycle-smoke-20261018-01-initial_source-13f1a03112a6b063-39097559646-a1.tgz"
+      },
+      "body_run": 39097590140,
+      "games": 2,
+      "plies": 141,
+      "result": {
+        "wins": 0,
+        "losses": 2,
+        "draws": 0
+      },
+      "runtime_statistics": [
+        {
+          "shard": "shard-0.json",
+          "source_sha256": "f3cb0abc7a078019ade670e9cc570f4134f6d9ccca8e4f6f09f3826efff7c625",
+          "games": 1,
+          "elapsed_seconds": 26.258,
+          "ponder": {
+            "A": {
+              "hits": 24,
+              "misses": 14
+            },
+            "B": {
+              "hits": 27,
+              "misses": 11
+            }
+          },
+          "timing_ms": {
+            "A": {
+              "moves": 40,
+              "mean": 347.051,
+              "max": 993.988
+            },
+            "B": {
+              "moves": 40,
+              "mean": 302.815,
+              "max": 993.225
+            }
+          },
+          "search": {
+            "A": {
+              "samples": 39,
+              "nodes_total": 4663573,
+              "cutoffs_total": 243444,
+              "min_cutoffs_total": 146658,
+              "max_cutoffs_total": 96786,
+              "leaves_total": 4044628,
+              "terminals_total": 3285,
+              "ply1_total": 11036,
+              "ply2_total": 52257,
+              "ply3_total": 388243,
+              "order_calls_total": 602739,
+              "ordered_moves_total": 24189589,
+              "tt_probes_total": 291682,
+              "tt_hits_total": 16431,
+              "tt_exact_hits_total": 0,
+              "tt_bound_cutoffs_total": 13273,
+              "tt_stores_total": 278123,
+              "tt_replacements_total": 1514,
+              "tt_move_first_total": 3158,
+              "tt_disabled_repetition_total": 0,
+              "knowledge_probes_total": 78,
+              "knowledge_hits_total": 0,
+              "knowledge_promotions_total": 0,
+              "knowledge_disabled_repetition_total": 0,
+              "qnodes_total": 4371780,
+              "qcutoffs_total": 3477382,
+              "qlimit_leaves_total": 130291,
+              "search_threads_total": 78,
+              "probe_mask_total": 273,
+              "pvs_probes_total": 104562,
+              "pvs_researches_total": 1565,
+              "killer_priorities_total": 327657,
+              "history_priorities_total": 878947,
+              "ordering_updates_total": 35761,
+              "research_mask_total": 897,
+              "generated_plays_total": 4662008,
+              "legal_batches_total": 4594649,
+              "order_reuse_hits_total": 122568,
+              "qtt_probes_total": 0,
+              "qtt_hits_total": 0,
+              "qtt_cutoffs_total": 0,
+              "reuse_mask_total": 234,
+              "legal_cache_hits_total": 0,
+              "legal_cache_misses_total": 0,
+              "legal_cache_replacements_total": 0,
+              "efficiency_mask_total": 312,
+              "ordering_rule_checks_total": 0,
+              "eval_cache_hits_total": 1110816,
+              "lazy_snapshots_total": 4368604,
+              "selective_usi_skipped_total": 104845776,
+              "tt_hit_rate": 0.05633189569462634,
+              "knowledge_hit_rate": 0.0,
+              "long_think_moves": 8,
+              "long_think_reasons": {
+                "iteration_score_change_150": 3,
+                "score_drop_150": 5
+              }
+            },
+            "B": {
+              "samples": 38,
+              "nodes_total": 4212389,
+              "cutoffs_total": 210612,
+              "min_cutoffs_total": 122876,
+              "max_cutoffs_total": 87736,
+              "leaves_total": 3703994,
+              "terminals_total": 1164,
+              "ply1_total": 9615,
+              "ply2_total": 50004,
+              "ply3_total": 298955,
+              "order_calls_total": 494263,
+              "ordered_moves_total": 20616275,
+              "tt_probes_total": 255230,
+              "tt_hits_total": 16642,
+              "tt_exact_hits_total": 0,
+              "tt_bound_cutoffs_total": 13318,
+              "tt_stores_total": 241629,
+              "tt_replacements_total": 954,
+              "tt_move_first_total": 3324,
+              "tt_disabled_repetition_total": 0,
+              "knowledge_probes_total": 76,
+              "knowledge_hits_total": 0,
+              "knowledge_promotions_total": 0,
+              "knowledge_disabled_repetition_total": 0,
+              "qnodes_total": 3957137,
+              "qcutoffs_total": 3157322,
+              "qlimit_leaves_total": 105382,
+              "search_threads_total": 76,
+              "probe_mask_total": 266,
+              "pvs_probes_total": 108381,
+              "pvs_researches_total": 1622,
+              "killer_priorities_total": 307277,
+              "history_priorities_total": 897600,
+              "ordering_updates_total": 48010,
+              "research_mask_total": 874,
+              "generated_plays_total": 4210767,
+              "legal_batches_total": 4139577,
+              "order_reuse_hits_total": 113584,
+              "qtt_probes_total": 0,
+              "qtt_hits_total": 0,
+              "qtt_cutoffs_total": 0,
+              "reuse_mask_total": 228,
+              "legal_cache_hits_total": 0,
+              "legal_cache_misses_total": 0,
+              "legal_cache_replacements_total": 0,
+              "efficiency_mask_total": 304,
+              "ordering_rule_checks_total": 0,
+              "eval_cache_hits_total": 1072412,
+              "lazy_snapshots_total": 3955991,
+              "selective_usi_skipped_total": 91604732,
+              "tt_hit_rate": 0.06520393370685264,
+              "knowledge_hit_rate": 0.0,
+              "long_think_moves": 6,
+              "long_think_reasons": {
+                "score_drop_150": 3,
+                "iteration_score_change_150": 2,
+                "in_check": 1
+              }
+            }
+          }
+        },
+        {
+          "shard": "shard-1.json",
+          "source_sha256": "c0fc536279c680d2f560e239a1f61027b00dd5333109c41239dc35f5a03c3f83",
+          "games": 1,
+          "elapsed_seconds": 18.983,
+          "ponder": {
+            "A": {
+              "hits": 18,
+              "misses": 11
+            },
+            "B": {
+              "hits": 23,
+              "misses": 6
+            }
+          },
+          "timing_ms": {
+            "A": {
+              "moves": 30,
+              "mean": 378.568,
+              "max": 993.724
+            },
+            "B": {
+              "moves": 31,
+              "mean": 237.428,
+              "max": 992.977
+            }
+          },
+          "search": {
+            "A": {
+              "samples": 30,
+              "nodes_total": 2441117,
+              "cutoffs_total": 147539,
+              "min_cutoffs_total": 77533,
+              "max_cutoffs_total": 70006,
+              "leaves_total": 2137260,
+              "terminals_total": 296,
+              "ply1_total": 7077,
+              "ply2_total": 28470,
+              "ply3_total": 193764,
+              "order_calls_total": 299424,
+              "ordered_moves_total": 11814206,
+              "tt_probes_total": 175868,
+              "tt_hits_total": 6014,
+              "tt_exact_hits_total": 0,
+              "tt_bound_cutoffs_total": 4419,
+              "tt_stores_total": 171230,
+              "tt_replacements_total": 593,
+              "tt_move_first_total": 1595,
+              "tt_disabled_repetition_total": 0,
+              "knowledge_probes_total": 59,
+              "knowledge_hits_total": 0,
+              "knowledge_promotions_total": 0,
+              "knowledge_disabled_repetition_total": 0,
+              "qnodes_total": 2265215,
+              "qcutoffs_total": 1815665,
+              "qlimit_leaves_total": 36669,
+              "search_threads_total": 60,
+              "probe_mask_total": 210,
+              "pvs_probes_total": 56313,
+              "pvs_researches_total": 1087,
+              "killer_priorities_total": 227670,
+              "history_priorities_total": 523145,
+              "ordering_updates_total": 48923,
+              "research_mask_total": 690,
+              "generated_plays_total": 2440030,
+              "legal_batches_total": 2409214,
+              "order_reuse_hits_total": 69075,
+              "qtt_probes_total": 0,
+              "qtt_hits_total": 0,
+              "qtt_cutoffs_total": 0,
+              "reuse_mask_total": 180,
+              "legal_cache_hits_total": 0,
+              "legal_cache_misses_total": 0,
+              "legal_cache_replacements_total": 0,
+              "efficiency_mask_total": 240,
+              "ordering_rule_checks_total": 0,
+              "eval_cache_hits_total": 650516,
+              "lazy_snapshots_total": 2264952,
+              "selective_usi_skipped_total": 43719782,
+              "tt_hit_rate": 0.0341961016216708,
+              "knowledge_hit_rate": 0.0,
+              "long_think_moves": 7,
+              "long_think_reasons": {
+                "score_drop_150": 5,
+                "iteration_score_change_150": 2
+              }
+            },
+            "B": {
+              "samples": 30,
+              "nodes_total": 2433436,
+              "cutoffs_total": 136772,
+              "min_cutoffs_total": 68729,
+              "max_cutoffs_total": 68043,
+              "leaves_total": 2137608,
+              "terminals_total": 426,
+              "ply1_total": 6821,
+              "ply2_total": 31165,
+              "ply3_total": 216251,
+              "order_calls_total": 288992,
+              "ordered_moves_total": 11183725,
+              "tt_probes_total": 165129,
+              "tt_hits_total": 8693,
+              "tt_exact_hits_total": 0,
+              "tt_bound_cutoffs_total": 6684,
+              "tt_stores_total": 158225,
+              "tt_replacements_total": 532,
+              "tt_move_first_total": 2009,
+              "tt_disabled_repetition_total": 0,
+              "knowledge_probes_total": 60,
+              "knowledge_hits_total": 0,
+              "knowledge_promotions_total": 0,
+              "knowledge_disabled_repetition_total": 0,
+              "qnodes_total": 2268291,
+              "qcutoffs_total": 1813225,
+              "qlimit_leaves_total": 37164,
+              "search_threads_total": 60,
+              "probe_mask_total": 210,
+              "pvs_probes_total": 58514,
+              "pvs_researches_total": 1149,
+              "killer_priorities_total": 198565,
+              "history_priorities_total": 505419,
+              "ordering_updates_total": 46248,
+              "research_mask_total": 690,
+              "generated_plays_total": 2432287,
+              "legal_batches_total": 2400184,
+              "order_reuse_hits_total": 63880,
+              "qtt_probes_total": 0,
+              "qtt_hits_total": 0,
+              "qtt_cutoffs_total": 0,
+              "reuse_mask_total": 180,
+              "legal_cache_hits_total": 0,
+              "legal_cache_misses_total": 0,
+              "legal_cache_replacements_total": 0,
+              "efficiency_mask_total": 240,
+              "ordering_rule_checks_total": 0,
+              "eval_cache_hits_total": 600298,
+              "lazy_snapshots_total": 2267877,
+              "selective_usi_skipped_total": 48237557,
+              "tt_hit_rate": 0.05264369069030879,
+              "knowledge_hit_rate": 0.0,
+              "long_think_moves": 2,
+              "long_think_reasons": {
+                "score_drop_150": 2
+              }
+            }
+          }
+        }
+      ],
+      "audit": {
+        "schema": "postgame-source-bridge-audit-v1",
+        "games": 2,
+        "plies": 141,
+        "all_moves_legal": true,
+        "all_terminations_verified": true,
+        "conditions_verified": true,
+        "binary_verified": true,
+        "knowledge_snapshot_verified": true,
+        "duplicates_checked": true,
+        "prior_and_internal_duplicates_excluded": {
+          "wins": 0,
+          "losses": 2,
+          "draws": 0
+        },
+        "candidate_knowledge_uses": 0,
+        "parent_ref": "aea41f166b52b985cfe5cf40fc123520144381eb",
+        "binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "actual_binary_sha256": {
+          "A": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+          "B": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36"
+        },
+        "parent_parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591",
+        "internal_duplicates": 0,
+        "prior_trajectory_overlap": 0,
+        "trajectory_outcomes": [
+          {
+            "sha256": "b247ceaddc8ad580dda3f87dd7b36276cb50cd0414a031e6b0ee37cfebb5fe82",
+            "winner": "B",
+            "a_black": true,
+            "game_id": "f3cb0abc7a078019ade670e9cc570f4134f6d9ccca8e4f6f09f3826efff7c625:0"
+          },
+          {
+            "sha256": "49bbe1c8265c594c405b9aca75d1c74d364f788dde4a512a5c2bf69417240a9e",
+            "winner": "B",
+            "a_black": false,
+            "game_id": "c0fc536279c680d2f560e239a1f61027b00dd5333109c41239dc35f5a03c3f83:0"
+          }
+        ],
+        "reward_status": {
+          "verified_win_loss": 2
+        },
+        "loader_reproduced": true,
+        "original_loader_handshake_retained": false,
+        "candidate_parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591",
+        "limitation": "Complete-trajectory sensitivity only; partial-game overlap is not a proof of independence.",
+        "match_run": 39097590140,
+        "build_job": 117587157802,
+        "build_log_sha256": "05f988a2e225d5439015edf4e59302138db661b03f6f57b09c9908fb6bc7e0e8",
+        "actual_lane_jobs": [
+          {
+            "id": 117587309220,
+            "started_at": "2026-10-18T04:35:57Z",
+            "completed_at": "2026-10-18T04:36:30Z"
+          },
+          {
+            "id": 117587309414,
+            "started_at": "2026-10-18T04:35:58Z",
+            "completed_at": "2026-10-18T04:36:25Z"
+          }
+        ],
+        "audit_code_sha256": "657e1a454f5a2ed3144e08c44ffb742884df1abaf0b9c4a5437b1ba86967d341"
+      }
+    },
+    {
+      "stage": "prepare",
+      "generation": 1,
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "spiral-practice-cycle-smoke-20261018-01-prepare-5015dc92c0641000-39097559646-a1.tgz",
+        "sha256": "241005ef880d576ed3b6f9e3610b6d96a39d100fe1cb63da0a2cdbed559e0784",
+        "bytes": 114809,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-practice-cycle-smoke-20261018-01-prepare-5015dc92c0641000-39097559646-a1.tgz"
+      },
+      "analysis": {
+        "source_games": 2,
+        "source_plies": 141,
+        "unique_static_positions": 142,
+        "selected_cases": 8,
+        "categories": {
+          "static_loss": 5,
+          "static_gain": 3
+        },
+        "selected_side": {
+          "white": 5,
+          "black": 3
+        },
+        "selected_reward": {
+          "1": 5,
+          "-1": 3
+        },
+        "routes": {
+          "hold": 6,
+          "knowledge_reference_candidate": 2
+        },
+        "verification_pairs": 0,
+        "analyzer_binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "options": {
+          "SearchResearchMask": 23,
+          "SearchEfficiencyMask": 8,
+          "SearchReuseMask": 6,
+          "SearchNextMask": 4,
+          "SearchProbeMask": 7,
+          "SearchThreads": 2,
+          "RiskVerify": true,
+          "PositionKnowledge": true,
+          "AdaptiveLongThink": false,
+          "USI_Ponder": false,
+          "OpeningRandomNonLance": false,
+          "RandomSeed": 2031101701
+        },
+        "evaluation_options": {
+          "EvalSafety": 480,
+          "EvalPressure": 380,
+          "EvalActivity": 410,
+          "EvalDanger": 150,
+          "EvalInfluence": 140,
+          "EvalPotential": 210,
+          "EvalCoordination": 340,
+          "EvalHandPotential": 60,
+          "EvalThreat": 20
+        },
+        "fresh_process_per_search": true,
+        "seconds": 5.878,
+        "environment": {
+          "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+          "cpu_count": 4
+        },
+        "status": "diagnosis_completed",
+        "learning_status": "not_run",
+        "formal_adoption": false,
+        "limitation": "Provisional own-engine diagnosis; deeper search and fixed-depth pairing do not prove correct play or evaluation causality."
+      },
+      "learning_status": "not_requested_knowledge_only",
+      "parameter_updates": 0,
+      "eligible_pairs": 0,
+      "split_aliases": 549,
+      "old_aliases_preserved": 517,
+      "bank_pairs_reused": 0,
+      "progress": {
+        "schema": "postgame-progress-v1",
+        "preparation_sha256": "9835fc85a24a7b1107bde9d4e9b060795d290fba2c04f3d0499d8a601da5dd22",
+        "analysis": {
+          "source_games": 2,
+          "source_plies": 141,
+          "unique_static_positions": 142,
+          "selected_cases": 8,
+          "categories": {
+            "static_loss": 5,
+            "static_gain": 3
+          },
+          "selected_side": {
+            "white": 5,
+            "black": 3
+          },
+          "selected_reward": {
+            "1": 5,
+            "-1": 3
+          },
+          "routes": {
+            "hold": 6,
+            "knowledge_reference_candidate": 2
+          },
+          "verification_pairs": 0,
+          "analyzer_binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+          "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "options": {
+            "SearchResearchMask": 23,
+            "SearchEfficiencyMask": 8,
+            "SearchReuseMask": 6,
+            "SearchNextMask": 4,
+            "SearchProbeMask": 7,
+            "SearchThreads": 2,
+            "RiskVerify": true,
+            "PositionKnowledge": true,
+            "AdaptiveLongThink": false,
+            "USI_Ponder": false,
+            "OpeningRandomNonLance": false,
+            "RandomSeed": 2031101701
+          },
+          "evaluation_options": {
+            "EvalSafety": 480,
+            "EvalPressure": 380,
+            "EvalActivity": 410,
+            "EvalDanger": 150,
+            "EvalInfluence": 140,
+            "EvalPotential": 210,
+            "EvalCoordination": 340,
+            "EvalHandPotential": 60,
+            "EvalThreat": 20
+          },
+          "fresh_process_per_search": true,
+          "seconds": 5.878,
+          "environment": {
+            "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+            "cpu_count": 4
+          },
+          "status": "diagnosis_completed",
+          "learning_status": "not_run",
+          "formal_adoption": false,
+          "limitation": "Provisional own-engine diagnosis; deeper search and fixed-depth pairing do not prove correct play or evaluation causality."
+        },
+        "statistics": {
+          "source_games": 2,
+          "source_plies": 141,
+          "analysis_seconds": 5.878,
+          "selected_cases": 8,
+          "diagnosis_routes": {
+            "hold": 6,
+            "knowledge_reference_candidate": 2
+          },
+          "fixed_depth_pairs": 0,
+          "research_matches_actual": 8,
+          "decision_reasons": {
+            "not_stable_evaluation_pair": 8
+          },
+          "selection_details": {
+            "actual_move_supported_with_search_disagreement": 6,
+            "actual_move_supported": 2
+          },
+          "new_evaluation_pairs": 0,
+          "reused_evaluation_pairs": 0,
+          "evaluation_bank_pairs": 0,
+          "independent_groups": {
+            "train": 0,
+            "validation": 0,
+            "heldout": 0
+          },
+          "deficits": {
+            "pairs": 32,
+            "train": 8,
+            "validation": 4,
+            "heldout": 4
+          },
+          "observed_selected_yield": 0.0,
+          "limitation": "Selected-case observation, not an independent probability or a forecast of games to learning."
+        },
+        "work_items": [
+          {
+            "task_id": "2e9bf646bb9ff70aeb35803537159369292be403b89b1ba4106e801d1caa5873",
+            "kind": "review_search_stability",
+            "priority": 3,
+            "status": "requires_bounded_research_plan",
+            "executor_connected": false,
+            "formal_adoption": false,
+            "parent": {
+              "engine_ref": "aea41f166b52b985cfe5cf40fc123520144381eb",
+              "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+              "parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591"
+            },
+            "split": "train",
+            "reason": "not_stable_evaluation_pair",
+            "case": {
+              "schema_version": 1,
+              "case_id": "9c3a07a79654c9d518a625d7dc783d0612f9746be55fc5a97d0e5b9bdfa47c26",
+              "source": {
+                "run_id": "39097590140",
+                "game_id": "c0fc536279c680d2f560e239a1f61027b00dd5333109c41239dc35f5a03c3f83:0",
+                "ply": 48,
+                "archive_sha256": "09ba4a9f8b44d1cd6fc4c4a607e1917d7cf7613e38014d63d897b3e9fdc984ca",
+                "manifest_sha256": "28acf02b18d0577151087b8cd0db4250f746eea1339b45f8c9656b7da3b8b5eb"
+              },
+              "start_sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+              "history_moves": [
+                "6g6f",
+                "3c3d",
+                "7g7f",
+                "3a4b",
+                "3i4h",
+                "6c6d",
+                "8h7g",
+                "8b6b",
+                "1g1f",
+                "9c9d",
+                "9g9f",
+                "2b4d",
+                "8g8f",
+                "1c1d",
+                "2g2f",
+                "7a8b",
+                "2f2e",
+                "2a3c",
+                "2e2d",
+                "2c2d",
+                "2h2d",
+                "4b3a",
+                "2d2c+",
+                "6b2b",
+                "P*2d",
+                "P*2h",
+                "2c3d",
+                "2h2i+",
+                "2d2c+",
+                "2b2a",
+                "3d4c",
+                "4d2f",
+                "P*2b",
+                "3a4b",
+                "4c4f",
+                "N*6g",
+                "5i5h",
+                "6g7i+",
+                "4f2f",
+                "2a3a",
+                "6i7i",
+                "2i1i",
+                "2c3c",
+                "3a3c",
+                "2b2a+",
+                "1a1c",
+                "2f2h"
+              ],
+              "position_key": "ln1gkg1+P1/1s3s3/1pp1p1r1l/p2p4p/9/PPPP4P/2B1PPP2/4KS1+R1/LNG2G2+p w B2NPslp",
+              "history_key": "71eb275017b02eca1d58bc0745ec1e88819346f202d8d520f5136a97c93714ba",
+              "analysis_position_command": "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 6g6f 3c3d 7g7f 3a4b 3i4h 6c6d 8h7g 8b6b 1g1f 9c9d 9g9f 2b4d 8g8f 1c1d 2g2f 7a8b 2f2e 2a3c 2e2d 2c2d 2h2d 4b3a 2d2c+ 6b2b P*2d P*2h 2c3d 2h2i+ 2d2c+ 2b2a 3d4c 4d2f P*2b 3a4b 4c4f N*6g 5i5h 6g7i+ 4f2f 2a3a 6i7i 2i1i 2c3c 3a3c 2b2a+ 1a1c 2f2h",
+              "actual_position_after_command": "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 6g6f 3c3d 7g7f 3a4b 3i4h 6c6d 8h7g 8b6b 1g1f 9c9d 9g9f 2b4d 8g8f 1c1d 2g2f 7a8b 2f2e 2a3c 2e2d 2c2d 2h2d 4b3a 2d2c+ 6b2b P*2d P*2h 2c3d 2h2i+ 2d2c+ 2b2a 3d4c 4d2f P*2b 3a4b 4c4f N*6g 5i5h 6g7i+ 4f2f 2a3a 6i7i 2i1i 2c3c 3a3c 2b2a+ 1a1c 2f2h S*1h",
+              "actual_move": "S*1h",
+              "side_to_move": "white",
+              "actor": "A",
+              "outcome": {
+                "winner": "B",
+                "reason": "checkmate",
+                "status": "verified_win_loss",
+                "terminal_reward_stm": -1
+              },
+              "original_observation": {
+                "score_status": "recorded",
+                "score_cp_stm": -3399,
+                "depth": 3,
+                "seldepth": 13,
+                "phase_maturity": 55,
+                "phase_stage": "middle",
+                "phase_static_cp_black": 3235
+              },
+              "analysis_status": "not_run",
+              "cause": "unclassified",
+              "triage": {
+                "category": "static_loss",
+                "static_loss_candidate_cp": 245,
+                "fixed_static_before": {
+                  "material_term": 3030,
+                  "safety": -19,
+                  "pressure": 0,
+                  "activity": 34,
+                  "danger": 142,
+                  "influence": 21,
+                  "potential": 14,
+                  "coordination": 6,
+                  "hand_potential": 7,
+                  "threat": 0,
+                  "clamp": 0,
+                  "total": 3235
+                },
+                "fixed_static_after": {
+                  "material_term": 3280,
+                  "safety": -19,
+                  "pressure": 0,
+                  "activity": 19,
+                  "danger": 0,
+                  "influence": 11,
+                  "potential": 14,
+                  "coordination": -13,
+                  "hand_potential": 12,
+                  "threat": 176,
+                  "clamp": 0,
+                  "total": 3480
+                },
+                "recorded_phase_stage": "middle"
+              }
+            },
+            "research_move": "S*1h",
+            "evidence": {
+              "file": "analysis/diagnosis.json",
+              "case_id": "9c3a07a79654c9d518a625d7dc783d0612f9746be55fc5a97d0e5b9bdfa47c26",
+              "row_sha256": "2b1846a051636a2e41eb8677b3a87c43d77b0b91da7b7b077dbf5698b029dd13"
+            }
+          },
+          {
+            "task_id": "94eb15863cbcae9b072658d0dc578d82d46e2e9702d36d674e1205b03449279b",
+            "kind": "review_search_stability",
+            "priority": 3,
+            "status": "requires_bounded_research_plan",
+            "executor_connected": false,
+            "formal_adoption": false,
+            "parent": {
+              "engine_ref": "aea41f166b52b985cfe5cf40fc123520144381eb",
+              "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+              "parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591"
+            },
+            "split": "train",
+            "reason": "not_stable_evaluation_pair",
+            "case": {
+              "schema_version": 1,
+              "case_id": "025f02bdb70b926228114ab1a3e9ed5ff7eba15a100b63536f7320dc7510b236",
+              "source": {
+                "run_id": "39097590140",
+                "game_id": "c0fc536279c680d2f560e239a1f61027b00dd5333109c41239dc35f5a03c3f83:0",
+                "ply": 39,
+                "archive_sha256": "09ba4a9f8b44d1cd6fc4c4a607e1917d7cf7613e38014d63d897b3e9fdc984ca",
+                "manifest_sha256": "28acf02b18d0577151087b8cd0db4250f746eea1339b45f8c9656b7da3b8b5eb"
+              },
+              "start_sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+              "history_moves": [
+                "6g6f",
+                "3c3d",
+                "7g7f",
+                "3a4b",
+                "3i4h",
+                "6c6d",
+                "8h7g",
+                "8b6b",
+                "1g1f",
+                "9c9d",
+                "9g9f",
+                "2b4d",
+                "8g8f",
+                "1c1d",
+                "2g2f",
+                "7a8b",
+                "2f2e",
+                "2a3c",
+                "2e2d",
+                "2c2d",
+                "2h2d",
+                "4b3a",
+                "2d2c+",
+                "6b2b",
+                "P*2d",
+                "P*2h",
+                "2c3d",
+                "2h2i+",
+                "2d2c+",
+                "2b2a",
+                "3d4c",
+                "4d2f",
+                "P*2b",
+                "3a4b",
+                "4c4f",
+                "N*6g",
+                "5i5h",
+                "6g7i+"
+              ],
+              "position_key": "ln1gkg1rl/1s3s1P1/1pp1p1n+P1/p2p4p/9/PPPP1+R1bP/2B1PPP2/4KS3/LN+nG1G1+pL b Ps",
+              "history_key": "a2915d002228caee979d93c0a2ccf837781b1ae51b6c09f3266b50f99de0aa0f",
+              "analysis_position_command": "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 6g6f 3c3d 7g7f 3a4b 3i4h 6c6d 8h7g 8b6b 1g1f 9c9d 9g9f 2b4d 8g8f 1c1d 2g2f 7a8b 2f2e 2a3c 2e2d 2c2d 2h2d 4b3a 2d2c+ 6b2b P*2d P*2h 2c3d 2h2i+ 2d2c+ 2b2a 3d4c 4d2f P*2b 3a4b 4c4f N*6g 5i5h 6g7i+",
+              "actual_position_after_command": "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 6g6f 3c3d 7g7f 3a4b 3i4h 6c6d 8h7g 8b6b 1g1f 9c9d 9g9f 2b4d 8g8f 1c1d 2g2f 7a8b 2f2e 2a3c 2e2d 2c2d 2h2d 4b3a 2d2c+ 6b2b P*2d P*2h 2c3d 2h2i+ 2d2c+ 2b2a 3d4c 4d2f P*2b 3a4b 4c4f N*6g 5i5h 6g7i+ 4f2f",
+              "actual_move": "4f2f",
+              "side_to_move": "black",
+              "actor": "B",
+              "outcome": {
+                "winner": "B",
+                "reason": "checkmate",
+                "status": "verified_win_loss",
+                "terminal_reward_stm": 1
+              },
+              "original_observation": {
+                "score_status": "recorded",
+                "score_cp_stm": 3129,
+                "depth": 4,
+                "seldepth": 13,
+                "phase_maturity": 66,
+                "phase_stage": "middle",
+                "phase_static_cp_black": -789
+              },
+              "analysis_status": "not_run",
+              "cause": "unclassified",
+              "triage": {
+                "category": "static_gain",
+                "static_loss_candidate_cp": -2900,
+                "fixed_static_before": {
+                  "material_term": -1560,
+                  "safety": 38,
+                  "pressure": 0,
+                  "activity": -13,
+                  "danger": 460,
+                  "influence": -4,
+                  "potential": 9,
+                  "coordination": 24,
+                  "hand_potential": -3,
+                  "threat": 260,
+                  "clamp": 0,
+                  "total": -789
+                },
+                "fixed_static_after": {
+                  "material_term": 1540,
+                  "safety": 38,
+                  "pressure": -48,
+                  "activity": 45,
+                  "danger": 460,
+                  "influence": 23,
+                  "potential": 29,
+                  "coordination": 21,
+                  "hand_potential": 3,
+                  "threat": 0,
+                  "clamp": 0,
+                  "total": 2111
+                },
+                "recorded_phase_stage": "middle"
+              }
+            },
+            "research_move": "4f2f",
+            "evidence": {
+              "file": "analysis/diagnosis.json",
+              "case_id": "025f02bdb70b926228114ab1a3e9ed5ff7eba15a100b63536f7320dc7510b236",
+              "row_sha256": "4015cb5b31087b656628e48aac1ddbcd74a06b755071d6b1bbfbe06d59f022a9"
+            }
+          },
+          {
+            "task_id": "9d3f6a41c8fe3d9f2fb46b551dea70e58e634db79fd2c66989c611a1da99b1fa",
+            "kind": "review_search_stability",
+            "priority": 3,
+            "status": "requires_bounded_research_plan",
+            "executor_connected": false,
+            "formal_adoption": false,
+            "parent": {
+              "engine_ref": "aea41f166b52b985cfe5cf40fc123520144381eb",
+              "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+              "parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591"
+            },
+            "split": "train",
+            "reason": "not_stable_evaluation_pair",
+            "case": {
+              "schema_version": 1,
+              "case_id": "f54120f84d34992041ac7e1b2577b192411c5f1c25564202b4456b006fc7ba28",
+              "source": {
+                "run_id": "39097590140",
+                "game_id": "c0fc536279c680d2f560e239a1f61027b00dd5333109c41239dc35f5a03c3f83:0",
+                "ply": 57,
+                "archive_sha256": "09ba4a9f8b44d1cd6fc4c4a607e1917d7cf7613e38014d63d897b3e9fdc984ca",
+                "manifest_sha256": "28acf02b18d0577151087b8cd0db4250f746eea1339b45f8c9656b7da3b8b5eb"
+              },
+              "start_sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+              "history_moves": [
+                "6g6f",
+                "3c3d",
+                "7g7f",
+                "3a4b",
+                "3i4h",
+                "6c6d",
+                "8h7g",
+                "8b6b",
+                "1g1f",
+                "9c9d",
+                "9g9f",
+                "2b4d",
+                "8g8f",
+                "1c1d",
+                "2g2f",
+                "7a8b",
+                "2f2e",
+                "2a3c",
+                "2e2d",
+                "2c2d",
+                "2h2d",
+                "4b3a",
+                "2d2c+",
+                "6b2b",
+                "P*2d",
+                "P*2h",
+                "2c3d",
+                "2h2i+",
+                "2d2c+",
+                "2b2a",
+                "3d4c",
+                "4d2f",
+                "P*2b",
+                "3a4b",
+                "4c4f",
+                "N*6g",
+                "5i5h",
+                "6g7i+",
+                "4f2f",
+                "2a3a",
+                "6i7i",
+                "2i1i",
+                "2c3c",
+                "3a3c",
+                "2b2a+",
+                "1a1c",
+                "2f2h",
+                "S*1h",
+                "2h2d",
+                "3c4c",
+                "N*5e",
+                "4c4e",
+                "5e6c+",
+                "4e4c",
+                "N*3e",
+                "4c4e"
+              ],
+              "position_key": "ln1gkg1+P1/1s3s3/1pp+Np3l/p2p3+Rp/5rN2/PPPP4P/2B1PPP2/4KS2s/LNG2G2+p b BPlp",
+              "history_key": "528dfbdce7674e1119f70fe7bbc9243b654e683df731ef2555cf980282c11a72",
+              "analysis_position_command": "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 6g6f 3c3d 7g7f 3a4b 3i4h 6c6d 8h7g 8b6b 1g1f 9c9d 9g9f 2b4d 8g8f 1c1d 2g2f 7a8b 2f2e 2a3c 2e2d 2c2d 2h2d 4b3a 2d2c+ 6b2b P*2d P*2h 2c3d 2h2i+ 2d2c+ 2b2a 3d4c 4d2f P*2b 3a4b 4c4f N*6g 5i5h 6g7i+ 4f2f 2a3a 6i7i 2i1i 2c3c 3a3c 2b2a+ 1a1c 2f2h S*1h 2h2d 3c4c N*5e 4c4e 5e6c+ 4e4c N*3e 4c4e",
+              "actual_position_after_command": "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 6g6f 3c3d 7g7f 3a4b 3i4h 6c6d 8h7g 8b6b 1g1f 9c9d 9g9f 2b4d 8g8f 1c1d 2g2f 7a8b 2f2e 2a3c 2e2d 2c2d 2h2d 4b3a 2d2c+ 6b2b P*2d P*2h 2c3d 2h2i+ 2d2c+ 2b2a 3d4c 4d2f P*2b 3a4b 4c4f N*6g 5i5h 6g7i+ 4f2f 2a3a 6i7i 2i1i 2c3c 3a3c 2b2a+ 1a1c 2f2h S*1h 2h2d 3c4c N*5e 4c4e 5e6c+ 4e4c N*3e 4c4e B*3d",
+              "actual_move": "B*3d",
+              "side_to_move": "black",
+              "actor": "B",
+              "outcome": {
+                "winner": "B",
+                "reason": "checkmate",
+                "status": "verified_win_loss",
+                "terminal_reward_stm": 1
+              },
+              "original_observation": {
+                "score_status": "recorded",
+                "score_cp_stm": 4278,
+                "depth": 3,
+                "seldepth": 12,
+                "phase_maturity": 74,
+                "phase_stage": "end",
+                "phase_static_cp_black": 3530
+              },
+              "analysis_status": "not_run",
+              "cause": "unclassified",
+              "triage": {
+                "category": "static_gain",
+                "static_loss_candidate_cp": -177,
+                "fixed_static_before": {
+                  "material_term": 3320,
+                  "safety": -19,
+                  "pressure": 17,
+                  "activity": 40,
+                  "danger": 79,
+                  "influence": 14,
+                  "potential": 40,
+                  "coordination": 11,
+                  "hand_potential": 4,
+                  "threat": 24,
+                  "clamp": 0,
+                  "total": 3530
+                },
+                "fixed_static_after": {
+                  "material_term": 2720,
+                  "safety": -19,
+                  "pressure": 139,
+                  "activity": 58,
+                  "danger": 390,
+                  "influence": 9,
+                  "potential": 60,
+                  "coordination": 32,
+                  "hand_potential": -2,
+                  "threat": 320,
+                  "clamp": 0,
+                  "total": 3707
+                },
+                "recorded_phase_stage": "end"
+              }
+            },
+            "research_move": "B*3d",
+            "evidence": {
+              "file": "analysis/diagnosis.json",
+              "case_id": "f54120f84d34992041ac7e1b2577b192411c5f1c25564202b4456b006fc7ba28",
+              "row_sha256": "4063d29ccea403f15396464470c656ab395a20e1c136b8fed188c4dba29c20d8"
+            }
+          }
+        ],
+        "task_counts": {
+          "review_search_stability": 3
+        },
+        "formal_adoption": false,
+        "strength_improvement_demonstrated": false
+      },
+      "knowledge_stage": {
+        "schema": "postgame-knowledge-stage-v1",
+        "manifest": {
+          "schema": "postgame-knowledge-proposal-v1",
+          "purpose": "research",
+          "cycle_id": "practice-cycle-smoke-20261018-01",
+          "parent": {
+            "engine_ref": "aea41f166b52b985cfe5cf40fc123520144381eb",
+            "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591"
+          },
+          "policy": {
+            "schema": "postgame-knowledge-policy-v1",
+            "max_tasks": 8,
+            "parent_probe_ms": 200,
+            "parent_repeats": 2,
+            "fixed_depth": 2,
+            "fixed_timeout_ms": 5000,
+            "tactical_controls": 12,
+            "min_depth_ratio": 0.9
+          },
+          "preparation_sha256": "ed23ec102d3198239ffd241375196e8528a6b9eab32471b49886b0083e8f0a50",
+          "diagnosis_sha256": "c8f4341dbe20e501e3b912ac0a9936ae046702b1156aca65182df7e9836e8f6e",
+          "base_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "base_positions": 163,
+          "candidate_positions": 0,
+          "combined_positions": 163,
+          "candidate_sha256": null,
+          "accepted": [],
+          "rejected": [],
+          "status": "no_effective_candidate",
+          "formal_adoption": false,
+          "strength_improvement_demonstrated": false,
+          "production_match_eligible": true
+        },
+        "binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+        "status": "no_effective_candidate",
+        "formal_adoption": false,
+        "strength_improvement_demonstrated": false
+      }
+    },
+    {
+      "stage": "practice",
+      "generation": 1,
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "spiral-practice-cycle-smoke-20261018-01-practice-196b1a7eff9c7848-39097559646-a1.tgz",
+        "sha256": "45a14c542442a53f8c963af2928db3ced34643b8e331d9795e62efb8f4769849",
+        "bytes": 204045,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-practice-cycle-smoke-20261018-01-practice-196b1a7eff9c7848-39097559646-a1.tgz"
+      },
+      "practice": {
+        "schema": "postgame-practice-cycle-receipt-v1",
+        "parent": {
+          "engine_ref": "aea41f166b52b985cfe5cf40fc123520144381eb",
+          "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591"
+        },
+        "plan_sha256": "ca1c3531f0d3c574f3b0dbbe1ebafcd591e39b7c0591a82cec9c0d055ef17d03",
+        "practice_ids": [
+          "1808d91a80503fe292c46ad0f53fc4fe946529bb2f3b15cbdd9469e7bb7528d9"
+        ],
+        "games": 4,
+        "new_plies": 64,
+        "replayed_prefix_plies": 188,
+        "handoff_available": true,
+        "selected_cases": 8,
+        "analysis_reservation_ms": 600000,
+        "trajectory_signatures": [
+          "1be2fee8eefe48bbf93879fdd1f08fcc527c721aa9cdc51f62017bd31d61d2ce",
+          "8a0f967b77bb43a9b2669bda9dda87020d77b4e3da4940ad3654aa71a9830095",
+          "987bd5bd712fe96cde7fb2fd1999b56bb6ae300c9ee3696ca4484bdf924cb076",
+          "e8e6219bc07d389e7e49d37f5b8ec3327f69cd08aefaf21d7390f2816c048981"
+        ],
+        "requested_analysis_ms": 48800,
+        "analysis_and_audit_seconds": 14.042,
+        "verification": {
+          "all_moves_legal": true,
+          "all_terminations_verified": true,
+          "settings_verified": true,
+          "full_history_verified": true,
+          "raw_archive_reproduced": true,
+          "games": 4,
+          "new_plies": 64,
+          "new_engine_runs": 0,
+          "formal_adoption": false,
+          "strength_improvement_demonstrated": false,
+          "handoff_reproduced": true
+        },
+        "formal_adoption": false,
+        "strength_improvement_demonstrated": false
+      },
+      "practice_replay": {
+        "practice_reproduced": true,
+        "handoff_reproduced": true,
+        "new_games": 0,
+        "new_engine_runs": 0,
+        "games": 4,
+        "new_plies": 64,
+        "formal_adoption": false
+      }
+    },
+    {
+      "stage": "collect_source",
+      "generation": 1,
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "spiral-practice-cycle-smoke-20261018-01-collect_source-6cba0aa53fd7939a-39097559646-a1.tgz",
+        "sha256": "b59f477cb7d071d0b6e69e90c064c50ea2e88c2eaf29d9520ec9bacd4955c3ae",
+        "bytes": 5216616,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-practice-cycle-smoke-20261018-01-collect_source-6cba0aa53fd7939a-39097559646-a1.tgz"
+      },
+      "body_run": 39097775103,
+      "games": 2,
+      "plies": 302,
+      "result": {
+        "wins": 1,
+        "losses": 1,
+        "draws": 0
+      },
+      "runtime_statistics": [
+        {
+          "shard": "shard-0.json",
+          "source_sha256": "b6b03f7cc2c0382ca48c0eab08dbe1ea853a3551cb02b25e3389fbe830607b70",
+          "games": 1,
+          "elapsed_seconds": 43.388,
+          "ponder": {
+            "A": {
+              "hits": 39,
+              "misses": 32
+            },
+            "B": {
+              "hits": 53,
+              "misses": 19
+            }
+          },
+          "timing_ms": {
+            "A": {
+              "moves": 75,
+              "mean": 292.045,
+              "max": 994.936
+            },
+            "B": {
+              "moves": 74,
+              "mean": 278.866,
+              "max": 995.337
+            }
+          },
+          "search": {
+            "A": {
+              "samples": 72,
+              "nodes_total": 4726142,
+              "cutoffs_total": 237380,
+              "min_cutoffs_total": 152756,
+              "max_cutoffs_total": 84624,
+              "leaves_total": 4066849,
+              "terminals_total": 1075,
+              "ply1_total": 18941,
+              "ply2_total": 85532,
+              "ply3_total": 512736,
+              "order_calls_total": 645309,
+              "ordered_moves_total": 21534473,
+              "tt_probes_total": 279806,
+              "tt_hits_total": 16795,
+              "tt_exact_hits_total": 0,
+              "tt_bound_cutoffs_total": 13484,
+              "tt_stores_total": 265872,
+              "tt_replacements_total": 892,
+              "tt_move_first_total": 3311,
+              "tt_disabled_repetition_total": 0,
+              "knowledge_probes_total": 144,
+              "knowledge_hits_total": 0,
+              "knowledge_promotions_total": 0,
+              "knowledge_disabled_repetition_total": 0,
+              "qnodes_total": 4446324,
+              "qcutoffs_total": 3448492,
+              "qlimit_leaves_total": 107766,
+              "search_threads_total": 144,
+              "probe_mask_total": 504,
+              "pvs_probes_total": 153332,
+              "pvs_researches_total": 2774,
+              "killer_priorities_total": 354445,
+              "history_priorities_total": 1087865,
+              "ordering_updates_total": 62916,
+              "research_mask_total": 1656,
+              "generated_plays_total": 4723368,
+              "legal_batches_total": 4654749,
+              "order_reuse_hits_total": 119374,
+              "qtt_probes_total": 0,
+              "qtt_hits_total": 0,
+              "qtt_cutoffs_total": 0,
+              "reuse_mask_total": 432,
+              "legal_cache_hits_total": 0,
+              "legal_cache_misses_total": 0,
+              "legal_cache_replacements_total": 0,
+              "efficiency_mask_total": 576,
+              "ordering_rule_checks_total": 0,
+              "eval_cache_hits_total": 1011020,
+              "lazy_snapshots_total": 4445249,
+              "selective_usi_skipped_total": 107418317,
+              "tt_hit_rate": 0.060023730727718494,
+              "knowledge_hit_rate": 0.0,
+              "long_think_moves": 10,
+              "long_think_reasons": {
+                "iteration_move_change": 4,
+                "score_drop_150": 5,
+                "unfinished_depth2": 1
+              }
+            },
+            "B": {
+              "samples": 74,
+              "nodes_total": 5410627,
+              "cutoffs_total": 246298,
+              "min_cutoffs_total": 117771,
+              "max_cutoffs_total": 128527,
+              "leaves_total": 4648408,
+              "terminals_total": 1497,
+              "ply1_total": 20520,
+              "ply2_total": 90087,
+              "ply3_total": 585722,
+              "order_calls_total": 747747,
+              "ordered_moves_total": 23398259,
+              "tt_probes_total": 294131,
+              "tt_hits_total": 16578,
+              "tt_exact_hits_total": 0,
+              "tt_bound_cutoffs_total": 13571,
+              "tt_stores_total": 280075,
+              "tt_replacements_total": 882,
+              "tt_move_first_total": 3007,
+              "tt_disabled_repetition_total": 0,
+              "knowledge_probes_total": 145,
+              "knowledge_hits_total": 0,
+              "knowledge_promotions_total": 0,
+              "knowledge_disabled_repetition_total": 0,
+              "qnodes_total": 5116479,
+              "qcutoffs_total": 3998508,
+              "qlimit_leaves_total": 117343,
+              "search_threads_total": 148,
+              "probe_mask_total": 518,
+              "pvs_probes_total": 155280,
+              "pvs_researches_total": 2655,
+              "killer_priorities_total": 380111,
+              "history_priorities_total": 1159189,
+              "ordering_updates_total": 72560,
+              "research_mask_total": 1702,
+              "generated_plays_total": 5407972,
+              "legal_batches_total": 5328056,
+              "order_reuse_hits_total": 141463,
+              "qtt_probes_total": 0,
+              "qtt_hits_total": 0,
+              "qtt_cutoffs_total": 0,
+              "reuse_mask_total": 444,
+              "legal_cache_hits_total": 0,
+              "legal_cache_misses_total": 0,
+              "legal_cache_replacements_total": 0,
+              "efficiency_mask_total": 592,
+              "ordering_rule_checks_total": 0,
+              "eval_cache_hits_total": 1132929,
+              "lazy_snapshots_total": 5114990,
+              "selective_usi_skipped_total": 125500592,
+              "tt_hit_rate": 0.05636264113609242,
+              "knowledge_hit_rate": 0.0,
+              "long_think_moves": 8,
+              "long_think_reasons": {
+                "score_drop_150": 2,
+                "iteration_move_change": 2,
+                "iteration_score_change_150": 2,
+                "in_check": 1,
+                "unfinished_depth2": 1
+              }
+            }
+          }
+        },
+        {
+          "shard": "shard-1.json",
+          "source_sha256": "1dd9c61b36ea5836a517b93685da66cc09b3279e274ccb5ed1d186ffa19de612",
+          "games": 1,
+          "elapsed_seconds": 45.465,
+          "ponder": {
+            "A": {
+              "hits": 49,
+              "misses": 26
+            },
+            "B": {
+              "hits": 47,
+              "misses": 27
+            }
+          },
+          "timing_ms": {
+            "A": {
+              "moves": 76,
+              "mean": 297.561,
+              "max": 993.819
+            },
+            "B": {
+              "moves": 77,
+              "mean": 288.964,
+              "max": 993.853
+            }
+          },
+          "search": {
+            "A": {
+              "samples": 76,
+              "nodes_total": 6814150,
+              "cutoffs_total": 410566,
+              "min_cutoffs_total": 247194,
+              "max_cutoffs_total": 163372,
+              "leaves_total": 5890148,
+              "terminals_total": 4219,
+              "ply1_total": 23719,
+              "ply2_total": 125693,
+              "ply3_total": 856114,
+              "order_calls_total": 889647,
+              "ordered_moves_total": 45220573,
+              "tt_probes_total": 493618,
+              "tt_hits_total": 37133,
+              "tt_exact_hits_total": 0,
+              "tt_bound_cutoffs_total": 30776,
+              "tt_stores_total": 462331,
+              "tt_replacements_total": 2390,
+              "tt_move_first_total": 6357,
+              "tt_disabled_repetition_total": 0,
+              "knowledge_probes_total": 149,
+              "knowledge_hits_total": 0,
+              "knowledge_promotions_total": 0,
+              "knowledge_disabled_repetition_total": 0,
+              "qnodes_total": 6320428,
+              "qcutoffs_total": 5110935,
+              "qlimit_leaves_total": 44581,
+              "search_threads_total": 152,
+              "probe_mask_total": 532,
+              "pvs_probes_total": 264166,
+              "pvs_researches_total": 3787,
+              "killer_priorities_total": 680434,
+              "history_priorities_total": 2489849,
+              "ordering_updates_total": 108711,
+              "research_mask_total": 1748,
+              "generated_plays_total": 6810363,
+              "legal_batches_total": 6721669,
+              "order_reuse_hits_total": 154767,
+              "qtt_probes_total": 0,
+              "qtt_hits_total": 0,
+              "qtt_cutoffs_total": 0,
+              "reuse_mask_total": 456,
+              "legal_cache_hits_total": 0,
+              "legal_cache_misses_total": 0,
+              "legal_cache_replacements_total": 0,
+              "efficiency_mask_total": 608,
+              "ordering_rule_checks_total": 0,
+              "eval_cache_hits_total": 1325969,
+              "lazy_snapshots_total": 6316297,
+              "selective_usi_skipped_total": 141813265,
+              "tt_hit_rate": 0.07522618705152567,
+              "knowledge_hit_rate": 0.0,
+              "long_think_moves": 10,
+              "long_think_reasons": {
+                "score_drop_150": 6,
+                "iteration_move_change": 3,
+                "iteration_score_change_150": 1
+              }
+            },
+            "B": {
+              "samples": 74,
+              "nodes_total": 7001817,
+              "cutoffs_total": 431665,
+              "min_cutoffs_total": 270589,
+              "max_cutoffs_total": 161076,
+              "leaves_total": 6081853,
+              "terminals_total": 1263,
+              "ply1_total": 25290,
+              "ply2_total": 115640,
+              "ply3_total": 940169,
+              "order_calls_total": 892165,
+              "ordered_moves_total": 48909134,
+              "tt_probes_total": 507428,
+              "tt_hits_total": 33717,
+              "tt_exact_hits_total": 0,
+              "tt_bound_cutoffs_total": 27180,
+              "tt_stores_total": 479750,
+              "tt_replacements_total": 2674,
+              "tt_move_first_total": 6537,
+              "tt_disabled_repetition_total": 0,
+              "knowledge_probes_total": 148,
+              "knowledge_hits_total": 0,
+              "knowledge_promotions_total": 0,
+              "knowledge_disabled_repetition_total": 0,
+              "qnodes_total": 6494334,
+              "qcutoffs_total": 5249778,
+              "qlimit_leaves_total": 51080,
+              "search_threads_total": 148,
+              "probe_mask_total": 518,
+              "pvs_probes_total": 257918,
+              "pvs_researches_total": 3718,
+              "killer_priorities_total": 714366,
+              "history_priorities_total": 2563660,
+              "ordering_updates_total": 119766,
+              "research_mask_total": 1702,
+              "generated_plays_total": 6998099,
+              "legal_batches_total": 6918574,
+              "order_reuse_hits_total": 144097,
+              "qtt_probes_total": 0,
+              "qtt_hits_total": 0,
+              "qtt_cutoffs_total": 0,
+              "reuse_mask_total": 444,
+              "legal_cache_hits_total": 0,
+              "legal_cache_misses_total": 0,
+              "legal_cache_replacements_total": 0,
+              "efficiency_mask_total": 592,
+              "ordering_rule_checks_total": 0,
+              "eval_cache_hits_total": 1303057,
+              "lazy_snapshots_total": 6493119,
+              "selective_usi_skipped_total": 147613502,
+              "tt_hit_rate": 0.06644686536809163,
+              "knowledge_hit_rate": 0.0,
+              "long_think_moves": 10,
+              "long_think_reasons": {
+                "iteration_move_change": 3,
+                "score_drop_150": 7
+              }
+            }
+          }
+        }
+      ],
+      "audit": {
+        "schema": "postgame-source-bridge-audit-v1",
+        "games": 2,
+        "plies": 302,
+        "all_moves_legal": true,
+        "all_terminations_verified": true,
+        "conditions_verified": true,
+        "binary_verified": true,
+        "knowledge_snapshot_verified": true,
+        "duplicates_checked": true,
+        "prior_and_internal_duplicates_excluded": {
+          "wins": 1,
+          "losses": 1,
+          "draws": 0
+        },
+        "candidate_knowledge_uses": 0,
+        "parent_ref": "aea41f166b52b985cfe5cf40fc123520144381eb",
+        "binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "actual_binary_sha256": {
+          "A": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+          "B": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36"
+        },
+        "parent_parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591",
+        "internal_duplicates": 0,
+        "prior_trajectory_overlap": 0,
+        "trajectory_outcomes": [
+          {
+            "sha256": "3a7a57575c3973c21677de640aca4b6bf1a8a16243beed885cbc0c0743f19056",
+            "winner": "A",
+            "a_black": true,
+            "game_id": "b6b03f7cc2c0382ca48c0eab08dbe1ea853a3551cb02b25e3389fbe830607b70:0"
+          },
+          {
+            "sha256": "6e7a97b518d2b008fc286ee3febdd704a0375fb1a4f58f6952c16f1f3fe9b5cf",
+            "winner": "B",
+            "a_black": false,
+            "game_id": "1dd9c61b36ea5836a517b93685da66cc09b3279e274ccb5ed1d186ffa19de612:0"
+          }
+        ],
+        "reward_status": {
+          "verified_win_loss": 2
+        },
+        "loader_reproduced": true,
+        "original_loader_handshake_retained": false,
+        "candidate_parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591",
+        "limitation": "Complete-trajectory sensitivity only; partial-game overlap is not a proof of independence.",
+        "match_run": 39097775103,
+        "build_job": 117587701780,
+        "build_log_sha256": "cd4bcb9a36f0b8078c7a2c57a29b49be34bc1b6700ca8506d57b26c2674a20bc",
+        "actual_lane_jobs": [
+          {
+            "id": 117587840532,
+            "started_at": "2026-10-18T04:39:13Z",
+            "completed_at": "2026-10-18T04:40:08Z"
+          },
+          {
+            "id": 117587840590,
+            "started_at": "2026-10-18T04:39:13Z",
+            "completed_at": "2026-10-18T04:40:08Z"
+          }
+        ],
+        "audit_code_sha256": "657e1a454f5a2ed3144e08c44ffb742884df1abaf0b9c4a5437b1ba86967d341"
+      }
+    },
+    {
+      "stage": "prepare",
+      "generation": 2,
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "spiral-practice-cycle-smoke-20261018-01-prepare-a946f9cbf5cc0487-39097559646-a1.tgz",
+        "sha256": "94948b82b2ec44f0f3039ab0044ed8f32254376b7cf5d060d9b20efb97ab6c03",
+        "bytes": 137221,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-practice-cycle-smoke-20261018-01-prepare-a946f9cbf5cc0487-39097559646-a1.tgz"
+      },
+      "analysis": {
+        "source_games": 2,
+        "source_plies": 302,
+        "unique_static_positions": 292,
+        "selected_cases": 8,
+        "categories": {
+          "static_loss": 8
+        },
+        "selected_side": {
+          "black": 5,
+          "white": 3
+        },
+        "selected_reward": {
+          "1": 5,
+          "-1": 3
+        },
+        "routes": {
+          "knowledge_reference_candidate": 5,
+          "hold": 3
+        },
+        "verification_pairs": 0,
+        "analyzer_binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "options": {
+          "SearchResearchMask": 23,
+          "SearchEfficiencyMask": 8,
+          "SearchReuseMask": 6,
+          "SearchNextMask": 4,
+          "SearchProbeMask": 7,
+          "SearchThreads": 2,
+          "RiskVerify": true,
+          "PositionKnowledge": true,
+          "AdaptiveLongThink": false,
+          "USI_Ponder": false,
+          "OpeningRandomNonLance": false,
+          "RandomSeed": 2031101701
+        },
+        "evaluation_options": {
+          "EvalSafety": 480,
+          "EvalPressure": 380,
+          "EvalActivity": 410,
+          "EvalDanger": 150,
+          "EvalInfluence": 140,
+          "EvalPotential": 210,
+          "EvalCoordination": 340,
+          "EvalHandPotential": 60,
+          "EvalThreat": 20
+        },
+        "fresh_process_per_search": true,
+        "seconds": 5.97,
+        "environment": {
+          "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+          "cpu_count": 4
+        },
+        "status": "diagnosis_completed",
+        "learning_status": "not_run",
+        "formal_adoption": false,
+        "limitation": "Provisional own-engine diagnosis; deeper search and fixed-depth pairing do not prove correct play or evaluation causality."
+      },
+      "learning_status": "not_requested_knowledge_only",
+      "parameter_updates": 0,
+      "eligible_pairs": 0,
+      "split_aliases": 685,
+      "old_aliases_preserved": 656,
+      "bank_pairs_reused": 0,
+      "progress": {
+        "schema": "postgame-progress-v1",
+        "preparation_sha256": "783a9347cb80445aca96247200743d6da89df16ea7ee90b5fa8537c579d3320e",
+        "analysis": {
+          "source_games": 2,
+          "source_plies": 302,
+          "unique_static_positions": 292,
+          "selected_cases": 8,
+          "categories": {
+            "static_loss": 8
+          },
+          "selected_side": {
+            "black": 5,
+            "white": 3
+          },
+          "selected_reward": {
+            "1": 5,
+            "-1": 3
+          },
+          "routes": {
+            "knowledge_reference_candidate": 5,
+            "hold": 3
+          },
+          "verification_pairs": 0,
+          "analyzer_binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+          "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "options": {
+            "SearchResearchMask": 23,
+            "SearchEfficiencyMask": 8,
+            "SearchReuseMask": 6,
+            "SearchNextMask": 4,
+            "SearchProbeMask": 7,
+            "SearchThreads": 2,
+            "RiskVerify": true,
+            "PositionKnowledge": true,
+            "AdaptiveLongThink": false,
+            "USI_Ponder": false,
+            "OpeningRandomNonLance": false,
+            "RandomSeed": 2031101701
+          },
+          "evaluation_options": {
+            "EvalSafety": 480,
+            "EvalPressure": 380,
+            "EvalActivity": 410,
+            "EvalDanger": 150,
+            "EvalInfluence": 140,
+            "EvalPotential": 210,
+            "EvalCoordination": 340,
+            "EvalHandPotential": 60,
+            "EvalThreat": 20
+          },
+          "fresh_process_per_search": true,
+          "seconds": 5.97,
+          "environment": {
+            "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+            "cpu_count": 4
+          },
+          "status": "diagnosis_completed",
+          "learning_status": "not_run",
+          "formal_adoption": false,
+          "limitation": "Provisional own-engine diagnosis; deeper search and fixed-depth pairing do not prove correct play or evaluation causality."
+        },
+        "statistics": {
+          "source_games": 2,
+          "source_plies": 302,
+          "analysis_seconds": 5.97,
+          "selected_cases": 8,
+          "diagnosis_routes": {
+            "knowledge_reference_candidate": 5,
+            "hold": 3
+          },
+          "fixed_depth_pairs": 0,
+          "research_matches_actual": 8,
+          "decision_reasons": {
+            "not_stable_evaluation_pair": 8
+          },
+          "selection_details": {
+            "actual_move_supported": 5,
+            "actual_move_supported_with_search_disagreement": 3
+          },
+          "new_evaluation_pairs": 0,
+          "reused_evaluation_pairs": 0,
+          "evaluation_bank_pairs": 0,
+          "independent_groups": {
+            "train": 0,
+            "validation": 0,
+            "heldout": 0
+          },
+          "deficits": {
+            "pairs": 32,
+            "train": 8,
+            "validation": 4,
+            "heldout": 4
+          },
+          "observed_selected_yield": 0.0,
+          "limitation": "Selected-case observation, not an independent probability or a forecast of games to learning."
+        },
+        "work_items": [
+          {
+            "task_id": "a9679a11cbab4b39757f6e3803eeade9bddc7b00d87de2be729ffb6dc99ba000",
+            "kind": "review_search_stability",
+            "priority": 3,
+            "status": "requires_bounded_research_plan",
+            "executor_connected": false,
+            "formal_adoption": false,
+            "parent": {
+              "engine_ref": "aea41f166b52b985cfe5cf40fc123520144381eb",
+              "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+              "parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591"
+            },
+            "split": "train",
+            "reason": "not_stable_evaluation_pair",
+            "case": {
+              "schema_version": 1,
+              "case_id": "8f3e299e5b1e6fbd0afd231fe7a42d8789e8db664668575992abc13fe7b46231",
+              "source": {
+                "run_id": "39097775103",
+                "game_id": "1dd9c61b36ea5836a517b93685da66cc09b3279e274ccb5ed1d186ffa19de612:0",
+                "ply": 31,
+                "archive_sha256": "8bcdde2857d9272724b271b53239d1a0e93c9cc886033b2ed8b762c8d1c0d493",
+                "manifest_sha256": "5938c7a7721f8050981307b36abec7efb8e506452a3d1384af70dda7182faaf5"
+              },
+              "start_sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+              "history_moves": [
+                "3g3f",
+                "3c3d",
+                "7g7f",
+                "7a6b",
+                "8h2b+",
+                "3a2b",
+                "2h7h",
+                "B*5e",
+                "B*8h",
+                "5e8h+",
+                "7i8h",
+                "1c1d",
+                "9g9f",
+                "8c8d",
+                "3i4h",
+                "8d8e",
+                "8h7g",
+                "2a3c",
+                "7f7e",
+                "9c9d",
+                "1g1f",
+                "8b8d",
+                "2g2f",
+                "4a5b",
+                "7h5h",
+                "B*2h",
+                "B*3g",
+                "2h3g+",
+                "2i3g",
+                "B*2g"
+              ],
+              "position_key": "ln1gk3l/3sg2s1/2ppppnp1/pr4p1p/1pP6/P5PPP/1PSPPPNb1/4RS3/LN1GKG2L b B",
+              "history_key": "187896f7eccecf4816fc9f71ca2eedea61a875b381111432bad96a3f4094ff7c",
+              "analysis_position_command": "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 3g3f 3c3d 7g7f 7a6b 8h2b+ 3a2b 2h7h B*5e B*8h 5e8h+ 7i8h 1c1d 9g9f 8c8d 3i4h 8d8e 8h7g 2a3c 7f7e 9c9d 1g1f 8b8d 2g2f 4a5b 7h5h B*2h B*3g 2h3g+ 2i3g B*2g",
+              "actual_position_after_command": "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 3g3f 3c3d 7g7f 7a6b 8h2b+ 3a2b 2h7h B*5e B*8h 5e8h+ 7i8h 1c1d 9g9f 8c8d 3i4h 8d8e 8h7g 2a3c 7f7e 9c9d 1g1f 8b8d 2g2f 4a5b 7h5h B*2h B*3g 2h3g+ 2i3g B*2g B*3b",
+              "actual_move": "B*3b",
+              "side_to_move": "black",
+              "actor": "B",
+              "outcome": {
+                "winner": "B",
+                "reason": "checkmate",
+                "status": "verified_win_loss",
+                "terminal_reward_stm": 1
+              },
+              "original_observation": {
+                "score_status": "recorded",
+                "score_cp_stm": 335,
+                "depth": 5,
+                "seldepth": 14,
+                "phase_maturity": 37,
+                "phase_stage": "middle",
+                "phase_static_cp_black": 435
+              },
+              "analysis_status": "not_run",
+              "cause": "unclassified",
+              "triage": {
+                "category": "static_loss",
+                "static_loss_candidate_cp": 516,
+                "fixed_static_before": {
+                  "material_term": 600,
+                  "safety": 0,
+                  "pressure": -42,
+                  "activity": 0,
+                  "danger": -22,
+                  "influence": -9,
+                  "potential": 22,
+                  "coordination": -73,
+                  "hand_potential": 7,
+                  "threat": -48,
+                  "clamp": 0,
+                  "total": 435
+                },
+                "fixed_static_after": {
+                  "material_term": 0,
+                  "safety": 0,
+                  "pressure": -14,
+                  "activity": 10,
+                  "danger": -22,
+                  "influence": -4,
+                  "potential": 22,
+                  "coordination": -73,
+                  "hand_potential": 0,
+                  "threat": 0,
+                  "clamp": 0,
+                  "total": -81
+                },
+                "recorded_phase_stage": "middle"
+              }
+            },
+            "research_move": "B*3b",
+            "evidence": {
+              "file": "analysis/diagnosis.json",
+              "case_id": "8f3e299e5b1e6fbd0afd231fe7a42d8789e8db664668575992abc13fe7b46231",
+              "row_sha256": "218d5d9cdb8f737c5fbc1fa13da31d7dab456a7c15b0643e108e32f4f69e555d"
+            }
+          }
+        ],
+        "task_counts": {
+          "review_search_stability": 1
+        },
+        "formal_adoption": false,
+        "strength_improvement_demonstrated": false
+      },
+      "knowledge_stage": {
+        "schema": "postgame-knowledge-stage-v1",
+        "manifest": {
+          "schema": "postgame-knowledge-proposal-v1",
+          "purpose": "research",
+          "cycle_id": "practice-cycle-smoke-20261018-01",
+          "parent": {
+            "engine_ref": "aea41f166b52b985cfe5cf40fc123520144381eb",
+            "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591"
+          },
+          "policy": {
+            "schema": "postgame-knowledge-policy-v1",
+            "max_tasks": 8,
+            "parent_probe_ms": 200,
+            "parent_repeats": 2,
+            "fixed_depth": 2,
+            "fixed_timeout_ms": 5000,
+            "tactical_controls": 12,
+            "min_depth_ratio": 0.9
+          },
+          "preparation_sha256": "e19d6cd23fab5be2e5984e825170b05516f4c3cea462b09e10e9baa44750b194",
+          "diagnosis_sha256": "d6b6be43d4f3789912ff1d53d1be8b52a37403bc0785ef7a951703a3f9522b27",
+          "base_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "base_positions": 163,
+          "candidate_positions": 0,
+          "combined_positions": 163,
+          "candidate_sha256": null,
+          "accepted": [],
+          "rejected": [],
+          "status": "no_effective_candidate",
+          "formal_adoption": false,
+          "strength_improvement_demonstrated": false,
+          "production_match_eligible": true
+        },
+        "binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+        "status": "no_effective_candidate",
+        "formal_adoption": false,
+        "strength_improvement_demonstrated": false
+      }
+    },
+    {
+      "stage": "practice",
+      "generation": 2,
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "spiral-practice-cycle-smoke-20261018-01-practice-dddf47412b6d7fa6-39097559646-a1.tgz",
+        "sha256": "522a939ed7ff74207d3399a15cf7ce04ab29072439f4af8eb975c3e3368d9e01",
+        "bytes": 222228,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-practice-cycle-smoke-20261018-01-practice-dddf47412b6d7fa6-39097559646-a1.tgz"
+      },
+      "practice": {
+        "schema": "postgame-practice-cycle-receipt-v1",
+        "parent": {
+          "engine_ref": "aea41f166b52b985cfe5cf40fc123520144381eb",
+          "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591"
+        },
+        "plan_sha256": "8cef249dc12565935bc91231d8c87ee7c4fc519d4936eba02f6cd9c1d103dc64",
+        "practice_ids": [
+          "73eb933d28b149724a3b491e6b88d4d4c7b4dea61baac20099ed03e7aeafd802"
+        ],
+        "games": 4,
+        "new_plies": 64,
+        "replayed_prefix_plies": 120,
+        "handoff_available": true,
+        "selected_cases": 8,
+        "analysis_reservation_ms": 600000,
+        "trajectory_signatures": [
+          "14978d40487c2b27e661f08dbfa1919654d479a1a4bae119e40d1140320bb31e",
+          "1e4692e5752891eb84c69bdbfb5beda795813db7ca25f444f2ca43477229f14d",
+          "26fa20b71dd58248704bc2911450ac70c45f5acf2ab49098bcf9e47f70c3404a",
+          "f10f02c7898aa1bb06e1193ba57f3883f48c7da8fcbe4123e47dee46b72fdaf2"
+        ],
+        "requested_analysis_ms": 49200,
+        "analysis_and_audit_seconds": 15.083,
+        "verification": {
+          "all_moves_legal": true,
+          "all_terminations_verified": true,
+          "settings_verified": true,
+          "full_history_verified": true,
+          "raw_archive_reproduced": true,
+          "games": 4,
+          "new_plies": 64,
+          "new_engine_runs": 0,
+          "formal_adoption": false,
+          "strength_improvement_demonstrated": false,
+          "handoff_reproduced": true
+        },
+        "formal_adoption": false,
+        "strength_improvement_demonstrated": false
+      },
+      "practice_replay": {
+        "practice_reproduced": true,
+        "handoff_reproduced": true,
+        "new_games": 0,
+        "new_engine_runs": 0,
+        "games": 4,
+        "new_plies": 64,
+        "formal_adoption": false
+      }
+    },
+    {
+      "stage": "collect_source",
+      "generation": 2,
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "spiral-practice-cycle-smoke-20261018-01-collect_source-4078dca410ad289d-39097559646-a1.tgz",
+        "sha256": "3120938ff82cc4588206a517d97f1bc134242b2d4d025901b09fedac49c9aac5",
+        "bytes": 5211520,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-practice-cycle-smoke-20261018-01-collect_source-4078dca410ad289d-39097559646-a1.tgz"
+      },
+      "body_run": 39098024769,
+      "games": 2,
+      "plies": 211,
+      "result": {
+        "wins": 0,
+        "losses": 2,
+        "draws": 0
+      },
+      "runtime_statistics": [
+        {
+          "shard": "shard-0.json",
+          "source_sha256": "02fd18cddda9666ebc295e9f45d34e74c5dbc82dab069d68aca820ff9fa21295",
+          "games": 1,
+          "elapsed_seconds": 33.992,
+          "ponder": {
+            "A": {
+              "hits": 26,
+              "misses": 18
+            },
+            "B": {
+              "hits": 31,
+              "misses": 14
+            }
+          },
+          "timing_ms": {
+            "A": {
+              "moves": 46,
+              "mean": 362.348,
+              "max": 995.106
+            },
+            "B": {
+              "moves": 46,
+              "mean": 366.171,
+              "max": 995.345
+            }
+          },
+          "search": {
+            "A": {
+              "samples": 45,
+              "nodes_total": 4090671,
+              "cutoffs_total": 155495,
+              "min_cutoffs_total": 77483,
+              "max_cutoffs_total": 78012,
+              "leaves_total": 3389853,
+              "terminals_total": 740,
+              "ply1_total": 10326,
+              "ply2_total": 58453,
+              "ply3_total": 281214,
+              "order_calls_total": 689617,
+              "ordered_moves_total": 16474427,
+              "tt_probes_total": 187601,
+              "tt_hits_total": 14389,
+              "tt_exact_hits_total": 0,
+              "tt_bound_cutoffs_total": 10842,
+              "tt_stores_total": 176464,
+              "tt_replacements_total": 644,
+              "tt_move_first_total": 3547,
+              "tt_disabled_repetition_total": 0,
+              "knowledge_probes_total": 89,
+              "knowledge_hits_total": 0,
+              "knowledge_promotions_total": 0,
+              "knowledge_disabled_repetition_total": 0,
+              "qnodes_total": 3903034,
+              "qcutoffs_total": 2992200,
+              "qlimit_leaves_total": 112595,
+              "search_threads_total": 90,
+              "probe_mask_total": 315,
+              "pvs_probes_total": 108251,
+              "pvs_researches_total": 2135,
+              "killer_priorities_total": 226221,
+              "history_priorities_total": 617044,
+              "ordering_updates_total": 35507,
+              "research_mask_total": 1035,
+              "generated_plays_total": 4088536,
+              "legal_batches_total": 4039748,
+              "order_reuse_hits_total": 158412,
+              "qtt_probes_total": 0,
+              "qtt_hits_total": 0,
+              "qtt_cutoffs_total": 0,
+              "reuse_mask_total": 270,
+              "legal_cache_hits_total": 0,
+              "legal_cache_misses_total": 0,
+              "legal_cache_replacements_total": 0,
+              "efficiency_mask_total": 360,
+              "ordering_rule_checks_total": 0,
+              "eval_cache_hits_total": 990136,
+              "lazy_snapshots_total": 3902326,
+              "selective_usi_skipped_total": 99093441,
+              "tt_hit_rate": 0.07670001759052457,
+              "knowledge_hit_rate": 0.0,
+              "long_think_moves": 10,
+              "long_think_reasons": {
+                "in_check": 1,
+                "iteration_score_change_150": 2,
+                "score_drop_150": 6,
+                "unfinished_depth2": 1
+              }
+            },
+            "B": {
+              "samples": 46,
+              "nodes_total": 4685007,
+              "cutoffs_total": 192880,
+              "min_cutoffs_total": 123744,
+              "max_cutoffs_total": 69136,
+              "leaves_total": 3867095,
+              "terminals_total": 1229,
+              "ply1_total": 13481,
+              "ply2_total": 54153,
+              "ply3_total": 454286,
+              "order_calls_total": 805831,
+              "ordered_moves_total": 19269902,
+              "tt_probes_total": 230523,
+              "tt_hits_total": 14206,
+              "tt_exact_hits_total": 0,
+              "tt_bound_cutoffs_total": 11262,
+              "tt_stores_total": 218942,
+              "tt_replacements_total": 790,
+              "tt_move_first_total": 2944,
+              "tt_disabled_repetition_total": 0,
+              "knowledge_probes_total": 92,
+              "knowledge_hits_total": 0,
+              "knowledge_promotions_total": 0,
+              "knowledge_disabled_repetition_total": 0,
+              "qnodes_total": 4454369,
+              "qcutoffs_total": 3428411,
+              "qlimit_leaves_total": 105335,
+              "search_threads_total": 92,
+              "probe_mask_total": 322,
+              "pvs_probes_total": 115629,
+              "pvs_researches_total": 2080,
+              "killer_priorities_total": 272968,
+              "history_priorities_total": 772234,
+              "ordering_updates_total": 41224,
+              "research_mask_total": 1058,
+              "generated_plays_total": 4682927,
+              "legal_batches_total": 4632413,
+              "order_reuse_hits_total": 166687,
+              "qtt_probes_total": 0,
+              "qtt_hits_total": 0,
+              "qtt_cutoffs_total": 0,
+              "reuse_mask_total": 276,
+              "legal_cache_hits_total": 0,
+              "legal_cache_misses_total": 0,
+              "legal_cache_replacements_total": 0,
+              "efficiency_mask_total": 368,
+              "ordering_rule_checks_total": 0,
+              "eval_cache_hits_total": 1064634,
+              "lazy_snapshots_total": 4453250,
+              "selective_usi_skipped_total": 111620298,
+              "tt_hit_rate": 0.06162508730148401,
+              "knowledge_hit_rate": 0.0,
+              "long_think_moves": 10,
+              "long_think_reasons": {
+                "iteration_score_change_150": 5,
+                "score_drop_150": 4,
+                "in_check": 1
+              }
+            }
+          }
+        },
+        {
+          "shard": "shard-1.json",
+          "source_sha256": "bfbd5ff14f04533990f92c15cf8652b2e9fbbfd232dcee6b1e3966c9996623d9",
+          "games": 1,
+          "elapsed_seconds": 39.128,
+          "ponder": {
+            "A": {
+              "hits": 34,
+              "misses": 24
+            },
+            "B": {
+              "hits": 39,
+              "misses": 18
+            }
+          },
+          "timing_ms": {
+            "A": {
+              "moves": 59,
+              "mean": 327.771,
+              "max": 995.049
+            },
+            "B": {
+              "moves": 60,
+              "mean": 322.252,
+              "max": 994.088
+            }
+          },
+          "search": {
+            "A": {
+              "samples": 59,
+              "nodes_total": 5966072,
+              "cutoffs_total": 302566,
+              "min_cutoffs_total": 149473,
+              "max_cutoffs_total": 153093,
+              "leaves_total": 5219896,
+              "terminals_total": 2781,
+              "ply1_total": 13883,
+              "ply2_total": 91624,
+              "ply3_total": 440591,
+              "order_calls_total": 717411,
+              "ordered_moves_total": 27930530,
+              "tt_probes_total": 375067,
+              "tt_hits_total": 33471,
+              "tt_exact_hits_total": 0,
+              "tt_bound_cutoffs_total": 26486,
+              "tt_stores_total": 348173,
+              "tt_replacements_total": 1754,
+              "tt_move_first_total": 6985,
+              "tt_disabled_repetition_total": 0,
+              "knowledge_probes_total": 116,
+              "knowledge_hits_total": 0,
+              "knowledge_promotions_total": 0,
+              "knowledge_disabled_repetition_total": 0,
+              "qnodes_total": 5590898,
+              "qcutoffs_total": 4412583,
+              "qlimit_leaves_total": 126815,
+              "search_threads_total": 118,
+              "probe_mask_total": 413,
+              "pvs_probes_total": 185391,
+              "pvs_researches_total": 3034,
+              "killer_priorities_total": 490452,
+              "history_priorities_total": 1818584,
+              "ordering_updates_total": 100199,
+              "research_mask_total": 1357,
+              "generated_plays_total": 5963038,
+              "legal_batches_total": 5861347,
+              "order_reuse_hits_total": 157660,
+              "qtt_probes_total": 0,
+              "qtt_hits_total": 0,
+              "qtt_cutoffs_total": 0,
+              "reuse_mask_total": 354,
+              "legal_cache_hits_total": 0,
+              "legal_cache_misses_total": 0,
+              "legal_cache_replacements_total": 0,
+              "efficiency_mask_total": 472,
+              "ordering_rule_checks_total": 0,
+              "eval_cache_hits_total": 1448814,
+              "lazy_snapshots_total": 5588215,
+              "selective_usi_skipped_total": 134577248,
+              "tt_hit_rate": 0.08924005577670123,
+              "knowledge_hit_rate": 0.0,
+              "long_think_moves": 10,
+              "long_think_reasons": {
+                "iteration_move_change": 3,
+                "iteration_score_change_150": 2,
+                "score_drop_150": 5
+              }
+            },
+            "B": {
+              "samples": 59,
+              "nodes_total": 6344855,
+              "cutoffs_total": 331819,
+              "min_cutoffs_total": 172083,
+              "max_cutoffs_total": 159736,
+              "leaves_total": 5551960,
+              "terminals_total": 3761,
+              "ply1_total": 20544,
+              "ply2_total": 80463,
+              "ply3_total": 636693,
+              "order_calls_total": 767324,
+              "ordered_moves_total": 31334807,
+              "tt_probes_total": 402908,
+              "tt_hits_total": 28218,
+              "tt_exact_hits_total": 0,
+              "tt_bound_cutoffs_total": 22316,
+              "tt_stores_total": 380201,
+              "tt_replacements_total": 1920,
+              "tt_move_first_total": 5902,
+              "tt_disabled_repetition_total": 0,
+              "knowledge_probes_total": 118,
+              "knowledge_hits_total": 0,
+              "knowledge_promotions_total": 0,
+              "knowledge_disabled_repetition_total": 0,
+              "qnodes_total": 5941655,
+              "qcutoffs_total": 4729756,
+              "qlimit_leaves_total": 145217,
+              "search_threads_total": 118,
+              "probe_mask_total": 413,
+              "pvs_probes_total": 184141,
+              "pvs_researches_total": 2846,
+              "killer_priorities_total": 541420,
+              "history_priorities_total": 1817261,
+              "ordering_updates_total": 94768,
+              "research_mask_total": 1357,
+              "generated_plays_total": 6342009,
+              "legal_batches_total": 6225626,
+              "order_reuse_hits_total": 163132,
+              "qtt_probes_total": 0,
+              "qtt_hits_total": 0,
+              "qtt_cutoffs_total": 0,
+              "reuse_mask_total": 354,
+              "legal_cache_hits_total": 0,
+              "legal_cache_misses_total": 0,
+              "legal_cache_replacements_total": 0,
+              "efficiency_mask_total": 472,
+              "ordering_rule_checks_total": 0,
+              "eval_cache_hits_total": 1521181,
+              "lazy_snapshots_total": 5938175,
+              "selective_usi_skipped_total": 131592578,
+              "tt_hit_rate": 0.07003583944721872,
+              "knowledge_hit_rate": 0.0,
+              "long_think_moves": 10,
+              "long_think_reasons": {
+                "iteration_move_change": 3,
+                "score_drop_150": 3,
+                "iteration_score_change_150": 4
+              }
+            }
+          }
+        }
+      ],
+      "audit": {
+        "schema": "postgame-source-bridge-audit-v1",
+        "games": 2,
+        "plies": 211,
+        "all_moves_legal": true,
+        "all_terminations_verified": true,
+        "conditions_verified": true,
+        "binary_verified": true,
+        "knowledge_snapshot_verified": true,
+        "duplicates_checked": true,
+        "prior_and_internal_duplicates_excluded": {
+          "wins": 0,
+          "losses": 2,
+          "draws": 0
+        },
+        "candidate_knowledge_uses": 0,
+        "parent_ref": "aea41f166b52b985cfe5cf40fc123520144381eb",
+        "binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "actual_binary_sha256": {
+          "A": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+          "B": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36"
+        },
+        "parent_parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591",
+        "internal_duplicates": 0,
+        "prior_trajectory_overlap": 0,
+        "trajectory_outcomes": [
+          {
+            "sha256": "4952e8c0db794b82e5e28f5b541cf63eac3242a5cd77fe72b961b05af4ee57d0",
+            "winner": "B",
+            "a_black": true,
+            "game_id": "02fd18cddda9666ebc295e9f45d34e74c5dbc82dab069d68aca820ff9fa21295:0"
+          },
+          {
+            "sha256": "487b780dc173d3b4d5862e02361d41b6c17fba7de8b1d21ab8f82b09cdfc0e7f",
+            "winner": "B",
+            "a_black": false,
+            "game_id": "bfbd5ff14f04533990f92c15cf8652b2e9fbbfd232dcee6b1e3966c9996623d9:0"
+          }
+        ],
+        "reward_status": {
+          "verified_win_loss": 2
+        },
+        "loader_reproduced": true,
+        "original_loader_handshake_retained": false,
+        "candidate_parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591",
+        "limitation": "Complete-trajectory sensitivity only; partial-game overlap is not a proof of independence.",
+        "match_run": 39098024769,
+        "build_job": 117588409970,
+        "build_log_sha256": "f2d5b3922eeb422405310f6cf2156d8185c8799272a793f4674ec220a4b9d1be",
+        "actual_lane_jobs": [
+          {
+            "id": 117588531134,
+            "started_at": "2026-10-18T04:43:21Z",
+            "completed_at": "2026-10-18T04:44:11Z"
+          },
+          {
+            "id": 117588531160,
+            "started_at": "2026-10-18T04:43:21Z",
+            "completed_at": "2026-10-18T04:44:02Z"
+          }
+        ],
+        "audit_code_sha256": "657e1a454f5a2ed3144e08c44ffb742884df1abaf0b9c4a5437b1ba86967d341"
+      }
+    },
+    {
+      "stage": "prepare",
+      "generation": 3,
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "spiral-practice-cycle-smoke-20261018-01-prepare-9958a351e7451eb5-39097559646-a1.tgz",
+        "sha256": "4a7e58d07c2318c41abb8a0633cdee2855a4a14a873356b1827fb408b557c584",
+        "bytes": 161965,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-practice-cycle-smoke-20261018-01-prepare-9958a351e7451eb5-39097559646-a1.tgz"
+      },
+      "analysis": {
+        "source_games": 2,
+        "source_plies": 211,
+        "unique_static_positions": 212,
+        "selected_cases": 8,
+        "categories": {
+          "static_loss": 8
+        },
+        "selected_side": {
+          "black": 5,
+          "white": 3
+        },
+        "selected_reward": {
+          "-1": 3,
+          "1": 5
+        },
+        "routes": {
+          "knowledge_reference_candidate": 5,
+          "hold": 3
+        },
+        "verification_pairs": 1,
+        "analyzer_binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "options": {
+          "SearchResearchMask": 23,
+          "SearchEfficiencyMask": 8,
+          "SearchReuseMask": 6,
+          "SearchNextMask": 4,
+          "SearchProbeMask": 7,
+          "SearchThreads": 2,
+          "RiskVerify": true,
+          "PositionKnowledge": true,
+          "AdaptiveLongThink": false,
+          "USI_Ponder": false,
+          "OpeningRandomNonLance": false,
+          "RandomSeed": 2031101701
+        },
+        "evaluation_options": {
+          "EvalSafety": 480,
+          "EvalPressure": 380,
+          "EvalActivity": 410,
+          "EvalDanger": 150,
+          "EvalInfluence": 140,
+          "EvalPotential": 210,
+          "EvalCoordination": 340,
+          "EvalHandPotential": 60,
+          "EvalThreat": 20
+        },
+        "fresh_process_per_search": true,
+        "seconds": 7.642,
+        "environment": {
+          "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+          "cpu_count": 4
+        },
+        "status": "diagnosis_completed",
+        "learning_status": "not_run",
+        "formal_adoption": false,
+        "limitation": "Provisional own-engine diagnosis; deeper search and fixed-depth pairing do not prove correct play or evaluation causality."
+      },
+      "learning_status": "not_requested_knowledge_only",
+      "parameter_updates": 0,
+      "eligible_pairs": 0,
+      "split_aliases": 828,
+      "old_aliases_preserved": 797,
+      "bank_pairs_reused": 0,
+      "progress": {
+        "schema": "postgame-progress-v1",
+        "preparation_sha256": "d63cfd9865d602a11b272927c82b0a9584d1086acb7458636cb7ba70d02e2e46",
+        "analysis": {
+          "source_games": 2,
+          "source_plies": 211,
+          "unique_static_positions": 212,
+          "selected_cases": 8,
+          "categories": {
+            "static_loss": 8
+          },
+          "selected_side": {
+            "black": 5,
+            "white": 3
+          },
+          "selected_reward": {
+            "-1": 3,
+            "1": 5
+          },
+          "routes": {
+            "knowledge_reference_candidate": 5,
+            "hold": 3
+          },
+          "verification_pairs": 1,
+          "analyzer_binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+          "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "options": {
+            "SearchResearchMask": 23,
+            "SearchEfficiencyMask": 8,
+            "SearchReuseMask": 6,
+            "SearchNextMask": 4,
+            "SearchProbeMask": 7,
+            "SearchThreads": 2,
+            "RiskVerify": true,
+            "PositionKnowledge": true,
+            "AdaptiveLongThink": false,
+            "USI_Ponder": false,
+            "OpeningRandomNonLance": false,
+            "RandomSeed": 2031101701
+          },
+          "evaluation_options": {
+            "EvalSafety": 480,
+            "EvalPressure": 380,
+            "EvalActivity": 410,
+            "EvalDanger": 150,
+            "EvalInfluence": 140,
+            "EvalPotential": 210,
+            "EvalCoordination": 340,
+            "EvalHandPotential": 60,
+            "EvalThreat": 20
+          },
+          "fresh_process_per_search": true,
+          "seconds": 7.642,
+          "environment": {
+            "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+            "cpu_count": 4
+          },
+          "status": "diagnosis_completed",
+          "learning_status": "not_run",
+          "formal_adoption": false,
+          "limitation": "Provisional own-engine diagnosis; deeper search and fixed-depth pairing do not prove correct play or evaluation causality."
+        },
+        "statistics": {
+          "source_games": 2,
+          "source_plies": 211,
+          "analysis_seconds": 7.642,
+          "selected_cases": 8,
+          "diagnosis_routes": {
+            "knowledge_reference_candidate": 5,
+            "hold": 3
+          },
+          "fixed_depth_pairs": 1,
+          "research_matches_actual": 7,
+          "decision_reasons": {
+            "not_stable_evaluation_pair": 8
+          },
+          "selection_details": {
+            "actual_move_supported": 5,
+            "actual_move_supported_with_search_disagreement": 2,
+            "improvement_below_150cp": 1
+          },
+          "new_evaluation_pairs": 0,
+          "reused_evaluation_pairs": 0,
+          "evaluation_bank_pairs": 0,
+          "independent_groups": {
+            "train": 0,
+            "validation": 0,
+            "heldout": 0
+          },
+          "deficits": {
+            "pairs": 32,
+            "train": 8,
+            "validation": 4,
+            "heldout": 4
+          },
+          "observed_selected_yield": 0.0,
+          "limitation": "Selected-case observation, not an independent probability or a forecast of games to learning."
+        },
+        "work_items": [
+          {
+            "task_id": "f2602c8a32ec99d5e7c3ee2a354960317f74509a17dad3b3ba0b1f4a3dcd418d",
+            "kind": "review_search_stability",
+            "priority": 3,
+            "status": "requires_bounded_research_plan",
+            "executor_connected": false,
+            "formal_adoption": false,
+            "parent": {
+              "engine_ref": "aea41f166b52b985cfe5cf40fc123520144381eb",
+              "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+              "parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591"
+            },
+            "split": "train",
+            "reason": "not_stable_evaluation_pair",
+            "case": {
+              "schema_version": 1,
+              "case_id": "0e117d47109b983645b7462ac92237065435c18a9a6c2461647be2308c5a424d",
+              "source": {
+                "run_id": "39098024769",
+                "game_id": "bfbd5ff14f04533990f92c15cf8652b2e9fbbfd232dcee6b1e3966c9996623d9:0",
+                "ply": 97,
+                "archive_sha256": "e4fd62bf5a1458f5713fb75c1773b4edfb7e0e42afb1a239a42ef4a9521b1a07",
+                "manifest_sha256": "ecbd243cc9e1347b104fcdece32089e828815b74175f947d1bfbe581d29cf5a5"
+              },
+              "start_sfen": "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+              "history_moves": [
+                "7i6h",
+                "3c3d",
+                "9g9f",
+                "3a4b",
+                "3i4h",
+                "2b4d",
+                "6h7i",
+                "8b5b",
+                "7g7f",
+                "7a6b",
+                "8h4d",
+                "4c4d",
+                "B*6e",
+                "B*5e",
+                "9i9g",
+                "5c5d",
+                "6e8c+",
+                "5e9i+",
+                "7i7h",
+                "6a7a",
+                "8c5f",
+                "4b3c",
+                "1g1f",
+                "1c1d",
+                "2g2f",
+                "9i8h",
+                "5f6f",
+                "8h6f",
+                "6g6f",
+                "3c4b",
+                "2f2e",
+                "4a3a",
+                "2e2d",
+                "2c2d",
+                "2h2d",
+                "5b5c",
+                "2i1g",
+                "7a6a",
+                "2d3d",
+                "B*2h",
+                "P*2b",
+                "4b3c",
+                "3d3e",
+                "3c2b",
+                "3e8e",
+                "6a7a",
+                "8e8c+",
+                "2h1i+",
+                "8c8e",
+                "1i1h",
+                "1g2e",
+                "1h2g",
+                "8i7g",
+                "2g1f",
+                "8e3e",
+                "P*2d",
+                "7g6e",
+                "5c5b",
+                "3e2d",
+                "L*2c",
+                "2d4d",
+                "1f2e",
+                "B*4c",
+                "2e4c",
+                "4d4c",
+                "3a4b",
+                "4c4e",
+                "P*4c",
+                "4e3e",
+                "4b3c",
+                "3e4e",
+                "3c4d",
+                "4e3f",
+                "N*8e",
+                "P*2d",
+                "8e9g+",
+                "2d2c+",
+                "L*6g",
+                "7h6g",
+                "P*3e",
+                "3f2f",
+                "2b2c",
+                "L*5c",
+                "6b5c",
+                "6e5c+",
+                "5b5c",
+                "2f2c",
+                "B*1b",
+                "2c2b",
+                "5c5b",
+                "L*5c",
+                "L*5h",
+                "6i5h",
+                "5b5c",
+                "S*4b",
+                "5a5b"
+              ],
+              "position_key": "lng4nl/4kS1+Rb/p1pprp3/4pg2p/6p2/P1PP5/+nP1SPPP2/4GS3/4KG3 b BSL3Pnlp",
+              "history_key": "d1fe977457e1845ffb270902c6322915c84eda97600819d9cb00ed6fb0ca6ae3",
+              "analysis_position_command": "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7i6h 3c3d 9g9f 3a4b 3i4h 2b4d 6h7i 8b5b 7g7f 7a6b 8h4d 4c4d B*6e B*5e 9i9g 5c5d 6e8c+ 5e9i+ 7i7h 6a7a 8c5f 4b3c 1g1f 1c1d 2g2f 9i8h 5f6f 8h6f 6g6f 3c4b 2f2e 4a3a 2e2d 2c2d 2h2d 5b5c 2i1g 7a6a 2d3d B*2h P*2b 4b3c 3d3e 3c2b 3e8e 6a7a 8e8c+ 2h1i+ 8c8e 1i1h 1g2e 1h2g 8i7g 2g1f 8e3e P*2d 7g6e 5c5b 3e2d L*2c 2d4d 1f2e B*4c 2e4c 4d4c 3a4b 4c4e P*4c 4e3e 4b3c 3e4e 3c4d 4e3f N*8e P*2d 8e9g+ 2d2c+ L*6g 7h6g P*3e 3f2f 2b2c L*5c 6b5c 6e5c+ 5b5c 2f2c B*1b 2c2b 5c5b L*5c L*5h 6i5h 5b5c S*4b 5a5b",
+              "actual_position_after_command": "position sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1 moves 7i6h 3c3d 9g9f 3a4b 3i4h 2b4d 6h7i 8b5b 7g7f 7a6b 8h4d 4c4d B*6e B*5e 9i9g 5c5d 6e8c+ 5e9i+ 7i7h 6a7a 8c5f 4b3c 1g1f 1c1d 2g2f 9i8h 5f6f 8h6f 6g6f 3c4b 2f2e 4a3a 2e2d 2c2d 2h2d 5b5c 2i1g 7a6a 2d3d B*2h P*2b 4b3c 3d3e 3c2b 3e8e 6a7a 8e8c+ 2h1i+ 8c8e 1i1h 1g2e 1h2g 8i7g 2g1f 8e3e P*2d 7g6e 5c5b 3e2d L*2c 2d4d 1f2e B*4c 2e4c 4d4c 3a4b 4c4e P*4c 4e3e 4b3c 3e4e 3c4d 4e3f N*8e P*2d 8e9g+ 2d2c+ L*6g 7h6g P*3e 3f2f 2b2c L*5c 6b5c 6e5c+ 5b5c 2f2c B*1b 2c2b 5c5b L*5c L*5h 6i5h 5b5c S*4b 5a5b B*3a",
+              "actual_move": "B*3a",
+              "side_to_move": "black",
+              "actor": "B",
+              "outcome": {
+                "winner": "B",
+                "reason": "checkmate",
+                "status": "verified_win_loss",
+                "terminal_reward_stm": 1
+              },
+              "original_observation": {
+                "score_status": "recorded",
+                "score_cp_stm": 5801,
+                "depth": 2,
+                "seldepth": 12,
+                "phase_maturity": 70,
+                "phase_stage": "end",
+                "phase_static_cp_black": 2282
+              },
+              "analysis_status": "not_run",
+              "cause": "unclassified",
+              "triage": {
+                "category": "static_loss",
+                "static_loss_candidate_cp": 515,
+                "fixed_static_before": {
+                  "material_term": 1570,
+                  "safety": 124,
+                  "pressure": 239,
+                  "activity": 30,
+                  "danger": 199,
+                  "influence": 11,
+                  "potential": -21,
+                  "coordination": -8,
+                  "hand_potential": 10,
+                  "threat": 128,
+                  "clamp": 0,
+                  "total": 2282
+                },
+                "fixed_static_after": {
+                  "material_term": 970,
+                  "safety": 124,
+                  "pressure": 304,
+                  "activity": 17,
+                  "danger": 199,
+                  "influence": 12,
+                  "potential": -11,
+                  "coordination": 21,
+                  "hand_potential": 3,
+                  "threat": 128,
+                  "clamp": 0,
+                  "total": 1767
+                },
+                "recorded_phase_stage": "end"
+              }
+            },
+            "research_move": "B*3a",
+            "evidence": {
+              "file": "analysis/diagnosis.json",
+              "case_id": "0e117d47109b983645b7462ac92237065435c18a9a6c2461647be2308c5a424d",
+              "row_sha256": "6fc8d4bf64f2535bf26b0b4d5e37f9d33744270b83d95c665ab569ffffcd4ef6"
+            }
+          }
+        ],
+        "task_counts": {
+          "review_search_stability": 1
+        },
+        "formal_adoption": false,
+        "strength_improvement_demonstrated": false
+      },
+      "knowledge_stage": {
+        "schema": "postgame-knowledge-stage-v1",
+        "manifest": {
+          "schema": "postgame-knowledge-proposal-v1",
+          "purpose": "research",
+          "cycle_id": "practice-cycle-smoke-20261018-01",
+          "parent": {
+            "engine_ref": "aea41f166b52b985cfe5cf40fc123520144381eb",
+            "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+            "parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591"
+          },
+          "policy": {
+            "schema": "postgame-knowledge-policy-v1",
+            "max_tasks": 8,
+            "parent_probe_ms": 200,
+            "parent_repeats": 2,
+            "fixed_depth": 2,
+            "fixed_timeout_ms": 5000,
+            "tactical_controls": 12,
+            "min_depth_ratio": 0.9
+          },
+          "preparation_sha256": "56857bab6cbe897f2cd49ae6420d9ec4ae2958d72e408b8e45dee294332fc0e1",
+          "diagnosis_sha256": "a478da4104f78536696475ecf5daac0df34e688a58d029e1b5765ce704a3cf42",
+          "base_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+          "base_positions": 163,
+          "candidate_positions": 0,
+          "combined_positions": 163,
+          "candidate_sha256": null,
+          "accepted": [],
+          "rejected": [],
+          "status": "no_effective_candidate",
+          "formal_adoption": false,
+          "strength_improvement_demonstrated": false,
+          "production_match_eligible": true
+        },
+        "binary_sha256": "90c6080f59e93fb68b34321ae634a8ae7284e4142bb6bd82619e7f0593ab38a8",
+        "status": "no_effective_candidate",
+        "formal_adoption": false,
+        "strength_improvement_demonstrated": false
+      }
+    }
+  ],
+  "generation": 3,
+  "used_games": 6,
+  "stage": "complete",
+  "parent_retained": true,
+  "parameter_updates": 0,
+  "final_trajectory_signatures": 134,
+  "formal_adoption": false,
+  "scope": "Read-only replay of the actual stages listed in stage_reports; unexecuted branches and strength improvement are not established by this audit."
+}
