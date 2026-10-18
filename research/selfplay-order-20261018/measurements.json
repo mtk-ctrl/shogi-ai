@@ -1,0 +1,260 @@
+{
+  "schema": "selfplay-order-cycle-v1",
+  "candidate_ref": "77b9a1630dc7153af06c3fbecc7ab03c7c40ae0f",
+  "formal_adoption": false,
+  "screens": [
+    {
+      "scale": 50,
+      "report": {
+        "run_id": 39118731742,
+        "request": {
+          "ref_a": "77b9a1630dc7153af06c3fbecc7ab03c7c40ae0f",
+          "ref_b": "4448f40400a893feb3b4d79237111008026547da",
+          "games": 100,
+          "shards": 18,
+          "seed": 2031101801,
+          "go_command": "go movetime 200",
+          "max_plies": 300,
+          "options_a": "{\"AdaptiveLongThink\": true, \"OpeningRandomNonLance\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"RiskVerify\": true, \"SearchEfficiencyMask\": 8, \"SearchNextMask\": 4, \"SearchProbeMask\": 7, \"SearchResearchMask\": 23, \"SearchReuseMask\": 6, \"SearchThreads\": 2, \"SelfplayOrder\": true, \"SelfplayOrderScale\": 50, \"USI_Ponder\": true}",
+          "options_b": "{\"AdaptiveLongThink\": true, \"OpeningRandomNonLance\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"RiskVerify\": true, \"SearchEfficiencyMask\": 8, \"SearchNextMask\": 4, \"SearchProbeMask\": 7, \"SearchResearchMask\": 23, \"SearchReuseMask\": 6, \"SearchThreads\": 2, \"USI_Ponder\": true}"
+        },
+        "actual_binary_sha256": {
+          "A": "2fa528950fa0dd1e824531d09fbfda1c8b6e146142eed4f34fb2f8163130edc1",
+          "B": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36"
+        },
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "all_moves_legal": true,
+        "all_terminations_verified": true,
+        "raw": {
+          "games": 100,
+          "wins": 41,
+          "losses": 59,
+          "draws": 0,
+          "score": 0.41,
+          "lower": 0.3136006722015138
+        },
+        "unique": {
+          "games": 100,
+          "wins": 41,
+          "losses": 59,
+          "draws": 0,
+          "score": 0.41,
+          "lower": 0.3136006722015138
+        },
+        "model_order_calls": {
+          "A": 50932906,
+          "B": 0
+        },
+        "mean_depth": {
+          "A": 3.118397731300957,
+          "B": 3.1205460024818295
+        },
+        "mean_elapsed_ms": {
+          "A": 307.03715365938257,
+          "B": 305.31377593073597
+        },
+        "complete_trajectory_overlap": 0,
+        "limitation": "Complete-trajectory deduplication does not establish independent openings."
+      },
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "selfplay-order-screen-50-39118718919.tgz",
+        "sha256": "758c41c0eab4437a6cc46b175448e4f5657692e181b3f907086f5c339232eb4c",
+        "bytes": 6050104,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/selfplay-order-screen-50-39118718919.tgz"
+      }
+    },
+    {
+      "scale": 100,
+      "report": {
+        "run_id": 39119173027,
+        "request": {
+          "ref_a": "77b9a1630dc7153af06c3fbecc7ab03c7c40ae0f",
+          "ref_b": "4448f40400a893feb3b4d79237111008026547da",
+          "games": 100,
+          "shards": 19,
+          "seed": 2032101801,
+          "go_command": "go movetime 200",
+          "max_plies": 300,
+          "options_a": "{\"AdaptiveLongThink\": true, \"OpeningRandomNonLance\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"RiskVerify\": true, \"SearchEfficiencyMask\": 8, \"SearchNextMask\": 4, \"SearchProbeMask\": 7, \"SearchResearchMask\": 23, \"SearchReuseMask\": 6, \"SearchThreads\": 2, \"SelfplayOrder\": true, \"SelfplayOrderScale\": 100, \"USI_Ponder\": true}",
+          "options_b": "{\"AdaptiveLongThink\": true, \"OpeningRandomNonLance\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"RiskVerify\": true, \"SearchEfficiencyMask\": 8, \"SearchNextMask\": 4, \"SearchProbeMask\": 7, \"SearchResearchMask\": 23, \"SearchReuseMask\": 6, \"SearchThreads\": 2, \"USI_Ponder\": true}"
+        },
+        "actual_binary_sha256": {
+          "A": "2fa528950fa0dd1e824531d09fbfda1c8b6e146142eed4f34fb2f8163130edc1",
+          "B": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36"
+        },
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "all_moves_legal": true,
+        "all_terminations_verified": true,
+        "raw": {
+          "games": 100,
+          "wins": 48,
+          "losses": 51,
+          "draws": 1,
+          "score": 0.485,
+          "lower": 0.38704410992696764
+        },
+        "unique": {
+          "games": 98,
+          "wins": 48,
+          "losses": 49,
+          "draws": 1,
+          "score": 0.49489795918367346,
+          "lower": 0.3959081637912355
+        },
+        "model_order_calls": {
+          "A": 45027354,
+          "B": 0
+        },
+        "mean_depth": {
+          "A": 3.1646665355105252,
+          "B": 3.1631724683544302
+        },
+        "mean_elapsed_ms": {
+          "A": 312.1287962677953,
+          "B": 311.9330130769231
+        },
+        "complete_trajectory_overlap": 2,
+        "limitation": "Complete-trajectory deduplication does not establish independent openings."
+      },
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "selfplay-order-screen-100-39118718919.tgz",
+        "sha256": "54e4bdfe8ed56ba11f3085cc84c5974615b9b459e322f30f11a7b28714096911",
+        "bytes": 5971887,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/selfplay-order-screen-100-39118718919.tgz"
+      }
+    },
+    {
+      "scale": 200,
+      "report": {
+        "run_id": 39119607671,
+        "request": {
+          "ref_a": "77b9a1630dc7153af06c3fbecc7ab03c7c40ae0f",
+          "ref_b": "4448f40400a893feb3b4d79237111008026547da",
+          "games": 100,
+          "shards": 19,
+          "seed": 2033101801,
+          "go_command": "go movetime 200",
+          "max_plies": 300,
+          "options_a": "{\"AdaptiveLongThink\": true, \"OpeningRandomNonLance\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"RiskVerify\": true, \"SearchEfficiencyMask\": 8, \"SearchNextMask\": 4, \"SearchProbeMask\": 7, \"SearchResearchMask\": 23, \"SearchReuseMask\": 6, \"SearchThreads\": 2, \"SelfplayOrder\": true, \"SelfplayOrderScale\": 200, \"USI_Ponder\": true}",
+          "options_b": "{\"AdaptiveLongThink\": true, \"OpeningRandomNonLance\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"RiskVerify\": true, \"SearchEfficiencyMask\": 8, \"SearchNextMask\": 4, \"SearchProbeMask\": 7, \"SearchResearchMask\": 23, \"SearchReuseMask\": 6, \"SearchThreads\": 2, \"USI_Ponder\": true}"
+        },
+        "actual_binary_sha256": {
+          "A": "2fa528950fa0dd1e824531d09fbfda1c8b6e146142eed4f34fb2f8163130edc1",
+          "B": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36"
+        },
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "all_moves_legal": true,
+        "all_terminations_verified": true,
+        "raw": {
+          "games": 100,
+          "wins": 56,
+          "losses": 43,
+          "draws": 1,
+          "score": 0.565,
+          "lower": 0.46783162860271865
+        },
+        "unique": {
+          "games": 99,
+          "wins": 55,
+          "losses": 43,
+          "draws": 1,
+          "score": 0.5606060606060606,
+          "lower": 0.46283858549068735
+        },
+        "model_order_calls": {
+          "A": 46888715,
+          "B": 0
+        },
+        "mean_depth": {
+          "A": 3.130076838638858,
+          "B": 3.131526287065672
+        },
+        "mean_elapsed_ms": {
+          "A": 306.2803588695343,
+          "B": 310.8154996441281
+        },
+        "complete_trajectory_overlap": 0,
+        "limitation": "Complete-trajectory deduplication does not establish independent openings."
+      },
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "selfplay-order-screen-200-39118718919.tgz",
+        "sha256": "36d33cc9a80f512986ff9b2cc68125d1fa488453451667ff99d42b38aac71e12",
+        "bytes": 6028356,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/selfplay-order-screen-200-39118718919.tgz"
+      }
+    }
+  ],
+  "research_parent_updated": false,
+  "next_selfplay_completed": false,
+  "selected_scale": 200,
+  "confirmation": {
+    "run_id": 39120038047,
+    "request": {
+      "ref_a": "77b9a1630dc7153af06c3fbecc7ab03c7c40ae0f",
+      "ref_b": "4448f40400a893feb3b4d79237111008026547da",
+      "games": 200,
+      "shards": 19,
+      "seed": 2036101801,
+      "go_command": "go movetime 200",
+      "max_plies": 300,
+      "options_a": "{\"AdaptiveLongThink\": true, \"OpeningRandomNonLance\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"RiskVerify\": true, \"SearchEfficiencyMask\": 8, \"SearchNextMask\": 4, \"SearchProbeMask\": 7, \"SearchResearchMask\": 23, \"SearchReuseMask\": 6, \"SearchThreads\": 2, \"SelfplayOrder\": true, \"SelfplayOrderScale\": 200, \"USI_Ponder\": true}",
+      "options_b": "{\"AdaptiveLongThink\": true, \"OpeningRandomNonLance\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"RiskVerify\": true, \"SearchEfficiencyMask\": 8, \"SearchNextMask\": 4, \"SearchProbeMask\": 7, \"SearchResearchMask\": 23, \"SearchReuseMask\": 6, \"SearchThreads\": 2, \"USI_Ponder\": true}"
+    },
+    "actual_binary_sha256": {
+      "A": "2fa528950fa0dd1e824531d09fbfda1c8b6e146142eed4f34fb2f8163130edc1",
+      "B": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36"
+    },
+    "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+    "all_moves_legal": true,
+    "all_terminations_verified": true,
+    "raw": {
+      "games": 200,
+      "wins": 105,
+      "losses": 94,
+      "draws": 1,
+      "score": 0.5275,
+      "lower": 0.45830842572971764
+    },
+    "unique": {
+      "games": 198,
+      "wins": 104,
+      "losses": 93,
+      "draws": 1,
+      "score": 0.5277777777777778,
+      "lower": 0.4582397712208975
+    },
+    "model_order_calls": {
+      "A": 96035588,
+      "B": 0
+    },
+    "mean_depth": {
+      "A": 3.1312737814821525,
+      "B": 3.1357388316151202
+    },
+    "mean_elapsed_ms": {
+      "A": 309.10913234253366,
+      "B": 310.3985575323066
+    },
+    "complete_trajectory_overlap": 2,
+    "limitation": "Complete-trajectory deduplication does not establish independent openings."
+  },
+  "confirmation_publication": {
+    "release": "records-2026-10-01",
+    "name": "selfplay-order-confirmation-39118718919.tgz",
+    "sha256": "279dff87663b7b0f032b06ef1416ae793780acc08d80412d95d5984b69e5b553",
+    "bytes": 6836776,
+    "readback_verified": true,
+    "api_digest_verified": true,
+    "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/selfplay-order-confirmation-39118718919.tgz"
+  },
+  "status": "confirmation_rejected"
+}

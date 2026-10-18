@@ -1,0 +1,13 @@
+{
+  "games": 200,
+  "plies": 22602,
+  "counts": {
+    "wins": 105,
+    "losses": 94,
+    "draws": 1
+  },
+  "all_moves_legal": true,
+  "all_terminations_verified": true,
+  "release_api_digest_verified": true,
+  "archive_sha256": "279dff87663b7b0f032b06ef1416ae793780acc08d80412d95d5984b69e5b553"
+}

@@ -1,0 +1,48 @@
+{
+  "screens": [
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-order-screen-50-39118718919.tgz",
+      "sha256": "758c41c0eab4437a6cc46b175448e4f5657692e181b3f907086f5c339232eb4c",
+      "bytes": 6050104,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/selfplay-order-screen-50-39118718919.tgz"
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-order-screen-100-39118718919.tgz",
+      "sha256": "54e4bdfe8ed56ba11f3085cc84c5974615b9b459e322f30f11a7b28714096911",
+      "bytes": 5971887,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/selfplay-order-screen-100-39118718919.tgz"
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-order-screen-200-39118718919.tgz",
+      "sha256": "36d33cc9a80f512986ff9b2cc68125d1fa488453451667ff99d42b38aac71e12",
+      "bytes": 6028356,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/selfplay-order-screen-200-39118718919.tgz"
+    }
+  ],
+  "confirmation": {
+    "release": "records-2026-10-01",
+    "name": "selfplay-order-confirmation-39118718919.tgz",
+    "sha256": "279dff87663b7b0f032b06ef1416ae793780acc08d80412d95d5984b69e5b553",
+    "bytes": 6836776,
+    "readback_verified": true,
+    "api_digest_verified": true,
+    "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/selfplay-order-confirmation-39118718919.tgz"
+  },
+  "final": {
+    "release": "records-2026-10-01",
+    "name": "selfplay-order-result-39118718919.tgz",
+    "sha256": "ebbb621f6ec9244b22c70018176ddc1359af775bcfa9d56461cfb36fb68acaa1",
+    "bytes": 59096,
+    "api_digest_verified": true,
+    "readback_verified": true
+  }
+}

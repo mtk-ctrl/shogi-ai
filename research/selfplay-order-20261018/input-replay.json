@@ -1,0 +1,26 @@
+[
+  {
+    "run": 38946175603,
+    "games": 100,
+    "plies": 11563,
+    "terminations_verified": true
+  },
+  {
+    "run": 38946985753,
+    "games": 100,
+    "plies": 10630,
+    "terminations_verified": true
+  },
+  {
+    "run": 38947702135,
+    "games": 100,
+    "plies": 10803,
+    "terminations_verified": true
+  },
+  {
+    "run": 38948701892,
+    "games": 200,
+    "plies": 21825,
+    "terminations_verified": true
+  }
+]
