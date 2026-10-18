@@ -181,7 +181,7 @@ def inspect(backend,env):
                 generation=state['generation'],used_games=state['used_games'],stage=state['stage'],
                 parent_retained=state['parent']==plan['parent'],parameter_updates=sum(r.get('parameter_updates',0) for r in reports),
                 final_trajectory_signatures=len(prior),formal_adoption=False,
-                scope='Actual bounded cycle; candidate screen/confirm branches are separately tested with synthetic fixtures, not live strength evidence.')
+                scope='Read-only replay of the actual stages listed in stage_reports; unexecuted branches and strength improvement are not established by this audit.')
 
 
 def main():

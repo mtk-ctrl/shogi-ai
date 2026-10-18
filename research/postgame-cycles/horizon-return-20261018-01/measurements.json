@@ -1,0 +1,60 @@
+{
+  "schema": "postgame-horizon-measurements-v1",
+  "implementation_ref": "d1887904aa928c2ce64e9297987968680f27cd81",
+  "implementation_pr": 285,
+  "implementation_merge": "e93d32c1572cfef546bbd7a47af8c1c6630a1a8e",
+  "controller_run": 39095228850,
+  "screen_run": 39095282846,
+  "inspection_run": 39095662682,
+  "preparation_verification": {
+    "roots": 9,
+    "proposal_reproduced": true,
+    "new_engine_runs": 0,
+    "formal_adoption": false,
+    "live_preflight_reproduced": true,
+    "stage_verified": true,
+    "candidate_positions": 1,
+    "summary": {
+      "roots": 9,
+      "original_observations": 13,
+      "statuses": {
+        "already_correct": 8,
+        "validated_horizon_memory": 1
+      },
+      "seconds": 20.927,
+      "independent_strength_test": false,
+      "parameter_updates": 0
+    },
+    "new_games": 0
+  },
+  "screen_verification": {
+    "schema": "horizon-local-screen-verification-v1",
+    "games": 100,
+    "plies": 11341,
+    "result": {
+      "wins": 42,
+      "losses": 57,
+      "draws": 1
+    },
+    "a_black": 50,
+    "a_white": 50,
+    "all_moves_legal": true,
+    "all_terminations_verified": true,
+    "all_final_positions_verified": true,
+    "binary_and_knowledge_hashes_verified": true,
+    "candidate_knowledge_uses": 0,
+    "unique_trajectories": 100,
+    "termination_counts": {
+      "checkmate": 99,
+      "fourfold_repetition": 1
+    },
+    "new_games": 0,
+    "new_engine_runs": 0,
+    "formal_adoption": false,
+    "strength_improvement_demonstrated": false
+  },
+  "formal_adoption": false,
+  "parameter_updates": 0,
+  "strength_improvement_demonstrated": false,
+  "next_stage": "Budgeted practice insertion into ordinary generation control"
+}

@@ -1,0 +1,53 @@
+{
+  "schema": "postgame-horizon-publication-v1",
+  "publications": [
+    {
+      "stage": "prepare",
+      "release": "records-2026-10-01",
+      "name": "spiral-horizon-return-20261018-01-prepare-a7964d33bc3df8e8-39095228850-a1.tgz",
+      "bytes": 171092,
+      "sha256": "cbd8a407a01ab36ba3692d4f968ca3dfaef3888b04c78f1fbde135ae40b26152",
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-horizon-return-20261018-01-prepare-a7964d33bc3df8e8-39095228850-a1.tgz"
+    },
+    {
+      "stage": "preflight",
+      "release": "records-2026-10-01",
+      "name": "spiral-horizon-return-20261018-01-preflight-ad3dcb40c998cca0-39095228850-a1.tgz",
+      "bytes": 2895,
+      "sha256": "587f448ca45e7a2ace0d1a487cec51bcc7d41eaf7b0fa4a56f6775ace28cfca0",
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-horizon-return-20261018-01-preflight-ad3dcb40c998cca0-39095228850-a1.tgz"
+    },
+    {
+      "stage": "screen",
+      "release": "records-2026-10-01",
+      "name": "spiral-horizon-return-20261018-01-screen-6b81342b8db818fe-39095228850-a1.tgz",
+      "bytes": 6016792,
+      "sha256": "7cca90ce73857410477ae15bd8315bef60732787b8be3900d54ee2c2a7479067",
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-horizon-return-20261018-01-screen-6b81342b8db818fe-39095228850-a1.tgz"
+    },
+    {
+      "stage": "complete_state",
+      "release": "records-2026-10-01",
+      "name": "spiral-horizon-return-20261018-01-state-000011.json",
+      "bytes": 113235,
+      "sha256": "d33ecac97eeee8248b2b040981b3572d360e220ca5006834cae32f80f8266d31",
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-horizon-return-20261018-01-state-000011.json"
+    }
+  ],
+  "inspection": {
+    "run": 39095662682,
+    "artifact_id": 12124452203,
+    "bytes": 28879,
+    "sha256": "3748db603e98893149954784d94c83186b1478bbf6c66d87feaef828decdc971",
+    "download_matches_api_digest": true
+  },
+  "formal_adoption": false
+}
