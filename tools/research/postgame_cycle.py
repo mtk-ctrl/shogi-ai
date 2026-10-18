@@ -171,7 +171,9 @@ def finish(state, operation, evidence):
         if 'knowledge_execution_policy' in state['plan']:
             knowledge=evidence['knowledge_stage'];manifest=knowledge['manifest']
             require(manifest['parent']==state['parent'] and manifest['purpose']=='research'
-                    and manifest['production_match_eligible'] is True and manifest['formal_adoption'] is False,
+                    and manifest['production_match_eligible'] is True and manifest['formal_adoption'] is False
+                    and (state['plan'].get('knowledge_builder')!='horizon'
+                         or manifest['policy']==state['plan']['knowledge_policy']),
                     'knowledge preparation is not an eligible research proposal')
             ready_knowledge=manifest['candidate_positions']>0
             if ready_knowledge:

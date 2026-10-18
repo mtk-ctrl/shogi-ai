@@ -14,6 +14,7 @@ from tools.research.postgame_ranker import POLICY, digest, parent_values, requir
 from tools.research.postgame_eval_preflight import POLICY_LIVE
 from tools.research.postgame_knowledge import POLICY_KNOWLEDGE
 from tools.research.postgame_followup import POLICY_FOLLOWUP
+from tools.research.postgame_horizon import POLICY_HORIZON
 import json
 
 POLICY_KNOWLEDGE_EXECUTION=dict(schema='postgame-knowledge-execution-v1',screen_games=100,confirm_games=200,
@@ -25,22 +26,38 @@ def initialize(plan, parent_options, controller_sha256):
     require(plan['candidate_kind'] in ('evaluation','knowledge'), 'combined candidates require a separate frozen experiment')
     if 'knowledge_execution_policy' in plan:
         require(plan['candidate_kind']=='knowledge','knowledge execution policy requires a knowledge-only cycle')
+    horizon=plan.get('knowledge_builder')=='horizon'
+    require(plan.get('knowledge_builder') in (None,'horizon'),'unknown knowledge builder')
+    policy=POLICY_HORIZON if horizon else POLICY_KNOWLEDGE
     if plan['candidate_kind']=='knowledge':
         require(plan.get('knowledge_execution_policy')==POLICY_KNOWLEDGE_EXECUTION
-                and plan.get('knowledge_policy')==POLICY_KNOWLEDGE,'freeze actual knowledge execution policy')
+                and plan.get('knowledge_policy')==policy,'freeze actual knowledge execution policy')
     if 'followup_policy' in plan:
         require(plan['followup_policy']==POLICY_FOLLOWUP and 'progress_policy' in plan,
                 'freeze bounded follow-up with its original decision ledger')
-    require(plan.get('generate_initial_source') is True, 'automatic cycle starts from fresh selfplay')
+    if horizon:
+        require(plan['candidate_kind']=='knowledge' and plan.get('purpose')=='bounded_horizon_return'
+                and plan.get('generate_initial_source') is False and plan['max_generations']==1
+                and plan['max_new_games']==300,'horizon is one bounded saved-source knowledge experiment')
+        require('progress_policy' not in plan and 'followup_policy' not in plan and 'predecessor_checkpoint' not in plan,
+                'horizon uses its own frozen observations; old policies/predecessors cannot be relabeled')
+        for key in ('source_publication','horizon_input_publication'):
+            pub=plan[key]
+            require(pub.get('readback_verified') is True and pub.get('api_digest_verified') is True
+                    and type(pub.get('bytes')) is int and pub['bytes']>0
+                    and re.fullmatch('[0-9a-f]{64}',pub.get('sha256','')),'verified saved horizon input required')
+        require(plan['horizon_selection']['policy']==policy and plan['horizon_selection']['parent']==plan['parent'],
+                'freeze horizon roots and parent before execution')
+    else:require(plan.get('generate_initial_source') is True, 'automatic cycle starts from fresh selfplay')
     require(plan.get('learning_policy')==POLICY and plan.get('live_policy')==POLICY_LIVE, 'freeze actual implemented learning/live policy')
     if 'knowledge_policy' in plan:
-        require(plan['knowledge_policy']==POLICY_KNOWLEDGE,'freeze actual research-knowledge policy')
-        require('progress_policy' in plan,'knowledge preparation requires the decision/progress ledger')
+        require(plan['knowledge_policy']==policy,'freeze actual research-knowledge policy')
+        require(horizon or 'progress_policy' in plan,'knowledge preparation requires the decision/progress ledger')
     require(type(plan.get('runner_capacity')) is int and 1<=plan['runner_capacity']<=20, 'freeze available hosted runner capacity')
     parent_values(parent_options)
     require(digest(parent_options)==plan['parent']['parameters_sha256'], 'initial parent parameters differ')
     return dict(schema='postgame-runtime-v1',state=core.start(plan),parent_options=copy.deepcopy(parent_options),
-                controller_sha256=controller_sha256,sequence=0,prior_signatures=[],source_publication=None,
+                controller_sha256=controller_sha256,sequence=0,prior_signatures=[],source_publication=copy.deepcopy(plan.get('source_publication')),
                 preparation_publication=None,candidate_options=None,match_request=None,dispatch=None,
                 blocked=None,formal_adoption=False,receipts=[],parent_knowledge_publication=None,
                 completed_research_tasks=[])
