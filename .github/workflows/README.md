@@ -10,7 +10,7 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 | Workflow | 起動 | 用途 |
 |---|---|---|
 | `.github/workflows/selfplay-candidate-verification.yml` | 検証依頼ファイル変更 / 手動 | 固定した学習候補の48局面単独速度診断、完了した100/200局の合法性・終局ルール・長考・知識・実モデル使用・build出所を検証。結果と実戦手原本を月別データReleaseへhash確認付き保存。対局本体は既存汎用Workflowを使い、正式採用はしない |
-| `.github/workflows/postgame-spiral.yml` | 明示request / 手動 / 関連PR軽量検査 | 凍結予算内の評価学習/研究知識循環、追加研究、予算付き分岐練習、保存/検査。PRでは保存観測の再現と実Engine配線試験。正式採用しない |
+| `.github/workflows/postgame-spiral.yml` | 明示request / 手動 / 関連PR軽量検査 | 凍結予算内の評価学習/研究知識循環、追加研究、予算付き分岐練習、段階/先後/自作相手の固定練習、保存/検査。PRでは保存観測の再現と実Engine配線試験。正式採用しない |
 | `.github/workflows/postgame-cycle-pilot.yml` | 手動 | 旧G1の固定K0/K1比較を保持。追加の研究モードは保存済み循環checkpointから原本の実バイナリ/別知識を復元し、既存arenaで比較する。監査/長期保存と研究親選択は循環制御が担当。正式採用しない |
 | `.github/workflows/selfplay-learning.yml` | 学習依頼ファイル変更 / 手動 | 完了した同一版自己対局を出所・合法性・分割漏洩検査し、小型の評価補正を学習して候補をビルド。実戦手原本とモデルは月別データReleaseへhash検証付きで保存し、エンジンへの正式採用や次の対局を自動決定しない |
 | `.github/workflows/position10-adopt.yml` | 明示的な10局面採用依頼 / 手動 | 実行38091143128の研究10局面を原本から厳密検査して局面知識153→163件を採用。研究原本を月別Releaseへ保存・照合する |

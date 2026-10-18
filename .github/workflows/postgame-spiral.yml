@@ -20,6 +20,7 @@ on:
       - ".github/scripts/run_postgame_knowledge_match.py"
       - ".github/scripts/publish_postgame_followup.py"
       - ".github/scripts/run_postgame_practice.py"
+      - ".github/scripts/run_postgame_curriculum.py"
       - "research/self-improvement-20261017/practice_saved.py"
       - "research/self-improvement-20261017/verify_practice_publication.py"
       - "research/self-improvement-20261017/practice-publication.json"
@@ -38,7 +39,7 @@ on:
         type: boolean
         default: false
       practice_only:
-        description: Execute the frozen saved-position practice trial once, with audit and publication
+        description: Execute one frozen saved-position or phase/opponent curriculum trial with audit and publication
         type: boolean
         default: false
       inspect_only:

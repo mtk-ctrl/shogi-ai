@@ -343,6 +343,10 @@ def learning_inputs(plan,report,directory):
         for ply in (d['prefix_plies']+1,d['prefix_plies']+3):
             if ply<=len(g.moves):selection.append(dict(game_id=g.row['game_id'],ply=ply))
     require(len(selection)<=len(games)*POLICY_PRACTICE['max_selected_per_game'],'practice selection exceeds frozen budget')
+    if 'curriculum_handoff_policy' in plan:
+        from tools.research.postgame_curriculum import HANDOFF, bounded_handoff
+        require(plan['curriculum_handoff_policy']==HANDOFF,'curriculum handoff policy changed')
+        selection=bounded_handoff(selection,games,by_source)
     return dict(selection=selection,split_registry=registry,game_splits=descriptors,selected_cases=len(selection),
                 training_games=sum(d['split']=='train' for d in descriptors),quarantined_games=sum(d['split']!='train' for d in descriptors),
                 limitation='Descendants of existing training groups; not new independent games/groups or strength evidence.')
