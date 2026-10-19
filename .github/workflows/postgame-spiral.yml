@@ -259,6 +259,7 @@ jobs:
         env:
           GH_TOKEN: '${{ github.token }}'
           PLAN_REF: '${{ inputs.plan_ref }}'
+          CYCLE_ID: '${{ inputs.cycle_id }}'
         run: python3 .github/scripts/run_structured_value.py
       - uses: actions/upload-artifact@v4
         if: always()

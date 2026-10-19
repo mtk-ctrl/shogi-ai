@@ -1,0 +1,42 @@
+{
+  "controller_run": 39195782210,
+  "candidate_ref": "055732661e303a46aaf912bd6a0dc9784e50721e",
+  "recording_fix_ref": "88194802b6ee99e4293bf9acfe739c9d12b2789a",
+  "model_sha256": "8c174f7adac2d45cc0ab2633986ab89db3f24906bd655f5e18e81538eb7fdb1c",
+  "screening": [
+    {
+      "scale": 50,
+      "run_id": 39195895351,
+      "wins": 53,
+      "losses": 46,
+      "draws": 1,
+      "score": 0.535
+    },
+    {
+      "scale": 100,
+      "run_id": 39196399077,
+      "wins": 50,
+      "losses": 49,
+      "draws": 1,
+      "score": 0.505
+    },
+    {
+      "scale": 150,
+      "run_id": 39196898081,
+      "wins": 43,
+      "losses": 57,
+      "draws": 0,
+      "score": 0.43
+    }
+  ],
+  "confirmation_run": 39197359039,
+  "selected_scale": 50,
+  "confirmation_runners": 18,
+  "confirmation_distribution": {
+    "games56": 10,
+    "games55": 8
+  },
+  "expected_confirmation_end_jst": "2026-10-19T13:43:00+09:00",
+  "status": "confirmation_running",
+  "updated_jst": "2026-10-19T13:12:26.174792+09:00"
+}

@@ -1,0 +1,67 @@
+{
+  "schema": "structured-cycle-execution-v1",
+  "cycle_id": "structured-value-20261019-01",
+  "max_games": 1600,
+  "comparison_parent": {
+    "engine_ref": "4448f40400a893feb3b4d79237111008026547da",
+    "options": {
+      "SearchResearchMask": 23,
+      "SearchEfficiencyMask": 8,
+      "SearchReuseMask": 6,
+      "SearchNextMask": 4,
+      "SearchProbeMask": 7,
+      "SearchThreads": 2,
+      "RiskVerify": true,
+      "AdaptiveLongThink": true,
+      "USI_Ponder": true,
+      "OpeningRandomNonLance": true,
+      "PositionKnowledge": true,
+      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+      "EvalSafety": 540,
+      "EvalPressure": 391,
+      "EvalActivity": 422,
+      "EvalDanger": 157,
+      "EvalInfluence": 143,
+      "EvalPotential": 190,
+      "EvalCoordination": 343,
+      "EvalHandPotential": 59,
+      "EvalThreat": 22
+    },
+    "model_sha256": null
+  },
+  "training_publications": [
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-value-next-generation-39120804144.tgz",
+      "sha256": "2bd392425a066c3a1bc88878c21d952c0acf1284638e52918fe89bb7173a760c",
+      "bytes": 7408409
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "value-loop-selfplay-two-rounds-20261019-01-r1-next-source.tgz",
+      "sha256": "5355763ddec17d6662f5d064b8f0f1ca24b9e9ae13059bd459bd5ca7c91b4515",
+      "bytes": 7413226
+    }
+  ],
+  "seeds": {
+    "screens": [
+      2080101901,
+      2081101901,
+      2082101901
+    ],
+    "confirmation": 2085101901,
+    "next_source": 2090101901
+  },
+  "used_seed_bases": [
+    2051101801,
+    2052101801,
+    2053101801,
+    2056101801,
+    2061101801,
+    2070101901,
+    2071101901,
+    2072101901,
+    2075101901,
+    2076101901
+  ]
+}

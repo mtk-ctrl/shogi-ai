@@ -33,7 +33,7 @@ def main(old,fixed,probe,source,output):
                 rows.append(dict(game_id=game.row['game_id'],ply=m['ply'],sfen=b.sfen(),recorded=m['search']['phase_static_cp_black']))
             b.push_usi(m['move'])
     observed=evaluations(old,rows);corrected=evaluations(fixed,rows)
-    run=subprocess.run([str(Path(probe).resolve())],input=''.join(r['sfen']+'\n' for r in rows),text=True,capture_output=True,check=True)
+    run=subprocess.run([str(Path(probe).resolve()),'--verify-modes'],input=''.join(r['sfen']+'\n' for r in rows),text=True,capture_output=True,check=True)
     frames=[json.loads(s) for s in run.stdout.splitlines()]
     if len(frames)!=len(rows):raise ValueError('feature count differs')
     for row,raw,c,f in zip(rows,observed,corrected,frames):

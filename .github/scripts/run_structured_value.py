@@ -15,6 +15,7 @@ import selfplay_trial_transport as transport
 from run_postgame_spiral import Backend,api
 from tools.research.postgame_cases import load_archive,sha256
 from tools.research.train_structured_value import train,PARENT
+from structured_execution import validate_execution,comparison_request
 REPO=transport.REPO;OUT=ROOT/'build/structured-cycle';save=transport.save
 SOURCE=dict(release='records-2026-10-01',name='selfplay-value-next-generation-39120804144.tgz',
     sha256='2bd392425a066c3a1bc88878c21d952c0acf1284638e52918fe89bb7173a760c',bytes=7408409)
@@ -44,6 +45,9 @@ def launch():
     if request==dict(enabled=False):return
     if set(request)!={'candidate_ref','request_id'} or len(request['candidate_ref'])!=40:
         raise ValueError('explicit frozen request required')
+    execution=json.loads((ROOT/'research/structured-eval-20261019/EXECUTION.json').read_text())
+    if execution['cycle_id']!=request['request_id']:
+        raise ValueError('cycle ID changed without freezing a new execution plan')
     runs=api(f'repos/{REPO}/actions/workflows/postgame-spiral.yml/runs?event=workflow_dispatch&per_page=100')['workflow_runs']
     if any(r['display_title']=='Spiral '+request['request_id'] for r in runs):
         raise ValueError('existing controller; reconcile instead of retrying')
@@ -53,14 +57,10 @@ def launch():
     if type(response.get('workflow_run_id'))is not int:raise ValueError('controller dispatch ID missing')
     print('STRUCTURED_LAUNCH '+json.dumps(response),flush=True)
 
-def compare(backend,ref,scale,games,seed,label,prior,own=False):
+def compare(backend,ref,scale,games,seed,label,prior,parent,own=False):
     if stop_requested():raise ValueError('stopped by explicit user control before dispatch')
     while not (free:=backend.free_runners(20)):time.sleep(30)
-    oa=dict(transport.BASE,**PARENT,StructuredEval=True,StructuredScale=scale)
-    ob=oa if own else dict(transport.BASE,**PARENT)
-    request=dict(ref_a=ref,ref_b=ref if own else transport.BASE_REF,games=games,shards=min(free,games),
-        seed=seed,go_command='go movetime 200',max_plies=300,
-        options_a=json.dumps(oa,sort_keys=True),options_b=json.dumps(ob,sort_keys=True))
+    request=comparison_request(ref,parent,transport.BASE,PARENT,scale,games,min(free,games),seed,own)
     folder=OUT/label;folder.mkdir();save(folder/'request.json',request)
     state=json.loads((OUT/'result.json').read_text())
     state['active_operation']=dict(label=label,request=request,status='intent_saved');save(OUT/'result.json',state)
@@ -78,11 +78,15 @@ def compare(backend,ref,scale,games,seed,label,prior,own=False):
     for side in ('a','b') if own else ('a',):
         if model_sha.encode() not in (source/'binaries/build'/('engine-'+side)).read_bytes():
             raise ValueError('actual binary does not contain the frozen learned model identity')
+    if not own and parent['model_sha256'] is not None:
+        if parent['model_sha256'].encode() not in (source/'binaries/build/engine-b').read_bytes():
+            raise ValueError('the baseline did not retain the previously learned model')
     usage=dict(A=0,B=0)
     for shard in (source/'shards').glob('shard-*.json'):
         for game in json.loads(shard.read_text())['details']:
             for m in game['move_records']:usage[m['engine']]+=m['search'].get('structured_eval_calls',0)
-    if usage['A']<=0 or (own and usage['B']<=0) or (not own and usage['B']!=0):
+    learned_baseline=own or parent['model_sha256'] is not None
+    if usage['A']<=0 or (learned_baseline and usage['B']<=0) or (not learned_baseline and usage['B']!=0):
         raise ValueError('actual learned evaluation usage differs from frozen comparison')
     report.update(structured_eval_calls=usage,model_sha256=model_sha,compiled_model_identity_verified=True)
     receipt=transport.publish(backend,folder,source,report,label,prefix='structured-value')
@@ -100,27 +104,32 @@ def main():
     OUT.mkdir(parents=True,exist_ok=False);backend=Backend(REPO,OUT/'transport')
     model_path=ROOT/'research/structured-eval-20261019/model.json';model=json.loads(model_path.read_text())
     checks=json.loads((ROOT/'research/structured-eval-20261019/preflight.json').read_text())
+    execution=json.loads((ROOT/'research/structured-eval-20261019/EXECUTION.json').read_text())
+    comparison_parent,seeds=validate_execution(execution,model,transport.BASE,PARENT)
+    if execution['cycle_id']!=os.environ['CYCLE_ID']:raise ValueError('controller cycle does not match frozen plan')
     if not(model['features']==4893 and model['eligible'] and checks['disabled_exact'] and checks['integer_evaluation_exact']):
         raise ValueError('model or preflight gate missing')
-    initial=backend.unpack(SOURCE);games=load_archive(initial)+load_archive(backend.unpack(EXTRA_SOURCE))
+    games=[]
+    for publication in execution['training_publications']:games.extend(load_archive(backend.unpack(publication)))
     prior={transport.signature(g) for g in games}
     # Previously completed ordinary comparisons remain used evaluation, not a
     # fresh independent confirmation. Include all stored played trajectories.
     for receipt in json.loads((ROOT/'research/structured-eval-20261019/prior-publications.json').read_text()):
         prior.update(transport.signature(g) for g in load_archive(backend.unpack(receipt)))
     report=dict(schema='structured-value-cycle-v1',candidate_ref=ref,model_sha256=sha256(model_path.read_bytes()),
-        parent_options=PARENT,learned_coefficients=model['nonzero_coefficients'],screens=[],
+        parent_options=PARENT,comparison_parent=comparison_parent,execution=execution,
+        learned_coefficients=model['nonzero_coefficients'],screens=[],
         research_parent_updated=False,next_selfplay_completed=False,formal_adoption=False)
     save(OUT/'result.json',report)
     for i,scale in enumerate((50,100,150)):
         if not checks['candidates_passed'][i]:continue
-        actual,audit,pub,_=compare(backend,ref,scale,100,2080101901+i*1000000,'screen-'+str(scale),prior)
+        actual,audit,pub,_=compare(backend,ref,scale,100,seeds['screens'][i],'screen-'+str(scale),prior,comparison_parent)
         report['screens'].append(dict(scale=scale,audit=audit,publication=pub));save(OUT/'result.json',report)
         prior.update(transport.signature(g) for g in actual)
     eligible=[r for r in report['screens'] if r['audit']['raw']['score']>=.5]
     if not eligible:report['status']='screen_rejected';save(OUT/'result.json',report);return
     selected=max(eligible,key=lambda r:(r['audit']['raw']['score'],-r['scale']))['scale']
-    actual,audit,pub,_=compare(backend,ref,selected,1000,2085101901,'confirmation',prior)
+    actual,audit,pub,_=compare(backend,ref,selected,1000,seeds['confirmation'],'confirmation',prior,comparison_parent)
     report.update(selected_scale=selected,confirmation=audit,confirmation_publication=pub);save(OUT/'result.json',report)
     if not(audit['raw']['lower']>.5 and audit['unique']['lower']>.5):
         report['status']='confirmation_rejected';save(OUT/'result.json',report);return
@@ -128,7 +137,7 @@ def main():
         model_sha256=sha256(model_path.read_bytes()),formal_adoption=False)
     report.update(research_parent_updated=True,research_parent=parent);save(OUT/'research-parent.json',parent)
     prior.update(transport.signature(g) for g in actual)
-    actual,audit,pub,source=compare(backend,ref,selected,300,2090101901,'next-generation',prior,own=True)
+    actual,audit,pub,source=compare(backend,ref,selected,300,seeds['next_source'],'next-generation',prior,comparison_parent,own=True)
     report.update(status='research_parent_improved',next_selfplay_completed=True,next_selfplay=audit,next_publication=pub)
     save(OUT/'result.json',report)
     subprocess.run([sys.executable,'scripts/build.py','--structured-value-probe','--output','build/next-structured-probe'],check=True)

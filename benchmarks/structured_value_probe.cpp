@@ -5,7 +5,8 @@
 #include <map>
 #include <string>
 using namespace shogi;
-int main(){try{
+int main(int argc,char** argv){try{
+    const bool verify_modes=argc>1 && std::string(argv[1])=="--verify-modes";
     std::string line,error;
     while(std::getline(std::cin,line)) {
         if(line.empty())continue;
@@ -22,7 +23,7 @@ int main(){try{
         strategy::AttackMap a(s,true,true);
         std::map<int,int> sparse;
         strategy::structured_features(s,a,phase.maturity,[&](int i,int v){sparse[i]+=v;});
-        for(int mask=0;mask<8;++mask) {
+        for(int mask=0;verify_modes && mask<8;++mask) {
             strategy::AttackMap other(s,mask&1,mask&2,mask&4);
             std::map<int,int> again;
             strategy::structured_features(s,other,phase.maturity,[&](int i,int v){again[i]+=v;});
