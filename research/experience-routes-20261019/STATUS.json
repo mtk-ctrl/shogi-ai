@@ -1,0 +1,73 @@
+{
+  "schema": "replay-routes-status-v1",
+  "updated_jst": "2026-10-19T17:00:47+09:00",
+  "status": "confirmation_running",
+  "controller_run": 39217732375,
+  "controller_job": 117945466819,
+  "candidate_ref": "004017159250d8fbd02dc55bd15bc87c3eaed604",
+  "model_sha256": "8c174f7adac2d45cc0ab2633986ab89db3f24906bd655f5e18e81538eb7fdb1c",
+  "model_scale": 50,
+  "asset_sha256": "d4cee015a6a6809eecf65bd2e4bd51ca1005479bd7824060e2db058650248dd1",
+  "sources": {
+    "selfplay_games": 300,
+    "verified_source_plies": 35986,
+    "order_hints": 8100,
+    "time_candidates": 5,
+    "research_hints": 0,
+    "analyzed_roots": 24,
+    "analysis_calls": 92,
+    "practice_games": 16,
+    "practice_new_plies": 128,
+    "practice_unique_reached_positions": 98,
+    "practice_original_groups": 4,
+    "practice_independent_new_groups": 0
+  },
+  "screening": [
+    {
+      "route": "ReplayOrder",
+      "run_id": 39217969919,
+      "wins": 55,
+      "losses": 42,
+      "draws": 3,
+      "score": 0.565,
+      "lower": 0.46783162860271865,
+      "priority_operations": 992,
+      "used_actual_moves": 191,
+      "total_actual_A_moves": 6161,
+      "used_games": 54,
+      "eligible": true
+    },
+    {
+      "route": "ReplayTime",
+      "run_id": 39218736890,
+      "wins": 44,
+      "losses": 52,
+      "draws": 4,
+      "score": 0.46,
+      "matched_roots": 0,
+      "new_long_think_uses": 0,
+      "eligible": false
+    }
+  ],
+  "selected_route": "ReplayOrder",
+  "confirmation_run": 39219471110,
+  "confirmation_games": 1000,
+  "confirmation_runners": 19,
+  "confirmation_distribution": {
+    "games53": 12,
+    "games52": 7
+  },
+  "confirmation_actual_start_jst": "2026-10-19T16:59:35+09:00",
+  "expected_finish_and_readback_jst": "2026-10-19T17:40:00+09:00",
+  "one_time_continuation_enabled": true,
+  "research_parent_updated": false,
+  "formal_adoption": false,
+  "evaluation_unchanged_in_route_comparison": true,
+  "limitations": [
+    "The 1000-game confirmation has not finished.",
+    "Time allocation had no actual normal-game use.",
+    "No newly verified research move was produced.",
+    "Practice is training data generation; no new learner update from these 128 plies has been demonstrated.",
+    "Unbounded automatic regeneration of every route under arbitrary new parents is not complete."
+  ]
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "case_id": "523b1c039ee9cb06724d13eed0e12ca4b317a99f69f51839ad1f9046e3a05288",
+    "ply": 142,
+    "side": "white",
+    "prior_long_uses": 10,
+    "original_reason": null,
+    "original_ms": 193.146,
+    "original_depth": 2,
+    "source_had_coupon": false,
+    "short_move": "7e7f",
+    "deep_move": "P*5f"
+  },
+  {
+    "case_id": "21c641cbe159e3ef074ece6238f34636ca35c13136497a122699f71c73f32156",
+    "ply": 203,
+    "side": "black",
+    "prior_long_uses": 10,
+    "original_reason": null,
+    "original_ms": 196.097,
+    "original_depth": 2,
+    "source_had_coupon": false,
+    "short_move": "G*8c",
+    "deep_move": "B*5e"
+  },
+  {
+    "case_id": "607ddc8907eca6e20eadf07cdadea92bbd7b10fbbe83b423af4e3edaac3bb859",
+    "ply": 47,
+    "side": "black",
+    "prior_long_uses": 3,
+    "original_reason": null,
+    "original_ms": 192.419,
+    "original_depth": 2,
+    "source_had_coupon": true,
+    "short_move": "8h7i",
+    "deep_move": "8f8e"
+  },
+  {
+    "case_id": "6aafb012c738e79e4e5907402071dc72bdbc482598176ee18df975f065db483a",
+    "ply": 43,
+    "side": "black",
+    "prior_long_uses": 4,
+    "original_reason": null,
+    "original_ms": 191.555,
+    "original_depth": 2,
+    "source_had_coupon": true,
+    "short_move": "P*8h",
+    "deep_move": "4e4d"
+  },
+  {
+    "case_id": "23d423bdf0b4787fb4429f04c54ccfd84ab9730f92e614ce7ba2141d8fc20127",
+    "ply": 48,
+    "side": "white",
+    "prior_long_uses": 4,
+    "original_reason": null,
+    "original_ms": 192.666,
+    "original_depth": 2,
+    "source_had_coupon": true,
+    "short_move": "P*1c",
+    "deep_move": "6c6d"
+  }
+]
