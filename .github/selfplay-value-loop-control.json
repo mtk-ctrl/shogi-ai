@@ -9,9 +9,122 @@
     "plan_ref": "864b6c17dcbef847b533d9a5906bfc8da7f2a12e",
     "first_match_run": 39188841243,
     "timing_mode": "exact_schedule",
-    "current_match_run": 39190476308,
-    "phase_at_last_check": "r1-next-source-running",
-    "latest_verified_state": "value-loop-selfplay-two-rounds-20261019-01-state-000018.json",
-    "last_check_jst": "2026-10-19T11:36:00+09:00"
+    "current_match_run": null,
+    "phase_at_last_check": "complete",
+    "latest_verified_state": "value-loop-selfplay-two-rounds-20261019-01-state-000025.json",
+    "last_check_jst": "2026-10-19T11:58:35+09:00",
+    "status": "completed_verified",
+    "is_enabled": false,
+    "last_completed_match_run": 39190476308,
+    "controller_completed_at_jst": "2026-10-19T11:46:34+09:00",
+    "completion": {
+      "state_sha256": "f7c3fa5b3de44572603acbcc36b6ae11f09344138aab5275fff011b2f4d783d9",
+      "state_bytes": 77822,
+      "state_api_digest_verified": true,
+      "rounds_complete": 2,
+      "operations_complete": 4,
+      "new_games": 600,
+      "verified_plies": 67641,
+      "parent_updates": 0,
+      "result": {
+        "rounds": 2,
+        "parent_updates": 0,
+        "initial_parent": {
+          "EvalSafety": 540,
+          "EvalPressure": 391,
+          "EvalActivity": 422,
+          "EvalDanger": 157,
+          "EvalInfluence": 143,
+          "EvalPotential": 190,
+          "EvalCoordination": 343,
+          "EvalHandPotential": 59,
+          "EvalThreat": 22
+        },
+        "final_parent": {
+          "EvalSafety": 540,
+          "EvalPressure": 391,
+          "EvalActivity": 422,
+          "EvalDanger": 157,
+          "EvalInfluence": 143,
+          "EvalPotential": 190,
+          "EvalCoordination": 343,
+          "EvalHandPotential": 59,
+          "EvalThreat": 22
+        },
+        "used_games": 600,
+        "formal_adoption": false,
+        "limitation": "Per-round approximate intervals; no repeated-testing or independent-opening guarantee."
+      },
+      "initial_parent_and_model_chain_verified": true,
+      "publications_readback_verified": [
+        {
+          "name": "selfplay-value-next-generation-39120804144.tgz",
+          "bytes": 7408409,
+          "sha256": "2bd392425a066c3a1bc88878c21d952c0acf1284638e52918fe89bb7173a760c"
+        },
+        {
+          "name": "value-loop-selfplay-two-rounds-20261019-01-initial-learning.tgz",
+          "bytes": 76558,
+          "sha256": "bd7e4ba5a13994065c6bc99ba2ae9494b21b45266039a4015fc482f3374b577b"
+        },
+        {
+          "name": "value-loop-selfplay-two-rounds-20261019-01-r1-next-learning.tgz",
+          "bytes": 8467877,
+          "sha256": "ed99eba8a9dc8a372402b7fc31045a39bfba787139197548b4c3769ac95f5233"
+        },
+        {
+          "name": "value-loop-selfplay-two-rounds-20261019-01-r1-next-source.tgz",
+          "bytes": 7413226,
+          "sha256": "5355763ddec17d6662f5d064b8f0f1ca24b9e9ae13059bd459bd5ca7c91b4515"
+        },
+        {
+          "name": "value-loop-selfplay-two-rounds-20261019-01-r1-screen-100.tgz",
+          "bytes": 5983945,
+          "sha256": "5a9e5b62565f1e362b4837304df5f975bad7ed6a94f19bff100f35793c3932d1"
+        },
+        {
+          "name": "value-loop-selfplay-two-rounds-20261019-01-r1-screen-25.tgz",
+          "bytes": 5924286,
+          "sha256": "a04a9b4e7d68b426a1b174d35a012e4c2a8c6815f18ca20bd855740bdd2386db"
+        },
+        {
+          "name": "value-loop-selfplay-two-rounds-20261019-01-r1-screen-50.tgz",
+          "bytes": 5995382,
+          "sha256": "50a1b885e774547ac49fb7451dcca46f544dfe4d82d4b62b11da4d1ebca52b00"
+        },
+        {
+          "name": "value-loop-selfplay-two-rounds-20261019-01-round-1-preflight.tgz",
+          "bytes": 3064,
+          "sha256": "c9d6d4012d8af202ef0219f8f98ac167a12d11bce8205b4aa48dee6ea2e4c6c3"
+        },
+        {
+          "name": "value-loop-selfplay-two-rounds-20261019-01-round-2-preflight.tgz",
+          "bytes": 325,
+          "sha256": "d8742bd22d820d9a01854c8c9ce0518a91b12206a41c3965fd1c5f7e2470c14e"
+        }
+      ],
+      "next_model": {
+        "publication": "value-loop-selfplay-two-rounds-20261019-01-r1-next-learning.tgz",
+        "member": "model.json",
+        "eligible": false,
+        "samples": {
+          "train": 444,
+          "validation": 73,
+          "test": 85
+        },
+        "validation_improvement": -0.000240004304835173,
+        "required_validation_improvement": 0.002,
+        "historical_exclusions": {
+          "games": 2673,
+          "positions": 224443
+        },
+        "diagnostic_positions": 8
+      },
+      "formal_main_sha": "4448f40400a893feb3b4d79237111008026547da",
+      "formal_version": "KUMOJI v2.0.21",
+      "formal_adoption": false,
+      "elapsed_seconds": 2145,
+      "reason": "Two round decisions complete; no further games authorized."
+    }
   }
 }
