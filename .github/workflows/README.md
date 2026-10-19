@@ -136,3 +136,5 @@ engine-match.ymlは対局後に実際の着手だけを圧縮し、played-move-a
 第3段階Cでは、新しいPLANに`practice_cycle_policy`を固定した通常`control`だけで、材料不足時に1局面×2分岐×2状況の練習を挿入できる。通常対局と別に最大2回/8練習局、探索指示時間の予約を管理し、親別の完了IDと検証群の使用履歴を引き継ぐ。再分析・既存の知識生成・読み足し知識経路へ渡し、候補ができた場合だけ既存の検査と通常比較へ進む。実行前の台帳保存後に応答を失った場合は再生成せず保存結果を照合する。失敗時の練習原本も期限付きartifactへ保持する。旧PLAN・独立`practice_only`・正式Engineを変更しない。参照：[固定試験計画](../../research/postgame-cycles/practice-cycle-smoke-20261018-01/PLAN.md)。
 
 研究ブランチ `research/value-learning-20261018` の `postgame-spiral.yml` は自己対局の勝敗による9配点学習を、3候補各100局→独立1000局→研究親継承と300局の新規自己対局・次のモデル学習まで検証する。実対局は既存 `engine-match.yml`、記録監査・Release保存は既存helpersを再利用する。正式なEngineや既定値は変えない。
+
+研究ブランチ `research/structured-eval-20261019` の同じ入口には `structured_only` を追加。駒配置・双方玉距離・持駒・攻守・可動性を序中終で学ぶ4,893係数の学習評価を、固定3尺度の100局選別→別1000局確認→通過時300局と評価表を継承した次モデルの学習へ接続する。最大1600新規局。`.github/structured-value-request.json` は無効時に起動せず、有効時は固定candidate_refとrequest_idを要求する。正式Engineや知識の自動採用をしない。

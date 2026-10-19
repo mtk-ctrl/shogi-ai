@@ -3,6 +3,7 @@
 #include "strategy/search_research.h"
 #include "strategy/evaluation_params.h"
 #include "strategy/evaluation_v2_features.h"
+#include "strategy/structured_value.h"
 #include <cstdint>
 
 namespace shogi::strategy {
@@ -20,6 +21,7 @@ struct EvaluationBreakdown {
     // 4 influence, 5 potential, 6 coordination, 7 hand potential, 8 threat.
     std::array<std::array<int,9>,2> side_points{};
     std::array<int,9> terms{};
+    int structured=0;
     int positional_unclamped=0, positional=0, clamp_adjustment=0, total=0;
 };
 
@@ -149,6 +151,10 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
         }
     }
 
+    if(p.structured_enabled) {
+        b.structured=structured_value(s,a,p.structured_maturity,p.structured_scale);
+        b.positional_unclamped+=b.structured;
+    }
     b.positional=std::clamp(b.positional_unclamped,-p.positional_cap,p.positional_cap);
     b.total=std::clamp(b.material_term+b.positional,-p.StaticLimit,p.StaticLimit);
     b.clamp_adjustment=b.total-b.material_term-b.positional_unclamped;

@@ -125,6 +125,8 @@ int main() {
                       << "option name OpeningRandomNonLance type check default true\n"
                       << "option name EvalProfile type combo default features var features var material\n"
                       << "option name EvalSafety type spin default " << evaluation_parameters.weights[0] << " min 0 max 10000\n"
+                      << "option name StructuredEval type check default false\n"
+                      << "option name StructuredScale type spin default 100 min 0 max 200\n"
                       << "option name EvalPressure type spin default " << evaluation_parameters.weights[1] << " min 0 max 10000\n"
                       << "option name EvalActivity type spin default " << evaluation_parameters.weights[2] << " min 0 max 10000\n"
                       << "option name EvalDanger type spin default " << evaluation_parameters.weights[3] << " min 0 max 10000\n"
@@ -154,6 +156,7 @@ int main() {
                       << " influence " << b.terms[4] << " potential " << b.terms[5]
                       << " coordination " << b.terms[6] << " hand_potential " << b.terms[7]
                       << " threat " << b.terms[8]
+                      << " structured " << b.structured
                       << " positional_raw " << b.positional_unclamped
                       << " clamp " << b.clamp_adjustment << " total " << b.total << '\n' << std::flush;
         } else if (command == "isready") {
@@ -641,6 +644,7 @@ int main() {
                         << " efficiency_mask " << strategy.efficiency_mask()
                         << " ordering_rule_checks " << stats.ordering_rule_checks
                         << " eval_cache_hits " << stats.eval_cache_hits
+                        << " structured_eval_calls " << stats.structured_eval_calls
                         << " lazy_snapshots " << stats.lazy_snapshots
                         << " selective_usi_skipped " << stats.selective_usi_skipped
                         << " generated_plays " << stats.generated_plays
@@ -695,6 +699,19 @@ int main() {
                 if (name == "USI_Ponder") {
                     if (value == "true" || value == "false")
                         usi_ponder_enabled = value == "true";
+                } else if (name == "StructuredEval") {
+                    if(value=="true" || value=="false") {
+                        evaluation_parameters.structured_enabled=value=="true";
+                        strategy.set_evaluator(shogi::strategy::FeatureEvaluator(evaluation_parameters,strategy.reuse_mask()));
+                    }
+                } else if (name == "StructuredScale") {
+                    try {
+                        std::size_t used=0;int scale=std::stoi(value,&used);
+                        if(used==value.size() && scale>=0 && scale<=200) {
+                            evaluation_parameters.structured_scale=scale;
+                            strategy.set_evaluator(shogi::strategy::FeatureEvaluator(evaluation_parameters,strategy.reuse_mask()));
+                        }
+                    } catch(...) {}
                 } else if (name == "RiskVerify") {
                     if (value == "true" || value == "false")
                         strategy.set_risk_verify(value == "true");

@@ -58,6 +58,7 @@ def can_declare_win(board):
 
 
 SEARCH_STAT_NAMES = (
+    "structured_eval_calls",
     "learned_eval", "learned_scale",
     "nodes", "full_nodes", "cutoffs", "min_cutoffs", "max_cutoffs",
     "leaves", "terminals", "ply1", "ply2", "ply3",
@@ -79,6 +80,7 @@ USI_INFO_INTEGER_NAMES = (
 )
 
 PER_MOVE_SEARCH_FIELDS = (
+    "structured_eval_calls",
     "learned_eval", "learned_scale",
     "depth", "seldepth", "time", "nodes", "nps",
     "full_nodes", "cutoffs", "tt_probes", "tt_hits",

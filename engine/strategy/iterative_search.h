@@ -81,6 +81,7 @@ public:
         std::uint64_t generated_plays = 0, legal_batches = 0, order_reuse_hits = 0;
         std::uint64_t qtt_probes = 0, qtt_hits = 0, qtt_cutoffs = 0;
         std::uint64_t ordering_rule_checks = 0, eval_cache_hits = 0, lazy_snapshots = 0;
+        std::uint64_t structured_eval_calls = 0;
         std::uint64_t selective_usi_skipped = 0;
         std::uint64_t legal_cache_hits = 0, legal_cache_misses = 0;
         std::uint64_t legal_cache_replacements = 0;
@@ -371,6 +372,7 @@ private:
         SUM_STAT(knowledge_disabled_repetition);SUM_STAT(generated_plays);SUM_STAT(legal_batches);
         SUM_STAT(order_reuse_hits);SUM_STAT(qtt_probes);SUM_STAT(qtt_hits);SUM_STAT(qtt_cutoffs);
         SUM_STAT(ordering_rule_checks);SUM_STAT(eval_cache_hits);SUM_STAT(lazy_snapshots);
+        SUM_STAT(structured_eval_calls);
         SUM_STAT(selective_usi_skipped);SUM_STAT(legal_cache_hits);SUM_STAT(legal_cache_misses);
         SUM_STAT(legal_cache_replacements);
         SUM_STAT(pvs_probes);SUM_STAT(pvs_researches);SUM_STAT(killer_priorities);
@@ -686,6 +688,9 @@ private:
             return cell.value;
         }
         const int value = evaluator_(get_snapshot());
+        if constexpr (std::is_same_v<Evaluator,FeatureEvaluator>)
+            stats_.structured_eval_calls += evaluator_.parameters().structured_enabled
+                && evaluator_.parameters().structured_scale>0 && StructuredValueReady;
         cell = {key, value, eval_epoch_};
         return value;
     }

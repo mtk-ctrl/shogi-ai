@@ -10,6 +10,7 @@ from pathlib import Path
 
 SCHEMA = 1
 SEARCH_FIELDS = (
+    "structured_eval_calls",
     "depth", "seldepth", "time", "elapsed_ms", "nodes", "nps",
     "score_cp_stm", "score_black_cp", "score_mate_stm", "score_black_mate",
     "score_lowerbound", "score_upperbound",

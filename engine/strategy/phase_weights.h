@@ -22,6 +22,7 @@ inline int phase_interpolate(int maturity,int a,int b,int c) {
 }
 inline EvaluationParameters phase_turn_parameters(EvaluationParameters p,int maturity,
                                                    int /*battle*/=0,int /*king_threat*/=0) {
+    p.structured_maturity=std::clamp(maturity,0,100);
     std::array<int*,10> target{{
         &p.material_weight,&p.weights[0],&p.weights[1],&p.weights[2],
         &p.weights[3],&p.influence_weight,&p.potential_weight,

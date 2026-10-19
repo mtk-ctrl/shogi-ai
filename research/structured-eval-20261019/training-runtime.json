@@ -1,0 +1,9 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "numpy": "2.3.5",
+  "scipy": "1.17.0",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "command": "PYTHONPATH=build/python python tools/research/train_structured_value.py --inputs SOURCE_39124621200 SOURCE_39190476308 --probe build/structured-probe-trained --output build/structured-full-training",
+  "randomness": "No random initialization; deterministic zero-start L-BFGS and trajectory-hash split",
+  "data_note": "600 saved games, both sides use the same declared own G1 settings; older mixed-parent matches are used only as used-trajectory exclusions."
+}

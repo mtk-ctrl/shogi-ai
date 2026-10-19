@@ -2,8 +2,8 @@ name: Postgame Automatic Spiral
 run-name: "Spiral ${{ inputs.cycle_id || 'launcher' }}"
 on:
   push:
-    branches: [main, research/value-learning-20261018]
-    paths: [".github/postgame-spiral-request.json", ".github/selfplay-value-request.json"]
+    branches: [main, research/value-learning-20261018, research/structured-eval-20261019]
+    paths: [".github/postgame-spiral-request.json", ".github/selfplay-value-request.json", ".github/structured-value-request.json"]
   pull_request:
     paths:
       - "tools/research/postgame_*.py"
@@ -36,6 +36,10 @@ on:
         required: true
       order_only:
         description: Frozen selfplay value model comparisons and research-parent inheritance
+        type: boolean
+        default: false
+      structured_only:
+        description: Frozen own-game contextual evaluation with 4893 coefficients and inherited next model
         type: boolean
         default: false
       publication_only:
@@ -105,7 +109,9 @@ jobs:
       - name: Dispatch explicit manual controller entry
         env: {GH_TOKEN: "${{ github.token }}"}
         run: |
-          if [ "$GITHUB_REF_NAME" = "research/value-learning-20261018" ]; then
+          if [ "$GITHUB_REF_NAME" = "research/structured-eval-20261019" ]; then
+            python3 .github/scripts/run_structured_value.py --launch
+          elif [ "$GITHUB_REF_NAME" = "research/value-learning-20261018" ]; then
             python3 .github/scripts/run_selfplay_value.py --launch
           else
             python3 .github/scripts/run_postgame_spiral.py --launch
@@ -208,7 +214,7 @@ jobs:
           if-no-files-found: ignore
 
   selfplay-value:
-    if: github.event_name == 'workflow_dispatch' && inputs.order_only
+    if: github.event_name == 'workflow_dispatch' && inputs.order_only && !inputs.structured_only
     runs-on: ubuntu-latest
     timeout-minutes: 240
     permissions: {contents: write, actions: write}
@@ -234,5 +240,38 @@ jobs:
             build/value-cycle/*/dispatch.json
             build/value-cycle/*/audit.json
             build/value-cycle/*/publication.json
+          retention-days: 90
+          if-no-files-found: error
+
+  structured-value:
+    if: github.event_name == 'workflow_dispatch' && inputs.order_only && inputs.structured_only
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    permissions: {contents: write, actions: write}
+    steps:
+      - uses: actions/checkout@v5
+        with: {ref: '${{ inputs.plan_ref }}'}
+      - run: python3 -m pip install python-shogi==1.1.1 numpy==2.3.5 scipy==1.17.0
+      - run: python3 scripts/check_workflow_inventory.py --strict && python3 scripts/check_match_workflows.py
+      - name: Verify structured value gates and inherited model arithmetic
+        run: python3 -m unittest discover -s tests -p test_structured_value.py
+      - name: Compare frozen contextual value and inherit only a confirmed parent
+        env:
+          GH_TOKEN: '${{ github.token }}'
+          PLAN_REF: '${{ inputs.plan_ref }}'
+        run: python3 .github/scripts/run_structured_value.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: structured-value-cycle-${{ github.run_id }}
+          path: |
+            build/structured-cycle/result.json
+            build/structured-cycle/research-parent.json
+            build/structured-cycle/final-publication.json
+            build/structured-cycle/*/request.json
+            build/structured-cycle/*/dispatch.json
+            build/structured-cycle/*/audit.json
+            build/structured-cycle/*/publication.json
+            build/structured-cycle/next-model/model.json
           retention-days: 90
           if-no-files-found: error

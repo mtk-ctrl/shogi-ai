@@ -1,0 +1,138 @@
+{
+  "baseline": {
+    "test": {
+      "mean_abs_correction_cp": 0.0,
+      "mixed_loss": 0.6385930906674783,
+      "outcome_loss": 0.7328699441595365,
+      "p95_abs_correction_cp": 0.0,
+      "positions": 3075
+    },
+    "train": {
+      "mean_abs_correction_cp": 0.0,
+      "mixed_loss": 0.6534922154948452,
+      "outcome_loss": 0.7254457787268298,
+      "p95_abs_correction_cp": 0.0,
+      "positions": 18530
+    },
+    "validation": {
+      "mean_abs_correction_cp": 0.0,
+      "mixed_loss": 0.7182329338921964,
+      "outcome_loss": 0.8714789709540326,
+      "p95_abs_correction_cp": 0.0,
+      "positions": 3511
+    }
+  },
+  "candidates": [
+    50,
+    100,
+    150
+  ],
+  "coefficient_cap_cp": 300,
+  "coefficient_units": "cp/64",
+  "eligible": true,
+  "feature_families": {
+    "attack_defence": 126,
+    "hand_count": 35,
+    "king_distance": 252,
+    "mobility": 84,
+    "piece_square": 1134
+  },
+  "features": 4893,
+  "formal_adoption": false,
+  "historical_position_exclusions": 0,
+  "learned": {
+    "test": {
+      "mean_abs_correction_cp": 349.11533048780484,
+      "mixed_loss": 0.6147869577802054,
+      "outcome_loss": 0.6846571509385432,
+      "p95_abs_correction_cp": 889.8313749999996,
+      "positions": 3075
+    },
+    "train": {
+      "mean_abs_correction_cp": 314.98950067458173,
+      "mixed_loss": 0.570546043693431,
+      "outcome_loss": 0.5735844342991676,
+      "p95_abs_correction_cp": 805.5614374999997,
+      "positions": 18530
+    },
+    "validation": {
+      "mean_abs_correction_cp": 293.13027734263744,
+      "mixed_loss": 0.6969686724328938,
+      "outcome_loss": 0.8280871240897829,
+      "p95_abs_correction_cp": 740.439375,
+      "positions": 3511
+    }
+  },
+  "nonzero_coefficients": 3291,
+  "objective": "equal-game mixture: 50% actual outcome + 50% recorded own lookahead probability where eligible",
+  "optimization": {
+    "converged": true,
+    "iterations": 58
+  },
+  "parent_model_sha256": null,
+  "parent_options": {
+    "EvalActivity": 422,
+    "EvalCoordination": 343,
+    "EvalDanger": 157,
+    "EvalHandPotential": 59,
+    "EvalInfluence": 143,
+    "EvalPotential": 190,
+    "EvalPressure": 391,
+    "EvalSafety": 540,
+    "EvalThreat": 22
+  },
+  "parent_scale": 100,
+  "phase_features": 1631,
+  "phases": [
+    "opening",
+    "middle",
+    "end"
+  ],
+  "provenance": {
+    "receipts": [
+      {
+        "archive_bytes": 2185412,
+        "archive_sha256": "054ec05eeb3eef1166a06a8bfd7b29a74c7aaf0fde2640dca21f8a3bc98ffd75",
+        "games": 300,
+        "run_id": "39124621200"
+      },
+      {
+        "archive_bytes": 2189923,
+        "archive_sha256": "a57b759ba7f09036428f086f416552668a2aa7a9a67f92cb4444d162c6992ff5",
+        "games": 300,
+        "run_id": "39190476308"
+      }
+    ],
+    "unique_resolved_games": 594,
+    "verified_plies": 67270
+  },
+  "residual_cap_cp": 1200,
+  "samples": {
+    "test": 3075,
+    "train": 18530,
+    "validation": 3511
+  },
+  "samples_sha256": "d598bf162b96110d081d745ba4d850c26026fc8f4c1c81e05af86dc59a857072",
+  "schema": "structured-own-value-v2",
+  "selected_l2": 0.01,
+  "selection": [
+    {
+      "l2": 0.0001,
+      "validation_loss": 0.7433395387484932
+    },
+    {
+      "l2": 0.001,
+      "validation_loss": 0.7100499677820192
+    },
+    {
+      "l2": 0.01,
+      "validation_loss": 0.6969686724328938
+    }
+  ],
+  "split_games": {
+    "test": 77,
+    "train": 384,
+    "validation": 82
+  },
+  "trained_feature_support": 3375
+}

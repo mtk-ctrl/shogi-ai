@@ -7,6 +7,9 @@ namespace shogi::strategy {
 // values for USI options. The adopted profile 47 scales them each turn.
 // Earlier fixed static profiles remain reproducible when explicitly requested.
 struct EvaluationParameters {
+    bool structured_enabled = false;
+    int structured_scale = 100;
+    int structured_maturity = 50;
     int guard_gold = 12, guard_silver = 10, guard_pawn = 4;
     int pressure_king = 12, pressure_occupied = 6, pressure_empty = 4;
     int pressure_partner = 8;
@@ -65,6 +68,8 @@ struct EvaluationParameters {
     }
 
     void validate() const {
+        if(structured_scale<0 || structured_scale>200 || structured_maturity<0 || structured_maturity>100)
+            throw std::invalid_argument("invalid structured evaluation configuration");
         const int values[] = {guard_gold, guard_silver, guard_pawn, pressure_king,
             pressure_occupied, pressure_empty, pressure_partner, mobility_major,
             mobility_minor, mobility_piece_cap, danger_numerator, positional_cap,
