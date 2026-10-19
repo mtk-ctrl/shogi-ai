@@ -10,6 +10,9 @@ on:
       - "tests/test_postgame_*.py"
       - ".github/scripts/run_postgame_spiral.py"
       - ".github/scripts/inspect_postgame_spiral.py"
+      - ".github/scripts/run_selfplay_value_loop.py"
+      - "tools/research/train_selfplay_value.py"
+      - "tests/test_selfplay_value_loop.py"
       - ".github/workflows/postgame-spiral.yml"
       - "research/self-improvement-20261017/replay_progress.py"
       - "research/self-improvement-20261017/knowledge_fixture.py"
@@ -36,6 +39,10 @@ on:
         required: true
       order_only:
         description: Frozen selfplay value model comparisons and research-parent inheritance
+        type: boolean
+        default: false
+      value_loop:
+        description: Execute the immutable explicitly budgeted two-round value loop
         type: boolean
         default: false
       publication_only:
@@ -68,6 +75,7 @@ jobs:
       - uses: actions/checkout@v5
       - run: python3 -m pip install python-shogi==1.1.1
       - run: python3 -m unittest discover -s tests -p 'test_postgame_*.py'
+      - run: python3 -m unittest tests.test_selfplay_value_loop
       - name: Reproduce research yield from immutable saved diagnoses
         run: python3 research/self-improvement-20261017/replay_progress.py --download --output build/postgame-progress-replay.json
       - name: Verify knowledge preparation against exact saved source binaries
@@ -210,18 +218,29 @@ jobs:
   selfplay-value:
     if: github.event_name == 'workflow_dispatch' && inputs.order_only
     runs-on: ubuntu-latest
-    timeout-minutes: 240
+    timeout-minutes: 360
     permissions: {contents: write, actions: write}
     steps:
       - uses: actions/checkout@v5
         with: {ref: '${{ inputs.plan_ref }}'}
       - run: python3 -m pip install python-shogi==1.1.1 numpy==2.3.5
       - run: python3 scripts/check_workflow_inventory.py --strict && python3 scripts/check_match_workflows.py
+      - name: Verify bounded loop guards before dispatching games
+        if: inputs.value_loop
+        run: python3 -m unittest tests.test_selfplay_value_loop
       - name: Compare frozen learned evaluation and inherit only a confirmed research parent
         env:
           GH_TOKEN: '${{ github.token }}'
           PLAN_REF: '${{ inputs.plan_ref }}'
-        run: python3 .github/scripts/run_selfplay_value.py
+          CYCLE_ID: '${{ inputs.cycle_id }}'
+          REPAIR: '${{ inputs.repair }}'
+          VALUE_LOOP: '${{ inputs.value_loop }}'
+        run: |
+          if [ "$VALUE_LOOP" = "true" ]; then
+            python3 .github/scripts/run_selfplay_value_loop.py
+          else
+            python3 .github/scripts/run_selfplay_value.py
+          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -234,5 +253,7 @@ jobs:
             build/value-cycle/*/dispatch.json
             build/value-cycle/*/audit.json
             build/value-cycle/*/publication.json
+            build/value-loop/latest-state.json
+            build/value-loop/*preflight.json
           retention-days: 90
           if-no-files-found: error

@@ -38,7 +38,7 @@ def collect(inputs,parent_options):
             h=int(gh[:8],16)%100;groups[0 if h<70 else 1 if h<85 else 2].extend(samples[:8])
     return groups,dict(receipts=receipts,verified_plies=plies,unique_resolved_games=len(seen))
 
-def fit(inputs,binary,output,parent_options=None):
+def fit(inputs,binary,output,parent_options=None,exclusions=None):
     import numpy as np
     parent_options=parent_options or dict(zip(OPTIONS,BASE))
     if set(parent_options)!=set(OPTIONS) or any(type(v)is not int or not 1<=v<=10000 for v in parent_options.values()):raise ValueError("complete parent parameters required")
@@ -49,6 +49,8 @@ def fit(inputs,binary,output,parent_options=None):
     run=subprocess.run([str(binary)],input=command,text=True,capture_output=True,check=True)
     frames=[l.split()[3:] for l in run.stdout.splitlines() if l.startswith('info string evaluation ')]
     if len(frames)!=len(rows):raise ValueError('static feature count differs')
+    excluded_games=set((exclusions or {}).get('games',()))
+    excluded_positions=set((exclusions or {}).get('positions',()))
     kept=[[],[],[]];occupied=set();offset=0
     for split,group in enumerate(groups):
         for r in group:
@@ -56,7 +58,8 @@ def fit(inputs,binary,output,parent_options=None):
             b={tokens[i]:int(tokens[i+1]) for i in range(0,len(tokens),2)}
             if r['recorded_static'] is not None and b['total']!=r['recorded_static']:raise ValueError('recorded parent static differs')
             key=' '.join(r['sfen'].split()[:3])
-            if b['clamp'] or abs(b['total'])>800 or key in occupied:continue
+            if (b['clamp'] or abs(b['total'])>800 or key in occupied
+                    or r['game_hash'] in excluded_games or sha(key.encode()) in excluded_positions):continue
             occupied.add(key);r['features']=b;r['split']=('train','validation','test')[split];kept[split].append(r)
     if any(len(g)<50 for g in kept):raise ValueError('insufficient independent split')
     all_rows=[r for g in kept for r in g];lengths=[len(g) for g in kept];cuts=np.cumsum([0]+lengths)
@@ -91,6 +94,9 @@ def fit(inputs,binary,output,parent_options=None):
         baseline_loss={s:loss(np.zeros(9),i) for i,s in enumerate(('train','validation','test'))},
         learned_loss={s:loss(d,i) for i,s in enumerate(('train','validation','test'))},candidates=candidates,
         eligible=loss(np.zeros(9),1)-loss(d,1)>=.002,formal_adoption=False)
+    if exclusions is not None:
+        report['historical_exclusions']=dict(games=len(excluded_games),positions=len(excluded_positions),
+            sha256=sha(json.dumps({k:sorted(v) for k,v in exclusions.items()},sort_keys=True).encode()))
     (output/'model.json').write_text(json.dumps(report,indent=2)+'\n')
     with (output/'selected-actual-positions.jsonl').open('w') as f:
         for r in all_rows:f.write(json.dumps(r,sort_keys=True)+'\n')

@@ -1,0 +1,138 @@
+{
+  "schema": "selfplay-value-loop-v1",
+  "cycle_id": "selfplay-two-rounds-20261019-01",
+  "rounds": 2,
+  "max_games": 3200,
+  "engine_ref": "4448f40400a893feb3b4d79237111008026547da",
+  "binary_sha256": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36",
+  "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+  "initial_result": {
+    "release": "records-2026-10-01",
+    "name": "selfplay-value-result-39120804144.tgz",
+    "sha256": "1032a620f64d16446c130e0419295a66b42f9d5f4cc6bb7c6e42023f26b47134",
+    "bytes": 32037
+  },
+  "history": [
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-audit-38947455452.tgz",
+      "sha256": "ad2e3b2413f0ba2bff553cc2a38089b8d36a5cc752b0f1068a2317643d7d5b03",
+      "bytes": 6032950
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-audit-38947742788.tgz",
+      "sha256": "a680b884e1b17abb6231a39457c718d73b9f56448adfd9216efde9b060a0ec3b",
+      "bytes": 5983542
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-audit-38948491634.tgz",
+      "sha256": "bbebce04baea7a1aeafb96f709f7f2772b91eccaa507b9a58821c7a1fd683965",
+      "bytes": 5992255
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-audit-38950067410.tgz",
+      "sha256": "ad8e1ce5f873ebe34107ef45d9ebe48b6e95bcd250f7df6279eca015c38ec87f",
+      "bytes": 6716687
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-order-screen-100-39118718919.tgz",
+      "sha256": "54e4bdfe8ed56ba11f3085cc84c5974615b9b459e322f30f11a7b28714096911",
+      "bytes": 5971887,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/selfplay-order-screen-100-39118718919.tgz"
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-order-screen-200-39118718919.tgz",
+      "sha256": "36d33cc9a80f512986ff9b2cc68125d1fa488453451667ff99d42b38aac71e12",
+      "bytes": 6028356,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/selfplay-order-screen-200-39118718919.tgz"
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-order-screen-50-39118718919.tgz",
+      "sha256": "758c41c0eab4437a6cc46b175448e4f5657692e181b3f907086f5c339232eb4c",
+      "bytes": 6050104,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/selfplay-order-screen-50-39118718919.tgz"
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-value-screen-25-39120804144.tgz",
+      "sha256": "bfa3c899fa3d159d246067fafd4b2a3e56ddf8a5fac6d9c932f8b0cb8b551c14",
+      "bytes": 5984006,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/selfplay-value-screen-25-39120804144.tgz"
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-value-screen-50-39120804144.tgz",
+      "sha256": "eef2b600dab4d881e8c28823a9c1864781556381d8b4dadad5f3ad09ea75f052",
+      "bytes": 6005744,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/selfplay-value-screen-50-39120804144.tgz"
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-value-screen-100-39120804144.tgz",
+      "sha256": "206f381ca1b08942b501da069b0a4e2c0009f645b51b6128ecf6b6222060410c",
+      "bytes": 5977610,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/selfplay-value-screen-100-39120804144.tgz"
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-value-confirmation-39120804144.tgz",
+      "sha256": "f9748eb7d414520a21dfdbae8eb68df2a8a42775effe1a80a08ff8a03d29c915",
+      "bytes": 12456473,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/selfplay-value-confirmation-39120804144.tgz"
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "selfplay-value-next-generation-39120804144.tgz",
+      "sha256": "2bd392425a066c3a1bc88878c21d952c0acf1284638e52918fe89bb7173a760c",
+      "bytes": 7408409,
+      "readback_verified": true,
+      "api_digest_verified": true,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/selfplay-value-next-generation-39120804144.tgz"
+    }
+  ],
+  "seeds": [
+    [
+      2070101901,
+      2071101901,
+      2072101901,
+      2074101901,
+      2076101901
+    ],
+    [
+      2080101901,
+      2081101901,
+      2082101901,
+      2084101901,
+      2086101901
+    ]
+  ],
+  "source_games": 300,
+  "screen_games": 100,
+  "confirmation_games": 1000,
+  "go_command": "go movetime 200",
+  "formal_adoption": false,
+  "user_authorization": "2026-10-19 JST: とりあえず２周させてみて。",
+  "isolation": "Reproduce the already frozen initial G1 model unchanged. For subsequent fits, exclude previously exposed complete trajectories and position hashes from every archived learning/screen/confirmation/source game. Initial legacy model has only its original within-generation split guarantees.",
+  "stopping": "Two round decisions; at most 3200 new games. Skip last 300 after two failures. No third round or automatic formal adoption.",
+  "timer": "One ETA task follows this single controller; it cannot separately dispatch next-generation games."
+}

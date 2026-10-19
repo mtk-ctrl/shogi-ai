@@ -43,12 +43,13 @@ def preflight(binary,positions,candidates):
 def launch():
     request=json.loads((ROOT/'.github/selfplay-value-request.json').read_text())
     if request==dict(enabled=False):return
-    if set(request)!={'candidate_ref','request_id'} or len(request['candidate_ref'])!=40:raise ValueError('fixed request required')
+    if set(request) not in ({'candidate_ref','request_id'},{'candidate_ref','request_id','value_loop'}) or len(request['candidate_ref'])!=40:raise ValueError('fixed request required')
+    if 'value_loop' in request and request['value_loop'] is not True:raise ValueError('explicit loop request required')
     runs=api(f'repos/{REPO}/actions/workflows/postgame-spiral.yml/runs?event=workflow_dispatch&per_page=100')['workflow_runs']
     if any(r['display_title']=='Spiral '+request['request_id'] for r in runs):raise ValueError('existing body; reconcile instead of retry')
     result=api(f'repos/{REPO}/actions/workflows/postgame-spiral.yml/dispatches',dict(
         ref=os.environ['GITHUB_REF_NAME'],return_run_details=True,inputs=dict(cycle_id=request['request_id'],
-        plan_ref=request['candidate_ref'],order_only='true')))
+        plan_ref=request['candidate_ref'],order_only='true',value_loop=str(request.get('value_loop',False)).lower())))
     if type(result.get('workflow_run_id'))is not int:raise ValueError('actual run ID missing')
     print('VALUE_LAUNCH '+json.dumps(result),flush=True)
 
