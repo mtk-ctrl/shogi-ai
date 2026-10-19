@@ -127,6 +127,7 @@ int main() {
                       << "option name EvalSafety type spin default " << evaluation_parameters.weights[0] << " min 0 max 10000\n"
                       << "option name StructuredEval type check default false\n"
                       << "option name StructuredScale type spin default 100 min 0 max 200\n"
+                      << "info string structured_model " << shogi::strategy::StructuredValueModel << "\n"
                       << "option name EvalPressure type spin default " << evaluation_parameters.weights[1] << " min 0 max 10000\n"
                       << "option name EvalActivity type spin default " << evaluation_parameters.weights[2] << " min 0 max 10000\n"
                       << "option name EvalDanger type spin default " << evaluation_parameters.weights[3] << " min 0 max 10000\n"

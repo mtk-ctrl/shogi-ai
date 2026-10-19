@@ -74,13 +74,17 @@ def compare(backend,ref,scale,games,seed,label,prior,own=False):
     print('STRUCTURED_MATCH '+json.dumps(dict(label=label,run_id=run,request=request)),flush=True)
     wait_body(run);source=transport.restore(run,folder)
     actual,report=transport.audit(source,request,run,prior,require_order_usage=False)
+    model_sha=sha256((ROOT/'research/structured-eval-20261019/model.json').read_bytes())
+    for side in ('a','b') if own else ('a',):
+        if model_sha.encode() not in (source/'binaries/build'/('engine-'+side)).read_bytes():
+            raise ValueError('actual binary does not contain the frozen learned model identity')
     usage=dict(A=0,B=0)
     for shard in (source/'shards').glob('shard-*.json'):
         for game in json.loads(shard.read_text())['details']:
             for m in game['move_records']:usage[m['engine']]+=m['search'].get('structured_eval_calls',0)
     if usage['A']<=0 or (own and usage['B']<=0) or (not own and usage['B']!=0):
         raise ValueError('actual learned evaluation usage differs from frozen comparison')
-    report.update(structured_eval_calls=usage,model_sha256=sha256((ROOT/'research/structured-eval-20261019/model.json').read_bytes()))
+    report.update(structured_eval_calls=usage,model_sha256=model_sha,compiled_model_identity_verified=True)
     receipt=transport.publish(backend,folder,source,report,label,prefix='structured-value')
     state['active_operation'].update(status='saved',publication=receipt,audit=report);save(OUT/'result.json',state)
     print('STRUCTURED_RESULT '+json.dumps(dict(label=label,audit=report,publication=receipt)),flush=True)

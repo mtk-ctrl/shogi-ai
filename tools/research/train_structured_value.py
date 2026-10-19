@@ -69,7 +69,9 @@ def train(inputs,probe,output,parent_model=None,parent_scale=100,excluded_positi
             frame=frames[frame_offset];frame_offset+=1
             key=' '.join(row['sfen'].split()[:3])
             if key in occupied or digest(key.encode()) in excluded or frame['clamp'] or abs(frame['base'])>1800:continue
-            occupied.add(key);row.update(frame);row['split']=('train','validation','test')[split]
+            occupied.add(key)
+            row.update({k:frame[k] for k in ('base','clamp','maturity','features')})
+            row['split']=('train','validation','test')[split]
             kept[split].append(row)
     if any(len(g)<200 for g in kept):raise ValueError('too few distinct actual positions in a split')
     rows=[r for g in kept for r in g];lengths=[len(g) for g in kept];cuts=np.cumsum([0]+lengths)

@@ -1,0 +1,7 @@
+{
+  "learned_coefficients_reproduced_exactly": true,
+  "feature_count": 4893,
+  "nonzero_coefficients": 3291,
+  "model_sha256": "8c174f7adac2d45cc0ab2633986ab89db3f24906bd655f5e18e81538eb7fdb1c",
+  "note": "Unused diagnostic outputs from the feature probe are excluded from sample identity; learned coefficients did not change."
+}
