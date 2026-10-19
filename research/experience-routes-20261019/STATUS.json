@@ -1,7 +1,7 @@
 {
   "schema": "replay-routes-status-v1",
-  "updated_jst": "2026-10-19T17:00:47+09:00",
-  "status": "confirmation_running",
+  "updated_jst": "2026-10-19T17:52:15+09:00",
+  "status": "confirmation_rejected_parent_retained",
   "controller_run": 39217732375,
   "controller_job": 117945466819,
   "candidate_ref": "004017159250d8fbd02dc55bd15bc87c3eaed604",
@@ -58,16 +58,109 @@
     "games52": 7
   },
   "confirmation_actual_start_jst": "2026-10-19T16:59:35+09:00",
-  "expected_finish_and_readback_jst": "2026-10-19T17:40:00+09:00",
-  "one_time_continuation_enabled": true,
+  "one_time_continuation_enabled": false,
   "research_parent_updated": false,
   "formal_adoption": false,
   "evaluation_unchanged_in_route_comparison": true,
   "limitations": [
-    "The 1000-game confirmation has not finished.",
+    "ReplayOrder was used but failed the predeclared strength gate; retain prior confirmed research parent with all Replay routes OFF.",
+    "Whole-trajectory deduplication does not establish independent openings.",
     "Time allocation had no actual normal-game use.",
     "No newly verified research move was produced.",
     "Practice is training data generation; no new learner update from these 128 plies has been demonstrated.",
     "Unbounded automatic regeneration of every route under arbitrary new parents is not complete."
+  ],
+  "controller_conclusion": "success",
+  "confirmation_conclusion": "success",
+  "confirmation_audit": {
+    "all_moves_and_terminations_verified": true,
+    "plies": 116747,
+    "used_actual_moves": 2388,
+    "total_actual_A_moves": 58368,
+    "used_games": 496,
+    "usage": {
+      "A": {
+        "structured_eval_calls": 2970751106,
+        "replay_probes": 498297,
+        "replay_order_promotions": 12366,
+        "replay_research_promotions": 0,
+        "replay_time_match": 0
+      },
+      "B": {
+        "structured_eval_calls": 2972967390,
+        "replay_probes": 0,
+        "replay_order_promotions": 0,
+        "replay_research_promotions": 0,
+        "replay_time_match": 0
+      }
+    },
+    "raw": {
+      "games": 1000,
+      "wins": 481,
+      "losses": 505,
+      "draws": 14,
+      "score": 0.488,
+      "lower": 0.4570186054284188
+    },
+    "unique": {
+      "games": 990,
+      "wins": 477,
+      "losses": 502,
+      "draws": 11,
+      "score": 0.48737373737373735,
+      "lower": 0.45623722526404215
+    },
+    "prior_publications_found": 20,
+    "prior_publications_required": 20,
+    "overlap": 3,
+    "color_A_black": 500
+  },
+  "normal_games_executed": 1200,
+  "launch_request_enabled": false,
+  "prior_publications_independently_verified": 20,
+  "prior_trajectory_signatures": 4358,
+  "prior_overlap": 3,
+  "internal_duplicate_trajectories": 7,
+  "publications": [
+    {
+      "name": "replay-routes-confirmation-39217732375.tgz",
+      "bytes": 14019800,
+      "sha256": "124c701981592e7931fcc41bb3d9130ce383c2ed1bf7ff22e2ffbe115667db91",
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/replay-routes-confirmation-39217732375.tgz",
+      "readback_verified": true,
+      "api_digest_verified": true
+    },
+    {
+      "name": "replay-routes-local-evidence-39217732375.tgz",
+      "bytes": 3480849,
+      "sha256": "826671b12e3d1c963d394a615e9db5f166b6cda66b04d46f3179a0d6a246c00a",
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/replay-routes-local-evidence-39217732375.tgz",
+      "readback_verified": true,
+      "api_digest_verified": true
+    },
+    {
+      "name": "replay-routes-result-39217732375.tgz",
+      "bytes": 204534,
+      "sha256": "c97bf59018723cc478f8893665c114cf67aed1be4235bcc3f2901acf41239200",
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/replay-routes-result-39217732375.tgz",
+      "readback_verified": true,
+      "api_digest_verified": true
+    },
+    {
+      "name": "replay-routes-screen-ReplayOrder-39217732375.tgz",
+      "bytes": 6511126,
+      "sha256": "624de8ce6399b8297aebf906942fcd449ff320a467bb14d0fc1a01953223d3f8",
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/replay-routes-screen-ReplayOrder-39217732375.tgz",
+      "readback_verified": true,
+      "api_digest_verified": true
+    },
+    {
+      "name": "replay-routes-screen-ReplayTime-39217732375.tgz",
+      "bytes": 6544580,
+      "sha256": "cc8dd84c88bfd18e9b7984a463794755e88871cfeb17ec403458a5b6365ea40f",
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/replay-routes-screen-ReplayTime-39217732375.tgz",
+      "readback_verified": true,
+      "api_digest_verified": true
+    }
   ]
 }
