@@ -12,6 +12,7 @@ from unittest.mock import patch
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'.github/scripts'))
 import run_selfplay_value_loop as loop
+import run_selfplay_value as entry
 from tools.research.postgame_ranker import OPTIONS,BASE
 
 PARENT=dict(zip(OPTIONS,BASE))
@@ -23,6 +24,19 @@ def plan():
                [2080101901,2081101901,2082101901,2084101901,2086101901]])
 
 class Tests(unittest.TestCase):
+    def test_repair_launcher_only_resumes_an_inactive_failed_controller(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);(root/'.github').mkdir()
+            request=dict(candidate_ref='a'*40,request_id='two-round-fixture',value_loop=True,repair=True)
+            (root/'.github/selfplay-value-request.json').write_text(json.dumps(request))
+            for status,conclusion,allowed in [('in_progress',None,False),('completed','success',False),('completed','failure',True)]:
+                prior=dict(id=123,display_title='Spiral two-round-fixture',status=status,conclusion=conclusion)
+                with patch.object(entry,'ROOT',root),patch.object(entry,'api',side_effect=[dict(workflow_runs=[prior]),dict(workflow_run_id=456)]) as api,patch.dict(os.environ,GITHUB_REF_NAME='research/value-learning-20261018'):
+                    if allowed:
+                        entry.launch();self.assertEqual(api.call_args.args[1]['inputs']['repair'],'true')
+                    else:
+                        with self.assertRaisesRegex(ValueError,'existing body'):entry.launch()
+                        self.assertEqual(api.call_count,1)
     def test_model_tolerance_never_changes_integer_candidates_or_input_hash(self):
         original=dict(loss=.7201624438582374,candidates=[dict(weight=540)],samples_sha256='abc')
         repeated=dict(loss=.7201624438582372,candidates=[dict(weight=540)],samples_sha256='abc')
