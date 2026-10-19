@@ -1,4 +1,13 @@
 {
   "cycle_id": "selfplay-two-rounds-20261019-01",
-  "stop_requested": false
+  "stop_requested": false,
+  "confirmation_task": {
+    "id": "6ad57cc7157c819195b667c84a5268b6",
+    "schedule": "BEGIN:VEVENT\nDTSTART:20261019T023827Z\nEND:VEVENT",
+    "timezone": "Asia/Tokyo",
+    "controller_run": 39188739902,
+    "plan_ref": "864b6c17dcbef847b533d9a5906bfc8da7f2a12e",
+    "first_match_run": 39188841243,
+    "timing_mode": "exact_schedule"
+  }
 }
