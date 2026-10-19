@@ -1,0 +1,37 @@
+[
+  {
+    "family": "駒配置",
+    "opening": 501,
+    "middle": 854,
+    "end": 851,
+    "updated": 2206
+  },
+  {
+    "family": "玉との距離",
+    "opening": 155,
+    "middle": 204,
+    "end": 204,
+    "updated": 563
+  },
+  {
+    "family": "持駒の枚数",
+    "opening": 16,
+    "middle": 24,
+    "end": 24,
+    "updated": 64
+  },
+  {
+    "family": "攻め・守りの利き",
+    "opening": 97,
+    "middle": 122,
+    "end": 121,
+    "updated": 340
+  },
+  {
+    "family": "可動性",
+    "opening": 38,
+    "middle": 40,
+    "end": 40,
+    "updated": 118
+  }
+]

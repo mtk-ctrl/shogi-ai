@@ -22,7 +22,19 @@ int main(){try{
         strategy::AttackMap a(s,true,true);
         std::map<int,int> sparse;
         strategy::structured_features(s,a,phase.maturity,[&](int i,int v){sparse[i]+=v;});
+        for(int mask=0;mask<8;++mask) {
+            strategy::AttackMap other(s,mask&1,mask&2,mask&4);
+            std::map<int,int> again;
+            strategy::structured_features(s,other,phase.maturity,[&](int i,int v){again[i]+=v;});
+            for(auto it=again.begin();it!=again.end();)if(it->second==0)it=again.erase(it);else ++it;
+            auto expected=sparse;
+            for(auto it=expected.begin();it!=expected.end();)if(it->second==0)it=expected.erase(it);else ++it;
+            if(again!=expected)throw std::runtime_error("feature extraction depends on attack-map optimization mask");
+            if(strategy::structured_value(s,other,phase.maturity,100)!=strategy::structured_value(s,a,phase.maturity,100))
+                throw std::runtime_error("learned value depends on attack-map optimization mask");
+        }
         std::cout<<"{\"maturity\":"<<phase.maturity<<",\"base\":"<<b.total
+                 <<",\"material\":"<<b.material_term<<",\"positional_raw\":"<<b.positional_unclamped
                  <<",\"clamp\":"<<b.clamp_adjustment
                  <<",\"learned50\":"<<strategy::structured_value(s,a,phase.maturity,50)
                  <<",\"learned100\":"<<strategy::structured_value(s,a,phase.maturity,100)

@@ -11,6 +11,7 @@ on:
       - "position-knowledge-v1.manifest.json"
       - "tools/knowledge/**"
       - "tests/evaluation_test.cpp"
+      - "tests/structured_value_test.cpp"
       - "tests/strategy_test.cpp"
       - "tests/ordering_test.cpp"
       - "tests/contact_ordering_test.cpp"
@@ -73,6 +74,8 @@ jobs:
         run: |
           python3 scripts/build.py --evaluation-test --output build/evaluation-test
           ./build/evaluation-test
+          g++ -std=c++17 -O2 -Iengine tests/structured_value_test.cpp -o build/structured-value-test
+          ./build/structured-value-test
 
       - name: Strategy tests
         run: |

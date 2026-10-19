@@ -27,6 +27,9 @@ inline void structured_base_features(const rules::Snapshot& s,const AttackMap& a
         const int sign=side==0 ? 1 : -1;
         for(int sq:a.squares(side)) {
             const auto& p=s.board[sq];
+            // Without OccupiedIndex the range is all 81 squares, just as in
+            // the existing feature families. Filter ownership in both modes.
+            if(!p.kind || int(p.color)!=side)continue;
             const int type=p.promoted ? p.kind+7 : p.kind-1;
             if(type<0 || type>=StructuredPieceTypes)continue;
             const int normalized=side==0 ? sq : 80-sq;

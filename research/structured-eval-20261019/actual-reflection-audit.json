@@ -1,0 +1,180 @@
+{
+  "run_id": 39195895351,
+  "positions": 5928,
+  "historical_raw_observations_reproduced": true,
+  "attack_map_modes_checked_per_position": 8,
+  "corrected_static_matches_indexed_search": true,
+  "configured_search_mask": 6,
+  "configured_fixed_depth_search_unchanged": true,
+  "search_checks": [
+    {
+      "game_id": "61fe87e64af22568dc4e38603bd8c223d457791ba64261ac2aa5a356eac74c3b:0",
+      "ply": 1,
+      "before": {
+        "move": "3i4h",
+        "elapsed_ms": 2.3775760000717128,
+        "depth": 2,
+        "nodes": 216,
+        "score_cp": 0,
+        "structured_eval_calls": 145
+      },
+      "after": {
+        "move": "3i4h",
+        "elapsed_ms": 2.5927890001185006,
+        "depth": 2,
+        "nodes": 216,
+        "score_cp": 0,
+        "structured_eval_calls": 145
+      }
+    },
+    {
+      "game_id": "3e84638f516e5087df082993354c10843403151bd5a7762c0d0337d15d907396:0",
+      "ply": 66,
+      "before": {
+        "move": "8i9h",
+        "elapsed_ms": 19.828839000183507,
+        "depth": 2,
+        "nodes": 1594,
+        "score_cp": -4339,
+        "structured_eval_calls": 1395
+      },
+      "after": {
+        "move": "8i9h",
+        "elapsed_ms": 19.685678998939693,
+        "depth": 2,
+        "nodes": 1594,
+        "score_cp": -4339,
+        "structured_eval_calls": 1395
+      }
+    },
+    {
+      "game_id": "a8bcbe3b6ac9a26b8597aa88e906d942cbfc1fb9e515db5a6f03c3c18e7e296c:4",
+      "ply": 12,
+      "before": {
+        "move": "6a7b",
+        "elapsed_ms": 8.570269999836455,
+        "depth": 2,
+        "nodes": 1626,
+        "score_cp": 236,
+        "structured_eval_calls": 640
+      },
+      "after": {
+        "move": "6a7b",
+        "elapsed_ms": 8.611991999714519,
+        "depth": 2,
+        "nodes": 1626,
+        "score_cp": 236,
+        "structured_eval_calls": 640
+      }
+    },
+    {
+      "game_id": "0a478f902e30cdeb2d844b7e28a8d0a1c3651ae5dfc7aa74e668891f23a38dd5:1",
+      "ply": 10,
+      "before": {
+        "move": "3c3d",
+        "elapsed_ms": 2.4104049989546183,
+        "depth": 2,
+        "nodes": 259,
+        "score_cp": 170,
+        "structured_eval_calls": 168
+      },
+      "after": {
+        "move": "3c3d",
+        "elapsed_ms": 2.4059980005404213,
+        "depth": 2,
+        "nodes": 259,
+        "score_cp": 170,
+        "structured_eval_calls": 168
+      }
+    },
+    {
+      "game_id": "fe4bfeacf39aa7133e95fac815adfa2c4e98e6f211bf50024c539d4bcf57e7e0:2",
+      "ply": 89,
+      "before": {
+        "move": "5f6e",
+        "elapsed_ms": 154.40216699971643,
+        "depth": 2,
+        "nodes": 18246,
+        "score_cp": 1227,
+        "structured_eval_calls": 12052
+      },
+      "after": {
+        "move": "5f6e",
+        "elapsed_ms": 131.44542000009096,
+        "depth": 2,
+        "nodes": 18246,
+        "score_cp": 1227,
+        "structured_eval_calls": 12052
+      }
+    },
+    {
+      "game_id": "c51cffd2bdf7f9a1baf8f945c478d9a391e584c6684c7d6d2816b806f56cf68b:0",
+      "ply": 49,
+      "before": {
+        "move": "L*7h",
+        "elapsed_ms": 158.32566799872438,
+        "depth": 2,
+        "nodes": 20635,
+        "score_cp": 1628,
+        "structured_eval_calls": 14382
+      },
+      "after": {
+        "move": "L*7h",
+        "elapsed_ms": 153.40518800076097,
+        "depth": 2,
+        "nodes": 20635,
+        "score_cp": 1628,
+        "structured_eval_calls": 14382
+      }
+    },
+    {
+      "game_id": "633339b2995ee2f7d53b1a51deb5a3d31106732e21e6e69d046b3825998023c6:2",
+      "ply": 45,
+      "before": {
+        "move": "B*6e",
+        "elapsed_ms": 38.816541999040055,
+        "depth": 2,
+        "nodes": 7908,
+        "score_cp": -586,
+        "structured_eval_calls": 3548
+      },
+      "after": {
+        "move": "B*6e",
+        "elapsed_ms": 46.45410900047864,
+        "depth": 2,
+        "nodes": 7908,
+        "score_cp": -586,
+        "structured_eval_calls": 3548
+      }
+    },
+    {
+      "game_id": "aadb506b4dde2823cafcebf032f032acb3ae26239381cf9356ba6547476624ef:3",
+      "ply": 24,
+      "before": {
+        "move": "6b5c",
+        "elapsed_ms": 2.195261999077047,
+        "depth": 2,
+        "nodes": 156,
+        "score_cp": 33,
+        "structured_eval_calls": 120
+      },
+      "after": {
+        "move": "6b5c",
+        "elapsed_ms": 2.0348310008557746,
+        "depth": 2,
+        "nodes": 156,
+        "score_cp": 33,
+        "structured_eval_calls": 120
+      }
+    }
+  ],
+  "raw_static_values_affected": 5843,
+  "nonzero_actual_position_corrections": 5868,
+  "mean_abs_correction_cp": 235.80549932523616,
+  "p95_abs_correction_cp": 565.6499999999996,
+  "min_correction_cp": -1044,
+  "max_correction_cp": 1127,
+  "original_binary_sha256": "23401eda1a89717f188ae164712297bbb48b9e87925a01f125a4933c51b629c0",
+  "fixed_binary_sha256": "72218bf9dfeed28315f3ffaa4cd061032e037cb5fbb4f6f21c37b728b1198965",
+  "note": "Original played moves, searched scores and results are retained. Only the root static observation used a buggy non-indexed scan. Training targets use actual searched scores and outcomes, not that static observation."
+}
