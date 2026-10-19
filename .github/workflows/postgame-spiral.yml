@@ -3,7 +3,7 @@ run-name: "Spiral ${{ inputs.cycle_id || 'launcher' }}"
 on:
   push:
     branches: [main, research/value-learning-20261018, research/structured-eval-20261019]
-    paths: [".github/postgame-spiral-request.json", ".github/selfplay-value-request.json", ".github/structured-value-request.json"]
+    paths: [".github/postgame-spiral-request.json", ".github/selfplay-value-request.json", ".github/structured-value-request.json", ".github/replay-routes-request.json"]
   pull_request:
     paths:
       - "tools/research/postgame_*.py"
@@ -36,6 +36,10 @@ on:
         required: true
       order_only:
         description: Frozen selfplay value model comparisons and research-parent inheritance
+        type: boolean
+        default: false
+      replay_only:
+        description: Compare frozen replay order, research hints, and read-more allocation independently
         type: boolean
         default: false
       structured_only:
@@ -110,6 +114,7 @@ jobs:
         env: {GH_TOKEN: "${{ github.token }}"}
         run: |
           if [ "$GITHUB_REF_NAME" = "research/structured-eval-20261019" ]; then
+            python3 .github/scripts/run_replay_routes.py --launch
             python3 .github/scripts/run_structured_value.py --launch
           elif [ "$GITHUB_REF_NAME" = "research/value-learning-20261018" ]; then
             python3 .github/scripts/run_selfplay_value.py --launch
@@ -214,7 +219,7 @@ jobs:
           if-no-files-found: ignore
 
   selfplay-value:
-    if: github.event_name == 'workflow_dispatch' && inputs.order_only && !inputs.structured_only
+    if: github.event_name == 'workflow_dispatch' && inputs.order_only && !inputs.structured_only && !inputs.replay_only
     runs-on: ubuntu-latest
     timeout-minutes: 240
     permissions: {contents: write, actions: write}
@@ -274,5 +279,30 @@ jobs:
             build/structured-cycle/*/audit.json
             build/structured-cycle/*/publication.json
             build/structured-cycle/next-model/model.json
+          retention-days: 90
+          if-no-files-found: error
+
+  replay-routes:
+    if: github.event_name == 'workflow_dispatch' && inputs.order_only && inputs.replay_only && !inputs.structured_only
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    permissions: {contents: write, actions: write}
+    steps:
+      - uses: actions/checkout@v5
+        with: {ref: '${{ inputs.plan_ref }}'}
+      - run: python3 -m pip install python-shogi==1.1.1
+      - run: python3 scripts/check_workflow_inventory.py --strict && python3 scripts/check_match_workflows.py
+      - run: python3 -m unittest discover -s tests -p test_postgame_routes.py
+      - name: Compare each frozen route with confirmed evaluation held fixed
+        env:
+          GH_TOKEN: '${{ github.token }}'
+          PLAN_REF: '${{ inputs.plan_ref }}'
+          CYCLE_ID: '${{ inputs.cycle_id }}'
+        run: python3 .github/scripts/run_replay_routes.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: replay-routes-cycle-${{ github.run_id }}
+          path: build/replay-cycle
           retention-days: 90
           if-no-files-found: error

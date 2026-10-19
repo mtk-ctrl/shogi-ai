@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import math
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -20,11 +21,14 @@ PARENT=dict(EvalSafety=540,EvalPressure=391,EvalActivity=422,EvalDanger=157,
 DIM=4893
 def digest(x):return hashlib.sha256(x).hexdigest()
 
-def collect(inputs):
+def collect(inputs,learned_parent=False,parent_scale=100):
     import shogi
     groups=[[],[],[]];seen=set();receipts=[];plies=0
     for path in map(Path,inputs):
         manifest=json.loads((path/'manifest.json').read_text())
+        if (not re.fullmatch('[0-9a-f]{40}',manifest.get('requested_ref_a',''))
+                or manifest.get('requested_ref_a')!=manifest.get('requested_ref_b')):
+            raise ValueError('outcome training requires the same immutable own parent on both sides')
         receipts.append(dict(run_id=manifest['run_id'],archive_sha256=manifest['archive_sha256'],
                              archive_bytes=manifest['archive_bytes'],games=manifest['games']))
         for game in load_archive(path):
@@ -34,6 +38,11 @@ def collect(inputs):
             for side in ('a','b'):
                 if any(game.metadata['options_'+side].get(k)!=v for k,v in PARENT.items()):
                     raise ValueError('both sides must use the declared own research parent')
+                options=game.metadata['options_'+side]
+                if options.get('StructuredEval',False) is not learned_parent:
+                    raise ValueError('mixed learned and unlearned opponents cannot supply same-parent outcome targets')
+                if learned_parent and options.get('StructuredScale')!=parent_scale:
+                    raise ValueError('source selfplay did not use the retained learned-parent scale')
             winner=game.row['winner'];outcome=.5 if winner is None else float((winner=='A')==game.row['a_black'])
             bucket=int(gh[:8],16)%100;split=0 if bucket<70 else 1 if bucket<85 else 2
             board=shogi.Board(game.start_sfen)
@@ -56,7 +65,7 @@ def train(inputs,probe,output,parent_model=None,parent_scale=100,excluded_positi
     import numpy as np
     from scipy.sparse import csr_matrix
     from scipy.optimize import minimize
-    groups,provenance=collect(inputs)
+    groups,provenance=collect(inputs,parent_model is not None,parent_scale)
     all_rows=[r for g in groups for r in g]
     result=subprocess.run([str(Path(probe).resolve())],input=''.join(r['sfen']+'\n' for r in all_rows),
                           text=True,capture_output=True,check=True)

@@ -1,0 +1,526 @@
+{
+  "schema": "structured-value-cycle-v1",
+  "candidate_ref": "055732661e303a46aaf912bd6a0dc9784e50721e",
+  "model_sha256": "8c174f7adac2d45cc0ab2633986ab89db3f24906bd655f5e18e81538eb7fdb1c",
+  "parent_options": {
+    "EvalSafety": 540,
+    "EvalPressure": 391,
+    "EvalActivity": 422,
+    "EvalDanger": 157,
+    "EvalInfluence": 143,
+    "EvalPotential": 190,
+    "EvalCoordination": 343,
+    "EvalHandPotential": 59,
+    "EvalThreat": 22
+  },
+  "learned_coefficients": 3291,
+  "screens": [
+    {
+      "scale": 50,
+      "audit": {
+        "run_id": 39195895351,
+        "request": {
+          "ref_a": "055732661e303a46aaf912bd6a0dc9784e50721e",
+          "ref_b": "4448f40400a893feb3b4d79237111008026547da",
+          "games": 100,
+          "shards": 19,
+          "seed": 2080101901,
+          "go_command": "go movetime 200",
+          "max_plies": 300,
+          "options_a": "{\"AdaptiveLongThink\": true, \"EvalActivity\": 422, \"EvalCoordination\": 343, \"EvalDanger\": 157, \"EvalHandPotential\": 59, \"EvalInfluence\": 143, \"EvalPotential\": 190, \"EvalPressure\": 391, \"EvalSafety\": 540, \"EvalThreat\": 22, \"OpeningRandomNonLance\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"RiskVerify\": true, \"SearchEfficiencyMask\": 8, \"SearchNextMask\": 4, \"SearchProbeMask\": 7, \"SearchResearchMask\": 23, \"SearchReuseMask\": 6, \"SearchThreads\": 2, \"StructuredEval\": true, \"StructuredScale\": 50, \"USI_Ponder\": true}",
+          "options_b": "{\"AdaptiveLongThink\": true, \"EvalActivity\": 422, \"EvalCoordination\": 343, \"EvalDanger\": 157, \"EvalHandPotential\": 59, \"EvalInfluence\": 143, \"EvalPotential\": 190, \"EvalPressure\": 391, \"EvalSafety\": 540, \"EvalThreat\": 22, \"OpeningRandomNonLance\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"RiskVerify\": true, \"SearchEfficiencyMask\": 8, \"SearchNextMask\": 4, \"SearchProbeMask\": 7, \"SearchResearchMask\": 23, \"SearchReuseMask\": 6, \"SearchThreads\": 2, \"USI_Ponder\": true}"
+        },
+        "actual_binary_sha256": {
+          "A": "7daec755b651df2748d904a47cf98438676b5e08896a89edc7a9604d97a3d1db",
+          "B": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36"
+        },
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "all_moves_legal": true,
+        "all_terminations_verified": true,
+        "raw": {
+          "games": 100,
+          "wins": 53,
+          "losses": 46,
+          "draws": 1,
+          "score": 0.535,
+          "lower": 0.4372403948453146
+        },
+        "unique": {
+          "games": 100,
+          "wins": 53,
+          "losses": 46,
+          "draws": 1,
+          "score": 0.535,
+          "lower": 0.4372403948453146
+        },
+        "model_order_calls": {
+          "A": 0,
+          "B": 0
+        },
+        "mean_depth": {
+          "A": 3.154696132596685,
+          "B": 3.212325220093216
+        },
+        "mean_elapsed_ms": {
+          "A": 309.7928603238866,
+          "B": 311.80519530722484
+        },
+        "complete_trajectory_overlap": 0,
+        "limitation": "Complete-trajectory deduplication does not establish independent openings.",
+        "structured_eval_calls": {
+          "A": 292520238,
+          "B": 0
+        },
+        "model_sha256": "8c174f7adac2d45cc0ab2633986ab89db3f24906bd655f5e18e81538eb7fdb1c",
+        "compiled_model_identity_verified": true
+      },
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "structured-value-screen-50-39195782210.tgz",
+        "sha256": "91de6e5faa76c64eca216a53690b005849303d66a742bbb18b03667c8be4cb1b",
+        "bytes": 6064528,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/structured-value-screen-50-39195782210.tgz"
+      }
+    },
+    {
+      "scale": 100,
+      "audit": {
+        "run_id": 39196399077,
+        "request": {
+          "ref_a": "055732661e303a46aaf912bd6a0dc9784e50721e",
+          "ref_b": "4448f40400a893feb3b4d79237111008026547da",
+          "games": 100,
+          "shards": 19,
+          "seed": 2081101901,
+          "go_command": "go movetime 200",
+          "max_plies": 300,
+          "options_a": "{\"AdaptiveLongThink\": true, \"EvalActivity\": 422, \"EvalCoordination\": 343, \"EvalDanger\": 157, \"EvalHandPotential\": 59, \"EvalInfluence\": 143, \"EvalPotential\": 190, \"EvalPressure\": 391, \"EvalSafety\": 540, \"EvalThreat\": 22, \"OpeningRandomNonLance\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"RiskVerify\": true, \"SearchEfficiencyMask\": 8, \"SearchNextMask\": 4, \"SearchProbeMask\": 7, \"SearchResearchMask\": 23, \"SearchReuseMask\": 6, \"SearchThreads\": 2, \"StructuredEval\": true, \"StructuredScale\": 100, \"USI_Ponder\": true}",
+          "options_b": "{\"AdaptiveLongThink\": true, \"EvalActivity\": 422, \"EvalCoordination\": 343, \"EvalDanger\": 157, \"EvalHandPotential\": 59, \"EvalInfluence\": 143, \"EvalPotential\": 190, \"EvalPressure\": 391, \"EvalSafety\": 540, \"EvalThreat\": 22, \"OpeningRandomNonLance\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"RiskVerify\": true, \"SearchEfficiencyMask\": 8, \"SearchNextMask\": 4, \"SearchProbeMask\": 7, \"SearchResearchMask\": 23, \"SearchReuseMask\": 6, \"SearchThreads\": 2, \"USI_Ponder\": true}"
+        },
+        "actual_binary_sha256": {
+          "A": "7daec755b651df2748d904a47cf98438676b5e08896a89edc7a9604d97a3d1db",
+          "B": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36"
+        },
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "all_moves_legal": true,
+        "all_terminations_verified": true,
+        "raw": {
+          "games": 100,
+          "wins": 50,
+          "losses": 49,
+          "draws": 1,
+          "score": 0.505,
+          "lower": 0.4070049001225061
+        },
+        "unique": {
+          "games": 100,
+          "wins": 50,
+          "losses": 49,
+          "draws": 1,
+          "score": 0.505,
+          "lower": 0.4070049001225061
+        },
+        "model_order_calls": {
+          "A": 0,
+          "B": 0
+        },
+        "mean_depth": {
+          "A": 3.0849501835343474,
+          "B": 3.1157068062827227
+        },
+        "mean_elapsed_ms": {
+          "A": 312.9031933287951,
+          "B": 311.50548391489366
+        },
+        "complete_trajectory_overlap": 0,
+        "limitation": "Complete-trajectory deduplication does not establish independent openings.",
+        "structured_eval_calls": {
+          "A": 260809559,
+          "B": 0
+        },
+        "model_sha256": "8c174f7adac2d45cc0ab2633986ab89db3f24906bd655f5e18e81538eb7fdb1c",
+        "compiled_model_identity_verified": true
+      },
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "structured-value-screen-100-39195782210.tgz",
+        "sha256": "0d22bfbc9a420af4f70492cfb46ad99f309c83e4a5c5c0e45a123cc6f44ac570",
+        "bytes": 6055919,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/structured-value-screen-100-39195782210.tgz"
+      }
+    },
+    {
+      "scale": 150,
+      "audit": {
+        "run_id": 39196898081,
+        "request": {
+          "ref_a": "055732661e303a46aaf912bd6a0dc9784e50721e",
+          "ref_b": "4448f40400a893feb3b4d79237111008026547da",
+          "games": 100,
+          "shards": 19,
+          "seed": 2082101901,
+          "go_command": "go movetime 200",
+          "max_plies": 300,
+          "options_a": "{\"AdaptiveLongThink\": true, \"EvalActivity\": 422, \"EvalCoordination\": 343, \"EvalDanger\": 157, \"EvalHandPotential\": 59, \"EvalInfluence\": 143, \"EvalPotential\": 190, \"EvalPressure\": 391, \"EvalSafety\": 540, \"EvalThreat\": 22, \"OpeningRandomNonLance\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"RiskVerify\": true, \"SearchEfficiencyMask\": 8, \"SearchNextMask\": 4, \"SearchProbeMask\": 7, \"SearchResearchMask\": 23, \"SearchReuseMask\": 6, \"SearchThreads\": 2, \"StructuredEval\": true, \"StructuredScale\": 150, \"USI_Ponder\": true}",
+          "options_b": "{\"AdaptiveLongThink\": true, \"EvalActivity\": 422, \"EvalCoordination\": 343, \"EvalDanger\": 157, \"EvalHandPotential\": 59, \"EvalInfluence\": 143, \"EvalPotential\": 190, \"EvalPressure\": 391, \"EvalSafety\": 540, \"EvalThreat\": 22, \"OpeningRandomNonLance\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"RiskVerify\": true, \"SearchEfficiencyMask\": 8, \"SearchNextMask\": 4, \"SearchProbeMask\": 7, \"SearchResearchMask\": 23, \"SearchReuseMask\": 6, \"SearchThreads\": 2, \"USI_Ponder\": true}"
+        },
+        "actual_binary_sha256": {
+          "A": "7daec755b651df2748d904a47cf98438676b5e08896a89edc7a9604d97a3d1db",
+          "B": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36"
+        },
+        "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+        "all_moves_legal": true,
+        "all_terminations_verified": true,
+        "raw": {
+          "games": 100,
+          "wins": 43,
+          "losses": 57,
+          "draws": 0,
+          "score": 0.43,
+          "lower": 0.33296515265122534
+        },
+        "unique": {
+          "games": 100,
+          "wins": 43,
+          "losses": 57,
+          "draws": 0,
+          "score": 0.43,
+          "lower": 0.33296515265122534
+        },
+        "model_order_calls": {
+          "A": 0,
+          "B": 0
+        },
+        "mean_depth": {
+          "A": 3.1914893617021276,
+          "B": 3.229403820181362
+        },
+        "mean_elapsed_ms": {
+          "A": 327.18017621560494,
+          "B": 320.98587634105024
+        },
+        "complete_trajectory_overlap": 0,
+        "limitation": "Complete-trajectory deduplication does not establish independent openings.",
+        "structured_eval_calls": {
+          "A": 251939421,
+          "B": 0
+        },
+        "model_sha256": "8c174f7adac2d45cc0ab2633986ab89db3f24906bd655f5e18e81538eb7fdb1c",
+        "compiled_model_identity_verified": true
+      },
+      "publication": {
+        "release": "records-2026-10-01",
+        "name": "structured-value-screen-150-39195782210.tgz",
+        "sha256": "c5382b076e4b1b3f849937f92bb678c425a8afc7df988600804132a16f449f29",
+        "bytes": 5986533,
+        "readback_verified": true,
+        "api_digest_verified": true,
+        "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/structured-value-screen-150-39195782210.tgz"
+      }
+    }
+  ],
+  "research_parent_updated": true,
+  "next_selfplay_completed": true,
+  "formal_adoption": false,
+  "selected_scale": 50,
+  "confirmation": {
+    "run_id": 39197359039,
+    "request": {
+      "ref_a": "055732661e303a46aaf912bd6a0dc9784e50721e",
+      "ref_b": "4448f40400a893feb3b4d79237111008026547da",
+      "games": 1000,
+      "shards": 18,
+      "seed": 2085101901,
+      "go_command": "go movetime 200",
+      "max_plies": 300,
+      "options_a": "{\"AdaptiveLongThink\": true, \"EvalActivity\": 422, \"EvalCoordination\": 343, \"EvalDanger\": 157, \"EvalHandPotential\": 59, \"EvalInfluence\": 143, \"EvalPotential\": 190, \"EvalPressure\": 391, \"EvalSafety\": 540, \"EvalThreat\": 22, \"OpeningRandomNonLance\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"RiskVerify\": true, \"SearchEfficiencyMask\": 8, \"SearchNextMask\": 4, \"SearchProbeMask\": 7, \"SearchResearchMask\": 23, \"SearchReuseMask\": 6, \"SearchThreads\": 2, \"StructuredEval\": true, \"StructuredScale\": 50, \"USI_Ponder\": true}",
+      "options_b": "{\"AdaptiveLongThink\": true, \"EvalActivity\": 422, \"EvalCoordination\": 343, \"EvalDanger\": 157, \"EvalHandPotential\": 59, \"EvalInfluence\": 143, \"EvalPotential\": 190, \"EvalPressure\": 391, \"EvalSafety\": 540, \"EvalThreat\": 22, \"OpeningRandomNonLance\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"RiskVerify\": true, \"SearchEfficiencyMask\": 8, \"SearchNextMask\": 4, \"SearchProbeMask\": 7, \"SearchResearchMask\": 23, \"SearchReuseMask\": 6, \"SearchThreads\": 2, \"USI_Ponder\": true}"
+    },
+    "actual_binary_sha256": {
+      "A": "7daec755b651df2748d904a47cf98438676b5e08896a89edc7a9604d97a3d1db",
+      "B": "2de18d82f89b9fd1e6795ef6905f4a9bb46023771d7651a96b5f5682e1338f36"
+    },
+    "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+    "all_moves_legal": true,
+    "all_terminations_verified": true,
+    "raw": {
+      "games": 1000,
+      "wins": 530,
+      "losses": 465,
+      "draws": 5,
+      "score": 0.5325,
+      "lower": 0.5015752152796499
+    },
+    "unique": {
+      "games": 987,
+      "wins": 523,
+      "losses": 459,
+      "draws": 5,
+      "score": 0.5324214792299898,
+      "lower": 0.50129338337048
+    },
+    "model_order_calls": {
+      "A": 0,
+      "B": 0
+    },
+    "mean_depth": {
+      "A": 3.0918556223970386,
+      "B": 3.136727698946882
+    },
+    "mean_elapsed_ms": {
+      "A": 314.1815516518182,
+      "B": 313.98335932432667
+    },
+    "complete_trajectory_overlap": 1,
+    "limitation": "Complete-trajectory deduplication does not establish independent openings.",
+    "structured_eval_calls": {
+      "A": 2562358593,
+      "B": 0
+    },
+    "model_sha256": "8c174f7adac2d45cc0ab2633986ab89db3f24906bd655f5e18e81538eb7fdb1c",
+    "compiled_model_identity_verified": true
+  },
+  "confirmation_publication": {
+    "release": "records-2026-10-01",
+    "name": "structured-value-confirmation-39195782210.tgz",
+    "sha256": "38a9c03daf0658bb4b91b4e9b72c2d700f06b7fee20005e4d6c1202c61e8a369",
+    "bytes": 13179269,
+    "readback_verified": true,
+    "api_digest_verified": true,
+    "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/structured-value-confirmation-39195782210.tgz"
+  },
+  "research_parent": {
+    "engine_ref": "055732661e303a46aaf912bd6a0dc9784e50721e",
+    "options": {
+      "SearchResearchMask": 23,
+      "SearchEfficiencyMask": 8,
+      "SearchReuseMask": 6,
+      "SearchNextMask": 4,
+      "SearchProbeMask": 7,
+      "SearchThreads": 2,
+      "RiskVerify": true,
+      "AdaptiveLongThink": true,
+      "USI_Ponder": true,
+      "OpeningRandomNonLance": true,
+      "PositionKnowledge": true,
+      "PositionKnowledgeFile": "build/position-knowledge-v1.tsv",
+      "EvalSafety": 540,
+      "EvalPressure": 391,
+      "EvalActivity": 422,
+      "EvalDanger": 157,
+      "EvalInfluence": 143,
+      "EvalPotential": 190,
+      "EvalCoordination": 343,
+      "EvalHandPotential": 59,
+      "EvalThreat": 22,
+      "StructuredEval": true,
+      "StructuredScale": 50
+    },
+    "model_sha256": "8c174f7adac2d45cc0ab2633986ab89db3f24906bd655f5e18e81538eb7fdb1c",
+    "formal_adoption": false
+  },
+  "status": "research_parent_improved",
+  "next_selfplay": {
+    "run_id": 39200586260,
+    "request": {
+      "ref_a": "055732661e303a46aaf912bd6a0dc9784e50721e",
+      "ref_b": "055732661e303a46aaf912bd6a0dc9784e50721e",
+      "games": 300,
+      "shards": 19,
+      "seed": 2090101901,
+      "go_command": "go movetime 200",
+      "max_plies": 300,
+      "options_a": "{\"AdaptiveLongThink\": true, \"EvalActivity\": 422, \"EvalCoordination\": 343, \"EvalDanger\": 157, \"EvalHandPotential\": 59, \"EvalInfluence\": 143, \"EvalPotential\": 190, \"EvalPressure\": 391, \"EvalSafety\": 540, \"EvalThreat\": 22, \"OpeningRandomNonLance\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"RiskVerify\": true, \"SearchEfficiencyMask\": 8, \"SearchNextMask\": 4, \"SearchProbeMask\": 7, \"SearchResearchMask\": 23, \"SearchReuseMask\": 6, \"SearchThreads\": 2, \"StructuredEval\": true, \"StructuredScale\": 50, \"USI_Ponder\": true}",
+      "options_b": "{\"AdaptiveLongThink\": true, \"EvalActivity\": 422, \"EvalCoordination\": 343, \"EvalDanger\": 157, \"EvalHandPotential\": 59, \"EvalInfluence\": 143, \"EvalPotential\": 190, \"EvalPressure\": 391, \"EvalSafety\": 540, \"EvalThreat\": 22, \"OpeningRandomNonLance\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"RiskVerify\": true, \"SearchEfficiencyMask\": 8, \"SearchNextMask\": 4, \"SearchProbeMask\": 7, \"SearchResearchMask\": 23, \"SearchReuseMask\": 6, \"SearchThreads\": 2, \"StructuredEval\": true, \"StructuredScale\": 50, \"USI_Ponder\": true}"
+    },
+    "actual_binary_sha256": {
+      "A": "7daec755b651df2748d904a47cf98438676b5e08896a89edc7a9604d97a3d1db",
+      "B": "d743140f21440398b101ebd2ea37d069b4fb5b860ba15afd174b83f8cef12119"
+    },
+    "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+    "all_moves_legal": true,
+    "all_terminations_verified": true,
+    "raw": {
+      "games": 300,
+      "wins": 156,
+      "losses": 144,
+      "draws": 0,
+      "score": 0.52,
+      "lower": 0.4634649560007247
+    },
+    "unique": {
+      "games": 300,
+      "wins": 156,
+      "losses": 144,
+      "draws": 0,
+      "score": 0.52,
+      "lower": 0.4634649560007247
+    },
+    "model_order_calls": {
+      "A": 0,
+      "B": 0
+    },
+    "mean_depth": {
+      "A": 3.2660451367176395,
+      "B": 3.267211997273347
+    },
+    "mean_elapsed_ms": {
+      "A": 306.4916410313403,
+      "B": 309.3033691495275
+    },
+    "complete_trajectory_overlap": 0,
+    "limitation": "Complete-trajectory deduplication does not establish independent openings.",
+    "structured_eval_calls": {
+      "A": 925027164,
+      "B": 927440937
+    },
+    "model_sha256": "8c174f7adac2d45cc0ab2633986ab89db3f24906bd655f5e18e81538eb7fdb1c",
+    "compiled_model_identity_verified": true
+  },
+  "next_publication": {
+    "release": "records-2026-10-01",
+    "name": "structured-value-next-generation-39195782210.tgz",
+    "sha256": "56cb500aab2a680d36b33dcfbb51f084171b55a8e9c3be744b9ef513ecaa965a",
+    "bytes": 7793371,
+    "readback_verified": true,
+    "api_digest_verified": true,
+    "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/structured-value-next-generation-39195782210.tgz"
+  },
+  "next_learning": {
+    "schema": "structured-own-value-v2",
+    "features": 4893,
+    "phase_features": 1631,
+    "feature_families": {
+      "piece_square": 1134,
+      "king_distance": 252,
+      "hand_count": 35,
+      "attack_defence": 126,
+      "mobility": 84
+    },
+    "phases": [
+      "opening",
+      "middle",
+      "end"
+    ],
+    "coefficient_units": "cp/64",
+    "parent_options": {
+      "EvalSafety": 540,
+      "EvalPressure": 391,
+      "EvalActivity": 422,
+      "EvalDanger": 157,
+      "EvalInfluence": 143,
+      "EvalPotential": 190,
+      "EvalCoordination": 343,
+      "EvalHandPotential": 59,
+      "EvalThreat": 22
+    },
+    "parent_model_sha256": "8c174f7adac2d45cc0ab2633986ab89db3f24906bd655f5e18e81538eb7fdb1c",
+    "parent_scale": 50,
+    "historical_position_exclusions": 171835,
+    "objective": "equal-game mixture: 50% actual outcome + 50% recorded own lookahead probability where eligible",
+    "provenance": {
+      "receipts": [
+        {
+          "run_id": "39200586260",
+          "archive_sha256": "97341940b87eda066a886e6b44800e2334f787d5c3038d24c02632468b61643b",
+          "archive_bytes": 2512834,
+          "games": 300
+        }
+      ],
+      "verified_plies": 35986,
+      "unique_resolved_games": 300
+    },
+    "samples": {
+      "train": 13624,
+      "validation": 2219,
+      "test": 2199
+    },
+    "split_games": {
+      "train": 223,
+      "validation": 38,
+      "test": 35
+    },
+    "selected_l2": 0.001,
+    "optimization": {
+      "iterations": 300,
+      "converged": false
+    },
+    "nonzero_coefficients": 3219,
+    "trained_feature_support": 3247,
+    "baseline": {
+      "train": {
+        "positions": 13624,
+        "mixed_loss": 0.6729017114817256,
+        "outcome_loss": 0.7224242168946984,
+        "mean_abs_correction_cp": 143.81074097181445,
+        "p95_abs_correction_cp": 387.2023437499997
+      },
+      "validation": {
+        "positions": 2219,
+        "mixed_loss": 0.6814931715260454,
+        "outcome_loss": 0.7262556913087089,
+        "mean_abs_correction_cp": 167.19145166741774,
+        "p95_abs_correction_cp": 431.72062499999987
+      },
+      "test": {
+        "positions": 2199,
+        "mixed_loss": 0.618678412829535,
+        "outcome_loss": 0.6465992613986614,
+        "mean_abs_correction_cp": 144.77076512050934,
+        "p95_abs_correction_cp": 373.9556875
+      }
+    },
+    "learned": {
+      "train": {
+        "positions": 13624,
+        "mixed_loss": 0.55866010673743,
+        "outcome_loss": 0.4825839431453073,
+        "mean_abs_correction_cp": 455.028959373165,
+        "p95_abs_correction_cp": 1200.0
+      },
+      "validation": {
+        "positions": 2219,
+        "mixed_loss": 0.6703905990421042,
+        "outcome_loss": 0.6836828604161924,
+        "mean_abs_correction_cp": 441.0395625844975,
+        "p95_abs_correction_cp": 1144.2629999999997
+      },
+      "test": {
+        "positions": 2199,
+        "mixed_loss": 0.634619938736535,
+        "outcome_loss": 0.6385588382088043,
+        "mean_abs_correction_cp": 446.01032941109594,
+        "p95_abs_correction_cp": 1200.0
+      }
+    },
+    "candidates": [
+      50,
+      100,
+      150
+    ],
+    "residual_cap_cp": 1200,
+    "coefficient_cap_cp": 300,
+    "selection": [
+      {
+        "l2": 0.0001,
+        "validation_loss": 0.6855167313409551
+      },
+      {
+        "l2": 0.001,
+        "validation_loss": 0.6703905990421042
+      },
+      {
+        "l2": 0.01,
+        "validation_loss": 0.673935970949542
+      }
+    ],
+    "formal_adoption": false,
+    "eligible": true,
+    "samples_sha256": "cfa5062dbf0f354558d53aed0392cf1dc1d930e99666f069f24b696b9466a9b5"
+  },
+  "next_model_sha256": "1b5f6db3ca9a6a8dd3a24394aa4655702e18d95c313b50cf32016653d145a680"
+}

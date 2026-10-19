@@ -1,0 +1,49 @@
+{
+  "binary_sha256": "72218bf9dfeed28315f3ffaa4cd061032e037cb5fbb4f6f21c37b728b1198965",
+  "elapsed_seconds": 63.223,
+  "formal_adoption": false,
+  "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+  "memory_sha256": "d4cee015a6a6809eecf65bd2e4bd51ca1005479bd7824060e2db058650248dd1",
+  "order_hints": 8100,
+  "parent_model": "8c174f7adac2d45cc0ab2633986ab89db3f24906bd655f5e18e81538eb7fdb1c",
+  "parent_scale": 50,
+  "policy": {
+    "deep_ms": 1000,
+    "deep_repeats": 2,
+    "fixed_depth_cap": 3,
+    "fixed_ms": 3000,
+    "formal_adoption": false,
+    "max_hints": 8192,
+    "max_per_game": 2,
+    "max_practice_games": 16,
+    "max_practice_roots": 4,
+    "max_research": 24,
+    "max_seconds": 600,
+    "practice_ms": 200,
+    "practice_new_plies": 8,
+    "schema": "postgame-routes-policy-v1",
+    "short_ms": 200,
+    "verified_gap_cp": 150
+  },
+  "provenance": {
+    "archive_bytes": 2512834,
+    "archive_sha256": "97341940b87eda066a886e6b44800e2334f787d5c3038d24c02632468b61643b",
+    "eligible_positions": 13759,
+    "games": 300,
+    "protected_boards": 8637,
+    "training_games": 225,
+    "verified_plies": 35986
+  },
+  "research_cases": 24,
+  "research_hints": 0,
+  "retention_cases": 12,
+  "retention_parent_passed": 12,
+  "schema": "postgame-routes-v1",
+  "search_calls": 92,
+  "status_counts": {
+    "read_more_disagreement": 5,
+    "same_choice": 19
+  },
+  "strength_improvement_demonstrated": false,
+  "time_cases": 5
+}

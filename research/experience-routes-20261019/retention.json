@@ -1,0 +1,290 @@
+[
+  {
+    "case": {
+      "case_id": "capture-10a6b90f7ceb682a",
+      "expected_prefix": "5e5c",
+      "history_moves": [],
+      "start_sfen": "8k/9/4s4/9/4R4/9/9/9/K8 b - 1"
+    },
+    "parent": {
+      "bestmove": "5e5c+",
+      "bound": "exact",
+      "depth": 5,
+      "elapsed_ms": 191.032,
+      "history_key": "a0c4572204143e2592134fc4c1a118de3a6cd64bde482b7be8d268b7b6b0b4e5",
+      "kind": "cp",
+      "position_command": "position sfen 8k/9/4s4/9/4R4/9/9/9/K8 b - 1",
+      "pv_head_matches": true,
+      "requested_depth": null,
+      "requested_ms": 200,
+      "research_decision_id": null,
+      "status": "recorded",
+      "value_stm": 90000000
+    },
+    "passed": true
+  },
+  {
+    "case": {
+      "case_id": "capture-5795ceab2d927ae2",
+      "expected_prefix": "5e5g",
+      "history_moves": [],
+      "start_sfen": "8k/9/9/9/4r4/9/4S4/9/K8 w - 1"
+    },
+    "parent": {
+      "bestmove": "5e5g+",
+      "bound": "exact",
+      "depth": 5,
+      "elapsed_ms": 190.97,
+      "history_key": "ec98286a2f49f617cd4d9be9e167132d7d98d98330e27892821ae3292527682a",
+      "kind": "cp",
+      "position_command": "position sfen 8k/9/9/9/4r4/9/4S4/9/K8 w - 1",
+      "pv_head_matches": true,
+      "requested_depth": null,
+      "requested_ms": 200,
+      "research_decision_id": null,
+      "status": "recorded",
+      "value_stm": 90000000
+    },
+    "passed": true
+  },
+  {
+    "case": {
+      "case_id": "capture-df2e9ab52017fc7d",
+      "expected_prefix": "4e4c",
+      "history_moves": [],
+      "start_sfen": "8k/9/5s3/9/5R3/9/9/9/K8 b - 1"
+    },
+    "parent": {
+      "bestmove": "4e4c+",
+      "bound": "exact",
+      "depth": 5,
+      "elapsed_ms": 191.005,
+      "history_key": "4f5d7be78573c6cbdd65eba1693b786293efd918db453237ad664ad7c188bd8d",
+      "kind": "mate",
+      "position_command": "position sfen 8k/9/5s3/9/5R3/9/9/9/K8 b - 1",
+      "pv_head_matches": true,
+      "requested_depth": null,
+      "requested_ms": 200,
+      "research_decision_id": null,
+      "status": "recorded",
+      "value_stm": 7
+    },
+    "passed": true
+  },
+  {
+    "case": {
+      "case_id": "capture-044da5382145a4ac",
+      "expected_prefix": "6e6g",
+      "history_moves": [],
+      "start_sfen": "8k/9/9/9/3r5/9/3S5/9/K8 w - 1"
+    },
+    "parent": {
+      "bestmove": "6e6g+",
+      "bound": "exact",
+      "depth": 5,
+      "elapsed_ms": 190.959,
+      "history_key": "dc100beb5a72404a44edd5c9e07c727974be4f1c8eb0c1e496568d603503356c",
+      "kind": "mate",
+      "position_command": "position sfen 8k/9/9/9/3r5/9/3S5/9/K8 w - 1",
+      "pv_head_matches": true,
+      "requested_depth": null,
+      "requested_ms": 200,
+      "research_decision_id": null,
+      "status": "recorded",
+      "value_stm": 7
+    },
+    "passed": true
+  },
+  {
+    "case": {
+      "case_id": "capture-d3d08e01960c229c",
+      "expected_prefix": "5e5c",
+      "history_moves": [],
+      "start_sfen": "8k/9/4g4/9/4R4/9/9/9/K8 b - 1"
+    },
+    "parent": {
+      "bestmove": "5e5c+",
+      "bound": "exact",
+      "depth": 6,
+      "elapsed_ms": 190.924,
+      "history_key": "737d13a3a70987285d973cfb09a95d7f4fed19b1cae5ea30ca10ff470392006e",
+      "kind": "mate",
+      "position_command": "position sfen 8k/9/4g4/9/4R4/9/9/9/K8 b - 1",
+      "pv_head_matches": true,
+      "requested_depth": null,
+      "requested_ms": 200,
+      "research_decision_id": null,
+      "status": "recorded",
+      "value_stm": 5
+    },
+    "passed": true
+  },
+  {
+    "case": {
+      "case_id": "capture-875ab811f688a4d4",
+      "expected_prefix": "5e5g",
+      "history_moves": [],
+      "start_sfen": "8k/9/9/9/4r4/9/4G4/9/K8 w - 1"
+    },
+    "parent": {
+      "bestmove": "5e5g+",
+      "bound": "exact",
+      "depth": 6,
+      "elapsed_ms": 190.878,
+      "history_key": "e7bcf26d34154361be3e0e45032a4c0dd59ff4a1668e0a497567010af6a43fea",
+      "kind": "mate",
+      "position_command": "position sfen 8k/9/9/9/4r4/9/4G4/9/K8 w - 1",
+      "pv_head_matches": true,
+      "requested_depth": null,
+      "requested_ms": 200,
+      "research_decision_id": null,
+      "status": "recorded",
+      "value_stm": 5
+    },
+    "passed": true
+  },
+  {
+    "case": {
+      "case_id": "capture-064ee25e6270cb65",
+      "expected_prefix": "4e4c",
+      "history_moves": [],
+      "start_sfen": "8k/9/5g3/9/5R3/9/9/9/K8 b - 1"
+    },
+    "parent": {
+      "bestmove": "4e4c+",
+      "bound": "exact",
+      "depth": 6,
+      "elapsed_ms": 192.06,
+      "history_key": "28a824edea99a639d315335b86b6716ee8b5b9eff740101fd9ce6a5dd62a0385",
+      "kind": "mate",
+      "position_command": "position sfen 8k/9/5g3/9/5R3/9/9/9/K8 b - 1",
+      "pv_head_matches": true,
+      "requested_depth": null,
+      "requested_ms": 200,
+      "research_decision_id": null,
+      "status": "recorded",
+      "value_stm": 5
+    },
+    "passed": true
+  },
+  {
+    "case": {
+      "case_id": "capture-1773130f1a05c98f",
+      "expected_prefix": "6e6g",
+      "history_moves": [],
+      "start_sfen": "8k/9/9/9/3r5/9/3G5/9/K8 w - 1"
+    },
+    "parent": {
+      "bestmove": "6e6g+",
+      "bound": "exact",
+      "depth": 5,
+      "elapsed_ms": 190.986,
+      "history_key": "e728dec816c6b413f5d188967d38a748e237774c4f139d739d37171d22f878dd",
+      "kind": "mate",
+      "position_command": "position sfen 8k/9/9/9/3r5/9/3G5/9/K8 w - 1",
+      "pv_head_matches": true,
+      "requested_depth": null,
+      "requested_ms": 200,
+      "research_decision_id": null,
+      "status": "recorded",
+      "value_stm": 5
+    },
+    "passed": true
+  },
+  {
+    "case": {
+      "case_id": "capture-1f4ee9df7105b4c7",
+      "expected_prefix": "5e5c",
+      "history_moves": [],
+      "start_sfen": "8k/9/4b4/9/4R4/9/9/9/K8 b - 1"
+    },
+    "parent": {
+      "bestmove": "5e5c+",
+      "bound": "exact",
+      "depth": 5,
+      "elapsed_ms": 191.169,
+      "history_key": "5a7721aee15c2556e082b22dff575328f097ab9d9d9edae471badbdf11d1c04e",
+      "kind": "cp",
+      "position_command": "position sfen 8k/9/4b4/9/4R4/9/9/9/K8 b - 1",
+      "pv_head_matches": true,
+      "requested_depth": null,
+      "requested_ms": 200,
+      "research_decision_id": null,
+      "status": "recorded",
+      "value_stm": 4853
+    },
+    "passed": true
+  },
+  {
+    "case": {
+      "case_id": "capture-336f91dda8c0769c",
+      "expected_prefix": "5e5g",
+      "history_moves": [],
+      "start_sfen": "8k/9/9/9/4r4/9/4B4/9/K8 w - 1"
+    },
+    "parent": {
+      "bestmove": "5e5g+",
+      "bound": "exact",
+      "depth": 5,
+      "elapsed_ms": 190.855,
+      "history_key": "1453cd847c784e2d58eb23272cd28dda0ec93cbcdad1beb0f5d60fe17ec49929",
+      "kind": "cp",
+      "position_command": "position sfen 8k/9/9/9/4r4/9/4B4/9/K8 w - 1",
+      "pv_head_matches": true,
+      "requested_depth": null,
+      "requested_ms": 200,
+      "research_decision_id": null,
+      "status": "recorded",
+      "value_stm": 4853
+    },
+    "passed": true
+  },
+  {
+    "case": {
+      "case_id": "capture-4e3b07de36163ba6",
+      "expected_prefix": "4e4c",
+      "history_moves": [],
+      "start_sfen": "8k/9/5b3/9/5R3/9/9/9/K8 b - 1"
+    },
+    "parent": {
+      "bestmove": "4e4c+",
+      "bound": "exact",
+      "depth": 6,
+      "elapsed_ms": 190.884,
+      "history_key": "a0ab6e22175407ae670eeccd146a5ff7b9b4f7c77975285d24b900f1a6f28e83",
+      "kind": "mate",
+      "position_command": "position sfen 8k/9/5b3/9/5R3/9/9/9/K8 b - 1",
+      "pv_head_matches": true,
+      "requested_depth": null,
+      "requested_ms": 200,
+      "research_decision_id": null,
+      "status": "recorded",
+      "value_stm": 7
+    },
+    "passed": true
+  },
+  {
+    "case": {
+      "case_id": "capture-5f0a8ba92edf2974",
+      "expected_prefix": "6e6g",
+      "history_moves": [],
+      "start_sfen": "8k/9/9/9/3r5/9/3B5/9/K8 w - 1"
+    },
+    "parent": {
+      "bestmove": "6e6g+",
+      "bound": "exact",
+      "depth": 6,
+      "elapsed_ms": 190.888,
+      "history_key": "d3d57a85809f7a744e7df62b789dff80cbb3713331e98694f622d13663e0a23b",
+      "kind": "mate",
+      "position_command": "position sfen 8k/9/9/9/3r5/9/3B5/9/K8 w - 1",
+      "pv_head_matches": true,
+      "requested_depth": null,
+      "requested_ms": 200,
+      "research_decision_id": null,
+      "status": "recorded",
+      "value_stm": 7
+    },
+    "passed": true
+  }
+]

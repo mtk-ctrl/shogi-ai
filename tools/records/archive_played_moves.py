@@ -10,6 +10,7 @@ from pathlib import Path
 
 SCHEMA = 1
 SEARCH_FIELDS = (
+    "replay_time_match", "replay_probes", "replay_order_hits", "replay_research_hits", "replay_order_promotions", "replay_research_promotions",
     "structured_eval_calls",
     "depth", "seldepth", "time", "elapsed_ms", "nodes", "nps",
     "score_cp_stm", "score_black_cp", "score_mate_stm", "score_black_mate",
@@ -25,6 +26,7 @@ SEARCH_FIELDS = (
     "phase_king_threat", "phase_static_cp_black",
 )
 META_FIELDS = (
+    "execution_segments", "training_lineage",
     "telemetry_schema_version", "engine_a", "engine_b", "sha256_a", "sha256_b",
     "options_a", "options_b", "seed", "max_plies", "go_command",
     "position_knowledge",

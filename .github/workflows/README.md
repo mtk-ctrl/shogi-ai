@@ -138,3 +138,10 @@ engine-match.ymlは対局後に実際の着手だけを圧縮し、played-move-a
 研究ブランチ `research/value-learning-20261018` の `postgame-spiral.yml` は自己対局の勝敗による9配点学習を、3候補各100局→独立1000局→研究親継承と300局の新規自己対局・次のモデル学習まで検証する。実対局は既存 `engine-match.yml`、記録監査・Release保存は既存helpersを再利用する。正式なEngineや既定値は変えない。
 
 研究ブランチ `research/structured-eval-20261019` の同じ入口には `structured_only` を追加。駒配置・双方玉距離・持駒・攻守・可動性を序中終で学ぶ4,893係数の学習評価を、固定3尺度の100局選別→別1000局確認→通過時300局と評価表を継承した次モデルの学習へ接続する。最大1600新規局。`.github/structured-value-request.json` は無効時に起動せず、有効時は固定candidate_refとrequest_idを要求する。正式Engineや知識の自動採用をしない。
+
+
+### 評価以外への経験反映（研究ブランチ）
+
+`research/structured-eval-20261019` の `.github/replay-routes-request.json` は、固定候補SHAと一意な request_id を持つ明示依頼だけを起動する。`enabled:false` は何も起動しない。通常の汎用Issue入力の許可範囲は拡張しない。既存 `postgame-spiral.yml` の `order_only:true,replay_only:true` が、研究親の評価を固定し、探索順・裏付け済み研究知識・長考対象の記憶を単独で通常100局ずつ、最良の実使用経路だけ別1,000局で比較する。資産0件は起動しない。最大1,300局、正式採用はしない。
+
+実際の対局は `engine-match.yml` を再利用する。実行前にローカルで完了した再分析・16練習局・実バイナリを、hash付き分割転送から復元してReleaseへ保存・再取得する。分割blobは受渡しだけであり、長期正本はRelease。原本の全手、履歴の実行区間、親子群、実体と条件を再検査する。個別のON/OFF、使用回数、長考理由、保持検査、概算区間・重複除外を保存し、同じ親の経路だけを研究用に引き継ぐ。親が変わった知識は再確認が必要。詳細は `research/experience-routes-20261019/PLAN.md`。

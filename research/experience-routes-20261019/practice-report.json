@@ -1,0 +1,450 @@
+{
+  "all_legal_and_terminations_verified": true,
+  "formal_adoption": false,
+  "games": 16,
+  "independent_new_groups": 0,
+  "lineages": [
+    {
+      "branch": "actual",
+      "forced_move": "G*8c",
+      "lineage": {
+        "group": "4813a7e22b19d1b94d116d58c797d068acf65a9659b0bcc92559798c1d61b27c",
+        "heldout_consumed": false,
+        "split": "train"
+      },
+      "new_plies": 8,
+      "practice_id": "d459147c2efab9dda7b578d0a5b6f59f9bde3d1d19c43f9570645ba1f9c73a5f",
+      "prefix_plies": 202,
+      "scenario": {
+        "actor_ms": 200,
+        "name": "parent",
+        "reply_ms": 200
+      },
+      "source": {
+        "archive_sha256": "97341940b87eda066a886e6b44800e2334f787d5c3038d24c02632468b61643b",
+        "game_id": "18b8c6115e0daf174a103fb1b0ed6c157784c9c645fdbdcb5ca47d8077751d1f:13",
+        "manifest_sha256": "3737cf300b30836a0c7be30c14faccf0a6e4c9ebeff6b6af6f761ee2d4960555",
+        "ply": 203,
+        "run_id": "39200586260"
+      },
+      "source_case_id": "21c641cbe159e3ef074ece6238f34636ca35c13136497a122699f71c73f32156",
+      "split": "train",
+      "terminal_observation": null
+    },
+    {
+      "branch": "alternative",
+      "forced_move": "B*5e",
+      "lineage": {
+        "group": "4813a7e22b19d1b94d116d58c797d068acf65a9659b0bcc92559798c1d61b27c",
+        "heldout_consumed": false,
+        "split": "train"
+      },
+      "new_plies": 8,
+      "practice_id": "d459147c2efab9dda7b578d0a5b6f59f9bde3d1d19c43f9570645ba1f9c73a5f",
+      "prefix_plies": 202,
+      "scenario": {
+        "actor_ms": 200,
+        "name": "parent",
+        "reply_ms": 200
+      },
+      "source": {
+        "archive_sha256": "97341940b87eda066a886e6b44800e2334f787d5c3038d24c02632468b61643b",
+        "game_id": "18b8c6115e0daf174a103fb1b0ed6c157784c9c645fdbdcb5ca47d8077751d1f:13",
+        "manifest_sha256": "3737cf300b30836a0c7be30c14faccf0a6e4c9ebeff6b6af6f761ee2d4960555",
+        "ply": 203,
+        "run_id": "39200586260"
+      },
+      "source_case_id": "21c641cbe159e3ef074ece6238f34636ca35c13136497a122699f71c73f32156",
+      "split": "train",
+      "terminal_observation": null
+    },
+    {
+      "branch": "actual",
+      "forced_move": "G*8c",
+      "lineage": {
+        "group": "4813a7e22b19d1b94d116d58c797d068acf65a9659b0bcc92559798c1d61b27c",
+        "heldout_consumed": false,
+        "split": "train"
+      },
+      "new_plies": 8,
+      "practice_id": "d459147c2efab9dda7b578d0a5b6f59f9bde3d1d19c43f9570645ba1f9c73a5f",
+      "prefix_plies": 202,
+      "scenario": {
+        "actor_ms": 200,
+        "name": "previous-own-parent",
+        "reply_ms": 200
+      },
+      "source": {
+        "archive_sha256": "97341940b87eda066a886e6b44800e2334f787d5c3038d24c02632468b61643b",
+        "game_id": "18b8c6115e0daf174a103fb1b0ed6c157784c9c645fdbdcb5ca47d8077751d1f:13",
+        "manifest_sha256": "3737cf300b30836a0c7be30c14faccf0a6e4c9ebeff6b6af6f761ee2d4960555",
+        "ply": 203,
+        "run_id": "39200586260"
+      },
+      "source_case_id": "21c641cbe159e3ef074ece6238f34636ca35c13136497a122699f71c73f32156",
+      "split": "train",
+      "terminal_observation": null
+    },
+    {
+      "branch": "alternative",
+      "forced_move": "B*5e",
+      "lineage": {
+        "group": "4813a7e22b19d1b94d116d58c797d068acf65a9659b0bcc92559798c1d61b27c",
+        "heldout_consumed": false,
+        "split": "train"
+      },
+      "new_plies": 8,
+      "practice_id": "d459147c2efab9dda7b578d0a5b6f59f9bde3d1d19c43f9570645ba1f9c73a5f",
+      "prefix_plies": 202,
+      "scenario": {
+        "actor_ms": 200,
+        "name": "previous-own-parent",
+        "reply_ms": 200
+      },
+      "source": {
+        "archive_sha256": "97341940b87eda066a886e6b44800e2334f787d5c3038d24c02632468b61643b",
+        "game_id": "18b8c6115e0daf174a103fb1b0ed6c157784c9c645fdbdcb5ca47d8077751d1f:13",
+        "manifest_sha256": "3737cf300b30836a0c7be30c14faccf0a6e4c9ebeff6b6af6f761ee2d4960555",
+        "ply": 203,
+        "run_id": "39200586260"
+      },
+      "source_case_id": "21c641cbe159e3ef074ece6238f34636ca35c13136497a122699f71c73f32156",
+      "split": "train",
+      "terminal_observation": null
+    },
+    {
+      "branch": "actual",
+      "forced_move": "P*8h",
+      "lineage": {
+        "group": "5a59c21b4d80262658d83c834ac089cfa662126b9db8656d93b443e08596c71b",
+        "heldout_consumed": false,
+        "split": "train"
+      },
+      "new_plies": 8,
+      "practice_id": "9fe160597c35d5007eb3f6cc90f9426e701f8c2a1214324d2eaa4cd675fc96ef",
+      "prefix_plies": 42,
+      "scenario": {
+        "actor_ms": 200,
+        "name": "parent",
+        "reply_ms": 200
+      },
+      "source": {
+        "archive_sha256": "97341940b87eda066a886e6b44800e2334f787d5c3038d24c02632468b61643b",
+        "game_id": "cfc7b445f8d2c12ba2f9951c5857a5262f9b04f35490b13d6dde03dc977e2159:8",
+        "manifest_sha256": "3737cf300b30836a0c7be30c14faccf0a6e4c9ebeff6b6af6f761ee2d4960555",
+        "ply": 43,
+        "run_id": "39200586260"
+      },
+      "source_case_id": "6aafb012c738e79e4e5907402071dc72bdbc482598176ee18df975f065db483a",
+      "split": "train",
+      "terminal_observation": null
+    },
+    {
+      "branch": "alternative",
+      "forced_move": "4e4d",
+      "lineage": {
+        "group": "5a59c21b4d80262658d83c834ac089cfa662126b9db8656d93b443e08596c71b",
+        "heldout_consumed": false,
+        "split": "train"
+      },
+      "new_plies": 8,
+      "practice_id": "9fe160597c35d5007eb3f6cc90f9426e701f8c2a1214324d2eaa4cd675fc96ef",
+      "prefix_plies": 42,
+      "scenario": {
+        "actor_ms": 200,
+        "name": "parent",
+        "reply_ms": 200
+      },
+      "source": {
+        "archive_sha256": "97341940b87eda066a886e6b44800e2334f787d5c3038d24c02632468b61643b",
+        "game_id": "cfc7b445f8d2c12ba2f9951c5857a5262f9b04f35490b13d6dde03dc977e2159:8",
+        "manifest_sha256": "3737cf300b30836a0c7be30c14faccf0a6e4c9ebeff6b6af6f761ee2d4960555",
+        "ply": 43,
+        "run_id": "39200586260"
+      },
+      "source_case_id": "6aafb012c738e79e4e5907402071dc72bdbc482598176ee18df975f065db483a",
+      "split": "train",
+      "terminal_observation": null
+    },
+    {
+      "branch": "actual",
+      "forced_move": "P*8h",
+      "lineage": {
+        "group": "5a59c21b4d80262658d83c834ac089cfa662126b9db8656d93b443e08596c71b",
+        "heldout_consumed": false,
+        "split": "train"
+      },
+      "new_plies": 8,
+      "practice_id": "9fe160597c35d5007eb3f6cc90f9426e701f8c2a1214324d2eaa4cd675fc96ef",
+      "prefix_plies": 42,
+      "scenario": {
+        "actor_ms": 200,
+        "name": "previous-own-parent",
+        "reply_ms": 200
+      },
+      "source": {
+        "archive_sha256": "97341940b87eda066a886e6b44800e2334f787d5c3038d24c02632468b61643b",
+        "game_id": "cfc7b445f8d2c12ba2f9951c5857a5262f9b04f35490b13d6dde03dc977e2159:8",
+        "manifest_sha256": "3737cf300b30836a0c7be30c14faccf0a6e4c9ebeff6b6af6f761ee2d4960555",
+        "ply": 43,
+        "run_id": "39200586260"
+      },
+      "source_case_id": "6aafb012c738e79e4e5907402071dc72bdbc482598176ee18df975f065db483a",
+      "split": "train",
+      "terminal_observation": null
+    },
+    {
+      "branch": "alternative",
+      "forced_move": "4e4d",
+      "lineage": {
+        "group": "5a59c21b4d80262658d83c834ac089cfa662126b9db8656d93b443e08596c71b",
+        "heldout_consumed": false,
+        "split": "train"
+      },
+      "new_plies": 8,
+      "practice_id": "9fe160597c35d5007eb3f6cc90f9426e701f8c2a1214324d2eaa4cd675fc96ef",
+      "prefix_plies": 42,
+      "scenario": {
+        "actor_ms": 200,
+        "name": "previous-own-parent",
+        "reply_ms": 200
+      },
+      "source": {
+        "archive_sha256": "97341940b87eda066a886e6b44800e2334f787d5c3038d24c02632468b61643b",
+        "game_id": "cfc7b445f8d2c12ba2f9951c5857a5262f9b04f35490b13d6dde03dc977e2159:8",
+        "manifest_sha256": "3737cf300b30836a0c7be30c14faccf0a6e4c9ebeff6b6af6f761ee2d4960555",
+        "ply": 43,
+        "run_id": "39200586260"
+      },
+      "source_case_id": "6aafb012c738e79e4e5907402071dc72bdbc482598176ee18df975f065db483a",
+      "split": "train",
+      "terminal_observation": null
+    },
+    {
+      "branch": "actual",
+      "forced_move": "8h7i",
+      "lineage": {
+        "group": "841e09fd2df67959f55245097328710f521c42ddbad2931f6ff84d4afcca1d42",
+        "heldout_consumed": false,
+        "split": "train"
+      },
+      "new_plies": 8,
+      "practice_id": "1ad10ba4fbd3cb3c7ed350260d8fe235474bd4e341898c582c2d3ba6686bae67",
+      "prefix_plies": 46,
+      "scenario": {
+        "actor_ms": 200,
+        "name": "parent",
+        "reply_ms": 200
+      },
+      "source": {
+        "archive_sha256": "97341940b87eda066a886e6b44800e2334f787d5c3038d24c02632468b61643b",
+        "game_id": "fea1d6871186872f31860bf2a31889a45ae3c256a2b6972ec56bee00b15b6beb:6",
+        "manifest_sha256": "3737cf300b30836a0c7be30c14faccf0a6e4c9ebeff6b6af6f761ee2d4960555",
+        "ply": 47,
+        "run_id": "39200586260"
+      },
+      "source_case_id": "607ddc8907eca6e20eadf07cdadea92bbd7b10fbbe83b423af4e3edaac3bb859",
+      "split": "train",
+      "terminal_observation": null
+    },
+    {
+      "branch": "alternative",
+      "forced_move": "8f8e",
+      "lineage": {
+        "group": "841e09fd2df67959f55245097328710f521c42ddbad2931f6ff84d4afcca1d42",
+        "heldout_consumed": false,
+        "split": "train"
+      },
+      "new_plies": 8,
+      "practice_id": "1ad10ba4fbd3cb3c7ed350260d8fe235474bd4e341898c582c2d3ba6686bae67",
+      "prefix_plies": 46,
+      "scenario": {
+        "actor_ms": 200,
+        "name": "parent",
+        "reply_ms": 200
+      },
+      "source": {
+        "archive_sha256": "97341940b87eda066a886e6b44800e2334f787d5c3038d24c02632468b61643b",
+        "game_id": "fea1d6871186872f31860bf2a31889a45ae3c256a2b6972ec56bee00b15b6beb:6",
+        "manifest_sha256": "3737cf300b30836a0c7be30c14faccf0a6e4c9ebeff6b6af6f761ee2d4960555",
+        "ply": 47,
+        "run_id": "39200586260"
+      },
+      "source_case_id": "607ddc8907eca6e20eadf07cdadea92bbd7b10fbbe83b423af4e3edaac3bb859",
+      "split": "train",
+      "terminal_observation": null
+    },
+    {
+      "branch": "actual",
+      "forced_move": "8h7i",
+      "lineage": {
+        "group": "841e09fd2df67959f55245097328710f521c42ddbad2931f6ff84d4afcca1d42",
+        "heldout_consumed": false,
+        "split": "train"
+      },
+      "new_plies": 8,
+      "practice_id": "1ad10ba4fbd3cb3c7ed350260d8fe235474bd4e341898c582c2d3ba6686bae67",
+      "prefix_plies": 46,
+      "scenario": {
+        "actor_ms": 200,
+        "name": "previous-own-parent",
+        "reply_ms": 200
+      },
+      "source": {
+        "archive_sha256": "97341940b87eda066a886e6b44800e2334f787d5c3038d24c02632468b61643b",
+        "game_id": "fea1d6871186872f31860bf2a31889a45ae3c256a2b6972ec56bee00b15b6beb:6",
+        "manifest_sha256": "3737cf300b30836a0c7be30c14faccf0a6e4c9ebeff6b6af6f761ee2d4960555",
+        "ply": 47,
+        "run_id": "39200586260"
+      },
+      "source_case_id": "607ddc8907eca6e20eadf07cdadea92bbd7b10fbbe83b423af4e3edaac3bb859",
+      "split": "train",
+      "terminal_observation": null
+    },
+    {
+      "branch": "alternative",
+      "forced_move": "8f8e",
+      "lineage": {
+        "group": "841e09fd2df67959f55245097328710f521c42ddbad2931f6ff84d4afcca1d42",
+        "heldout_consumed": false,
+        "split": "train"
+      },
+      "new_plies": 8,
+      "practice_id": "1ad10ba4fbd3cb3c7ed350260d8fe235474bd4e341898c582c2d3ba6686bae67",
+      "prefix_plies": 46,
+      "scenario": {
+        "actor_ms": 200,
+        "name": "previous-own-parent",
+        "reply_ms": 200
+      },
+      "source": {
+        "archive_sha256": "97341940b87eda066a886e6b44800e2334f787d5c3038d24c02632468b61643b",
+        "game_id": "fea1d6871186872f31860bf2a31889a45ae3c256a2b6972ec56bee00b15b6beb:6",
+        "manifest_sha256": "3737cf300b30836a0c7be30c14faccf0a6e4c9ebeff6b6af6f761ee2d4960555",
+        "ply": 47,
+        "run_id": "39200586260"
+      },
+      "source_case_id": "607ddc8907eca6e20eadf07cdadea92bbd7b10fbbe83b423af4e3edaac3bb859",
+      "split": "train",
+      "terminal_observation": null
+    },
+    {
+      "branch": "actual",
+      "forced_move": "P*1c",
+      "lineage": {
+        "group": "c4b760cdeed8715b4f45f2a9baf1b7a39fa2145962d924e04959dee28db08974",
+        "heldout_consumed": false,
+        "split": "train"
+      },
+      "new_plies": 8,
+      "practice_id": "bbfcb103aea7fbc5837da09f62216de55f51508ec5c80a36960d7670804ef401",
+      "prefix_plies": 47,
+      "scenario": {
+        "actor_ms": 200,
+        "name": "parent",
+        "reply_ms": 200
+      },
+      "source": {
+        "archive_sha256": "97341940b87eda066a886e6b44800e2334f787d5c3038d24c02632468b61643b",
+        "game_id": "4dbe1d71aeef8616615e2fd4e6cef383ea82a5c3b3959cc6b116e67f2cc6ba2c:4",
+        "manifest_sha256": "3737cf300b30836a0c7be30c14faccf0a6e4c9ebeff6b6af6f761ee2d4960555",
+        "ply": 48,
+        "run_id": "39200586260"
+      },
+      "source_case_id": "23d423bdf0b4787fb4429f04c54ccfd84ab9730f92e614ce7ba2141d8fc20127",
+      "split": "train",
+      "terminal_observation": null
+    },
+    {
+      "branch": "alternative",
+      "forced_move": "6c6d",
+      "lineage": {
+        "group": "c4b760cdeed8715b4f45f2a9baf1b7a39fa2145962d924e04959dee28db08974",
+        "heldout_consumed": false,
+        "split": "train"
+      },
+      "new_plies": 8,
+      "practice_id": "bbfcb103aea7fbc5837da09f62216de55f51508ec5c80a36960d7670804ef401",
+      "prefix_plies": 47,
+      "scenario": {
+        "actor_ms": 200,
+        "name": "parent",
+        "reply_ms": 200
+      },
+      "source": {
+        "archive_sha256": "97341940b87eda066a886e6b44800e2334f787d5c3038d24c02632468b61643b",
+        "game_id": "4dbe1d71aeef8616615e2fd4e6cef383ea82a5c3b3959cc6b116e67f2cc6ba2c:4",
+        "manifest_sha256": "3737cf300b30836a0c7be30c14faccf0a6e4c9ebeff6b6af6f761ee2d4960555",
+        "ply": 48,
+        "run_id": "39200586260"
+      },
+      "source_case_id": "23d423bdf0b4787fb4429f04c54ccfd84ab9730f92e614ce7ba2141d8fc20127",
+      "split": "train",
+      "terminal_observation": null
+    },
+    {
+      "branch": "actual",
+      "forced_move": "P*1c",
+      "lineage": {
+        "group": "c4b760cdeed8715b4f45f2a9baf1b7a39fa2145962d924e04959dee28db08974",
+        "heldout_consumed": false,
+        "split": "train"
+      },
+      "new_plies": 8,
+      "practice_id": "bbfcb103aea7fbc5837da09f62216de55f51508ec5c80a36960d7670804ef401",
+      "prefix_plies": 47,
+      "scenario": {
+        "actor_ms": 200,
+        "name": "previous-own-parent",
+        "reply_ms": 200
+      },
+      "source": {
+        "archive_sha256": "97341940b87eda066a886e6b44800e2334f787d5c3038d24c02632468b61643b",
+        "game_id": "4dbe1d71aeef8616615e2fd4e6cef383ea82a5c3b3959cc6b116e67f2cc6ba2c:4",
+        "manifest_sha256": "3737cf300b30836a0c7be30c14faccf0a6e4c9ebeff6b6af6f761ee2d4960555",
+        "ply": 48,
+        "run_id": "39200586260"
+      },
+      "source_case_id": "23d423bdf0b4787fb4429f04c54ccfd84ab9730f92e614ce7ba2141d8fc20127",
+      "split": "train",
+      "terminal_observation": null
+    },
+    {
+      "branch": "alternative",
+      "forced_move": "6c6d",
+      "lineage": {
+        "group": "c4b760cdeed8715b4f45f2a9baf1b7a39fa2145962d924e04959dee28db08974",
+        "heldout_consumed": false,
+        "split": "train"
+      },
+      "new_plies": 8,
+      "practice_id": "bbfcb103aea7fbc5837da09f62216de55f51508ec5c80a36960d7670804ef401",
+      "prefix_plies": 47,
+      "scenario": {
+        "actor_ms": 200,
+        "name": "previous-own-parent",
+        "reply_ms": 200
+      },
+      "source": {
+        "archive_sha256": "97341940b87eda066a886e6b44800e2334f787d5c3038d24c02632468b61643b",
+        "game_id": "4dbe1d71aeef8616615e2fd4e6cef383ea82a5c3b3959cc6b116e67f2cc6ba2c:4",
+        "manifest_sha256": "3737cf300b30836a0c7be30c14faccf0a6e4c9ebeff6b6af6f761ee2d4960555",
+        "ply": 48,
+        "run_id": "39200586260"
+      },
+      "source_case_id": "23d423bdf0b4787fb4429f04c54ccfd84ab9730f92e614ce7ba2141d8fc20127",
+      "split": "train",
+      "terminal_observation": null
+    }
+  ],
+  "new_plies": 128,
+  "opponents": [
+    "parent",
+    "previous-own-parent"
+  ],
+  "recording_repair": "Original executed records preserved; canonical adapter fixes archive shape and labels replayed-prefix execution scope without replaying games.",
+  "roots": 4,
+  "source_groups": 4,
+  "strength_measurement": false,
+  "unique_reached_positions": 98
+}

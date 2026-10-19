@@ -24,6 +24,7 @@ tests.add_argument("--contact-ordering-test", action="store_true")
 tests.add_argument("--evaluation-test", action="store_true")
 tests.add_argument("--evaluation-probe", action="store_true")
 tests.add_argument("--structured-value-probe", action="store_true")
+tests.add_argument("--replay-knowledge-test", action="store_true")
 tests.add_argument("--kifu-validator", action="store_true")
 tests.add_argument("--phase-probe", action="store_true")
 parser.add_argument("--sanitize", action="store_true")
@@ -92,6 +93,7 @@ test_source = ("tests/rules_test.cpp" if args.test else
                "tests/evaluation_test.cpp" if args.evaluation_test else
                "benchmarks/evaluation_probe.cpp" if args.evaluation_probe else
                "benchmarks/structured_value_probe.cpp" if args.structured_value_probe else
+               "tests/replay_knowledge_test.cpp" if args.replay_knowledge_test else
                "tools/kifu/validate_games.cpp" if args.kifu_validator else
                "tools/phase/phase_probe.cpp" if args.phase_probe else
                "engine/main.cpp")

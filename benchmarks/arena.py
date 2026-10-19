@@ -58,6 +58,7 @@ def can_declare_win(board):
 
 
 SEARCH_STAT_NAMES = (
+    "replay_time_match", "replay_probes", "replay_order_hits", "replay_research_hits", "replay_order_promotions", "replay_research_promotions",
     "structured_eval_calls",
     "learned_eval", "learned_scale",
     "nodes", "full_nodes", "cutoffs", "min_cutoffs", "max_cutoffs",
@@ -80,6 +81,7 @@ USI_INFO_INTEGER_NAMES = (
 )
 
 PER_MOVE_SEARCH_FIELDS = (
+    "replay_time_match", "replay_probes", "replay_order_hits", "replay_research_hits", "replay_order_promotions", "replay_research_promotions",
     "structured_eval_calls",
     "learned_eval", "learned_scale",
     "depth", "seldepth", "time", "nodes", "nps",

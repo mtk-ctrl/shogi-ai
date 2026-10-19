@@ -3,6 +3,7 @@
 #include "strategy/alphabeta3_tt.h"
 #include "strategy/search_research.h"
 #include "strategy/position_knowledge.h"
+#include "strategy/replay_knowledge.h"
 #include <optional>
 #include "strategy/move_hint_cache.h"
 #include <atomic>
@@ -30,6 +31,7 @@ enum class LongThinkReason : int {
     IterationMoveChange,
     UnfinishedDepth2,
     BudgetDeadline,
+    ReplayReadMore,
 };
 
 inline const char* long_think_reason_name(LongThinkReason reason) {
@@ -40,6 +42,7 @@ inline const char* long_think_reason_name(LongThinkReason reason) {
     case LongThinkReason::IterationMoveChange: return "iteration_move_change";
     case LongThinkReason::UnfinishedDepth2: return "unfinished_depth2";
     case LongThinkReason::BudgetDeadline: return "budget_deadline";
+    case LongThinkReason::ReplayReadMore: return "replay_read_more";
     default: return "none";
     }
 }
@@ -51,6 +54,7 @@ struct SearchControl {
     std::uint64_t node_limit = 0;
     bool adaptive_long_think = false;
     bool force_long_think = false;
+    bool replay_time_need = false;
     bool has_previous_score = false;
     int previous_score = 0;
     std::atomic<int> long_think_reason{static_cast<int>(LongThinkReason::None)};
@@ -82,6 +86,8 @@ public:
         std::uint64_t qtt_probes = 0, qtt_hits = 0, qtt_cutoffs = 0;
         std::uint64_t ordering_rule_checks = 0, eval_cache_hits = 0, lazy_snapshots = 0;
         std::uint64_t structured_eval_calls = 0;
+        std::uint64_t replay_probes = 0, replay_order_hits = 0, replay_research_hits = 0;
+        std::uint64_t replay_order_promotions = 0, replay_research_promotions = 0;
         std::uint64_t selective_usi_skipped = 0;
         std::uint64_t legal_cache_hits = 0, legal_cache_misses = 0;
         std::uint64_t legal_cache_replacements = 0;
@@ -179,6 +185,7 @@ public:
         return DirectResearch{move, id, index, pv.size()};
     }
     std::size_t position_knowledge_size() const { return position_knowledge_.size(); }
+    bool position_knowledge_matches_builtin() const { return position_knowledge_enabled_ && position_knowledge_.matches_builtin(); }
     void set_quiescence_enabled(bool enabled) { quiescence_enabled_ = enabled; }
     const Stats& last_stats() const { return stats_; }
     void set_research_mask(unsigned mask) { research_mask_ = mask & 31; }
@@ -186,6 +193,7 @@ public:
     void set_efficiency_mask(unsigned mask) { efficiency_mask_ = mask & 15; }
     unsigned efficiency_mask() const { return efficiency_mask_; }
     void set_next_mask(unsigned mask) { next_mask_ = mask & 15; }
+    unsigned next_mask() const { return next_mask_; }
     // Officially adopted: verify pawn drops the opponent can immediately capture.
     void set_risk_verify(bool enabled) { risk_verify_enabled_ = enabled; }
     bool risk_verify() const { return risk_verify_enabled_; }
@@ -195,6 +203,7 @@ public:
     }
     unsigned reuse_mask() const { return reuse_mask_; }
     void set_threads(unsigned count) { threads_=std::clamp(count,1u,2u); }
+    void set_replay_modes(bool order, bool research) { replay_order_=order; replay_research_=research; }
     unsigned threads() const { return threads_; }
     void set_probe_mask(unsigned mask) { probe_mask_ = mask & 7u; }
     unsigned probe_mask() const { return probe_mask_; }
@@ -373,6 +382,8 @@ private:
         SUM_STAT(order_reuse_hits);SUM_STAT(qtt_probes);SUM_STAT(qtt_hits);SUM_STAT(qtt_cutoffs);
         SUM_STAT(ordering_rule_checks);SUM_STAT(eval_cache_hits);SUM_STAT(lazy_snapshots);
         SUM_STAT(structured_eval_calls);
+        SUM_STAT(replay_probes);SUM_STAT(replay_order_hits);SUM_STAT(replay_research_hits);
+        SUM_STAT(replay_order_promotions);SUM_STAT(replay_research_promotions);
         SUM_STAT(selective_usi_skipped);SUM_STAT(legal_cache_hits);SUM_STAT(legal_cache_misses);
         SUM_STAT(legal_cache_replacements);
         SUM_STAT(pvs_probes);SUM_STAT(pvs_researches);SUM_STAT(killer_priorities);
@@ -404,6 +415,7 @@ private:
             lane.set_probe_mask(probe_mask_);
             lane.set_quiescence_enabled(quiescence_enabled_);
             lane.set_threads(1);
+            lane.set_replay_modes(replay_order_,replay_research_);
             lane.position_knowledge_=position_knowledge_;lane.position_knowledge_enabled_=position_knowledge_enabled_;
             lane.capture_root_ties_=true;
         }
@@ -538,6 +550,8 @@ private:
             reason = LongThinkReason::IterationMoveChange;
         } else if (!has_last_completed_ || last_completed_.depth < 2) {
             reason = LongThinkReason::UnfinishedDepth2;
+        } else if (control_->replay_time_need) {
+            reason = LongThinkReason::ReplayReadMore;
         } else if (control_->force_long_think) {
             reason = LongThinkReason::BudgetDeadline;
         }
@@ -1045,6 +1059,19 @@ private:
             if (it == result.end()) return false;
             std::rotate(result.begin(), it, std::next(it)); return true;
         };
+        if (ply==0 && (replay_order_ || replay_research_)) {
+            ++stats_.replay_probes;
+            if (const auto* entry=ReplayKnowledge::instance().probe(p)) {
+                if(replay_order_ && !entry->order.empty()) {
+                    ++stats_.replay_order_hits;
+                    if(promote(entry->order))++stats_.replay_order_promotions;
+                }
+                if(replay_research_ && !entry->research.empty()) {
+                    ++stats_.replay_research_hits;
+                    if(promote(entry->research))++stats_.replay_research_promotions;
+                }
+            }
+        }
         if (promote(knowledge_move)) ++stats_.knowledge_promotions;
         // At introductory depths, horizon changes made previous-iteration
         // ordering worse on contact positions. Preserve the accepted ordering
@@ -1065,6 +1092,7 @@ private:
     unsigned efficiency_mask_ = DefaultSearchEfficiencyMask;
     unsigned reuse_mask_ = DefaultSearchReuseMask;
     unsigned threads_=2;
+    bool replay_order_=false,replay_research_=false;
     unsigned probe_mask_=DefaultSearchProbeMask;
     std::array<std::array<std::string, 2>, MaxPly + 1> killers_{};
     std::array<std::array<int, 88 * 81>, 2> history_scores_{};

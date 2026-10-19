@@ -49,8 +49,9 @@ public:
         return load_stream(input);
     }
 
-    void clear() { moves_.clear(); }
+    void clear() { moves_.clear(); builtin_match_=false; }
     std::size_t size() const { return moves_.size(); }
+    bool matches_builtin() const { return builtin_match_; }
 
     const Entry* probe(const rules::Position& position) const {
         const auto key = canonical_key(position);
@@ -69,7 +70,9 @@ private:
     bool load_stream(std::istream& in) {
         std::unordered_map<std::string, Entry> loaded;
         std::string line;
+        std::string observed;
         while (std::getline(in, line)) {
+            observed+=line+'\n';
             if (line.empty() || line[0] == '#') continue;
             const auto first = line.find('\t');
             if (first == std::string::npos) {
@@ -143,10 +146,12 @@ private:
             return false;
         }
         moves_.swap(loaded);
+        builtin_match_=observed==detail::kEmbeddedPositionKnowledge;
         return true;
     }
 
     std::unordered_map<std::string, Entry> moves_;
+    bool builtin_match_=false;
 };
 
 } // namespace shogi::strategy

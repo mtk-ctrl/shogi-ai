@@ -12,6 +12,7 @@ on:
       - "tools/knowledge/**"
       - "tests/evaluation_test.cpp"
       - "tests/structured_value_test.cpp"
+      - "tests/replay_knowledge_test.cpp"
       - "tests/strategy_test.cpp"
       - "tests/ordering_test.cpp"
       - "tests/contact_ordering_test.cpp"
@@ -159,3 +160,7 @@ jobs:
 
       - name: Floodgate bridge dry-run
         run: python3 tools/floodgate/client.py --engine build/shogi-ai
+      - name: Verify all replay hints are legal and history-safe
+        run: |
+          python3 scripts/build.py --replay-knowledge-test --output build/replay-knowledge-test
+          build/replay-knowledge-test

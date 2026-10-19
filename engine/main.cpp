@@ -47,6 +47,7 @@ int main() {
     std::string position_knowledge_file = "position-knowledge-v1.tsv";
     int default_depth = 3;
     bool adaptive_long_think_enabled = true;
+    bool replay_order_enabled=false, replay_research_enabled=false, replay_time_enabled=false;
     bool usi_ponder_enabled = true;
     int long_think_used = 0;
     bool previous_root_score_valid = false;
@@ -126,6 +127,10 @@ int main() {
                       << "option name EvalProfile type combo default features var features var material\n"
                       << "option name EvalSafety type spin default " << evaluation_parameters.weights[0] << " min 0 max 10000\n"
                       << "option name StructuredEval type check default false\n"
+                      << "option name ReplayOrder type check default false\n"
+                      << "option name ReplayResearch type check default false\n"
+                      << "option name ReplayTime type check default false\n"
+                      << "info string replay_knowledge " << shogi::strategy::detail::ReplayKnowledgeSha << "\n"
                       << "option name StructuredScale type spin default 100 min 0 max 200\n"
                       << "info string structured_model " << shogi::strategy::StructuredValueModel << "\n"
                       << "option name EvalPressure type spin default " << evaluation_parameters.weights[1] << " min 0 max 10000\n"
@@ -179,6 +184,19 @@ int main() {
             valid_position = position.set_usi(line, error);
             if (!valid_position) std::cout << "info string " << error << '\n' << std::flush;
         } else if (command == "go") {
+            const auto& ep=evaluation_parameters;
+            // A changed evaluator makes old observations stale. Keep the asset
+            // for research, but never silently transfer it to a different parent.
+            const bool replay_compatible=!material_profile && ep.structured_enabled && ep.structured_scale==50
+                && std::string(shogi::strategy::StructuredValueModel)=="8c174f7adac2d45cc0ab2633986ab89db3f24906bd655f5e18e81538eb7fdb1c"
+                && ep.weights==std::array<int,4>{540,391,422,157} && ep.influence_weight==143
+                && ep.potential_weight==190 && ep.coordination_weight==343 && ep.hand_potential_weight==59
+                && ep.threat_weight==22 && ep.v2_enabled && ep.material_weight==100 && ep.positional_cap==5000
+                && strategy.research_mask()==23 && strategy.efficiency_mask()==8 && strategy.reuse_mask()==6
+                && strategy.probe_mask()==7 && strategy.next_mask()==4 && strategy.risk_verify()
+                && quiescence_enabled && mate_assist_enabled && mate_learning_enabled && mate_stage_budget_enabled
+                && mate_learning_file=="embedded" && entering_king && strategy.position_knowledge_matches_builtin();
+            strategy.set_replay_modes(replay_compatible && replay_order_enabled,replay_compatible && replay_research_enabled);
             ensure_position_knowledge_loaded();
             std::vector<std::string> tokens, allowed;
             std::string token;
@@ -329,6 +347,10 @@ int main() {
             if (long_think_slot) {
                 active->control.adaptive_long_think = true;
                 active->control.force_long_think = long_think_fallback;
+                if(replay_compatible && replay_time_enabled) {
+                    const auto* entry=shogi::strategy::ReplayKnowledge::instance().probe(position);
+                    active->control.replay_time_need=entry && entry->time_need;
+                }
                 active->control.has_previous_score = previous_root_score_valid;
                 active->control.previous_score = previous_root_score;
                 // parse_go_limits keeps a 10ms communication margin. Match a
@@ -646,6 +668,12 @@ int main() {
                         << " ordering_rule_checks " << stats.ordering_rule_checks
                         << " eval_cache_hits " << stats.eval_cache_hits
                         << " structured_eval_calls " << stats.structured_eval_calls
+                        << " replay_probes " << stats.replay_probes
+                        << " replay_order_hits " << stats.replay_order_hits
+                        << " replay_research_hits " << stats.replay_research_hits
+                        << " replay_order_promotions " << stats.replay_order_promotions
+                        << " replay_research_promotions " << stats.replay_research_promotions
+                        << " replay_time_match " << (active->control.replay_time_need?1:0)
                         << " lazy_snapshots " << stats.lazy_snapshots
                         << " selective_usi_skipped " << stats.selective_usi_skipped
                         << " generated_plays " << stats.generated_plays
@@ -795,6 +823,12 @@ int main() {
                     }
                 } else if (name == "OpeningRandomNonLance") {
                     if (value == "true" || value == "false") opening_random_non_lance = value == "true";
+                } else if (name == "ReplayOrder" || name == "ReplayResearch" || name == "ReplayTime") {
+                    if(value=="true" || value=="false") {
+                        if(name=="ReplayOrder")replay_order_enabled=value=="true";
+                        else if(name=="ReplayResearch")replay_research_enabled=value=="true";
+                        else replay_time_enabled=value=="true";
+                    }
                 } else if (name == "AdaptiveLongThink") {
                     if (value == "true" || value == "false")
                         adaptive_long_think_enabled = value == "true";

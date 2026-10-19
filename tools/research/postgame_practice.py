@@ -113,14 +113,16 @@ def replay_prefix(case):
     return board,judge
 
 
-def play_branch(root,scenario,branch,source_game,search):
+def play_branch(root,scenario,branch,source_game,search,max_new_plies=None):
     """search(case, history, ms) returns a fresh own-engine observation."""
     case=root['task']['case'];prefix=case['history_moves'];board,judge=replay_prefix(case);actor_color=board.turn
     require(source_game.start_sfen==case['start_sfen'] and list(source_game.moves[:len(prefix)])==prefix
             and source_game.moves[len(prefix)]==case['actual_move'],'practice source game differs')
     rows=copy.deepcopy(source_game.row['moves'][:len(prefix)]);records=[];reason='move_limit';winner=None
     branch_move=root[branch+'_move'];termination=None
-    for step in range(POLICY_PRACTICE['max_new_plies']):
+    limit=POLICY_PRACTICE['max_new_plies'] if max_new_plies is None else max_new_plies
+    require(type(limit)is int and 1<=limit<=POLICY_PRACTICE['max_new_plies'],'invalid bounded practice length')
+    for step in range(limit):
         color=board.turn;actor='A' if (color==shogi.BLACK)==source_game.row['a_black'] else 'B'
         if step==0:
             token=branch_move;telemetry=dict(score_status='not_recorded',decision_source='practice_forced_branch')
@@ -164,7 +166,7 @@ def play_branch(root,scenario,branch,source_game,search):
         # Custom verifier below keeps this unresolved. Never feed a resignation
         # into verify_game as a proved win/loss.
         require(winner is None,'unverified resignation supplied a teacher')
-    else:verify_game(game,dict(max_plies=len(prefix)+POLICY_PRACTICE['max_new_plies']))
+    else:verify_game(game,dict(max_plies=len(prefix)+limit))
     return game,info
 
 
