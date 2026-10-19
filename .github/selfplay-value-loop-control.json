@@ -3,11 +3,15 @@
   "stop_requested": false,
   "confirmation_task": {
     "id": "6ad57cc7157c819195b667c84a5268b6",
-    "schedule": "BEGIN:VEVENT\nDTSTART:20261019T023827Z\nEND:VEVENT",
+    "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Asia/Tokyo:20261019T115000\nEND:VEVENT",
     "timezone": "Asia/Tokyo",
     "controller_run": 39188739902,
     "plan_ref": "864b6c17dcbef847b533d9a5906bfc8da7f2a12e",
     "first_match_run": 39188841243,
-    "timing_mode": "exact_schedule"
+    "timing_mode": "exact_schedule",
+    "current_match_run": 39190476308,
+    "phase_at_last_check": "r1-next-source-running",
+    "latest_verified_state": "value-loop-selfplay-two-rounds-20261019-01-state-000018.json",
+    "last_check_jst": "2026-10-19T11:36:00+09:00"
   }
 }
