@@ -18,6 +18,7 @@ OUT=ROOT/'build/replay-cycle';REPO=transport.REPO;save=transport.save
 
 def publish_local_evidence(backend):
     import base64
+    import io
     meta=json.loads((ROOT/'research/experience-routes-20261019/local-evidence-transport.json').read_text())
     raw=bytearray()
     for expected,part in enumerate(meta['parts']):
@@ -27,6 +28,15 @@ def publish_local_evidence(backend):
         if len(chunk)!=part['bytes'] or sha256(chunk)!=part['sha256']:raise ValueError('transport part bytes differ')
         raw.extend(chunk)
     if len(raw)!=meta['bytes'] or sha256(raw)!=meta['sha256']:raise ValueError('transport package differs')
+    def no_pv(value):
+        if isinstance(value,dict):
+            if 'pv' in value:raise ValueError('diagnostic PV must not enter permanent evidence')
+            for item in value.values():no_pv(item)
+        elif isinstance(value,list):
+            for item in value:no_pv(item)
+    with tarfile.open(fileobj=io.BytesIO(raw)) as tar:
+        for member in tar.getmembers():
+            if member.isfile() and member.name.endswith('.json'):no_pv(json.load(tar.extractfile(member)))
     package=OUT/('replay-routes-local-evidence-'+str(backend.run_id)+'.tgz');package.write_bytes(raw)
     pub=backend.upload(package);source=backend.unpack(pub)
     generation=json.loads((source/'generation/report.json').read_text())

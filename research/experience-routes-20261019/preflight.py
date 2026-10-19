@@ -14,7 +14,9 @@ def probe(binary,knowledge,case,modes=(),depth=None,extra=None,ms=200):
     try:
         if extra:
             for name,value in extra.items():e.send('setoption name '+name+' value '+str(value).lower())
-        return e.search(case['start_sfen'],tuple(case['history_moves']),ms,depth,include_telemetry=True)
+        result=e.search(case['start_sfen'],tuple(case['history_moves']),ms,depth,include_telemetry=True)
+        result['played_telemetry'].pop('pv',None)
+        return result
     finally:e.close()
 
 def run(binary,parent,knowledge,research,output,source):

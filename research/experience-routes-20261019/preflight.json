@@ -32,11 +32,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": -47,
           "phase_version": 1,
-          "pv": [
-            "2f2e",
-            "8f7f",
-            "2e2d"
-          ],
           "qcutoffs": 39604,
           "qnodes": 56559,
           "qtt_cutoffs": 0,
@@ -98,11 +93,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": -47,
           "phase_version": 1,
-          "pv": [
-            "2f2e",
-            "8f7f",
-            "2e2d"
-          ],
           "qcutoffs": 37543,
           "qnodes": 53987,
           "qtt_cutoffs": 0,
@@ -165,12 +155,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": 1135,
           "phase_version": 1,
-          "pv": [
-            "2f2g+",
-            "1g2g",
-            "3d3e",
-            "3f3e"
-          ],
           "qcutoffs": 35484,
           "qnodes": 45884,
           "qtt_cutoffs": 0,
@@ -232,12 +216,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": 1135,
           "phase_version": 1,
-          "pv": [
-            "2f2g+",
-            "1g2g",
-            "3d3e",
-            "3f3e"
-          ],
           "qcutoffs": 41686,
           "qnodes": 53135,
           "qtt_cutoffs": 0,
@@ -300,10 +278,6 @@
           "phase_stage": "middle",
           "phase_static_cp_black": -1164,
           "phase_version": 1,
-          "pv": [
-            "S*8h",
-            "7i2d"
-          ],
           "qcutoffs": 29531,
           "qnodes": 37752,
           "qtt_cutoffs": 0,
@@ -365,10 +339,6 @@
           "phase_stage": "middle",
           "phase_static_cp_black": -1164,
           "phase_version": 1,
-          "pv": [
-            "S*8h",
-            "7i2d"
-          ],
           "qcutoffs": 30956,
           "qnodes": 39487,
           "qtt_cutoffs": 0,
@@ -431,9 +401,6 @@
           "phase_stage": "middle",
           "phase_static_cp_black": -190,
           "phase_version": 1,
-          "pv": [
-            "7e7f"
-          ],
           "qcutoffs": 37295,
           "qnodes": 50461,
           "qtt_cutoffs": 0,
@@ -495,9 +462,6 @@
           "phase_stage": "middle",
           "phase_static_cp_black": -190,
           "phase_version": 1,
-          "pv": [
-            "7e7f"
-          ],
           "qcutoffs": 39775,
           "qnodes": 53899,
           "qtt_cutoffs": 0,
@@ -560,10 +524,6 @@
           "phase_stage": "end",
           "phase_static_cp_black": -1922,
           "phase_version": 1,
-          "pv": [
-            "G*8c",
-            "7c6d"
-          ],
           "qcutoffs": 23293,
           "qnodes": 34504,
           "qtt_cutoffs": 0,
@@ -625,10 +585,6 @@
           "phase_stage": "end",
           "phase_static_cp_black": -1922,
           "phase_version": 1,
-          "pv": [
-            "G*8c",
-            "7c6d"
-          ],
           "qcutoffs": 26781,
           "qnodes": 38529,
           "qtt_cutoffs": 0,
@@ -691,11 +647,6 @@
           "phase_stage": "end",
           "phase_static_cp_black": -1269,
           "phase_version": 1,
-          "pv": [
-            "P*8h",
-            "G*8c",
-            "7c6d"
-          ],
           "qcutoffs": 23652,
           "qnodes": 29429,
           "qtt_cutoffs": 0,
@@ -757,11 +708,6 @@
           "phase_stage": "end",
           "phase_static_cp_black": -1269,
           "phase_version": 1,
-          "pv": [
-            "P*8h",
-            "G*8c",
-            "7c6d"
-          ],
           "qcutoffs": 25719,
           "qnodes": 32516,
           "qtt_cutoffs": 0,
@@ -824,10 +770,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": -245,
           "phase_version": 1,
-          "pv": [
-            "8h7i",
-            "7e8f"
-          ],
           "qcutoffs": 45887,
           "qnodes": 59958,
           "qtt_cutoffs": 0,
@@ -889,10 +831,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": -245,
           "phase_version": 1,
-          "pv": [
-            "8h7i",
-            "7e8f"
-          ],
           "qcutoffs": 52772,
           "qnodes": 69047,
           "qtt_cutoffs": 0,
@@ -955,11 +893,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": 716,
           "phase_version": 1,
-          "pv": [
-            "P*2g",
-            "2h2g",
-            "P*2f"
-          ],
           "qcutoffs": 44154,
           "qnodes": 59511,
           "qtt_cutoffs": 0,
@@ -1021,11 +954,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": 716,
           "phase_version": 1,
-          "pv": [
-            "P*2g",
-            "2h2g",
-            "P*2f"
-          ],
           "qcutoffs": 48246,
           "qnodes": 64847,
           "qtt_cutoffs": 0,
@@ -1088,10 +1016,6 @@
           "phase_stage": "middle",
           "phase_static_cp_black": -1400,
           "phase_version": 1,
-          "pv": [
-            "L*9e",
-            "P*9d"
-          ],
           "qcutoffs": 38603,
           "qnodes": 42565,
           "qtt_cutoffs": 0,
@@ -1153,10 +1077,6 @@
           "phase_stage": "middle",
           "phase_static_cp_black": -1400,
           "phase_version": 1,
-          "pv": [
-            "L*9e",
-            "P*9d"
-          ],
           "qcutoffs": 40023,
           "qnodes": 44227,
           "qtt_cutoffs": 0,
@@ -1219,13 +1139,6 @@
           "phase_stage": "middle",
           "phase_static_cp_black": -296,
           "phase_version": 1,
-          "pv": [
-            "R*4h",
-            "B*5h",
-            "4h2h+",
-            "8b8a+",
-            "3f3g+"
-          ],
           "qcutoffs": 42148,
           "qnodes": 57146,
           "qtt_cutoffs": 0,
@@ -1287,16 +1200,6 @@
           "phase_stage": "middle",
           "phase_static_cp_black": -296,
           "phase_version": 1,
-          "pv": [
-            "R*4h",
-            "6h7i",
-            "4h2h+",
-            "8b8a+",
-            "2h2i",
-            "S*6i",
-            "3f3g+",
-            "7a8b+"
-          ],
           "qcutoffs": 42574,
           "qnodes": 57723,
           "qtt_cutoffs": 0,
@@ -1359,11 +1262,6 @@
           "phase_stage": "end",
           "phase_static_cp_black": -288,
           "phase_version": 1,
-          "pv": [
-            "8i8d",
-            "1h1i",
-            "7d8c+"
-          ],
           "qcutoffs": 28951,
           "qnodes": 34859,
           "qtt_cutoffs": 0,
@@ -1425,11 +1323,6 @@
           "phase_stage": "end",
           "phase_static_cp_black": -288,
           "phase_version": 1,
-          "pv": [
-            "8i8d",
-            "1h1i",
-            "7d8c+"
-          ],
           "qcutoffs": 26495,
           "qnodes": 31892,
           "qtt_cutoffs": 0,
@@ -1492,12 +1385,6 @@
           "phase_stage": "end",
           "phase_static_cp_black": 1452,
           "phase_version": 1,
-          "pv": [
-            "S*1h",
-            "9a7a",
-            "9f9g+",
-            "5d5c+"
-          ],
           "qcutoffs": 26435,
           "qnodes": 34538,
           "qtt_cutoffs": 0,
@@ -1559,12 +1446,6 @@
           "phase_stage": "end",
           "phase_static_cp_black": 1452,
           "phase_version": 1,
-          "pv": [
-            "S*1h",
-            "9a7a",
-            "9f9g+",
-            "5d5c+"
-          ],
           "qcutoffs": 29247,
           "qnodes": 38165,
           "qtt_cutoffs": 0,
@@ -1627,16 +1508,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": -538,
           "phase_version": 1,
-          "pv": [
-            "7i2d",
-            "P*2g",
-            "2h2g",
-            "8f8h+",
-            "2d3c+",
-            "2a3c",
-            "2g2b+",
-            "8h9h"
-          ],
           "qcutoffs": 40171,
           "qnodes": 53598,
           "qtt_cutoffs": 0,
@@ -1698,16 +1569,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": -538,
           "phase_version": 1,
-          "pv": [
-            "7i2d",
-            "P*2g",
-            "2h2g",
-            "8f8h+",
-            "2d3c+",
-            "2a3c",
-            "2g2b+",
-            "8h9h"
-          ],
           "qcutoffs": 38274,
           "qnodes": 51329,
           "qtt_cutoffs": 0,
@@ -1770,13 +1631,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": 99,
           "phase_version": 1,
-          "pv": [
-            "P*2d",
-            "2e2i",
-            "8e8f",
-            "8g8f",
-            "8b8f"
-          ],
           "qcutoffs": 39259,
           "qnodes": 55600,
           "qtt_cutoffs": 0,
@@ -1838,13 +1692,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": 99,
           "phase_version": 1,
-          "pv": [
-            "P*2d",
-            "2e2i",
-            "8e8f",
-            "8g8f",
-            "8b8f"
-          ],
           "qcutoffs": 46277,
           "qnodes": 64605,
           "qtt_cutoffs": 0,
@@ -1907,10 +1754,6 @@
           "phase_stage": "middle",
           "phase_static_cp_black": -575,
           "phase_version": 1,
-          "pv": [
-            "9d9c+",
-            "8c9c"
-          ],
           "qcutoffs": 43007,
           "qnodes": 48152,
           "qtt_cutoffs": 0,
@@ -1972,10 +1815,6 @@
           "phase_stage": "middle",
           "phase_static_cp_black": -575,
           "phase_version": 1,
-          "pv": [
-            "9d9c+",
-            "8c9c"
-          ],
           "qcutoffs": 44126,
           "qnodes": 49412,
           "qtt_cutoffs": 0,
@@ -2038,13 +1877,6 @@
           "phase_stage": "middle",
           "phase_static_cp_black": 747,
           "phase_version": 1,
-          "pv": [
-            "B*5g",
-            "6i6h",
-            "5g6f+",
-            "2c3b+",
-            "2a1b"
-          ],
           "qcutoffs": 25027,
           "qnodes": 33866,
           "qtt_cutoffs": 0,
@@ -2106,13 +1938,6 @@
           "phase_stage": "middle",
           "phase_static_cp_black": 747,
           "phase_version": 1,
-          "pv": [
-            "B*5g",
-            "6i6h",
-            "5g6f+",
-            "2c3b+",
-            "2a1b"
-          ],
           "qcutoffs": 27577,
           "qnodes": 37167,
           "qtt_cutoffs": 0,
@@ -2175,10 +2000,6 @@
           "phase_stage": "end",
           "phase_static_cp_black": -526,
           "phase_version": 1,
-          "pv": [
-            "L*2i",
-            "2g3f"
-          ],
           "qcutoffs": 33817,
           "qnodes": 45577,
           "qtt_cutoffs": 0,
@@ -2240,10 +2061,6 @@
           "phase_stage": "end",
           "phase_static_cp_black": -526,
           "phase_version": 1,
-          "pv": [
-            "L*2i",
-            "2g3f"
-          ],
           "qcutoffs": 31072,
           "qnodes": 42092,
           "qtt_cutoffs": 0,
@@ -2306,10 +2123,6 @@
           "phase_stage": "end",
           "phase_static_cp_black": -106,
           "phase_version": 1,
-          "pv": [
-            "4b6b",
-            "L*2i"
-          ],
           "qcutoffs": 26655,
           "qnodes": 36869,
           "qtt_cutoffs": 0,
@@ -2371,10 +2184,6 @@
           "phase_stage": "end",
           "phase_static_cp_black": -106,
           "phase_version": 1,
-          "pv": [
-            "4b6b",
-            "L*2i"
-          ],
           "qcutoffs": 30166,
           "qnodes": 41344,
           "qtt_cutoffs": 0,
@@ -2437,11 +2246,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": -33,
           "phase_version": 1,
-          "pv": [
-            "P*8h",
-            "8f7f",
-            "7h8g"
-          ],
           "qcutoffs": 43250,
           "qnodes": 61666,
           "qtt_cutoffs": 0,
@@ -2503,11 +2307,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": -33,
           "phase_version": 1,
-          "pv": [
-            "P*8h",
-            "8f7f",
-            "7h8g"
-          ],
           "qcutoffs": 48724,
           "qnodes": 69767,
           "qtt_cutoffs": 0,
@@ -2570,13 +2369,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": 284,
           "phase_version": 1,
-          "pv": [
-            "P*1c",
-            "1d1c+",
-            "1b1c",
-            "1h1c+",
-            "2a1c"
-          ],
           "qcutoffs": 37961,
           "qnodes": 57317,
           "qtt_cutoffs": 0,
@@ -2638,13 +2430,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": 284,
           "phase_version": 1,
-          "pv": [
-            "P*1c",
-            "1d1c+",
-            "1b1c",
-            "1h1c+",
-            "2a1c"
-          ],
           "qcutoffs": 37806,
           "qnodes": 57370,
           "qtt_cutoffs": 0,
@@ -2707,10 +2492,6 @@
           "phase_stage": "middle",
           "phase_static_cp_black": -534,
           "phase_version": 1,
-          "pv": [
-            "3i2h",
-            "6i8i+"
-          ],
           "qcutoffs": 27505,
           "qnodes": 40518,
           "qtt_cutoffs": 0,
@@ -2772,10 +2553,6 @@
           "phase_stage": "middle",
           "phase_static_cp_black": -534,
           "phase_version": 1,
-          "pv": [
-            "3i2h",
-            "6i8i+"
-          ],
           "qcutoffs": 27256,
           "qnodes": 40522,
           "qtt_cutoffs": 0,
@@ -2838,11 +2615,6 @@
           "phase_stage": "middle",
           "phase_static_cp_black": -119,
           "phase_version": 1,
-          "pv": [
-            "6e7g+",
-            "6h5h",
-            "7g8g"
-          ],
           "qcutoffs": 23153,
           "qnodes": 27549,
           "qtt_cutoffs": 0,
@@ -2904,11 +2676,6 @@
           "phase_stage": "middle",
           "phase_static_cp_black": -119,
           "phase_version": 1,
-          "pv": [
-            "6e7g+",
-            "6h5h",
-            "7g8g"
-          ],
           "qcutoffs": 18321,
           "qnodes": 22405,
           "qtt_cutoffs": 0,
@@ -2971,13 +2738,6 @@
           "phase_stage": "end",
           "phase_static_cp_black": 1414,
           "phase_version": 1,
-          "pv": [
-            "4c7f",
-            "3d3h+",
-            "4g3h",
-            "6g5g",
-            "9g8h"
-          ],
           "qcutoffs": 23220,
           "qnodes": 35090,
           "qtt_cutoffs": 0,
@@ -3039,13 +2799,6 @@
           "phase_stage": "end",
           "phase_static_cp_black": 1414,
           "phase_version": 1,
-          "pv": [
-            "4c7f",
-            "3d3h+",
-            "4g3h",
-            "6g5g",
-            "9g8h"
-          ],
           "qcutoffs": 21636,
           "qnodes": 30265,
           "qtt_cutoffs": 0,
@@ -3108,10 +2861,6 @@
           "phase_stage": "end",
           "phase_static_cp_black": 233,
           "phase_version": 1,
-          "pv": [
-            "2c3d",
-            "9c9b+"
-          ],
           "qcutoffs": 26979,
           "qnodes": 33373,
           "qtt_cutoffs": 0,
@@ -3173,10 +2922,6 @@
           "phase_stage": "end",
           "phase_static_cp_black": 233,
           "phase_version": 1,
-          "pv": [
-            "2c3d",
-            "9c9b+"
-          ],
           "qcutoffs": 24387,
           "qnodes": 30268,
           "qtt_cutoffs": 0,
@@ -3362,12 +3107,6 @@
           "phase_stage": "middle",
           "phase_static_cp_black": -190,
           "phase_version": 1,
-          "pv": [
-            "P*5f",
-            "5g5f",
-            "1c7i+",
-            "1f1e"
-          ],
           "qcutoffs": 187073,
           "qnodes": 277859,
           "qtt_cutoffs": 0,
@@ -3436,16 +3175,6 @@
           "phase_stage": "end",
           "phase_static_cp_black": -1922,
           "phase_version": 1,
-          "pv": [
-            "B*5e",
-            "7c6b",
-            "G*5b",
-            "7d5b",
-            "4b5b",
-            "6b5b",
-            "5e8h",
-            "1i1h+"
-          ],
           "qcutoffs": 160550,
           "qnodes": 217770,
           "qtt_cutoffs": 0,
@@ -3514,12 +3243,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": -245,
           "phase_version": 1,
-          "pv": [
-            "8f8e",
-            "P*8g",
-            "8h9g",
-            "8g8h+"
-          ],
           "qcutoffs": 273179,
           "qnodes": 354456,
           "qtt_cutoffs": 0,
@@ -3588,12 +3311,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": -33,
           "phase_version": 1,
-          "pv": [
-            "4e4d",
-            "4c4d",
-            "6f4d",
-            "8f7f"
-          ],
           "qcutoffs": 201416,
           "qnodes": 288388,
           "qtt_cutoffs": 0,
@@ -3662,11 +3379,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": 284,
           "phase_version": 1,
-          "pv": [
-            "6c6d",
-            "8g8f",
-            "6b6c"
-          ],
           "qcutoffs": 196099,
           "qnodes": 323888,
           "qtt_cutoffs": 0,
@@ -3776,13 +3488,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": -81,
           "phase_version": 1,
-          "pv": [
-            "9a9b",
-            "7g7f",
-            "3c3d",
-            "9i9h",
-            "1a1b"
-          ],
           "qcutoffs": 37346,
           "qnodes": 49906,
           "qtt_cutoffs": 0,
@@ -3892,13 +3597,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": 38,
           "phase_version": 1,
-          "pv": [
-            "7a6b",
-            "5i5h",
-            "3c3d",
-            "8h2b+",
-            "3a2b"
-          ],
           "qcutoffs": 26651,
           "qnodes": 40162,
           "qtt_cutoffs": 0,
@@ -4008,12 +3706,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": 9,
           "phase_version": 1,
-          "pv": [
-            "3a3b",
-            "7g7f",
-            "2b8h+",
-            "7i8h"
-          ],
           "qcutoffs": 27475,
           "qnodes": 37773,
           "qtt_cutoffs": 0,
@@ -4123,14 +3815,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": -5,
           "phase_version": 1,
-          "pv": [
-            "4a4b",
-            "1i1h",
-            "9a9b",
-            "9i9h",
-            "2b8h+",
-            "7i8h"
-          ],
           "qcutoffs": 21639,
           "qnodes": 32539,
           "qtt_cutoffs": 0,
@@ -4240,12 +3924,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": 27,
           "phase_version": 1,
-          "pv": [
-            "2b3c",
-            "3i4h",
-            "3a3b",
-            "1g1f"
-          ],
           "qcutoffs": 35975,
           "qnodes": 48393,
           "qtt_cutoffs": 0,
@@ -4355,12 +4033,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": -35,
           "phase_version": 1,
-          "pv": [
-            "3c3d",
-            "1i1h",
-            "2b3c",
-            "9i9h"
-          ],
           "qcutoffs": 26053,
           "qnodes": 36810,
           "qtt_cutoffs": 0,
@@ -4470,14 +4142,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": 152,
           "phase_version": 1,
-          "pv": [
-            "9a9b",
-            "8h7g",
-            "5a5b",
-            "7i7h",
-            "2b7g+",
-            "6h7g"
-          ],
           "qcutoffs": 24777,
           "qnodes": 34094,
           "qtt_cutoffs": 0,
@@ -4590,13 +4254,6 @@
           "phase_stage": "opening",
           "phase_static_cp_black": -183,
           "phase_version": 1,
-          "pv": [
-            "6i7i",
-            "3a3b",
-            "3i4h",
-            "4a4b",
-            "7g7f"
-          ],
           "qcutoffs": 29585,
           "qnodes": 43011,
           "qtt_cutoffs": 0,
