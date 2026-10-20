@@ -1,0 +1,155 @@
+{
+  "cycle_id": "sixhour-strength-20261020-01",
+  "purpose": "bounded_strength_research",
+  "max_generations": 4,
+  "max_new_games": 1600,
+  "source_games": 100,
+  "generate_initial_source": true,
+  "candidate_kind": "evaluation",
+  "runner_capacity": 20,
+  "parent": {
+    "engine_ref": "4448f40400a893feb3b4d79237111008026547da",
+    "knowledge_sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c",
+    "parameters_sha256": "f93a21e2aeb7f4dbdfd3d49101cadd556ff68ff7a3ea81d5e4544746c730a591"
+  },
+  "parent_options": {
+    "EvalSafety": 480,
+    "EvalPressure": 380,
+    "EvalActivity": 410,
+    "EvalDanger": 150,
+    "EvalInfluence": 140,
+    "EvalPotential": 210,
+    "EvalCoordination": 340,
+    "EvalHandPotential": 60,
+    "EvalThreat": 20
+  },
+  "learning_policy": {
+    "epochs": 100,
+    "learning_rate": 0.02,
+    "max_fraction": 0.05,
+    "pair_temperature": 150,
+    "reward_temperature": 600,
+    "reward_weight": 0.1,
+    "regularization": 0.1,
+    "min_groups": [
+      8,
+      4,
+      4
+    ],
+    "min_pairs": 32
+  },
+  "live_policy": {
+    "fixed_depth": 2,
+    "fixed_timeout_ms": 5000,
+    "probe_ms": 200,
+    "speed_cases": 16,
+    "min_depth_ratio": 0.9,
+    "tactical_cases": 12,
+    "heldout_limit": 96,
+    "trials": 1
+  },
+  "knowledge_policy": {
+    "schema": "postgame-knowledge-policy-v1",
+    "max_tasks": 8,
+    "parent_probe_ms": 200,
+    "parent_repeats": 2,
+    "fixed_depth": 2,
+    "fixed_timeout_ms": 5000,
+    "tactical_controls": 12,
+    "min_depth_ratio": 0.9
+  },
+  "followup_policy": {
+    "schema": "postgame-followup-policy-v1",
+    "max_tasks": 8,
+    "root_ms": [
+      50,
+      500
+    ],
+    "repeats": 2,
+    "child_ms": 500,
+    "fixed_timeout_ms": 5000,
+    "max_fixed_depth": 4,
+    "mate_ms": 1000,
+    "attempts_per_parent_task": 1
+  },
+  "progress_policy": {
+    "schema": "postgame-progress-policy-v1",
+    "max_stagnant_preparations": 3
+  },
+  "seeds": [
+    {
+      "source": 830010020,
+      "screen": 840010020,
+      "confirm": 850010020
+    },
+    {
+      "source": 860010020,
+      "screen": 870010020,
+      "confirm": 880010020
+    },
+    {
+      "source": 890010020,
+      "screen": 900010020,
+      "confirm": 910010020
+    },
+    {
+      "source": 920010020,
+      "screen": 930010020,
+      "confirm": 940010020
+    }
+  ],
+  "reference_publications": [
+    {
+      "name": "selfplay-audit-38947455452.tgz",
+      "sha256": "ad2e3b2413f0ba2bff553cc2a38089b8d36a5cc752b0f1068a2317643d7d5b03",
+      "bytes": 6032950,
+      "release": "records-2026-10-01"
+    },
+    {
+      "name": "selfplay-audit-38947742788.tgz",
+      "sha256": "a680b884e1b17abb6231a39457c718d73b9f56448adfd9216efde9b060a0ec3b",
+      "bytes": 5983542,
+      "release": "records-2026-10-01"
+    },
+    {
+      "name": "selfplay-audit-38948491634.tgz",
+      "sha256": "bbebce04baea7a1aeafb96f709f7f2772b91eccaa507b9a58821c7a1fd683965",
+      "bytes": 5992255,
+      "release": "records-2026-10-01"
+    },
+    {
+      "name": "selfplay-audit-38950067410.tgz",
+      "sha256": "ad8e1ce5f873ebe34107ef45d9ebe48b6e95bcd250f7df6279eca015c38ec87f",
+      "bytes": 6716687,
+      "release": "records-2026-10-01"
+    },
+    {
+      "name": "selfplay-source-38853046638.tgz",
+      "sha256": "8069ececf0ce979768e0c093165b2b83dc7b9371aa7d237fb20e8cdf148cc740",
+      "bytes": 12380711,
+      "release": "records-2026-10-01"
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "postgame-screen-39005539549.tgz",
+      "sha256": "d7571d8dd991e1d05963a512310d7622d20c26308c6086d894cb86c42bf19665",
+      "bytes": 6001373
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "postgame-screen-39006231582.tgz",
+      "sha256": "000899f29ce3b538e5325330396adf56310476c4fa885a3328b4b83912a30ea9",
+      "bytes": 6688120
+    },
+    {
+      "release": "records-2026-10-01",
+      "name": "postgame-source-bridge-39014782775-a1.tgz",
+      "sha256": "ce65ed25b167ca052f74f95e6a98d1f60d517cbd2bf6f1206fd4a47b0ff5a974",
+      "bytes": 5224606
+    }
+  ],
+  "controller_sha256": "75128f30d864d1507171ae466edd46c931df87c8babb3829523e20e2fac8c026",
+  "algorithm_sha256": "f3e613ad14ab954434ddb9dbd49fca9338377e145a52a5ffa84f13d0252063c7",
+  "formal_adoption": false,
+  "strength_measurement": true
+}
