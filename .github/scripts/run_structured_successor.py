@@ -93,6 +93,7 @@ def prepare_and_launch():
                                dest, transport.BASE, PARENT)
     if not model.get("eligible"):
         raise ValueError("candidate failed its own learning suitability gate")
+    STUDY.mkdir(parents=True, exist_ok=False)
     for name in ("model.json", "EXECUTION.json", "parent-options.json",
                  "prior-publications.json"):
         shutil.copyfile(dest / name, STUDY / name)
