@@ -17,6 +17,7 @@ from tools.research.postgame_cases import load_archive,sha256
 from tools.research.train_structured_value import train,PARENT
 from structured_execution import validate_execution,comparison_request
 REPO=transport.REPO;OUT=ROOT/'build/structured-cycle';save=transport.save
+STUDY=ROOT/('research/structured-successor-20261020' if os.environ.get('CYCLE_ID')=='structured-value-20261020-g2' else 'research/structured-eval-20261019')
 SOURCE=dict(release='records-2026-10-01',name='selfplay-value-next-generation-39120804144.tgz',
     sha256='2bd392425a066c3a1bc88878c21d952c0acf1284638e52918fe89bb7173a760c',bytes=7408409)
 EXTRA_SOURCE=dict(release='records-2026-10-01',name='value-loop-selfplay-two-rounds-20261019-01-r1-next-source.tgz',
@@ -45,7 +46,7 @@ def launch():
     if request==dict(enabled=False):return
     if set(request)!={'candidate_ref','request_id'} or len(request['candidate_ref'])!=40:
         raise ValueError('explicit frozen request required')
-    execution=json.loads((ROOT/'research/structured-eval-20261019/EXECUTION.json').read_text())
+    execution=json.loads((STUDY/'EXECUTION.json').read_text())
     if execution['cycle_id']!=request['request_id']:
         raise ValueError('cycle ID changed without freezing a new execution plan')
     runs=api(f'repos/{REPO}/actions/workflows/postgame-spiral.yml/runs?event=workflow_dispatch&per_page=100')['workflow_runs']
@@ -74,7 +75,7 @@ def compare(backend,ref,scale,games,seed,label,prior,parent,own=False):
     print('STRUCTURED_MATCH '+json.dumps(dict(label=label,run_id=run,request=request)),flush=True)
     wait_body(run);source=transport.restore(run,folder)
     actual,report=transport.audit(source,request,run,prior,require_order_usage=False)
-    model_sha=sha256((ROOT/'research/structured-eval-20261019/model.json').read_bytes())
+    model_sha=sha256((STUDY/'model.json').read_bytes())
     for side in ('a','b') if own else ('a',):
         if model_sha.encode() not in (source/'binaries/build'/('engine-'+side)).read_bytes():
             raise ValueError('actual binary does not contain the frozen learned model identity')
@@ -102,9 +103,9 @@ def main():
             or subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()!=ref):
         raise ValueError('repository, attempt or frozen checkout differs')
     OUT.mkdir(parents=True,exist_ok=False);backend=Backend(REPO,OUT/'transport')
-    model_path=ROOT/'research/structured-eval-20261019/model.json';model=json.loads(model_path.read_text())
-    checks=json.loads((ROOT/'research/structured-eval-20261019/preflight.json').read_text())
-    execution=json.loads((ROOT/'research/structured-eval-20261019/EXECUTION.json').read_text())
+    model_path=STUDY/'model.json';model=json.loads(model_path.read_text())
+    checks=json.loads((STUDY/'preflight.json').read_text())
+    execution=json.loads((STUDY/'EXECUTION.json').read_text())
     comparison_parent,seeds=validate_execution(execution,model,transport.BASE,PARENT)
     if execution['cycle_id']!=os.environ['CYCLE_ID']:raise ValueError('controller cycle does not match frozen plan')
     if not(model['features']==4893 and model['eligible'] and checks['disabled_exact'] and checks['integer_evaluation_exact']):
@@ -114,7 +115,7 @@ def main():
     prior={transport.signature(g) for g in games}
     # Previously completed ordinary comparisons remain used evaluation, not a
     # fresh independent confirmation. Include all stored played trajectories.
-    for receipt in json.loads((ROOT/'research/structured-eval-20261019/prior-publications.json').read_text()):
+    for receipt in json.loads((STUDY/'prior-publications.json').read_text()):
         prior.update(transport.signature(g) for g in load_archive(backend.unpack(receipt)))
     report=dict(schema='structured-value-cycle-v1',candidate_ref=ref,model_sha256=sha256(model_path.read_bytes()),
         parent_options=PARENT,comparison_parent=comparison_parent,execution=execution,
@@ -169,7 +170,7 @@ if __name__=='__main__':
             backend=Backend(REPO,OUT/'transport');package=OUT/('structured-value-result-'+str(backend.run_id)+'.tgz')
             with tarfile.open(package,'w:gz') as tar:
                 tar.add(OUT/'result.json',arcname='result.json',recursive=False)
-                for p in sorted((ROOT/'research/structured-eval-20261019').glob('*')):
+                for p in sorted(STUDY.glob('*')):
                     if p.is_file():tar.add(p,arcname='research/'+p.name,recursive=False)
                 for name in ('model.json','structured_value_weights.h','actual-positions.jsonl'):
                     p=OUT/'next-model'/name
