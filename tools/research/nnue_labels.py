@@ -8,6 +8,7 @@ archive. Every derived label retains its group and exact source hashes.
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 import sys
 
@@ -26,6 +27,31 @@ def verified_outcome(game):
         return 0
     a_won = game.row["winner"] == "A"
     return 1 if a_won == game.row["a_black"] else -1
+
+
+def source_is_owned_selfplay(directory, games):
+    # The normal arena calls the two own binaries build/engine-a and
+    # build/engine-b, not KUMOJI. Trust those names only together with a
+    # manifest proving the *same immutable source commit* was built on both
+    # sides and binary SHA256 values are recorded.
+    manifest = json.loads((Path(directory) / "manifest.json").read_text())
+    ref = manifest.get("requested_ref_a")
+    fixed_same_parent = (isinstance(ref, str) and
+                         re.fullmatch(r"[0-9a-f]{40}", ref) is not None and
+                         ref == manifest.get("requested_ref_b"))
+    for game in games:
+        a = str(game.metadata.get("engine_a", "")).lower()
+        b = str(game.metadata.get("engine_b", "")).lower()
+        direct_own = all(("kumoji" in name or "shogi-ai" in name)
+                         for name in (a, b))
+        built_own = (fixed_same_parent and
+                     a.endswith("engine-a") and b.endswith("engine-b") and
+                     all(re.fullmatch(r"[0-9a-f]{64}",
+                                      str(game.metadata.get("sha256_" + side, "")))
+                         for side in ("a", "b")))
+        if not (direct_own or built_own):
+            return False
+    return bool(games)
 
 
 def labels_from_games(games, per_game):
@@ -125,14 +151,12 @@ def labels_from_diagnosis(diagnosis, games_by_id):
 def convert(archives, diagnosis, per_game):
     if not 1 <= per_game <= 16:
         raise ValueError("per-game cap must be 1..16")
-    games = [game for archive in archives for game in load_archive(archive)]
-    for game in games:
-        # Win/loss labels from an external opponent are NOT self-play. Require
-        # both actors to be recognisable own KUMOJI / shogi-ai executables.
-        for side in ("a", "b"):
-            name = str(game.metadata.get("engine_" + side, "")).lower()
-            if not ("kumoji" in name or "shogi-ai" in name):
-                raise ValueError("not a proven all-KUMOJI self-play archive")
+    games = []
+    for directory in archives:
+        verified = load_archive(directory)
+        if not source_is_owned_selfplay(directory, verified):
+            raise ValueError("not a proven all-KUMOJI self-play archive")
+        games.extend(verified)
     ids = {g.row["game_id"]: g for g in games}
     if len(ids) != len(games):
         raise ValueError("repeated original game among archives")
