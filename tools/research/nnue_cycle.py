@@ -117,16 +117,24 @@ def verify_native(binary, model, sfen, expected_cp, knowledge, expected_position
 
 def execute(args):
     if not re.fullmatch(r"[0-9a-f]{40}", args.parent_commit):
-        raise ValueError("parent_commit must be immutable 40-hex source commit")
+        raise ValueError("comparison parent must be immutable 40-hex source commit")
+    if not re.fullmatch(r"[0-9a-f]{40}", args.research_commit):
+        raise ValueError("research_engine_commit must be immutable 40-hex checkout commit")
     out = args.output_dir
     out.mkdir(parents=True, exist_ok=True)
     input_record = {
         "schema": "nnue-generation-v1",
         "parent_commit": args.parent_commit,
+        "research_engine_commit": args.research_commit,
         "engine_sha256": sha(args.engine.read_bytes()),
         "knowledge_sha256": sha(args.knowledge.read_bytes()),
         "archives": sorted([
-            {"path": str(p.resolve()), "manifest_sha256": sha((p / "manifest.json").read_bytes())}
+            {
+                "path": str(p.resolve()),
+                "manifest_sha256": sha((p / "manifest.json").read_bytes()),
+                "source_parent_a": json.loads((p / "manifest.json").read_text()).get("requested_ref_a"),
+                "source_parent_b": json.loads((p / "manifest.json").read_text()).get("requested_ref_b"),
+            }
             for p in args.archive_dir
         ], key=lambda item: item["path"]),
         "study": {"max_cases": args.max_cases, "medium_ms": args.medium_ms,
@@ -173,7 +181,12 @@ def execute(args):
     final = dict(
         schema="nnue-generation-v1",
         state="research_candidate_ready_for_independent_evaluation",
-        parent_commit=args.parent_commit, source_plan_sha256=sha((out/"input-plan.json").read_bytes()),
+        parent_commit=args.parent_commit,
+        research_engine_commit=args.research_commit,
+        source_game_parent_commits=[
+            {"a": item["source_parent_a"], "b": item["source_parent_b"]}
+            for item in input_record["archives"]],
+        source_plan_sha256=sha((out/"input-plan.json").read_bytes()),
         analysis_checkpoint_sha256=sha(analysis_path.read_bytes()),
         study_completed=len(studied["results"]),
         focused_labels=meta["labels_by_origin"]["own_search"],
@@ -197,6 +210,8 @@ def main():
     p.add_argument("--knowledge", type=Path, required=True)
     p.add_argument("--output-dir", type=Path, required=True)
     p.add_argument("--parent-commit", required=True)
+    p.add_argument("--research-commit", required=True,
+                   help="exact checkout SHA used to build research analyst binary")
     p.add_argument("--max-cases", type=int, default=4)
     p.add_argument("--medium-ms", type=int, default=600000)
     p.add_argument("--long-ms", type=int, default=3000000)
