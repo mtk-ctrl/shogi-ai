@@ -18,6 +18,16 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def assert_arena_options(data, candidate, baseline):
+    # The standard arena explicitly adds RiskVerify=true when absent.
+    # Verify that exact documented default, rather than accidentally
+    # comparing an augmented live request to our pre-default dictionary.
+    for side, requested in (("options_a", candidate), ("options_b", baseline)):
+        expected = dict(requested, RiskVerify=True)
+        if data.get(side) != expected:
+            raise ValueError(f"{side} actual USI options differ from research plan")
+
+
 def execute(engine, model, knowledge, out, games=2, max_plies=160):
     if not 2 <= games <= 4 or not 80 <= max_plies <= 400:
         raise ValueError("smoke scope: two to four games, 80..400 plies")
@@ -51,8 +61,7 @@ def execute(engine, model, knowledge, out, games=2, max_plies=160):
         raise ValueError("match did not produce all trial games")
     if data.get("illegal_games") != 0:
         raise ValueError("candidate has illegal games")
-    if data["options_a"] != a or data["options_b"] != b:
-        raise ValueError("actual USI options differ from research plan")
+    assert_arena_options(data, a, b)
     for side in ("A", "B"):
         meta = data.get("position_knowledge", {}).get(side, {})
         if meta.get("available") is not True or meta.get("sha256") != sha(knowledge):
@@ -62,8 +71,21 @@ def execute(engine, model, knowledge, out, games=2, max_plies=160):
     if not model_turns or not any(m.get("search", {}).get("nodes", 0) > 0
                                   for m in model_turns):
         raise ValueError("candidate did not actually search moves")
+    candidate_static = [m.get("search", {}).get("phase_static_cp_black")
+                        for m in model_turns]
+    candidate_static = [v for v in candidate_static if type(v) is int]
+    baseline_static = [
+        m.get("search", {}).get("phase_static_cp_black")
+        for g in data["details"] for m in g.get("move_records", [])
+        if m["engine"] == "B"]
+    baseline_static = [v for v in baseline_static if type(v) is int]
     result = {
         "schema": "nnue-independent-game-smoke-v1",
+        "candidate_static_cp_span": (max(candidate_static)-min(candidate_static)
+                                     if candidate_static else None),
+        "baseline_static_cp_span": (max(baseline_static)-min(baseline_static)
+                                    if baseline_static else None),
+        "static_range_caveat": "different turns/boards; diagnostic hint, NOT paired position comparison",
         "purpose": "actual search and legal move smoke, not strength/adoption",
         "engine_sha256": sha(engine), "model_sha256": sha(model),
         "knowledge_sha256": sha(knowledge),
