@@ -28,6 +28,7 @@ if str(ROOT) not in sys.path:
 import shogi
 from tools.research.postgame_analyze import Analyzer, exact_cp
 from tools.research.postgame_cases import load_archive, make_case
+from tools.research.nnue_split import allocate_roots, position_identity
 
 
 def digest(blob):
@@ -42,11 +43,13 @@ def atomic_write(path, value):
     staging.replace(p)
 
 
-def choose(games, max_cases, per_game):
+def choose(games, max_cases, per_game, eligible_roots=None):
     if not (1 <= max_cases <= 96 and 1 <= per_game <= 4):
         raise ValueError("research case budget must meet bounded postgame scope")
     candidates = []
     for game in games:
+        if eligible_roots is not None and game.row["game_id"] not in eligible_roots:
+            continue
         # Unresolved endings may still have diagnostic interest, but are not
         # outcome teachers. Do not put them in this first complete-game study.
         if game.outcome_status == "unresolved" or len(game.moves) < 8:
@@ -66,10 +69,15 @@ def choose(games, max_cases, per_game):
     for group in buckets.values():
         group.sort()
     selected = []
+    seen_positions = set()
     for index in range(per_game):
         for gid in sorted(buckets):
             if index < len(buckets[gid]) and len(selected) < max_cases:
-                selected.append(buckets[gid][index][1])
+                candidate = buckets[gid][index][1]
+                key = candidate["position_key"]
+                if key not in seen_positions:
+                    selected.append(candidate)
+                    seen_positions.add(key)
     return selected
 
 
@@ -122,7 +130,7 @@ def analyze(binary, knowledge, case, short_ms, medium_ms, long_ms, branch_ms,
 
 def execute(archives, binary, knowledge, output, max_cases=4, per_game=4,
             short_ms=50, medium_ms=600000, long_ms=3000000,
-            branch_ms=600000, expected_positions=163):
+            branch_ms=600000, expected_positions=163, split_seed=20261021):
     if not (1 <= max_cases <= 96 and 1 <= per_game <= 4):
         raise ValueError("invalid selection")
     if not (1 <= short_ms <= medium_ms <= long_ms <= 86400000
@@ -142,8 +150,11 @@ def execute(archives, binary, knowledge, output, max_cases=4, per_game=4,
               "max_cases": max_cases, "per_game": per_game,
               "short_ms": short_ms, "medium_ms": medium_ms,
               "long_ms": long_ms, "branch_ms": branch_ms,
-              "expected_positions": expected_positions}
-    case_list = choose(games, max_cases, per_game)
+              "expected_positions": expected_positions,
+              "split_seed": split_seed, "split_rule": "root_sha256_train_only"}
+    train_roots = (allocate_roots((g.row["game_id"] for g in games), split_seed)["train"]
+                   if len(games) >= 3 else {g.row["game_id"] for g in games})
+    case_list = choose(games, max_cases, per_game, train_roots)
     if not case_list:
         raise ValueError("no eligible original cases")
     input_hash = digest(json.dumps(params, sort_keys=True).encode())
@@ -195,10 +206,12 @@ def main():
     ap.add_argument("--long-ms", type=int, default=3000000)
     ap.add_argument("--branch-ms", type=int, default=600000)
     ap.add_argument("--expected-positions", type=int, default=163)
+    ap.add_argument("--split-seed", type=int, default=20261021)
     args = ap.parse_args()
     execute(args.archive_dir, args.engine, args.knowledge, args.output,
             args.max_cases, args.per_game, args.short_ms,
-            args.medium_ms, args.long_ms, args.branch_ms, args.expected_positions)
+            args.medium_ms, args.long_ms, args.branch_ms, args.expected_positions,
+            args.split_seed)
 
 
 if __name__ == "__main__":
