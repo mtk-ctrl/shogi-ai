@@ -32,7 +32,7 @@ jobs:
           from pathlib import Path
           request=json.loads(Path("research/nnue-selfplay-20261021/REQUEST.json").read_text())
           if request!={"enabled":True,"mode":"single-case-short-integration",
-                       "source_asset":"postgame-source-bridge-39014782775-a1.tgz"}:
+                       "source_asset":"spiral-sixhour-strength-20261020-01-initial_source-eea4f91363b3b4be-39441941187-a1.tgz"}:
               raise SystemExit("unknown NNUE pilot request")
           PY
 
@@ -47,14 +47,14 @@ jobs:
         run: |
           mkdir -p source-download
           gh release download records-2026-10-01 \
-            --pattern 'postgame-source-bridge-39014782775-a1.tgz' \
+            --pattern 'spiral-sixhour-strength-20261020-01-initial_source-eea4f91363b3b4be-39441941187-a1.tgz' \
             --dir source-download
-          test -s source-download/postgame-source-bridge-39014782775-a1.tgz
+          test -s source-download/spiral-sixhour-strength-20261020-01-initial_source-eea4f91363b3b4be-39441941187-a1.tgz
 
       - name: Safe extraction and full history-terminal validation
         run: |
           python3 tools/research/nnue_release_source.py \
-            --bundle source-download/postgame-source-bridge-39014782775-a1.tgz \
+            --bundle source-download/spiral-sixhour-strength-20261020-01-initial_source-eea4f91363b3b4be-39441941187-a1.tgz \
             --output-dir source-restored \
             --receipt source-receipt.json
 
