@@ -70,9 +70,9 @@ def labels_from_diagnosis(diagnosis, games_by_id):
         if not game:
             raise ValueError("diagnosis references non-source game")
         ply = source["ply"]
-        if case != make_case(game, ply):
-            # The source case must match the originally verified record. Any
-            # postgame-enriched metadata is kept in result, not case.
+        original_case = make_case(game, ply)
+        if any(case.get(field) != original_case[field] for field in original_case):
+            # Selection can add triage metadata, but not change the original.
             raise ValueError("diagnosis case does not match verified game history")
         obs = result.get("root_deep", {})
         reason = None
@@ -124,6 +124,13 @@ def convert(archives, diagnosis, per_game):
     if not 1 <= per_game <= 16:
         raise ValueError("per-game cap must be 1..16")
     games = [game for archive in archives for game in load_archive(archive)]
+    for game in games:
+        # Win/loss labels from an external opponent are NOT self-play. Require
+        # both actors to be recognisable own KUMOJI / shogi-ai executables.
+        for side in ("a", "b"):
+            name = str(game.metadata.get("engine_" + side, "")).lower()
+            if not ("kumoji" in name or "shogi-ai" in name):
+                raise ValueError("not a proven all-KUMOJI self-play archive")
     ids = {g.row["game_id"]: g for g in games}
     if len(ids) != len(games):
         raise ValueError("repeated original game among archives")
