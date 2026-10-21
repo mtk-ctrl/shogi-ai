@@ -9,6 +9,8 @@ on:
       - "tools/research/train_nnue.py"
       - "tools/research/nnue_split.py"
       - "tests/test_nnue_split.py"
+      - "tools/research/nnue_match_smoke.py"
+      - "tests/test_nnue_match_smoke.py"
       - "tools/research/nnue_labels.py"
       - "tools/research/nnue_deep_study.py"
       - "tools/research/nnue_cycle.py"
@@ -86,6 +88,7 @@ jobs:
           mkdir -p build
           c++ -std=c++17 -Iengine tests/nnue_evaluator_test.cpp -o build/nnue-test
           ./build/nnue-test
+          python3 tests/test_nnue_match_smoke.py
           python3 tests/test_nnue_split.py
           python3 tests/test_nnue_labels.py
           python3 tests/test_nnue_study.py
