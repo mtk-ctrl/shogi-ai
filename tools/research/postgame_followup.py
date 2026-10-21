@@ -18,6 +18,8 @@ from tools.research.postgame_ranker import digest, require, parent_values
 
 POLICY_FOLLOWUP=dict(schema='postgame-followup-policy-v1',max_tasks=8,root_ms=[50,500],repeats=2,
                      child_ms=500,fixed_timeout_ms=5000,max_fixed_depth=4,mate_ms=1000,attempts_per_parent_task=1)
+SUPPORTED_KINDS=frozenset(('verify_mate_research','repeat_missing_observation','review_search_stability',
+                            'verify_same_depth','resolve_parent_instability','extend_own_analysis'))
 
 
 def tasks_from(preparation,diagnosis,parent,for_practice=False):
@@ -30,10 +32,10 @@ def tasks_from(preparation,diagnosis,parent,for_practice=False):
     rows={r['case']['case_id']:r for r in diagnosis};tasks=[]
     for task in progress['work_items']:
         if task['kind']=='validate_research_knowledge':continue
-        supported=task['kind'] in ('verify_mate_research','repeat_missing_observation','review_search_stability',
-                                  'verify_same_depth','resolve_parent_instability','extend_own_analysis')
+        supported=task['kind'] in SUPPORTED_KINDS
         if for_practice and not supported:continue  # Keep representation tasks in the original queue.
-        require(supported,'research task needs an unimplemented representation-specific executor; do not substitute more games')
+        # Unsupported kinds remain in the audited queue, but are not executed
+        # as a different kind of research.
         row=rows[task['case']['case_id']]
         require(task['split']=='train' and task['parent']==parent and task['case']==row['case']
                 and task['evidence']['row_sha256']==digest(row),'follow-up leaked split or changed evidence')
@@ -42,8 +44,7 @@ def tasks_from(preparation,diagnosis,parent,for_practice=False):
         replay(case)
         require(case.get('evidence_purpose')!='synthetic_fixture','synthetic fixture is not follow-up training research')
         tasks.append((copy.deepcopy(task),copy.deepcopy(row)))
-    require(len(tasks)<=(96 if for_practice else POLICY_FOLLOWUP['max_tasks']),
-            'follow-up budget exceeded; review rather than truncate')
+    require(len(tasks)<=96, 'follow-up queue exceeds selected-case budget')
     return sorted(tasks,key=lambda pair:(pair[0]['priority'],pair[0]['task_id']))
 
 
@@ -131,8 +132,15 @@ def mate_probe(binary,knowledge,count,params,case):
 
 def run(binary,knowledge,preparation,diagnosis,parent,output,completed_task_ids=()):
     tasks=tasks_from(preparation,diagnosis,parent)
-    skipped=[t['task_id'] for t,_ in tasks if t['task_id'] in completed_task_ids]
-    tasks=[(t,r) for t,r in tasks if t['task_id'] not in completed_task_ids]
+    all_tasks=tasks
+    completed=set(completed_task_ids)
+    require(len(completed)==len(tuple(completed_task_ids)), 'duplicate previously completed task')
+    require(completed <= {t['task_id'] for t,_ in all_tasks}, 'completed task not in audited current queue')
+    skipped=[t['task_id'] for t,_ in all_tasks if t['task_id'] in completed]
+    eligible=[(t,r) for t,r in all_tasks if t['task_id'] not in completed and t['kind'] in SUPPORTED_KINDS]
+    tasks=eligible[:POLICY_FOLLOWUP['max_tasks']]
+    deferred=[t['task_id'] for t,_ in eligible[POLICY_FOLLOWUP['max_tasks']:]]
+    unsupported=[t['task_id'] for t,_ in all_tasks if t['task_id'] not in completed and t['kind'] not in SUPPORTED_KINDS]
     params=preparation['learning']['parent_options'];binary=Path(binary);knowledge=Path(knowledge)
     require(sha256(binary.read_bytes())==preparation['progress']['analysis']['analyzer_binary_sha256'],
             'follow-up binary differs from original analyzer')
@@ -154,7 +162,9 @@ def run(binary,knowledge,preparation,diagnosis,parent,output,completed_task_ids=
         print('FOLLOWUP '+str(len(results))+'/'+str(len(tasks))+' '+observation['status'],flush=True)
     report=dict(schema='postgame-followup-v1',policy=POLICY_FOLLOWUP,parent=parent,
                 preparation_sha256=digest(preparation),diagnosis_sha256=digest(diagnosis),binary_sha256=sha256(binary.read_bytes()),
-                tasks=len(tasks),completed_task_ids=[r['task_id'] for r in results],previously_completed_task_ids=skipped,
+                tasks=len(tasks),total_queued_tasks=len(all_tasks),deferred_task_ids=deferred,
+                unsupported_task_ids=unsupported,
+                completed_task_ids=[r['task_id'] for r in results],previously_completed_task_ids=skipped,
                 results=results,diagnosis_updates=updates,
                 status_counts=dict(Counter(r['status'] for r in results)),search_probes=calls,
                 mate_probes=sum('mate_verification' in r for r in results),seconds=round(time.monotonic()-started,3),
@@ -173,6 +183,17 @@ def verify_saved(preparation,diagnosis,parent,report):
             and report['formal_adoption'] is False,'saved follow-up binary/adoption differs')
     require(report['tasks']==len(report['results']) and report['completed_task_ids']==[r['task_id'] for r in report['results']],
             'saved follow-up task counts differ')
+    ordered=list(tasks.values())
+    previous=set(report.get('previously_completed_task_ids',[]))
+    require(len(previous)==len(report.get('previously_completed_task_ids',[])) and previous <= set(tasks),
+            'previously completed task IDs are invalid')
+    eligible=[t['task_id'] for t,r in ordered if t['task_id'] not in previous and t['kind'] in SUPPORTED_KINDS]
+    unsupported=[t['task_id'] for t,r in ordered if t['task_id'] not in previous and t['kind'] not in SUPPORTED_KINDS]
+    require(report['completed_task_ids']==eligible[:POLICY_FOLLOWUP['max_tasks']]
+            and report.get('deferred_task_ids')==eligible[POLICY_FOLLOWUP['max_tasks']:]
+            and report.get('unsupported_task_ids')==unsupported
+            and report.get('total_queued_tasks')==len(tasks),
+            'saved follow-up selection/deferred queue differs')
     require(len(set(report['completed_task_ids']))==len(report['completed_task_ids']),'repeated follow-up task result')
     updates=[];calls=0
     for saved in report['results']:
@@ -204,6 +225,7 @@ def verify_saved(preparation,diagnosis,parent,report):
     require(report['status_counts']==dict(Counter(r['status'] for r in report['results']))
             and report['mate_probes']==sum('mate_verification' in r for r in report['results']),
             'saved follow-up status totals differ')
-    require(set(report['completed_task_ids'])|set(report.get('previously_completed_task_ids',[]))==set(tasks),
+    require(set(report['completed_task_ids'])|set(report.get('previously_completed_task_ids',[]))
+            |set(report.get('deferred_task_ids',[]))|set(report.get('unsupported_task_ids',[]))==set(tasks),
             'follow-up task was silently lost')
     return True
