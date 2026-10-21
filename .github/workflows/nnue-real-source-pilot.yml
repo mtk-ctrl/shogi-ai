@@ -18,22 +18,41 @@ concurrency:
 jobs:
   research:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 120
     steps:
       - name: Checkout fixed source
         uses: actions/checkout@v5
 
       - name: Validate request and workflow rules before study
+        id: plan
         run: |
           python3 scripts/check_match_workflows.py
           python3 scripts/check_workflow_inventory.py --strict
           python3 - <<'PY'
-          import json
+          import json,os
           from pathlib import Path
-          request=json.loads(Path("research/nnue-selfplay-20261021/REQUEST.json").read_text())
-          if request!={"enabled":True,"mode":"single-case-short-integration",
-                       "source_asset":"spiral-sixhour-strength-20261020-01-initial_source-eea4f91363b3b4be-39441941187-a1.tgz"}:
-              raise SystemExit("unknown NNUE pilot request")
+          r=json.loads(Path("research/nnue-selfplay-20261021/REQUEST.json").read_text())
+          keys={"enabled","mode","source_asset","max_cases","medium_ms","long_ms",
+                "branch_ms","hidden","epochs","smoke_games"}
+          if set(r)!=keys or r["enabled"] is not True or r["mode"] not in (
+              "short-integration","focused-study"):
+              raise SystemExit("unknown or disabled NNUE study request")
+          expected="spiral-sixhour-strength-20261020-01-initial_source-eea4f91363b3b4be-39441941187-a1.tgz"
+          if r["source_asset"]!=expected:
+              raise SystemExit("request changes frozen verified selfplay source")
+          for key,low,high in (("max_cases",1,4),("medium_ms",1000,600000),
+                                ("long_ms",2000,3000000),("branch_ms",1000,600000),
+                                ("hidden",16,256),("epochs",3,100),("smoke_games",2,4)):
+              if type(r[key]) is not int or not low<=r[key]<=high:
+                  raise SystemExit("invalid study budget: "+key)
+          if r["medium_ms"]>r["long_ms"]:
+              raise SystemExit("shorter long-study budget than medium")
+          maximum_ms=r["max_cases"]*(50+r["medium_ms"]+r["long_ms"]+2*r["branch_ms"])
+          if maximum_ms>100*60*1000:
+              raise SystemExit("study budget exceeds single-run bounded research allowance")
+          with open(os.environ["GITHUB_OUTPUT"],"a") as f:
+              for key in ("max_cases","medium_ms","long_ms","branch_ms","hidden","epochs","smoke_games"):
+                  print(f"{key}={r[key]}",file=f)
           PY
 
       - name: Build fixed-engine research candidate
@@ -58,7 +77,14 @@ jobs:
             --output-dir source-restored \
             --receipt source-receipt.json
 
-      - name: Run ONE short-source training cycle, never formal adoption
+      - name: Run bounded real-source training cycle, never formal adoption
+        env:
+          MAX_CASES: ${{ steps.plan.outputs.max_cases }}
+          MEDIUM_MS: ${{ steps.plan.outputs.medium_ms }}
+          LONG_MS: ${{ steps.plan.outputs.long_ms }}
+          BRANCH_MS: ${{ steps.plan.outputs.branch_ms }}
+          HIDDEN: ${{ steps.plan.outputs.hidden }}
+          EPOCHS: ${{ steps.plan.outputs.epochs }}
         run: |
           set -euo pipefail
           ARCHIVE_DIR=$(python3 -c "import json; print(json.load(open('source-receipt.json'))['archive_dir'])")
@@ -68,17 +94,28 @@ jobs:
             --knowledge position-knowledge-v1.tsv \
             --parent-commit c6a46a4ee6d77a46f087ba506e4920115c8a4366 \
             --output-dir research-results \
-            --max-cases 1 --medium-ms 1000 --long-ms 2000 \
-            --branch-ms 1000 --hidden 16 --epochs 3
+            --max-cases "$MAX_CASES" --medium-ms "$MEDIUM_MS" --long-ms "$LONG_MS" \
+            --branch-ms "$BRANCH_MS" --hidden "$HIDDEN" --epochs "$EPOCHS"
           python3 - <<'PY'
           import json
           from pathlib import Path
           result=json.loads(Path('research-results/status.json').read_text())
           assert result["state"]=="research_candidate_ready_for_independent_evaluation"
-          assert result["study_completed"]==1
+          assert result["study_completed"]>=1
           assert result["independent_matches"]=="not_run"
           assert result["formal_engine_adopted"] is False
           PY
+
+      - name: Two-to-four game NNUE vs baseline real move verification
+        env:
+          SMOKE_GAMES: ${{ steps.plan.outputs.smoke_games }}
+        run: |
+          python3 tools/research/nnue_match_smoke.py \
+            --engine build/shogi-ai \
+            --model research-results/candidate.nnue \
+            --knowledge position-knowledge-v1.tsv \
+            --out research-match-smoke \
+            --games "$SMOKE_GAMES" --max-plies 160
 
       - name: Preserve 30-day research artifact, not long-term knowledge
         if: always()
@@ -90,3 +127,4 @@ jobs:
           path: |
             source-receipt.json
             research-results/
+            research-match-smoke/
