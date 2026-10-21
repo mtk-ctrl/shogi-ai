@@ -48,6 +48,25 @@ def tasks_from(preparation,diagnosis,parent,for_practice=False):
     return sorted(tasks,key=lambda pair:(pair[0]['priority'],pair[0]['task_id']))
 
 
+def select_batch(all_tasks,completed_task_ids,limit=None):
+    """Deterministic cap; overflow and unsupported work remain explicitly recorded."""
+    limit=POLICY_FOLLOWUP['max_tasks'] if limit is None else limit
+    require(type(limit) is int and 1<=limit<=POLICY_FOLLOWUP['max_tasks'],
+            'per-batch cap must not exceed frozen policy')
+    previous=tuple(completed_task_ids)
+    completed=set(previous)
+    ids=[t['task_id'] for t,_ in all_tasks]
+    require(len(completed)==len(previous),'duplicate previously completed task')
+    require(len(ids)==len(set(ids)),'duplicate current research task')
+    require(completed <= set(ids),'completed task not in audited current queue')
+    skipped=[tid for tid in ids if tid in completed]
+    eligible=[(t,r) for t,r in all_tasks if t['task_id'] not in completed and t['kind'] in SUPPORTED_KINDS]
+    selected=eligible[:limit]
+    deferred=[t['task_id'] for t,r in eligible[limit:]]
+    unsupported=[t['task_id'] for t,r in all_tasks if t['task_id'] not in completed and t['kind'] not in SUPPORTED_KINDS]
+    return selected,skipped,deferred,unsupported
+
+
 def stable(results):
     return all(exact_cp(r) for r in results) and len({r['bestmove'] for r in results})==1
 
@@ -133,14 +152,7 @@ def mate_probe(binary,knowledge,count,params,case):
 def run(binary,knowledge,preparation,diagnosis,parent,output,completed_task_ids=()):
     tasks=tasks_from(preparation,diagnosis,parent)
     all_tasks=tasks
-    completed=set(completed_task_ids)
-    require(len(completed)==len(tuple(completed_task_ids)), 'duplicate previously completed task')
-    require(completed <= {t['task_id'] for t,_ in all_tasks}, 'completed task not in audited current queue')
-    skipped=[t['task_id'] for t,_ in all_tasks if t['task_id'] in completed]
-    eligible=[(t,r) for t,r in all_tasks if t['task_id'] not in completed and t['kind'] in SUPPORTED_KINDS]
-    tasks=eligible[:POLICY_FOLLOWUP['max_tasks']]
-    deferred=[t['task_id'] for t,_ in eligible[POLICY_FOLLOWUP['max_tasks']:]]
-    unsupported=[t['task_id'] for t,_ in all_tasks if t['task_id'] not in completed and t['kind'] not in SUPPORTED_KINDS]
+    tasks,skipped,deferred,unsupported=select_batch(all_tasks,completed_task_ids)
     params=preparation['learning']['parent_options'];binary=Path(binary);knowledge=Path(knowledge)
     require(sha256(binary.read_bytes())==preparation['progress']['analysis']['analyzer_binary_sha256'],
             'follow-up binary differs from original analyzer')
@@ -189,10 +201,13 @@ def verify_saved(preparation,diagnosis,parent,report):
             'previously completed task IDs are invalid')
     eligible=[t['task_id'] for t,r in ordered if t['task_id'] not in previous and t['kind'] in SUPPORTED_KINDS]
     unsupported=[t['task_id'] for t,r in ordered if t['task_id'] not in previous and t['kind'] not in SUPPORTED_KINDS]
+    # Historical verified eight-case packages lack explicit overflow fields.
+    legacy='total_queued_tasks' not in report
     require(report['completed_task_ids']==eligible[:POLICY_FOLLOWUP['max_tasks']]
-            and report.get('deferred_task_ids')==eligible[POLICY_FOLLOWUP['max_tasks']:]
-            and report.get('unsupported_task_ids')==unsupported
-            and report.get('total_queued_tasks')==len(tasks),
+            and (legacy and len(tasks)<=POLICY_FOLLOWUP['max_tasks'] and not unsupported
+                 or not legacy and report.get('deferred_task_ids')==eligible[POLICY_FOLLOWUP['max_tasks']:]
+                    and report.get('unsupported_task_ids')==unsupported
+                    and report.get('total_queued_tasks')==len(tasks)),
             'saved follow-up selection/deferred queue differs')
     require(len(set(report['completed_task_ids']))==len(report['completed_task_ids']),'repeated follow-up task result')
     updates=[];calls=0
