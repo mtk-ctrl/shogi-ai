@@ -41,6 +41,27 @@ class StudyControl(unittest.TestCase):
     def setUp(self):
         FakeAnalyzer.requests.clear()
 
+    def test_loss_signal_selects_sharp_played_move_but_not_training_label(self):
+        rows = [{"move": "7g7f", "search": {
+            "score_status": "recorded", "score_cp_stm": 0}}
+            for _ in range(24)]
+        # Before ply 11 the mover likes the position; the other side then
+        # suddenly likes it even more. Actor loss signal = 240+270.
+        rows[10]["search"]["score_cp_stm"] = 240
+        rows[11]["search"]["score_cp_stm"] = 270
+        g = types.SimpleNamespace(row={"game_id": "g", "moves": rows},
+                                  outcome_status="verified_win_loss")
+        def fake_case(game, ply):
+            return {"source": {"game_id": "g"}, "position_key": str(ply),
+                    "case_id": f"c-{ply}", "actual_move": "7g7f"}
+        with patch.object(nnue_deep_study, "make_case", fake_case):
+            chosen = nnue_deep_study.choose([g], 1, 4, {"g"})
+        self.assertEqual(chosen[0]["case_id"], "c-11")
+        self.assertEqual(chosen[0]["triage"]["reason"], "suspected_loss")
+        self.assertEqual(chosen[0]["triage"]["observed_actor_drop_cp"], 510)
+        # The same score is not an exact cp teacher and is never copied there.
+        self.assertNotIn("cp_black", chosen[0])
+
     def test_disagreement_uses_long_analysis_and_equal_child_budget(self):
         with patch.object(nnue_deep_study, "Analyzer", FakeAnalyzer):
             result = nnue_deep_study.analyze(
