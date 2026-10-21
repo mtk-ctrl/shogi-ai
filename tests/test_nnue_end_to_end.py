@@ -71,7 +71,7 @@ def main():
             archive_dir=[archive], engine=Path(sys.argv[1]).resolve(),
             knowledge=Path("position-knowledge-v1.tsv").resolve(),
             output_dir=root / "research-output",
-            parent_commit="0" * 40, max_cases=1, medium_ms=1000,
+            parent_commit="0" * 40, research_commit="1"*40, max_cases=1, medium_ms=1000,
             long_ms=2000, branch_ms=1000, expected_positions=163,
             hidden=16, epochs=3, seed=20261021,
         )
