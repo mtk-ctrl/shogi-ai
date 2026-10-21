@@ -29,6 +29,16 @@ int main() {
     shogi::strategy::IterativeSearch strategy;
     shogi::strategy::EvaluationParameters evaluation_parameters;
     bool material_profile = false;
+    // Experimental and OFF by default. Formal Engine v2.0.21 remains unchanged.
+    bool neural_enabled = false;
+    std::shared_ptr<shogi::strategy::NnueModel> neural_model;
+    std::string neural_file;
+    auto make_evaluator = [&](const shogi::strategy::EvaluationParameters& params) {
+        shogi::strategy::FeatureEvaluator evaluator(params, strategy.reuse_mask());
+        if (neural_enabled && neural_model && neural_model->valid())
+            evaluator.set_neural_model(neural_model);
+        return evaluator;
+    };
     bool quiescence_enabled = true;
     bool mate_assist_enabled = true;
     bool mate_learning_enabled = true;
@@ -124,6 +134,8 @@ int main() {
                       << "option name RandomSeed type spin default 5489 min 0 max 2147483647\n"
                       << "option name OpeningRandomNonLance type check default true\n"
                       << "option name EvalProfile type combo default features var features var material\n"
+                      << "option name EvalNeural type check default false\n"
+                      << "option name EvalNeuralFile type string default none\n"
                       << "option name EvalSafety type spin default " << evaluation_parameters.weights[0] << " min 0 max 10000\n"
                       << "option name EvalPressure type spin default " << evaluation_parameters.weights[1] << " min 0 max 10000\n"
                       << "option name EvalActivity type spin default " << evaluation_parameters.weights[2] << " min 0 max 10000\n"
@@ -147,6 +159,12 @@ int main() {
                 : shogi::strategy::phase_turn_parameters(evaluation_parameters, phase.maturity,
                     phase.components.battle, phase.components.king_threat);
             const auto b = shogi::strategy::evaluate(root, params);
+            if (neural_enabled) {
+                if (neural_model && neural_model->valid())
+                    emit("info string neural_evaluation static_cp_black "
+                         + std::to_string(neural_model->evaluate(root)) + "\n");
+                else emit("info string neural_evaluation error model_unavailable\n");
+            }
             std::cout << "info string evaluation material " << b.material
                       << " material_term " << b.material_term
                       << " safety " << b.terms[0] << " pressure " << b.terms[1]
@@ -175,6 +193,11 @@ int main() {
             valid_position = position.set_usi(line, error);
             if (!valid_position) std::cout << "info string " << error << '\n' << std::flush;
         } else if (command == "go") {
+            if (neural_enabled && (!neural_model || !neural_model->valid())) {
+                emit("info string neural_evaluation error model_unavailable\n");
+                bestmove("resign");
+                continue; // Never pretend to use a missing research model.
+            }
             ensure_position_knowledge_loaded();
             std::vector<std::string> tokens, allowed;
             std::string token;
@@ -265,7 +288,7 @@ int main() {
                     ? shogi::strategy::EvaluationParameters::material_only()
                     : shogi::strategy::phase_turn_parameters(evaluation_parameters, phase.maturity,
                     phase.components.battle, phase.components.king_threat);
-                strategy.set_evaluator(shogi::strategy::FeatureEvaluator(active_parameters, strategy.reuse_mask()));
+                strategy.set_evaluator(make_evaluator(active_parameters));
                 const auto eval = shogi::strategy::evaluate(root, active_parameters);
                 std::ostringstream out;
                 out << "info string phase v 1 maturity " << phase.maturity
@@ -275,7 +298,7 @@ int main() {
                     << " invasion " << phase.components.invasion
                     << " king_threat " << phase.components.king_threat
                     << " phase_weight_profile " << shogi::strategy::AdoptedPhaseProfile
-                     << " static_cp_black " << eval.total << '\n';
+                     << " static_cp_black " << (neural_enabled ? neural_model->evaluate(root) : eval.total) << '\n';
                 emit(out.str());
             }
             if (!restrict && entering_king && position.can_declare_win()) {
@@ -793,17 +816,41 @@ int main() {
                         strategy.clear_position_knowledge();
                         position_knowledge_loaded = false;
                     }
+                } else if (name == "EvalNeural") {
+                    if (value == "true" || value == "false") {
+                        neural_enabled = value == "true";
+                        strategy.set_evaluator(make_evaluator(material_profile
+                            ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
+                        if (neural_enabled && (!neural_model || !neural_model->valid()))
+                            emit("info string neural_evaluation error model_unavailable\n");
+                    }
+                } else if (name == "EvalNeuralFile") {
+                    if (!value.empty() && value.find('\n') == std::string::npos
+                        && value.find('\r') == std::string::npos) {
+                        neural_file = value;
+                        auto next = std::make_shared<shogi::strategy::NnueModel>();
+                        if (next->load(neural_file)) {
+                            neural_model = std::move(next);
+                            emit("info string neural_evaluation loaded width "
+                                 + std::to_string(neural_model->width()) + "\n");
+                        } else {
+                            neural_model.reset();
+                            emit("info string neural_evaluation error invalid_model\n");
+                        }
+                        strategy.set_evaluator(make_evaluator(material_profile
+                            ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
+                    }
                 } else if (name == "EvalProfile") {
                     if (value == "features" || value == "material") {
                         material_profile = value == "material";
-                        strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
-                            ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters, strategy.reuse_mask()));
+                        strategy.set_evaluator(make_evaluator(material_profile
+                            ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
                     }
                 } else if (name == "EvalV2") {
                     if (value == "true" || value == "false") {
                         evaluation_parameters.v2_enabled = value == "true";
-                        strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
-                            ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters, strategy.reuse_mask()));
+                        strategy.set_evaluator(make_evaluator(material_profile
+                            ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
                     }
                 } else if (name == "EvalSafety" || name == "EvalPressure" || name == "EvalActivity" || name == "EvalDanger"
                            || name == "EvalMaterialWeight" || name == "EvalInfluence" || name == "EvalPotential"
@@ -825,8 +872,8 @@ int main() {
                             else if (name == "EvalHandPotential") evaluation_parameters.hand_potential_weight = weight;
                             else if (name == "EvalThreat") evaluation_parameters.threat_weight = weight;
                             else evaluation_parameters.positional_cap = weight;
-                            strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
-                                ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters, strategy.reuse_mask()));
+                            strategy.set_evaluator(make_evaluator(material_profile
+                                ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
                         }
                     } catch (const std::exception&) {}
                 } else if (name == "RandomSeed") {
