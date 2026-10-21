@@ -59,6 +59,7 @@ def can_declare_win(board):
 
 SEARCH_STAT_NAMES = (
     "learned_eval", "learned_scale",
+    "neural_refreshes", "neural_updates", "neural_evals", "neural_policy_nodes",
     "nodes", "full_nodes", "cutoffs", "min_cutoffs", "max_cutoffs",
     "leaves", "terminals", "ply1", "ply2", "ply3",
     "order_calls", "ordered_moves", "tt_probes", "tt_hits",
@@ -80,6 +81,7 @@ USI_INFO_INTEGER_NAMES = (
 
 PER_MOVE_SEARCH_FIELDS = (
     "learned_eval", "learned_scale",
+    "neural_refreshes", "neural_updates", "neural_evals", "neural_policy_nodes",
     "depth", "seldepth", "time", "nodes", "nps",
     "full_nodes", "cutoffs", "tt_probes", "tt_hits",
     "knowledge_probes", "knowledge_hits", "knowledge_promotions",

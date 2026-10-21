@@ -7,6 +7,8 @@ on:
       - "engine/strategy/**"
       - "engine/main.cpp"
       - "tools/research/train_nnue.py"
+      - "tools/research/neural_*.py"
+      - "tests/test_neural_*.py"
       - "tools/research/nnue_split.py"
       - "tests/test_nnue_split.py"
       - "tools/research/nnue_match_smoke.py"
@@ -74,7 +76,7 @@ permissions:
 jobs:
   quick:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -94,6 +96,12 @@ jobs:
           python3 tests/test_nnue_study.py
           python3 tests/test_nnue_pipeline.py build/shogi-ai
           python3 tests/test_nnue_end_to_end.py build/shogi-ai
+
+      - name: Neural generation, incremental search and MCTS tests
+        run: |
+          python3 -m pip install torch==2.14.1+cpu --index-url https://download.pytorch.org/whl/cpu
+          python3 tests/test_neural_loop.py
+          python3 tests/test_neural_native.py build/shogi-ai
 
       - name: Adopted evaluation and phase tests
         run: |

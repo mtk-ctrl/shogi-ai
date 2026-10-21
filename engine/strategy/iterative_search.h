@@ -82,6 +82,7 @@ public:
         std::uint64_t qtt_probes = 0, qtt_hits = 0, qtt_cutoffs = 0;
         std::uint64_t ordering_rule_checks = 0, eval_cache_hits = 0, lazy_snapshots = 0;
         std::uint64_t selective_usi_skipped = 0;
+        std::uint64_t neural_refreshes = 0, neural_updates = 0, neural_evals = 0, neural_policy_nodes = 0;
         std::uint64_t legal_cache_hits = 0, legal_cache_misses = 0;
         std::uint64_t legal_cache_replacements = 0;
         std::uint64_t pvs_probes = 0, pvs_researches = 0;
@@ -99,6 +100,7 @@ public:
         : rng_(seed), evaluator_(evaluator) { set_reuse_mask(reuse_mask_); }
     void set_seed(unsigned seed) { rng_.seed(seed); }
     void set_evaluator(Evaluator e) { evaluator_ = e; set_reuse_mask(reuse_mask_); }
+    void set_neural_incremental(bool enabled) { neural_incremental_ = enabled; }
     struct DirectResearch {
         std::string move, research_id;
         std::size_t ply_index = 0, pv_length = 0;
@@ -216,6 +218,7 @@ private:
                         const std::vector<std::string>& allowed,
                         const std::function<void(const SearchResult&)>& completed) {
         stats_ = {};
+        for (auto& frame : neural_frames_) frame.valid = false;
         if (probe_mask_ & 2) for (auto& row : killers_) for (auto& move : row) move.clear();
         if (probe_mask_ & 4) for (auto& side : history_scores_) side.fill(0);
         control_ = &control;
@@ -372,6 +375,7 @@ private:
         SUM_STAT(order_reuse_hits);SUM_STAT(qtt_probes);SUM_STAT(qtt_hits);SUM_STAT(qtt_cutoffs);
         SUM_STAT(ordering_rule_checks);SUM_STAT(eval_cache_hits);SUM_STAT(lazy_snapshots);
         SUM_STAT(selective_usi_skipped);SUM_STAT(legal_cache_hits);SUM_STAT(legal_cache_misses);
+        SUM_STAT(neural_refreshes);SUM_STAT(neural_updates);SUM_STAT(neural_evals);SUM_STAT(neural_policy_nodes);
         SUM_STAT(legal_cache_replacements);
         SUM_STAT(pvs_probes);SUM_STAT(pvs_researches);SUM_STAT(killer_priorities);
         SUM_STAT(history_priorities);SUM_STAT(ordering_updates);
@@ -396,6 +400,7 @@ private:
         for(int i=0;i<2;++i) {
             if(!parallel_lanes_[i])parallel_lanes_[i]=std::make_unique<BasicIterativeSearch>();
             auto& lane=*parallel_lanes_[i];lane.rng_=initial_rng;lane.set_evaluator(evaluator_);
+            lane.set_neural_incremental(neural_incremental_);
             lane.set_research_mask(research_mask_);lane.set_efficiency_mask(efficiency_mask_);
             lane.set_reuse_mask(reuse_mask_);lane.set_next_mask(next_mask_);
             lane.set_risk_verify(risk_verify_enabled_);
@@ -650,6 +655,8 @@ private:
         return {};
     }
     void make(rules::Position& position, const std::string& move, int ply) {
+        if constexpr (std::is_same_v<Evaluator,FeatureEvaluator>)
+            if (neural_incremental_ && evaluator_.neural_enabled()) neural_frame(position, ply);
         std::string error;
         if (research_mask_ & GeneratedPlay) {
             const auto& b = batch(position, ply);
@@ -671,6 +678,36 @@ private:
                 throw std::logic_error(error);
             ++stats_.generated_plays;
         } else if (!position.play_generated_legal(move, error)) throw std::logic_error(error);
+        if constexpr (std::is_same_v<Evaluator,FeatureEvaluator>) {
+            if (neural_incremental_ && evaluator_.neural_enabled()) {
+                auto& child = neural_frames_.at(ply + 1);
+                const auto& parent = neural_frames_.at(ply);
+                child.snapshot = position.snapshot();
+                child.acc = evaluator_.neural_model()->update(parent.snapshot, child.snapshot, parent.acc);
+                child.key = position.hash_key(); child.valid = true;
+                ++stats_.neural_updates;
+            }
+        }
+    }
+    struct NeuralFrame {
+        bool valid = false;
+        std::uint64_t key = 0;
+        rules::Snapshot snapshot;
+        NnueModel::Accumulator acc;
+    };
+    std::array<NeuralFrame, MaxPly + 2> neural_frames_;
+    bool neural_incremental_ = true;
+    NeuralFrame& neural_frame(const rules::Position& position, int ply) {
+        auto& frame = neural_frames_.at(ply);
+        if constexpr (std::is_same_v<Evaluator,FeatureEvaluator>) {
+            if (!frame.valid || frame.key != position.hash_key()) {
+                frame.snapshot = position.snapshot();
+                frame.acc = evaluator_.neural_model()->accumulate(frame.snapshot);
+                frame.key = position.hash_key(); frame.valid = true;
+                ++stats_.neural_refreshes;
+            }
+        }
+        return frame;
     }
     // Exact board/hands/side identity; no repetition-sensitive search scores
     // are cached here. Terminal and repetition results remain uncached.
@@ -678,19 +715,26 @@ private:
     std::vector<EvalCell> eval_cache_ = std::vector<EvalCell>(1u << 15);
     std::uint32_t eval_epoch_ = 1;
     template<class SnapshotGetter>
-    int eval_cached(const rules::Position& p, SnapshotGetter get_snapshot) {
+    int eval_cached(const rules::Position& p, SnapshotGetter get_snapshot, int ply = 0) {
         const auto key = p.hash_key();
         auto& cell = eval_cache_[key & (eval_cache_.size() - 1)];
         if (cell.epoch == eval_epoch_ && cell.key == key) {
             ++stats_.eval_cache_hits;
             return cell.value;
         }
-        const int value = evaluator_(get_snapshot());
+        int value;
+        if constexpr (std::is_same_v<Evaluator,FeatureEvaluator>) {
+            if (evaluator_.neural_enabled()) {
+                ++stats_.neural_evals;
+                value = neural_incremental_ ? evaluator_.neural_model()->score(neural_frame(p, ply).acc)
+                                             : evaluator_(get_snapshot());
+            } else value = evaluator_(get_snapshot());
+        } else value = evaluator_(get_snapshot());
         cell = {key, value, eval_epoch_};
         return value;
     }
-    int eval_node(const rules::Position& p, const rules::Snapshot& snap) {
-        return eval_cached(p, [&]() -> const rules::Snapshot& { return snap; });
+    int eval_node(const rules::Position& p, const rules::Snapshot& snap, int ply = 0) {
+        return eval_cached(p, [&]() -> const rules::Snapshot& { return snap; }, ply);
     }
     int terminal(const rules::Position& p, const rules::Status& status, int ply) const {
         if (status.result == rules::Result::Draw) return 0;
@@ -745,8 +789,8 @@ private:
             ++stats_.leaf_evals;
             const int sign = root_ == rules::Color::Black ? 1 : -1;
             const int value = sign * ((efficiency_mask_ & LazySnapshot)
-                ? eval_cached(p, [&] { ++stats_.lazy_snapshots; return p.snapshot(); })
-                : eval_node(p, p.snapshot()));
+                ? eval_cached(p, [&] { ++stats_.lazy_snapshots; return p.snapshot(); }, ply)
+                : eval_node(p, p.snapshot(), ply));
             ++stats_.tt_store_calls;
             if (tt_.store(score_key, depth, value, Bound::Exact)) ++stats_.tt_replacements;
             return {value};
@@ -860,8 +904,8 @@ private:
         if (!checked) {
             ++stats_.leaf_evals;
             best.value = (root_ == rules::Color::Black ? 1 : -1)
-                * ((efficiency_mask_ & LazySnapshot) ? eval_cached(p, get_snapshot)
-                                                    : eval_node(p, get_snapshot()));
+                * ((efficiency_mask_ & LazySnapshot) ? eval_cached(p, get_snapshot, ply)
+                                                    : eval_node(p, get_snapshot(), ply));
             if (qply >= QuiescenceDepth) {
                 ++stats_.qlimit_leaves;
                 return best;
@@ -1034,6 +1078,19 @@ private:
                 return a.killer != b.killer ? a.killer > b.killer : a.history > b.history;
             });
             for (std::size_t i = 0; i < slots.size(); ++i) result[slots[i]] = std::move(quiet[i].move);
+        }
+        if constexpr (std::is_same_v<Evaluator,FeatureEvaluator>) {
+            if (ply <= 1 && evaluator_.neural_policy()) {
+                const auto& acc = neural_frame(p, ply).acc;
+                std::vector<std::pair<std::int64_t, std::string>> ranked;
+                for (const auto& move : result)
+                    ranked.emplace_back(evaluator_.neural_model()->policy_score(acc, move), move);
+                std::stable_sort(ranked.begin(), ranked.end(), [](const auto& a, const auto& b) {
+                    return a.first > b.first;
+                });
+                for (std::size_t i = 0; i < result.size(); ++i) result[i] = ranked[i].second;
+                ++stats_.neural_policy_nodes;
+            }
         }
         auto promote = [&](const std::string& hint) {
             auto it = std::find(result.begin(), result.end(), hint);

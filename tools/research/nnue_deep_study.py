@@ -2,15 +2,15 @@
 """Budgeted, resumable own-engine deep study for NNUE teacher generation.
 
 A case is selected from fully verified played games. Normal 50ms preliminary
-search identifies a disagreement; 10-minute research follows; only cases whose
-preferred move changes get the additional 50-minute stage. Independent
+search identifies a disagreement; 10-minute research follows; changed choices
+and an explicit priority quota get the additional 50-minute stage. Independent
 candidate-child refutations use fresh processes and symmetric time budgets.
 Research observations are not presumed true, nor directly added to the
 formal position-knowledge archive.
 
-The state is single-worker and atomic per finished case. It can be resumed
-after cancellation: no duplicate *completed* case is reread, but an interrupted
-uncheckpointed analysis may be repeated; such repeats must not be counted as
+The state is single-worker and atomic per completed stage and case, with the
+latest completed-depth observation saved during search. Completed stages are
+reused after cancellation, but the interrupted stage restarts its search; such repeats must not be counted as
 independent evidence.
 """
 import argparse
@@ -116,17 +116,33 @@ def choose(games, max_cases, per_game, eligible_roots=None):
 
 
 def analyze(binary, knowledge, case, short_ms, medium_ms, long_ms, branch_ms,
-            expected_positions):
-    def search(history, ms):
-        instance = Analyzer(binary, knowledge, expected_positions=expected_positions)
+            expected_positions, checkpoint=None, persist=None, force_long=False,
+            neural_options=None):
+    checkpoint = checkpoint if checkpoint is not None else {}
+    def search(stage, history, ms):
+        if stage in checkpoint.get('completed', {}):
+            return checkpoint['completed'][stage]
+        kwargs = {'neural_options': neural_options} if neural_options else {}
+        instance = Analyzer(binary, knowledge, expected_positions=expected_positions, **kwargs)
+        def iteration(frame):
+            checkpoint['active'] = {'stage': stage, 'latest_completed_iteration': frame,
+                                    'stage_complete': False}
+            if persist:
+                persist()
         try:
-            return instance.search(case["start_sfen"], history, ms)
+            kwargs = {'on_iteration': iteration} if persist else {}
+            result = instance.search(case['start_sfen'], history, ms, **kwargs)
+            checkpoint.setdefault('completed', {})[stage] = result
+            checkpoint.pop('active', None)
+            if persist:
+                persist()
+            return result
         finally:
             instance.close()
 
     history = tuple(case["history_moves"])
-    fast = search(history, short_ms)
-    medium = search(history, medium_ms)
+    fast = search('short', history, short_ms)
+    medium = search('medium', history, medium_ms)
     # A study that was just a preapproved, immediate position-knowledge move
     # offers no deep-search teacher. Preserve the observation but do not assign
     # deep budget or a confident neural label.
@@ -136,8 +152,9 @@ def analyze(binary, knowledge, case, short_ms, medium_ms, long_ms, branch_ms,
                 "additional_ms": 0, "branches": {}}
     moved = (fast.get("bestmove") != medium.get("bestmove")
              and medium.get("bestmove") not in ("resign", "win"))
-    deep = search(history, long_ms) if moved else medium
-    additional = long_ms if moved else 0
+    use_long = moved or force_long
+    deep = search('long', history, long_ms) if use_long else medium
+    additional = long_ms if use_long else 0
     children = {}
     best = deep.get("bestmove")
     original = case["actual_move"]
@@ -149,8 +166,8 @@ def analyze(binary, knowledge, case, short_ms, medium_ms, long_ms, branch_ms,
             board.push_usi(token)
         if shogi.Move.from_usi(best) in board.legal_moves:
             children = {
-                "actual": search(history + (original,), branch_ms),
-                "research": search(history + (best,), branch_ms)
+                "actual": search('actual_child', history + (original,), branch_ms),
+                "research": search('research_child', history + (best,), branch_ms)
             }
     status = ("studied_and_compared" if children else "studied")
     return {"case": case, "root_short": fast, "root_medium": medium,
@@ -164,7 +181,8 @@ def analyze(binary, knowledge, case, short_ms, medium_ms, long_ms, branch_ms,
 
 def execute(archives, binary, knowledge, output, max_cases=4, per_game=4,
             short_ms=50, medium_ms=600000, long_ms=3000000,
-            branch_ms=600000, expected_positions=163, split_seed=20261021):
+            branch_ms=600000, expected_positions=163, split_seed=20261021,
+            force_long_cases=0, neural_options=None, eligible_roots=None):
     if not (1 <= max_cases <= 96 and 1 <= per_game <= 4):
         raise ValueError("invalid selection")
     if not (1 <= short_ms <= medium_ms <= long_ms <= 86400000
@@ -186,8 +204,16 @@ def execute(archives, binary, knowledge, output, max_cases=4, per_game=4,
               "long_ms": long_ms, "branch_ms": branch_ms,
               "expected_positions": expected_positions,
               "split_seed": split_seed, "split_rule": "root_sha256_train_only"}
+    if force_long_cases < 0 or force_long_cases > max_cases:
+        raise ValueError('invalid long-analysis quota')
+    params.update(force_long_cases=force_long_cases, neural_options=neural_options,
+                  eligible_roots=sorted(eligible_roots) if eligible_roots is not None else None)
+    if neural_options and neural_options.get('EvalNeuralFile'):
+        params['model_sha256'] = digest(Path(neural_options['EvalNeuralFile']).read_bytes())
     train_roots = (allocate_roots((g.row["game_id"] for g in games), split_seed)["train"]
                    if len(games) >= 3 else {g.row["game_id"] for g in games})
+    if eligible_roots is not None:
+        train_roots = set(eligible_roots)
     case_list = choose(games, max_cases, per_game, train_roots)
     if not case_list:
         raise ValueError("no eligible original cases")
@@ -206,12 +232,16 @@ def execute(archives, binary, knowledge, output, max_cases=4, per_game=4,
     done = {r["case"]["case_id"] for r in state["results"]}
     if len(done) != len(state["results"]):
         raise ValueError("duplicate saved research result")
-    for case in case_list:
+    for case_index, case in enumerate(case_list):
         if case["case_id"] in done:
             continue
+        partial = state.setdefault('partial', {}).setdefault(case['case_id'], {})
         row = analyze(binary, knowledge, case, short_ms, medium_ms, long_ms,
-                      branch_ms, expected_positions)
+                      branch_ms, expected_positions, checkpoint=partial,
+                      persist=lambda: atomic_write(state_path, state),
+                      force_long=case_index < force_long_cases, neural_options=neural_options)
         state["results"].append(row)
+        state['partial'].pop(case['case_id'], None)
         atomic_write(state_path, state)
         print(json.dumps({"research": len(state["results"]), "total": len(case_list),
                           "case_id": case["case_id"], "status": row["status"]}),

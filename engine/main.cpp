@@ -31,12 +31,14 @@ int main() {
     bool material_profile = false;
     // Experimental and OFF by default. Formal Engine v2.0.21 remains unchanged.
     bool neural_enabled = false;
+    bool neural_policy = false;
     std::shared_ptr<shogi::strategy::NnueModel> neural_model;
     std::string neural_file;
     auto make_evaluator = [&](const shogi::strategy::EvaluationParameters& params) {
         shogi::strategy::FeatureEvaluator evaluator(params, strategy.reuse_mask());
         if (neural_enabled && neural_model && neural_model->valid())
             evaluator.set_neural_model(neural_model);
+        evaluator.set_neural_policy(neural_policy);
         return evaluator;
     };
     bool quiescence_enabled = true;
@@ -136,6 +138,8 @@ int main() {
                       << "option name EvalProfile type combo default features var features var material\n"
                       << "option name EvalNeural type check default false\n"
                       << "option name EvalNeuralFile type string default none\n"
+                      << "option name EvalNeuralPolicy type check default false\n"
+                      << "option name EvalNeuralIncremental type check default true\n"
                       << "option name EvalSafety type spin default " << evaluation_parameters.weights[0] << " min 0 max 10000\n"
                       << "option name EvalPressure type spin default " << evaluation_parameters.weights[1] << " min 0 max 10000\n"
                       << "option name EvalActivity type spin default " << evaluation_parameters.weights[2] << " min 0 max 10000\n"
@@ -151,6 +155,17 @@ int main() {
                       << "option name PositionKnowledge type check default true\n"
                       << "option name PositionKnowledgeFile type string default position-knowledge-v1.tsv\n"
                       << "usiok\n" << std::flush;
+        } else if (command == "rules") {
+            // Read-only research interface: no foreign evaluation/search leaks.
+            if (!valid_position) { emit("info string rules error invalid_position\n"); continue; }
+            std::ostringstream out;
+            out << "info string rules result " << static_cast<int>(position.status().result)
+                << " turn " << static_cast<int>(position.turn())
+                << " declare " << position.can_declare_win()
+                << " check " << position.in_check() << " moves";
+            for (const auto& move : position.legal_moves()) out << ' ' << move;
+            out << '\n';
+            emit(out.str());
         } else if (command == "eval") {
             const auto root = position.snapshot();
             const auto phase = shogi::strategy::classify_turn_phase(root);
@@ -665,6 +680,10 @@ int main() {
                         << " ordering_rule_checks " << stats.ordering_rule_checks
                         << " eval_cache_hits " << stats.eval_cache_hits
                         << " lazy_snapshots " << stats.lazy_snapshots
+                        << " neural_refreshes " << stats.neural_refreshes
+                        << " neural_updates " << stats.neural_updates
+                        << " neural_evals " << stats.neural_evals
+                        << " neural_policy_nodes " << stats.neural_policy_nodes
                         << " selective_usi_skipped " << stats.selective_usi_skipped
                         << " generated_plays " << stats.generated_plays
                         << " legal_batches " << stats.legal_batches
@@ -823,6 +842,15 @@ int main() {
                             ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
                         if (neural_enabled && (!neural_model || !neural_model->valid()))
                             emit("info string neural_evaluation error model_unavailable\n");
+                    }
+                } else if (name == "EvalNeuralIncremental") {
+                    if (value == "true" || value == "false")
+                        strategy.set_neural_incremental(value == "true");
+                } else if (name == "EvalNeuralPolicy") {
+                    if (value == "true" || value == "false") {
+                        neural_policy = value == "true";
+                        strategy.set_evaluator(make_evaluator(material_profile
+                            ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters));
                     }
                 } else if (name == "EvalNeuralFile") {
                     if (!value.empty() && value.find('\n') == std::string::npos
