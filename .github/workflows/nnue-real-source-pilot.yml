@@ -1,0 +1,92 @@
+name: NNUE Real-Source Research Pilot
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/nnue-selfplay-pipeline-20261021
+    paths:
+      - research/nnue-selfplay-20261021/REQUEST.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nnue-real-source-research-pilot
+  cancel-in-progress: false
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout fixed source
+        uses: actions/checkout@v5
+
+      - name: Validate request and workflow rules before study
+        run: |
+          python3 scripts/check_match_workflows.py
+          python3 scripts/check_workflow_inventory.py --strict
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          request=json.loads(Path("research/nnue-selfplay-20261021/REQUEST.json").read_text())
+          if request!={"enabled":True,"mode":"single-case-short-integration",
+                       "source_asset":"postgame-source-bridge-39014782775-a1.tgz"}:
+              raise SystemExit("unknown NNUE pilot request")
+          PY
+
+      - name: Build fixed-engine research candidate
+        run: |
+          python3 -m pip install numpy==2.3.3 python-shogi==1.1.1
+          python3 scripts/build.py --output build/shogi-ai
+
+      - name: Retrieve already saved actual own-engine played archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p source-download
+          gh release download records-2026-10-01 \
+            --pattern 'postgame-source-bridge-39014782775-a1.tgz' \
+            --dir source-download
+          test -s source-download/postgame-source-bridge-39014782775-a1.tgz
+
+      - name: Safe extraction and full history-terminal validation
+        run: |
+          python3 tools/research/nnue_release_source.py \
+            --bundle source-download/postgame-source-bridge-39014782775-a1.tgz \
+            --output-dir source-restored \
+            --receipt source-receipt.json
+
+      - name: Run ONE short-source training cycle, never formal adoption
+        run: |
+          set -euo pipefail
+          ARCHIVE_DIR=$(python3 -c "import json; print(json.load(open('source-receipt.json'))['archive_dir'])")
+          python3 tools/research/nnue_cycle.py \
+            --archive-dir "$ARCHIVE_DIR" \
+            --engine build/shogi-ai \
+            --knowledge position-knowledge-v1.tsv \
+            --parent-commit c6a46a4ee6d77a46f087ba506e4920115c8a4366 \
+            --output-dir research-results \
+            --max-cases 1 --medium-ms 1000 --long-ms 2000 \
+            --branch-ms 1000 --hidden 16 --epochs 3
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          result=json.loads(Path('research-results/status.json').read_text())
+          assert result["state"]=="research_candidate_ready_for_independent_evaluation"
+          assert result["study_completed"]==1
+          assert result["independent_matches"]=="not_run"
+          assert result["formal_engine_adopted"] is False
+          PY
+
+      - name: Preserve 30-day research artifact, not long-term knowledge
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nnue-real-source-pilot
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            source-receipt.json
+            research-results/
