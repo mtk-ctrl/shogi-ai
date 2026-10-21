@@ -62,6 +62,24 @@ def initialize(plan, parent_options, controller_sha256):
                     and re.fullmatch('[0-9a-f]{64}',pub.get('sha256','')),'verified saved horizon input required')
         require(plan['horizon_selection']['policy']==policy and plan['horizon_selection']['parent']==plan['parent'],
                 'freeze horizon roots and parent before execution')
+    elif plan.get('recovery_checkpoint') is not None:
+        # The previous cycle is immutable. An explicit, independently frozen
+        # successor can reuse its verified source without repeating those games.
+        source=plan.get('source_publication')
+        checkpoint=plan['recovery_checkpoint']
+        require(plan.get('generate_initial_source') is False and plan['max_generations']==1
+                and plan.get('max_new_games')==300 and plan.get('source_games')==100
+                and type(source) is dict and type(checkpoint) is dict,
+                'bounded one-generation recovery requires immutable prior source and checkpoint')
+        for pub in (source,checkpoint):
+            require(pub.get('release')=='records-2026-10-01'
+                    and type(pub.get('bytes')) is int and 0<pub['bytes']<=256*1024**2
+                    and re.fullmatch('[0-9a-f]{64}',pub.get('sha256',''))
+                    and pub.get('readback_verified') is True and pub.get('api_digest_verified') is True,
+                    'recovery publication not verified')
+        require(plan.get('recovery_cycle_id')!=plan['cycle_id']
+                and re.fullmatch('[A-Za-z0-9][A-Za-z0-9-]{0,63}',plan.get('recovery_cycle_id','')),
+                'recovery previous cycle identifier invalid')
     else:require(plan.get('generate_initial_source') is True, 'automatic cycle starts from fresh selfplay')
     require(plan.get('learning_policy')==POLICY and plan.get('live_policy')==POLICY_LIVE, 'freeze actual implemented learning/live policy')
     if 'knowledge_policy' in plan:
