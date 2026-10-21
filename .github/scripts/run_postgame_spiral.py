@@ -545,9 +545,38 @@ def main():
         require('knowledge_policy' in plan,'new cycle plans must freeze research-knowledge preparation policy')
         require(horizon or 'followup_policy' in plan or 'practice_cycle_policy' in plan,
                 'new cycle plans must freeze a bounded follow-up or practice research policy')
-        # New start must not overlap an already active cycle under another name.
-        require(backend.load() is None,'another cycle is already active')
+        # New start cannot overlap unrelated research. A blocked older cycle
+        # may only be superseded by its EXACT immutable checkpoint and source.
+        active=backend.load()
+        if plan.get('recovery_checkpoint') is not None:
+            receipt=plan['recovery_checkpoint']
+            require(active is not None and active['state']['plan']['cycle_id']==plan['recovery_cycle_id']
+                    and active['blocked'] is not None
+                    and active['blocked'].get('message')=='follow-up budget exceeded; review rather than truncate'
+                    and active['state']['stage']=='prepare'
+                    and active['state']['used_games']==100
+                    and active['state']['pending'] is not None
+                    and active['state']['parent']==plan['parent']
+                    and active['source_publication']==plan['source_publication']
+                    and backend.latest_name==receipt['name'],
+                    'successor must reuse ONLY the known blocked 100-game source')
+            original=json.loads(backend.bytes(receipt).read_bytes())
+            require(original==active and original['sequence']==8,
+                    'recovery checkpoint differs from saved blocked original')
+            old_seeds={value for row in active['state']['plan']['seeds'] for value in row.values()}
+            new_seeds={value for row in plan['seeds'] for value in row.values()}
+            require(not old_seeds.intersection(new_seeds),'successor reuses prior experiment seeds')
+            # Retain parent, original source, and audit trail; never mark old
+            # failed cycle complete or rewrite any of its 8 checkpoints.
+            backend.latest_name=None;backend.active=None
+        else:
+            require(active is None,'another cycle is already active')
         env=initialize(plan,plan['parent_options'],code_hash());env['plan_ref']=ref
+        if plan.get('recovery_checkpoint') is not None:
+            env['recovery']=dict(previous_cycle=plan['recovery_cycle_id'],old_checkpoint=plan['recovery_checkpoint'],
+                                 source=plan['source_publication'],reused_games=100,
+                                 old_failure='follow-up budget exceeded; review rather than truncate')
+            print('SPIRAL_RECOVERY '+json.dumps(env['recovery']),flush=True)
         env['experiment_seeds']=sorted(v for row in plan['seeds'] for v in row.values())
         if plan.get('predecessor_checkpoint'):
             prior=json.loads(backend.bytes(plan['predecessor_checkpoint']).read_bytes())
