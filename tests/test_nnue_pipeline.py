@@ -11,6 +11,7 @@ import shogi
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools" / "research"))
 import train_nnue
+from tools.research.nnue_cycle import verify_native
 
 
 def run():
@@ -57,6 +58,9 @@ def run():
             {"features": train_nnue.sparse_features(rows[0]["sfen"])},
             model.read_bytes())
         assert int(match.group(1)) == expected, (match.group(1), expected)
+        native = verify_native(binary, model, rows[0]["sfen"], expected,
+                               Path("position-knowledge-v1.tsv"), 163)
+        assert native["search_completed"] and native["native_cp"] == expected
         # A bad model must be visible, never silently scored by the old evaluator.
         output_bad = subprocess.run([binary], input="\n".join([
             "setoption name EvalNeuralFile value /no/such/model",
