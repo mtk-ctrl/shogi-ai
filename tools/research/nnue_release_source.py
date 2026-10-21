@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 from tools.research.postgame_cases import load_archive
+from tools.research.nnue_labels import source_is_owned_selfplay
 
 
 def safely_extract(bundle, destination, max_bytes=512 * 1024 * 1024):
@@ -62,11 +63,7 @@ def find_source(root):
             continue
         try:
             games = load_archive(directory)
-            proven_selfplay = all(
-                all(("kumoji" in str(game.metadata.get("engine_" + side, "")).lower()
-                     or "shogi-ai" in str(game.metadata.get("engine_" + side, "")).lower())
-                    for side in ("a", "b"))
-                for game in games)
+            proven_selfplay = source_is_owned_selfplay(directory, games)
             completed = sum(g.outcome_status != "unresolved" for g in games)
             examined.append({"directory": str(directory), "games": len(games),
                              "completed": completed, "all_selfplay": proven_selfplay})
