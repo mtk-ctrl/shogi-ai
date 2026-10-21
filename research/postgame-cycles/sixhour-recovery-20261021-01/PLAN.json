@@ -152,6 +152,7 @@
     "sha256": "6a47ec7c1fa92d351bb57c5159dc73c9445be73be8198da90471866959de5b52",
     "bytes": 5987650,
     "readback_verified": true,
-    "api_digest_verified": true
+    "api_digest_verified": true,
+    "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-sixhour-strength-20261020-01-initial_source-eea4f91363b3b4be-39441941187-a1.tgz"
   }
 }
