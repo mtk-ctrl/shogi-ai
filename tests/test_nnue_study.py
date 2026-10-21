@@ -50,7 +50,7 @@ class StudyControl(unittest.TestCase):
         rows[10]["search"]["score_cp_stm"] = 240
         rows[11]["search"]["score_cp_stm"] = 270
         g = types.SimpleNamespace(row={"game_id": "g", "moves": rows},
-                                  outcome_status="verified_win_loss")
+                                  moves=rows, outcome_status="verified_win_loss")
         def fake_case(game, ply):
             return {"source": {"game_id": "g"}, "position_key": str(ply),
                     "case_id": f"c-{ply}", "actual_move": "7g7f"}
