@@ -93,6 +93,7 @@ jobs:
             --engine build/shogi-ai \
             --knowledge position-knowledge-v1.tsv \
             --parent-commit c6a46a4ee6d77a46f087ba506e4920115c8a4366 \
+            --research-commit "$GITHUB_SHA" \
             --output-dir research-results \
             --max-cases "$MAX_CASES" --medium-ms "$MEDIUM_MS" --long-ms "$LONG_MS" \
             --branch-ms "$BRANCH_MS" --hidden "$HIDDEN" --epochs "$EPOCHS"
