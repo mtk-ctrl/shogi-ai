@@ -9,7 +9,9 @@ import tempfile
 
 import shogi
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools" / "research"))
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "tools" / "research"))
 import train_nnue
 from tools.research.nnue_cycle import verify_native
 
