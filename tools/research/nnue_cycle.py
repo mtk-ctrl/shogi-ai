@@ -140,7 +140,8 @@ def execute(args):
         args.archive_dir, args.engine, args.knowledge, analysis_path,
         max_cases=args.max_cases, per_game=4, short_ms=50,
         medium_ms=args.medium_ms, long_ms=args.long_ms,
-        branch_ms=args.branch_ms, expected_positions=args.expected_positions)
+        branch_ms=args.branch_ms, expected_positions=args.expected_positions,
+        split_seed=args.seed)
     if studied["status"] != "analysis_complete_not_training_or_strength":
         raise ValueError("study did not complete")
     labels, meta = nnue_labels.convert(args.archive_dir, analysis_path, per_game=8)
