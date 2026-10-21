@@ -21,6 +21,7 @@ import struct
 
 import numpy as np
 import shogi
+from tools.research.nnue_split import allocate_roots, position_identity
 
 FEATURES = 81 * 2 * 14 + 2 * 7 * 18 + 2
 SCALE = 256
@@ -120,23 +121,17 @@ def read_samples(path):
 
 
 def split_groups(samples, seed):
-    groups = sorted({s["root"] for s in samples},
-                    key=lambda x: hashlib.sha256(f"{seed}:{x}".encode()).digest())
-    n = len(groups)
-    n_test = max(1, n // 10)
-    n_valid = max(1, n // 10)
-    test = set(groups[:n_test])
-    valid = set(groups[n_test:n_test+n_valid])
-    subsets = [[], [], []]
-    for sample in samples:
-        i = 2 if sample["root"] in test else 1 if sample["root"] in valid else 0
-        subsets[i].append(sample)
-    # Do not allow identical positions to leak across splits, including a
-    # repeated opening in separate games. Drop validation/test duplicates.
-    train_positions = {s["sfen"] for s in subsets[0]}
-    subsets[1] = [s for s in subsets[1] if s["sfen"] not in train_positions]
-    holdout_positions = train_positions | {s["sfen"] for s in subsets[1]}
-    subsets[2] = [s for s in subsets[2] if s["sfen"] not in holdout_positions]
+    membership = allocate_roots((s["root"] for s in samples), seed)
+    subsets = [[s for s in samples if s["root"] in membership[name]]
+               for name in ("train", "validation", "test")]
+    # Do not leak identical NNUE inputs under different SFEN ply numbers, nor
+    # across games: the network sees exactly board, hands, turn.
+    train_positions = {position_identity(s["sfen"]) for s in subsets[0]}
+    subsets[1] = [s for s in subsets[1]
+                  if position_identity(s["sfen"]) not in train_positions]
+    holdout_positions = train_positions | {position_identity(s["sfen"]) for s in subsets[1]}
+    subsets[2] = [s for s in subsets[2]
+                  if position_identity(s["sfen"]) not in holdout_positions]
     if not all(subsets):
         raise ValueError("nonempty leakage-free train/validation/test samples required")
     return subsets
@@ -231,16 +226,19 @@ def main():
         ap.error("epochs and learning rate out of range")
     samples, sources = read_samples(args.data)
     (training, validation, heldout) = split_groups(samples, args.seed)
-    before = float(sum(abs(s["target"] * 1000) for s in heldout) / len(heldout))
+    before = float(sum(abs(s["target"] * 1000) * s["weight"] for s in heldout)
+                   / sum(s["weight"] for s in heldout))
     best = train(training, validation, args.hidden, args.epochs, args.lr, args.seed)
     _, embeddings, bias, head, output_bias, epoch = best
     args.model.parent.mkdir(parents=True, exist_ok=True)
     export(args.model, embeddings, bias, head, output_bias)
     blob = args.model.read_bytes()
-    heldout_error = sum(abs(evaluate_quantized(s, blob) - s["target"] * 1000)
-                        for s in heldout) / len(heldout)
+    heldout_error = sum(abs(evaluate_quantized(s, blob) - s["target"] * 1000) * s["weight"]
+                        for s in heldout) / sum(s["weight"] for s in heldout)
     report = {
         "status": "trained_candidate_not_proven_stronger",
+        "holdout_policy": "frozen_original_game_groups; canonical_position_without_ply; untouched_holdouts",
+        "loss_metric": "confidence_weighted_mean_absolute_error_cp",
         "source_file_sha256": hashlib.sha256(args.data.read_bytes()).hexdigest(),
         "model_sha256": hashlib.sha256(blob).hexdigest(),
         "source_counts": dict(sources), "total_samples": len(samples),
