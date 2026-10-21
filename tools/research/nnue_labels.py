@@ -84,6 +84,8 @@ def labels_from_diagnosis(diagnosis, games_by_id):
         elif (obs.get("position_command") != case["analysis_position_command"]
               or obs.get("history_key") != case["history_key"]):
             reason = "mismatched_history"
+        elif obs.get("research_decision_id"):
+            reason = "preapproved_knowledge_not_fresh_search"
         elif not (type(obs.get("requested_ms")) is int and obs["requested_ms"] > 0):
             reason = "missing_time"
         if reason:
@@ -138,8 +140,12 @@ def convert(archives, diagnosis, per_game):
     rejected = {}
     if diagnosis:
         diag = json.loads(Path(diagnosis).read_text(encoding="utf-8"))
+        if isinstance(diag, dict) and diag.get("schema") == "nnue-deep-study-v1":
+            if diag.get("status") != "analysis_complete_not_training_or_strength":
+                raise ValueError("incomplete deep-study checkpoint cannot become training data")
+            diag = diag.get("results")
         if not isinstance(diag, list):
-            raise ValueError("diagnosis must be saved list")
+            raise ValueError("diagnosis must be a completed research list")
         focused, rejected = labels_from_diagnosis(diag, ids)
         labels.extend(focused)
     if not labels:
