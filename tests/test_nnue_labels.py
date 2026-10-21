@@ -77,6 +77,24 @@ class LabelsTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "not a proven all-KUMOJI"):
                 nnue_labels.convert([Path(d)], None, 8)
 
+    def test_own_binary_paths_require_matching_fixed_commit_and_sha256(self):
+        with tempfile.TemporaryDirectory() as d:
+            archive(d)
+            path = Path(d, "manifest.json")
+            manifest = json.loads(path.read_text())
+            source = manifest["sources"][0]["metadata"]
+            source.update(engine_a="build/engine-a", engine_b="build/engine-b",
+                          sha256_a="a"*64, sha256_b="b"*64)
+            manifest.update(requested_ref_a="c"*40, requested_ref_b="c"*40)
+            path.write_text(json.dumps(manifest))
+            rows, meta = nnue_labels.convert([Path(d)], None, 8)
+            self.assertEqual(meta["independent_source_games"], 1)
+            self.assertEqual(rows[0]["origin"], "selfplay_result")
+            manifest["requested_ref_b"] = "d"*40
+            path.write_text(json.dumps(manifest))
+            with self.assertRaisesRegex(ValueError, "not a proven all-KUMOJI"):
+                nnue_labels.convert([Path(d)], None, 8)
+
     def test_tampered_research_history_is_rejected(self):
         with tempfile.TemporaryDirectory() as d:
             archive(d)
