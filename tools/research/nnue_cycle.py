@@ -12,6 +12,9 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import queue
+import threading
+import time
 import re
 import subprocess
 import sys
@@ -45,12 +48,18 @@ def immutable_file(path, content):
     path.write_bytes(content)
 
 
-def verify_native(binary, model, sfen, expected_cp):
+def verify_native(binary, model, sfen, expected_cp, knowledge, expected_positions=163):
     # Proper USI handshake and asynchronous search: avoid sending quit before
     # a move has actually been searched.
     p = subprocess.Popen([str(Path(binary).resolve())], stdin=subprocess.PIPE,
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                          text=True, bufsize=1)
+    messages = queue.Queue()
+    def reader():
+        for message in p.stdout:
+            messages.put(message)
+        messages.put(None)
+    threading.Thread(target=reader, daemon=True).start()
     try:
         for line in (
             "usi",
@@ -59,17 +68,21 @@ def verify_native(binary, model, sfen, expected_cp):
             "setoption name OpeningRandomNonLance value false",
             "setoption name SearchThreads value 1",
             "setoption name PositionKnowledge value true",
+            f"setoption name PositionKnowledgeFile value {Path(knowledge).resolve()}",
             "isready", "position sfen " + sfen,
             "eval", "go depth 1",
         ):
             p.stdin.write(line + "\n")
             p.stdin.flush()
-        # A bounded subprocess watchdog. readline itself blocks, so terminate
-        # when a complete engine response is seen; outer CI has a job timeout.
+        # Bounded watchdog even if engine deadlocks or stops producing output.
         transcript = []
-        for _ in range(200):
-            line = p.stdout.readline()
-            if not line:
+        end = time.monotonic() + 60
+        while time.monotonic() < end:
+            try:
+                line = messages.get(timeout=max(.01, end - time.monotonic()))
+            except queue.Empty:
+                break
+            if line is None:
                 break
             transcript.append(line.rstrip())
             if line.startswith("bestmove "):
@@ -77,6 +90,8 @@ def verify_native(binary, model, sfen, expected_cp):
         joined = "\n".join(transcript)
         if "neural_evaluation loaded width " not in joined:
             raise ValueError("candidate native NNUE did not load")
+        if f"info string position_knowledge loaded {expected_positions} positions file " not in joined:
+            raise ValueError("adopted position-knowledge asset not verified in candidate search")
         match = re.search(r"neural_evaluation static_cp_black (-?\d+)", joined)
         if not match or int(match.group(1)) != expected_cp:
             raise ValueError("native and training quantized evaluation disagree")
@@ -152,7 +167,8 @@ def execute(args):
     first = next(item for item in labels if item["sfen"])
     expected = train_nnue.evaluate_quantized(
         {"features": train_nnue.sparse_features(first["sfen"])}, model.read_bytes())
-    native = verify_native(args.engine, model, first["sfen"], expected)
+    native = verify_native(args.engine, model, first["sfen"], expected,
+                           args.knowledge, args.expected_positions)
     final = dict(
         schema="nnue-generation-v1",
         state="research_candidate_ready_for_independent_evaluation",
