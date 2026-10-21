@@ -18,6 +18,7 @@ if str(ROOT) not in sys.path:
 
 import shogi
 from tools.research.postgame_cases import load_archive, make_case, position_command
+from tools.research.nnue_split import allocate_roots
 
 
 def verified_outcome(game):
@@ -171,6 +172,13 @@ def convert(archives, diagnosis, per_game):
         if not isinstance(diag, list):
             raise ValueError("diagnosis must be a completed research list")
         focused, rejected = labels_from_diagnosis(diag, ids)
+        if len(ids) >= 3:
+            split_seed = (json.loads(Path(diagnosis).read_text()).get("parameters", {})
+                          .get("split_seed", 20261021)
+                          if isinstance(json.loads(Path(diagnosis).read_text()), dict) else 20261021)
+            train_ids = allocate_roots(ids, split_seed)["train"]
+            if any(label["root_game_id"] not in train_ids for label in focused):
+                raise ValueError("deep study touched validation/test original game: leakage")
         labels.extend(focused)
     if not labels:
         raise ValueError("no verified training labels")
