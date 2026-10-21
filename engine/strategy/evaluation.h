@@ -1,5 +1,6 @@
 #pragma once
 #include "strategy/attack_map.h"
+#include "strategy/nnue_eval.h"
 #include "strategy/search_research.h"
 #include "strategy/evaluation_params.h"
 #include "strategy/evaluation_v2_features.h"
@@ -161,11 +162,16 @@ class FeatureEvaluator {
 public:
     explicit FeatureEvaluator(EvaluationParameters p={},unsigned reuse_mask=0)
         :params_(p),reuse_mask_(reuse_mask){params_.validate();}
-    int operator()(const rules::Snapshot& s) const {return evaluate(s,params_,reuse_mask_).total;}
+    int operator()(const rules::Snapshot& s) const {
+        return nnue_ ? nnue_->evaluate(s) : evaluate(s,params_,reuse_mask_).total;
+    }
+    void set_neural_model(std::shared_ptr<const NnueModel> model) { nnue_ = std::move(model); }
+    bool neural_enabled() const { return static_cast<bool>(nnue_); }
     const EvaluationParameters& parameters() const {return params_;}
     void set_reuse_mask(unsigned mask) { reuse_mask_=mask & 15; }
 private:
     EvaluationParameters params_;
     unsigned reuse_mask_=0;
+    std::shared_ptr<const NnueModel> nnue_;
 };
 } // namespace shogi::strategy
