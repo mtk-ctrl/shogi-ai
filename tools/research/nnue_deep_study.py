@@ -43,31 +43,65 @@ def atomic_write(path, value):
     staging.replace(p)
 
 
+def observed_actor_drop(game, ply):
+    """Diagnostic-only disagreement across turns, never a teacher score."""
+    if ply >= len(game.moves) or ply < 1:
+        return None
+    before = game.row["moves"][ply - 1].get("search", {})
+    after = game.row["moves"][ply].get("search", {})
+    def exact(record):
+        return (record.get("score_status") == "recorded"
+                and type(record.get("score_cp_stm")) is int
+                and not record.get("score_lowerbound")
+                and not record.get("score_upperbound"))
+    if not exact(before) or not exact(after):
+        return None
+    # Both search scores are side-to-move relative; the next mover is the
+    # opposite side. A positive sum means the mover's position deteriorated.
+    return before["score_cp_stm"] + after["score_cp_stm"]
+
+
 def choose(games, max_cases, per_game, eligible_roots=None):
     if not (1 <= max_cases <= 96 and 1 <= per_game <= 4):
         raise ValueError("research case budget must meet bounded postgame scope")
-    candidates = []
+    # Sample uncertainty/loss signatures, not simply the first sorted game.
+    # An unchanged short search is never treated as proof of a good move.
+    buckets = {}
     for game in games:
-        if eligible_roots is not None and game.row["game_id"] not in eligible_roots:
-            continue
-        # Unresolved endings may still have diagnostic interest, but are not
-        # outcome teachers. Do not put them in this first complete-game study.
-        if game.outcome_status == "unresolved" or len(game.moves) < 8:
+        gid = game.row["game_id"]
+        if eligible_roots is not None and gid not in eligible_roots:
             continue
         n = len(game.moves)
-        # spread case selection across game phases, with bounded examples/game
-        chosen = sorted({max(1, min(n - 1, (k + 1) * n // (per_game + 1)))
-                         for k in range(per_game)})
-        for ply in chosen:
+        if game.outcome_status == "unresolved" or n < 10:
+            continue
+        candidate_plies = set()
+        drops = [(observed_actor_drop(game, ply), ply)
+                 for ply in range(8, n - 3)]
+        sharp = [(drop, ply) for drop, ply in drops
+                 if drop is not None and drop >= 100]
+        sharp.sort(key=lambda x: (-x[0], digest(f"{gid}:{x[1]}".encode())))
+        for drop, ply in sharp[:min(2, per_game)]:
+            candidate_plies.add(ply)
+        # Complement dramatic cases with spaced control positions, not an
+        # entire game of late losing moves. Never label a move correct because
+        # its game was won; this triage signal only allocates research time.
+        for k in range(1, per_game + 1):
+            candidate_plies.add(max(8, min(n - 4, k * n // (per_game + 1))))
+        records = []
+        for ply in sorted(candidate_plies):
             case = make_case(game, ply)
-            rank = digest((str(game.row["game_id"]) + ":" + str(ply)).encode())
-            candidates.append((rank, case))
-    # round robin across original games, then deterministically within group
-    buckets = {}
-    for rank, case in candidates:
-        buckets.setdefault(case["source"]["game_id"], []).append((rank, case))
-    for group in buckets.values():
-        group.sort()
+            drop = observed_actor_drop(game, ply)
+            case["triage"] = {
+                "reason": "suspected_loss" if drop is not None and drop >= 100 else "phase_control",
+                "observed_actor_drop_cp": drop,
+                "only_for_case_selection": True,
+            }
+            priority = (0 if drop is not None and drop >= 100 else 1,
+                        -drop if drop is not None else 0,
+                        digest(f"{gid}:{ply}".encode()))
+            records.append((priority, case))
+        records.sort(key=lambda entry: entry[0])
+        buckets[gid] = records[:per_game]
     selected = []
     seen_positions = set()
     for index in range(per_game):
