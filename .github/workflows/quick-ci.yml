@@ -12,6 +12,7 @@ on:
       - "tools/research/nnue_cycle.py"
       - "tests/test_nnue_labels.py"
       - "tests/test_nnue_study.py"
+      - "tests/test_nnue_end_to_end.py"
       - "tests/nnue_evaluator_test.cpp"
       - "tests/test_nnue_pipeline.py"
       - "engine/rules/**"
@@ -86,6 +87,7 @@ jobs:
           python3 tests/test_nnue_labels.py
           python3 tests/test_nnue_study.py
           python3 tests/test_nnue_pipeline.py build/shogi-ai
+          python3 tests/test_nnue_end_to_end.py build/shogi-ai
 
       - name: Adopted evaluation and phase tests
         run: |
