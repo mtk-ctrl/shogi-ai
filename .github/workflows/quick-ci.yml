@@ -8,7 +8,10 @@ on:
       - "engine/main.cpp"
       - "tools/research/train_nnue.py"
       - "tools/research/nnue_labels.py"
+      - "tools/research/nnue_deep_study.py"
+      - "tools/research/nnue_cycle.py"
       - "tests/test_nnue_labels.py"
+      - "tests/test_nnue_study.py"
       - "tests/nnue_evaluator_test.cpp"
       - "tests/test_nnue_pipeline.py"
       - "engine/rules/**"
@@ -81,6 +84,7 @@ jobs:
           c++ -std=c++17 -Iengine tests/nnue_evaluator_test.cpp -o build/nnue-test
           ./build/nnue-test
           python3 tests/test_nnue_labels.py
+          python3 tests/test_nnue_study.py
           python3 tests/test_nnue_pipeline.py build/shogi-ai
 
       - name: Adopted evaluation and phase tests
