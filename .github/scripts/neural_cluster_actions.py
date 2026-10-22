@@ -66,7 +66,8 @@ cancel another run to obtain capacity. Platform scheduling remains authoritative
     if not free:raise RuntimeError('no free runners; other active runs were left running')
     lanes=min(requested,free)
     nc.atomic_json('runner-allocation.json',dict(account_limit=20,other_running_jobs=occupied,
-        requested=requested,allocated=lanes,current_run=current,visible_repositories=len(repos)))
+        requested=requested,allocated=lanes,current_run=current,visible_repositories=len(repos),
+        repository_scope='public_owner_repositories',private_repository_capacity_known=False))
     print(json.dumps(nc.read('runner-allocation.json')))
     return lanes
 
@@ -133,6 +134,7 @@ def prepare():
     if not (work/'current').exists():
         lanes=available_lanes(plan['parameters']['runners'])
         nc.begin(work,lanes)
+        shutil.copy2('runner-allocation.json',work/'current/runner-allocation.json')
     export_state()
 
 
@@ -218,7 +220,7 @@ def publish():
 def finish():
     restore_input()
     try:
-        if Path('run/current').exists():nc.finish('run')
+        if Path('run/current').exists() or Path('run/finalization.json').exists():nc.finish('run')
         receipt=publish()
         if os.environ.get('GITHUB_STEP_SUMMARY'):
             _,plan,state=nc.context('run')

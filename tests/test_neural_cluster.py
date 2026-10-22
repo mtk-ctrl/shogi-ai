@@ -152,5 +152,58 @@ class ClusterTests(unittest.TestCase):
                 self.assertEqual((work/'learner/student/model.pt').read_bytes(),b'learned weights')
                 self.assertIn('studied-position',nc.read(work/'state.json')['seen_positions'])
 
+    def test_finalization_recovers_after_copy_move_and_state_save_without_double_promotion(self):
+        # These are destructive boundaries: a fresh runner must finish from
+        # uploaded state even when current/models or current itself is gone.
+        for failure in ('learner_copy','history_move','state_saved'):
+            with self.subTest(failure=failure),tempfile.TemporaryDirectory() as tmp:
+                root=Path(tmp);work=root/'run';current=work/'current';current.mkdir(parents=True)
+                plan={'parameters':dict(mode='standard',generations=1)}
+                state=dict(next_generation=0,accepted=0,parent=None,seen_positions=[],completed=[])
+                nc.atomic_json(work/'state.json',state)
+                for kind in ('teacher','student'):
+                    (current/kind).mkdir()
+                    (current/kind/'model.pt').write_bytes(b'learned weights')
+                    (current/kind/'resume.pt').write_bytes(b'optimizer state')
+                    nc.atomic_json(current/kind/'report.json',{})
+                (current/'candidate.nnue').write_bytes(b'native candidate')
+                nc.atomic_json(current/'cases.json',[{'position_key':'studied-position'}])
+                nc.atomic_json(work/'research-replay.json',[])
+                nc.atomic_json(current/'screen-decision.json',dict(pass_screen=True))
+                nc.atomic_json(current/'evaluate-parent.json',dict(games=1000,pair_scores=[1]*500,
+                    movetime=200,invalid_games=0))
+                (work/'tasks.json').write_text('{}')
+                atomic=nc.atomic_json;unlink=Path.unlink
+                def fail_copy(source,destination,*args,**kwargs):
+                    Path(destination).mkdir(parents=True)
+                    (Path(destination)/'model.pt').write_bytes(b'partial')
+                    raise OSError('injected learner copy interruption')
+                def fail_state(path,value):
+                    if Path(path).name=='state.json':raise OSError('injected history move interruption')
+                    return atomic(path,value)
+                def fail_unlink(path,*args,**kwargs):
+                    if path.name=='finalization.json':raise OSError('injected state save interruption')
+                    return unlink(path,*args,**kwargs)
+                with patch.object(nc,'context',side_effect=lambda path:(Path(path),plan,nc.read(Path(path)/'state.json'))):
+                    target,attribute,replacement=(
+                        (nc.shutil,'copytree',fail_copy) if failure=='learner_copy' else
+                        (nc,'atomic_json',fail_state) if failure=='history_move' else
+                        (Path,'unlink',fail_unlink))
+                    with patch.object(target,attribute,replacement),self.assertRaisesRegex(OSError,'injected'):
+                        nc.finish(work)
+                    self.assertTrue((work/'finalization.json').exists())
+                    nc.pack(work,root/'interrupted.tgz')
+                    restored=root/'fresh-runner';nc.unpack(root/'interrupted.tgz',restored)
+                    result=nc.finish(restored)
+                after=nc.read(restored/'state.json')
+                self.assertTrue(result['decision']['accepted'])
+                self.assertEqual((after['accepted'],after['next_generation'],len(after['completed'])),(1,1,1))
+                self.assertEqual(after['seen_positions'],['studied-position'])
+                self.assertEqual((restored/'parent.nnue').read_bytes(),b'native candidate')
+                self.assertEqual((restored/'learner/student/resume.pt').read_bytes(),b'optimizer state')
+                self.assertFalse((restored/'current').exists())
+                self.assertFalse((restored/'finalization.json').exists())
+                self.assertEqual(nc.read(restored/'history/g000/result.json'),result)
+
 
 if __name__=='__main__':unittest.main()

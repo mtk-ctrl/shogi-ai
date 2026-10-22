@@ -421,46 +421,73 @@ def evaluation_tasks(work):
 def finish(work):
     from tools.research.neural_arena import gate
     work,plan,state=context(work); p=plan['parameters']; current=work/'current'
-    decision=read(current/'screen-decision.json')
-    result=dict(generation=state['next_generation'],screen=decision,formal_engine_adopted=False,
-        candidate_sha256=sha(current/'candidate.nnue'),
-        teacher=read(current/'teacher/report.json'),student=read(current/'student/report.json'),
-        case_count=len(read(current/'cases.json')),replay_rows=len(read(work/'research-replay.json')),
-        stage_timings={f.stem:read(f) for f in current.glob('*-timing.json')})
-    if decision['pass_screen']:
-        parent=read(current/'evaluate-parent.json')
-        baseline=read(current/'evaluate-baseline.json') if state['parent'] else parent
-        result.update(parent_match=parent,baseline_match=baseline,
-            decision=gate(parent,baseline,state['next_generation'],p['generations']))
+    pending=work/'finalization.json'
+    if pending.exists():
+        transaction=read(pending)
+        if (transaction['plan_sha256']!=identity(plan) or
+            identity(state) not in (transaction['before_state_sha256'],identity(transaction['state']))):
+            raise ValueError('finalization belongs to a different generation state')
+        result=transaction['result']
     else:
-        result['decision']=dict(accepted=False,reason='screen_rejected',formal_engine_adopted=False)
-    if p['mode']=='smoke':
-        result['decision'].update(accepted=False,reason='integration_only_not_a_strength_test')
-    if result['decision']['accepted']:
-        shutil.copy2(current/'candidate.nnue',work/'parent.nnue')
-        state['parent']='parent.nnue'
-        state['accepted']+=1
-    for kind in ('teacher','student'):
-        destination=work/'learner'/kind
-        if destination.exists():
-            shutil.rmtree(destination)
-        shutil.copytree(current/kind,destination)
-    state['seen_positions']=sorted(set(state['seen_positions'])|
-        {c['position_key'] for c in read(current/'cases.json')})
-    atomic_json(current/'result.json',result)
-    state['completed'].append(dict(generation=state['next_generation'],
-        accepted=result['decision']['accepted'],candidate_sha256=result['candidate_sha256']))
-    state['next_generation']+=1
+        decision=read(current/'screen-decision.json')
+        result=dict(generation=state['next_generation'],screen=decision,formal_engine_adopted=False,
+            candidate_sha256=sha(current/'candidate.nnue'),
+            teacher=read(current/'teacher/report.json'),student=read(current/'student/report.json'),
+            case_count=len(read(current/'cases.json')),replay_rows=len(read(work/'research-replay.json')),
+            stage_timings={f.stem:read(f) for f in current.glob('*-timing.json')})
+        if decision['pass_screen']:
+            parent=read(current/'evaluate-parent.json')
+            baseline=read(current/'evaluate-baseline.json') if state['parent'] else parent
+            result.update(parent_match=parent,baseline_match=baseline,
+                decision=gate(parent,baseline,state['next_generation'],p['generations']))
+        else:
+            result['decision']=dict(accepted=False,reason='screen_rejected',formal_engine_adopted=False)
+        if p['mode']=='smoke':
+            result['decision'].update(accepted=False,reason='integration_only_not_a_strength_test')
+        next_state=copy.deepcopy(state)
+        if result['decision']['accepted']:
+            next_state['parent']='parent.nnue'
+            next_state['accepted']+=1
+        next_state['seen_positions']=sorted(set(state['seen_positions'])|
+            {c['position_key'] for c in read(current/'cases.json')})
+        next_state['completed'].append(dict(generation=state['next_generation'],
+            accepted=result['decision']['accepted'],candidate_sha256=result['candidate_sha256']))
+        next_state['next_generation']+=1
+        next_state['status']='completed' if next_state['next_generation']>=p['generations'] else 'ready_for_next_generation'
+        transaction=dict(plan_sha256=identity(plan),before_state_sha256=identity(state),
+            state=next_state,result=result,
+            learner_files={kind:file_manifest(current/kind) for kind in ('teacher','student')})
+        # Persist the entire transition BEFORE removing or moving any input.
+        # A retry can finish it even after current was renamed or state saved.
+        atomic_json(pending,transaction)
     history=work/'history'/f"g{result['generation']:03d}"
-    history.parent.mkdir(exist_ok=True)
-    # Latest optimizer/learner stays resumable; previous candidate binaries and
-    # complete actual game archives remain evidence. No raw PV/tree retention.
-    shutil.rmtree(current/'teacher')
-    shutil.rmtree(current/'student')
-    shutil.move(str(current),history)
-    (work/'tasks.json').unlink()
-    state['status']='completed' if state['next_generation']>=p['generations'] else 'ready_for_next_generation'
-    atomic_json(work/'state.json',state)
+    record=current if current.exists() else history
+    if sha(record/'candidate.nnue')!=result['candidate_sha256']:
+        raise ValueError('finalization candidate changed')
+    if result['decision']['accepted']:
+        shutil.copy2(record/'candidate.nnue',work/'parent.nnue')
+    for kind in ('teacher','student'):
+        source=current/kind
+        destination=work/'learner'/kind
+        expected=transaction['learner_files'][kind]
+        if source.exists():
+            if file_manifest(source)!=expected:
+                raise ValueError('finalization source learner changed')
+            if file_manifest(destination)!=expected:
+                if destination.exists():shutil.rmtree(destination)
+                shutil.copytree(source,destination)
+        if file_manifest(destination)!=expected:
+            raise ValueError('finalization learner missing or changed')
+    atomic_json(record/'result.json',result)
+    if current.exists():
+        for kind in ('teacher','student'):
+            if (current/kind).exists():shutil.rmtree(current/kind)
+        history.parent.mkdir(exist_ok=True)
+        if history.exists():raise ValueError('duplicate generation history')
+        shutil.move(str(current),history)
+    (work/'tasks.json').unlink(missing_ok=True)
+    atomic_json(work/'state.json',transaction['state'])
+    pending.unlink()
     return result
 
 
