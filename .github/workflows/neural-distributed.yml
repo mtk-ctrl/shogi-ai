@@ -1,0 +1,91 @@
+name: Neural 20 Runner Learning
+run-name: Neural20 ${{ github.run_number }}
+'on':
+  workflow_dispatch:
+    inputs:
+      checkpoint:
+        description: Verified Release checkpoint manifest; empty for REQUEST.json
+        required: false
+        type: string
+        default: ''
+  push:
+    branches:
+    - research/nnue-selfplay-pipeline-20261021
+    paths:
+    - research/neural-distributed/REQUEST.json
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: neural-distributed-research
+  cancel-in-progress: false
+jobs:
+  initialize:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      GH_TOKEN: ${{ github.token }}
+    timeout-minutes: 20
+    outputs:
+      more: ${{ steps.start.outputs.more }}
+    steps:
+    - uses: actions/checkout@v5
+    - uses: ./.github/actions/neural-runtime
+    - name: Validate before heavy jobs
+      run: 'python3 scripts/check_match_workflows.py
+
+        python3 scripts/check_workflow_inventory.py --strict
+
+        python3 -m unittest discover -s tests -p test_neural_cluster.py'
+    - id: start
+      name: Restore verified source and fixed engine
+      env:
+        CHECKPOINT: ${{ inputs.checkpoint }}
+      run: python3 .github/scripts/neural_cluster_actions.py bootstrap
+    - name: Save neural20-initial
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: neural20-initial
+        path: out/state.tgz
+        overwrite: true
+        compression-level: 0
+        retention-days: 30
+        if-no-files-found: warn
+  g0:
+    needs:
+    - initialize
+    if: needs.initialize.outputs.more == 'true'
+    permissions:
+      contents: write
+      actions: read
+    uses: ./.github/workflows/neural-generation.yml
+    with:
+      prefix: neural20-g0
+      state_artifact: neural20-initial
+  g1:
+    needs:
+    - g0
+    if: needs.g0.outputs.more == 'true'
+    permissions:
+      contents: write
+      actions: read
+    uses: ./.github/workflows/neural-generation.yml
+    with:
+      prefix: neural20-g1
+      state_artifact: ${{ needs.g0.outputs.state_artifact }}
+  g2:
+    needs:
+    - g1
+    if: needs.g1.outputs.more == 'true'
+    permissions:
+      contents: write
+      actions: read
+    uses: ./.github/workflows/neural-generation.yml
+    with:
+      prefix: neural20-g2
+      state_artifact: ${{ needs.g1.outputs.state_artifact }}

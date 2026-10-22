@@ -1,0 +1,10 @@
+{
+  "enabled": false,
+  "parameters": {
+    "cycle_id": "neural20-integration-20261022",
+    "mode": "smoke",
+    "generations": 2,
+    "runners": 20
+  },
+  "checkpoint": ""
+}

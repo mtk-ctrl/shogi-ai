@@ -54,9 +54,11 @@ def options(knowledge, model=None):
 
 
 def paired_match(binary, knowledge, output, games, seed, candidate=None, parent=None,
-                 max_plies=400, movetime=200):
-    if games < 2 or games%2 or movetime < 1:
+                 max_plies=400, movetime=200, pair_offset=0):
+    if games < 2 or games%2 or movetime < 1 or pair_offset < 0:
         raise ValueError('even paired games and positive time required')
+    if seed < 0 or seed + 2 * (pair_offset + games//2) > 2147483647:
+        raise ValueError('paired seeds exceed the USI integer range')
     output=Path(output)
     output.mkdir(parents=True,exist_ok=True)
     oa,ob=options(knowledge,candidate),options(knowledge,parent)
@@ -64,12 +66,14 @@ def paired_match(binary, knowledge, output, games, seed, candidate=None, parent=
         candidate_sha256=digest(candidate) if candidate else None,
         parent_sha256=digest(parent) if parent else None,games=games,seed=seed,
         max_plies=max_plies,movetime=movetime)
+    if pair_offset:
+        identity['pair_offset']=pair_offset
     plan=output/'plan.json'
     if plan.exists() and json.loads(plan.read_text()) != identity:
         raise ValueError('match resume inputs changed')
     atomic_json(plan,identity)
     paths=[]
-    for pair in range(games//2):
+    for pair in range(pair_offset,pair_offset+games//2):
         path=output/f'pair-{pair:05d}.json'
         paths.append(path)
         if path.exists():
@@ -98,23 +102,31 @@ def paired_match(binary, knowledge, output, games, seed, candidate=None, parent=
                 search={'A':search_summary(a),'B':search_summary(b)},
                 elapsed_seconds=time.monotonic()-started,telemetry_schema_version=1)
             atomic_json(path,record)
-            print(json.dumps(dict(pair=pair+1,total=games//2,wins_a=record['wins_a'],
+            print(json.dumps(dict(pair=pair-pair_offset+1,total=games//2,wins_a=record['wins_a'],
                                   wins_b=record['wins_b'],draws=record['draws'])),flush=True)
         finally:
             a.close()
             if b:
                 b.close()
     records=[json.loads(p.read_text()) for p in paths]
+    result=summarize_records(records,paths,movetime)
+    atomic_json(output/'summary.json',result)
+    return result
+
+
+def summarize_records(records, paths, movetime=200):
+    """Aggregate complete color pairs; workers never average rounded win rates."""
+    if not records or any(len(r['details']) != 2 for r in records):
+        raise ValueError('complete paired records required')
     # Bounded pair scores, including two correlated colors in one observation.
     scores=[(r['wins_a']+.5*r['draws'])/2 for r in records]
     invalid=[g for r in records for g in r['details']
              if 'illegal_by' in g or g['reason'] in ('move_limit','max_plies','error','timeout')]
-    result=dict(games=games,pairs=len(scores),score=sum(scores)/len(scores),
+    result=dict(games=2*len(records),pairs=len(scores),score=sum(scores)/len(scores),
         pair_scores=scores,invalid_games=len(invalid),movetime=movetime,
         wins=sum(r['wins_a'] for r in records),losses=sum(r['wins_b'] for r in records),
         draws=sum(r['draws'] for r in records),files=[str(p.resolve()) for p in paths],
         elapsed_seconds=sum(r['elapsed_seconds'] for r in records))
-    atomic_json(output/'summary.json',result)
     return result
 
 

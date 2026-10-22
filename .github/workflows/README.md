@@ -18,6 +18,8 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 | `.github/workflows/timebox40-long-research.yml` | 研究request更新 / 手動 | 指定した時間枠内で未研究の序盤・中盤・終盤計40局面を各50分研究。最大20runnerを2巡利用し原本はReleasesへ保存。既存研究との重複を除外し、新知識は自動正式採用しない |
 | `.github/workflows/opening20-adopt.yml` | 明示的採用依頼のrequest更新 / 手動 | 2026-10-09承認の序盤20局面50分研究を既存53局面へ追記し、合法性・研究結果・直接選択・73件・長期保存を検証して採用版を更新する |\n| `.github/workflows/opening20-followup.yml` | request更新 / 手動 | 50分研究で終了間際に研究手が変わった序盤3局面を3runner・各30分独立再探索（固定した元Engineと知識使用、旧研究との比較、結果は自動採用しない） | 
 | `.github/workflows/opening20-long-research.yml` | 選定済み局面request更新 / 手動 | 既存棋譜から抽出した未研究の序盤20局面を1台1局面・50分並列研究。研究記録だけを保存し局面知識へ自動採用しない |\n| `.github/workflows/position10-long-research.yml` | 研究依頼JSON更新 / 手動 | 採用済み局面知識と重複しない序盤3・中盤4・終盤3の計10局面を、現行エンジンで10runner各50分研究。研究原本はReleasesへ保存し、正式採用はしない |
+| `.github/workflows/neural-distributed.yml` | 明示REQUEST更新 / 手動 | 最大20runnerで自己対局・40局面の長考・MCTS・予備/本評価を分散し、集約学習・研究親判定・最大3世代・Release保存/再取得検証まで自動接続。正式Engine採用なし |
+| `.github/workflows/neural-generation.yml` | 上記からのworkflow_call | 1世代の分配/集約。20runnerを管理jobで占有せず、同一seed対を保持し、失敗laneを再開。学習と集計は単一job |
 | `.github/workflows/nnue-real-source-pilot.yml` | 単一検証REQUEST更新 / 手動 | 月別Releaseの自己対局原本を安全に復元し、短い再分析→自作NNUE学習→探索までを1局面検証。結果は30日artifactのみ。研究親・正式Engine採用なし |
 | `.github/workflows/quick-ci.yml` | 関連push / 手動 | エンジンの短時間CI。通常開発の基本検査 |
 | `.github/workflows/docs-rule-check.yml` | docs/workflow変更 / PR / 手動 | Rule・ルーター・workflow一覧の整合性 |

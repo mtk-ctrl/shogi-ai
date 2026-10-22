@@ -61,7 +61,8 @@ def observed_actor_drop(game, ply):
     return before["score_cp_stm"] + after["score_cp_stm"]
 
 
-def choose(games, max_cases, per_game, eligible_roots=None):
+def choose(games, max_cases, per_game, eligible_roots=None, excluded_positions=None,
+           selection_seed=None):
     if not (1 <= max_cases <= 96 and 1 <= per_game <= 4):
         raise ValueError("research case budget must meet bounded postgame scope")
     # Sample uncertainty/loss signatures, not simply the first sorted game.
@@ -103,9 +104,11 @@ def choose(games, max_cases, per_game, eligible_roots=None):
         records.sort(key=lambda entry: entry[0])
         buckets[gid] = records[:per_game]
     selected = []
-    seen_positions = set()
+    seen_positions = set(excluded_positions or ())
+    ordered_roots = sorted(buckets, key=(lambda gid: digest(f'{selection_seed}:{gid}'.encode()))
+                           if selection_seed is not None else None)
     for index in range(per_game):
-        for gid in sorted(buckets):
+        for gid in ordered_roots:
             if index < len(buckets[gid]) and len(selected) < max_cases:
                 candidate = buckets[gid][index][1]
                 key = candidate["position_key"]
