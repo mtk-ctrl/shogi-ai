@@ -1,5 +1,5 @@
 {
-  "enabled": false,
+  "enabled": true,
   "parameters": {
     "cycle_id": "neural20-integration-20261022",
     "mode": "smoke",
