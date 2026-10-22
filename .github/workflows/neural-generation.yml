@@ -36,11 +36,6 @@ jobs:
     steps:
     - uses: actions/checkout@v5
     - uses: ./.github/actions/neural-runtime
-    - name: Restore incoming
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ inputs.state_artifact }}
-        path: incoming
     - name: Restore resume
       uses: actions/download-artifact@v4
       with:
@@ -48,6 +43,13 @@ jobs:
         path: resume
       if: github.run_attempt != '1'
       continue-on-error: true
+      id: resume
+    - name: Restore incoming
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.state_artifact }}
+        path: incoming
+      if: steps.resume.outcome != 'success'
     - name: Advance verified generation
       id: advance
       run: python3 .github/scripts/neural_cluster_actions.py prepare
@@ -138,11 +140,6 @@ jobs:
     steps:
     - uses: actions/checkout@v5
     - uses: ./.github/actions/neural-runtime
-    - name: Restore incoming
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ inputs.prefix }}-prepared-state
-        path: incoming
     - name: Restore resume
       uses: actions/download-artifact@v4
       with:
@@ -150,6 +147,13 @@ jobs:
         path: resume
       if: github.run_attempt != '1'
       continue-on-error: true
+      id: resume
+    - name: Restore incoming
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-prepared-state
+        path: incoming
+      if: steps.resume.outcome != 'success'
     - uses: actions/download-artifact@v4
       with:
         pattern: ${{ inputs.prefix }}-selfplay-*
@@ -244,11 +248,6 @@ jobs:
     steps:
     - uses: actions/checkout@v5
     - uses: ./.github/actions/neural-runtime
-    - name: Restore incoming
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ inputs.prefix }}-selected-state
-        path: incoming
     - name: Restore resume
       uses: actions/download-artifact@v4
       with:
@@ -256,6 +255,13 @@ jobs:
         path: resume
       if: github.run_attempt != '1'
       continue-on-error: true
+      id: resume
+    - name: Restore incoming
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-selected-state
+        path: incoming
+      if: steps.resume.outcome != 'success'
     - uses: actions/download-artifact@v4
       with:
         pattern: ${{ inputs.prefix }}-study-*
@@ -350,11 +356,6 @@ jobs:
     steps:
     - uses: actions/checkout@v5
     - uses: ./.github/actions/neural-runtime
-    - name: Restore incoming
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ inputs.prefix }}-teacher-state
-        path: incoming
     - name: Restore resume
       uses: actions/download-artifact@v4
       with:
@@ -362,6 +363,13 @@ jobs:
         path: resume
       if: github.run_attempt != '1'
       continue-on-error: true
+      id: resume
+    - name: Restore incoming
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-teacher-state
+        path: incoming
+      if: steps.resume.outcome != 'success'
     - uses: actions/download-artifact@v4
       with:
         pattern: ${{ inputs.prefix }}-mcts-*
@@ -458,11 +466,6 @@ jobs:
     steps:
     - uses: actions/checkout@v5
     - uses: ./.github/actions/neural-runtime
-    - name: Restore incoming
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ inputs.prefix }}-student-state
-        path: incoming
     - name: Restore resume
       uses: actions/download-artifact@v4
       with:
@@ -470,6 +473,13 @@ jobs:
         path: resume
       if: github.run_attempt != '1'
       continue-on-error: true
+      id: resume
+    - name: Restore incoming
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-student-state
+        path: incoming
+      if: steps.resume.outcome != 'success'
     - uses: actions/download-artifact@v4
       with:
         pattern: ${{ inputs.prefix }}-screen-*
@@ -567,11 +577,6 @@ jobs:
     steps:
     - uses: actions/checkout@v5
     - uses: ./.github/actions/neural-runtime
-    - name: Restore incoming
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ inputs.prefix }}-screened-state
-        path: incoming
     - name: Restore resume
       uses: actions/download-artifact@v4
       with:
@@ -579,6 +584,13 @@ jobs:
         path: resume
       if: github.run_attempt != '1'
       continue-on-error: true
+      id: resume
+    - name: Restore incoming
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-screened-state
+        path: incoming
+      if: steps.resume.outcome != 'success'
     - uses: actions/download-artifact@v4
       with:
         pattern: ${{ inputs.prefix }}-evaluate-*
@@ -610,7 +622,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      actions: read
+      actions: write
     env:
       OMP_NUM_THREADS: '2'
       MKL_NUM_THREADS: '2'
@@ -629,12 +641,6 @@ jobs:
     steps:
     - uses: actions/checkout@v5
     - uses: ./.github/actions/neural-runtime
-    - name: Restore incoming
-      uses: actions/download-artifact@v4
-      with:
-        name: ${{ needs.screened.outputs.evaluate == 'true' && format('{0}-evaluated-state', inputs.prefix) || format('{0}-screened-state', inputs.prefix)
-          }}
-        path: incoming
     - name: Restore resume
       uses: actions/download-artifact@v4
       with:
@@ -642,6 +648,14 @@ jobs:
         path: resume
       if: github.run_attempt != '1'
       continue-on-error: true
+      id: resume
+    - name: Restore incoming
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ needs.screened.outputs.evaluate == 'true' && format('{0}-evaluated-state', inputs.prefix) || format('{0}-screened-state', inputs.prefix)
+          }}
+        path: incoming
+      if: steps.resume.outcome != 'success'
     - name: Advance verified generation
       id: advance
       run: python3 .github/scripts/neural_cluster_actions.py finish
@@ -665,3 +679,7 @@ jobs:
         compression-level: 0
         retention-days: 30
         if-no-files-found: error
+    - name: Remove verified redundant transport artifacts
+      run: python3 .github/scripts/neural_cluster_actions.py prune --prefix "$PREFIX"
+      env:
+        PREFIX: ${{ inputs.prefix }}

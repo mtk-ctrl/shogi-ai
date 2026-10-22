@@ -162,6 +162,15 @@ def reduce(stage):
             for bundle in sorted(Path('downloads').glob('*/task.tgz')):
                 lane=int(bundle.parent.name.rsplit('-',1)[1])
                 nc.unpack(bundle,Path('results')/f'lane-{lane:02d}')
+            # Preserve compact worker provenance and selected MCTS evidence
+            # before the temporary transport artifacts can be removed.
+            audit=Path('run/current/worker-audit')/stage
+            audit.mkdir(parents=True,exist_ok=True)
+            for receipt in Path('results').glob('lane-*/receipt.json'):
+                shutil.copy2(receipt,audit/(receipt.parent.name+'.json'))
+                if stage=='mcts':
+                    shutil.copy2(receipt.parent/'mcts-checkpoint.json',
+                                 audit/(receipt.parent.name+'-mcts.json'))
             nc.reduce_stage('run','results')
     finally:
         export_state()
@@ -224,17 +233,46 @@ def finish():
         export_state()
 
 
+def prune(prefix):
+    """Remove only this completed generation's redundant transfer artifacts.
+
+    Complete game archives, neural checkpoints, selected research and worker
+    receipts have already been published and read back successfully. Keep the
+    completed state artifact for the next generation and the publication receipt.
+    """
+    if not re.fullmatch('neural20-g[0-2]',prefix):raise ValueError('invalid generation prefix')
+    if nc.read('publication-receipt.json').get('verified') is not True:
+        raise ValueError('cannot prune before verified durable publication')
+    repo=os.environ['GITHUB_REPOSITORY'];run=os.environ['GITHUB_RUN_ID']
+    artifacts=[];page=1
+    while True:
+        rows=api(f'repos/{repo}/actions/runs/{run}/artifacts?per_page=100&page={page}')['artifacts']
+        artifacts.extend(rows)
+        if len(rows)<100:break
+        page+=1
+    keep={prefix+'-complete-state',prefix+'-publication'}
+    removed=[]
+    for item in artifacts:
+        if item['name'].startswith(prefix+'-') and item['name'] not in keep:
+            gh('api','--method','DELETE',f"repos/{repo}/actions/artifacts/{item['id']}")
+            removed.append(dict(id=item['id'],name=item['name'],bytes=item['size_in_bytes']))
+    nc.atomic_json('pruned-transfers.json',removed)
+    print(json.dumps(dict(removed_artifacts=len(removed),bytes=sum(r['bytes'] for r in removed))))
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('command',choices=('bootstrap','prepare','worker','reduce','finish'))
+    p.add_argument('command',choices=('bootstrap','prepare','worker','reduce','finish','prune'))
     p.add_argument('--lane',type=int)
     p.add_argument('--stage')
+    p.add_argument('--prefix')
     args=p.parse_args()
     if args.command=='bootstrap':bootstrap()
     elif args.command=='prepare':prepare()
     elif args.command=='worker':run_worker(args.lane)
     elif args.command=='reduce':reduce(args.stage)
     elif args.command=='finish':finish()
+    elif args.command=='prune':prune(args.prefix)
 
 
 if __name__=='__main__':main()
