@@ -1,0 +1,307 @@
+{
+  "verified_at": "2026-10-23T08:00:30.536729+00:00",
+  "run_id": 39889330568,
+  "cycle_id": "neural20-standard-20261023",
+  "generation": 0,
+  "source_commit": "457e7d876540c5270c399031a563e36c04d53995",
+  "release_manifest": "neural20-neural20-standard-20261023-g000-dcd0430ffdc1.json",
+  "bundle_sha256": "dcd0430ffdc18b367f3f8b5bff62d7d4d2396303c553bd967f774e6cbfb89187",
+  "bundle_bytes": 204450830,
+  "bundle_files_verified": 130,
+  "plan_identity_verified": true,
+  "fixed_assets_verified": true,
+  "implementation_identity_verified": true,
+  "source_manifest_verified": true,
+  "parameters": {
+    "branch_ms": 600000,
+    "cases": 40,
+    "cycle_id": "neural20-standard-20261023",
+    "epochs": 20,
+    "generations": 3,
+    "long_ms": 3000000,
+    "match_games": 1000,
+    "max_plies": 400,
+    "medium_ms": 600000,
+    "mode": "standard",
+    "runners": 20,
+    "samples_per_game": 64,
+    "screen_games": 80,
+    "seed": 20261022,
+    "selfplay_games": 100,
+    "simulations": 512,
+    "split_seed": 20261021,
+    "threads": 2,
+    "width": 128
+  },
+  "archives": [
+    {
+      "path": "archives/g000",
+      "games": 100,
+      "plies": 11164,
+      "archive_sha256": "d0c3b4c9c5db877f1ea517bb580a2caf5ddc7b7a08483c41352474b755b89bb2",
+      "outcomes": {
+        "verified_win_loss": 100
+      },
+      "winners": {
+        "A": 52,
+        "B": 48
+      },
+      "all_moves_legally_replayed": true
+    },
+    {
+      "path": "archives/source",
+      "games": 300,
+      "plies": 33600,
+      "archive_sha256": "054ec05eeb3eef1166a06a8bfd7b29a74c7aaf0fde2640dca21f8a3bc98ffd75",
+      "outcomes": {
+        "verified_win_loss": 298,
+        "unresolved": 1,
+        "verified_draw": 1
+      },
+      "winners": {
+        "B": 141,
+        "A": 157,
+        "None": 2
+      },
+      "all_moves_legally_replayed": true
+    },
+    {
+      "path": "history/g000/evaluation-archives/screen-parent",
+      "games": 80,
+      "plies": 6705,
+      "archive_sha256": "f4f635fedb908bba2ffae4d8bdb3a1a1301fc55232d7ba383bb28d1d63622033",
+      "outcomes": {
+        "verified_win_loss": 80
+      },
+      "winners": {
+        "B": 79,
+        "A": 1
+      },
+      "all_moves_legally_replayed": true
+    }
+  ],
+  "state": {
+    "accepted": 0,
+    "completed": [
+      {
+        "accepted": false,
+        "candidate_sha256": "c724e3fb5c1284299aacb9ae1fd44c73f4958f8d4cb895632f85e3efed15184e",
+        "generation": 0
+      }
+    ],
+    "formal_engine_adopted": false,
+    "lanes": 20,
+    "next_generation": 1,
+    "parent": null,
+    "plan_sha256": "c3aaeea115560d6f0a1aeed05961f9662caf117d9bee6f67815addc67498cf59",
+    "status": "ready_for_next_generation"
+  },
+  "research_cases": 40,
+  "unique_research_positions": 40,
+  "research_cases_train_only": true,
+  "replay_rows": 78,
+  "replay_origins": {
+    "own_deep_search": 38,
+    "own_mcts": 40
+  },
+  "study_statuses": {
+    "studied_and_compared": 31,
+    "studied": 9
+  },
+  "deep_score_kinds": {
+    "cp": 38,
+    "mate": 2
+  },
+  "model_files": {
+    "learner/teacher/model.pt": "c95cd1e370766a66680027080c04ad1eb3e2e624c5a9e0412723b82c320e1ea5",
+    "learner/teacher/report.json": "cf20c46c9a7d47eb7877c02425ab3d7321a26aaa3595706632a7eb3280dbcb58",
+    "learner/teacher/resume.pt": "008f044b445863988d8053bc7a0d3961002a259fd2b61038536be52192827ddc",
+    "learner/student/model.pt": "0cd6e38367ca361d588f86b7bd693a43d840380e3e3c6129763b984604c444f9",
+    "learner/student/report.json": "64e2fd84a4ca45461bdb498973ff2cdadfcba98bcf2b51834eb75e420833f837",
+    "learner/student/resume.pt": "f1770c5bdcad8c60ddef1a25192196dd7efc6a97139e585335a6d7ed2ec4a5f3"
+  },
+  "candidate_sha256": "c724e3fb5c1284299aacb9ae1fd44c73f4958f8d4cb895632f85e3efed15184e",
+  "stage_timings": {
+    "mcts-timing": {
+      "longest_worker_seconds": 3.8588497570000015,
+      "reduce_and_learning_seconds": 1266.128401244,
+      "worker_seconds": 48.672803461,
+      "workers": 20
+    },
+    "screen-timing": {
+      "longest_worker_seconds": 151.41654783299998,
+      "reduce_and_learning_seconds": 0.924235601999996,
+      "worker_seconds": 2381.987590111,
+      "workers": 20
+    },
+    "selfplay-timing": {
+      "longest_worker_seconds": 281.348314723,
+      "reduce_and_learning_seconds": 63.99660780699999,
+      "worker_seconds": 3527.418321555,
+      "workers": 20
+    },
+    "study-timing": {
+      "longest_worker_seconds": 9601.034930331,
+      "new_deep_labels": 38,
+      "reduce_and_learning_seconds": 242.02938093500003,
+      "worker_seconds": 181216.17672806198,
+      "workers": 20
+    }
+  },
+  "screen": {
+    "games": 80,
+    "pass_screen": false,
+    "reason": "rejected_before_full_match",
+    "score": 0.0125,
+    "used_for_promotion": false
+  },
+  "decision": {
+    "accepted": false,
+    "formal_engine_adopted": false,
+    "reason": "screen_rejected"
+  },
+  "models": {
+    "teacher": {
+      "architecture": {
+        "material_prior": true,
+        "residual": 2,
+        "width": 128
+      },
+      "epochs": 20,
+      "identity": "8a63c5c0031df7b409ed9e85fa56891077304d9828c58efc47135eb3b2df0aee",
+      "initial_validation_mae_cp": 1015.6669788421925,
+      "model_sha256": "c95cd1e370766a66680027080c04ad1eb3e2e624c5a9e0412723b82c320e1ea5",
+      "sample_counts": {
+        "test": 2026,
+        "train": 16930,
+        "validation": 1555
+      },
+      "schema": "own-policy-value-training-v1",
+      "strength_proven": false,
+      "test_mae_cp": 947.8983601365837,
+      "validation_mae_cp": 864.3422510079632,
+      "best_epoch": 2,
+      "last_epoch_validation_mae_cp": 977.8644794819822
+    },
+    "student": {
+      "architecture": {
+        "material_prior": true,
+        "residual": 0,
+        "width": 128
+      },
+      "epochs": 20,
+      "identity": "d87cb838486c1bd40632d739ff70c2410349c551e83e8f23bf3c0cbdbaca16d3",
+      "initial_validation_mae_cp": 1015.6669788421925,
+      "model_sha256": "0cd6e38367ca361d588f86b7bd693a43d840380e3e3c6129763b984604c444f9",
+      "sample_counts": {
+        "test": 2026,
+        "train": 16969,
+        "validation": 1555
+      },
+      "schema": "own-policy-value-training-v1",
+      "strength_proven": false,
+      "test_mae_cp": 1046.0966435966227,
+      "validation_mae_cp": 937.232301472851,
+      "best_epoch": 2,
+      "last_epoch_validation_mae_cp": 1050.361049443579
+    }
+  },
+  "remaining": [
+    "generation 2 and 3 results and saved checkpoints",
+    "independent cross-generation model inheritance verification",
+    "playing strength improvement"
+  ],
+  "actions_snapshot": {
+    "total_jobs": 131,
+    "pages": 2,
+    "active_study_jobs": 20,
+    "failed_jobs": 0,
+    "generation0_elapsed_seconds": 12344,
+    "stage_jobs": [
+      {
+        "stage": "g0 / prepare",
+        "jobs": 1,
+        "success": 1,
+        "wall_seconds": 44,
+        "peak_actual_work": 0
+      },
+      {
+        "stage": "g0 / selfplay",
+        "jobs": 20,
+        "success": 20,
+        "wall_seconds": 335,
+        "peak_actual_work": 20
+      },
+      {
+        "stage": "g0 / select",
+        "jobs": 1,
+        "success": 1,
+        "wall_seconds": 105,
+        "peak_actual_work": 0
+      },
+      {
+        "stage": "g0 / study",
+        "jobs": 20,
+        "success": 20,
+        "wall_seconds": 9667,
+        "peak_actual_work": 20
+      },
+      {
+        "stage": "g0 / teacher",
+        "jobs": 1,
+        "success": 1,
+        "wall_seconds": 283,
+        "peak_actual_work": 0
+      },
+      {
+        "stage": "g0 / mcts",
+        "jobs": 20,
+        "success": 20,
+        "wall_seconds": 52,
+        "peak_actual_work": 6
+      },
+      {
+        "stage": "g0 / student",
+        "jobs": 1,
+        "success": 1,
+        "wall_seconds": 1353,
+        "peak_actual_work": 0
+      },
+      {
+        "stage": "g0 / screen",
+        "jobs": 20,
+        "success": 20,
+        "wall_seconds": 189,
+        "peak_actual_work": 20
+      },
+      {
+        "stage": "g0 / screened",
+        "jobs": 1,
+        "success": 1,
+        "wall_seconds": 70,
+        "peak_actual_work": 0
+      },
+      {
+        "stage": "g0 / complete",
+        "jobs": 1,
+        "success": 1,
+        "wall_seconds": 136,
+        "peak_actual_work": 0
+      },
+      {
+        "stage": "g0 / evaluate",
+        "jobs": 1,
+        "success": 0,
+        "wall_seconds": 0,
+        "peak_actual_work": 0
+      },
+      {
+        "stage": "g0 / evaluated",
+        "jobs": 1,
+        "success": 0,
+        "wall_seconds": 0,
+        "peak_actual_work": 0
+      }
+    ]
+  }
+}
