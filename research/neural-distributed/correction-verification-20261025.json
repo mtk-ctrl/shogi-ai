@@ -770,7 +770,8 @@
     "old_history_and_archives_preserved": true,
     "learner_models_match_selected_report_sha256": true,
     "training_warmstart_code_path_checked": true,
-    "independent_validation_mae_recalculation": false
+    "independent_validation_mae_recalculation": false,
+    "fixed_engine_and_knowledge_sha256": true
   },
   "strength_improved": false,
   "formal_adoption": false,
@@ -785,5 +786,19 @@
     "end_jst": "2026-10-25T01:56:11+09:00",
     "elapsed_seconds": 60751,
     "conclusion": "success"
+  },
+  "exact_game_sequence_duplicates": {
+    "duplicate_complete_new_game_sequences": 115,
+    "unique_new_game_sequences": 785,
+    "unique_sequences_shared_selfplay_screen": 0,
+    "shared_selfplay_screen_game_instances": 0
+  },
+  "preflight": {
+    "status": "completed",
+    "generations": 2,
+    "selfplay_games": 4,
+    "evaluation_games": 4,
+    "new_study_positions": 4,
+    "bundle_sha256": "b3b017546c0b8147d7c8c9c63b81c8d77965d72396f01f4ff28754c4fbb8fff9"
   }
 }
