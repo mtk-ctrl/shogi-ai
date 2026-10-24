@@ -40,7 +40,7 @@ jobs:
 
         python3 scripts/check_workflow_inventory.py --strict
 
-        python3 -m unittest discover -s tests -p test_neural_cluster*.py'
+        python3 -m unittest discover -s tests -p test_neural_*.py'
     - id: start
       name: Restore verified source and fixed engine
       env:
@@ -89,3 +89,25 @@ jobs:
     with:
       prefix: neural20-g2
       state_artifact: ${{ needs.g1.outputs.state_artifact }}
+  g3:
+    needs:
+    - g2
+    if: needs.g2.outputs.more == 'true'
+    permissions:
+      contents: write
+      actions: write
+    uses: ./.github/workflows/neural-generation.yml
+    with:
+      prefix: neural20-g3
+      state_artifact: ${{ needs.g2.outputs.state_artifact }}
+  g4:
+    needs:
+    - g3
+    if: needs.g3.outputs.more == 'true'
+    permissions:
+      contents: write
+      actions: write
+    uses: ./.github/workflows/neural-generation.yml
+    with:
+      prefix: neural20-g4
+      state_artifact: ${{ needs.g3.outputs.state_artifact }}

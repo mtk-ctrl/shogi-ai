@@ -70,9 +70,12 @@ def action_id(move):
 
 
 class Network(nn.Module):
-    def __init__(self, width=128, residual=0, material_prior=False):
+    def __init__(self, width=128, residual=0, material_prior=False, correction=False):
         super().__init__()
         self.width, self.residual, self.material_prior = width, residual, material_prior
+        self.correction = correction
+        if correction and material_prior:
+            raise ValueError('correction must not double-count material')
         self.embedding = nn.EmbeddingBag(KING_FEATURES, width, mode='sum')
         self.bias = nn.Parameter(torch.full((width,), .25))
         self.blocks = nn.ModuleList(nn.Sequential(nn.Linear(width, width), nn.ReLU(),
@@ -84,6 +87,8 @@ class Network(nn.Module):
         nn.init.zeros_(self.value.bias)
         nn.init.normal_(self.policy.weight, std=.01)
         nn.init.zeros_(self.policy.bias)
+        if correction:
+            nn.init.zeros_(self.value.weight)
         if material_prior:
             # Bootstrap two channels from OUR adopted material model. The
             # remaining nonlinear channels learn positional corrections. This
@@ -127,7 +132,8 @@ class Network(nn.Module):
         hidden = (self.embedding(ids, offsets) + self.bias).clamp(0, 4)
         for block in self.blocks:
             hidden = (hidden + .25 * block(hidden)).clamp(0, 4)
-        return self.value(hidden).squeeze(-1), self.policy(hidden)
+        value = self.value(hidden).squeeze(-1)
+        return (value.clamp(-.6, .6) if self.correction else value), self.policy(hidden)
 
 
 def tensors(rows, device):
@@ -141,7 +147,7 @@ def policy_loss(logits, rows):
     # carry positive mass. Absent targets contribute zero policy loss.
     terms = []
     for i, row in enumerate(rows):
-        if not row.get('policy'):
+        if not row.get('policy') or row.get('policy_weight', .2) == 0:
             continue
         legal = row['legal']
         logp = F.log_softmax(logits[i, legal], dim=0)
@@ -264,13 +270,15 @@ def error(net, rows, device='cpu'):
 
 
 def train(parts, output, width=128, residual=0, epochs=20, seed=20261021,
-          warmstart=None, device='cpu', threads=2):
+          warmstart=None, device='cpu', threads=2, correction=False):
     torch.set_num_threads(threads)
     torch.manual_seed(seed)
     torch.use_deterministic_algorithms(True)
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
-    architecture = dict(width=width, residual=residual, material_prior=True)
+    architecture = dict(width=width, residual=residual, material_prior=not correction)
+    if correction:
+        architecture['correction'] = True
     identity = hashlib.sha256(json.dumps({'architecture': architecture,
         'data': {s: [{k:v for k,v in r.items() if k not in ('features','legal')}
                     for r in rows] for s, rows in parts.items()}, 'epochs': epochs,
@@ -342,7 +350,7 @@ def export_nnue(net, path):
         if not np.isfinite(data).all() or data.min() < limits.min or data.max() > limits.max:
             raise ValueError('quantization overflow')
         return data.astype(dtype).tobytes()
-    blob = b'KMNNUE03' + struct.pack('<II', net.width, KING_FEATURES)
+    blob = (b'KMNNUE04' if net.correction else b'KMNNUE03') + struct.pack('<II', net.width, KING_FEATURES)
     blob += quant(net.bias,256,'<i4') + quant(net.embedding.weight,256,'<i2')
     blob += quant(net.value.weight,256,'<i2') + quant(net.value.bias,65536,'<i4')
     blob += quant(net.policy.weight,256,'<i2') + quant(net.policy.bias,65536,'<i4')
@@ -356,7 +364,7 @@ def export_nnue(net, path):
 def quantized_cp(path, sfen):
     blob = Path(path).read_bytes()
     magic, width, count = struct.unpack_from('<8sII', blob)
-    if magic != b'KMNNUE03' or count != KING_FEATURES:
+    if magic not in (b'KMNNUE03', b'KMNNUE04') or count != KING_FEATURES:
         raise ValueError('invalid own model')
     bias = np.frombuffer(blob, '<i4', width, 16).astype(np.int64)
     offset = 16 + width*4
@@ -367,4 +375,5 @@ def quantized_cp(path, sfen):
     total = int(np.dot(np.clip(bias+embedding[features(sfen)].sum(axis=0),0,1024),head))+out
     # C++ lround rounds halfway away from zero (Python round uses ties-to-even).
     cp = math.floor(abs(total)*1000/65536+.5) * (1 if total>=0 else -1)
-    return max(-30000,min(30000,cp))
+    limit = 600 if magic == b'KMNNUE04' else 30000
+    return max(-limit,min(limit,cp))

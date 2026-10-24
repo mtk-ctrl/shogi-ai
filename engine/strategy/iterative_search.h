@@ -726,7 +726,7 @@ private:
         if constexpr (std::is_same_v<Evaluator,FeatureEvaluator>) {
             if (evaluator_.neural_enabled()) {
                 ++stats_.neural_evals;
-                value = neural_incremental_ ? evaluator_.neural_model()->score(neural_frame(p, ply).acc)
+                value = neural_incremental_ ? evaluator_.combine_neural(get_snapshot(), evaluator_.neural_model()->score(neural_frame(p, ply).acc))
                                              : evaluator_(get_snapshot());
             } else value = evaluator_(get_snapshot());
         } else value = evaluator_(get_snapshot());

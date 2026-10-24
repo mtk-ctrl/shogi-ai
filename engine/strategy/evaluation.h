@@ -163,13 +163,17 @@ public:
     explicit FeatureEvaluator(EvaluationParameters p={},unsigned reuse_mask=0)
         :params_(p),reuse_mask_(reuse_mask){params_.validate();}
     int operator()(const rules::Snapshot& s) const {
-        return nnue_ ? nnue_->evaluate(s) : evaluate(s,params_,reuse_mask_).total;
+        if (!nnue_ || nnue_->zero_correction()) return evaluate(s,params_,reuse_mask_).total;
+        return combine_neural(s, nnue_->evaluate(s));
+    }
+    int combine_neural(const rules::Snapshot& s, int learned) const {
+        return nnue_->combine(nnue_->correction() ? evaluate(s,params_,reuse_mask_).total : 0, learned);
     }
     void set_neural_model(std::shared_ptr<const NnueModel> model) { nnue_ = std::move(model); }
-    bool neural_enabled() const { return static_cast<bool>(nnue_); }
+    bool neural_enabled() const { return nnue_ && !nnue_->zero_correction(); }
     const NnueModel* neural_model() const { return nnue_.get(); }
     void set_neural_policy(bool enabled) { neural_policy_ = enabled; }
-    bool neural_policy() const { return neural_policy_ && nnue_ && nnue_->has_policy(); }
+    bool neural_policy() const { return neural_policy_ && nnue_ && !nnue_->correction() && nnue_->has_policy(); }
     const EvaluationParameters& parameters() const {return params_;}
     void set_reuse_mask(unsigned mask) { reuse_mask_=mask & 15; }
 private:

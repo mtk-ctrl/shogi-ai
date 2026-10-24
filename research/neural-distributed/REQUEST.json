@@ -1,10 +1,12 @@
 {
   "enabled": true,
   "parameters": {
-    "cycle_id": "neural20-standard-20261023",
+    "cycle_id": "neural20-correction-20261024",
     "mode": "standard",
-    "generations": 3,
-    "runners": 20
+    "evaluation_mode": "correction",
+    "generations": 5,
+    "runners": 20,
+    "seed": 20261024
   },
   "checkpoint": ""
 }

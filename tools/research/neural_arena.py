@@ -49,7 +49,9 @@ def options(knowledge, model=None):
         SearchThreads=2,USI_Ponder=True,AdaptiveLongThink=True,RiskVerify=True,
         OpeningRandomNonLance=True)
     if model:
-        result.update(EvalNeuralFile=str(Path(model).resolve()),EvalNeural=True,EvalNeuralPolicy=True)
+        with Path(model).open('rb') as source:
+            correction = source.read(8) == b'KMNNUE04'
+        result.update(EvalNeuralFile=str(Path(model).resolve()),EvalNeural=True,EvalNeuralPolicy=not correction)
     return result
 
 

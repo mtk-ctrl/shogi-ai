@@ -106,7 +106,7 @@ class ClusterTests(unittest.TestCase):
         p=nc.parameters({})
         self.assertEqual((p['runners'],p['cases'],p['match_games']),(20,40,1000))
         for change in ({'runners':21},{'selfplay_games':41},{'match_games':40},
-                       {'screen_games':0},{'generations':4},{'unexpected':1}):
+                       {'screen_games':0},{'generations':6},{'unexpected':1}):
             with self.assertRaises(ValueError):nc.parameters(change)
         self.assertEqual(nc.parameters({'mode':'smoke'})['screen_games'],0)
 

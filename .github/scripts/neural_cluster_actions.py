@@ -110,7 +110,14 @@ def bootstrap():
         safely_extract(source,'source-restored')
         (_,_,directory,_),_=find_source('source-restored')
         subprocess.run([sys.executable,'scripts/build.py','--output','build/shogi-ai'],check=True)
+        if request['evaluation_mode']=='correction':
+            subprocess.run([sys.executable,'tests/test_neural_residual_native.py','build/shogi-ai'],check=True)
+            subprocess.run([sys.executable,'tests/test_neural_residual_cycle.py',str(directory),
+                'build/shogi-ai','correction-preflight',os.environ['GITHUB_SHA']],check=True)
         nc.initialize('run',request,directory,'build/shogi-ai','position-knowledge-v1.tsv',os.environ['GITHUB_SHA'])
+        if request['evaluation_mode']=='correction':
+            shutil.copy2('correction-preflight/checkpoint.tgz','run/correction-preflight.tgz')
+            shutil.copy2('correction-preflight/report.json','run/correction-preflight.json')
     nc.pack('run','out/state.tgz')
     nc.workflow_outputs('run')
 
@@ -242,7 +249,7 @@ def prune(prefix):
     receipts have already been published and read back successfully. Keep the
     completed state artifact for the next generation and the publication receipt.
     """
-    if not re.fullmatch('neural20-g[0-2]',prefix):raise ValueError('invalid generation prefix')
+    if not re.fullmatch('neural20-g[0-4]',prefix):raise ValueError('invalid generation prefix')
     if nc.read('publication-receipt.json').get('verified') is not True:
         raise ValueError('cannot prune before verified durable publication')
     repo=os.environ['GITHUB_REPOSITORY'];run=os.environ['GITHUB_RUN_ID']

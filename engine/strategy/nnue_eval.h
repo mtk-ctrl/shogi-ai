@@ -73,7 +73,8 @@ public:
         std::vector<unsigned char> bytes(static_cast<std::size_t>(length));
         if (!file.read(reinterpret_cast<char*>(bytes.data()), bytes.size())) return false;
         const std::string magic(bytes.begin(), bytes.begin() + 8);
-        if (magic != "KMNNUE01" && magic != "KMNNUE02" && magic != "KMNNUE03") return false;
+        if (magic != "KMNNUE01" && magic != "KMNNUE02" && magic != "KMNNUE03" && magic != "KMNNUE04") return false;
+        candidate.correction_ = magic == "KMNNUE04";
         std::size_t offset = 8;
         auto u32 = [&]() -> std::uint32_t {
             const auto n = std::uint32_t(bytes[offset]) |
@@ -87,7 +88,7 @@ public:
             || width < 16 || width > 512) return false;
         const std::size_t expected = 16 + 4ull * width
             + 2ull * count * width + 2ull * width + 4
-            + (magic == "KMNNUE03" ? Actions * (2ull * width + 4ull) : 0);
+            + ((magic == "KMNNUE03" || magic == "KMNNUE04") ? Actions * (2ull * width + 4ull) : 0);
         if (bytes.size() != expected) return false;
         auto i16 = [&]() -> std::int16_t {
             const auto n = std::uint16_t(bytes[offset]) |
@@ -108,17 +109,24 @@ public:
         candidate.output_.reserve(width);
         for (unsigned i = 0; i < width; ++i) candidate.output_.push_back(i16());
         candidate.output_bias_ = static_cast<std::int32_t>(u32());
-        if (magic == "KMNNUE03") {
+        if (magic == "KMNNUE03" || magic == "KMNNUE04") {
             candidate.policy_.reserve(Actions * width);
             for (std::size_t i = 0; i < Actions * width; ++i) candidate.policy_.push_back(i16());
             for (unsigned i = 0; i < Actions; ++i)
                 candidate.policy_bias_.push_back(static_cast<std::int32_t>(u32()));
         }
+        candidate.zero_correction_ = candidate.correction_ && candidate.output_bias_ == 0
+            && std::all_of(candidate.output_.begin(), candidate.output_.end(), [](auto v) { return v == 0; });
         *this = std::move(candidate);
         return true;
     }
 
     bool valid() const { return width_ >= 16 && embedding_.size() == feature_count_ * width_; }
+    bool correction() const { return correction_; }
+    bool zero_correction() const { return zero_correction_; }
+    int combine(int base, int learned) const {
+        return correction_ ? std::clamp(base + std::clamp(learned, -600, 600), -1000000, 1000000) : learned;
+    }
     unsigned width() const { return width_; }
     unsigned feature_count() const { return feature_count_; }
     bool has_policy() const { return policy_.size() == Actions * width_ && !policy_.empty(); }
@@ -192,6 +200,7 @@ public:
     int evaluate(const rules::Snapshot& s) const { return score(accumulate(s)); }
 
 private:
+    bool correction_ = false, zero_correction_ = false;
     std::uint32_t width_ = 0;
     std::uint32_t feature_count_ = Features;
     std::vector<std::int32_t> bias_;

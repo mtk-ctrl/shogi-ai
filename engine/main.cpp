@@ -177,7 +177,7 @@ int main() {
             if (neural_enabled) {
                 if (neural_model && neural_model->valid())
                     emit("info string neural_evaluation static_cp_black "
-                         + std::to_string(neural_model->evaluate(root)) + "\n");
+                         + std::to_string(neural_model->combine(b.total, neural_model->evaluate(root))) + "\n");
                 else emit("info string neural_evaluation error model_unavailable\n");
             }
             std::cout << "info string evaluation material " << b.material
@@ -313,7 +313,7 @@ int main() {
                     << " invasion " << phase.components.invasion
                     << " king_threat " << phase.components.king_threat
                     << " phase_weight_profile " << shogi::strategy::AdoptedPhaseProfile
-                     << " static_cp_black " << (neural_enabled ? neural_model->evaluate(root) : eval.total) << '\n';
+                     << " static_cp_black " << (neural_enabled ? neural_model->combine(eval.total, neural_model->evaluate(root)) : eval.total) << '\n';
                 emit(out.str());
             }
             if (!restrict && entering_king && position.can_declare_win()) {

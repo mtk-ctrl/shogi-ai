@@ -51,7 +51,7 @@ def parameters(request):
         selfplay_games=100, screen_games=80, match_games=1000, cases=40,
         medium_ms=600000, long_ms=3000000, branch_ms=600000, epochs=20,
         width=128, simulations=512, samples_per_game=64, seed=20261022,
-        split_seed=20261021, max_plies=400, threads=2)
+        split_seed=20261021, max_plies=400, threads=2, evaluation_mode='replacement')
     if request.get('mode') == 'smoke':
         defaults.update(generations=2, selfplay_games=40, screen_games=0, match_games=40,
             cases=20, medium_ms=100, long_ms=200, branch_ms=100, epochs=1,
@@ -63,7 +63,9 @@ def parameters(request):
         raise ValueError('invalid cycle identifier')
     if p['mode'] not in ('standard', 'smoke'):
         raise ValueError('invalid mode')
-    bounds = dict(generations=(1,3), runners=(1,20), selfplay_games=(2,10000),
+    if p['evaluation_mode'] not in ('replacement', 'correction'):
+        raise ValueError('invalid evaluation mode')
+    bounds = dict(generations=(1,5), runners=(1,20), selfplay_games=(2,10000),
         screen_games=(0,1000), match_games=(2,10000), cases=(1,96),
         medium_ms=(50,600000), long_ms=(50,3000000), branch_ms=(50,600000),
         epochs=(1,100), width=(16,256), simulations=(8,4096), samples_per_game=(8,128),
@@ -322,15 +324,22 @@ def train_stage(work,kind):
                        extra=read(work/'research-replay.json'))
     if kind=='student':
         parts=distill(nm.load_network(work/'current/teacher/model.pt'),parts)
+    correction = kind=='student' and p['evaluation_mode']=='correction'
+    if correction:
+        from tools.research.neural_residual import correction_targets
+        parts=correction_targets(parts,work/'engine/shogi-ai',work/'static-evaluation-cache.json')
     warm=work/'learner'/kind/'model.pt'
     net,report=nm.train(parts,work/'current'/kind,width=p['width'],residual=2 if kind=='teacher' else 0,
         epochs=p['epochs'],seed=p['seed']+state['next_generation'],
-        warmstart=warm if warm.exists() else None,threads=p['threads'])
+        warmstart=warm if warm.exists() else None,threads=p['threads'],correction=correction)
     if kind=='student':
         candidate=work/'current/candidate.nnue'
         nm.export_nnue(net,candidate)
         probe=parts['validation'][0]['sfen']
-        proof=verify_native(work/'engine/shogi-ai',candidate,probe,nm.quantized_cp(candidate,probe),work/'knowledge.tsv')
+        expected=nm.quantized_cp(candidate,probe)
+        if correction:
+            expected=max(-1000000,min(1000000,expected+parts['validation'][0]['baseline_cp']))
+        proof=verify_native(work/'engine/shogi-ai',candidate,probe,expected,work/'knowledge.tsv')
         atomic_json(work/'current/native-verification.json',proof)
     return report
 
