@@ -1,0 +1,685 @@
+name: Neural Distributed Generation
+'on':
+  workflow_call:
+    inputs:
+      prefix:
+        required: true
+        type: string
+      state_artifact:
+        required: true
+        type: string
+    outputs:
+      more:
+        value: ${{ jobs.complete.outputs.more }}
+      state_artifact:
+        value: ${{ inputs.prefix }}-complete-state
+permissions:
+  contents: read
+  actions: read
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      GH_TOKEN: ${{ github.token }}
+    timeout-minutes: 20
+    outputs:
+      matrix: ${{ steps.advance.outputs.matrix }}
+      stage: ${{ steps.advance.outputs.stage }}
+      evaluate: ${{ steps.advance.outputs.evaluate }}
+      more: ${{ steps.advance.outputs.more }}
+      generation: ${{ steps.advance.outputs.generation }}
+    steps:
+    - uses: actions/checkout@v5
+    - uses: ./.github/actions/neural-runtime
+    - name: Restore resume
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-prepared-state
+        path: resume
+      if: github.run_attempt != '1'
+      continue-on-error: true
+      id: resume
+    - name: Restore incoming
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.state_artifact }}
+        path: incoming
+      if: steps.resume.outcome != 'success'
+    - name: Advance verified generation
+      id: advance
+      run: python3 .github/scripts/neural_cluster_actions.py prepare
+    - name: Save ${{ inputs.prefix }}-prepared-state
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-prepared-state
+        path: out/state.tgz
+        overwrite: true
+        compression-level: 0
+        retention-days: 30
+        if-no-files-found: error
+    - name: Save ${{ inputs.prefix }}-prepared-work
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-prepared-work
+        path: out/workers.tgz
+        overwrite: true
+        compression-level: 0
+        retention-days: 30
+        if-no-files-found: error
+  selfplay:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      GH_TOKEN: ${{ github.token }}
+    needs:
+    - prepare
+    timeout-minutes: 210
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    steps:
+    - uses: actions/checkout@v5
+    - uses: ./.github/actions/neural-runtime
+    - name: Restore incoming
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-prepared-work
+        path: incoming
+    - name: Restore resume
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-selfplay-${{ matrix.lane }}
+        path: resume
+      if: github.run_attempt != '1'
+      continue-on-error: true
+    - name: Run assigned selfplay
+      run: python3 .github/scripts/neural_cluster_actions.py worker --lane "${LANE}"
+      env:
+        LANE: ${{ matrix.lane }}
+    - name: Save ${{ inputs.prefix }}-selfplay-${{ matrix.lane }}
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-selfplay-${{ matrix.lane }}
+        path: out/task.tgz
+        overwrite: true
+        compression-level: 0
+        retention-days: 30
+        if-no-files-found: error
+  select:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      GH_TOKEN: ${{ github.token }}
+    needs:
+    - selfplay
+    - prepare
+    timeout-minutes: 60
+    outputs:
+      matrix: ${{ steps.advance.outputs.matrix }}
+      stage: ${{ steps.advance.outputs.stage }}
+      evaluate: ${{ steps.advance.outputs.evaluate }}
+      more: ${{ steps.advance.outputs.more }}
+      generation: ${{ steps.advance.outputs.generation }}
+    steps:
+    - uses: actions/checkout@v5
+    - uses: ./.github/actions/neural-runtime
+    - name: Restore resume
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-selected-state
+        path: resume
+      if: github.run_attempt != '1'
+      continue-on-error: true
+      id: resume
+    - name: Restore incoming
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-prepared-state
+        path: incoming
+      if: steps.resume.outcome != 'success'
+    - uses: actions/download-artifact@v4
+      with:
+        pattern: ${{ inputs.prefix }}-selfplay-*
+        path: downloads
+    - name: Advance verified generation
+      id: advance
+      run: python3 .github/scripts/neural_cluster_actions.py reduce --stage selfplay
+    - name: Save ${{ inputs.prefix }}-selected-state
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-selected-state
+        path: out/state.tgz
+        overwrite: true
+        compression-level: 0
+        retention-days: 30
+        if-no-files-found: error
+    - name: Save ${{ inputs.prefix }}-selected-work
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-selected-work
+        path: out/workers.tgz
+        overwrite: true
+        compression-level: 0
+        retention-days: 30
+        if-no-files-found: error
+  study:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      GH_TOKEN: ${{ github.token }}
+    needs:
+    - select
+    timeout-minutes: 210
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix: ${{ fromJSON(needs.select.outputs.matrix) }}
+    steps:
+    - uses: actions/checkout@v5
+    - uses: ./.github/actions/neural-runtime
+    - name: Restore incoming
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-selected-work
+        path: incoming
+    - name: Restore resume
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-study-${{ matrix.lane }}
+        path: resume
+      if: github.run_attempt != '1'
+      continue-on-error: true
+    - name: Run assigned study
+      run: python3 .github/scripts/neural_cluster_actions.py worker --lane "${LANE}"
+      env:
+        LANE: ${{ matrix.lane }}
+    - name: Save ${{ inputs.prefix }}-study-${{ matrix.lane }}
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-study-${{ matrix.lane }}
+        path: out/task.tgz
+        overwrite: true
+        compression-level: 0
+        retention-days: 30
+        if-no-files-found: error
+  teacher:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      GH_TOKEN: ${{ github.token }}
+    needs:
+    - study
+    - select
+    timeout-minutes: 120
+    outputs:
+      matrix: ${{ steps.advance.outputs.matrix }}
+      stage: ${{ steps.advance.outputs.stage }}
+      evaluate: ${{ steps.advance.outputs.evaluate }}
+      more: ${{ steps.advance.outputs.more }}
+      generation: ${{ steps.advance.outputs.generation }}
+    steps:
+    - uses: actions/checkout@v5
+    - uses: ./.github/actions/neural-runtime
+    - name: Restore resume
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-teacher-state
+        path: resume
+      if: github.run_attempt != '1'
+      continue-on-error: true
+      id: resume
+    - name: Restore incoming
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-selected-state
+        path: incoming
+      if: steps.resume.outcome != 'success'
+    - uses: actions/download-artifact@v4
+      with:
+        pattern: ${{ inputs.prefix }}-study-*
+        path: downloads
+    - name: Advance verified generation
+      id: advance
+      run: python3 .github/scripts/neural_cluster_actions.py reduce --stage study
+    - name: Save ${{ inputs.prefix }}-teacher-state
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-teacher-state
+        path: out/state.tgz
+        overwrite: true
+        compression-level: 0
+        retention-days: 30
+        if-no-files-found: error
+    - name: Save ${{ inputs.prefix }}-teacher-work
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-teacher-work
+        path: out/workers.tgz
+        overwrite: true
+        compression-level: 0
+        retention-days: 30
+        if-no-files-found: error
+  mcts:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      GH_TOKEN: ${{ github.token }}
+    needs:
+    - teacher
+    timeout-minutes: 210
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix: ${{ fromJSON(needs.teacher.outputs.matrix) }}
+    steps:
+    - uses: actions/checkout@v5
+    - uses: ./.github/actions/neural-runtime
+    - name: Restore incoming
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-teacher-work
+        path: incoming
+    - name: Restore resume
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-mcts-${{ matrix.lane }}
+        path: resume
+      if: github.run_attempt != '1'
+      continue-on-error: true
+    - name: Run assigned mcts
+      run: python3 .github/scripts/neural_cluster_actions.py worker --lane "${LANE}"
+      env:
+        LANE: ${{ matrix.lane }}
+    - name: Save ${{ inputs.prefix }}-mcts-${{ matrix.lane }}
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-mcts-${{ matrix.lane }}
+        path: out/task.tgz
+        overwrite: true
+        compression-level: 0
+        retention-days: 30
+        if-no-files-found: error
+  student:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      GH_TOKEN: ${{ github.token }}
+    needs:
+    - mcts
+    - teacher
+    timeout-minutes: 120
+    outputs:
+      matrix: ${{ steps.advance.outputs.matrix }}
+      stage: ${{ steps.advance.outputs.stage }}
+      evaluate: ${{ steps.advance.outputs.evaluate }}
+      more: ${{ steps.advance.outputs.more }}
+      generation: ${{ steps.advance.outputs.generation }}
+    steps:
+    - uses: actions/checkout@v5
+    - uses: ./.github/actions/neural-runtime
+    - name: Restore resume
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-student-state
+        path: resume
+      if: github.run_attempt != '1'
+      continue-on-error: true
+      id: resume
+    - name: Restore incoming
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-teacher-state
+        path: incoming
+      if: steps.resume.outcome != 'success'
+    - uses: actions/download-artifact@v4
+      with:
+        pattern: ${{ inputs.prefix }}-mcts-*
+        path: downloads
+    - name: Advance verified generation
+      id: advance
+      run: python3 .github/scripts/neural_cluster_actions.py reduce --stage mcts
+    - name: Save ${{ inputs.prefix }}-student-state
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-student-state
+        path: out/state.tgz
+        overwrite: true
+        compression-level: 0
+        retention-days: 30
+        if-no-files-found: error
+    - name: Save ${{ inputs.prefix }}-student-work
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-student-work
+        path: out/workers.tgz
+        overwrite: true
+        compression-level: 0
+        retention-days: 30
+        if-no-files-found: error
+  screen:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      GH_TOKEN: ${{ github.token }}
+    needs:
+    - student
+    timeout-minutes: 210
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix: ${{ fromJSON(needs.student.outputs.matrix) }}
+    if: needs.student.outputs.stage == 'screen'
+    steps:
+    - uses: actions/checkout@v5
+    - uses: ./.github/actions/neural-runtime
+    - name: Restore incoming
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-student-work
+        path: incoming
+    - name: Restore resume
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-screen-${{ matrix.lane }}
+        path: resume
+      if: github.run_attempt != '1'
+      continue-on-error: true
+    - name: Run assigned screen
+      run: python3 .github/scripts/neural_cluster_actions.py worker --lane "${LANE}"
+      env:
+        LANE: ${{ matrix.lane }}
+    - name: Save ${{ inputs.prefix }}-screen-${{ matrix.lane }}
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-screen-${{ matrix.lane }}
+        path: out/task.tgz
+        overwrite: true
+        compression-level: 0
+        retention-days: 30
+        if-no-files-found: error
+  screened:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      GH_TOKEN: ${{ github.token }}
+    needs:
+    - screen
+    - student
+    timeout-minutes: 60
+    outputs:
+      matrix: ${{ steps.advance.outputs.matrix }}
+      stage: ${{ steps.advance.outputs.stage }}
+      evaluate: ${{ steps.advance.outputs.evaluate }}
+      more: ${{ steps.advance.outputs.more }}
+      generation: ${{ steps.advance.outputs.generation }}
+    if: always() && needs.student.result == 'success' && (needs.screen.result == 'success' || needs.screen.result == 'skipped')
+    steps:
+    - uses: actions/checkout@v5
+    - uses: ./.github/actions/neural-runtime
+    - name: Restore resume
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-screened-state
+        path: resume
+      if: github.run_attempt != '1'
+      continue-on-error: true
+      id: resume
+    - name: Restore incoming
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-student-state
+        path: incoming
+      if: steps.resume.outcome != 'success'
+    - uses: actions/download-artifact@v4
+      with:
+        pattern: ${{ inputs.prefix }}-screen-*
+        path: downloads
+      if: needs.student.outputs.stage == 'screen'
+    - name: Advance verified generation
+      id: advance
+      run: python3 .github/scripts/neural_cluster_actions.py reduce --stage screen
+    - name: Save ${{ inputs.prefix }}-screened-state
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-screened-state
+        path: out/state.tgz
+        overwrite: true
+        compression-level: 0
+        retention-days: 30
+        if-no-files-found: error
+    - name: Save ${{ inputs.prefix }}-screened-work
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-screened-work
+        path: out/workers.tgz
+        overwrite: true
+        compression-level: 0
+        retention-days: 30
+        if-no-files-found: error
+  evaluate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      GH_TOKEN: ${{ github.token }}
+    needs:
+    - screened
+    timeout-minutes: 210
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix: ${{ fromJSON(needs.screened.outputs.matrix) }}
+    if: always() && needs.screened.result == 'success' && needs.screened.outputs.evaluate == 'true'
+    steps:
+    - uses: actions/checkout@v5
+    - uses: ./.github/actions/neural-runtime
+    - name: Restore incoming
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-screened-work
+        path: incoming
+    - name: Restore resume
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-evaluate-${{ matrix.lane }}
+        path: resume
+      if: github.run_attempt != '1'
+      continue-on-error: true
+    - name: Run assigned evaluate
+      run: python3 .github/scripts/neural_cluster_actions.py worker --lane "${LANE}"
+      env:
+        LANE: ${{ matrix.lane }}
+    - name: Save ${{ inputs.prefix }}-evaluate-${{ matrix.lane }}
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-evaluate-${{ matrix.lane }}
+        path: out/task.tgz
+        overwrite: true
+        compression-level: 0
+        retention-days: 30
+        if-no-files-found: error
+  evaluated:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      GH_TOKEN: ${{ github.token }}
+    needs:
+    - evaluate
+    - screened
+    timeout-minutes: 60
+    outputs:
+      matrix: ${{ steps.advance.outputs.matrix }}
+      stage: ${{ steps.advance.outputs.stage }}
+      evaluate: ${{ steps.advance.outputs.evaluate }}
+      more: ${{ steps.advance.outputs.more }}
+      generation: ${{ steps.advance.outputs.generation }}
+    if: always() && needs.evaluate.result == 'success' && needs.screened.outputs.evaluate == 'true'
+    steps:
+    - uses: actions/checkout@v5
+    - uses: ./.github/actions/neural-runtime
+    - name: Restore resume
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-evaluated-state
+        path: resume
+      if: github.run_attempt != '1'
+      continue-on-error: true
+      id: resume
+    - name: Restore incoming
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-screened-state
+        path: incoming
+      if: steps.resume.outcome != 'success'
+    - uses: actions/download-artifact@v4
+      with:
+        pattern: ${{ inputs.prefix }}-evaluate-*
+        path: downloads
+    - name: Advance verified generation
+      id: advance
+      run: python3 .github/scripts/neural_cluster_actions.py reduce --stage evaluate
+    - name: Save ${{ inputs.prefix }}-evaluated-state
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-evaluated-state
+        path: out/state.tgz
+        overwrite: true
+        compression-level: 0
+        retention-days: 30
+        if-no-files-found: error
+    - name: Save ${{ inputs.prefix }}-evaluated-work
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-evaluated-work
+        path: out/workers.tgz
+        overwrite: true
+        compression-level: 0
+        retention-days: 30
+        if-no-files-found: error
+  complete:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      GH_TOKEN: ${{ github.token }}
+    needs:
+    - screened
+    - evaluated
+    timeout-minutes: 30
+    outputs:
+      matrix: ${{ steps.advance.outputs.matrix }}
+      stage: ${{ steps.advance.outputs.stage }}
+      evaluate: ${{ steps.advance.outputs.evaluate }}
+      more: ${{ steps.advance.outputs.more }}
+      generation: ${{ steps.advance.outputs.generation }}
+    if: always() && needs.screened.result == 'success' && (needs.screened.outputs.evaluate == 'false' || needs.evaluated.result == 'success')
+    steps:
+    - uses: actions/checkout@v5
+    - uses: ./.github/actions/neural-runtime
+    - name: Restore resume
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-complete-state
+        path: resume
+      if: github.run_attempt != '1'
+      continue-on-error: true
+      id: resume
+    - name: Restore incoming
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ needs.screened.outputs.evaluate == 'true' && format('{0}-evaluated-state', inputs.prefix) || format('{0}-screened-state', inputs.prefix)
+          }}
+        path: incoming
+      if: steps.resume.outcome != 'success'
+    - name: Advance verified generation
+      id: advance
+      run: python3 .github/scripts/neural_cluster_actions.py finish
+    - name: Save ${{ inputs.prefix }}-complete-state
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-complete-state
+        path: out/state.tgz
+        overwrite: true
+        compression-level: 0
+        retention-days: 30
+        if-no-files-found: error
+    - name: Save ${{ inputs.prefix }}-publication
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.prefix }}-publication
+        path: publication-receipt.json
+        overwrite: true
+        compression-level: 0
+        retention-days: 30
+        if-no-files-found: error
+    - name: Remove verified redundant transport artifacts
+      run: python3 .github/scripts/neural_cluster_actions.py prune --prefix "$PREFIX"
+      env:
+        PREFIX: ${{ inputs.prefix }}

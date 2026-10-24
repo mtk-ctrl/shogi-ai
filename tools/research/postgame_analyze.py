@@ -39,7 +39,8 @@ def dump(path, value):
 
 class Analyzer:
     """Fresh process per search; no TT, clock or research-line carryover."""
-    def __init__(self, binary, knowledge, expected_positions=163, evaluation_options=None):
+    def __init__(self, binary, knowledge, expected_positions=163, evaluation_options=None,
+                 neural_options=None):
         self.proc = subprocess.Popen([str(Path(binary).resolve())], stdin=subprocess.PIPE,
                                      stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                      text=True, bufsize=1)
@@ -61,6 +62,10 @@ class Analyzer:
             if evaluation_options is not None:
                 parent_values(evaluation_options)
                 options.update(evaluation_options)
+            if neural_options:
+                require(set(neural_options) <= {'EvalNeural', 'EvalNeuralFile',
+                        'EvalNeuralPolicy', 'EvalNeuralIncremental'}, 'invalid neural options')
+                options.update(neural_options)
             require(set(options) <= names, 'unsupported analyzer options')
             for key, value in options.items():
                 text = str(value).lower() if isinstance(value, bool) else str(value)
@@ -86,7 +91,7 @@ class Analyzer:
         self.proc.stdin.write(line + '\n')
         self.proc.stdin.flush()
 
-    def until(self, prefix, timeout):
+    def until(self, prefix, timeout, on_line=None):
         end = time.monotonic() + timeout
         lines = []
         while True:
@@ -101,6 +106,8 @@ class Analyzer:
             require(not line.startswith('info string invalid position') and 'search error' not in line,
                     'analyzer rejected input: ' + line)
             lines.append(line)
+            if on_line:
+                on_line(line)
             if line.startswith(prefix):
                 return lines
 
@@ -114,7 +121,8 @@ class Analyzer:
         require(set(FEATURES) <= values.keys(), 'missing evaluation terms')
         return {k: values[k] for k in FEATURES}
 
-    def search(self, start_sfen, history, ms, depth=None, include_telemetry=False):
+    def search(self, start_sfen, history, ms, depth=None, include_telemetry=False,
+               on_iteration=None):
         board = shogi.Board(start_sfen)
         for token in history:
             board.push_usi(token)
@@ -124,7 +132,15 @@ class Analyzer:
         go = f'go movetime {ms}' + (f' depth {depth}' if depth is not None else '')
         started = time.monotonic()
         self.send(go)
-        lines = self.until('bestmove ', max(15, ms/1000 + 5))
+        def progress(line):
+            if on_iteration and line.startswith('info depth ') and ' pv ' in line:
+                chosen = line.split(' pv ', 1)[1].split()[0]
+                frame = score_frame([line], chosen)
+                if frame.get('status') == 'recorded' and frame.get('bound') == 'exact':
+                    # Latest completed iteration only, not an unbounded PV/tree log.
+                    on_iteration(dict(frame, bestmove=chosen,
+                                      elapsed_ms=round((time.monotonic()-started)*1000)))
+        lines = self.until('bestmove ', max(15, ms/1000 + 5), progress)
         chosen = lines[-1].split()[1]
         if chosen not in ('resign', 'win'):
             require(shogi.Move.from_usi(chosen) in board.legal_moves, 'illegal analyzer move')

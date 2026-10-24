@@ -1,0 +1,12 @@
+{
+  "enabled": true,
+  "mode": "short-integration",
+  "source_asset": "spiral-sixhour-strength-20261020-01-initial_source-eea4f91363b3b4be-39441941187-a1.tgz",
+  "max_cases": 4,
+  "medium_ms": 30000,
+  "long_ms": 60000,
+  "branch_ms": 30000,
+  "hidden": 128,
+  "epochs": 40,
+  "smoke_games": 2
+}
