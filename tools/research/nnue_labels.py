@@ -125,6 +125,26 @@ def labels_from_diagnosis(diagnosis, games_by_id):
         if best in ("resign", "win") or not isinstance(best, str) or shogi.Move.from_usi(best) not in board.legal_moves:
             rejected["nonlegal_study_move"] = rejected.get("nonlegal_study_move", 0) + 1
             continue
+        branches = result.get('branches', {})
+        branch_evidence = None
+        if best != case['actual_move']:
+            actual, research = branches.get('actual', {}), branches.get('research', {})
+            valid = all(r.get('status') == 'recorded' and r.get('kind') == 'cp'
+                        and r.get('bound') == 'exact' and type(r.get('value_stm')) is int
+                        and r.get('pv_head_matches') is True for r in (actual, research))
+            same_budget = actual.get('requested_ms') == research.get('requested_ms')
+            same_depth = type(actual.get('depth')) is int and actual['depth'] > 0 and actual.get('depth') == research.get('depth')
+            histories_match = (actual.get('position_command') == case['analysis_position_command']+' '+case['actual_move']
+                               and research.get('position_command') == case['analysis_position_command']+' '+best)
+            if not valid or not same_budget or not same_depth or not histories_match:
+                rejected['branch_comparison_inconclusive'] = rejected.get('branch_comparison_inconclusive', 0) + 1
+                continue
+            improvement = actual['value_stm'] - research['value_stm']
+            if improvement < 30:
+                rejected['branch_improvement_not_confirmed'] = rejected.get('branch_improvement_not_confirmed', 0) + 1
+                continue
+            branch_evidence = dict(improvement_cp=improvement, depth=actual['depth'],
+                                   requested_ms=actual['requested_ms'])
         milliseconds = obs["requested_ms"]
         # Not a truth probability: a conservative training weight, never an
         # independently proven correct move. 10-50min studies get more weight.
@@ -142,7 +162,7 @@ def labels_from_diagnosis(diagnosis, games_by_id):
                 "case_id": case["case_id"],
                 "history_key": case["history_key"],
                 "requested_ms": milliseconds,
-                "completed_depth": obs["depth"],
+                "completed_depth": obs["depth"], "branch_confirmation": branch_evidence,
                 "studied_move": best,
             },
         })

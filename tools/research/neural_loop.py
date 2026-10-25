@@ -56,7 +56,8 @@ def freeze_archives(sources, output):
 
 def deep_labels(study,games):
     observations=study['results']
-    labels,_=labels_from_diagnosis(observations,{g.row['game_id']:g for g in games})
+    labels,rejected=labels_from_diagnosis(observations,{g.row['game_id']:g for g in games})
+    study['teacher_admission'] = dict(accepted=len(labels), rejected=rejected)
     rows=[]
     for label in labels:
         rows.append(dict(root=label['root_game_id'],sfen=label['sfen'],origin='own_deep_search',

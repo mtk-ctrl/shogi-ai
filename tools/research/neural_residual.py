@@ -71,7 +71,8 @@ def correction_targets(parts, binary, cache_path):
                     cache['values'][sfen] = oracle.evaluate(sfen)
                 row['baseline_cp'] = cache['values'][sfen]
                 row['absolute_target'] = row['target']
-                row['target'] -= row['baseline_cp']/1000
+                row['unbounded_correction_target'] = row['target'] - row['baseline_cp']/1000
+                row['target'] = max(-.6, min(.6, row['unbounded_correction_target']))
                 row['policy_weight'] = 0
     finally:
         oracle.close()

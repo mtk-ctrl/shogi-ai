@@ -72,7 +72,7 @@ cancel another run to obtain capacity. Platform scheduling remains authoritative
     return lanes
 
 
-def restore_release(asset,work):
+def read_verified_release(asset,work):
     manifest=nc.read(download(asset,'restored-release'))
     if manifest['schema']!='neural20-checkpoint-v1':raise ValueError('invalid checkpoint manifest')
     with Path('restored.tgz').open('wb') as out:
@@ -84,12 +84,17 @@ def restore_release(asset,work):
     if nc.sha('restored.tgz')!=manifest['bundle_sha256']:
         raise ValueError('checkpoint bundle checksum mismatch')
     nc.unpack('restored.tgz',work)
+    return manifest
+
+
+def restore_release(asset,work):
+    read_verified_release(asset,work)
     nc.context(work)
 
 
 def bootstrap():
     envelope=nc.read('research/neural-distributed/REQUEST.json')
-    if set(envelope)!={'enabled','parameters','checkpoint'} or type(envelope['enabled']) is not bool:
+    if not {'enabled','parameters','checkpoint'} <= set(envelope) or set(envelope)-{'enabled','parameters','checkpoint','bootstrap_from'} or type(envelope['enabled']) is not bool:
         raise ValueError('invalid explicit research request')
     if not envelope['enabled']:
         if os.environ.get('GITHUB_OUTPUT'):
@@ -98,6 +103,8 @@ def bootstrap():
         return
     request=nc.parameters(envelope['parameters'])
     checkpoint=os.environ.get('CHECKPOINT','') or envelope['checkpoint']
+    if checkpoint and envelope.get('bootstrap_from'):
+        raise ValueError('new-cycle import and immutable resume are distinct operations')
     if checkpoint:
         restore_release(checkpoint,'run')
         _,plan,state=nc.context('run')
@@ -115,6 +122,9 @@ def bootstrap():
             subprocess.run([sys.executable,'tests/test_neural_residual_cycle.py',str(directory),
                 'build/shogi-ai','correction-preflight',os.environ['GITHUB_SHA']],check=True)
         nc.initialize('run',request,directory,'build/shogi-ai','position-knowledge-v1.tsv',os.environ['GITHUB_SHA'])
+        if envelope.get('bootstrap_from'):
+            manifest=read_verified_release(envelope['bootstrap_from'],'bootstrap-source')
+            nc.import_completed('run','bootstrap-source',manifest)
         if request['evaluation_mode']=='correction':
             shutil.copy2('correction-preflight/checkpoint.tgz','run/correction-preflight.tgz')
             shutil.copy2('correction-preflight/report.json','run/correction-preflight.json')

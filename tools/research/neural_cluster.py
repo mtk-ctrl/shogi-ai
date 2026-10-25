@@ -51,7 +51,8 @@ def parameters(request):
         selfplay_games=100, screen_games=80, match_games=1000, cases=40,
         medium_ms=600000, long_ms=3000000, branch_ms=600000, epochs=20,
         width=128, simulations=512, samples_per_game=64, seed=20261022,
-        split_seed=20261021, max_plies=400, threads=2, evaluation_mode='replacement')
+        split_seed=20261021, max_plies=400, threads=2, evaluation_mode='replacement',
+        validation_cases=0, learner_selfplay=False)
     if request.get('mode') == 'smoke':
         defaults.update(generations=2, selfplay_games=40, screen_games=0, match_games=40,
             cases=20, medium_ms=100, long_ms=200, branch_ms=100, epochs=1,
@@ -73,6 +74,8 @@ def parameters(request):
     for k,(low,high) in bounds.items():
         if type(p[k]) is not int or not low <= p[k] <= high:
             raise ValueError('invalid budget: '+k)
+    if type(p['learner_selfplay']) is not bool or type(p['validation_cases']) is not int or not 0 <= p['validation_cases'] < p['cases']:
+        raise ValueError('invalid learner/validation plan')
     if any(p[k]%2 for k in ('selfplay_games','screen_games','match_games')):
         raise ValueError('games must form complete color pairs')
     if p['long_ms'] < p['medium_ms']:
@@ -139,13 +142,63 @@ def initialize(work, request, source, engine, knowledge, commit):
     atomic_json(work/'state.json',dict(plan_sha256=identity(plan),next_generation=0,
         accepted=0,parent=None,seen_positions=[],completed=[],formal_engine_adopted=False))
     atomic_json(work/'research-replay.json',[])
+    atomic_json(work/'research-validation.json',[])
+
+
+def import_completed(work, previous, manifest):
+    from tools.research.neural_loop import deep_labels
+    from tools.research import neural_model as nm
+    work,plan,state=context(work); previous=Path(previous)
+    old=read(previous/'state.json');old_plan=read(previous/'plan.json')
+    if old['status']!='completed' or old_plan['parameters']['evaluation_mode']!='correction':
+        raise ValueError('bootstrap needs a completed compatible correction cycle')
+    if old_plan['parameters']['split_seed'] != plan['parameters']['split_seed'] or old_plan['parameters']['width'] != plan['parameters']['width']:
+        raise ValueError('bootstrap split or architecture differs')
+    if state['next_generation'] or state['completed']:
+        raise ValueError('bootstrap only before the new cycle starts')
+    if sha(previous/'knowledge.tsv') != sha(work/'knowledge.tsv'):
+        raise ValueError('bootstrap knowledge differs')
+    for directory in archives(previous):
+        if directory.name=='source':
+            if sha(directory/'manifest.json')!=plan['source_manifest_sha256']:
+                raise ValueError('bootstrap original source differs')
+            continue
+        destination=work/'archives'/('imported-'+directory.name)
+        if destination.exists():raise ValueError('duplicate bootstrap archive')
+        shutil.copytree(directory,destination)
+    _,_,games=nm.prepare(archives(work),plan['parameters']['split_seed'])
+    observations=[]
+    for path in sorted((previous/'history').glob('g*/deep-study.json')):
+        observations.extend(read(path)['results'])
+    # Re-derive deep labels with the NEW branch-admission rule.
+    study={'results':observations};deep=deep_labels(study,games)
+    mcts=[r for r in read(previous/'research-replay.json') if r['origin']=='own_mcts']
+    atomic_json(work/'research-replay.json',replay_merge(deep,mcts))
+    for kind in ('teacher','student'):
+        source=previous/'learner'/kind/'model.pt'
+        expected=read(previous/'learner'/kind/'report.json')['model_sha256']
+        if sha(source)!=expected:raise ValueError('bootstrap learner SHA mismatch')
+        destination=work/'learner'/kind;destination.mkdir(parents=True,exist_ok=True)
+        shutil.copy2(source,destination/'model.pt')
+    latest=previous/'history'/f"g{old['next_generation']-1:03d}"/'candidate.nnue'
+    shutil.copy2(latest,work/'learner.nnue')
+    state['seen_positions']=old['seen_positions']
+    plan['bootstrap_bundle_sha256']=manifest['bundle_sha256']
+    state['plan_sha256']=identity(plan)
+    atomic_json(work/'plan.json',plan);atomic_json(work/'state.json',state)
+    atomic_json(work/'bootstrap-provenance.json',dict(manifest=manifest,
+        source_cycle=old_plan['parameters']['cycle_id'],source_implementation=old_plan['implementation_sha256'],
+        model_sha256={kind:sha(work/'learner'/kind/'model.pt') for kind in ('teacher','student')},
+        deployable_sha256=sha(work/'learner.nnue'),deep_admission=study['teacher_admission'],
+        imported_research_rows=len(read(work/'research-replay.json')),optimizer_imported=False,
+        old_state_resumed=False,formal_adoption=False))
 
 
 def make_tasks(work,stage,items,lanes):
     work,plan,state = context(work)
     groups = partition(items,lanes)
     assets = {}
-    for file in ('parent.nnue','current/candidate.nnue','current/teacher/model.pt'):
+    for file in ('parent.nnue','learner.nnue','current/candidate.nnue','current/teacher/model.pt'):
         if (work/file).exists():
             assets[file]=sha(work/file)
     tasks = dict(stage=stage,generation=state['next_generation'],plan_sha256=identity(plan),
@@ -219,6 +272,7 @@ def worker(work,output,lane):
     p=plan['parameters']; stage=tasks['stage']
     engine,knowledge=work/'engine/shogi-ai',work/'knowledge.tsv'
     parent=work/state['parent'] if state['parent'] else None
+    learner=work/'learner.nnue' if p['learner_selfplay'] and (work/'learner.nnue').exists() else parent
     started=time.monotonic()
     receipt=dict(task_key=key,lane=lane,stage=stage,generation=tasks['generation'])
     try:
@@ -229,11 +283,11 @@ def worker(work,output,lane):
             for item in task['items']:
                 opponent=item['opponent']
                 paired_match(engine,knowledge,output/opponent/f"p{item['pair']:05d}",
-                    2,item['seed'],candidate=parent if stage=='selfplay' else work/'current/candidate.nnue',
+                    2,item['seed'],candidate=learner if stage=='selfplay' else work/'current/candidate.nnue',
                     parent=parent if opponent=='parent' else None,
                     max_plies=p['max_plies'],movetime=200,pair_offset=item['pair'])
         elif stage=='study':
-            neural={k:v for k,v in options(knowledge,parent).items() if k.startswith('EvalNeural')}
+            neural={k:v for k,v in options(knowledge,learner).items() if k.startswith('EvalNeural')}
             for case in task['items']:
                 path=output/(case['case_id']+'.json')
                 saved=read(path) if path.exists() else dict(case=case,partial={})
@@ -288,7 +342,7 @@ def collect_matches(work,tasks,found):
             record=read(path)
             ident=record['identity']
             parent_sha=sha(work/state['parent']) if state['parent'] else None
-            candidate_sha=parent_sha if tasks['stage']=='selfplay' else sha(work/'current/candidate.nnue')
+            candidate_sha=(sha(work/'learner.nnue') if plan['parameters']['learner_selfplay'] and (work/'learner.nnue').exists() else parent_sha) if tasks['stage']=='selfplay' else sha(work/'current/candidate.nnue')
             if (ident['seed']!=item['seed'] or ident.get('pair_offset',0)!=item['pair'] or
                 ident['games']!=2 or ident['movetime']!=200 or ident['max_plies']!=plan['parameters']['max_plies'] or
                 ident['binary_sha256']!=plan['fixed_assets']['engine/shogi-ai'] or
@@ -321,7 +375,8 @@ def train_stage(work,kind):
     from tools.research.neural_loop import distill
     work,plan,state=context(work); p=plan['parameters']
     _,parts,_=nm.prepare(archives(work),p['split_seed'],per_game=p['samples_per_game'],
-                       extra=read(work/'research-replay.json'))
+                       extra=read(work/'research-replay.json'),
+                       research_validation=read(work/'research-validation.json') if (work/'research-validation.json').exists() else [])
     if kind=='student':
         parts=distill(nm.load_network(work/'current/teacher/model.pt'),parts)
     correction = kind=='student' and p['evaluation_mode']=='correction'
@@ -368,10 +423,19 @@ def reduce_stage(work,outputs):
     if stage=='selfplay':
         _,_,games=nm.prepare(archives(work),p['split_seed'],per_game=p['samples_per_game'])
         roots={g.row['game_id'] for g in games if nm.split_root(g.row['game_id'],p['split_seed'])=='train'}
-        cases=choose(games,p['cases'],2,roots,excluded_positions=state['seen_positions'],
-                     selection_seed=p['seed']+generation)
+        train_count=p['cases']-p['validation_cases']
+        cases=choose(games,train_count,2,roots,excluded_positions=state['seen_positions'],
+                     selection_seed=p['seed']+generation,diverse=True)
+        for case in cases:case['learning_split']='train'
+        if p['validation_cases']:
+            val_roots={g.row['game_id'] for g in games if nm.split_root(g.row['game_id'],p['split_seed'])=='validation'}
+            validation=choose(games,p['validation_cases'],2,val_roots,
+                excluded_positions=set(state['seen_positions'])|{c['position_key'] for c in cases},
+                selection_seed=p['seed']+generation,diverse=True)
+            for case in validation:case['learning_split']='validation'
+            cases+=validation
         if len(cases)!=p['cases']:
-            raise ValueError(f"need {p['cases']} fresh train cases; found {len(cases)}")
+            raise ValueError(f"need {p['cases']} fresh split-separated cases; found {len(cases)}")
         atomic_json(current/'cases.json',cases)
         make_tasks(work,'study',cases,state['lanes'])
     elif stage=='study':
@@ -386,11 +450,19 @@ def reduce_stage(work,outputs):
         study={'results':observations}
         atomic_json(current/'deep-study.json',study)
         _,_,games=nm.prepare(archives(work),p['split_seed'],per_game=p['samples_per_game'])
-        extra=deep_labels(study,games)
+        training={'results':[o for o in observations if o['case'].get('learning_split','train')=='train']}
+        validation={'results':[o for o in observations if o['case'].get('learning_split')=='validation']}
+        extra=deep_labels(training,games)
+        holdout=deep_labels(validation,games)
+        study['teacher_admission']={'train':training['teacher_admission'], 'validation':validation['teacher_admission']}
+        atomic_json(current/'deep-study.json',study)
+        atomic_json(work/'research-validation.json',replay_merge(read(work/'research-validation.json'),holdout))
+        if p['validation_cases'] and not read(work/'research-validation.json'):
+            raise ValueError('no admissible independent research validation; inspect saved branch evidence')
         atomic_json(work/'research-replay.json',replay_merge(read(work/'research-replay.json'),extra))
         timing['new_deep_labels']=len(extra)
         train_stage(work,'teacher')
-        make_tasks(work,'mcts',observations,state['lanes'])
+        make_tasks(work,'mcts',training['results'],state['lanes'])
     elif stage=='mcts':
         extra=[]
         for directory,_ in found.values():
@@ -487,6 +559,8 @@ def finish(work):
                 shutil.copytree(source,destination)
         if file_manifest(destination)!=expected:
             raise ValueError('finalization learner missing or changed')
+    if p.get('learner_selfplay'):
+        shutil.copy2(record/'candidate.nnue',work/'learner.nnue')
     atomic_json(record/'result.json',result)
     if current.exists():
         for kind in ('teacher','student'):

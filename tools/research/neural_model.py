@@ -128,12 +128,12 @@ class Network(nn.Module):
             self.value.weight.register_hook(keep_prior)
             self.bias.register_hook(keep_prior)
 
-    def forward(self, ids, offsets):
+    def forward(self, ids, offsets, unbounded=False):
         hidden = (self.embedding(ids, offsets) + self.bias).clamp(0, 4)
         for block in self.blocks:
             hidden = (hidden + .25 * block(hidden)).clamp(0, 4)
         value = self.value(hidden).squeeze(-1)
-        return (value.clamp(-.6, .6) if self.correction else value), self.policy(hidden)
+        return (value.clamp(-.6, .6) if self.correction and not unbounded else value), self.policy(hidden)
 
 
 def tensors(rows, device):
@@ -180,7 +180,7 @@ def replay_batches(rows, batch_size=128):
         yield batch
 
 
-def prepare(archives, seed, per_game=64, extra=None):
+def prepare(archives, seed, per_game=64, extra=None, research_validation=None):
     rows, games = [], []
     for directory in archives:
         source = load_archive(Path(directory))
@@ -222,6 +222,12 @@ def prepare(archives, seed, per_game=64, extra=None):
             if row.get('origin') not in ('own_deep_search', 'own_mcts'):
                 raise ValueError('unapproved research label')
             rows.append(dict(row))
+    for row in research_validation or []:
+        if row['root'] not in set(identities) or split_root(row['root'], seed) != 'validation':
+            raise ValueError('research validation must retain a validation original game')
+        if row.get('origin') != 'own_deep_search':
+            raise ValueError('research validation needs a verified deep-search label')
+        rows.append(dict(row))
     position_splits = {}
     for row in rows:
         row['split'] = split_root(row['root'], seed)
@@ -269,6 +275,15 @@ def error(net, rows, device='cpu'):
     return total * 1000 / len(rows)
 
 
+def selection_metrics(net, rows, device='cpu'):
+    ordinary = [r for r in rows if r.get('origin') not in ('own_deep_search', 'own_mcts')]
+    research = [r for r in rows if r.get('origin') == 'own_deep_search']
+    a = error(net, ordinary, device) if ordinary else None
+    b = error(net, research, device) if research else None
+    return dict(ordinary_mae_cp=a, research_mae_cp=b,
+                score_cp=(a+b)/2 if a is not None and b is not None else a if a is not None else b)
+
+
 def train(parts, output, width=128, residual=0, epochs=20, seed=20261021,
           warmstart=None, device='cpu', threads=2, correction=False):
     torch.set_num_threads(threads)
@@ -293,7 +308,9 @@ def train(parts, output, width=128, residual=0, epochs=20, seed=20261021,
         net.load_state_dict(state['model'])
     # Weight decay would silently modify the supposedly fixed material prior.
     optimizer = torch.optim.AdamW(net.parameters(), lr=.001, weight_decay=0)
-    best, best_error, start, history = copy.deepcopy(net.state_dict()), error(net, parts['validation'], device), 0, []
+    initial_selection = selection_metrics(net, parts['validation'], device)
+    best, best_error, start, history = copy.deepcopy(net.state_dict()), initial_selection['score_cp'], 0, []
+    initial_error = error(net, parts['validation'], device)
     checkpoint = output / 'resume.pt'
     if checkpoint.exists():
         state = torch.load(checkpoint, map_location=device, weights_only=True)
@@ -303,12 +320,11 @@ def train(parts, output, width=128, residual=0, epochs=20, seed=20261021,
         optimizer.load_state_dict(state['optimizer'])
         torch.set_rng_state(state['rng'].cpu())
         best, best_error, start, history = state['best'], state['best_error'], state['epoch'], state['history']
-    initial_error = error(net, parts['validation'], device)
     for epoch in range(start, epochs):
         net.train()
         running, seen, replayed = 0, 0, 0
         for batch in replay_batches(parts['train']):
-            prediction, logits = net(*tensors(batch, device))
+            prediction, logits = net(*tensors(batch, device), unbounded=correction)
             target = torch.tensor([r['target'] for r in batch], device=device)
             weight = torch.tensor([r['weight'] for r in batch], device=device)
             loss = (F.smooth_l1_loss(prediction, target, reduction='none')*weight).sum()/weight.sum()
@@ -322,10 +338,11 @@ def train(parts, output, width=128, residual=0, epochs=20, seed=20261021,
             replayed += sum(r.get('origin') in ('own_deep_search','own_mcts') for r in batch)
         net.eval()
         validation = error(net, parts['validation'], device)
-        history.append(dict(epoch=epoch+1, loss=running/seen, validation_mae_cp=validation,
+        metrics = selection_metrics(net, parts['validation'], device)
+        history.append(dict(epoch=epoch+1, loss=running/seen, validation_mae_cp=validation, selection=metrics,
                             examples_seen=seen,replayed_research_examples=replayed))
-        if validation < best_error:
-            best_error, best = validation, copy.deepcopy(net.state_dict())
+        if metrics['score_cp'] < best_error:
+            best_error, best = metrics['score_cp'], copy.deepcopy(net.state_dict())
         save_torch(checkpoint, dict(identity=identity, architecture=architecture,
             model=net.state_dict(), optimizer=optimizer.state_dict(), rng=torch.get_rng_state(),
             best=best, best_error=best_error, epoch=epoch+1, history=history))
@@ -334,7 +351,10 @@ def train(parts, output, width=128, residual=0, epochs=20, seed=20261021,
     save_torch(output/'model.pt', dict(architecture=architecture, model=net.state_dict()))
     report = dict(schema='own-policy-value-training-v1', identity=identity,
         architecture=architecture, epochs=epochs, initial_validation_mae_cp=initial_error,
-        validation_mae_cp=best_error, test_mae_cp=error(net, parts['test'], device),
+        validation_mae_cp=error(net, parts['validation'], device),
+        selection=selection_metrics(net, parts['validation'], device), initial_selection=initial_selection,
+        correction_training='unbounded_loss_projected_target' if correction else None,
+        test_mae_cp=error(net, parts['test'], device),
         sample_counts={s:len(r) for s,r in parts.items()}, history=history,
         model_sha256=digest(output/'model.pt'), strength_proven=False)
     (output/'report.json').write_text(json.dumps(report, indent=2)+'\n')

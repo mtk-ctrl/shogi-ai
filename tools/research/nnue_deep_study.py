@@ -62,7 +62,7 @@ def observed_actor_drop(game, ply):
 
 
 def choose(games, max_cases, per_game, eligible_roots=None, excluded_positions=None,
-           selection_seed=None):
+           selection_seed=None, diverse=False):
     if not (1 <= max_cases <= 96 and 1 <= per_game <= 4):
         raise ValueError("research case budget must meet bounded postgame scope")
     # Sample uncertainty/loss signatures, not simply the first sorted game.
@@ -102,11 +102,25 @@ def choose(games, max_cases, per_game, eligible_roots=None, excluded_positions=N
                         digest(f"{gid}:{ply}".encode()))
             records.append((priority, case))
         records.sort(key=lambda entry: entry[0])
-        buckets[gid] = records[:per_game]
+        buckets[gid] = records if diverse else records[:per_game]
     selected = []
     seen_positions = set(excluded_positions or ())
     ordered_roots = sorted(buckets, key=(lambda gid: digest(f'{selection_seed}:{gid}'.encode()))
                            if selection_seed is not None else None)
+    if diverse:
+        used = Counter()
+        for reason, quota in [('suspected_loss', max_cases//2), ('phase_control', max_cases-max_cases//2), (None, max_cases)]:
+            added = 0
+            for index in range(per_game):
+                for gid in ordered_roots:
+                    if added >= quota or len(selected) >= max_cases or used[gid] >= per_game:
+                        continue
+                    candidates = [x[1] for x in buckets[gid] if reason is None or x[1]['triage']['reason'] == reason]
+                    for candidate in candidates:
+                        if candidate['position_key'] not in seen_positions:
+                            selected.append(candidate); seen_positions.add(candidate['position_key'])
+                            used[gid] += 1; added += 1; break
+        return selected
     for index in range(per_game):
         for gid in ordered_roots:
             if index < len(buckets[gid]) and len(selected) < max_cases:
