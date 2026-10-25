@@ -1,0 +1,3457 @@
+{
+  "run": 40145438299,
+  "status": "completed",
+  "next_generation": 5,
+  "accepted": 0,
+  "final_manifest": "neural20-neural20-repaired-20261025-g004-caf10afd5a0f.json",
+  "final_bundle_sha256": "caf10afd5a0ffff07e54ac5f162c38ef0030216c5c9d1ac49ed4472a2408f354",
+  "verified_files": 614,
+  "archives": [
+    {
+      "run": "neural20-repaired-20261025-g4-selfplay-parent",
+      "games": 100,
+      "plies": 10824
+    },
+    {
+      "run": "39124621200",
+      "games": 300,
+      "plies": 33600
+    },
+    {
+      "run": "neural20-correction-20261024-g3-selfplay-parent",
+      "games": 100,
+      "plies": 10913
+    },
+    {
+      "run": "neural20-repaired-20261025-g3-selfplay-parent",
+      "games": 100,
+      "plies": 10943
+    },
+    {
+      "run": "neural20-repaired-20261025-g0-selfplay-parent",
+      "games": 100,
+      "plies": 10754
+    },
+    {
+      "run": "neural20-repaired-20261025-g2-selfplay-parent",
+      "games": 100,
+      "plies": 11700
+    },
+    {
+      "run": "neural20-repaired-20261025-g1-selfplay-parent",
+      "games": 100,
+      "plies": 11128
+    },
+    {
+      "run": "neural20-correction-20261024-g4-selfplay-parent",
+      "games": 100,
+      "plies": 10295
+    },
+    {
+      "run": "neural20-correction-20261024-g0-selfplay-parent",
+      "games": 100,
+      "plies": 10787
+    },
+    {
+      "run": "neural20-correction-20261024-g1-selfplay-parent",
+      "games": 100,
+      "plies": 11105
+    },
+    {
+      "run": "neural20-correction-20261024-g2-selfplay-parent",
+      "games": 100,
+      "plies": 11482
+    },
+    {
+      "run": "neural20-repaired-20261025-g4-screen-parent",
+      "games": 80,
+      "plies": 9123
+    },
+    {
+      "run": "neural20-repaired-20261025-g3-screen-parent",
+      "games": 80,
+      "plies": 9108
+    },
+    {
+      "run": "neural20-repaired-20261025-g0-screen-parent",
+      "games": 80,
+      "plies": 8507
+    },
+    {
+      "run": "neural20-repaired-20261025-g2-screen-parent",
+      "games": 80,
+      "plies": 9079
+    },
+    {
+      "run": "neural20-repaired-20261025-g1-screen-parent",
+      "games": 80,
+      "plies": 8448
+    }
+  ],
+  "total_games": 1700,
+  "total_plies": 187796,
+  "independent_final_student_metrics": {
+    "ordinary_mae_cp": 287.63647745136115,
+    "research_mae_cp": 363.43617775610517,
+    "score_cp": 325.5363276037332
+  },
+  "saturation": {
+    "validation": 5209,
+    "raw_output_saturated": 804,
+    "target_outside_limit": 2393,
+    "projected_target_mae_cp": 287.84020096917004
+  },
+  "generations": [
+    {
+      "generation": 0,
+      "screen": {
+        "draws": 0,
+        "elapsed_seconds": 2758.741604663,
+        "files": [
+          "current/evaluation-archives/screen-parent"
+        ],
+        "games": 80,
+        "invalid_games": 0,
+        "losses": 45,
+        "movetime": 200,
+        "pair_scores": [
+          0.5,
+          0.0,
+          1.0,
+          0.0,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.0,
+          0.5,
+          0.5,
+          0.5,
+          0.0,
+          0.5,
+          0.5,
+          0.5,
+          1.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.5,
+          1.0,
+          0.5,
+          0.0,
+          0.0,
+          0.5,
+          0.0,
+          0.0,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1.0,
+          0.5,
+          0.5,
+          1.0,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "pairs": 40,
+        "score": 0.4375,
+        "wins": 35
+      },
+      "result": {
+        "candidate_sha256": "9ec66ff11e811e9c189927e90c9194e5e0a3c4a37ccad5c41df1fcc604cd52b4",
+        "case_count": 40,
+        "decision": {
+          "accepted": false,
+          "formal_engine_adopted": false,
+          "reason": "screen_rejected"
+        },
+        "formal_engine_adopted": false,
+        "generation": 0,
+        "replay_rows": 348,
+        "screen": {
+          "games": 80,
+          "pass_screen": false,
+          "reason": "rejected_before_full_match",
+          "score": 0.4375,
+          "used_for_promotion": false
+        },
+        "stage_timings": {
+          "mcts-timing": {
+            "longest_worker_seconds": 3.3407979810000086,
+            "reduce_and_learning_seconds": 416.837104251,
+            "worker_seconds": 34.84828469800002,
+            "workers": 20
+          },
+          "screen-timing": {
+            "longest_worker_seconds": 180.26155799999998,
+            "reduce_and_learning_seconds": 1.0314207799999906,
+            "worker_seconds": 2765.041806384,
+            "workers": 20
+          },
+          "selfplay-timing": {
+            "longest_worker_seconds": 248.525966968,
+            "reduce_and_learning_seconds": 182.433936098,
+            "worker_seconds": 3496.9885007039998,
+            "workers": 20
+          },
+          "study-timing": {
+            "longest_worker_seconds": 9601.250883797,
+            "new_deep_labels": 18,
+            "reduce_and_learning_seconds": 683.933596386,
+            "worker_seconds": 166817.128260853,
+            "workers": 20
+          }
+        },
+        "student": {
+          "architecture": {
+            "correction": true,
+            "material_prior": false,
+            "residual": 0,
+            "width": 128
+          },
+          "correction_training": "unbounded_loss_projected_target",
+          "epochs": 20,
+          "history": [
+            {
+              "epoch": 1,
+              "examples_seen": 41459,
+              "loss": 0.034536284806209565,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 289.9187763609765,
+                "research_mae_cp": 250.40211280186972,
+                "score_cp": 270.1604445814231
+              },
+              "validation_mae_cp": 289.88566158870077
+            },
+            {
+              "epoch": 2,
+              "examples_seen": 41459,
+              "loss": 0.01591329502456713,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 281.23868761497204,
+                "research_mae_cp": 271.71297868092853,
+                "score_cp": 276.4758331479503
+              },
+              "validation_mae_cp": 281.2307054104086
+            },
+            {
+              "epoch": 3,
+              "examples_seen": 41459,
+              "loss": 0.012690008991711084,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 285.5609273124014,
+                "research_mae_cp": 267.9094870885213,
+                "score_cp": 276.73520720046133
+              },
+              "validation_mae_cp": 285.54613497004163
+            },
+            {
+              "epoch": 4,
+              "examples_seen": 41459,
+              "loss": 0.010919289135334884,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 287.0100984901298,
+                "research_mae_cp": 236.91691954930624,
+                "score_cp": 261.963509019718
+              },
+              "validation_mae_cp": 286.9681209159297
+            },
+            {
+              "epoch": 5,
+              "examples_seen": 41459,
+              "loss": 0.010014767065228596,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 288.2023529530505,
+                "research_mae_cp": 252.55179405212402,
+                "score_cp": 270.3770735025872
+              },
+              "validation_mae_cp": 288.17247838281384
+            },
+            {
+              "epoch": 6,
+              "examples_seen": 41459,
+              "loss": 0.00923622228303056,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 288.98447893637,
+                "research_mae_cp": 262.5719904899597,
+                "score_cp": 275.77823471316486
+              },
+              "validation_mae_cp": 288.96234554951417
+            },
+            {
+              "epoch": 7,
+              "examples_seen": 41459,
+              "loss": 0.008754330878020309,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 291.4034806385632,
+                "research_mae_cp": 289.19978936513263,
+                "score_cp": 290.3016350018479
+              },
+              "validation_mae_cp": 291.401634003197
+            },
+            {
+              "epoch": 8,
+              "examples_seen": 41459,
+              "loss": 0.007968243061135784,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 290.2312488038679,
+                "research_mae_cp": 263.0083163579305,
+                "score_cp": 276.6197825808992
+              },
+              "validation_mae_cp": 290.2084382552674
+            },
+            {
+              "epoch": 9,
+              "examples_seen": 41459,
+              "loss": 0.007920816255092122,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 293.0489546232194,
+                "research_mae_cp": 216.90378586451212,
+                "score_cp": 254.97637024386574
+              },
+              "validation_mae_cp": 292.98514573933693
+            },
+            {
+              "epoch": 10,
+              "examples_seen": 41459,
+              "loss": 0.007495316946213879,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 297.06782297545516,
+                "research_mae_cp": 217.33333667119345,
+                "score_cp": 257.2005798233243
+              },
+              "validation_mae_cp": 297.0010054178078
+            },
+            {
+              "epoch": 11,
+              "examples_seen": 41459,
+              "loss": 0.007563023230795004,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 290.22221169326434,
+                "research_mae_cp": 259.9104841550191,
+                "score_cp": 275.0663479241417
+              },
+              "validation_mae_cp": 290.1968108875125
+            },
+            {
+              "epoch": 12,
+              "examples_seen": 41459,
+              "loss": 0.007278312487877398,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 289.67414410180277,
+                "research_mae_cp": 265.5351956685384,
+                "score_cp": 277.60466988517055
+              },
+              "validation_mae_cp": 289.6539155331404
+            },
+            {
+              "epoch": 13,
+              "examples_seen": 41459,
+              "loss": 0.00703750004324133,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 291.89301550238366,
+                "research_mae_cp": 256.74140453338623,
+                "score_cp": 274.3172100178849
+              },
+              "validation_mae_cp": 291.8635592114326
+            },
+            {
+              "epoch": 14,
+              "examples_seen": 41459,
+              "loss": 0.007023963014880927,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 292.462270287185,
+                "research_mae_cp": 302.2453387578328,
+                "score_cp": 297.3538045225089
+              },
+              "validation_mae_cp": 292.4704679563725
+            },
+            {
+              "epoch": 15,
+              "examples_seen": 41459,
+              "loss": 0.007007190583380876,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 296.6974864700569,
+                "research_mae_cp": 259.652058283488,
+                "score_cp": 278.17477237677247
+              },
+              "validation_mae_cp": 296.6664431481388
+            },
+            {
+              "epoch": 16,
+              "examples_seen": 41459,
+              "loss": 0.006680540332931035,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 291.2860216626516,
+                "research_mae_cp": 262.454628944397,
+                "score_cp": 276.8703253035243
+              },
+              "validation_mae_cp": 291.26186157738033
+            },
+            {
+              "epoch": 17,
+              "examples_seen": 41459,
+              "loss": 0.006670249712682953,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 293.35262457485265,
+                "research_mae_cp": 234.58492755889893,
+                "score_cp": 263.96877606687576
+              },
+              "validation_mae_cp": 293.3033778014796
+            },
+            {
+              "epoch": 18,
+              "examples_seen": 41459,
+              "loss": 0.006324675287031066,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 292.6367236343482,
+                "research_mae_cp": 234.43740606307983,
+                "score_cp": 263.537064848714
+              },
+              "validation_mae_cp": 292.58795423880633
+            },
+            {
+              "epoch": 19,
+              "examples_seen": 41459,
+              "loss": 0.006268242992802715,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 294.9545174828781,
+                "research_mae_cp": 272.4733153978984,
+                "score_cp": 283.71391644038823
+              },
+              "validation_mae_cp": 294.9356777041984
+            },
+            {
+              "epoch": 20,
+              "examples_seen": 41459,
+              "loss": 0.00650154465848147,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 294.3164797711712,
+                "research_mae_cp": 259.3470017115275,
+                "score_cp": 276.83174074134934
+              },
+              "validation_mae_cp": 294.28717490681055
+            }
+          ],
+          "identity": "2382439551143b0e5d42d1cbe0b1c4af3757a110730a87fd8c5d1ac315ad54d8",
+          "initial_selection": {
+            "ordinary_mae_cp": 295.57313617794813,
+            "research_mae_cp": 18.77043644587199,
+            "score_cp": 157.17178631191007
+          },
+          "initial_validation_mae_cp": 295.34117682686065,
+          "model_sha256": "ca6851f1486126e359b5d1b5f2fe21eed0ab7b61846ac7ee5fcd306587dd292b",
+          "sample_counts": {
+            "test": 3450,
+            "train": 36603,
+            "validation": 3580
+          },
+          "schema": "own-policy-value-training-v1",
+          "selection": {
+            "ordinary_mae_cp": 295.57313617794813,
+            "research_mae_cp": 18.77043644587199,
+            "score_cp": 157.17178631191007
+          },
+          "strength_proven": false,
+          "test_mae_cp": 299.5869119616522,
+          "validation_mae_cp": 295.34117682686065
+        },
+        "teacher": {
+          "architecture": {
+            "material_prior": true,
+            "residual": 2,
+            "width": 128
+          },
+          "correction_training": null,
+          "epochs": 20,
+          "history": [
+            {
+              "epoch": 1,
+              "examples_seen": 41459,
+              "loss": 0.43309820304889607,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 944.7472657376173,
+                "research_mae_cp": 1255.0630569458008,
+                "score_cp": 1099.9051613417091
+              },
+              "validation_mae_cp": 945.0073093009395
+            },
+            {
+              "epoch": 2,
+              "examples_seen": 41459,
+              "loss": 0.35867764098607624,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 961.8379882437109,
+                "research_mae_cp": 1434.848149617513,
+                "score_cp": 1198.343068930612
+              },
+              "validation_mae_cp": 962.2343670722493
+            },
+            {
+              "epoch": 3,
+              "examples_seen": 41459,
+              "loss": 0.3241530188591977,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 969.2492614353639,
+                "research_mae_cp": 1659.1494878133137,
+                "score_cp": 1314.1993746243388
+              },
+              "validation_mae_cp": 969.8273898502968
+            },
+            {
+              "epoch": 4,
+              "examples_seen": 41459,
+              "loss": 0.30164284357435955,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 951.1457639997619,
+                "research_mae_cp": 1375.6380081176758,
+                "score_cp": 1163.391886058719
+              },
+              "validation_mae_cp": 951.5014861549079
+            },
+            {
+              "epoch": 5,
+              "examples_seen": 41459,
+              "loss": 0.2794032542305402,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 945.229839338815,
+                "research_mae_cp": 1595.3219731648762,
+                "score_cp": 1270.2759062518458
+              },
+              "validation_mae_cp": 945.7746090169726
+            },
+            {
+              "epoch": 6,
+              "examples_seen": 41459,
+              "loss": 0.2688029580587945,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 969.3588755935273,
+                "research_mae_cp": 1638.5075251261394,
+                "score_cp": 1303.9332003598333
+              },
+              "validation_mae_cp": 969.9196117550301
+            },
+            {
+              "epoch": 7,
+              "examples_seen": 41459,
+              "loss": 0.248485768332162,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 964.7233646809805,
+                "research_mae_cp": 1544.5804595947266,
+                "score_cp": 1254.6519121378535
+              },
+              "validation_mae_cp": 965.2092789804469
+            },
+            {
+              "epoch": 8,
+              "examples_seen": 41459,
+              "loss": 0.24340293793830217,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 936.9832764866301,
+                "research_mae_cp": 1575.375239054362,
+                "score_cp": 1256.179257770496
+              },
+              "validation_mae_cp": 937.5182444822855
+            },
+            {
+              "epoch": 9,
+              "examples_seen": 41459,
+              "loss": 0.23246137769546196,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 987.9627222450945,
+                "research_mae_cp": 1533.4299405415852,
+                "score_cp": 1260.6963313933397
+              },
+              "validation_mae_cp": 988.4198194109528
+            },
+            {
+              "epoch": 10,
+              "examples_seen": 41459,
+              "loss": 0.22944374900886214,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 947.5512676542952,
+                "research_mae_cp": 1510.5215708414714,
+                "score_cp": 1229.0364192478833
+              },
+              "validation_mae_cp": 948.023032076532
+            },
+            {
+              "epoch": 11,
+              "examples_seen": 41459,
+              "loss": 0.22224042997317328,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 957.6033394130742,
+                "research_mae_cp": 1450.2684275309246,
+                "score_cp": 1203.9358834719994
+              },
+              "validation_mae_cp": 958.0161899161739
+            },
+            {
+              "epoch": 12,
+              "examples_seen": 41459,
+              "loss": 0.21690655831207042,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 953.2609213854902,
+                "research_mae_cp": 1766.7066256205242,
+                "score_cp": 1359.9837735030071
+              },
+              "validation_mae_cp": 953.9425833931182
+            },
+            {
+              "epoch": 13,
+              "examples_seen": 41459,
+              "loss": 0.21241327762178208,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 955.3994489909218,
+                "research_mae_cp": 1562.151273091634,
+                "score_cp": 1258.7753610412778
+              },
+              "validation_mae_cp": 955.907898375442
+            },
+            {
+              "epoch": 14,
+              "examples_seen": 41459,
+              "loss": 0.2116794654952913,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 925.5860744323816,
+                "research_mae_cp": 1586.516539255778,
+                "score_cp": 1256.0513068440798
+              },
+              "validation_mae_cp": 926.1399274431793
+            },
+            {
+              "epoch": 15,
+              "examples_seen": 41459,
+              "loss": 0.20589510468536198,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 957.4736375731399,
+                "research_mae_cp": 1762.5052134195964,
+                "score_cp": 1359.989425496368
+              },
+              "validation_mae_cp": 958.1482466372697
+            },
+            {
+              "epoch": 16,
+              "examples_seen": 41459,
+              "loss": 0.20389180293867357,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 968.6565916398933,
+                "research_mae_cp": 1479.6336491902669,
+                "score_cp": 1224.14512041508
+              },
+              "validation_mae_cp": 969.0847855040481
+            },
+            {
+              "epoch": 17,
+              "examples_seen": 41459,
+              "loss": 0.1975005246673158,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 952.8658991923771,
+                "research_mae_cp": 1423.2888221740723,
+                "score_cp": 1188.0773606832247
+              },
+              "validation_mae_cp": 953.2601084789085
+            },
+            {
+              "epoch": 18,
+              "examples_seen": 41459,
+              "loss": 0.19583713677306203,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 971.7857098492758,
+                "research_mae_cp": 1475.6652514139812,
+                "score_cp": 1223.7254806316284
+              },
+              "validation_mae_cp": 972.2079570066995
+            },
+            {
+              "epoch": 19,
+              "examples_seen": 41459,
+              "loss": 0.19448030474322006,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 972.1470726979388,
+                "research_mae_cp": 1591.750144958496,
+                "score_cp": 1281.9486088282174
+              },
+              "validation_mae_cp": 972.6662939487223
+            },
+            {
+              "epoch": 20,
+              "examples_seen": 41459,
+              "loss": 0.19515826582021584,
+              "replayed_research_examples": 5184,
+              "selection": {
+                "ordinary_mae_cp": 946.3238906753706,
+                "research_mae_cp": 1550.5879720052083,
+                "score_cp": 1248.4559313402895
+              },
+              "validation_mae_cp": 946.8302572239711
+            }
+          ],
+          "identity": "e898dc8d6685de0020d5dead0626bf66da34505f045a121d9d4177e8a68e7d5d",
+          "initial_selection": {
+            "ordinary_mae_cp": 1007.8525111300005,
+            "research_mae_cp": 1367.2065734863281,
+            "score_cp": 1187.5295423081643
+          },
+          "initial_validation_mae_cp": 1008.1536468846838,
+          "model_sha256": "341f963b8daa3ec3e7953d4a7b64812e20f356e1976cb2c5bee1fcfcd9d6446a",
+          "sample_counts": {
+            "test": 3450,
+            "train": 36575,
+            "validation": 3580
+          },
+          "schema": "own-policy-value-training-v1",
+          "selection": {
+            "ordinary_mae_cp": 944.7472657376173,
+            "research_mae_cp": 1255.0630569458008,
+            "score_cp": 1099.9051613417091
+          },
+          "strength_proven": false,
+          "test_mae_cp": 914.2305943585824,
+          "validation_mae_cp": 945.0073093009395
+        }
+      },
+      "admission": {
+        "train": {
+          "accepted": 18,
+          "rejected": {
+            "branch_comparison_inconclusive": 12,
+            "incomplete_or_non_cp": 2
+          }
+        },
+        "validation": {
+          "accepted": 5,
+          "rejected": {
+            "branch_comparison_inconclusive": 2,
+            "incomplete_or_non_cp": 1
+          }
+        }
+      }
+    },
+    {
+      "generation": 1,
+      "screen": {
+        "draws": 0,
+        "elapsed_seconds": 2773.647340111,
+        "files": [
+          "current/evaluation-archives/screen-parent"
+        ],
+        "games": 80,
+        "invalid_games": 0,
+        "losses": 48,
+        "movetime": 200,
+        "pair_scores": [
+          0.5,
+          1.0,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.5,
+          0.0,
+          0.5,
+          0.0,
+          0.5,
+          0.0,
+          0.5,
+          0.5,
+          1.0,
+          0.5,
+          0.0,
+          0.0,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.0,
+          0.5,
+          0.0,
+          0.5,
+          0.0,
+          0.5,
+          1.0,
+          0.5,
+          0.0,
+          0.0,
+          0.5,
+          1.0
+        ],
+        "pairs": 40,
+        "score": 0.4,
+        "wins": 32
+      },
+      "result": {
+        "candidate_sha256": "9ec66ff11e811e9c189927e90c9194e5e0a3c4a37ccad5c41df1fcc604cd52b4",
+        "case_count": 40,
+        "decision": {
+          "accepted": false,
+          "formal_engine_adopted": false,
+          "reason": "screen_rejected"
+        },
+        "formal_engine_adopted": false,
+        "generation": 1,
+        "replay_rows": 399,
+        "screen": {
+          "games": 80,
+          "pass_screen": false,
+          "reason": "rejected_before_full_match",
+          "score": 0.4,
+          "used_for_promotion": false
+        },
+        "stage_timings": {
+          "mcts-timing": {
+            "longest_worker_seconds": 3.0906099970000014,
+            "reduce_and_learning_seconds": 381.253032486,
+            "worker_seconds": 33.40678778300002,
+            "workers": 20
+          },
+          "screen-timing": {
+            "longest_worker_seconds": 176.279512666,
+            "reduce_and_learning_seconds": 1.011888779000003,
+            "worker_seconds": 2779.7206807049997,
+            "workers": 20
+          },
+          "selfplay-timing": {
+            "longest_worker_seconds": 246.14238187599997,
+            "reduce_and_learning_seconds": 214.38406364300002,
+            "worker_seconds": 3578.250088875,
+            "workers": 20
+          },
+          "study-timing": {
+            "longest_worker_seconds": 9601.222037879,
+            "new_deep_labels": 19,
+            "reduce_and_learning_seconds": 743.804942403,
+            "worker_seconds": 176417.552647574,
+            "workers": 20
+          }
+        },
+        "student": {
+          "architecture": {
+            "correction": true,
+            "material_prior": false,
+            "residual": 0,
+            "width": 128
+          },
+          "correction_training": "unbounded_loss_projected_target",
+          "epochs": 20,
+          "history": [
+            {
+              "epoch": 1,
+              "examples_seen": 46806,
+              "loss": 0.03677191972133709,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 288.5364047972578,
+                "research_mae_cp": 432.509183883667,
+                "score_cp": 360.5227943404624
+              },
+              "validation_mae_cp": 288.7114263525735
+            },
+            {
+              "epoch": 2,
+              "examples_seen": 46806,
+              "loss": 0.01784692848178381,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 281.27076702433646,
+                "research_mae_cp": 464.7059917449951,
+                "score_cp": 372.9883793846658
+              },
+              "validation_mae_cp": 281.4937617521984
+            },
+            {
+              "epoch": 3,
+              "examples_seen": 46806,
+              "loss": 0.014190362998628745,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 285.0376207385114,
+                "research_mae_cp": 480.40013313293457,
+                "score_cp": 382.71887693572296
+              },
+              "validation_mae_cp": 285.2751147332575
+            },
+            {
+              "epoch": 4,
+              "examples_seen": 46806,
+              "loss": 0.012110754406279501,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 293.7522276931287,
+                "research_mae_cp": 464.53027725219727,
+                "score_cp": 379.141252472663
+              },
+              "validation_mae_cp": 293.95983533907946
+            },
+            {
+              "epoch": 5,
+              "examples_seen": 46806,
+              "loss": 0.010921200228856526,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 290.5849163813159,
+                "research_mae_cp": 474.5399475097656,
+                "score_cp": 382.56243194554077
+              },
+              "validation_mae_cp": 290.8085424941211
+            },
+            {
+              "epoch": 6,
+              "examples_seen": 46806,
+              "loss": 0.009958553193725617,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 288.05689129184026,
+                "research_mae_cp": 504.53200340270996,
+                "score_cp": 396.2944473472751
+              },
+              "validation_mae_cp": 288.3200509803822
+            },
+            {
+              "epoch": 7,
+              "examples_seen": 46806,
+              "loss": 0.00953005653798589,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 291.3188610476203,
+                "research_mae_cp": 507.63068199157715,
+                "score_cp": 399.47477151959873
+              },
+              "validation_mae_cp": 291.5818221140685
+            },
+            {
+              "epoch": 8,
+              "examples_seen": 46806,
+              "loss": 0.008873192737672423,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 288.91547153383755,
+                "research_mae_cp": 518.2573318481445,
+                "score_cp": 403.586401690991
+              },
+              "validation_mae_cp": 289.19427260963
+            },
+            {
+              "epoch": 9,
+              "examples_seen": 46806,
+              "loss": 0.008243668696612715,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 290.6118320281225,
+                "research_mae_cp": 543.8719749450684,
+                "score_cp": 417.24190348659545
+              },
+              "validation_mae_cp": 290.91970966356735
+            },
+            {
+              "epoch": 10,
+              "examples_seen": 46806,
+              "loss": 0.008124803381104126,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 291.0421564377039,
+                "research_mae_cp": 504.80427742004395,
+                "score_cp": 397.9232169288739
+              },
+              "validation_mae_cp": 291.3020180577696
+            },
+            {
+              "epoch": 11,
+              "examples_seen": 46806,
+              "loss": 0.007696424484424366,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 292.4368895713635,
+                "research_mae_cp": 514.7372245788574,
+                "score_cp": 403.58705707511047
+              },
+              "validation_mae_cp": 292.7071306788368
+            },
+            {
+              "epoch": 12,
+              "examples_seen": 46806,
+              "loss": 0.007665744073781627,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 293.543988681002,
+                "research_mae_cp": 489.6028518676758,
+                "score_cp": 391.5734202743389
+              },
+              "validation_mae_cp": 293.7823294897657
+            },
+            {
+              "epoch": 13,
+              "examples_seen": 46806,
+              "loss": 0.007165360843577072,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 289.2270798576377,
+                "research_mae_cp": 542.5171375274658,
+                "score_cp": 415.87210869255176
+              },
+              "validation_mae_cp": 289.53499380121434
+            },
+            {
+              "epoch": 14,
+              "examples_seen": 46806,
+              "loss": 0.0070439326085499805,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 291.92811349350615,
+                "research_mae_cp": 517.0966148376465,
+                "score_cp": 404.5123641655763
+              },
+              "validation_mae_cp": 292.20184142532185
+            },
+            {
+              "epoch": 15,
+              "examples_seen": 46806,
+              "loss": 0.006740159980144264,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 292.6105682202184,
+                "research_mae_cp": 505.09538650512695,
+                "score_cp": 398.8529773626727
+              },
+              "validation_mae_cp": 292.8688769035608
+            },
+            {
+              "epoch": 16,
+              "examples_seen": 46806,
+              "loss": 0.006904883117829714,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 291.776913862962,
+                "research_mae_cp": 512.1885299682617,
+                "score_cp": 401.9827219156118
+              },
+              "validation_mae_cp": 292.0448589348138
+            },
+            {
+              "epoch": 17,
+              "examples_seen": 46806,
+              "loss": 0.006847563616710815,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 294.173712855769,
+                "research_mae_cp": 499.4953155517578,
+                "score_cp": 396.83451420376343
+              },
+              "validation_mae_cp": 294.4233136370673
+            },
+            {
+              "epoch": 18,
+              "examples_seen": 46806,
+              "loss": 0.0065111089331461505,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 293.2243690750731,
+                "research_mae_cp": 504.7741413116455,
+                "score_cp": 398.9992551933593
+              },
+              "validation_mae_cp": 293.48154112048144
+            },
+            {
+              "epoch": 19,
+              "examples_seen": 46806,
+              "loss": 0.006404321393085569,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 292.87911703431035,
+                "research_mae_cp": 507.6622486114502,
+                "score_cp": 400.2706828228803
+              },
+              "validation_mae_cp": 293.1402198537376
+            },
+            {
+              "epoch": 20,
+              "examples_seen": 46806,
+              "loss": 0.006335377610979681,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 293.9111339082504,
+                "research_mae_cp": 543.3089733123779,
+                "score_cp": 418.61005361031414
+              },
+              "validation_mae_cp": 294.21431613090175
+            }
+          ],
+          "identity": "c8a89345499d56fede0c054a4cc49ce7a7d7403a5cdf90eb4ff304665ba39e43",
+          "initial_selection": {
+            "ordinary_mae_cp": 312.1816206581985,
+            "research_mae_cp": 318.227744102478,
+            "score_cp": 315.2046823803382
+          },
+          "initial_validation_mae_cp": 312.18897093539397,
+          "model_sha256": "ca6851f1486126e359b5d1b5f2fe21eed0ab7b61846ac7ee5fcd306587dd292b",
+          "sample_counts": {
+            "test": 3890,
+            "train": 41322,
+            "validation": 4113
+          },
+          "schema": "own-policy-value-training-v1",
+          "selection": {
+            "ordinary_mae_cp": 312.1816206581985,
+            "research_mae_cp": 318.227744102478,
+            "score_cp": 315.2046823803382
+          },
+          "strength_proven": false,
+          "test_mae_cp": 314.27439343959935,
+          "validation_mae_cp": 312.18897093539397
+        },
+        "teacher": {
+          "architecture": {
+            "material_prior": true,
+            "residual": 2,
+            "width": 128
+          },
+          "correction_training": null,
+          "epochs": 20,
+          "history": [
+            {
+              "epoch": 1,
+              "examples_seen": 46806,
+              "loss": 0.44978725714076967,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 934.4595892403815,
+                "research_mae_cp": 1619.8722839355469,
+                "score_cp": 1277.165936587964
+              },
+              "validation_mae_cp": 935.2928159766147
+            },
+            {
+              "epoch": 2,
+              "examples_seen": 46806,
+              "loss": 0.3833840407479835,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 922.7408239184475,
+                "research_mae_cp": 1453.7652015686035,
+                "score_cp": 1188.2530127435255
+              },
+              "validation_mae_cp": 923.3863671968489
+            },
+            {
+              "epoch": 3,
+              "examples_seen": 46806,
+              "loss": 0.3485761300669783,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 935.1822823837414,
+                "research_mae_cp": 1461.160659790039,
+                "score_cp": 1198.1714710868903
+              },
+              "validation_mae_cp": 935.821691801042
+            },
+            {
+              "epoch": 4,
+              "examples_seen": 46806,
+              "loss": 0.3173540253909292,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 924.2246209008088,
+                "research_mae_cp": 1566.8580055236816,
+                "score_cp": 1245.5413132122453
+              },
+              "validation_mae_cp": 925.0058434521401
+            },
+            {
+              "epoch": 5,
+              "examples_seen": 46806,
+              "loss": 0.29770634798001555,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 909.7345622860353,
+                "research_mae_cp": 1580.722427368164,
+                "score_cp": 1245.2284948270997
+              },
+              "validation_mae_cp": 910.5502535993677
+            },
+            {
+              "epoch": 6,
+              "examples_seen": 46806,
+              "loss": 0.27783627259432286,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 926.835162033705,
+                "research_mae_cp": 1530.5408477783203,
+                "score_cp": 1228.6880049060128
+              },
+              "validation_mae_cp": 927.5690617133544
+            },
+            {
+              "epoch": 7,
+              "examples_seen": 46806,
+              "loss": 0.2644222404225048,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 923.8922157213309,
+                "research_mae_cp": 1531.328296661377,
+                "score_cp": 1227.610256191354
+              },
+              "validation_mae_cp": 924.6306499367122
+            },
+            {
+              "epoch": 8,
+              "examples_seen": 46806,
+              "loss": 0.2514253718888246,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 957.7814374253255,
+                "research_mae_cp": 1527.1000862121582,
+                "score_cp": 1242.440761818742
+              },
+              "validation_mae_cp": 958.4735338919186
+            },
+            {
+              "epoch": 9,
+              "examples_seen": 46806,
+              "loss": 0.2422602342009743,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 925.6380368114794,
+                "research_mae_cp": 1610.1524353027344,
+                "score_cp": 1267.895236057107
+              },
+              "validation_mae_cp": 926.4701719907783
+            },
+            {
+              "epoch": 10,
+              "examples_seen": 46806,
+              "loss": 0.2321413836356733,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 923.8915865934348,
+                "research_mae_cp": 1486.1294746398926,
+                "score_cp": 1205.0105306166638
+              },
+              "validation_mae_cp": 924.5750757426553
+            },
+            {
+              "epoch": 11,
+              "examples_seen": 46806,
+              "loss": 0.22294364173086423,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 921.2784070699333,
+                "research_mae_cp": 1553.8084030151367,
+                "score_cp": 1237.5434050425351
+              },
+              "validation_mae_cp": 922.0473467796469
+            },
+            {
+              "epoch": 12,
+              "examples_seen": 46806,
+              "loss": 0.22193568700939875,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 956.0971441148203,
+                "research_mae_cp": 1619.7616577148438,
+                "score_cp": 1287.929400914832
+              },
+              "validation_mae_cp": 956.9039325078792
+            },
+            {
+              "epoch": 13,
+              "examples_seen": 46806,
+              "loss": 0.21754106157193687,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 958.1091473606336,
+                "research_mae_cp": 1596.8154907226562,
+                "score_cp": 1277.462319041645
+              },
+              "validation_mae_cp": 958.8855953944619
+            },
+            {
+              "epoch": 14,
+              "examples_seen": 46806,
+              "loss": 0.20973736979712004,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 919.3095139426405,
+                "research_mae_cp": 1567.1761512756348,
+                "score_cp": 1243.2428326091376
+              },
+              "validation_mae_cp": 920.0970978740355
+            },
+            {
+              "epoch": 15,
+              "examples_seen": 46806,
+              "loss": 0.20720214533896517,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 945.5035689278726,
+                "research_mae_cp": 1645.7649230957031,
+                "score_cp": 1295.6342460117878
+              },
+              "validation_mae_cp": 946.3548463190266
+            },
+            {
+              "epoch": 16,
+              "examples_seen": 46806,
+              "loss": 0.2052904863630162,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 954.3071419958246,
+                "research_mae_cp": 1588.3835792541504,
+                "score_cp": 1271.3453606249875
+              },
+              "validation_mae_cp": 955.0779617647171
+            },
+            {
+              "epoch": 17,
+              "examples_seen": 46806,
+              "loss": 0.20190771015588022,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 946.2921120291676,
+                "research_mae_cp": 1749.8926162719727,
+                "score_cp": 1348.0923641505701
+              },
+              "validation_mae_cp": 947.2690149145407
+            },
+            {
+              "epoch": 18,
+              "examples_seen": 46806,
+              "loss": 0.20157359261197044,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 927.6525574974795,
+                "research_mae_cp": 1695.9321975708008,
+                "score_cp": 1311.79237753414
+              },
+              "validation_mae_cp": 928.5865229989906
+            },
+            {
+              "epoch": 19,
+              "examples_seen": 46806,
+              "loss": 0.19485678540556492,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 945.1365723930292,
+                "research_mae_cp": 1672.2719192504883,
+                "score_cp": 1308.7042458217588
+              },
+              "validation_mae_cp": 946.0205205188828
+            },
+            {
+              "epoch": 20,
+              "examples_seen": 46806,
+              "loss": 0.19473792985989,
+              "replayed_research_examples": 5856,
+              "selection": {
+                "ordinary_mae_cp": 929.7295431547527,
+                "research_mae_cp": 1716.080093383789,
+                "score_cp": 1322.904818269271
+              },
+              "validation_mae_cp": 930.6854764649447
+            }
+          ],
+          "identity": "4646b80b40434e718ca6d83983085a388e9e3ef11ae44a6dd3e55d0c35e868a9",
+          "initial_selection": {
+            "ordinary_mae_cp": 936.2774029910971,
+            "research_mae_cp": 1527.8101921081543,
+            "score_cp": 1232.0437975496257
+          },
+          "initial_validation_mae_cp": 936.9965035521778,
+          "model_sha256": "15fc3968e2f20386c54d53e561861d7778ac2fd40fd5be64f6e7c1983022bdbf",
+          "sample_counts": {
+            "test": 3890,
+            "train": 41294,
+            "validation": 4113
+          },
+          "schema": "own-policy-value-training-v1",
+          "selection": {
+            "ordinary_mae_cp": 922.7408239184475,
+            "research_mae_cp": 1453.7652015686035,
+            "score_cp": 1188.2530127435255
+          },
+          "strength_proven": false,
+          "test_mae_cp": 892.0258195970237,
+          "validation_mae_cp": 923.3863671968489
+        }
+      },
+      "admission": {
+        "train": {
+          "accepted": 19,
+          "rejected": {
+            "branch_comparison_inconclusive": 11,
+            "branch_improvement_not_confirmed": 1,
+            "incomplete_or_non_cp": 1
+          }
+        },
+        "validation": {
+          "accepted": 4,
+          "rejected": {
+            "branch_comparison_inconclusive": 3,
+            "incomplete_or_non_cp": 1
+          }
+        }
+      }
+    },
+    {
+      "generation": 2,
+      "screen": {
+        "draws": 0,
+        "elapsed_seconds": 2885.903253027,
+        "files": [
+          "current/evaluation-archives/screen-parent"
+        ],
+        "games": 80,
+        "invalid_games": 0,
+        "losses": 47,
+        "movetime": 200,
+        "pair_scores": [
+          0.0,
+          0.0,
+          0.5,
+          0.5,
+          0.0,
+          0.0,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.0,
+          0.0,
+          0.5,
+          0.0,
+          0.5,
+          0.0,
+          1.0,
+          0.5,
+          0.5,
+          0.0,
+          0.5,
+          0.5,
+          0.5,
+          1.0,
+          0.5,
+          1.0,
+          0.5,
+          0.5,
+          1.0,
+          0.0,
+          0.5,
+          0.5,
+          0.0,
+          0.5,
+          0.5,
+          0.0,
+          0.5,
+          0.5,
+          1.0
+        ],
+        "pairs": 40,
+        "score": 0.4125,
+        "wins": 33
+      },
+      "result": {
+        "candidate_sha256": "dacea69a842fef1036f602e891942b63ff94136d3ab65d301761e434cc56d7b2",
+        "case_count": 40,
+        "decision": {
+          "accepted": false,
+          "formal_engine_adopted": false,
+          "reason": "screen_rejected"
+        },
+        "formal_engine_adopted": false,
+        "generation": 2,
+        "replay_rows": 449,
+        "screen": {
+          "games": 80,
+          "pass_screen": false,
+          "reason": "rejected_before_full_match",
+          "score": 0.4125,
+          "used_for_promotion": false
+        },
+        "stage_timings": {
+          "mcts-timing": {
+            "longest_worker_seconds": 2.830256583999997,
+            "reduce_and_learning_seconds": 480.46205669200003,
+            "worker_seconds": 35.32746962600001,
+            "workers": 20
+          },
+          "screen-timing": {
+            "longest_worker_seconds": 174.81605114500002,
+            "reduce_and_learning_seconds": 1.1572772539999505,
+            "worker_seconds": 2891.81363491,
+            "workers": 20
+          },
+          "selfplay-timing": {
+            "longest_worker_seconds": 276.086252142,
+            "reduce_and_learning_seconds": 118.93207508,
+            "worker_seconds": 3683.905021956,
+            "workers": 20
+          },
+          "study-timing": {
+            "longest_worker_seconds": 9601.186958549999,
+            "new_deep_labels": 18,
+            "reduce_and_learning_seconds": 1407.647829662,
+            "worker_seconds": 172817.531650674,
+            "workers": 20
+          }
+        },
+        "student": {
+          "architecture": {
+            "correction": true,
+            "material_prior": false,
+            "residual": 0,
+            "width": 128
+          },
+          "correction_training": "unbounded_loss_projected_target",
+          "epochs": 20,
+          "history": [
+            {
+              "epoch": 1,
+              "examples_seen": 51877,
+              "loss": 0.039013133031825645,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 282.7551401228099,
+                "research_mae_cp": 333.65511894226074,
+                "score_cp": 308.20512953253535
+              },
+              "validation_mae_cp": 282.84758049297005
+            },
+            {
+              "epoch": 2,
+              "examples_seen": 51877,
+              "loss": 0.019501446438978595,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 279.19922543027496,
+                "research_mae_cp": 336.1383378505707,
+                "score_cp": 307.6687816404228
+              },
+              "validation_mae_cp": 279.3026338505826
+            },
+            {
+              "epoch": 3,
+              "examples_seen": 51877,
+              "loss": 0.015350174711946482,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 282.794986661521,
+                "research_mae_cp": 329.98746633529663,
+                "score_cp": 306.39122649840886
+              },
+              "validation_mae_cp": 282.8806938838201
+            },
+            {
+              "epoch": 4,
+              "examples_seen": 51877,
+              "loss": 0.013015673595591226,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 288.58727998887514,
+                "research_mae_cp": 344.46215629577637,
+                "score_cp": 316.52471814232575
+              },
+              "validation_mae_cp": 288.6887553601476
+            },
+            {
+              "epoch": 5,
+              "examples_seen": 51877,
+              "loss": 0.011394254571910825,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 288.07004712130606,
+                "research_mae_cp": 358.6384057998657,
+                "score_cp": 323.3542264605859
+              },
+              "validation_mae_cp": 288.1982073745987
+            },
+            {
+              "epoch": 6,
+              "examples_seen": 51877,
+              "loss": 0.010426401822835888,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 283.78419743794484,
+                "research_mae_cp": 327.8343975543976,
+                "score_cp": 305.8092974961712
+              },
+              "validation_mae_cp": 283.86419774725545
+            },
+            {
+              "epoch": 7,
+              "examples_seen": 51877,
+              "loss": 0.00960475535693348,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 287.03678253430627,
+                "research_mae_cp": 335.69276332855225,
+                "score_cp": 311.36477293142923
+              },
+              "validation_mae_cp": 287.12514732265583
+            },
+            {
+              "epoch": 8,
+              "examples_seen": 51877,
+              "loss": 0.009158925775315824,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 287.561339412409,
+                "research_mae_cp": 313.50407004356384,
+                "score_cp": 300.5327047279864
+              },
+              "validation_mae_cp": 287.60845431134055
+            },
+            {
+              "epoch": 9,
+              "examples_seen": 51877,
+              "loss": 0.00860742021297908,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 287.0132384691722,
+                "research_mae_cp": 362.6604676246643,
+                "score_cp": 324.83685304691824
+              },
+              "validation_mae_cp": 287.1506226590489
+            },
+            {
+              "epoch": 10,
+              "examples_seen": 51877,
+              "loss": 0.008202250601440248,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 290.11191914020304,
+                "research_mae_cp": 351.7792522907257,
+                "score_cp": 320.9455857154644
+              },
+              "validation_mae_cp": 290.22391424276503
+            },
+            {
+              "epoch": 11,
+              "examples_seen": 51877,
+              "loss": 0.0076049542239391,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 288.925535277071,
+                "research_mae_cp": 349.2303788661957,
+                "score_cp": 319.07795707163336
+              },
+              "validation_mae_cp": 289.03505582950174
+            },
+            {
+              "epoch": 12,
+              "examples_seen": 51877,
+              "loss": 0.007618710835745919,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 290.2583425251603,
+                "research_mae_cp": 349.3936061859131,
+                "score_cp": 319.8259743555367
+              },
+              "validation_mae_cp": 290.3657387117522
+            },
+            {
+              "epoch": 13,
+              "examples_seen": 51877,
+              "loss": 0.007414995401651115,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 284.9080990411109,
+                "research_mae_cp": 352.1040081977844,
+                "score_cp": 318.5060536194477
+              },
+              "validation_mae_cp": 285.03013506920735
+            },
+            {
+              "epoch": 14,
+              "examples_seen": 51877,
+              "loss": 0.007101453987691855,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 290.33171536842747,
+                "research_mae_cp": 341.1993980407715,
+                "score_cp": 315.7655567045995
+              },
+              "validation_mae_cp": 290.424097084972
+            },
+            {
+              "epoch": 15,
+              "examples_seen": 51877,
+              "loss": 0.007015790727790836,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 286.41413709698196,
+                "research_mae_cp": 336.10764145851135,
+                "score_cp": 311.2608892777466
+              },
+              "validation_mae_cp": 286.5043856634861
+            },
+            {
+              "epoch": 16,
+              "examples_seen": 51877,
+              "loss": 0.006628104318792528,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 287.39330316907524,
+                "research_mae_cp": 327.37505435943604,
+                "score_cp": 307.38417876425564
+              },
+              "validation_mae_cp": 287.4659149654878
+            },
+            {
+              "epoch": 17,
+              "examples_seen": 51877,
+              "loss": 0.006829921956886018,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 288.5212593521073,
+                "research_mae_cp": 342.54947304725647,
+                "score_cp": 315.5353661996819
+              },
+              "validation_mae_cp": 288.61938069545994
+            },
+            {
+              "epoch": 18,
+              "examples_seen": 51877,
+              "loss": 0.006691722985102336,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 288.54664222798834,
+                "research_mae_cp": 321.89756631851196,
+                "score_cp": 305.2221042732501
+              },
+              "validation_mae_cp": 288.60721090189037
+            },
+            {
+              "epoch": 19,
+              "examples_seen": 51877,
+              "loss": 0.006658584631717071,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 288.39971955754635,
+                "research_mae_cp": 329.92658019065857,
+                "score_cp": 309.1631498741025
+              },
+              "validation_mae_cp": 288.47513750922803
+            },
+            {
+              "epoch": 20,
+              "examples_seen": 51877,
+              "loss": 0.006183035379874899,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 287.13331294108553,
+                "research_mae_cp": 323.5165774822235,
+                "score_cp": 305.3249452116545
+              },
+              "validation_mae_cp": 287.1993892985765
+            }
+          ],
+          "identity": "b83258d53c7d66e7648c47f13eba963629795492d4ea3c98e51336ea1d8851b8",
+          "initial_selection": {
+            "ordinary_mae_cp": 320.35647009024706,
+            "research_mae_cp": 308.322936296463,
+            "score_cp": 314.33970319335504
+          },
+          "initial_validation_mae_cp": 320.3346157182224,
+          "model_sha256": "05b55542406dbffaeda327a74f6f4594104f3501a687c85f30fd12f593c4ffdd",
+          "sample_counts": {
+            "test": 4467,
+            "train": 45798,
+            "validation": 4405
+          },
+          "schema": "own-policy-value-training-v1",
+          "selection": {
+            "ordinary_mae_cp": 287.561339412409,
+            "research_mae_cp": 313.50407004356384,
+            "score_cp": 300.5327047279864
+          },
+          "strength_proven": false,
+          "test_mae_cp": 285.54887859138677,
+          "validation_mae_cp": 287.60845431134055
+        },
+        "teacher": {
+          "architecture": {
+            "material_prior": true,
+            "residual": 2,
+            "width": 128
+          },
+          "correction_training": null,
+          "epochs": 20,
+          "history": [
+            {
+              "epoch": 1,
+              "examples_seen": 51877,
+              "loss": 0.42091352295682066,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 901.1949977740283,
+                "research_mae_cp": 1659.6362590789795,
+                "score_cp": 1280.4156284265039
+              },
+              "validation_mae_cp": 902.5724153377953
+            },
+            {
+              "epoch": 2,
+              "examples_seen": 51877,
+              "loss": 0.3703841871755411,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 951.1125038395097,
+                "research_mae_cp": 1901.4867544174194,
+                "score_cp": 1426.2996291284646
+              },
+              "validation_mae_cp": 952.8384958845262
+            },
+            {
+              "epoch": 3,
+              "examples_seen": 51877,
+              "loss": 0.333550102008433,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 905.8430419880232,
+                "research_mae_cp": 1783.2404375076294,
+                "score_cp": 1344.5417397478263
+              },
+              "validation_mae_cp": 907.436498150517
+            },
+            {
+              "epoch": 4,
+              "examples_seen": 51877,
+              "loss": 0.3072712634170327,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 942.1731481667077,
+                "research_mae_cp": 1761.8459463119507,
+                "score_cp": 1352.009547239329
+              },
+              "validation_mae_cp": 943.6617709451041
+            },
+            {
+              "epoch": 5,
+              "examples_seen": 51877,
+              "loss": 0.28681035298555885,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 946.3474923490204,
+                "research_mae_cp": 1894.4793939590454,
+                "score_cp": 1420.4134431540328
+              },
+              "validation_mae_cp": 948.0694124566033
+            },
+            {
+              "epoch": 6,
+              "examples_seen": 51877,
+              "loss": 0.275369483239277,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 938.6990746503964,
+                "research_mae_cp": 1948.4630823135376,
+                "score_cp": 1443.5810784819669
+              },
+              "validation_mae_cp": 940.532925072106
+            },
+            {
+              "epoch": 7,
+              "examples_seen": 51877,
+              "loss": 0.25762393530786026,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 934.0056323289383,
+                "research_mae_cp": 1760.2201700210571,
+                "score_cp": 1347.1129011749977
+              },
+              "validation_mae_cp": 935.5061369775779
+            },
+            {
+              "epoch": 8,
+              "examples_seen": 51877,
+              "loss": 0.24506322615134274,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 926.2657486527569,
+                "research_mae_cp": 1841.418743133545,
+                "score_cp": 1383.842245893151
+              },
+              "validation_mae_cp": 927.9277736564229
+            },
+            {
+              "epoch": 9,
+              "examples_seen": 51877,
+              "loss": 0.24145385246636067,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 943.2947906223459,
+                "research_mae_cp": 1811.6462230682373,
+                "score_cp": 1377.4705068452915
+              },
+              "validation_mae_cp": 944.87181976353
+            },
+            {
+              "epoch": 10,
+              "examples_seen": 51877,
+              "loss": 0.2311982907682142,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 902.6122536744913,
+                "research_mae_cp": 1707.1810960769653,
+                "score_cp": 1304.8966748757284
+              },
+              "validation_mae_cp": 904.0734471852609
+            },
+            {
+              "epoch": 11,
+              "examples_seen": 51877,
+              "loss": 0.22645778740293632,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 938.3129434800294,
+                "research_mae_cp": 1752.463459968567,
+                "score_cp": 1345.3882017242981
+              },
+              "validation_mae_cp": 939.7915384420337
+            },
+            {
+              "epoch": 12,
+              "examples_seen": 51877,
+              "loss": 0.21959483778269673,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 938.9110215555572,
+                "research_mae_cp": 1726.9296646118164,
+                "score_cp": 1332.920343083687
+              },
+              "validation_mae_cp": 940.3421564351146
+            },
+            {
+              "epoch": 13,
+              "examples_seen": 51877,
+              "loss": 0.2160958941902171,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 935.693336991741,
+                "research_mae_cp": 1797.1755266189575,
+                "score_cp": 1366.4344318053493
+              },
+              "validation_mae_cp": 937.2578901275739
+            },
+            {
+              "epoch": 14,
+              "examples_seen": 51877,
+              "loss": 0.2076236535706976,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 935.4895703869026,
+                "research_mae_cp": 1892.7924633026123,
+                "score_cp": 1414.1410168447574
+              },
+              "validation_mae_cp": 937.2281458808128
+            },
+            {
+              "epoch": 15,
+              "examples_seen": 51877,
+              "loss": 0.20486376921939445,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 971.8922659947923,
+                "research_mae_cp": 1924.1986274719238,
+                "score_cp": 1448.045446733358
+              },
+              "validation_mae_cp": 973.6217658987922
+            },
+            {
+              "epoch": 16,
+              "examples_seen": 51877,
+              "loss": 0.20988565922118943,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 965.7006982730035,
+                "research_mae_cp": 1932.05726146698,
+                "score_cp": 1448.8789798699918
+              },
+              "validation_mae_cp": 967.4557160844056
+            },
+            {
+              "epoch": 17,
+              "examples_seen": 51877,
+              "loss": 0.2030943002805499,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 969.7036769191108,
+                "research_mae_cp": 1851.0968685150146,
+                "score_cp": 1410.4002727170628
+              },
+              "validation_mae_cp": 971.3043897024754
+            },
+            {
+              "epoch": 18,
+              "examples_seen": 51877,
+              "loss": 0.1982588031463984,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 934.4246929169569,
+                "research_mae_cp": 1830.244779586792,
+                "score_cp": 1382.3347362518743
+              },
+              "validation_mae_cp": 936.0516075108297
+            },
+            {
+              "epoch": 19,
+              "examples_seen": 51877,
+              "loss": 0.19700695485784886,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 938.1509277260463,
+                "research_mae_cp": 1752.6681423187256,
+                "score_cp": 1345.409535022386
+              },
+              "validation_mae_cp": 939.6301858406197
+            },
+            {
+              "epoch": 20,
+              "examples_seen": 51877,
+              "loss": 0.19786354361635283,
+              "replayed_research_examples": 6496,
+              "selection": {
+                "ordinary_mae_cp": 938.53968936312,
+                "research_mae_cp": 1742.6402568817139,
+                "score_cp": 1340.589973122417
+              },
+              "validation_mae_cp": 940.000031348931
+            }
+          ],
+          "identity": "c731555d8232086ca5b3824003b417f5ea8bf2ed17025d7ac27a19dde566707c",
+          "initial_selection": {
+            "ordinary_mae_cp": 924.1781436450811,
+            "research_mae_cp": 1799.9569177627563,
+            "score_cp": 1362.0675307039187
+          },
+          "initial_validation_mae_cp": 925.7686627980123,
+          "model_sha256": "6dc0cf291fa28db97db4c81472259f14586a07dd2fb79d4856f811275d457900",
+          "sample_counts": {
+            "test": 4467,
+            "train": 45769,
+            "validation": 4405
+          },
+          "schema": "own-policy-value-training-v1",
+          "selection": {
+            "ordinary_mae_cp": 901.1949977740283,
+            "research_mae_cp": 1659.6362590789795,
+            "score_cp": 1280.4156284265039
+          },
+          "strength_proven": false,
+          "test_mae_cp": 905.4437060470359,
+          "validation_mae_cp": 902.5724153377953
+        }
+      },
+      "admission": {
+        "train": {
+          "accepted": 18,
+          "rejected": {
+            "branch_comparison_inconclusive": 12,
+            "branch_improvement_not_confirmed": 2
+          }
+        },
+        "validation": {
+          "accepted": 6,
+          "rejected": {
+            "branch_comparison_inconclusive": 2
+          }
+        }
+      }
+    },
+    {
+      "generation": 3,
+      "screen": {
+        "draws": 0,
+        "elapsed_seconds": 2877.8111989980002,
+        "files": [
+          "current/evaluation-archives/screen-parent"
+        ],
+        "games": 80,
+        "invalid_games": 0,
+        "losses": 44,
+        "movetime": 200,
+        "pair_scores": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.0,
+          0.0,
+          0.5,
+          0.0,
+          0.0,
+          0.5,
+          1.0,
+          0.5,
+          0.5,
+          1.0,
+          0.5,
+          1.0,
+          0.0,
+          0.0,
+          0.5,
+          0.5,
+          0.5,
+          0.0,
+          0.0,
+          0.0,
+          0.5,
+          0.5,
+          1.0,
+          0.0,
+          1.0,
+          0.0,
+          0.5,
+          0.0,
+          0.5,
+          0.5,
+          1.0,
+          1.0,
+          0.5,
+          0.5,
+          1.0
+        ],
+        "pairs": 40,
+        "score": 0.45,
+        "wins": 36
+      },
+      "result": {
+        "candidate_sha256": "3d6f8861e217ac1e4abc77daf346859e974997550988438975234331dd82d0b8",
+        "case_count": 40,
+        "decision": {
+          "accepted": false,
+          "formal_engine_adopted": false,
+          "reason": "screen_rejected"
+        },
+        "formal_engine_adopted": false,
+        "generation": 3,
+        "replay_rows": 501,
+        "screen": {
+          "games": 80,
+          "pass_screen": false,
+          "reason": "rejected_before_full_match",
+          "score": 0.45,
+          "used_for_promotion": false
+        },
+        "stage_timings": {
+          "mcts-timing": {
+            "longest_worker_seconds": 3.1510380359999886,
+            "reduce_and_learning_seconds": 573.816151078,
+            "worker_seconds": 36.25694571499989,
+            "workers": 20
+          },
+          "screen-timing": {
+            "longest_worker_seconds": 188.28532549,
+            "reduce_and_learning_seconds": 1.1372957710000264,
+            "worker_seconds": 2884.182717624,
+            "workers": 20
+          },
+          "selfplay-timing": {
+            "longest_worker_seconds": 258.528374889,
+            "reduce_and_learning_seconds": 244.226428377,
+            "worker_seconds": 3499.8948560110002,
+            "workers": 20
+          },
+          "study-timing": {
+            "longest_worker_seconds": 9601.172786049001,
+            "new_deep_labels": 20,
+            "reduce_and_learning_seconds": 1485.281871708,
+            "worker_seconds": 172816.611127729,
+            "workers": 20
+          }
+        },
+        "student": {
+          "architecture": {
+            "correction": true,
+            "material_prior": false,
+            "residual": 0,
+            "width": 128
+          },
+          "correction_training": "unbounded_loss_projected_target",
+          "epochs": 20,
+          "history": [
+            {
+              "epoch": 1,
+              "examples_seen": 57236,
+              "loss": 0.014068449509275877,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 288.40948701151655,
+                "research_mae_cp": 347.22113609313965,
+                "score_cp": 317.8153115523281
+              },
+              "validation_mae_cp": 288.54312199350477
+            },
+            {
+              "epoch": 2,
+              "examples_seen": 57236,
+              "loss": 0.011040337458336217,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 291.5187851489207,
+                "research_mae_cp": 322.3763595927845,
+                "score_cp": 306.94757237085264
+              },
+              "validation_mae_cp": 291.5889020548259
+            },
+            {
+              "epoch": 3,
+              "examples_seen": 57236,
+              "loss": 0.010127476691778988,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 289.01728359562026,
+                "research_mae_cp": 338.8709371740168,
+                "score_cp": 313.9441103848185
+              },
+              "validation_mae_cp": 289.13056330847314
+            },
+            {
+              "epoch": 4,
+              "examples_seen": 57236,
+              "loss": 0.009107297924629372,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 289.9175264820549,
+                "research_mae_cp": 336.52782440185547,
+                "score_cp": 313.2226754419552
+              },
+              "validation_mae_cp": 290.0234368979697
+            },
+            {
+              "epoch": 5,
+              "examples_seen": 57236,
+              "loss": 0.008752473000299299,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 291.5256772722517,
+                "research_mae_cp": 344.7476083582098,
+                "score_cp": 318.13664281523074
+              },
+              "validation_mae_cp": 291.6466106784366
+            },
+            {
+              "epoch": 6,
+              "examples_seen": 57236,
+              "loss": 0.008358682986189796,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 291.43343741849344,
+                "research_mae_cp": 356.4778457988392,
+                "score_cp": 323.9556416086663
+              },
+              "validation_mae_cp": 291.5812336544044
+            },
+            {
+              "epoch": 7,
+              "examples_seen": 57236,
+              "loss": 0.007836808019322048,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 290.51918006091387,
+                "research_mae_cp": 349.9192324551669,
+                "score_cp": 320.21920625804034
+              },
+              "validation_mae_cp": 290.6541526871657
+            },
+            {
+              "epoch": 8,
+              "examples_seen": 57236,
+              "loss": 0.00793675989359336,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 294.13392084725893,
+                "research_mae_cp": 327.2668665105646,
+                "score_cp": 310.7003936789118
+              },
+              "validation_mae_cp": 294.20920704741343
+            },
+            {
+              "epoch": 9,
+              "examples_seen": 57236,
+              "loss": 0.007536312121838316,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 293.7775653341542,
+                "research_mae_cp": 344.53847191550517,
+                "score_cp": 319.15801862482965
+              },
+              "validation_mae_cp": 293.8929074954652
+            },
+            {
+              "epoch": 10,
+              "examples_seen": 57236,
+              "loss": 0.007126076243678781,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 295.0224045147313,
+                "research_mae_cp": 345.5310734835538,
+                "score_cp": 320.2767389991426
+              },
+              "validation_mae_cp": 295.1371733301608
+            },
+            {
+              "epoch": 11,
+              "examples_seen": 57236,
+              "loss": 0.007184680368739181,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 299.310969319156,
+                "research_mae_cp": 348.6057628284801,
+                "score_cp": 323.95836607381807
+              },
+              "validation_mae_cp": 299.4229797981072
+            },
+            {
+              "epoch": 12,
+              "examples_seen": 57236,
+              "loss": 0.0069873473221756755,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 292.5667290855392,
+                "research_mae_cp": 345.100923018022,
+                "score_cp": 318.8338260517806
+              },
+              "validation_mae_cp": 292.68609992336377
+            },
+            {
+              "epoch": 13,
+              "examples_seen": 57236,
+              "loss": 0.006818460600613481,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 290.56409436970273,
+                "research_mae_cp": 344.65787627480245,
+                "score_cp": 317.6109853222526
+              },
+              "validation_mae_cp": 290.6870094367084
+            },
+            {
+              "epoch": 14,
+              "examples_seen": 57236,
+              "loss": 0.006762409528061457,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 296.8061972355497,
+                "research_mae_cp": 347.118312662298,
+                "score_cp": 321.9622549489238
+              },
+              "validation_mae_cp": 296.9205186919126
+            },
+            {
+              "epoch": 15,
+              "examples_seen": 57236,
+              "loss": 0.006330966247830537,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 295.25040415256416,
+                "research_mae_cp": 336.21788024902344,
+                "score_cp": 315.7341422007938
+              },
+              "validation_mae_cp": 295.3434924255888
+            },
+            {
+              "epoch": 16,
+              "examples_seen": 57236,
+              "loss": 0.006555328924708483,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 292.822529810556,
+                "research_mae_cp": 361.5423332561146,
+                "score_cp": 327.18243153333526
+              },
+              "validation_mae_cp": 292.9786791660598
+            },
+            {
+              "epoch": 17,
+              "examples_seen": 57236,
+              "loss": 0.0064621059392843865,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 295.2971843458851,
+                "research_mae_cp": 349.97469728643244,
+                "score_cp": 322.6359408161588
+              },
+              "validation_mae_cp": 295.42142540628913
+            },
+            {
+              "epoch": 18,
+              "examples_seen": 57236,
+              "loss": 0.006108314349210686,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 292.33037818292655,
+                "research_mae_cp": 352.5494878942316,
+                "score_cp": 322.43993303857906
+              },
+              "validation_mae_cp": 292.46721147530536
+            },
+            {
+              "epoch": 19,
+              "examples_seen": 57236,
+              "loss": 0.006130428352576168,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 298.1223274215161,
+                "research_mae_cp": 356.3829552043568,
+                "score_cp": 327.2526413129365
+              },
+              "validation_mae_cp": 298.25471043956105
+            },
+            {
+              "epoch": 20,
+              "examples_seen": 57236,
+              "loss": 0.005973238235673937,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 295.2164079338374,
+                "research_mae_cp": 350.29621557755905,
+                "score_cp": 322.7563117556982
+              },
+              "validation_mae_cp": 295.34156301301806
+            }
+          ],
+          "identity": "51f844dde6498e86341300e5624ab50d1976adf426a020b72ebbbf817d7cc324",
+          "initial_selection": {
+            "ordinary_mae_cp": 295.01717964314525,
+            "research_mae_cp": 341.1338762803511,
+            "score_cp": 318.0755279617482
+          },
+          "initial_validation_mae_cp": 295.12196851894646,
+          "model_sha256": "8bd897359cccbf590b931fe477012ad73eb524f0d790d217a939b89a6b0945e6",
+          "sample_counts": {
+            "test": 5063,
+            "train": 50533,
+            "validation": 4841
+          },
+          "schema": "own-policy-value-training-v1",
+          "selection": {
+            "ordinary_mae_cp": 291.5187851489207,
+            "research_mae_cp": 322.3763595927845,
+            "score_cp": 306.94757237085264
+          },
+          "strength_proven": false,
+          "test_mae_cp": 283.4605168571073,
+          "validation_mae_cp": 291.5889020548259
+        },
+        "teacher": {
+          "architecture": {
+            "material_prior": true,
+            "residual": 2,
+            "width": 128
+          },
+          "correction_training": null,
+          "epochs": 20,
+          "history": [
+            {
+              "epoch": 1,
+              "examples_seen": 57236,
+              "loss": 0.43934421249718625,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 913.2567537990909,
+                "research_mae_cp": 1507.0863203568892,
+                "score_cp": 1210.17153707799
+              },
+              "validation_mae_cp": 914.6060892383659
+            },
+            {
+              "epoch": 2,
+              "examples_seen": 57236,
+              "loss": 0.3821681606352175,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 886.5615228688495,
+                "research_mae_cp": 1475.1888621937144,
+                "score_cp": 1180.875192531282
+              },
+              "validation_mae_cp": 887.8990351427343
+            },
+            {
+              "epoch": 3,
+              "examples_seen": 57236,
+              "loss": 0.3499750889891373,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 913.6533259358218,
+                "research_mae_cp": 1616.0918149081144,
+                "score_cp": 1264.8725704219682
+              },
+              "validation_mae_cp": 915.2494468759885
+            },
+            {
+              "epoch": 4,
+              "examples_seen": 57236,
+              "loss": 0.3174112697377113,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 922.8897726560479,
+                "research_mae_cp": 1598.2412858442826,
+                "score_cp": 1260.5655292501651
+              },
+              "validation_mae_cp": 924.424343034271
+            },
+            {
+              "epoch": 5,
+              "examples_seen": 57236,
+              "loss": 0.29565800204784565,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 919.1714695521763,
+                "research_mae_cp": 1430.0186850807884,
+                "score_cp": 1174.5950773164823
+              },
+              "validation_mae_cp": 920.3322453332376
+            },
+            {
+              "epoch": 6,
+              "examples_seen": 57236,
+              "loss": 0.28284024938996194,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 942.8848077051388,
+                "research_mae_cp": 1568.2210055264559,
+                "score_cp": 1255.5529066157974
+              },
+              "validation_mae_cp": 944.305731968997
+            },
+            {
+              "epoch": 7,
+              "examples_seen": 57236,
+              "loss": 0.2639654936451558,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 899.1658607625072,
+                "research_mae_cp": 1508.363203568892,
+                "score_cp": 1203.7645321656996
+              },
+              "validation_mae_cp": 900.5501125992096
+            },
+            {
+              "epoch": 8,
+              "examples_seen": 57236,
+              "loss": 0.2570006260957531,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 906.8128613458164,
+                "research_mae_cp": 1543.5024608265269,
+                "score_cp": 1225.1576610861716
+              },
+              "validation_mae_cp": 908.2595834651286
+            },
+            {
+              "epoch": 9,
+              "examples_seen": 57236,
+              "loss": 0.24544050940694828,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 908.4018399256357,
+                "research_mae_cp": 1553.7281036376953,
+                "score_cp": 1231.0649717816655
+              },
+              "validation_mae_cp": 909.8681879545927
+            },
+            {
+              "epoch": 10,
+              "examples_seen": 57236,
+              "loss": 0.23409150293500045,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 930.7749935805674,
+                "research_mae_cp": 1574.928110296076,
+                "score_cp": 1252.8515519383218
+              },
+              "validation_mae_cp": 932.2386759171134
+            },
+            {
+              "epoch": 11,
+              "examples_seen": 57236,
+              "loss": 0.22721824930335535,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 938.4628911936505,
+                "research_mae_cp": 1705.862045288086,
+                "score_cp": 1322.1624682408683
+              },
+              "validation_mae_cp": 940.2066226636938
+            },
+            {
+              "epoch": 12,
+              "examples_seen": 57236,
+              "loss": 0.227054114811275,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 921.6086946412396,
+                "research_mae_cp": 1625.0447359952059,
+                "score_cp": 1273.3267153182228
+              },
+              "validation_mae_cp": 923.2070818835855
+            },
+            {
+              "epoch": 13,
+              "examples_seen": 57236,
+              "loss": 0.21874393071507797,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 911.955694036701,
+                "research_mae_cp": 1678.9764057506216,
+                "score_cp": 1295.4660498936612
+              },
+              "validation_mae_cp": 913.698561648105
+            },
+            {
+              "epoch": 14,
+              "examples_seen": 57236,
+              "loss": 0.2159786199080435,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 918.6453983156824,
+                "research_mae_cp": 1643.1756453080611,
+                "score_cp": 1280.9105218118718
+              },
+              "validation_mae_cp": 920.2917201832734
+            },
+            {
+              "epoch": 15,
+              "examples_seen": 57236,
+              "loss": 0.2074342693362115,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 941.8782868000291,
+                "research_mae_cp": 1702.6878703724253,
+                "score_cp": 1322.2830785862272
+              },
+              "validation_mae_cp": 943.607042703075
+            },
+            {
+              "epoch": 16,
+              "examples_seen": 57236,
+              "loss": 0.2076836962879508,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 961.1074380499482,
+                "research_mae_cp": 1698.11335476962,
+                "score_cp": 1329.610396409784
+              },
+              "validation_mae_cp": 962.7821082493609
+            },
+            {
+              "epoch": 17,
+              "examples_seen": 57236,
+              "loss": 0.20371484134971857,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 932.6257077803523,
+                "research_mae_cp": 1663.4863073175604,
+                "score_cp": 1298.0560075489564
+              },
+              "validation_mae_cp": 934.2864110828849
+            },
+            {
+              "epoch": 18,
+              "examples_seen": 57236,
+              "loss": 0.20437515072289716,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 950.7583618164062,
+                "research_mae_cp": 1711.1046530983665,
+                "score_cp": 1330.9315074573865
+              },
+              "validation_mae_cp": 952.486063029938
+            },
+            {
+              "epoch": 19,
+              "examples_seen": 57236,
+              "loss": 0.19893492746922994,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 957.1294180354716,
+                "research_mae_cp": 1730.9306751598012,
+                "score_cp": 1344.0300465976366
+              },
+              "validation_mae_cp": 958.8876939760557
+            },
+            {
+              "epoch": 20,
+              "examples_seen": 57236,
+              "loss": 0.1997161606288038,
+              "replayed_research_examples": 7168,
+              "selection": {
+                "ordinary_mae_cp": 924.500964936756,
+                "research_mae_cp": 1617.601741443981,
+                "score_cp": 1271.0513531903684
+              },
+              "validation_mae_cp": 926.0758697629541
+            }
+          ],
+          "identity": "ddf8367add9f01d4b914c28eda95019b0e5daa6af9f0294950e2f84bd35fd9d8",
+          "initial_selection": {
+            "ordinary_mae_cp": 899.7384412935309,
+            "research_mae_cp": 1471.7903137207031,
+            "score_cp": 1185.764377507117
+          },
+          "initial_validation_mae_cp": 901.0382914094978,
+          "model_sha256": "e1b6536e41e5e5f33a672a05dd3447d9575eecdc441ece4cbff2a65008683a24",
+          "sample_counts": {
+            "test": 5063,
+            "train": 50503,
+            "validation": 4841
+          },
+          "schema": "own-policy-value-training-v1",
+          "selection": {
+            "ordinary_mae_cp": 919.1714695521763,
+            "research_mae_cp": 1430.0186850807884,
+            "score_cp": 1174.5950773164823
+          },
+          "strength_proven": false,
+          "test_mae_cp": 904.753638095543,
+          "validation_mae_cp": 920.3322453332376
+        }
+      },
+      "admission": {
+        "train": {
+          "accepted": 20,
+          "rejected": {
+            "branch_comparison_inconclusive": 9,
+            "branch_improvement_not_confirmed": 3
+          }
+        },
+        "validation": {
+          "accepted": 4,
+          "rejected": {
+            "branch_comparison_inconclusive": 3,
+            "branch_improvement_not_confirmed": 1
+          }
+        }
+      }
+    },
+    {
+      "generation": 4,
+      "screen": {
+        "draws": 1,
+        "elapsed_seconds": 2870.35018499,
+        "files": [
+          "current/evaluation-archives/screen-parent"
+        ],
+        "games": 80,
+        "invalid_games": 0,
+        "losses": 48,
+        "movetime": 200,
+        "pair_scores": [
+          0.5,
+          0.0,
+          0.5,
+          0.5,
+          0.0,
+          0.5,
+          0.5,
+          1.0,
+          0.0,
+          1.0,
+          0.5,
+          0.0,
+          0.5,
+          0.5,
+          0.0,
+          0.0,
+          0.25,
+          0.5,
+          0.0,
+          0.5,
+          0.0,
+          1.0,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.0,
+          1.0,
+          0.5,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.5,
+          1.0
+        ],
+        "pairs": 40,
+        "score": 0.39375,
+        "wins": 31
+      },
+      "result": {
+        "candidate_sha256": "779b2f1125fc5191eea587de8b65f3da014fabaea55e5d8697e88f554e42201f",
+        "case_count": 40,
+        "decision": {
+          "accepted": false,
+          "formal_engine_adopted": false,
+          "reason": "screen_rejected"
+        },
+        "formal_engine_adopted": false,
+        "generation": 4,
+        "replay_rows": 552,
+        "screen": {
+          "games": 80,
+          "pass_screen": false,
+          "reason": "rejected_before_full_match",
+          "score": 0.39375,
+          "used_for_promotion": false
+        },
+        "stage_timings": {
+          "mcts-timing": {
+            "longest_worker_seconds": 2.852998052000004,
+            "reduce_and_learning_seconds": 600.431264692,
+            "worker_seconds": 33.696720335999956,
+            "workers": 20
+          },
+          "screen-timing": {
+            "longest_worker_seconds": 173.55322087000002,
+            "reduce_and_learning_seconds": 0.9805333959999984,
+            "worker_seconds": 2876.3223932319997,
+            "workers": 20
+          },
+          "selfplay-timing": {
+            "longest_worker_seconds": 248.27755242400002,
+            "reduce_and_learning_seconds": 132.417040801,
+            "worker_seconds": 3511.151143614,
+            "workers": 20
+          },
+          "study-timing": {
+            "longest_worker_seconds": 9601.175766098,
+            "new_deep_labels": 19,
+            "reduce_and_learning_seconds": 1024.536724376,
+            "worker_seconds": 176419.050665145,
+            "workers": 20
+          }
+        },
+        "student": {
+          "architecture": {
+            "correction": true,
+            "material_prior": false,
+            "residual": 0,
+            "width": 128
+          },
+          "correction_training": "unbounded_loss_projected_target",
+          "epochs": 20,
+          "history": [
+            {
+              "epoch": 1,
+              "examples_seen": 62611,
+              "loss": 0.013930635522849382,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 287.6364850217729,
+                "research_mae_cp": 363.436222076416,
+                "score_cp": 325.53635354909443
+              },
+              "validation_mae_cp": 287.8402080891068
+            },
+            {
+              "epoch": 2,
+              "examples_seen": 62611,
+              "loss": 0.01133903939983127,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 292.7288642861272,
+                "research_mae_cp": 370.28588567461287,
+                "score_cp": 331.50737498037006
+              },
+              "validation_mae_cp": 292.93731115307867
+            },
+            {
+              "epoch": 3,
+              "examples_seen": 62611,
+              "loss": 0.010061911526216646,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 292.48912910410024,
+                "research_mae_cp": 364.04732295445035,
+                "score_cp": 328.2682260292753
+              },
+              "validation_mae_cp": 292.6814532778867
+            },
+            {
+              "epoch": 4,
+              "examples_seen": 62611,
+              "loss": 0.009613460057121931,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 287.390338651714,
+                "research_mae_cp": 375.6495884486607,
+                "score_cp": 331.51996355018736
+              },
+              "validation_mae_cp": 287.627548419896
+            },
+            {
+              "epoch": 5,
+              "examples_seen": 62611,
+              "loss": 0.008884218141738356,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 287.6848420922405,
+                "research_mae_cp": 386.2715108054025,
+                "score_cp": 336.9781764488215
+              },
+              "validation_mae_cp": 287.9498090504181
+            },
+            {
+              "epoch": 6,
+              "examples_seen": 62611,
+              "loss": 0.008460293286194489,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 285.82213165900015,
+                "research_mae_cp": 373.14374106270924,
+                "score_cp": 329.4829363608547
+              },
+              "validation_mae_cp": 286.0568217385362
+            },
+            {
+              "epoch": 7,
+              "examples_seen": 62611,
+              "loss": 0.00837108138432228,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 287.53174422909365,
+                "research_mae_cp": 382.216249193464,
+                "score_cp": 334.87399671127883
+              },
+              "validation_mae_cp": 287.7862237881598
+            },
+            {
+              "epoch": 8,
+              "examples_seen": 62611,
+              "loss": 0.007927381866773452,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 287.62236146311903,
+                "research_mae_cp": 382.88211822509766,
+                "score_cp": 335.2522398441083
+              },
+              "validation_mae_cp": 287.87838655187295
+            },
+            {
+              "epoch": 9,
+              "examples_seen": 62611,
+              "loss": 0.007522172911844081,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 290.75998778063246,
+                "research_mae_cp": 369.8897361755371,
+                "score_cp": 330.32486197808475
+              },
+              "validation_mae_cp": 290.9726615051867
+            },
+            {
+              "epoch": 10,
+              "examples_seen": 62611,
+              "loss": 0.007298828737364726,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 290.67563891296095,
+                "research_mae_cp": 387.86928994315014,
+                "score_cp": 339.2724644280555
+              },
+              "validation_mae_cp": 290.93686164420956
+            },
+            {
+              "epoch": 11,
+              "examples_seen": 62611,
+              "loss": 0.007213141813765243,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 290.3870763402357,
+                "research_mae_cp": 381.4382553100586,
+                "score_cp": 335.91266582514714
+              },
+              "validation_mae_cp": 290.63179058588315
+            },
+            {
+              "epoch": 12,
+              "examples_seen": 62611,
+              "loss": 0.0070639774540362165,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 292.58473261373337,
+                "research_mae_cp": 397.77234622410367,
+                "score_cp": 345.1785394189185
+              },
+              "validation_mae_cp": 292.8674400916917
+            },
+            {
+              "epoch": 13,
+              "examples_seen": 62611,
+              "loss": 0.006958289469102939,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 288.49402823278376,
+                "research_mae_cp": 390.7360349382673,
+                "score_cp": 339.61503158552557
+              },
+              "validation_mae_cp": 288.7688192073524
+            },
+            {
+              "epoch": 14,
+              "examples_seen": 62611,
+              "loss": 0.0068170352630850676,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 295.0724119860123,
+                "research_mae_cp": 403.21837152753557,
+                "score_cp": 349.14539175677396
+              },
+              "validation_mae_cp": 295.3630712124317
+            },
+            {
+              "epoch": 15,
+              "examples_seen": 62611,
+              "loss": 0.006781191320510968,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 292.252766936874,
+                "research_mae_cp": 394.4049222128732,
+                "score_cp": 343.32884457487364
+              },
+              "validation_mae_cp": 292.5273172455801
+            },
+            {
+              "epoch": 16,
+              "examples_seen": 62611,
+              "loss": 0.006731286754770715,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 292.3264522754423,
+                "research_mae_cp": 398.8166536603655,
+                "score_cp": 345.5715529679039
+              },
+              "validation_mae_cp": 292.6126613020096
+            },
+            {
+              "epoch": 17,
+              "examples_seen": 62611,
+              "loss": 0.0065046083972540355,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 289.83657550536407,
+                "research_mae_cp": 397.7302142551967,
+                "score_cp": 343.7833948802804
+              },
+              "validation_mae_cp": 290.1265563056757
+            },
+            {
+              "epoch": 18,
+              "examples_seen": 62611,
+              "loss": 0.006424143192225647,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 291.28582048462033,
+                "research_mae_cp": 393.566472189767,
+                "score_cp": 342.4261463371937
+              },
+              "validation_mae_cp": 291.56071550673545
+            },
+            {
+              "epoch": 19,
+              "examples_seen": 62611,
+              "loss": 0.006247775713740581,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 292.4820698948292,
+                "research_mae_cp": 377.1537712642125,
+                "score_cp": 334.81792057952083
+              },
+              "validation_mae_cp": 292.70963839089535
+            },
+            {
+              "epoch": 20,
+              "examples_seen": 62611,
+              "loss": 0.006157569308418488,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 293.06056708298246,
+                "research_mae_cp": 399.11907059805736,
+                "score_cp": 346.0898188405199
+              },
+              "validation_mae_cp": 293.3456163118933
+            }
+          ],
+          "identity": "0dc1eb763c752ae9497f104074c2a6868a66de05270febe2d5ca8127428eabcf",
+          "initial_selection": {
+            "ordinary_mae_cp": 290.8837132091357,
+            "research_mae_cp": 371.82930537632535,
+            "score_cp": 331.3565092927305
+          },
+          "initial_validation_mae_cp": 291.10126748014534,
+          "model_sha256": "e86e7ed08391badadc628bb9a17f21ab3aebcd41e1593b9ab8f504ded451cd77",
+          "sample_counts": {
+            "test": 5664,
+            "train": 55281,
+            "validation": 5209
+          },
+          "schema": "own-policy-value-training-v1",
+          "selection": {
+            "ordinary_mae_cp": 287.6364850217729,
+            "research_mae_cp": 363.436222076416,
+            "score_cp": 325.53635354909443
+          },
+          "strength_proven": false,
+          "test_mae_cp": 285.5005577459174,
+          "validation_mae_cp": 287.8402080891068
+        },
+        "teacher": {
+          "architecture": {
+            "material_prior": true,
+            "residual": 2,
+            "width": 128
+          },
+          "correction_training": null,
+          "epochs": 20,
+          "history": [
+            {
+              "epoch": 1,
+              "examples_seen": 62611,
+              "loss": 0.36848497172171635,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 917.8682916547612,
+                "research_mae_cp": 1495.0013841901507,
+                "score_cp": 1206.434837922456
+              },
+              "validation_mae_cp": 919.4194275945179
+            },
+            {
+              "epoch": 2,
+              "examples_seen": 62611,
+              "loss": 0.32032442114600734,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 898.5590739245594,
+                "research_mae_cp": 1534.0632029942103,
+                "score_cp": 1216.311138459385
+              },
+              "validation_mae_cp": 900.267090031226
+            },
+            {
+              "epoch": 3,
+              "examples_seen": 62611,
+              "loss": 0.2961356929836263,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 899.2620062437966,
+                "research_mae_cp": 1545.3270503452845,
+                "score_cp": 1222.2945282945407
+              },
+              "validation_mae_cp": 900.9984060907391
+            },
+            {
+              "epoch": 4,
+              "examples_seen": 62611,
+              "loss": 0.27628768557560573,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 909.1821694397031,
+                "research_mae_cp": 1585.1004464285713,
+                "score_cp": 1247.1413079341373
+              },
+              "validation_mae_cp": 910.9988052388669
+            },
+            {
+              "epoch": 5,
+              "examples_seen": 62611,
+              "loss": 0.26354323641957733,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 899.1724273123572,
+                "research_mae_cp": 1608.5049765450615,
+                "score_cp": 1253.8387019287093
+              },
+              "validation_mae_cp": 901.0788669831511
+            },
+            {
+              "epoch": 6,
+              "examples_seen": 62611,
+              "loss": 0.25002959555916704,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 911.3134668697177,
+                "research_mae_cp": 1623.8713945661273,
+                "score_cp": 1267.5924307179225
+              },
+              "validation_mae_cp": 913.2285774452121
+            },
+            {
+              "epoch": 7,
+              "examples_seen": 62611,
+              "loss": 0.24160558250052425,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 914.4089964057988,
+                "research_mae_cp": 1543.842043195452,
+                "score_cp": 1229.1255198006254
+              },
+              "validation_mae_cp": 916.1006966303626
+            },
+            {
+              "epoch": 8,
+              "examples_seen": 62611,
+              "loss": 0.23258364033994913,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 945.3866967796935,
+                "research_mae_cp": 1607.9908098493304,
+                "score_cp": 1276.6887533145118
+              },
+              "validation_mae_cp": 947.1675486865806
+            },
+            {
+              "epoch": 9,
+              "examples_seen": 62611,
+              "loss": 0.22914095278188829,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 940.499860306447,
+                "research_mae_cp": 1573.5273361206055,
+                "score_cp": 1257.0135982135262
+              },
+              "validation_mae_cp": 942.2012214858373
+            },
+            {
+              "epoch": 10,
+              "examples_seen": 62611,
+              "loss": 0.2253254687951176,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 923.0450744922626,
+                "research_mae_cp": 1528.313091823033,
+                "score_cp": 1225.6790831576477
+              },
+              "validation_mae_cp": 924.6718256000731
+            },
+            {
+              "epoch": 11,
+              "examples_seen": 62611,
+              "loss": 0.21551755473613396,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 925.6893815158994,
+                "research_mae_cp": 1575.2878189086914,
+                "score_cp": 1250.4886002122953
+              },
+              "validation_mae_cp": 927.435277542287
+            },
+            {
+              "epoch": 12,
+              "examples_seen": 62611,
+              "loss": 0.21624412985728875,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 933.287080649118,
+                "research_mae_cp": 1605.9391839163643,
+                "score_cp": 1269.6131322827412
+              },
+              "validation_mae_cp": 935.0949362661266
+            },
+            {
+              "epoch": 13,
+              "examples_seen": 62611,
+              "loss": 0.20978188018535623,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 906.9415491744804,
+                "research_mae_cp": 1559.2175892421178,
+                "score_cp": 1233.079569208299
+              },
+              "validation_mae_cp": 908.6946446050218
+            },
+            {
+              "epoch": 14,
+              "examples_seen": 62611,
+              "loss": 0.20764783706455756,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 923.6521907215283,
+                "research_mae_cp": 1508.9669908796038,
+                "score_cp": 1216.3095908005662
+              },
+              "validation_mae_cp": 925.2253148120478
+            },
+            {
+              "epoch": 15,
+              "examples_seen": 62611,
+              "loss": 0.2062513763047672,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 957.0373946365195,
+                "research_mae_cp": 1607.5330461774554,
+                "score_cp": 1282.2852204069875
+              },
+              "validation_mae_cp": 958.7857016997137
+            },
+            {
+              "epoch": 16,
+              "examples_seen": 62611,
+              "loss": 0.20282271118706008,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 930.544873587321,
+                "research_mae_cp": 1579.8146384102959,
+                "score_cp": 1255.1797559988086
+              },
+              "validation_mae_cp": 932.2898895503876
+            },
+            {
+              "epoch": 17,
+              "examples_seen": 62611,
+              "loss": 0.20114521479466116,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 934.5576399214802,
+                "research_mae_cp": 1519.0279824393135,
+                "score_cp": 1226.792811180397
+              },
+              "validation_mae_cp": 936.1284973296855
+            },
+            {
+              "epoch": 18,
+              "examples_seen": 62611,
+              "loss": 0.19674739794464507,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 912.3253624983082,
+                "research_mae_cp": 1524.8141969953265,
+                "score_cp": 1218.5697797468174
+              },
+              "validation_mae_cp": 913.9715214108844
+            },
+            {
+              "epoch": 19,
+              "examples_seen": 62611,
+              "loss": 0.1957287005127572,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 907.5186309961314,
+                "research_mae_cp": 1547.004154750279,
+                "score_cp": 1227.2613928732053
+              },
+              "validation_mae_cp": 909.2373480881947
+            },
+            {
+              "epoch": 20,
+              "examples_seen": 62611,
+              "loss": 0.19171734228122123,
+              "replayed_research_examples": 7840,
+              "selection": {
+                "ordinary_mae_cp": 922.9721759579523,
+                "research_mae_cp": 1528.0113220214844,
+                "score_cp": 1225.4917489897184
+              },
+              "validation_mae_cp": 924.5983145016813
+            }
+          ],
+          "identity": "b881ce6ffa26646fe0a5d2b789631f24ef48d3bff5ac0fa7d18d6bbf50d76ab5",
+          "initial_selection": {
+            "ordinary_mae_cp": 908.1834413089697,
+            "research_mae_cp": 1447.9434149605888,
+            "score_cp": 1178.0634281347793
+          },
+          "initial_validation_mae_cp": 909.6341322607582,
+          "model_sha256": "e1b6536e41e5e5f33a672a05dd3447d9575eecdc441ece4cbff2a65008683a24",
+          "sample_counts": {
+            "test": 5664,
+            "train": 55253,
+            "validation": 5209
+          },
+          "schema": "own-policy-value-training-v1",
+          "selection": {
+            "ordinary_mae_cp": 908.1834413089697,
+            "research_mae_cp": 1447.9434149605888,
+            "score_cp": 1178.0634281347793
+          },
+          "strength_proven": false,
+          "test_mae_cp": 917.5857345936662,
+          "validation_mae_cp": 909.6341322607582
+        }
+      },
+      "admission": {
+        "train": {
+          "accepted": 19,
+          "rejected": {
+            "branch_comparison_inconclusive": 11,
+            "branch_improvement_not_confirmed": 1,
+            "incomplete_or_non_cp": 1
+          }
+        },
+        "validation": {
+          "accepted": 5,
+          "rejected": {
+            "branch_comparison_inconclusive": 3
+          }
+        }
+      }
+    }
+  ],
+  "research_unique": 200,
+  "research_prior_overlap": 0,
+  "validation_count": 5209,
+  "research_validation_count": 14,
+  "replay_count": 552,
+  "independent_final_teacher_metrics": {
+    "ordinary_mae_cp": 908.183434811655,
+    "research_mae_cp": 1447.9434946392264,
+    "score_cp": 1178.0634647254408
+  },
+  "nnue_export_reproduced_bytes": 14803924
+}
