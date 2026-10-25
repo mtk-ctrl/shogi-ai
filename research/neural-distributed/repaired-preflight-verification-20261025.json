@@ -15,5 +15,32 @@
   "nnue_tests": 12,
   "native_positions": 6,
   "native_searches": 32,
-  "cycle_id": "neural20-repaired-20261025"
+  "cycle_id": "neural20-repaired-20261025",
+  "import_verification": {
+    "status": "completed",
+    "source_games": 800,
+    "selfplay_tasks": 20,
+    "deep_admission": {
+      "accepted": 98,
+      "rejected": {
+        "branch_comparison_inconclusive": 95,
+        "branch_improvement_not_confirmed": 2,
+        "incomplete_or_non_cp": 5
+      }
+    },
+    "deployable_sha256": "9ec66ff11e811e9c189927e90c9194e5e0a3c4a37ccad5c41df1fcc604cd52b4",
+    "formal_adoption": false,
+    "imported_research_rows": 298,
+    "manifest": {
+      "bundle_sha256": "7eefc5cadd2030b322e7da7b093071cc12207e91bd1b54c44e84db1ccf14290d"
+    },
+    "model_sha256": {
+      "student": "ca6851f1486126e359b5d1b5f2fe21eed0ab7b61846ac7ee5fcd306587dd292b",
+      "teacher": "6eefee57940db1ee982c78ff3b0fe3b8b6ec4dbb4cfa224a3fdaceaf2f2eecaa"
+    },
+    "old_state_resumed": false,
+    "optimizer_imported": false,
+    "source_cycle": "neural20-correction-20261024",
+    "source_implementation": "a492209fd5fa8c3e53f48148845697d9ffe52ce8a4b9281b21eda68b457ba19b"
+  }
 }
