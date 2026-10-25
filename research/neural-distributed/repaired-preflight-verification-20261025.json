@@ -1,0 +1,19 @@
+{
+  "checkpoint_sha256": "20b120cfde3f899ffa084e9f12982354f1b9ca11b1ac30f619a4ecc605f55e86",
+  "evaluation_games": 4,
+  "formal_adoption": false,
+  "generations": 2,
+  "new_study_positions": 16,
+  "schema": "correction-cycle-preflight-v1",
+  "selfplay_games": 4,
+  "status": "completed",
+  "strength_proven": false,
+  "scope": "Local real-game wiring test; not strength evidence",
+  "code_commit": "a270d2efa99d6112193ae33c81ffd9caf5803e50",
+  "implementation_sha256": "6997c01b7e2c32b56448d8bfb9a897c5df001f9ff48fa500bf5adb90b8357165",
+  "unit_tests": 26,
+  "nnue_tests": 12,
+  "native_positions": 6,
+  "native_searches": 32,
+  "cycle_id": "neural20-repaired-20261025"
+}
