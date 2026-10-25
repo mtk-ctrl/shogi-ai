@@ -116,3 +116,16 @@ run40145438299のinitialize（単体26/native6局面32探索/小規模2世代/�
 ### 2026-10-25 23:15：第3世代の分析完了、実戦用学習中
 
 研究40局面/20job、teacher20epoch、MCTS20jobが成功。studentは23:04:08 JSTより実行中、予備80局/モデル更新/世代Release確定はまだ未確認。第3世代100局10943実着手の合法再生と最終SFEN、保存物SHA、g2実戦NNUEの引継ぎ一致を確認。証跡repaired-g003-progress-20261025.json。次回10/26 00:15 JSTにg3の学習/評価/保存と最終g4開始を照合。実行完了・棋力向上は未達。
+
+
+## 2026-10-26 00:20〜00:30 第3世代の確定と最終世代の実開始
+
+ルーター/R00/R15/R20/R21/R25/R70再読。run40145438299はin_progress。全jobsを100件ずつ4ページ395件＋page5空まで取得し、367success/8skipped/20実行中、失敗0。g0〜g3は各88job完了。g3 student23:04:08〜23:16:18、screened23:20:09〜23:22:37、complete23:22:39〜23:26:16 JST success。g4 prepare/100自己対局/selectも成功し、長考研究20/20jobが10/25 23:36:21開始、全てRun assigned studyで実行中。
+
+第3世代は現行固定雲路と80局で36勝44敗0分、invalid0、得点45%。負け越したため1000局本評価には進まず、教師と更新した実戦モデルを最終第4世代へ引き継いだ。実戦用NNUE SHA3d6f8861e217ac1e4abc77daf346859e974997550988438975234331dd82d0b8へ更新。student20epoch中2回目が最良、群平均検証318.0755→306.9476cp（通常295.0172→291.5188、研究341.1339→322.3764）。teacher20epoch中5回目、群平均1185.7644→1174.5951cp（通常899.7384→919.1715は悪化、研究1471.7903→1430.0187は改善）。teacher/studentの実model.pt SHAはreportと一致。モデル更新は棋力改善の証明ではない。
+
+g3長考教師は学習20/検証4採用、学習側は比較不確実9/改善不確認3、検証側は比較不確実3/改善不確認1を不採用。MCTS32件と合わせ累積学習教師449→501、研究検証19。Release records-2026-10-01よりg3manifestと2partsを再取得し、API digest/bytes・各parts SHA/bytes・連結bundle SHA・内部497ファイルSHAすべて一致。manifest neural20-neural20-repaired-20261025-g003-aed9ba010883.json、bundleSHA aed9ba01088316583cdb287ad96e6b0e1773a0bd649490fd709cbd3200e78345。state ready_for_next_generation/next_generation4/accepted0/parentnull。
+
+g4 selected-work artifact12602642272 ZIP SHA2bd7757e82e422a3f5311071f801482b3a7dec406878c3487eab600f060e2b99、内部33ファイルSHA、learner.nnue/task資産SHAとg3候補の一致を確認。g4の100局10824着手も独立合法再生・全最終SFEN一致。g3Release全1520局とg4自己対局100局を合わせ、旧800局含む1620局178673着手をこの監査で独立再生した。今回生成820局90491着手（自己対局500/予備320）、研究完了160・最終40研究中。全5世代の選択200局面は相互/旧200との重複0、固定原局群32学習/8検証を照合。g4研究40例の最新g4由来は2、過去由来38。選択配分の偏りは最終課題。証跡repaired-g003-verification-20261026.json。
+
+最終g4研究の直近実測2h41mから終了見込み10/26 02:17頃、後続teacherは約27分・student約12分＋評価/保存。本体完了03〜04時頃＋queue/通過時本評価、最終監査別。同じ一回限り確認タスクを10/26 02:45 JSTへ更新し、研究完了→teacher/MCTS/studentの進行・教師採否・最終予備評価への移行を確認する。最終completed/next_generation5、g4全Release再取得、検証誤差の独立再計算/飽和率監査は未完了。棋力Goal未達を維持。他run停止・重複起動・条件変更・実装hash解除・main統合/正式採用なし。
