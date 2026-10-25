@@ -1,0 +1,92 @@
+{
+  "method": "read-only reconstruction from SHA-verified archive; NumPy inference, no retraining",
+  "parameter_counts": {
+    "value_active": 5548545,
+    "stored_total": 7387569
+  },
+  "validation_diagnostics": [
+    {
+      "generation": 0,
+      "validation_rows": 1802,
+      "targets_outside_600": 777,
+      "outside_fraction": 0.43118756936736957,
+      "minimum_possible_mae_cp": 559.4222530521643,
+      "selected_report_mae_cp": 820.5542453253573,
+      "best_new_epoch_mae_cp": 820.5542453253573,
+      "quantized_candidate_mae_cp": 820.6795782463929,
+      "quantized_raw_outside_600": 666,
+      "quantized_raw_outside_fraction": 0.36958934517203107
+    },
+    {
+      "generation": 1,
+      "validation_rows": 2030,
+      "targets_outside_600": 879,
+      "outside_fraction": 0.4330049261083744,
+      "minimum_possible_mae_cp": 554.3949753694583,
+      "selected_report_mae_cp": 830.7743166467826,
+      "best_new_epoch_mae_cp": 830.7743166467826,
+      "quantized_candidate_mae_cp": 830.826724137931,
+      "quantized_raw_outside_600": 771,
+      "quantized_raw_outside_fraction": 0.37980295566502464
+    },
+    {
+      "generation": 2,
+      "validation_rows": 2391,
+      "targets_outside_600": 1061,
+      "outside_fraction": 0.4437473860309494,
+      "minimum_possible_mae_cp": 653.3758051024677,
+      "selected_report_mae_cp": 928.23263094147,
+      "best_new_epoch_mae_cp": 931.2996283977513,
+      "quantized_candidate_mae_cp": 928.2995817649519,
+      "quantized_raw_outside_600": 933,
+      "quantized_raw_outside_fraction": 0.39021329987452946
+    },
+    {
+      "generation": 3,
+      "validation_rows": 2562,
+      "targets_outside_600": 1153,
+      "outside_fraction": 0.4500390320062451,
+      "minimum_possible_mae_cp": 660.5286299765809,
+      "selected_report_mae_cp": 936.8169093671764,
+      "best_new_epoch_mae_cp": 937.5006097262022,
+      "quantized_candidate_mae_cp": 936.8599336455895,
+      "quantized_raw_outside_600": 1023,
+      "quantized_raw_outside_fraction": 0.3992974238875878
+    },
+    {
+      "generation": 4,
+      "validation_rows": 2819,
+      "targets_outside_600": 1287,
+      "outside_fraction": 0.4565448740688187,
+      "minimum_possible_mae_cp": 711.1734480312167,
+      "selected_report_mae_cp": 979.171867445032,
+      "best_new_epoch_mae_cp": 979.171867445032,
+      "quantized_candidate_mae_cp": 978.9626995388436,
+      "quantized_raw_outside_600": 1164,
+      "quantized_raw_outside_fraction": 0.41291238027669386,
+      "numpy_float_selected_mae_cp": 979.1718687695786,
+      "float_raw_outside_600": 1168,
+      "float_raw_outside_fraction": 0.41433132316424265,
+      "float_saturated_not_box_optimum": 437
+    }
+  ],
+  "g4_selected_vs_last_epoch_changed_coefficients": {
+    "bias": 128,
+    "embedding.weight": 731016,
+    "value.weight": 128,
+    "value.bias": 1,
+    "policy.weight": 0,
+    "policy.bias": 0
+  },
+  "limitations": [
+    "No PyTorch gradient or training replay; saturation fractions for g0-g3 use quantized candidate raw outputs, not exact floating checkpoints.",
+    "Validation labels reconstructed; all generation validation sample counts match reports; g4 floating inference matches report within 0.01cp."
+  ],
+  "cycle_id": "neural20-correction-20261024",
+  "source_commit": "f230670d5ced9ea969245ea0bbb4007503d0130e",
+  "bundle_sha256": "7eefc5cadd2030b322e7da7b093071cc12207e91bd1b54c44e84db1ccf14290d",
+  "source_files_sha256": {
+    "neural_model.py": "f6a42441376c0615bcc630bf7d88596bda4b4a7af5346cd380be0ff94cf4b3cf",
+    "train_nnue.py": "f0b688239af1e856e935b7209463dd8f5abead1ec5ca9d33b6aaaa670d33aff7"
+  }
+}

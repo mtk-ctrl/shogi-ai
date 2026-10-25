@@ -1,0 +1,357 @@
+{
+  "run": 39847364594,
+  "source_commit": "aeeed08b3048f349955939f47960189cd8db276d",
+  "archives": [
+    {
+      "path": "archives/g000",
+      "games": 40,
+      "plies": 4226
+    },
+    {
+      "path": "archives/g001",
+      "games": 40,
+      "plies": 4175
+    },
+    {
+      "path": "archives/source",
+      "games": 300,
+      "plies": 33600
+    },
+    {
+      "path": "history/g000/evaluation-archives/evaluate-parent",
+      "games": 40,
+      "plies": 3323
+    },
+    {
+      "path": "history/g001/evaluation-archives/evaluate-parent",
+      "games": 40,
+      "plies": 3154
+    }
+  ],
+  "seen_positions": 40,
+  "accepted": 0,
+  "generations": [
+    {
+      "generation": 0,
+      "cases": 20,
+      "replay": 40,
+      "candidate_sha256": "7cef00e8a31ce4f243d0a0e68127b4531b83f082c2942cff3be93f129958ff1f",
+      "match": {
+        "draws": 0,
+        "elapsed_seconds": 1112.876271241,
+        "files": [
+          "current/evaluation-archives/evaluate-parent"
+        ],
+        "games": 40,
+        "invalid_games": 0,
+        "losses": 39,
+        "movetime": 200,
+        "pair_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.5,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pairs": 20,
+        "score": 0.025,
+        "wins": 1
+      }
+    },
+    {
+      "generation": 1,
+      "cases": 20,
+      "replay": 80,
+      "candidate_sha256": "7cef00e8a31ce4f243d0a0e68127b4531b83f082c2942cff3be93f129958ff1f",
+      "match": {
+        "draws": 0,
+        "elapsed_seconds": 1086.582635007,
+        "files": [
+          "current/evaluation-archives/evaluate-parent"
+        ],
+        "games": 40,
+        "invalid_games": 0,
+        "losses": 40,
+        "movetime": 200,
+        "pair_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pairs": 20,
+        "score": 0.0,
+        "wins": 0
+      }
+    }
+  ],
+  "inheritance": {
+    "teacher": {
+      "previous_model_sha256": "6904c4cd1bda3afd75fdd145c01eb627c6893999b2d9b00c48ce2894f3fe72ae",
+      "recomputed_initial_mae_cp": 757.9598076599466,
+      "recorded_initial_mae_cp": 757.9598076599466
+    },
+    "student": {
+      "previous_model_sha256": "9d58b4a7e25503b84155b585301a049906e771b111006e648a776249de470182",
+      "recomputed_initial_mae_cp": 772.6974056265449,
+      "recorded_initial_mae_cp": 772.6974056265449
+    }
+  },
+  "native": {
+    "native_cp": -438,
+    "search_completed": true,
+    "bestmove": "L*6d"
+  },
+  "durable_manifests": [
+    {
+      "bundle_sha256": "7019aedcae77ebcb59189371f913640d82e4d836d1bbd672da9ac98d8910c833",
+      "formal_engine_adopted": false,
+      "next_generation": 1,
+      "parts": [
+        {
+          "bytes": 50933540,
+          "name": "neural20-neural20-integration-20261022-g000-7019aedcae77.part000",
+          "sha256": "7019aedcae77ebcb59189371f913640d82e4d836d1bbd672da9ac98d8910c833"
+        }
+      ],
+      "plan_sha256": "d6af7c1a41c891c8bc1927f73926e49132f33b408f6efbd4426a80966d0a77db",
+      "schema": "neural20-checkpoint-v1",
+      "source_commit": "aeeed08b3048f349955939f47960189cd8db276d"
+    },
+    {
+      "bundle_sha256": "8766ea2da4fb3a33d45eb658de9994bffba7f40a4548cd38899c3f05223f5f13",
+      "formal_engine_adopted": false,
+      "next_generation": 2,
+      "parts": [
+        {
+          "bytes": 52864788,
+          "name": "neural20-neural20-integration-20261022-g001-8766ea2da4fb.part000",
+          "sha256": "8766ea2da4fb3a33d45eb658de9994bffba7f40a4548cd38899c3f05223f5f13"
+        }
+      ],
+      "plan_sha256": "d6af7c1a41c891c8bc1927f73926e49132f33b408f6efbd4426a80966d0a77db",
+      "schema": "neural20-checkpoint-v1",
+      "source_commit": "aeeed08b3048f349955939f47960189cd8db276d"
+    }
+  ],
+  "metrics": [
+    {
+      "stage": "initialize",
+      "jobs": 1,
+      "success": 1,
+      "wall_seconds": 95,
+      "peak_actual_work": 0
+    },
+    {
+      "stage": "g0 / prepare",
+      "jobs": 1,
+      "success": 1,
+      "wall_seconds": 49,
+      "peak_actual_work": 0
+    },
+    {
+      "stage": "g0 / selfplay",
+      "jobs": 20,
+      "success": 20,
+      "wall_seconds": 147,
+      "peak_actual_work": 20
+    },
+    {
+      "stage": "g0 / select",
+      "jobs": 1,
+      "success": 1,
+      "wall_seconds": 70,
+      "peak_actual_work": 0
+    },
+    {
+      "stage": "g0 / study",
+      "jobs": 20,
+      "success": 20,
+      "wall_seconds": 48,
+      "peak_actual_work": 8
+    },
+    {
+      "stage": "g0 / teacher",
+      "jobs": 1,
+      "success": 1,
+      "wall_seconds": 72,
+      "peak_actual_work": 0
+    },
+    {
+      "stage": "g0 / mcts",
+      "jobs": 20,
+      "success": 20,
+      "wall_seconds": 47,
+      "peak_actual_work": 6
+    },
+    {
+      "stage": "g0 / student",
+      "jobs": 1,
+      "success": 1,
+      "wall_seconds": 76,
+      "peak_actual_work": 0
+    },
+    {
+      "stage": "g0 / screened",
+      "jobs": 1,
+      "success": 1,
+      "wall_seconds": 47,
+      "peak_actual_work": 0
+    },
+    {
+      "stage": "g0 / screen",
+      "jobs": 1,
+      "success": 0,
+      "wall_seconds": 0,
+      "peak_actual_work": 0
+    },
+    {
+      "stage": "g0 / evaluate",
+      "jobs": 20,
+      "success": 20,
+      "wall_seconds": 123,
+      "peak_actual_work": 20
+    },
+    {
+      "stage": "g0 / evaluated",
+      "jobs": 1,
+      "success": 1,
+      "wall_seconds": 54,
+      "peak_actual_work": 0
+    },
+    {
+      "stage": "g0 / complete",
+      "jobs": 1,
+      "success": 1,
+      "wall_seconds": 123,
+      "peak_actual_work": 0
+    },
+    {
+      "stage": "g1 / prepare",
+      "jobs": 1,
+      "success": 1,
+      "wall_seconds": 42,
+      "peak_actual_work": 0
+    },
+    {
+      "stage": "g1 / selfplay",
+      "jobs": 20,
+      "success": 20,
+      "wall_seconds": 169,
+      "peak_actual_work": 20
+    },
+    {
+      "stage": "g1 / select",
+      "jobs": 1,
+      "success": 1,
+      "wall_seconds": 69,
+      "peak_actual_work": 0
+    },
+    {
+      "stage": "g1 / study",
+      "jobs": 20,
+      "success": 20,
+      "wall_seconds": 75,
+      "peak_actual_work": 5
+    },
+    {
+      "stage": "g1 / teacher",
+      "jobs": 1,
+      "success": 1,
+      "wall_seconds": 94,
+      "peak_actual_work": 0
+    },
+    {
+      "stage": "g1 / mcts",
+      "jobs": 20,
+      "success": 20,
+      "wall_seconds": 81,
+      "peak_actual_work": 5
+    },
+    {
+      "stage": "g1 / student",
+      "jobs": 1,
+      "success": 1,
+      "wall_seconds": 93,
+      "peak_actual_work": 0
+    },
+    {
+      "stage": "g1 / screened",
+      "jobs": 1,
+      "success": 1,
+      "wall_seconds": 57,
+      "peak_actual_work": 0
+    },
+    {
+      "stage": "g1 / screen",
+      "jobs": 1,
+      "success": 0,
+      "wall_seconds": 0,
+      "peak_actual_work": 0
+    },
+    {
+      "stage": "g1 / evaluate",
+      "jobs": 20,
+      "success": 20,
+      "wall_seconds": 112,
+      "peak_actual_work": 20
+    },
+    {
+      "stage": "g1 / evaluated",
+      "jobs": 1,
+      "success": 1,
+      "wall_seconds": 65,
+      "peak_actual_work": 0
+    },
+    {
+      "stage": "g1 / complete",
+      "jobs": 1,
+      "success": 1,
+      "wall_seconds": 148,
+      "peak_actual_work": 0
+    },
+    {
+      "stage": "g2",
+      "jobs": 1,
+      "success": 0,
+      "wall_seconds": 0,
+      "peak_actual_work": 0
+    }
+  ],
+  "workflow_started_at": "2026-10-22T20:16:11Z",
+  "workflow_completed_at": "2026-10-22T20:49:45Z",
+  "successful_jobs": 175,
+  "skipped_jobs": 3,
+  "strength_improved": false
+}

@@ -1,0 +1,804 @@
+{
+  "cycle_id": "neural20-correction-20261024",
+  "source_commit": "f230670d5ced9ea969245ea0bbb4007503d0130e",
+  "state": {
+    "status": "completed",
+    "next_generation": 5,
+    "accepted": 0,
+    "parent": null
+  },
+  "totals": {
+    "selfplay_games": 500,
+    "selfplay_plies": 54582,
+    "screen_games": 400,
+    "screen_plies": 46077
+  },
+  "unique_study_positions": 200,
+  "replay_origin_counts": {
+    "own_deep_search": 195,
+    "own_mcts": 200
+  },
+  "evaluation_roots_in_research": 0,
+  "duplicate_complete_new_game_sequences": 115,
+  "snapshots": [
+    {
+      "generation": 0,
+      "files_verified": 133,
+      "bundle": "neural20-neural20-correction-20261024-g000-12cc233730a6.json.tgz",
+      "teacher_sha256": "7c22c11daab9c46112dadffa3161a78d9fff04fc719da84977ce079fea8b2ca9",
+      "student_sha256": "16b6a867941ea7768696db8bf5e972de57f6e54eb2eb0c1472bd4046d315c9b6",
+      "candidate_sha256": "a6d25ea7182661964174d78b18c2896111c823c4998c753c85cbd791a16d4ac8"
+    },
+    {
+      "generation": 1,
+      "files_verified": 250,
+      "bundle": "neural20-neural20-correction-20261024-g001-378d9827c013.json.tgz",
+      "teacher_sha256": "c78a601adcacbeac7746f2e24d6e4f3a5fe5ba8f2ee4a8f566eb4abf757c19b9",
+      "student_sha256": "2d8b6e5f7d5d05f49c0d29ca632ca62e581770c50b88fe30882f44ee676bcf06",
+      "candidate_sha256": "d3ebe236b9f5282bfe56c37a8c4e78e37bb918b62466be44b9d0e048105734ce"
+    },
+    {
+      "generation": 2,
+      "files_verified": 367,
+      "bundle": "neural20-neural20-correction-20261024-g002-6ba915493490.json.tgz",
+      "teacher_sha256": "10a08995a127d1c1b886b754e7448fbdb53d77818af72cb43882e653d60823a5",
+      "student_sha256": "2d8b6e5f7d5d05f49c0d29ca632ca62e581770c50b88fe30882f44ee676bcf06",
+      "candidate_sha256": "d3ebe236b9f5282bfe56c37a8c4e78e37bb918b62466be44b9d0e048105734ce"
+    },
+    {
+      "generation": 3,
+      "files_verified": 484,
+      "bundle": "neural20-neural20-correction-20261024-g003-215453ade6d3.json.tgz",
+      "teacher_sha256": "10a08995a127d1c1b886b754e7448fbdb53d77818af72cb43882e653d60823a5",
+      "student_sha256": "2d8b6e5f7d5d05f49c0d29ca632ca62e581770c50b88fe30882f44ee676bcf06",
+      "candidate_sha256": "d3ebe236b9f5282bfe56c37a8c4e78e37bb918b62466be44b9d0e048105734ce"
+    },
+    {
+      "generation": 4,
+      "files_verified": 601,
+      "bundle": "neural20-neural20-correction-20261024-g004-7eefc5cadd20.json.tgz",
+      "teacher_sha256": "6eefee57940db1ee982c78ff3b0fe3b8b6ec4dbb4cfa224a3fdaceaf2f2eecaa",
+      "student_sha256": "ca6851f1486126e359b5d1b5f2fe21eed0ab7b61846ac7ee5fcd306587dd292b",
+      "candidate_sha256": "9ec66ff11e811e9c189927e90c9194e5e0a3c4a37ccad5c41df1fcc604cd52b4"
+    }
+  ],
+  "generation_results": [
+    {
+      "generation": 0,
+      "candidate_sha256": "a6d25ea7182661964174d78b18c2896111c823c4998c753c85cbd791a16d4ac8",
+      "research_cases": 40,
+      "replay_rows": 78,
+      "screen": {
+        "games": 80,
+        "pass_screen": false,
+        "reason": "rejected_before_full_match",
+        "score": 0.3,
+        "used_for_promotion": false
+      },
+      "decision": {
+        "accepted": false,
+        "formal_engine_adopted": false,
+        "reason": "screen_rejected"
+      },
+      "training": {
+        "teacher": {
+          "initial_mae_cp": 955.788021743893,
+          "selected_mae_cp": 820.2841194567749,
+          "best_new_epoch_mae_cp": 820.2841194567749,
+          "model_sha256": "7c22c11daab9c46112dadffa3161a78d9fff04fc719da84977ce079fea8b2ca9",
+          "epochs": 20
+        },
+        "student": {
+          "initial_mae_cp": 965.0544919131466,
+          "selected_mae_cp": 820.5542453253573,
+          "best_new_epoch_mae_cp": 820.5542453253573,
+          "model_sha256": "16b6a867941ea7768696db8bf5e972de57f6e54eb2eb0c1472bd4046d315c9b6",
+          "epochs": 20
+        }
+      },
+      "archives": {
+        "selfplay": {
+          "games": 100,
+          "plies": 10787,
+          "reasons": {
+            "checkmate": 100,
+            "a_black": 50
+          },
+          "missing_score_plies": 261
+        },
+        "screen": {
+          "games": 80,
+          "plies": 9085,
+          "reasons": {
+            "checkmate": 79,
+            "a_black": 40,
+            "declare_win": 1
+          },
+          "missing_score_plies": 255
+        }
+      },
+      "match": {
+        "draws": 0,
+        "games": 80,
+        "invalid_games": 0,
+        "losses": 56,
+        "score": 0.3,
+        "wins": 24
+      }
+    },
+    {
+      "generation": 1,
+      "candidate_sha256": "d3ebe236b9f5282bfe56c37a8c4e78e37bb918b62466be44b9d0e048105734ce",
+      "research_cases": 40,
+      "replay_rows": 158,
+      "screen": {
+        "games": 80,
+        "pass_screen": false,
+        "reason": "rejected_before_full_match",
+        "score": 0.31875,
+        "used_for_promotion": false
+      },
+      "decision": {
+        "accepted": false,
+        "formal_engine_adopted": false,
+        "reason": "screen_rejected"
+      },
+      "training": {
+        "teacher": {
+          "initial_mae_cp": 840.5009265016453,
+          "selected_mae_cp": 824.3692031634852,
+          "best_new_epoch_mae_cp": 824.3692031634852,
+          "model_sha256": "c78a601adcacbeac7746f2e24d6e4f3a5fe5ba8f2ee4a8f566eb4abf757c19b9",
+          "epochs": 20
+        },
+        "student": {
+          "initial_mae_cp": 832.2807124095598,
+          "selected_mae_cp": 830.7743166467826,
+          "best_new_epoch_mae_cp": 830.7743166467826,
+          "model_sha256": "2d8b6e5f7d5d05f49c0d29ca632ca62e581770c50b88fe30882f44ee676bcf06",
+          "epochs": 20
+        }
+      },
+      "archives": {
+        "selfplay": {
+          "games": 100,
+          "plies": 11105,
+          "reasons": {
+            "checkmate": 100,
+            "a_black": 50
+          },
+          "missing_score_plies": 278
+        },
+        "screen": {
+          "games": 80,
+          "plies": 9906,
+          "reasons": {
+            "checkmate": 79,
+            "a_black": 40,
+            "move_limit": 1
+          },
+          "missing_score_plies": 230
+        }
+      },
+      "match": {
+        "draws": 1,
+        "games": 80,
+        "invalid_games": 1,
+        "losses": 54,
+        "score": 0.31875,
+        "wins": 25
+      }
+    },
+    {
+      "generation": 2,
+      "candidate_sha256": "d3ebe236b9f5282bfe56c37a8c4e78e37bb918b62466be44b9d0e048105734ce",
+      "research_cases": 40,
+      "replay_rows": 238,
+      "screen": {
+        "games": 80,
+        "pass_screen": false,
+        "reason": "rejected_before_full_match",
+        "score": 0.41875,
+        "used_for_promotion": false
+      },
+      "decision": {
+        "accepted": false,
+        "formal_engine_adopted": false,
+        "reason": "screen_rejected"
+      },
+      "training": {
+        "teacher": {
+          "initial_mae_cp": 886.6734714101219,
+          "selected_mae_cp": 875.3670246119482,
+          "best_new_epoch_mae_cp": 875.3670246119482,
+          "model_sha256": "10a08995a127d1c1b886b754e7448fbdb53d77818af72cb43882e653d60823a5",
+          "epochs": 20
+        },
+        "student": {
+          "initial_mae_cp": 928.23263094147,
+          "selected_mae_cp": 928.23263094147,
+          "best_new_epoch_mae_cp": 931.2996283977513,
+          "model_sha256": "2d8b6e5f7d5d05f49c0d29ca632ca62e581770c50b88fe30882f44ee676bcf06",
+          "epochs": 20
+        }
+      },
+      "archives": {
+        "selfplay": {
+          "games": 100,
+          "plies": 11482,
+          "reasons": {
+            "checkmate": 100,
+            "a_black": 50
+          },
+          "missing_score_plies": 301
+        },
+        "screen": {
+          "games": 80,
+          "plies": 9194,
+          "reasons": {
+            "checkmate": 79,
+            "a_black": 40,
+            "move_limit": 1
+          },
+          "missing_score_plies": 216
+        }
+      },
+      "match": {
+        "draws": 1,
+        "games": 80,
+        "invalid_games": 1,
+        "losses": 46,
+        "score": 0.41875,
+        "wins": 33
+      }
+    },
+    {
+      "generation": 3,
+      "candidate_sha256": "d3ebe236b9f5282bfe56c37a8c4e78e37bb918b62466be44b9d0e048105734ce",
+      "research_cases": 40,
+      "replay_rows": 317,
+      "screen": {
+        "games": 80,
+        "pass_screen": false,
+        "reason": "rejected_before_full_match",
+        "score": 0.3125,
+        "used_for_promotion": false
+      },
+      "decision": {
+        "accepted": false,
+        "formal_engine_adopted": false,
+        "reason": "screen_rejected"
+      },
+      "training": {
+        "teacher": {
+          "initial_mae_cp": 925.9657833745571,
+          "selected_mae_cp": 925.9657833745571,
+          "best_new_epoch_mae_cp": 941.0643311890655,
+          "model_sha256": "10a08995a127d1c1b886b754e7448fbdb53d77818af72cb43882e653d60823a5",
+          "epochs": 20
+        },
+        "student": {
+          "initial_mae_cp": 936.8169093671764,
+          "selected_mae_cp": 936.8169093671764,
+          "best_new_epoch_mae_cp": 937.5006097262022,
+          "model_sha256": "2d8b6e5f7d5d05f49c0d29ca632ca62e581770c50b88fe30882f44ee676bcf06",
+          "epochs": 20
+        }
+      },
+      "archives": {
+        "selfplay": {
+          "games": 100,
+          "plies": 10913,
+          "reasons": {
+            "checkmate": 98,
+            "a_black": 50,
+            "fourfold_repetition": 2
+          },
+          "missing_score_plies": 274
+        },
+        "screen": {
+          "games": 80,
+          "plies": 9023,
+          "reasons": {
+            "checkmate": 80,
+            "a_black": 40
+          },
+          "missing_score_plies": 208
+        }
+      },
+      "match": {
+        "draws": 0,
+        "games": 80,
+        "invalid_games": 0,
+        "losses": 55,
+        "score": 0.3125,
+        "wins": 25
+      }
+    },
+    {
+      "generation": 4,
+      "candidate_sha256": "9ec66ff11e811e9c189927e90c9194e5e0a3c4a37ccad5c41df1fcc604cd52b4",
+      "research_cases": 40,
+      "replay_rows": 395,
+      "screen": {
+        "games": 80,
+        "pass_screen": false,
+        "reason": "rejected_before_full_match",
+        "score": 0.3375,
+        "used_for_promotion": false
+      },
+      "decision": {
+        "accepted": false,
+        "formal_engine_adopted": false,
+        "reason": "screen_rejected"
+      },
+      "training": {
+        "teacher": {
+          "initial_mae_cp": 940.2864375999102,
+          "selected_mae_cp": 934.1050064407286,
+          "best_new_epoch_mae_cp": 934.1050064407286,
+          "model_sha256": "6eefee57940db1ee982c78ff3b0fe3b8b6ec4dbb4cfa224a3fdaceaf2f2eecaa",
+          "epochs": 20
+        },
+        "student": {
+          "initial_mae_cp": 981.6424407701875,
+          "selected_mae_cp": 979.171867445032,
+          "best_new_epoch_mae_cp": 979.171867445032,
+          "model_sha256": "ca6851f1486126e359b5d1b5f2fe21eed0ab7b61846ac7ee5fcd306587dd292b",
+          "epochs": 20
+        }
+      },
+      "archives": {
+        "selfplay": {
+          "games": 100,
+          "plies": 10295,
+          "reasons": {
+            "checkmate": 98,
+            "a_black": 50,
+            "fourfold_repetition": 2
+          },
+          "missing_score_plies": 289
+        },
+        "screen": {
+          "games": 80,
+          "plies": 8869,
+          "reasons": {
+            "checkmate": 80,
+            "a_black": 40
+          },
+          "missing_score_plies": 223
+        }
+      },
+      "match": {
+        "draws": 0,
+        "games": 80,
+        "invalid_games": 0,
+        "losses": 53,
+        "score": 0.3375,
+        "wins": 27
+      }
+    }
+  ],
+  "release": [
+    {
+      "manifest": "neural20-neural20-correction-20261024-g000-12cc233730a6.json",
+      "bundle_sha256": "12cc233730a62348b8d2579f6d9286317a4489ea35df6b7399bc4e4394c9a97f",
+      "verified": true,
+      "next_generation": 1,
+      "files": 134,
+      "state": {
+        "status": "ready_for_next_generation",
+        "next_generation": 1,
+        "accepted": 0,
+        "parent": null
+      }
+    },
+    {
+      "manifest": "neural20-neural20-correction-20261024-g001-378d9827c013.json",
+      "bundle_sha256": "378d9827c013f1bcd6c0226bb53dea152a6f6bded1099a6ef0045d11ddf88bb6",
+      "verified": true,
+      "next_generation": 2,
+      "files": 251,
+      "state": {
+        "status": "ready_for_next_generation",
+        "next_generation": 2,
+        "accepted": 0,
+        "parent": null
+      }
+    },
+    {
+      "manifest": "neural20-neural20-correction-20261024-g002-6ba915493490.json",
+      "bundle_sha256": "6ba915493490ca516e28f29e2a8bd96f5de66a7e08d4c613e009c152fec8c5f0",
+      "verified": true,
+      "next_generation": 3,
+      "files": 368,
+      "state": {
+        "status": "ready_for_next_generation",
+        "next_generation": 3,
+        "accepted": 0,
+        "parent": null
+      }
+    },
+    {
+      "manifest": "neural20-neural20-correction-20261024-g003-215453ade6d3.json",
+      "bundle_sha256": "215453ade6d35b81c1754acdf1f3288e4e6d576495c175f48099df9c315bd80e",
+      "verified": true,
+      "next_generation": 4,
+      "files": 485,
+      "state": {
+        "status": "ready_for_next_generation",
+        "next_generation": 4,
+        "accepted": 0,
+        "parent": null
+      }
+    },
+    {
+      "manifest": "neural20-neural20-correction-20261024-g004-7eefc5cadd20.json",
+      "bundle_sha256": "7eefc5cadd2030b322e7da7b093071cc12207e91bd1b54c44e84db1ccf14290d",
+      "verified": true,
+      "next_generation": 5,
+      "files": 602,
+      "state": {
+        "status": "completed",
+        "next_generation": 5,
+        "accepted": 0,
+        "parent": null
+      }
+    }
+  ],
+  "job_audit": {
+    "jobs": 441,
+    "conclusions": {
+      "success": 431,
+      "skipped": 10
+    },
+    "max_job_concurrency": 20,
+    "generations": [
+      {
+        "generation": 0,
+        "stages": {
+          "selfplay": {
+            "jobs": 20,
+            "wall_seconds": 299,
+            "start_utc": "2026-10-24T00:13:08+00:00",
+            "end_utc": "2026-10-24T00:18:07+00:00",
+            "max_job_concurrency": 20,
+            "max_execution_concurrency": 20
+          },
+          "study": {
+            "jobs": 20,
+            "wall_seconds": 9671,
+            "start_utc": "2026-10-24T00:19:50+00:00",
+            "end_utc": "2026-10-24T03:01:01+00:00",
+            "max_job_concurrency": 20,
+            "max_execution_concurrency": 20
+          },
+          "teacher": {
+            "jobs": 1,
+            "wall_seconds": 491,
+            "start_utc": "2026-10-24T03:01:03+00:00",
+            "end_utc": "2026-10-24T03:09:14+00:00",
+            "max_job_concurrency": 1,
+            "max_execution_concurrency": null
+          },
+          "mcts": {
+            "jobs": 20,
+            "wall_seconds": 55,
+            "start_utc": "2026-10-24T03:09:16+00:00",
+            "end_utc": "2026-10-24T03:10:11+00:00",
+            "max_job_concurrency": 20,
+            "max_execution_concurrency": 9
+          },
+          "student": {
+            "jobs": 1,
+            "wall_seconds": 256,
+            "start_utc": "2026-10-24T03:10:13+00:00",
+            "end_utc": "2026-10-24T03:14:29+00:00",
+            "max_job_concurrency": 1,
+            "max_execution_concurrency": null
+          },
+          "screen": {
+            "jobs": 20,
+            "wall_seconds": 207,
+            "start_utc": "2026-10-24T03:14:31+00:00",
+            "end_utc": "2026-10-24T03:17:58+00:00",
+            "max_job_concurrency": 20,
+            "max_execution_concurrency": 20
+          },
+          "complete": {
+            "jobs": 1,
+            "wall_seconds": 160,
+            "start_utc": "2026-10-24T03:19:21+00:00",
+            "end_utc": "2026-10-24T03:22:01+00:00",
+            "max_job_concurrency": 1,
+            "max_execution_concurrency": null
+          }
+        }
+      },
+      {
+        "generation": 1,
+        "stages": {
+          "selfplay": {
+            "jobs": 20,
+            "wall_seconds": 285,
+            "start_utc": "2026-10-24T03:23:25+00:00",
+            "end_utc": "2026-10-24T03:28:10+00:00",
+            "max_job_concurrency": 20,
+            "max_execution_concurrency": 20
+          },
+          "study": {
+            "jobs": 20,
+            "wall_seconds": 9656,
+            "start_utc": "2026-10-24T03:31:19+00:00",
+            "end_utc": "2026-10-24T06:12:15+00:00",
+            "max_job_concurrency": 20,
+            "max_execution_concurrency": 20
+          },
+          "teacher": {
+            "jobs": 1,
+            "wall_seconds": 648,
+            "start_utc": "2026-10-24T06:12:18+00:00",
+            "end_utc": "2026-10-24T06:23:06+00:00",
+            "max_job_concurrency": 1,
+            "max_execution_concurrency": null
+          },
+          "mcts": {
+            "jobs": 20,
+            "wall_seconds": 66,
+            "start_utc": "2026-10-24T06:23:08+00:00",
+            "end_utc": "2026-10-24T06:24:14+00:00",
+            "max_job_concurrency": 20,
+            "max_execution_concurrency": 8
+          },
+          "student": {
+            "jobs": 1,
+            "wall_seconds": 326,
+            "start_utc": "2026-10-24T06:24:16+00:00",
+            "end_utc": "2026-10-24T06:29:42+00:00",
+            "max_job_concurrency": 1,
+            "max_execution_concurrency": null
+          },
+          "screen": {
+            "jobs": 20,
+            "wall_seconds": 257,
+            "start_utc": "2026-10-24T06:29:44+00:00",
+            "end_utc": "2026-10-24T06:34:01+00:00",
+            "max_job_concurrency": 20,
+            "max_execution_concurrency": 20
+          },
+          "complete": {
+            "jobs": 1,
+            "wall_seconds": 168,
+            "start_utc": "2026-10-24T06:36:22+00:00",
+            "end_utc": "2026-10-24T06:39:10+00:00",
+            "max_job_concurrency": 1,
+            "max_execution_concurrency": null
+          }
+        }
+      },
+      {
+        "generation": 2,
+        "stages": {
+          "selfplay": {
+            "jobs": 20,
+            "wall_seconds": 307,
+            "start_utc": "2026-10-24T06:40:31+00:00",
+            "end_utc": "2026-10-24T06:45:38+00:00",
+            "max_job_concurrency": 20,
+            "max_execution_concurrency": 20
+          },
+          "study": {
+            "jobs": 20,
+            "wall_seconds": 9649,
+            "start_utc": "2026-10-24T06:48:57+00:00",
+            "end_utc": "2026-10-24T09:29:46+00:00",
+            "max_job_concurrency": 20,
+            "max_execution_concurrency": 20
+          },
+          "teacher": {
+            "jobs": 1,
+            "wall_seconds": 761,
+            "start_utc": "2026-10-24T09:29:49+00:00",
+            "end_utc": "2026-10-24T09:42:30+00:00",
+            "max_job_concurrency": 1,
+            "max_execution_concurrency": null
+          },
+          "mcts": {
+            "jobs": 20,
+            "wall_seconds": 64,
+            "start_utc": "2026-10-24T09:42:32+00:00",
+            "end_utc": "2026-10-24T09:43:36+00:00",
+            "max_job_concurrency": 20,
+            "max_execution_concurrency": 9
+          },
+          "student": {
+            "jobs": 1,
+            "wall_seconds": 368,
+            "start_utc": "2026-10-24T09:43:38+00:00",
+            "end_utc": "2026-10-24T09:49:46+00:00",
+            "max_job_concurrency": 1,
+            "max_execution_concurrency": null
+          },
+          "screen": {
+            "jobs": 20,
+            "wall_seconds": 269,
+            "start_utc": "2026-10-24T09:49:48+00:00",
+            "end_utc": "2026-10-24T09:54:17+00:00",
+            "max_job_concurrency": 20,
+            "max_execution_concurrency": 20
+          },
+          "complete": {
+            "jobs": 1,
+            "wall_seconds": 216,
+            "start_utc": "2026-10-24T09:57:12+00:00",
+            "end_utc": "2026-10-24T10:00:48+00:00",
+            "max_job_concurrency": 1,
+            "max_execution_concurrency": null
+          }
+        }
+      },
+      {
+        "generation": 3,
+        "stages": {
+          "selfplay": {
+            "jobs": 20,
+            "wall_seconds": 314,
+            "start_utc": "2026-10-24T10:02:20+00:00",
+            "end_utc": "2026-10-24T10:07:34+00:00",
+            "max_job_concurrency": 20,
+            "max_execution_concurrency": 20
+          },
+          "study": {
+            "jobs": 20,
+            "wall_seconds": 9663,
+            "start_utc": "2026-10-24T10:11:04+00:00",
+            "end_utc": "2026-10-24T12:52:07+00:00",
+            "max_job_concurrency": 20,
+            "max_execution_concurrency": 20
+          },
+          "teacher": {
+            "jobs": 1,
+            "wall_seconds": 865,
+            "start_utc": "2026-10-24T12:52:09+00:00",
+            "end_utc": "2026-10-24T13:06:34+00:00",
+            "max_job_concurrency": 1,
+            "max_execution_concurrency": null
+          },
+          "mcts": {
+            "jobs": 20,
+            "wall_seconds": 149,
+            "start_utc": "2026-10-24T13:06:36+00:00",
+            "end_utc": "2026-10-24T13:09:05+00:00",
+            "max_job_concurrency": 20,
+            "max_execution_concurrency": 9
+          },
+          "student": {
+            "jobs": 1,
+            "wall_seconds": 442,
+            "start_utc": "2026-10-24T13:09:07+00:00",
+            "end_utc": "2026-10-24T13:16:29+00:00",
+            "max_job_concurrency": 1,
+            "max_execution_concurrency": null
+          },
+          "screen": {
+            "jobs": 20,
+            "wall_seconds": 229,
+            "start_utc": "2026-10-24T13:16:31+00:00",
+            "end_utc": "2026-10-24T13:20:20+00:00",
+            "max_job_concurrency": 20,
+            "max_execution_concurrency": 20
+          },
+          "complete": {
+            "jobs": 1,
+            "wall_seconds": 188,
+            "start_utc": "2026-10-24T13:22:24+00:00",
+            "end_utc": "2026-10-24T13:25:32+00:00",
+            "max_job_concurrency": 1,
+            "max_execution_concurrency": null
+          }
+        }
+      },
+      {
+        "generation": 4,
+        "stages": {
+          "selfplay": {
+            "jobs": 20,
+            "wall_seconds": 275,
+            "start_utc": "2026-10-24T13:27:02+00:00",
+            "end_utc": "2026-10-24T13:31:37+00:00",
+            "max_job_concurrency": 20,
+            "max_execution_concurrency": 20
+          },
+          "study": {
+            "jobs": 20,
+            "wall_seconds": 9662,
+            "start_utc": "2026-10-24T13:36:37+00:00",
+            "end_utc": "2026-10-24T16:17:39+00:00",
+            "max_job_concurrency": 20,
+            "max_execution_concurrency": 20
+          },
+          "teacher": {
+            "jobs": 1,
+            "wall_seconds": 967,
+            "start_utc": "2026-10-24T16:17:41+00:00",
+            "end_utc": "2026-10-24T16:33:48+00:00",
+            "max_job_concurrency": 1,
+            "max_execution_concurrency": null
+          },
+          "mcts": {
+            "jobs": 20,
+            "wall_seconds": 52,
+            "start_utc": "2026-10-24T16:33:50+00:00",
+            "end_utc": "2026-10-24T16:34:42+00:00",
+            "max_job_concurrency": 20,
+            "max_execution_concurrency": 10
+          },
+          "student": {
+            "jobs": 1,
+            "wall_seconds": 461,
+            "start_utc": "2026-10-24T16:34:44+00:00",
+            "end_utc": "2026-10-24T16:42:25+00:00",
+            "max_job_concurrency": 1,
+            "max_execution_concurrency": null
+          },
+          "screen": {
+            "jobs": 20,
+            "wall_seconds": 224,
+            "start_utc": "2026-10-24T16:42:28+00:00",
+            "end_utc": "2026-10-24T16:46:12+00:00",
+            "max_job_concurrency": 20,
+            "max_execution_concurrency": 20
+          },
+          "complete": {
+            "jobs": 1,
+            "wall_seconds": 379,
+            "start_utc": "2026-10-24T16:49:51+00:00",
+            "end_utc": "2026-10-24T16:56:10+00:00",
+            "max_job_concurrency": 1,
+            "max_execution_concurrency": null
+          }
+        }
+      }
+    ]
+  },
+  "checks": {
+    "all_release_parts_and_bundle_sha256": true,
+    "all_snapshot_member_sha256": true,
+    "all_new_played_moves_legal_and_final_sfen_match": true,
+    "research_positions_unique": true,
+    "all_research_roots_training_split": true,
+    "old_history_and_archives_preserved": true,
+    "learner_models_match_selected_report_sha256": true,
+    "training_warmstart_code_path_checked": true,
+    "independent_validation_mae_recalculation": false,
+    "fixed_engine_and_knowledge_sha256": true
+  },
+  "strength_improved": false,
+  "formal_adoption": false,
+  "release_assets_bytes": 1204474922,
+  "fixed_knowledge": {
+    "positions": 163,
+    "sha256": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c"
+  },
+  "run": {
+    "id": 40043047195,
+    "start_jst": "2026-10-24T09:03:40+09:00",
+    "end_jst": "2026-10-25T01:56:11+09:00",
+    "elapsed_seconds": 60751,
+    "conclusion": "success"
+  },
+  "exact_game_sequence_duplicates": {
+    "duplicate_complete_new_game_sequences": 115,
+    "unique_new_game_sequences": 785,
+    "unique_sequences_shared_selfplay_screen": 0,
+    "shared_selfplay_screen_game_instances": 0
+  },
+  "preflight": {
+    "status": "completed",
+    "generations": 2,
+    "selfplay_games": 4,
+    "evaluation_games": 4,
+    "new_study_positions": 4,
+    "bundle_sha256": "b3b017546c0b8147d7c8c9c63b81c8d77965d72396f01f4ff28754c4fbb8fff9"
+  }
+}

@@ -1,0 +1,856 @@
+{
+  "run_id": 40145438299,
+  "cycle": "neural20-repaired-20261025",
+  "checked_at_jst": "2026-10-26 00:30",
+  "jobs": {
+    "total": 395,
+    "success": 367,
+    "skipped": 8,
+    "in_progress": 20,
+    "failure": 0
+  },
+  "release": {
+    "manifest": "neural20-neural20-repaired-20261025-g003-aed9ba010883.json",
+    "bundle_sha256": "aed9ba01088316583cdb287ad96e6b0e1773a0bd649490fd709cbd3200e78345",
+    "verified_internal_files": 497,
+    "all_api_parts_bundle_internal_sha_verified": true
+  },
+  "state": {
+    "accepted": 0,
+    "completed": [
+      {
+        "accepted": false,
+        "candidate_sha256": "9ec66ff11e811e9c189927e90c9194e5e0a3c4a37ccad5c41df1fcc604cd52b4",
+        "generation": 0
+      },
+      {
+        "accepted": false,
+        "candidate_sha256": "9ec66ff11e811e9c189927e90c9194e5e0a3c4a37ccad5c41df1fcc604cd52b4",
+        "generation": 1
+      },
+      {
+        "accepted": false,
+        "candidate_sha256": "dacea69a842fef1036f602e891942b63ff94136d3ab65d301761e434cc56d7b2",
+        "generation": 2
+      },
+      {
+        "accepted": false,
+        "candidate_sha256": "3d6f8861e217ac1e4abc77daf346859e974997550988438975234331dd82d0b8",
+        "generation": 3
+      }
+    ],
+    "formal_engine_adopted": false,
+    "lanes": 20,
+    "next_generation": 4,
+    "parent": null,
+    "plan_sha256": "b37badf9303d1ac14ea144b175f78192d70d17d5b8c4b1ce6161b671f1fb2944",
+    "status": "ready_for_next_generation"
+  },
+  "g3_result": {
+    "candidate_sha256": "3d6f8861e217ac1e4abc77daf346859e974997550988438975234331dd82d0b8",
+    "case_count": 40,
+    "decision": {
+      "accepted": false,
+      "formal_engine_adopted": false,
+      "reason": "screen_rejected"
+    },
+    "formal_engine_adopted": false,
+    "generation": 3,
+    "replay_rows": 501,
+    "screen": {
+      "games": 80,
+      "pass_screen": false,
+      "reason": "rejected_before_full_match",
+      "score": 0.45,
+      "used_for_promotion": false
+    },
+    "stage_timings": {
+      "mcts-timing": {
+        "longest_worker_seconds": 3.1510380359999886,
+        "reduce_and_learning_seconds": 573.816151078,
+        "worker_seconds": 36.25694571499989,
+        "workers": 20
+      },
+      "screen-timing": {
+        "longest_worker_seconds": 188.28532549,
+        "reduce_and_learning_seconds": 1.1372957710000264,
+        "worker_seconds": 2884.182717624,
+        "workers": 20
+      },
+      "selfplay-timing": {
+        "longest_worker_seconds": 258.528374889,
+        "reduce_and_learning_seconds": 244.226428377,
+        "worker_seconds": 3499.8948560110002,
+        "workers": 20
+      },
+      "study-timing": {
+        "longest_worker_seconds": 9601.172786049001,
+        "new_deep_labels": 20,
+        "reduce_and_learning_seconds": 1485.281871708,
+        "worker_seconds": 172816.611127729,
+        "workers": 20
+      }
+    },
+    "student": {
+      "architecture": {
+        "correction": true,
+        "material_prior": false,
+        "residual": 0,
+        "width": 128
+      },
+      "correction_training": "unbounded_loss_projected_target",
+      "epochs": 20,
+      "history": [
+        {
+          "epoch": 1,
+          "examples_seen": 57236,
+          "loss": 0.014068449509275877,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 288.40948701151655,
+            "research_mae_cp": 347.22113609313965,
+            "score_cp": 317.8153115523281
+          },
+          "validation_mae_cp": 288.54312199350477
+        },
+        {
+          "epoch": 2,
+          "examples_seen": 57236,
+          "loss": 0.011040337458336217,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 291.5187851489207,
+            "research_mae_cp": 322.3763595927845,
+            "score_cp": 306.94757237085264
+          },
+          "validation_mae_cp": 291.5889020548259
+        },
+        {
+          "epoch": 3,
+          "examples_seen": 57236,
+          "loss": 0.010127476691778988,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 289.01728359562026,
+            "research_mae_cp": 338.8709371740168,
+            "score_cp": 313.9441103848185
+          },
+          "validation_mae_cp": 289.13056330847314
+        },
+        {
+          "epoch": 4,
+          "examples_seen": 57236,
+          "loss": 0.009107297924629372,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 289.9175264820549,
+            "research_mae_cp": 336.52782440185547,
+            "score_cp": 313.2226754419552
+          },
+          "validation_mae_cp": 290.0234368979697
+        },
+        {
+          "epoch": 5,
+          "examples_seen": 57236,
+          "loss": 0.008752473000299299,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 291.5256772722517,
+            "research_mae_cp": 344.7476083582098,
+            "score_cp": 318.13664281523074
+          },
+          "validation_mae_cp": 291.6466106784366
+        },
+        {
+          "epoch": 6,
+          "examples_seen": 57236,
+          "loss": 0.008358682986189796,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 291.43343741849344,
+            "research_mae_cp": 356.4778457988392,
+            "score_cp": 323.9556416086663
+          },
+          "validation_mae_cp": 291.5812336544044
+        },
+        {
+          "epoch": 7,
+          "examples_seen": 57236,
+          "loss": 0.007836808019322048,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 290.51918006091387,
+            "research_mae_cp": 349.9192324551669,
+            "score_cp": 320.21920625804034
+          },
+          "validation_mae_cp": 290.6541526871657
+        },
+        {
+          "epoch": 8,
+          "examples_seen": 57236,
+          "loss": 0.00793675989359336,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 294.13392084725893,
+            "research_mae_cp": 327.2668665105646,
+            "score_cp": 310.7003936789118
+          },
+          "validation_mae_cp": 294.20920704741343
+        },
+        {
+          "epoch": 9,
+          "examples_seen": 57236,
+          "loss": 0.007536312121838316,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 293.7775653341542,
+            "research_mae_cp": 344.53847191550517,
+            "score_cp": 319.15801862482965
+          },
+          "validation_mae_cp": 293.8929074954652
+        },
+        {
+          "epoch": 10,
+          "examples_seen": 57236,
+          "loss": 0.007126076243678781,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 295.0224045147313,
+            "research_mae_cp": 345.5310734835538,
+            "score_cp": 320.2767389991426
+          },
+          "validation_mae_cp": 295.1371733301608
+        },
+        {
+          "epoch": 11,
+          "examples_seen": 57236,
+          "loss": 0.007184680368739181,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 299.310969319156,
+            "research_mae_cp": 348.6057628284801,
+            "score_cp": 323.95836607381807
+          },
+          "validation_mae_cp": 299.4229797981072
+        },
+        {
+          "epoch": 12,
+          "examples_seen": 57236,
+          "loss": 0.0069873473221756755,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 292.5667290855392,
+            "research_mae_cp": 345.100923018022,
+            "score_cp": 318.8338260517806
+          },
+          "validation_mae_cp": 292.68609992336377
+        },
+        {
+          "epoch": 13,
+          "examples_seen": 57236,
+          "loss": 0.006818460600613481,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 290.56409436970273,
+            "research_mae_cp": 344.65787627480245,
+            "score_cp": 317.6109853222526
+          },
+          "validation_mae_cp": 290.6870094367084
+        },
+        {
+          "epoch": 14,
+          "examples_seen": 57236,
+          "loss": 0.006762409528061457,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 296.8061972355497,
+            "research_mae_cp": 347.118312662298,
+            "score_cp": 321.9622549489238
+          },
+          "validation_mae_cp": 296.9205186919126
+        },
+        {
+          "epoch": 15,
+          "examples_seen": 57236,
+          "loss": 0.006330966247830537,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 295.25040415256416,
+            "research_mae_cp": 336.21788024902344,
+            "score_cp": 315.7341422007938
+          },
+          "validation_mae_cp": 295.3434924255888
+        },
+        {
+          "epoch": 16,
+          "examples_seen": 57236,
+          "loss": 0.006555328924708483,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 292.822529810556,
+            "research_mae_cp": 361.5423332561146,
+            "score_cp": 327.18243153333526
+          },
+          "validation_mae_cp": 292.9786791660598
+        },
+        {
+          "epoch": 17,
+          "examples_seen": 57236,
+          "loss": 0.0064621059392843865,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 295.2971843458851,
+            "research_mae_cp": 349.97469728643244,
+            "score_cp": 322.6359408161588
+          },
+          "validation_mae_cp": 295.42142540628913
+        },
+        {
+          "epoch": 18,
+          "examples_seen": 57236,
+          "loss": 0.006108314349210686,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 292.33037818292655,
+            "research_mae_cp": 352.5494878942316,
+            "score_cp": 322.43993303857906
+          },
+          "validation_mae_cp": 292.46721147530536
+        },
+        {
+          "epoch": 19,
+          "examples_seen": 57236,
+          "loss": 0.006130428352576168,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 298.1223274215161,
+            "research_mae_cp": 356.3829552043568,
+            "score_cp": 327.2526413129365
+          },
+          "validation_mae_cp": 298.25471043956105
+        },
+        {
+          "epoch": 20,
+          "examples_seen": 57236,
+          "loss": 0.005973238235673937,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 295.2164079338374,
+            "research_mae_cp": 350.29621557755905,
+            "score_cp": 322.7563117556982
+          },
+          "validation_mae_cp": 295.34156301301806
+        }
+      ],
+      "identity": "51f844dde6498e86341300e5624ab50d1976adf426a020b72ebbbf817d7cc324",
+      "initial_selection": {
+        "ordinary_mae_cp": 295.01717964314525,
+        "research_mae_cp": 341.1338762803511,
+        "score_cp": 318.0755279617482
+      },
+      "initial_validation_mae_cp": 295.12196851894646,
+      "model_sha256": "8bd897359cccbf590b931fe477012ad73eb524f0d790d217a939b89a6b0945e6",
+      "sample_counts": {
+        "test": 5063,
+        "train": 50533,
+        "validation": 4841
+      },
+      "schema": "own-policy-value-training-v1",
+      "selection": {
+        "ordinary_mae_cp": 291.5187851489207,
+        "research_mae_cp": 322.3763595927845,
+        "score_cp": 306.94757237085264
+      },
+      "strength_proven": false,
+      "test_mae_cp": 283.4605168571073,
+      "validation_mae_cp": 291.5889020548259
+    },
+    "teacher": {
+      "architecture": {
+        "material_prior": true,
+        "residual": 2,
+        "width": 128
+      },
+      "correction_training": null,
+      "epochs": 20,
+      "history": [
+        {
+          "epoch": 1,
+          "examples_seen": 57236,
+          "loss": 0.43934421249718625,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 913.2567537990909,
+            "research_mae_cp": 1507.0863203568892,
+            "score_cp": 1210.17153707799
+          },
+          "validation_mae_cp": 914.6060892383659
+        },
+        {
+          "epoch": 2,
+          "examples_seen": 57236,
+          "loss": 0.3821681606352175,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 886.5615228688495,
+            "research_mae_cp": 1475.1888621937144,
+            "score_cp": 1180.875192531282
+          },
+          "validation_mae_cp": 887.8990351427343
+        },
+        {
+          "epoch": 3,
+          "examples_seen": 57236,
+          "loss": 0.3499750889891373,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 913.6533259358218,
+            "research_mae_cp": 1616.0918149081144,
+            "score_cp": 1264.8725704219682
+          },
+          "validation_mae_cp": 915.2494468759885
+        },
+        {
+          "epoch": 4,
+          "examples_seen": 57236,
+          "loss": 0.3174112697377113,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 922.8897726560479,
+            "research_mae_cp": 1598.2412858442826,
+            "score_cp": 1260.5655292501651
+          },
+          "validation_mae_cp": 924.424343034271
+        },
+        {
+          "epoch": 5,
+          "examples_seen": 57236,
+          "loss": 0.29565800204784565,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 919.1714695521763,
+            "research_mae_cp": 1430.0186850807884,
+            "score_cp": 1174.5950773164823
+          },
+          "validation_mae_cp": 920.3322453332376
+        },
+        {
+          "epoch": 6,
+          "examples_seen": 57236,
+          "loss": 0.28284024938996194,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 942.8848077051388,
+            "research_mae_cp": 1568.2210055264559,
+            "score_cp": 1255.5529066157974
+          },
+          "validation_mae_cp": 944.305731968997
+        },
+        {
+          "epoch": 7,
+          "examples_seen": 57236,
+          "loss": 0.2639654936451558,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 899.1658607625072,
+            "research_mae_cp": 1508.363203568892,
+            "score_cp": 1203.7645321656996
+          },
+          "validation_mae_cp": 900.5501125992096
+        },
+        {
+          "epoch": 8,
+          "examples_seen": 57236,
+          "loss": 0.2570006260957531,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 906.8128613458164,
+            "research_mae_cp": 1543.5024608265269,
+            "score_cp": 1225.1576610861716
+          },
+          "validation_mae_cp": 908.2595834651286
+        },
+        {
+          "epoch": 9,
+          "examples_seen": 57236,
+          "loss": 0.24544050940694828,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 908.4018399256357,
+            "research_mae_cp": 1553.7281036376953,
+            "score_cp": 1231.0649717816655
+          },
+          "validation_mae_cp": 909.8681879545927
+        },
+        {
+          "epoch": 10,
+          "examples_seen": 57236,
+          "loss": 0.23409150293500045,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 930.7749935805674,
+            "research_mae_cp": 1574.928110296076,
+            "score_cp": 1252.8515519383218
+          },
+          "validation_mae_cp": 932.2386759171134
+        },
+        {
+          "epoch": 11,
+          "examples_seen": 57236,
+          "loss": 0.22721824930335535,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 938.4628911936505,
+            "research_mae_cp": 1705.862045288086,
+            "score_cp": 1322.1624682408683
+          },
+          "validation_mae_cp": 940.2066226636938
+        },
+        {
+          "epoch": 12,
+          "examples_seen": 57236,
+          "loss": 0.227054114811275,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 921.6086946412396,
+            "research_mae_cp": 1625.0447359952059,
+            "score_cp": 1273.3267153182228
+          },
+          "validation_mae_cp": 923.2070818835855
+        },
+        {
+          "epoch": 13,
+          "examples_seen": 57236,
+          "loss": 0.21874393071507797,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 911.955694036701,
+            "research_mae_cp": 1678.9764057506216,
+            "score_cp": 1295.4660498936612
+          },
+          "validation_mae_cp": 913.698561648105
+        },
+        {
+          "epoch": 14,
+          "examples_seen": 57236,
+          "loss": 0.2159786199080435,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 918.6453983156824,
+            "research_mae_cp": 1643.1756453080611,
+            "score_cp": 1280.9105218118718
+          },
+          "validation_mae_cp": 920.2917201832734
+        },
+        {
+          "epoch": 15,
+          "examples_seen": 57236,
+          "loss": 0.2074342693362115,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 941.8782868000291,
+            "research_mae_cp": 1702.6878703724253,
+            "score_cp": 1322.2830785862272
+          },
+          "validation_mae_cp": 943.607042703075
+        },
+        {
+          "epoch": 16,
+          "examples_seen": 57236,
+          "loss": 0.2076836962879508,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 961.1074380499482,
+            "research_mae_cp": 1698.11335476962,
+            "score_cp": 1329.610396409784
+          },
+          "validation_mae_cp": 962.7821082493609
+        },
+        {
+          "epoch": 17,
+          "examples_seen": 57236,
+          "loss": 0.20371484134971857,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 932.6257077803523,
+            "research_mae_cp": 1663.4863073175604,
+            "score_cp": 1298.0560075489564
+          },
+          "validation_mae_cp": 934.2864110828849
+        },
+        {
+          "epoch": 18,
+          "examples_seen": 57236,
+          "loss": 0.20437515072289716,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 950.7583618164062,
+            "research_mae_cp": 1711.1046530983665,
+            "score_cp": 1330.9315074573865
+          },
+          "validation_mae_cp": 952.486063029938
+        },
+        {
+          "epoch": 19,
+          "examples_seen": 57236,
+          "loss": 0.19893492746922994,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 957.1294180354716,
+            "research_mae_cp": 1730.9306751598012,
+            "score_cp": 1344.0300465976366
+          },
+          "validation_mae_cp": 958.8876939760557
+        },
+        {
+          "epoch": 20,
+          "examples_seen": 57236,
+          "loss": 0.1997161606288038,
+          "replayed_research_examples": 7168,
+          "selection": {
+            "ordinary_mae_cp": 924.500964936756,
+            "research_mae_cp": 1617.601741443981,
+            "score_cp": 1271.0513531903684
+          },
+          "validation_mae_cp": 926.0758697629541
+        }
+      ],
+      "identity": "ddf8367add9f01d4b914c28eda95019b0e5daa6af9f0294950e2f84bd35fd9d8",
+      "initial_selection": {
+        "ordinary_mae_cp": 899.7384412935309,
+        "research_mae_cp": 1471.7903137207031,
+        "score_cp": 1185.764377507117
+      },
+      "initial_validation_mae_cp": 901.0382914094978,
+      "model_sha256": "e1b6536e41e5e5f33a672a05dd3447d9575eecdc441ece4cbff2a65008683a24",
+      "sample_counts": {
+        "test": 5063,
+        "train": 50503,
+        "validation": 4841
+      },
+      "schema": "own-policy-value-training-v1",
+      "selection": {
+        "ordinary_mae_cp": 919.1714695521763,
+        "research_mae_cp": 1430.0186850807884,
+        "score_cp": 1174.5950773164823
+      },
+      "strength_proven": false,
+      "test_mae_cp": 904.753638095543,
+      "validation_mae_cp": 920.3322453332376
+    }
+  },
+  "g3_teacher_admission": {
+    "train": {
+      "accepted": 20,
+      "rejected": {
+        "branch_comparison_inconclusive": 9,
+        "branch_improvement_not_confirmed": 3
+      }
+    },
+    "validation": {
+      "accepted": 4,
+      "rejected": {
+        "branch_comparison_inconclusive": 3,
+        "branch_improvement_not_confirmed": 1
+      }
+    }
+  },
+  "replayed_archives": [
+    {
+      "run_id": "neural20-repaired-20261025-g3-selfplay-parent",
+      "games": 100,
+      "plies": 10943,
+      "winners": {
+        "B": 69,
+        "A": 31
+      }
+    },
+    {
+      "run_id": "neural20-correction-20261024-g2-selfplay-parent",
+      "games": 100,
+      "plies": 11482,
+      "winners": {
+        "B": 50,
+        "A": 50
+      }
+    },
+    {
+      "run_id": "neural20-correction-20261024-g3-selfplay-parent",
+      "games": 100,
+      "plies": 10913,
+      "winners": {
+        "A": 52,
+        "B": 46,
+        "None": 2
+      }
+    },
+    {
+      "run_id": "neural20-repaired-20261025-g1-selfplay-parent",
+      "games": 100,
+      "plies": 11128,
+      "winners": {
+        "B": 60,
+        "A": 40
+      }
+    },
+    {
+      "run_id": "neural20-repaired-20261025-g0-selfplay-parent",
+      "games": 100,
+      "plies": 10754,
+      "winners": {
+        "A": 34,
+        "B": 65,
+        "None": 1
+      }
+    },
+    {
+      "run_id": "neural20-correction-20261024-g0-selfplay-parent",
+      "games": 100,
+      "plies": 10787,
+      "winners": {
+        "A": 55,
+        "B": 45
+      }
+    },
+    {
+      "run_id": "neural20-correction-20261024-g1-selfplay-parent",
+      "games": 100,
+      "plies": 11105,
+      "winners": {
+        "A": 53,
+        "B": 47
+      }
+    },
+    {
+      "run_id": "39124621200",
+      "games": 300,
+      "plies": 33600,
+      "winners": {
+        "B": 141,
+        "A": 157,
+        "None": 2
+      }
+    },
+    {
+      "run_id": "neural20-repaired-20261025-g2-selfplay-parent",
+      "games": 100,
+      "plies": 11700,
+      "winners": {
+        "B": 66,
+        "A": 33,
+        "None": 1
+      }
+    },
+    {
+      "run_id": "neural20-correction-20261024-g4-selfplay-parent",
+      "games": 100,
+      "plies": 10295,
+      "winners": {
+        "A": 43,
+        "B": 55,
+        "None": 2
+      }
+    },
+    {
+      "run_id": "neural20-repaired-20261025-g3-screen-parent",
+      "games": 80,
+      "plies": 9108,
+      "winners": {
+        "A": 36,
+        "B": 44
+      }
+    },
+    {
+      "run_id": "neural20-repaired-20261025-g1-screen-parent",
+      "games": 80,
+      "plies": 8448,
+      "winners": {
+        "B": 48,
+        "A": 32
+      }
+    },
+    {
+      "run_id": "neural20-repaired-20261025-g0-screen-parent",
+      "games": 80,
+      "plies": 8507,
+      "winners": {
+        "A": 35,
+        "B": 45
+      }
+    },
+    {
+      "run_id": "neural20-repaired-20261025-g2-screen-parent",
+      "games": 80,
+      "plies": 9079,
+      "winners": {
+        "B": 47,
+        "A": 33
+      }
+    },
+    {
+      "run_id": "neural20-repaired-20261025-g4-selfplay-parent",
+      "games": 100,
+      "plies": 10824,
+      "winners": {
+        "B": 62,
+        "A": 38
+      }
+    }
+  ],
+  "replayed_total_games": 1620,
+  "replayed_total_plies": 178673,
+  "case_audit": [
+    {
+      "generation": 0,
+      "split": {
+        "train": 32,
+        "validation": 8
+      },
+      "latest_source": 1
+    },
+    {
+      "generation": 1,
+      "split": {
+        "train": 32,
+        "validation": 8
+      },
+      "latest_source": 1
+    },
+    {
+      "generation": 2,
+      "split": {
+        "train": 32,
+        "validation": 8
+      },
+      "latest_source": 1
+    },
+    {
+      "generation": 3,
+      "split": {
+        "train": 32,
+        "validation": 8
+      },
+      "latest_source": 6
+    },
+    {
+      "generation": 4,
+      "split": {
+        "train": 32,
+        "validation": 8
+      },
+      "latest_source": 2
+    }
+  ],
+  "g4": {
+    "learner_sha256": "3d6f8861e217ac1e4abc77daf346859e974997550988438975234331dd82d0b8",
+    "task_assets": {
+      "learner.nnue": "3d6f8861e217ac1e4abc77daf346859e974997550988438975234331dd82d0b8"
+    },
+    "verified_worker_files": 33
+  },
+  "pending": [
+    "g4 study/training/evaluation/publication",
+    "independent recomputation of validation errors/saturation",
+    "final completed state"
+  ]
+}

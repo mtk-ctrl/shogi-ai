@@ -1,0 +1,15 @@
+{
+  "enabled": true,
+  "parameters": {
+    "cycle_id": "neural20-repaired-20261025",
+    "mode": "standard",
+    "evaluation_mode": "correction",
+    "generations": 5,
+    "runners": 20,
+    "seed": 20261025,
+    "validation_cases": 8,
+    "learner_selfplay": true
+  },
+  "checkpoint": "",
+  "bootstrap_from": "neural20-neural20-correction-20261024-g004-7eefc5cadd20.json"
+}

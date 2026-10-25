@@ -6,6 +6,21 @@ on:
     paths:
       - "engine/strategy/**"
       - "engine/main.cpp"
+      - "tools/research/train_nnue.py"
+      - "tools/research/neural_*.py"
+      - "tests/test_neural_*.py"
+      - "tools/research/nnue_split.py"
+      - "tests/test_nnue_split.py"
+      - "tools/research/nnue_match_smoke.py"
+      - "tests/test_nnue_match_smoke.py"
+      - "tools/research/nnue_labels.py"
+      - "tools/research/nnue_deep_study.py"
+      - "tools/research/nnue_cycle.py"
+      - "tests/test_nnue_labels.py"
+      - "tests/test_nnue_study.py"
+      - "tests/test_nnue_end_to_end.py"
+      - "tests/nnue_evaluator_test.cpp"
+      - "tests/test_nnue_pipeline.py"
       - "engine/rules/**"
       - "position-knowledge-v1.tsv"
       - "position-knowledge-v1.manifest.json"
@@ -61,13 +76,33 @@ permissions:
 jobs:
   quick:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v5
 
       - name: Build engine
         run: python3 scripts/build.py --output build/shogi-ai
+
+      - name: Experimental NNUE arithmetic and train-to-search smoke
+        run: |
+          python3 -m pip install numpy python-shogi==1.1.1
+          mkdir -p build
+          c++ -std=c++17 -Iengine tests/nnue_evaluator_test.cpp -o build/nnue-test
+          ./build/nnue-test
+          python3 tests/test_nnue_match_smoke.py
+          python3 tests/test_nnue_split.py
+          python3 tests/test_nnue_labels.py
+          python3 tests/test_nnue_study.py
+          python3 tests/test_nnue_pipeline.py build/shogi-ai
+          python3 tests/test_nnue_end_to_end.py build/shogi-ai
+
+      - name: Neural generation, incremental search and MCTS tests
+        run: |
+          python3 -m pip install torch==2.14.1+cpu --index-url https://download.pytorch.org/whl/cpu
+          python3 tests/test_neural_loop.py
+          python3 -m unittest discover -s tests -p 'test_neural_cluster*.py'
+          python3 tests/test_neural_native.py build/shogi-ai
 
       - name: Adopted evaluation and phase tests
         run: |

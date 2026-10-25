@@ -1,0 +1,97 @@
+{
+  "verified_at_jst": "2026-10-25 09:33",
+  "run_id": 40145438299,
+  "generation": 0,
+  "artifact_id": 12580143449,
+  "artifact_zip_sha256": "1ae05e93c721f2eca7748aa2f6d060f3a72f563b9f83521dedbb0ad9dd6d77e6",
+  "selfplay_games": 100,
+  "plies": 10754,
+  "all_moves_legal": true,
+  "final_sfen_match": true,
+  "training_match": {
+    "wins": 34,
+    "losses": 65,
+    "draws": 1,
+    "invalid": 0,
+    "strength_evaluation": false
+  },
+  "study_cases": 40,
+  "splits": {
+    "train": 32,
+    "validation": 8
+  },
+  "selection": {
+    "suspected_loss": 20,
+    "phase_control": 20
+  },
+  "source_runs": {
+    "39124621200": 13,
+    "neural20-correction-20261024-g0-selfplay-parent": 6,
+    "neural20-correction-20261024-g1-selfplay-parent": 8,
+    "neural20-correction-20261024-g3-selfplay-parent": 4,
+    "neural20-correction-20261024-g2-selfplay-parent": 6,
+    "neural20-correction-20261024-g4-selfplay-parent": 2,
+    "neural20-repaired-20261025-g0-selfplay-parent": 1
+  },
+  "seen_overlap": 0,
+  "max_per_game": 2,
+  "bootstrap": {
+    "deep_admission": {
+      "accepted": 98,
+      "rejected": {
+        "branch_comparison_inconclusive": 95,
+        "branch_improvement_not_confirmed": 2,
+        "incomplete_or_non_cp": 5
+      }
+    },
+    "deployable_sha256": "9ec66ff11e811e9c189927e90c9194e5e0a3c4a37ccad5c41df1fcc604cd52b4",
+    "formal_adoption": false,
+    "imported_research_rows": 298,
+    "manifest": {
+      "bundle_sha256": "7eefc5cadd2030b322e7da7b093071cc12207e91bd1b54c44e84db1ccf14290d",
+      "formal_engine_adopted": false,
+      "next_generation": 5,
+      "parts": [
+        {
+          "bytes": 209715200,
+          "name": "neural20-neural20-correction-20261024-g004-7eefc5cadd20.part000",
+          "sha256": "5701dc8ca9cafb39ebb57b6677e128baa0d7ac4f30f80fab5ed855cb9e160227"
+        },
+        {
+          "bytes": 46276164,
+          "name": "neural20-neural20-correction-20261024-g004-7eefc5cadd20.part001",
+          "sha256": "01dbad280b4e9df8cfa8b086110ee869b8f6615ecafb317cea49a23d5b642cdc"
+        }
+      ],
+      "plan_sha256": "835695923e450c2ecb085bc8962809ae95049c23114c60ee0360c2adef46052f",
+      "schema": "neural20-checkpoint-v1",
+      "source_commit": "f230670d5ced9ea969245ea0bbb4007503d0130e"
+    },
+    "model_sha256": {
+      "student": "ca6851f1486126e359b5d1b5f2fe21eed0ab7b61846ac7ee5fcd306587dd292b",
+      "teacher": "6eefee57940db1ee982c78ff3b0fe3b8b6ec4dbb4cfa224a3fdaceaf2f2eecaa"
+    },
+    "old_state_resumed": false,
+    "optimizer_imported": false,
+    "source_cycle": "neural20-correction-20261024",
+    "source_implementation": "a492209fd5fa8c3e53f48148845697d9ffe52ce8a4b9281b21eda68b457ba19b"
+  },
+  "preflight": {
+    "checkpoint_sha256": "a9fbf8917cfe61bc976b85e96aae92c7f5592d316a7dab1dc2210debab67f30c",
+    "evaluation_games": 4,
+    "formal_adoption": false,
+    "generations": 2,
+    "new_study_positions": 16,
+    "schema": "correction-cycle-preflight-v1",
+    "selfplay_games": 4,
+    "status": "completed",
+    "strength_proven": false
+  },
+  "model_sha256": {
+    "learner/student/model.pt": "ca6851f1486126e359b5d1b5f2fe21eed0ab7b61846ac7ee5fcd306587dd292b",
+    "learner/teacher/model.pt": "6eefee57940db1ee982c78ff3b0fe3b8b6ec4dbb4cfa224a3fdaceaf2f2eecaa",
+    "learner.nnue": "9ec66ff11e811e9c189927e90c9194e5e0a3c4a37ccad5c41df1fcc604cd52b4"
+  },
+  "next_check_jst": "2026-10-25 12:30",
+  "strength_proven": false
+}

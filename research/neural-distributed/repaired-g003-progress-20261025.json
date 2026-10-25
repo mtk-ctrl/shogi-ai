@@ -1,0 +1,33 @@
+{
+  "run_id": 40145438299,
+  "artifact_id": 12595934395,
+  "zip_sha256": "78c0ce2b568163755187f4051d2c22d3bd5fd0169e0d60d30ba883bda9d7fca1",
+  "bundle_files_sha_verified": 31,
+  "stage": "study",
+  "cases": 40,
+  "splits": {
+    "train": 32,
+    "validation": 8
+  },
+  "g3_selfplay_games": 100,
+  "g3_selfplay_plies": 10943,
+  "g3_learner_sha256": "dacea69a842fef1036f602e891942b63ff94136d3ab65d301761e434cc56d7b2",
+  "source_distribution": {
+    "neural20-repaired-20261025-g0-selfplay-parent": 1,
+    "neural20-correction-20261024-g3-selfplay-parent": 3,
+    "39124621200": 11,
+    "neural20-correction-20261024-g1-selfplay-parent": 7,
+    "neural20-repaired-20261025-g3-selfplay-parent": 6,
+    "neural20-repaired-20261025-g1-selfplay-parent": 6,
+    "neural20-correction-20261024-g0-selfplay-parent": 2,
+    "neural20-correction-20261024-g4-selfplay-parent": 3,
+    "neural20-correction-20261024-g2-selfplay-parent": 1
+  },
+  "teacher_epochs": 20,
+  "mcts_jobs": 20,
+  "student_status": "in_progress",
+  "screen_status": "not_started",
+  "strength_proven": false,
+  "g3_all_moves_legal": true,
+  "g3_final_sfens_match": true
+}
