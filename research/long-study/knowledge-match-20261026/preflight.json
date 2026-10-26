@@ -1,0 +1,8 @@
+{
+  "engine_commit": "671012c5540a22275652ae548847bffc0da963f7",
+  "engine_sha256": "bf2ea968faba437b7bb8ebf1e6df6f67fca3a2626d73803e472b248433992d43",
+  "native_loaded": 390,
+  "direct_selections_verified": 227,
+  "position_mode": "each added SFEN with clean history",
+  "candidate_sha256": "45f8bcc6115e0fadc1030c5d1967551d27b377d5e0b2d007798ee61428da276e"
+}
