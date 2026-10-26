@@ -1,0 +1,1061 @@
+{
+  "schema": "kumoji-research-catalog-v1",
+  "snapshot_date_jst": "2026-10-26",
+  "release": "https://github.com/mtk-ctrl/shogi-ai/releases/tag/records-2026-10-01",
+  "scope": "Explicit sources listed here; not every historical workflow artifact.",
+  "automatic_training_import": false,
+  "automatic_knowledge_adoption": false,
+  "summary": {
+    "observations": 1079,
+    "sources": 16,
+    "record_groups": 29,
+    "by_category": {
+      "neural_long_study": 520,
+      "integration_short_test": 40,
+      "legacy_long_study": 180,
+      "legacy_60s_observation": 91,
+      "legacy_postgame_analysis": 232,
+      "legacy_followup": 16
+    }
+  },
+  "assets": [
+    {
+      "name": "neural20-neural20-correction-20261024-g004-7eefc5cadd20.json",
+      "bytes": 756,
+      "sha256": "999090acbac856efa3d96a041519c568a986ed2a9fd46c395ee329f8cf8c9b6d",
+      "asset_id": 672799046,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/neural20-neural20-correction-20261024-g004-7eefc5cadd20.json"
+    },
+    {
+      "name": "neural20-neural20-correction-20261024-g004-7eefc5cadd20.part000",
+      "bytes": 209715200,
+      "sha256": "5701dc8ca9cafb39ebb57b6677e128baa0d7ac4f30f80fab5ed855cb9e160227",
+      "asset_id": 672798623,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/neural20-neural20-correction-20261024-g004-7eefc5cadd20.part000"
+    },
+    {
+      "name": "neural20-neural20-correction-20261024-g004-7eefc5cadd20.part001",
+      "bytes": 46276164,
+      "sha256": "01dbad280b4e9df8cfa8b086110ee869b8f6615ecafb317cea49a23d5b642cdc",
+      "asset_id": 672798953,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/neural20-neural20-correction-20261024-g004-7eefc5cadd20.part001"
+    },
+    {
+      "name": "neural20-neural20-integration-20261022-g001-8766ea2da4fb.json",
+      "bytes": 554,
+      "sha256": "8423198bd679cb36e3d8dbb758deffeabc8f8b2f8b8bbb9f30cb9c9d3c01a436",
+      "asset_id": 667047990,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/neural20-neural20-integration-20261022-g001-8766ea2da4fb.json"
+    },
+    {
+      "name": "neural20-neural20-integration-20261022-g001-8766ea2da4fb.part000",
+      "bytes": 52864788,
+      "sha256": "8766ea2da4fb3a33d45eb658de9994bffba7f40a4548cd38899c3f05223f5f13",
+      "asset_id": 667047905,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/neural20-neural20-integration-20261022-g001-8766ea2da4fb.part000"
+    },
+    {
+      "name": "neural20-neural20-repaired-20261025-g004-caf10afd5a0f.json",
+      "bytes": 752,
+      "sha256": "f2945a2dbe053dc9763ccec7e0b7d1c945b3a4d660895dfe171bd2bc42975e7a",
+      "asset_id": 675726181,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/neural20-neural20-repaired-20261025-g004-caf10afd5a0f.json"
+    },
+    {
+      "name": "neural20-neural20-repaired-20261025-g004-caf10afd5a0f.part000",
+      "bytes": 209715200,
+      "sha256": "9254b922a672fd0a9953b0b443ccbedbbaccd5d178ae6545b6533659aa994b74",
+      "asset_id": 675725512,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/neural20-neural20-repaired-20261025-g004-caf10afd5a0f.part000"
+    },
+    {
+      "name": "neural20-neural20-repaired-20261025-g004-caf10afd5a0f.part001",
+      "bytes": 61121512,
+      "sha256": "5c67bdfd891c80ae4ef47e836127eca85b69f09c921c8a51f389580b9e49a02e",
+      "asset_id": 675725765,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/neural20-neural20-repaired-20261025-g004-caf10afd5a0f.part001"
+    },
+    {
+      "name": "neural20-neural20-standard-20261023-g002-23785cae5638.json",
+      "bytes": 752,
+      "sha256": "e6181e3bfbc2e8dbaf46d4b1f7faf7e56b314cbc0764c3774b4f9586e7fa8002",
+      "asset_id": 669177400,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/neural20-neural20-standard-20261023-g002-23785cae5638.json"
+    },
+    {
+      "name": "neural20-neural20-standard-20261023-g002-23785cae5638.part000",
+      "bytes": 209715200,
+      "sha256": "f1f6474ae2c435ff4a41928a5c02ea74a4a338fef6d716dd024d5397ddf91187",
+      "asset_id": 669177055,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/neural20-neural20-standard-20261023-g002-23785cae5638.part000"
+    },
+    {
+      "name": "neural20-neural20-standard-20261023-g002-23785cae5638.part001",
+      "bytes": 12022809,
+      "sha256": "97034c1be145ef116fc7262ccd81def81d9abd4abb754c78702b1d716c4eaca2",
+      "asset_id": 669177281,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/neural20-neural20-standard-20261023-g002-23785cae5638.part001"
+    },
+    {
+      "name": "nn-disagreement-research-38098538723.json.gz",
+      "bytes": 14319,
+      "sha256": "3bb7778fbb31b94784d39f1208b61c589b3579443275c9067ddc831a93bd5a7a",
+      "asset_id": 629615632,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/nn-disagreement-research-38098538723.json.gz"
+    },
+    {
+      "name": "postgame-diagnosis-20261017-01.tgz",
+      "bytes": 2739607,
+      "sha256": "4d439d6cabe207527cb9e7ce2710f4598e1bae07275396bf19a1ac6a69c39dd1",
+      "asset_id": 649095800,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-diagnosis-20261017-01.tgz"
+    },
+    {
+      "name": "postgame-diverse-practice-20261018-01-cdb07a2fec03.tgz",
+      "bytes": 591097,
+      "sha256": "1e0478ac281deffe8c669285aeb44b7535de84d2ed211588678bbd05384fa974",
+      "asset_id": 653087263,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-diverse-practice-20261018-01-cdb07a2fec03.tgz"
+    },
+    {
+      "name": "postgame-followup-20261018-01-0038b988b16a.tgz",
+      "bytes": 7909,
+      "sha256": "16ba0715aa6eb150ecf2e926c54e3fd305d04bc840a654fb9a0e47a5f9b6535f",
+      "asset_id": 651680591,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-followup-20261018-01-0038b988b16a.tgz"
+    },
+    {
+      "name": "postgame-practice-20261018-01-a4b409c23fe7.tgz",
+      "bytes": 352760,
+      "sha256": "32260b5c570d8c1f20058f0c66bedc21535d5a6f975ee5805d4b6f3423980641",
+      "asset_id": 651744561,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/postgame-practice-20261018-01-a4b409c23fe7.tgz"
+    },
+    {
+      "name": "research-opening20-37833560865.json.gz",
+      "bytes": 4422,
+      "sha256": "4ea98423ba3dd17bf8a7c89412897a6f19a6077ce14ab14cb3b0f7e669b4c61a",
+      "asset_id": 623163535,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/research-opening20-37833560865.json.gz"
+    },
+    {
+      "name": "research-records-37671846680.jsonl.gz",
+      "bytes": 6248,
+      "sha256": "8a3adad8c31a97924efe69ddaa50df8ddaf1f28071e1ea83778ec2f6d88fd04e",
+      "asset_id": 619719408,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/research-records-37671846680.jsonl.gz"
+    },
+    {
+      "name": "research-storage-manifest-37671846680.json",
+      "bytes": 3084,
+      "sha256": "e8efd10a038dccc54443dd9c5eb1b623fee1157ccfb8ecceee20fabc2fec5e93",
+      "asset_id": 619719412,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/research-storage-manifest-37671846680.json"
+    },
+    {
+      "name": "research10-38091143128.json.gz",
+      "bytes": 4282,
+      "sha256": "f4d587a5ea226ba537e8e757a066e97ff6123821f766cbaac2ed2ff2a55c32d1",
+      "asset_id": 629265685,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/research10-38091143128.json.gz"
+    },
+    {
+      "name": "spiral-sixhour-recovery-20261021-01-prepare-c369a20412292e9c-39539413389-a1.tgz",
+      "bytes": 269917,
+      "sha256": "a95921e5dfb1b6d1882daa22121509329e76e840a352bf1039c150392b8d4244",
+      "asset_id": 661252498,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/spiral-sixhour-recovery-20261021-01-prepare-c369a20412292e9c-39539413389-a1.tgz"
+    },
+    {
+      "name": "timebox40-records-37862974704.json.gz",
+      "bytes": 25440,
+      "sha256": "d2838cab178474c39c1da2879bfeecb0c015b6aaef6d64f49575332bdc633182",
+      "asset_id": 623615289,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/timebox40-records-37862974704.json.gz"
+    },
+    {
+      "name": "timebox40-records-37907909827.json.gz",
+      "bytes": 21353,
+      "sha256": "1cc846891cafb3247486af6a322a56c21f12e1019a7940380ae09c61255bde29",
+      "asset_id": 624655147,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/timebox40-records-37907909827.json.gz"
+    },
+    {
+      "name": "timebox40-records-37993892623.json.gz",
+      "bytes": 14849,
+      "sha256": "64def0ad190268bee00a82b9951450868cf9d7dbf1c259843f3956a28c6a9d9f",
+      "asset_id": 626465975,
+      "url": "https://github.com/mtk-ctrl/shogi-ai/releases/download/records-2026-10-01/timebox40-records-37993892623.json.gz"
+    }
+  ],
+  "sources": [
+    {
+      "id": "neural20-correction-20261024",
+      "format": "neural20-checkpoint-v1",
+      "manifest_asset": "neural20-neural20-correction-20261024-g004-7eefc5cadd20.json",
+      "parts": [
+        {
+          "bytes": 209715200,
+          "name": "neural20-neural20-correction-20261024-g004-7eefc5cadd20.part000",
+          "sha256": "5701dc8ca9cafb39ebb57b6677e128baa0d7ac4f30f80fab5ed855cb9e160227"
+        },
+        {
+          "bytes": 46276164,
+          "name": "neural20-neural20-correction-20261024-g004-7eefc5cadd20.part001",
+          "sha256": "01dbad280b4e9df8cfa8b086110ee869b8f6615ecafb317cea49a23d5b642cdc"
+        }
+      ],
+      "bundle_sha256": "7eefc5cadd2030b322e7da7b093071cc12207e91bd1b54c44e84db1ccf14290d",
+      "source_commit": "f230670d5ced9ea969245ea0bbb4007503d0130e",
+      "plan": {
+        "fixed_assets": {
+          "engine/shogi-ai": "57e2a2278b84a836d38bf0d93ecff3b5e7635b358ed837ecaec696b008a67e92",
+          "knowledge.tsv": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c"
+        },
+        "formal_adoption": false,
+        "gate": "fixed independent paired Hoeffding, Bonferroni across planned generations",
+        "implementation_sha256": "a492209fd5fa8c3e53f48148845697d9ffe52ce8a4b9281b21eda68b457ba19b",
+        "parameters": {
+          "branch_ms": 600000,
+          "cases": 40,
+          "cycle_id": "neural20-correction-20261024",
+          "epochs": 20,
+          "evaluation_mode": "correction",
+          "generations": 5,
+          "long_ms": 3000000,
+          "match_games": 1000,
+          "max_plies": 400,
+          "medium_ms": 600000,
+          "mode": "standard",
+          "runners": 20,
+          "samples_per_game": 64,
+          "screen_games": 80,
+          "seed": 20261024,
+          "selfplay_games": 100,
+          "simulations": 512,
+          "split_seed": 20261021,
+          "threads": 2,
+          "width": 128
+        },
+        "schema": "neural-cluster-v1",
+        "source_commit": "f230670d5ced9ea969245ea0bbb4007503d0130e",
+        "source_manifest_sha256": "9e936d0354b05b2a8b604e14e359a0c2e35df9498804daeffebcc6e90474eff5"
+      },
+      "members": {
+        "history/g000/deep-study.json": "5411e8200ed3235aa5b8d3aea33c241a3a7f1b679a1948c515e7c2531c2a93b8",
+        "history/g001/deep-study.json": "c05e137585cdb8d48edf67ad594a48c81cec4d4241210e02eb2db8469ab894d0",
+        "history/g002/deep-study.json": "9396c7485d5418ed15fe62980e4caec02c686ba59bdb266b2cd3de92d98b96e4",
+        "history/g003/deep-study.json": "c63eead23eba84d1671855c137a7b45e4ad4131e8c47f4823a6e0e23243c0e2a",
+        "history/g004/deep-study.json": "31dac16286644f690df8037c69de63e57fa343e9aa7bd654d39c1da8cc61cd24",
+        "plan.json": "c64cbc9030d39b4208bcc34c1cc0e793251041aca321b549818b50c3e3cacd62"
+      },
+      "verified_internal_files": 601
+    },
+    {
+      "id": "neural20-integration-20261022",
+      "format": "neural20-checkpoint-v1",
+      "manifest_asset": "neural20-neural20-integration-20261022-g001-8766ea2da4fb.json",
+      "parts": [
+        {
+          "bytes": 52864788,
+          "name": "neural20-neural20-integration-20261022-g001-8766ea2da4fb.part000",
+          "sha256": "8766ea2da4fb3a33d45eb658de9994bffba7f40a4548cd38899c3f05223f5f13"
+        }
+      ],
+      "bundle_sha256": "8766ea2da4fb3a33d45eb658de9994bffba7f40a4548cd38899c3f05223f5f13",
+      "source_commit": "aeeed08b3048f349955939f47960189cd8db276d",
+      "plan": {
+        "fixed_assets": {
+          "engine/shogi-ai": "18217034379bf3737515891464d059b3819a3d29ddba3f3f32ebb2a47f382064",
+          "knowledge.tsv": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c"
+        },
+        "formal_adoption": false,
+        "gate": "fixed independent paired Hoeffding, Bonferroni across planned generations",
+        "implementation_sha256": "c6aca4e1f102b8832288a6fac84744b5b771101759019401e691dcef162a3c39",
+        "parameters": {
+          "branch_ms": 100,
+          "cases": 20,
+          "cycle_id": "neural20-integration-20261022",
+          "epochs": 1,
+          "generations": 2,
+          "long_ms": 200,
+          "match_games": 40,
+          "max_plies": 400,
+          "medium_ms": 100,
+          "mode": "smoke",
+          "runners": 20,
+          "samples_per_game": 8,
+          "screen_games": 0,
+          "seed": 20261022,
+          "selfplay_games": 40,
+          "simulations": 16,
+          "split_seed": 20261021,
+          "threads": 2,
+          "width": 32
+        },
+        "schema": "neural-cluster-v1",
+        "source_commit": "aeeed08b3048f349955939f47960189cd8db276d",
+        "source_manifest_sha256": "9e936d0354b05b2a8b604e14e359a0c2e35df9498804daeffebcc6e90474eff5"
+      },
+      "members": {
+        "history/g000/deep-study.json": "f367931c22f2fab4fcae72bbd3f4ecb6d87b0c25d8833fa6d7aa3ab047d14c23",
+        "history/g001/deep-study.json": "912f86d07e762c774b2257910cd77a2fd4ef2e357ab0430f41810032485b37cb",
+        "plan.json": "b3cf1e4229f5ca2f8d4b7b6a99c6275f8e9c5ca34755c239c381d36d2315876b"
+      },
+      "verified_internal_files": 245
+    },
+    {
+      "id": "neural20-repaired-20261025",
+      "format": "neural20-checkpoint-v1",
+      "manifest_asset": "neural20-neural20-repaired-20261025-g004-caf10afd5a0f.json",
+      "parts": [
+        {
+          "bytes": 209715200,
+          "name": "neural20-neural20-repaired-20261025-g004-caf10afd5a0f.part000",
+          "sha256": "9254b922a672fd0a9953b0b443ccbedbbaccd5d178ae6545b6533659aa994b74"
+        },
+        {
+          "bytes": 61121512,
+          "name": "neural20-neural20-repaired-20261025-g004-caf10afd5a0f.part001",
+          "sha256": "5c67bdfd891c80ae4ef47e836127eca85b69f09c921c8a51f389580b9e49a02e"
+        }
+      ],
+      "bundle_sha256": "caf10afd5a0ffff07e54ac5f162c38ef0030216c5c9d1ac49ed4472a2408f354",
+      "source_commit": "d931a7c25e9577834950cf8ad4087c26c1a386e4",
+      "plan": {
+        "bootstrap_bundle_sha256": "7eefc5cadd2030b322e7da7b093071cc12207e91bd1b54c44e84db1ccf14290d",
+        "fixed_assets": {
+          "engine/shogi-ai": "57e2a2278b84a836d38bf0d93ecff3b5e7635b358ed837ecaec696b008a67e92",
+          "knowledge.tsv": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c"
+        },
+        "formal_adoption": false,
+        "gate": "fixed independent paired Hoeffding, Bonferroni across planned generations",
+        "implementation_sha256": "6997c01b7e2c32b56448d8bfb9a897c5df001f9ff48fa500bf5adb90b8357165",
+        "parameters": {
+          "branch_ms": 600000,
+          "cases": 40,
+          "cycle_id": "neural20-repaired-20261025",
+          "epochs": 20,
+          "evaluation_mode": "correction",
+          "generations": 5,
+          "learner_selfplay": true,
+          "long_ms": 3000000,
+          "match_games": 1000,
+          "max_plies": 400,
+          "medium_ms": 600000,
+          "mode": "standard",
+          "runners": 20,
+          "samples_per_game": 64,
+          "screen_games": 80,
+          "seed": 20261025,
+          "selfplay_games": 100,
+          "simulations": 512,
+          "split_seed": 20261021,
+          "threads": 2,
+          "validation_cases": 8,
+          "width": 128
+        },
+        "schema": "neural-cluster-v1",
+        "source_commit": "d931a7c25e9577834950cf8ad4087c26c1a386e4",
+        "source_manifest_sha256": "9e936d0354b05b2a8b604e14e359a0c2e35df9498804daeffebcc6e90474eff5"
+      },
+      "members": {
+        "history/g000/deep-study.json": "992372714941307438797ca9e8b777fdee39efe5337e6014a5b2a95bc7553872",
+        "history/g001/deep-study.json": "275e0014da1e74c958bb512781dcf948afda72db3399a6406bff2e304627bed9",
+        "history/g002/deep-study.json": "611a0e6baf2d43041b8e9f34a8cf356baea7ca12251a647c1bbd37b6f717dc42",
+        "history/g003/deep-study.json": "0c31d8a38744a00d815c7e135c34eddec95b986e7ab4a9d0e9dcd631e5d9cb06",
+        "history/g004/deep-study.json": "fa3ca378bd69a0204d26c6b87a8038697afcef9cbf3a79d7784cfe9b0e9679c1",
+        "plan.json": "92d3b5fcb3041db150492d77d6a4e4a2163fb84c618bf82dff362b687c6ea448"
+      },
+      "verified_internal_files": 614
+    },
+    {
+      "id": "neural20-standard-20261023",
+      "format": "neural20-checkpoint-v1",
+      "manifest_asset": "neural20-neural20-standard-20261023-g002-23785cae5638.json",
+      "parts": [
+        {
+          "bytes": 209715200,
+          "name": "neural20-neural20-standard-20261023-g002-23785cae5638.part000",
+          "sha256": "f1f6474ae2c435ff4a41928a5c02ea74a4a338fef6d716dd024d5397ddf91187"
+        },
+        {
+          "bytes": 12022809,
+          "name": "neural20-neural20-standard-20261023-g002-23785cae5638.part001",
+          "sha256": "97034c1be145ef116fc7262ccd81def81d9abd4abb754c78702b1d716c4eaca2"
+        }
+      ],
+      "bundle_sha256": "23785cae563804761e809ddc90ae86b371240663413ab1c3c5a5e6280852a8bb",
+      "source_commit": "457e7d876540c5270c399031a563e36c04d53995",
+      "plan": {
+        "fixed_assets": {
+          "engine/shogi-ai": "18217034379bf3737515891464d059b3819a3d29ddba3f3f32ebb2a47f382064",
+          "knowledge.tsv": "6da204cd1e65600ccdbb9f3dbe463627687d6cf7eb8347da6a103239129dac4c"
+        },
+        "formal_adoption": false,
+        "gate": "fixed independent paired Hoeffding, Bonferroni across planned generations",
+        "implementation_sha256": "583ce0c6488b6dee2d35fa042fcb8fb888a7758ca14b18bdd8b0727cbc5336f9",
+        "parameters": {
+          "branch_ms": 600000,
+          "cases": 40,
+          "cycle_id": "neural20-standard-20261023",
+          "epochs": 20,
+          "generations": 3,
+          "long_ms": 3000000,
+          "match_games": 1000,
+          "max_plies": 400,
+          "medium_ms": 600000,
+          "mode": "standard",
+          "runners": 20,
+          "samples_per_game": 64,
+          "screen_games": 80,
+          "seed": 20261022,
+          "selfplay_games": 100,
+          "simulations": 512,
+          "split_seed": 20261021,
+          "threads": 2,
+          "width": 128
+        },
+        "schema": "neural-cluster-v1",
+        "source_commit": "457e7d876540c5270c399031a563e36c04d53995",
+        "source_manifest_sha256": "9e936d0354b05b2a8b604e14e359a0c2e35df9498804daeffebcc6e90474eff5"
+      },
+      "members": {
+        "history/g000/deep-study.json": "3da27a6b1737d4216aef6df432e5cc8fe849520694fa8fd7118466c002cee02c",
+        "history/g001/deep-study.json": "b54e8ae494c21497a12d0e1a1ed6fee2f64f2760d203c89151c80c9edac2db0d",
+        "history/g002/deep-study.json": "62eeac26b51a0512dcd5d5829f3da7ea59f200184059072ab0cc9eab4854fe44",
+        "plan.json": "967e8804d929cb103a775f260412ea7e097493cce9492d0e9699b2e59ddeaadf"
+      },
+      "verified_internal_files": 364
+    },
+    {
+      "id": "nn-disagreement-research-38098538723.json.gz",
+      "format": "gzip-json",
+      "asset": "nn-disagreement-research-38098538723.json.gz",
+      "decoded_sha256": "0d9955403f4f9d878d2b98cebb675699ee842627d856023acb2e782cba6cb7ad"
+    },
+    {
+      "id": "research-opening20-37833560865.json.gz",
+      "format": "gzip-json",
+      "asset": "research-opening20-37833560865.json.gz",
+      "decoded_sha256": "98a8703ef3a6fc009ddd518d4c8fb278764351dc685f1a59bc525ac663d5e6a9"
+    },
+    {
+      "id": "research-records-37671846680.jsonl.gz",
+      "format": "gzip-jsonl",
+      "asset": "research-records-37671846680.jsonl.gz",
+      "decoded_sha256": "bde77ab4f2651d694d320a09b006a6ba0529237255e7b9504c3d5d72faa90869"
+    },
+    {
+      "id": "research10-38091143128.json.gz",
+      "format": "gzip-json",
+      "asset": "research10-38091143128.json.gz",
+      "decoded_sha256": "4e9a764efe3f842c58debb3a823bf7bb4306b652e0d139217ad1e30f2002131b"
+    },
+    {
+      "id": "timebox40-records-37862974704.json.gz",
+      "format": "gzip-json",
+      "asset": "timebox40-records-37862974704.json.gz",
+      "decoded_sha256": "8ab2e5f78893a98273fcf647f4cb4168a420c1792b7271bc798c0ac8e4f8231a"
+    },
+    {
+      "id": "timebox40-records-37907909827.json.gz",
+      "format": "gzip-json",
+      "asset": "timebox40-records-37907909827.json.gz",
+      "decoded_sha256": "370367cd029f2c11f39a67b37541a3d21919b4f44d5836bbc8f16113e20d1ef0"
+    },
+    {
+      "id": "timebox40-records-37993892623.json.gz",
+      "format": "gzip-json",
+      "asset": "timebox40-records-37993892623.json.gz",
+      "decoded_sha256": "6f7160d79971f26325a56b8b4455b7445e43818949c935747a0b9ab931acf6a4"
+    },
+    {
+      "id": "postgame-diagnosis-20261017-01.tgz",
+      "format": "tar-gzip",
+      "asset": "postgame-diagnosis-20261017-01.tgz",
+      "members": {
+        "analyzer-build.json": "eb454dcb54036344f4aa7b4d56ab04d8e92372276f799ab2134069bca16cb5ae",
+        "attribution.json": "a64d675fff621a27014583eae13086c91a02b05823b26a4d91d561cac9804f36",
+        "diagnosis.json": "b372c14e0d909a3a2116ce7014bb791bec4036099873597eb159868a96924eed",
+        "input-receipts.json": "918addb1f7c4d94c88f12ff3072390887bb5e0f9f3e9bd82cc3541c9757e2d18",
+        "postgame-analyzer": "37439e1ec26c4bce96a4bb2c43316a05ea019906c867c7247ee710f2c13483f8",
+        "selected-cases.json": "f5296042655c66a201d41deb541676a8e47cd62f9012299996f8094d283d46f4",
+        "summary.json": "21833c3f38d77a539bf4380f85030f43776222e1dfe957b573e0365e388a2155"
+      }
+    },
+    {
+      "id": "postgame-diverse-practice-20261018-01-cdb07a2fec03.tgz",
+      "format": "tar-gzip",
+      "asset": "postgame-diverse-practice-20261018-01-cdb07a2fec03.tgz",
+      "members": {
+        "binding.json": "a852b910b4dc60d4e566559b4c5970a5abd275b41d371acce5c1354c8f466166",
+        "frozen-plan.json": "0ec74ee2a4c5991a790ee79429669b69f42561be5dd71ceb7044fcf85bbe01c9",
+        "practice/checkpoint.json": "e036fa33c429331390f17196a8185b077b3a880fed773944e1a483920540fa37",
+        "practice/games/game-0.json": "c05f3e57bd699c7a8753cc94b791a3266b702e27fc99099f476e599e48284002",
+        "practice/games/game-1.json": "330e3802c075bd1b8026b2b346ce99fd366c05470a9e4f7879ff976a17c54915",
+        "practice/games/game-10.json": "cc4f6c64c4f38fbb07fedbd133a6b9a45f02996fc1cfca730608e2febf4fc952",
+        "practice/games/game-11.json": "005fb5626dfde2ddd2deb461e8889df1a811df0fc6b7eebac98123f779d194b4",
+        "practice/games/game-12.json": "6ce9f58d9200d5b53984e08efedddabb3c1245e92d530aa210ae745d3fe2960a",
+        "practice/games/game-13.json": "db63fdf543334c8050e1f2b32c9b87f4217c884ec813443e96a9c6f27154aa14",
+        "practice/games/game-14.json": "8d8db6d4180714070a2bb0a1861f509bb0b59ea7e030fd09e2d2575a3ce3029e",
+        "practice/games/game-15.json": "11e74702f9f2484c7c4542c062ba1ceaabc27635029c57dbe98a68eb03613378",
+        "practice/games/game-16.json": "aea594e55aa8c8875ccc4a97f33b30fe4335f5ea6afa5e797e49f768ffeb8cb0",
+        "practice/games/game-17.json": "77c48a6c759d0d6d47ca9f26b25185330f653d3a305bb3f04c7aef1c95d42d1b",
+        "practice/games/game-18.json": "c03d3144c3379c64187af843718b5021c1ffe863d606f73ed34b6a314492d157",
+        "practice/games/game-19.json": "3e7aa1f48b69e327aaab778c69fad45282247259157f3dded5fe60b1bf67b6f3",
+        "practice/games/game-2.json": "0e254deb2752288cd291f680baab6d63498c9f461a7b9770436006cffa59d83b",
+        "practice/games/game-20.json": "4a7b587e4ab2266f754d118f62b0a1b4ce6072b1d616c4242f293149a50f5faa",
+        "practice/games/game-21.json": "6cbd83a1a26541431f4c56ea77905dbe97634015ad3f10fe2082cd8a4c33bf4b",
+        "practice/games/game-22.json": "f5ab4943b55d5d4eb4876ac9695c544aa5bb0d62041be443b37405abed321392",
+        "practice/games/game-23.json": "5d86cf9dd93ece440548d62d41a5af671b837132260bce438b0ac34591ca6c54",
+        "practice/games/game-24.json": "f04a9fc8757b93a3351e8da46501526a2cea38afc79883da94683112047ea397",
+        "practice/games/game-25.json": "c5c0a6112c1bc036d377a605b3da886521deca69c1fc1b8ce2d5e195dc1bbc3c",
+        "practice/games/game-26.json": "664555ef2b3b7ddc45781d569c103a4a24d60167903e54d077faec54ed0f2add",
+        "practice/games/game-27.json": "ad3b0b151fe25d286906198b730e14ca8c86ca8d4873c99d4caeca4db2f4b213",
+        "practice/games/game-28.json": "63c4cfc5b3d6d19260da4cb8d2fcf738c651ae300477fd9f94fc934702e317c3",
+        "practice/games/game-29.json": "f90fadcc1bd446bceca88e13e0034938bf4365c4f9e21c2cfb2a0310b1a3c541",
+        "practice/games/game-3.json": "191c93dad04f2f7df75c50bd66b27bcb2fb58a59470ff35aab6404f93b99ace8",
+        "practice/games/game-4.json": "5cf9040af451bfddb21d2e63aa46fe1e4e04cce05663e12ba73be183bcf2e38d",
+        "practice/games/game-5.json": "e3b3fbf534bd5bbecef9fbe49671b2568ebd8782f7f0c014c9c5e10ec27771b4",
+        "practice/games/game-6.json": "6ed579d2d8e8d7c6d4f590ed417262ee8f87b78cd308a3db7e934a6607ff2a52",
+        "practice/games/game-7.json": "58a95bae89a8def862781f014244d5dd49898162cb2556faea926d42594319e7",
+        "practice/games/game-8.json": "72168c0f454bd8fc77c83d1f4c1d7d4ca5becb7def5366d7b1dddf765e5a191b",
+        "practice/games/game-9.json": "db6fc69e0ade87a4c4367e9cd7f19bb9942299bcda015edfef0a9260311c3bb3",
+        "practice/handoff/analysis/checkpoint.json": "183e3448a5000a39d366975b7744ecb6f56aadd24e5037fd72a294769660edc7",
+        "practice/handoff/analysis/diagnosis.json": "7bf05634a84bb64b6da7be199857bb2f4d7235dd44f180ea6f676d380e7d4cfb",
+        "practice/handoff/analysis/selected-cases.json": "30131f1757cc4a252d89e0ea58dc6616054ba7c35d48c6c08d28516ecf144bac",
+        "practice/handoff/analysis/summary.json": "6e6dae50e70ce97227d0db7987103c0d782bf4d61d3d88151c52a49cd302441d",
+        "practice/handoff/knowledge-stage/result.json": "2121f1e8f815a55bd6d5a32aed4aec43e3101e5873f122be63e0fd54663e6317",
+        "practice/handoff/preparation.json": "5fdc9fab2e76ff142d0954059256de9dacaecb87e9f4f792265b865e32f8a2e9",
+        "practice/handoff/prepare-observations.json": "040c8a39a1e2f020e65dd1133230bd25a83939c7a3a2486fd32eb12a81ca8b08",
+        "practice/handoff/result.json": "8353cbed2068b025f163c3273e305bb4b1fa5ece12331050d43846689a7d2837",
+        "practice/handoff/transfer.json": "0f50df14f77fbe9f22fc81bb9106f616d55ef6b88ee65e261b54185efeb1947f",
+        "practice/intent.json": "ee3116db25fa58b0e10a01428e1ffe8471961f682e0a0dbfede6e3cbd4d06635",
+        "practice/knowledge-stage/observations.json": "9d188cfdb67859e7e50733952cdf9e0c7d8bd96631f170e639c79884110955d7",
+        "practice/knowledge-stage/result.json": "19b20a4cf66c4d0853011d2261923596a667cb4498861073cb0c47a1aed3ed09",
+        "practice/knowledge-stage/selection.json": "c043cc289de2449773b910490692a118cf2280a0a638c584db622d887ee23d38",
+        "practice/plan.json": "d2e66f46f07ef90dbcf6ef3f6e5137730f204b90e17b57baf705ed8bffba6b7b",
+        "practice/played-archive/manifest.json": "bf35b63f8c28e3cfd826867dd9c4a75932fc3ae7639c15f7f7958637b7f3433c",
+        "practice/played-archive/played-games.jsonl.gz": "4766981c83b7325191eb29dcd5c0528e727134821ed7c9a112189d02fab8e4a0",
+        "practice/result.json": "a0ec34c62e5ed4efd3354c1e46755f7990a58ae17170c7f9fb2d43e31fcd239d",
+        "practice/retention-after.json": "44bb96552dac087a523a95a31be08e025f56ad1b28c67507ae6e129e2156524d",
+        "practice/retention-before.json": "9171b9baefea17af931c65e9df68007b4259747e6c946d7c039c40e2502d6e78",
+        "practice/retention-context.json": "e3a1f9b8f65ac818cfaa57306585cad6517c6a29c233d3a237f5a148641b93be",
+        "practice/root-observations.json": "6a660f8b95a7422cb55240639e7b7748c7a0bf17b3add6d46eb07dd6ca947ef5",
+        "verification.json": "51b60e80e15bb151317b109b694aa61275c9a5568ed0f7d65990c3ab5ac7cfc3"
+      }
+    },
+    {
+      "id": "postgame-followup-20261018-01-0038b988b16a.tgz",
+      "format": "tar-gzip",
+      "asset": "postgame-followup-20261018-01-0038b988b16a.tgz",
+      "members": {
+        "followup-observations.json": "10da10811a725295760e7d5c88e878b3e3631f02840606150cbb554e7906ccca",
+        "FOLLOWUP_PLAN.md": "46c44790fdcc827bbec8f203127bc81972a4ec658c29efd42b46e5c5e034e68a",
+        "verification.json": "4f1dcacd3c8d3a8f67adc9ce79f4423c5602e04f12723ada07e68f561a0ff5d8",
+        "binding.json": "723b5c1461ca0f8577fa1a69d1b2b0a6434a9918289d5ca5ab73c44ec3612cc9"
+      }
+    },
+    {
+      "id": "postgame-practice-20261018-01-a4b409c23fe7.tgz",
+      "format": "tar-gzip",
+      "asset": "postgame-practice-20261018-01-a4b409c23fe7.tgz",
+      "members": {
+        "binding.json": "47352118b5d971cd3816cbea0226393b8399e028326268b5ed47c2e430488aa6",
+        "frozen-plan.json": "c9ad3bfc9ced2b1266b5b18c7073053963701705cced9c83476a0beda9282c23",
+        "practice/checkpoint.json": "5667321fb6c678dda5b09cc8103c0fffda3ac64003af10e5f5d43564a78b0723",
+        "practice/games/game-0.json": "4bdef1a861c550c0bb5f1a880b472849b20eb993a71b72d85642c9fac9b2cdec",
+        "practice/games/game-1.json": "f599aa8993bb4a0ee04263781d2c93ca96396f7362b3a831e3e16c01ec650c35",
+        "practice/games/game-10.json": "33fbdf714c32497258243dc36c23ee99bbbf501eb5d7da911664433170da9488",
+        "practice/games/game-11.json": "0f4a90533cce0241e5b7e6b54763f525c49604fe8ab8b3c5bd3d0b521889c63b",
+        "practice/games/game-12.json": "a88f5a01d3e8b2344c9e17c3116142f9ef02404e23ad64cc4fc5f8345f86fe3d",
+        "practice/games/game-13.json": "e503e6e2e55ecbfa67290e0d1d0b8497e8c54400bb84b61bc545af770e28768f",
+        "practice/games/game-14.json": "e6ec3d5f7bca8618a4a2aefa242008158d26e064f6e2b9ca97f724dcec3a2d2a",
+        "practice/games/game-15.json": "6fa901857c8349e85be13cb44bae0d828a27400645e590f2be06e11518374190",
+        "practice/games/game-2.json": "91e36909171ebc28878860f43d472857251aa903d3d9ee3c461428be6ba866d3",
+        "practice/games/game-3.json": "3bfc7870a31460ea7c51a347065a214d6478d56dde790a2367e3a9e9c27335cf",
+        "practice/games/game-4.json": "e7602d4b1aa49caa68c455f966cd5a54c868e16ee5e836c7d39c5b51abecdad3",
+        "practice/games/game-5.json": "8ba2f03123e047e2427fbb0cdad75d1fc521130bb3a320378026d047b170d928",
+        "practice/games/game-6.json": "456cbec7b9f921e50999405210da73b3ffcad3141f77314599df228d89daed83",
+        "practice/games/game-7.json": "033157d62dc759c5f24bf01997f9c87032b00ca63ac4585c1d8ffdf046dc156c",
+        "practice/games/game-8.json": "1fd2245c20a04d16fad730ee9d18a370f9d27d6397edc7de8253da0bfb87b0b4",
+        "practice/games/game-9.json": "831270a3a9162f3882bcf77364fc48dcdbeff7916325668e8429ce7158af60a9",
+        "practice/handoff/analysis/checkpoint.json": "038673b952ec28822d840db85b112757d8be38c99f5f6873b8f46dd4f04e1fbe",
+        "practice/handoff/analysis/diagnosis.json": "ffc14a2797487716cf025a8a2028d0a47bdd421888797a3e6a013a4835b164d8",
+        "practice/handoff/analysis/selected-cases.json": "3f9306ba721c2bf67a7cc793117e2c5be91f9d70ba7a06fe518127e07bc34cec",
+        "practice/handoff/analysis/summary.json": "377c4979148d7699333902d08db8d392b709e15327e3d1dd458b5e0688ae1df6",
+        "practice/handoff/knowledge-stage/result.json": "0589b8306be2265efa53404958ff7dcf2ee10922263e280d37ede749134868f0",
+        "practice/handoff/preparation.json": "ee1dc161099a8b6f6c3ef35d35f38fa25268d40da17f35afb91fa17ddbde24ec",
+        "practice/handoff/prepare-observations.json": "0c485e3920759166bd70595d397ef9ae5a90068c176a1936b18ae9124b85933e",
+        "practice/handoff/result.json": "6e3d85a52fff7726c5f1d8d5363e844d3b1fc15edf1aab6fbe8243d175a1c2af",
+        "practice/handoff/transfer.json": "755136bd91da7136b9eee7f765eecf57d8bf5991301e8a671b164a55f061fb3f",
+        "practice/intent.json": "dc468290e6d2cae250af8231ece491488b7acdb0bc76fbe77bd8e5706e18d914",
+        "practice/plan.json": "cb1505d776e562f1a72ad2c3e3c827f1b87ee5670281b888f71a7304805f7928",
+        "practice/played-archive/manifest.json": "32b05a2dcc9916c1268e5f4d4ab74528f0f677b1e592feabc3de8074578a1a90",
+        "practice/played-archive/played-games.jsonl.gz": "dcab415c8c37a7b5be0a2c0ec7cfeddc50db1736bf6aec0190546369614d5d18",
+        "practice/result.json": "66d70ed3750ad36ef332986f029e38e3ae64f4885332b42bf59fcd6d780cf8fb",
+        "practice/verification.json": "8cb16ddd06344d9e2cc9a5e3a3d52c0553cef613ab09308bf2599aa7a61aa9e6",
+        "verification.json": "8cb16ddd06344d9e2cc9a5e3a3d52c0553cef613ab09308bf2599aa7a61aa9e6"
+      }
+    },
+    {
+      "id": "spiral-sixhour-recovery-20261021-01-prepare-c369a20412292e9c-39539413389-a1.tgz",
+      "format": "tar-gzip",
+      "asset": "spiral-sixhour-recovery-20261021-01-prepare-c369a20412292e9c-39539413389-a1.tgz",
+      "members": {
+        "analysis/diagnosis.json": "8565a33ff41e72d816c8046ddbc3324be03eed8565d13992e2defb0a38687f7f",
+        "analysis/selected-cases.json": "3774d83c3c33d4f869e3cb5e0ca295377e4572ba9653157f85be1a14986be163",
+        "analysis/summary.json": "268e6a83298484bdcd077cb3afb800b587f4e7875508bc6e3f16a6c2513ecf60",
+        "binding.json": "93e06c9c425c610df495d78a5e8c677038e6e66710080487714c736e6c6bc23f",
+        "eligible-cases.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "followup/checkpoint.json": "6c3d294730b8112bc90c1bb8ab391da95cbafc9a30093e140fe064436c1acc7e",
+        "followup/result.json": "35229ced6d6e96f3d17b6a988e4c25572f6e9b663d1ff4ad7faaaa291a4a0cf7",
+        "knowledge-stage/result.json": "65a4ee74bc3e1482edb27cb1838d94a1f3ed0344a0ccc4106fc8325f78f99410",
+        "original-preparation.json": "19918039f12e3f1f05359e171d5eebfe1d45a99da01a8736a54a4c421712b552",
+        "preparation.json": "19918039f12e3f1f05359e171d5eebfe1d45a99da01a8736a54a4c421712b552",
+        "stage-result.json": "18d5a768ff08cbe129aa11e153d23b714e1113f6c5716aa00ddb9f305d5f6eed"
+      }
+    }
+  ],
+  "groups": [
+    {
+      "id": "neural20-correction-20261024:history/g000/deep-study.json:/results",
+      "source_id": "neural20-correction-20261024",
+      "member": "history/g000/deep-study.json",
+      "pointer": "/results",
+      "category": "neural_long_study",
+      "observations": 40,
+      "metadata": {
+        "teacher_admission": null,
+        "learning_split": {
+          "not_recorded": 40
+        }
+      },
+      "member_sha256": "5411e8200ed3235aa5b8d3aea33c241a3a7f1b679a1948c515e7c2531c2a93b8"
+    },
+    {
+      "id": "neural20-correction-20261024:history/g001/deep-study.json:/results",
+      "source_id": "neural20-correction-20261024",
+      "member": "history/g001/deep-study.json",
+      "pointer": "/results",
+      "category": "neural_long_study",
+      "observations": 40,
+      "metadata": {
+        "teacher_admission": null,
+        "learning_split": {
+          "not_recorded": 40
+        }
+      },
+      "member_sha256": "c05e137585cdb8d48edf67ad594a48c81cec4d4241210e02eb2db8469ab894d0"
+    },
+    {
+      "id": "neural20-correction-20261024:history/g002/deep-study.json:/results",
+      "source_id": "neural20-correction-20261024",
+      "member": "history/g002/deep-study.json",
+      "pointer": "/results",
+      "category": "neural_long_study",
+      "observations": 40,
+      "metadata": {
+        "teacher_admission": null,
+        "learning_split": {
+          "not_recorded": 40
+        }
+      },
+      "member_sha256": "9396c7485d5418ed15fe62980e4caec02c686ba59bdb266b2cd3de92d98b96e4"
+    },
+    {
+      "id": "neural20-correction-20261024:history/g003/deep-study.json:/results",
+      "source_id": "neural20-correction-20261024",
+      "member": "history/g003/deep-study.json",
+      "pointer": "/results",
+      "category": "neural_long_study",
+      "observations": 40,
+      "metadata": {
+        "teacher_admission": null,
+        "learning_split": {
+          "not_recorded": 40
+        }
+      },
+      "member_sha256": "c63eead23eba84d1671855c137a7b45e4ad4131e8c47f4823a6e0e23243c0e2a"
+    },
+    {
+      "id": "neural20-correction-20261024:history/g004/deep-study.json:/results",
+      "source_id": "neural20-correction-20261024",
+      "member": "history/g004/deep-study.json",
+      "pointer": "/results",
+      "category": "neural_long_study",
+      "observations": 40,
+      "metadata": {
+        "teacher_admission": null,
+        "learning_split": {
+          "not_recorded": 40
+        }
+      },
+      "member_sha256": "31dac16286644f690df8037c69de63e57fa343e9aa7bd654d39c1da8cc61cd24"
+    },
+    {
+      "id": "neural20-integration-20261022:history/g000/deep-study.json:/results",
+      "source_id": "neural20-integration-20261022",
+      "member": "history/g000/deep-study.json",
+      "pointer": "/results",
+      "category": "integration_short_test",
+      "observations": 20,
+      "metadata": {
+        "teacher_admission": null,
+        "learning_split": {
+          "not_recorded": 20
+        }
+      },
+      "member_sha256": "f367931c22f2fab4fcae72bbd3f4ecb6d87b0c25d8833fa6d7aa3ab047d14c23"
+    },
+    {
+      "id": "neural20-integration-20261022:history/g001/deep-study.json:/results",
+      "source_id": "neural20-integration-20261022",
+      "member": "history/g001/deep-study.json",
+      "pointer": "/results",
+      "category": "integration_short_test",
+      "observations": 20,
+      "metadata": {
+        "teacher_admission": null,
+        "learning_split": {
+          "not_recorded": 20
+        }
+      },
+      "member_sha256": "912f86d07e762c774b2257910cd77a2fd4ef2e357ab0430f41810032485b37cb"
+    },
+    {
+      "id": "neural20-repaired-20261025:history/g000/deep-study.json:/results",
+      "source_id": "neural20-repaired-20261025",
+      "member": "history/g000/deep-study.json",
+      "pointer": "/results",
+      "category": "neural_long_study",
+      "observations": 40,
+      "metadata": {
+        "teacher_admission": {
+          "train": {
+            "accepted": 18,
+            "rejected": {
+              "branch_comparison_inconclusive": 12,
+              "incomplete_or_non_cp": 2
+            }
+          },
+          "validation": {
+            "accepted": 5,
+            "rejected": {
+              "branch_comparison_inconclusive": 2,
+              "incomplete_or_non_cp": 1
+            }
+          }
+        },
+        "learning_split": {
+          "train": 32,
+          "validation": 8
+        }
+      },
+      "member_sha256": "992372714941307438797ca9e8b777fdee39efe5337e6014a5b2a95bc7553872"
+    },
+    {
+      "id": "neural20-repaired-20261025:history/g001/deep-study.json:/results",
+      "source_id": "neural20-repaired-20261025",
+      "member": "history/g001/deep-study.json",
+      "pointer": "/results",
+      "category": "neural_long_study",
+      "observations": 40,
+      "metadata": {
+        "teacher_admission": {
+          "train": {
+            "accepted": 19,
+            "rejected": {
+              "branch_comparison_inconclusive": 11,
+              "branch_improvement_not_confirmed": 1,
+              "incomplete_or_non_cp": 1
+            }
+          },
+          "validation": {
+            "accepted": 4,
+            "rejected": {
+              "branch_comparison_inconclusive": 3,
+              "incomplete_or_non_cp": 1
+            }
+          }
+        },
+        "learning_split": {
+          "train": 32,
+          "validation": 8
+        }
+      },
+      "member_sha256": "275e0014da1e74c958bb512781dcf948afda72db3399a6406bff2e304627bed9"
+    },
+    {
+      "id": "neural20-repaired-20261025:history/g002/deep-study.json:/results",
+      "source_id": "neural20-repaired-20261025",
+      "member": "history/g002/deep-study.json",
+      "pointer": "/results",
+      "category": "neural_long_study",
+      "observations": 40,
+      "metadata": {
+        "teacher_admission": {
+          "train": {
+            "accepted": 18,
+            "rejected": {
+              "branch_comparison_inconclusive": 12,
+              "branch_improvement_not_confirmed": 2
+            }
+          },
+          "validation": {
+            "accepted": 6,
+            "rejected": {
+              "branch_comparison_inconclusive": 2
+            }
+          }
+        },
+        "learning_split": {
+          "train": 32,
+          "validation": 8
+        }
+      },
+      "member_sha256": "611a0e6baf2d43041b8e9f34a8cf356baea7ca12251a647c1bbd37b6f717dc42"
+    },
+    {
+      "id": "neural20-repaired-20261025:history/g003/deep-study.json:/results",
+      "source_id": "neural20-repaired-20261025",
+      "member": "history/g003/deep-study.json",
+      "pointer": "/results",
+      "category": "neural_long_study",
+      "observations": 40,
+      "metadata": {
+        "teacher_admission": {
+          "train": {
+            "accepted": 20,
+            "rejected": {
+              "branch_comparison_inconclusive": 9,
+              "branch_improvement_not_confirmed": 3
+            }
+          },
+          "validation": {
+            "accepted": 4,
+            "rejected": {
+              "branch_comparison_inconclusive": 3,
+              "branch_improvement_not_confirmed": 1
+            }
+          }
+        },
+        "learning_split": {
+          "train": 32,
+          "validation": 8
+        }
+      },
+      "member_sha256": "0c31d8a38744a00d815c7e135c34eddec95b986e7ab4a9d0e9dcd631e5d9cb06"
+    },
+    {
+      "id": "neural20-repaired-20261025:history/g004/deep-study.json:/results",
+      "source_id": "neural20-repaired-20261025",
+      "member": "history/g004/deep-study.json",
+      "pointer": "/results",
+      "category": "neural_long_study",
+      "observations": 40,
+      "metadata": {
+        "teacher_admission": {
+          "train": {
+            "accepted": 19,
+            "rejected": {
+              "branch_comparison_inconclusive": 11,
+              "branch_improvement_not_confirmed": 1,
+              "incomplete_or_non_cp": 1
+            }
+          },
+          "validation": {
+            "accepted": 5,
+            "rejected": {
+              "branch_comparison_inconclusive": 3
+            }
+          }
+        },
+        "learning_split": {
+          "train": 32,
+          "validation": 8
+        }
+      },
+      "member_sha256": "fa3ca378bd69a0204d26c6b87a8038697afcef9cbf3a79d7784cfe9b0e9679c1"
+    },
+    {
+      "id": "neural20-standard-20261023:history/g000/deep-study.json:/results",
+      "source_id": "neural20-standard-20261023",
+      "member": "history/g000/deep-study.json",
+      "pointer": "/results",
+      "category": "neural_long_study",
+      "observations": 40,
+      "metadata": {
+        "teacher_admission": null,
+        "learning_split": {
+          "not_recorded": 40
+        }
+      },
+      "member_sha256": "3da27a6b1737d4216aef6df432e5cc8fe849520694fa8fd7118466c002cee02c"
+    },
+    {
+      "id": "neural20-standard-20261023:history/g001/deep-study.json:/results",
+      "source_id": "neural20-standard-20261023",
+      "member": "history/g001/deep-study.json",
+      "pointer": "/results",
+      "category": "neural_long_study",
+      "observations": 40,
+      "metadata": {
+        "teacher_admission": null,
+        "learning_split": {
+          "not_recorded": 40
+        }
+      },
+      "member_sha256": "b54e8ae494c21497a12d0e1a1ed6fee2f64f2760d203c89151c80c9edac2db0d"
+    },
+    {
+      "id": "neural20-standard-20261023:history/g002/deep-study.json:/results",
+      "source_id": "neural20-standard-20261023",
+      "member": "history/g002/deep-study.json",
+      "pointer": "/results",
+      "category": "neural_long_study",
+      "observations": 40,
+      "metadata": {
+        "teacher_admission": null,
+        "learning_split": {
+          "not_recorded": 40
+        }
+      },
+      "member_sha256": "62eeac26b51a0512dcd5d5829f3da7ea59f200184059072ab0cc9eab4854fe44"
+    },
+    {
+      "id": "nn-disagreement-research-38098538723.json.gz::/results",
+      "source_id": "nn-disagreement-research-38098538723.json.gz",
+      "member": null,
+      "pointer": "/results",
+      "category": "legacy_long_study",
+      "observations": 30,
+      "metadata": {}
+    },
+    {
+      "id": "research-opening20-37833560865.json.gz::/research_records",
+      "source_id": "research-opening20-37833560865.json.gz",
+      "member": null,
+      "pointer": "/research_records",
+      "category": "legacy_long_study",
+      "observations": 20,
+      "metadata": {}
+    },
+    {
+      "id": "research-records-37671846680.jsonl.gz::",
+      "source_id": "research-records-37671846680.jsonl.gz",
+      "member": null,
+      "pointer": "",
+      "category": "legacy_60s_observation",
+      "observations": 91,
+      "metadata": {}
+    },
+    {
+      "id": "research10-38091143128.json.gz::/results",
+      "source_id": "research10-38091143128.json.gz",
+      "member": null,
+      "pointer": "/results",
+      "category": "legacy_long_study",
+      "observations": 10,
+      "metadata": {}
+    },
+    {
+      "id": "timebox40-records-37862974704.json.gz::/results",
+      "source_id": "timebox40-records-37862974704.json.gz",
+      "member": null,
+      "pointer": "/results",
+      "category": "legacy_long_study",
+      "observations": 40,
+      "metadata": {}
+    },
+    {
+      "id": "timebox40-records-37907909827.json.gz::/results",
+      "source_id": "timebox40-records-37907909827.json.gz",
+      "member": null,
+      "pointer": "/results",
+      "category": "legacy_long_study",
+      "observations": 40,
+      "metadata": {}
+    },
+    {
+      "id": "timebox40-records-37993892623.json.gz::/results",
+      "source_id": "timebox40-records-37993892623.json.gz",
+      "member": null,
+      "pointer": "/results",
+      "category": "legacy_long_study",
+      "observations": 40,
+      "metadata": {}
+    },
+    {
+      "id": "postgame-diagnosis-20261017-01.tgz:diagnosis.json:",
+      "source_id": "postgame-diagnosis-20261017-01.tgz",
+      "member": "diagnosis.json",
+      "pointer": "",
+      "category": "legacy_postgame_analysis",
+      "observations": 96,
+      "metadata": {},
+      "member_sha256": "b372c14e0d909a3a2116ce7014bb791bec4036099873597eb159868a96924eed"
+    },
+    {
+      "id": "postgame-diverse-practice-20261018-01-cdb07a2fec03.tgz:practice/handoff/analysis/diagnosis.json:",
+      "source_id": "postgame-diverse-practice-20261018-01-cdb07a2fec03.tgz",
+      "member": "practice/handoff/analysis/diagnosis.json",
+      "pointer": "",
+      "category": "legacy_postgame_analysis",
+      "observations": 8,
+      "metadata": {},
+      "member_sha256": "7bf05634a84bb64b6da7be199857bb2f4d7235dd44f180ea6f676d380e7d4cfb"
+    },
+    {
+      "id": "postgame-followup-20261018-01-0038b988b16a.tgz:followup-observations.json:/generations/0/results",
+      "source_id": "postgame-followup-20261018-01-0038b988b16a.tgz",
+      "member": "followup-observations.json",
+      "pointer": "/generations/0/results",
+      "category": "legacy_followup",
+      "observations": 3,
+      "metadata": {},
+      "member_sha256": "10da10811a725295760e7d5c88e878b3e3631f02840606150cbb554e7906ccca"
+    },
+    {
+      "id": "postgame-followup-20261018-01-0038b988b16a.tgz:followup-observations.json:/generations/1/results",
+      "source_id": "postgame-followup-20261018-01-0038b988b16a.tgz",
+      "member": "followup-observations.json",
+      "pointer": "/generations/1/results",
+      "category": "legacy_followup",
+      "observations": 5,
+      "metadata": {},
+      "member_sha256": "10da10811a725295760e7d5c88e878b3e3631f02840606150cbb554e7906ccca"
+    },
+    {
+      "id": "postgame-practice-20261018-01-a4b409c23fe7.tgz:practice/handoff/analysis/diagnosis.json:",
+      "source_id": "postgame-practice-20261018-01-a4b409c23fe7.tgz",
+      "member": "practice/handoff/analysis/diagnosis.json",
+      "pointer": "",
+      "category": "legacy_postgame_analysis",
+      "observations": 32,
+      "metadata": {},
+      "member_sha256": "ffc14a2797487716cf025a8a2028d0a47bdd421888797a3e6a013a4835b164d8"
+    },
+    {
+      "id": "spiral-sixhour-recovery-20261021-01-prepare-c369a20412292e9c-39539413389-a1.tgz:analysis/diagnosis.json:",
+      "source_id": "spiral-sixhour-recovery-20261021-01-prepare-c369a20412292e9c-39539413389-a1.tgz",
+      "member": "analysis/diagnosis.json",
+      "pointer": "",
+      "category": "legacy_postgame_analysis",
+      "observations": 96,
+      "metadata": {},
+      "member_sha256": "8565a33ff41e72d816c8046ddbc3324be03eed8565d13992e2defb0a38687f7f"
+    },
+    {
+      "id": "spiral-sixhour-recovery-20261021-01-prepare-c369a20412292e9c-39539413389-a1.tgz:followup/result.json:/results",
+      "source_id": "spiral-sixhour-recovery-20261021-01-prepare-c369a20412292e9c-39539413389-a1.tgz",
+      "member": "followup/result.json",
+      "pointer": "/results",
+      "category": "legacy_followup",
+      "observations": 8,
+      "metadata": {},
+      "member_sha256": "35229ced6d6e96f3d17b6a988e4c25572f6e9b663d1ff4ad7faaaa291a4a0cf7"
+    }
+  ]
+}
