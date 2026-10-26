@@ -19,7 +19,14 @@ class OutcomePerspectiveTests(unittest.TestCase):
             matches=[]
             # Three unique, valid opening fragments; a result field is a synthetic
             # conversion fixture, not a verified game outcome or evidence of strength.
-            for moves in (["7g7f","3c3d"],["2g2f","8c8d"],["7g7f","8c8d"]):
+            for seed in (1, 2, 3):
+                board = shogi.Board()
+                moves = []
+                for _ in range(12):
+                    legal = list(board.legal_moves)
+                    move = legal[(seed * 7 + len(moves) * 3) % len(legal)]
+                    moves.append(move.usi())
+                    board.push(move)
                 matches.append({"moves":moves,"winner":"A","reason":"resign","a_black":True})
             path=root/"match.json"
             path.write_text(json.dumps({"learning_origin":"kumoji_selfplay","sha256_a":"a"*64,"sha256_b":"a"*64,"details":matches}))
