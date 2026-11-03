@@ -50,7 +50,8 @@ v2対v1比較、固定v2.0.0の300局自己対局・60局面研究、その追�
 再現用の履歴であり、現行Actionsとして起動しない。
 
 ## 通常の対局起動：ファイル更新不要のIssue方式
-ChatGPTがGitHub Issueを1件作成し、タイトルを「`[KUMOJI MATCH] 対局名`」、本文を対局依頼JSON（従来の `.github/match-request.json` と同じ必須項目）とする。Issueの作成者はリポジトリ所有者本人に限る。`engine-match-request.yml` が依頼の入力検査を行ってから、既存の `engine-match.yml` を呼び出す。通常の対局ごとにYAMLや依頼JSONをcommitしない。
+作業するAIが利用可能な権限でGitHub Issueを1件作成し、タイトルを「`[KUMOJI MATCH] 対局名`」、本文を対局依頼JSON（従来の `.github/match-request.json` と同じ必須項目）とする。Issueの作成者はリポジトリ所有者本人に限る。`engine-match-request.yml` が依頼の入力検査を行ってから、既存の `engine-match.yml` を呼び出す。通常の対局ごとにYAMLや依頼JSONをcommitしない。
+Issue作成やGitHub APIを利用できないAIは、リポジトリ所有者が登録できるIssueタイトルとJSON本文を提示する。実際の作成・起動を確認できない間は未起動とし、run・job・成果物を読み戻せない場合は未検証の範囲と確認手順を残す。権限拒否を迂回する代替起動は行わない。
 
 - 指定できる基本項目は `ref_a`、`ref_b`、`games`、`shards`、`go_command`、`max_plies`、`seed`、`options_a`、`options_b`。`options_a` / `options_b` はJSON**文字列**で、後者にも同じ採用済み局面知識を指定する。
 - Issue方式は `go movetime N`、最大1万局・20並列・1000手、許可されたUSI設定のみ。`dry_run: true` なら入力検査だけ実施して対局は起動しない。
