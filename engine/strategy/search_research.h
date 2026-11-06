@@ -18,6 +18,9 @@ enum SearchEfficiency : unsigned {
 inline constexpr unsigned DefaultSearchReuseMask = 6;
 // v2.0.20: PVS + quiet cutoff killers. History ordering formally adopted in v2.0.21.
 inline constexpr unsigned DefaultSearchProbeMask = 7;
+// v2.0.22: late-move reduction (bit 2) formally adopted. Bit 1 (null move) is
+// research code and stays off by default.
+inline constexpr unsigned DefaultSearchPruneMask = 2;
 enum SearchReuse : unsigned {
     LegalTokenCache = 1, GeometryLookup = 2, OccupiedIndex = 4,
 };

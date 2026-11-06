@@ -40,7 +40,8 @@ def check(root: Path = ROOT) -> tuple[list[str], list[str]]:
     search_defaults = read("engine/strategy/search_research.h")
     for option, constant in (("SearchResearchMask", "DefaultSearchResearchMask"),
                              ("SearchEfficiencyMask", "DefaultSearchEfficiencyMask"),
-                             ("SearchProbeMask", "DefaultSearchProbeMask")):
+                             ("SearchProbeMask", "DefaultSearchProbeMask"),
+                             ("SearchPruneMask", "DefaultSearchPruneMask")):
         actual = re.search(rf"constexpr unsigned {constant}\s*=\s*(\d+)", search_defaults)
         described = re.search(rf"^\|\s*{option}\s*\|\s*(\d+)\s*\|", spec, re.M)
         if not actual or not described or actual.group(1) != described.group(1):

@@ -201,8 +201,8 @@ public:
     unsigned threads() const { return threads_; }
     void set_probe_mask(unsigned mask) { probe_mask_ = mask & 7u; }
     unsigned probe_mask() const { return probe_mask_; }
-    // Research selective search. Bit 1: null-move pruning. Default 0 (off), so
-    // the adopted search is unchanged unless explicitly enabled.
+    // Selective search. Bit 1 (value 1): null-move pruning, research, off by
+    // default. Bit 2 (value 2): late-move reduction, adopted in v2.0.22.
     void set_prune_mask(unsigned mask) { prune_mask_ = mask & 7u; }
     unsigned prune_mask() const { return prune_mask_; }
     void set_null_reduction(int r) { null_reduction_ = std::clamp(r, 1, 6); }
@@ -1140,7 +1140,7 @@ private:
     unsigned reuse_mask_ = DefaultSearchReuseMask;
     unsigned threads_=2;
     unsigned probe_mask_=DefaultSearchProbeMask;
-    unsigned prune_mask_=0;
+    unsigned prune_mask_=DefaultSearchPruneMask;
     int null_reduction_=2;
     int null_min_depth_=3;
     int lmr_min_depth_=3;

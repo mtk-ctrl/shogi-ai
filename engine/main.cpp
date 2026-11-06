@@ -103,7 +103,7 @@ int main() {
         if (command != "isready" && command != "stop" && command != "ponderhit" && command != "quit")
             finish_search(true);
         if (command == "usi") {
-            std::cout << "id name KUMOJI v2.0.21\nid author mtk-ctrl + ChatGPT\n"
+            std::cout << "id name KUMOJI v2.0.22\nid author mtk-ctrl + ChatGPT\n"
                       << "option name USI_Ponder type check default true\n"
                       << "option name RiskVerify type check default true\n"
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
@@ -114,7 +114,7 @@ int main() {
                       << "option name SearchNextMask type spin default 4 min 0 max 15\n"
                       << "option name SearchThreads type spin default 2 min 1 max 2\n"
                       << "option name SearchProbeMask type spin default " << shogi::strategy::DefaultSearchProbeMask << " min 0 max 7\n"
-                      << "option name SearchPruneMask type spin default 0 min 0 max 7\n"
+                      << "option name SearchPruneMask type spin default " << shogi::strategy::DefaultSearchPruneMask << " min 0 max 7\n"
                       << "option name NullMoveReduction type spin default 2 min 1 max 6\n"
                       << "option name LmrMinDepth type spin default 3 min 2 max 16\n"
                       << "option name LmrAfter type spin default 3 min 1 max 32\n"
