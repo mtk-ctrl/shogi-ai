@@ -116,6 +116,9 @@ int main() {
                       << "option name SearchProbeMask type spin default " << shogi::strategy::DefaultSearchProbeMask << " min 0 max 7\n"
                       << "option name SearchPruneMask type spin default 0 min 0 max 7\n"
                       << "option name NullMoveReduction type spin default 2 min 1 max 6\n"
+                      << "option name LmrMinDepth type spin default 3 min 2 max 16\n"
+                      << "option name LmrAfter type spin default 3 min 1 max 32\n"
+                      << "option name LmrReduction type spin default 1 min 1 max 4\n"
                       << "option name NullMoveMinDepth type spin default 3 min 2 max 16\n"
                       << "option name Quiescence type check default true\n"
                       << "option name MateAssist type check default true\n"
@@ -634,6 +637,7 @@ int main() {
                         << " search_threads " << strategy.threads()
                         << " probe_mask " << strategy.probe_mask()
                         << " prune_mask " << strategy.prune_mask()
+                        << " lmr_tries " << stats.lmr_tries << " lmr_researches " << stats.lmr_researches
                         << " null_tries " << stats.null_tries << " null_cutoffs " << stats.null_cutoffs
                         << " pvs_probes " << stats.pvs_probes << " pvs_researches " << stats.pvs_researches
                         << " killer_priorities " << stats.killer_priorities
@@ -751,6 +755,18 @@ int main() {
                     try {
                         std::size_t used=0; const int v=std::stoi(value,&used);
                         if(used==value.size() && v>=1 && v<=6) strategy.set_null_reduction(v);
+                    } catch(const std::exception&) {}
+                } else if (name == "LmrMinDepth") {
+                    try { std::size_t used=0; const int v=std::stoi(value,&used);
+                        if(used==value.size() && v>=2 && v<=16) strategy.set_lmr_min_depth(v);
+                    } catch(const std::exception&) {}
+                } else if (name == "LmrAfter") {
+                    try { std::size_t used=0; const int v=std::stoi(value,&used);
+                        if(used==value.size() && v>=1 && v<=32) strategy.set_lmr_after(v);
+                    } catch(const std::exception&) {}
+                } else if (name == "LmrReduction") {
+                    try { std::size_t used=0; const int v=std::stoi(value,&used);
+                        if(used==value.size() && v>=1 && v<=4) strategy.set_lmr_reduction(v);
                     } catch(const std::exception&) {}
                 } else if (name == "NullMoveMinDepth") {
                     try {

@@ -88,6 +88,8 @@ public:
         std::uint64_t killer_priorities = 0, history_priorities = 0, ordering_updates = 0;
         // Research: null-move pruning (SearchPruneMask bit 1). Off by default.
         std::uint64_t null_tries = 0, null_cutoffs = 0;
+        // Research: late-move reduction (SearchPruneMask bit 2).
+        std::uint64_t lmr_tries = 0, lmr_researches = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -205,6 +207,9 @@ public:
     unsigned prune_mask() const { return prune_mask_; }
     void set_null_reduction(int r) { null_reduction_ = std::clamp(r, 1, 6); }
     int null_reduction() const { return null_reduction_; }
+    void set_lmr_min_depth(int d) { lmr_min_depth_ = std::clamp(d, 2, 16); }
+    void set_lmr_after(int n) { lmr_after_ = std::clamp(n, 1, 32); }
+    void set_lmr_reduction(int r) { lmr_reduction_ = std::clamp(r, 1, 4); }
     void set_null_min_depth(int d) { null_min_depth_ = std::clamp(d, 2, 16); }
     int null_min_depth() const { return null_min_depth_; }
 
@@ -386,7 +391,7 @@ private:
         SUM_STAT(legal_cache_replacements);
         SUM_STAT(pvs_probes);SUM_STAT(pvs_researches);SUM_STAT(killer_priorities);
         SUM_STAT(history_priorities);SUM_STAT(ordering_updates);
-        SUM_STAT(null_tries);SUM_STAT(null_cutoffs);
+        SUM_STAT(null_tries);SUM_STAT(null_cutoffs);SUM_STAT(lmr_tries);SUM_STAT(lmr_researches);
 #undef SUM_STAT
         for(int i=0;i<4;++i)out.nodes_by_ply[i]=a.nodes_by_ply[i]+b.nodes_by_ply[i];
         out.seldepth=std::max(a.seldepth,b.seldepth);
@@ -415,6 +420,9 @@ private:
             lane.set_prune_mask(prune_mask_);
             lane.set_null_reduction(null_reduction_);
             lane.set_null_min_depth(null_min_depth_);
+            lane.set_lmr_min_depth(lmr_min_depth_);
+            lane.set_lmr_after(lmr_after_);
+            lane.set_lmr_reduction(lmr_reduction_);
             lane.set_quiescence_enabled(quiescence_enabled_);
             lane.set_threads(1);
             lane.position_knowledge_=position_knowledge_;lane.position_knowledge_enabled_=position_knowledge_enabled_;
@@ -804,15 +812,37 @@ private:
         auto moves = ordered(p, legal(p, ply), tt_move, {}, {}, ply);
         Node best{maximizing ? -Infinity : Infinity};
         bool searched = false;
+        // Research: late-move reduction (SearchPruneMask bit 2). Late quiet,
+        // non-checking, non-killer moves are first searched shallower with a null
+        // window; only a result that would improve the bound is searched fully.
+        const bool lmr_node = (prune_mask_ & 2) && depth >= lmr_min_depth_ && !p.in_check();
+        const rules::Snapshot lmr_snapshot = lmr_node ? p.snapshot() : rules::Snapshot{};
+        int move_index = -1;
         for (const auto& move : moves) {
             check_stop();
+            ++move_index;
             Node child;
             {
                 make(p, move, ply);
                 Undo undo{p};
                 visit(ply + 1);
                 const auto child_history = next_history(history, p.hash_key());
-                if ((probe_mask_ & 1) && searched && beta - alpha > 1) {
+                bool reduced_done = false;
+                if (lmr_node && searched && move_index >= lmr_after_
+                    && quiet_key(lmr_snapshot, move) >= 0
+                    && move != killers_[ply][0] && move != killers_[ply][1]
+                    && !p.in_check()) {
+                    ++stats_.lmr_tries;
+                    const int rd = std::max(0, depth - 1 - lmr_reduction_);
+                    child = maximizing
+                        ? search(p, rd, ply + 1, alpha, alpha + 1, child_history)
+                        : search(p, rd, ply + 1, beta - 1, beta, child_history);
+                    const bool improve = maximizing ? child.value > alpha : child.value < beta;
+                    if (improve) { ++stats_.lmr_researches; visit(ply + 1); }
+                    else reduced_done = true;
+                }
+                if (reduced_done) {
+                } else if ((probe_mask_ & 1) && searched && beta - alpha > 1) {
                     ++stats_.pvs_probes;
                     child = maximizing
                         ? search(p, depth - 1, ply + 1, alpha, alpha + 1, child_history)
@@ -1113,6 +1143,9 @@ private:
     unsigned prune_mask_=0;
     int null_reduction_=2;
     int null_min_depth_=3;
+    int lmr_min_depth_=3;
+    int lmr_after_=3;
+    int lmr_reduction_=1;
     // null_at_[ply] is true only while the node at that ply is inside its own
     // null-move child, so the child never passes twice in a row.
     std::array<bool, MaxPly + 2> null_at_{};
