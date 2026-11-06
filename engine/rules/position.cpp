@@ -133,6 +133,22 @@ bool Position::set_usi(const std::string& command, std::string& error) {
 
 std::string Position::sfen() const { return impl_->pos.sfen(); }
 bool Position::in_check() const { return bool(impl_->pos.checkers()); }
+bool Position::pass_position(Position& out, std::string& error) const {
+    if (in_check()) { error = "cannot pass while in check"; return false; }
+    // SFEN: <board> <turn> <hands> <ply>; flip only the turn field.
+    std::string sfen = impl_->pos.sfen();
+    const auto first = sfen.find(' ');
+    if (first == std::string::npos || first + 1 >= sfen.size()) { error = "malformed sfen"; return false; }
+    char& turn = sfen[first + 1];
+    if (turn == 'b') turn = 'w';
+    else if (turn == 'w') turn = 'b';
+    else { error = "malformed sfen turn"; return false; }
+    try {
+        out.impl_ = std::make_unique<Impl>(sfen);
+    } catch (const std::invalid_argument& e) { error = e.what(); return false; }
+    error.clear();
+    return true;
+}
 Color Position::turn() const { return impl_->pos.side_to_move() == yo::BLACK ? Color::Black : Color::White; }
 std::vector<std::string> Position::legal_moves() const {
     std::vector<std::string> result;

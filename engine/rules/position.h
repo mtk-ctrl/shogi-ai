@@ -81,6 +81,14 @@ public:
     bool play_generated_legal(const std::string& move, std::string& error);
     bool undo();
     bool in_check() const;
+    // Research (null-move search): a fresh Position with the same board and
+    // hands but the opponent to move, as if the side to move had passed. Built
+    // only from this Position's SFEN with the turn field flipped through our
+    // own set path; no upstream null-move routine is used. No game history is
+    // carried over, so repetition rules do not apply across the pass. Fails
+    // (returns false) while in check, because a pass is then not a legal state.
+    // When to pass is a search-policy decision that stays in the strategy layer.
+    bool pass_position(Position& out, std::string& error) const;
     // Repetition/perpetual-check adjudication only; unlike status(), this does
     // not generate legal moves to test checkmate/stalemate.
     Status repetition_status() const;

@@ -86,6 +86,8 @@ public:
         std::uint64_t legal_cache_replacements = 0;
         std::uint64_t pvs_probes = 0, pvs_researches = 0;
         std::uint64_t killer_priorities = 0, history_priorities = 0, ordering_updates = 0;
+        // Research: null-move pruning (SearchPruneMask bit 1). Off by default.
+        std::uint64_t null_tries = 0, null_cutoffs = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -197,6 +199,14 @@ public:
     unsigned threads() const { return threads_; }
     void set_probe_mask(unsigned mask) { probe_mask_ = mask & 7u; }
     unsigned probe_mask() const { return probe_mask_; }
+    // Research selective search. Bit 1: null-move pruning. Default 0 (off), so
+    // the adopted search is unchanged unless explicitly enabled.
+    void set_prune_mask(unsigned mask) { prune_mask_ = mask & 7u; }
+    unsigned prune_mask() const { return prune_mask_; }
+    void set_null_reduction(int r) { null_reduction_ = std::clamp(r, 1, 6); }
+    int null_reduction() const { return null_reduction_; }
+    void set_null_min_depth(int d) { null_min_depth_ = std::clamp(d, 2, 16); }
+    int null_min_depth() const { return null_min_depth_; }
 
     SearchResult choose(rules::Position& position, int max_depth, SearchControl& control,
                         const std::vector<std::string>& allowed = {},
@@ -223,6 +233,7 @@ private:
         qtt_.new_search();
         for (auto& batch : legal_batches_) batch.valid = false;
         pv_lengths_.fill(0);
+        null_at_.fill(false);
         iteration_hints_.clear();
         // The cache contains static evaluations only. A new go must not reuse
         // evaluations from a previous position, weight set or search session.
@@ -375,6 +386,7 @@ private:
         SUM_STAT(legal_cache_replacements);
         SUM_STAT(pvs_probes);SUM_STAT(pvs_researches);SUM_STAT(killer_priorities);
         SUM_STAT(history_priorities);SUM_STAT(ordering_updates);
+        SUM_STAT(null_tries);SUM_STAT(null_cutoffs);
 #undef SUM_STAT
         for(int i=0;i<4;++i)out.nodes_by_ply[i]=a.nodes_by_ply[i]+b.nodes_by_ply[i];
         out.seldepth=std::max(a.seldepth,b.seldepth);
@@ -400,6 +412,9 @@ private:
             lane.set_reuse_mask(reuse_mask_);lane.set_next_mask(next_mask_);
             lane.set_risk_verify(risk_verify_enabled_);
             lane.set_probe_mask(probe_mask_);
+            lane.set_prune_mask(prune_mask_);
+            lane.set_null_reduction(null_reduction_);
+            lane.set_null_min_depth(null_min_depth_);
             lane.set_quiescence_enabled(quiescence_enabled_);
             lane.set_threads(1);
             lane.position_knowledge_=position_knowledge_;lane.position_knowledge_enabled_=position_knowledge_enabled_;
@@ -751,8 +766,42 @@ private:
             if (tt_.store(score_key, depth, value, Bound::Exact)) ++stats_.tt_replacements;
             return {value};
         }
-        auto moves = ordered(p, legal(p, ply), tt_move, {}, {}, ply);
         const bool maximizing = ((efficiency_mask_ & LazySnapshot) ? p.turn() : p.snapshot().turn) == root_;
+        // Research: null-move pruning (SearchPruneMask bit 1). Own implementation
+        // for the root-perspective minimax form: a max node is cut when the
+        // opponent's reply after our pass still leaves value >= beta; a min node
+        // when value < alpha. Skipped at PV nodes, in check, right after a pass,
+        // near mate scores and when the static value does not already support
+        // the cut. Nothing is stored in the TT for a pruned node.
+        if ((prune_mask_ & 1) && depth >= null_min_depth_ && ply > 0 && beta - alpha == 1
+            && !(ply > 0 && null_at_[ply - 1])
+            && !is_mate_score(alpha) && !is_mate_score(beta)
+            && std::abs(alpha) < Infinity / 2 && std::abs(beta) < Infinity / 2
+            && !p.in_check()) {
+            const int sign = root_ == rules::Color::Black ? 1 : -1;
+            const int stat = sign * eval_node(p, p.snapshot());
+            const bool supported = maximizing ? stat >= beta : stat < alpha;
+            rules::Position np;
+            std::string err;
+            if (supported && p.pass_position(np, err)) {
+                ++stats_.null_tries;
+                const int nd = std::max(0, depth - 1 - null_reduction_);
+                null_at_[ply] = true;
+                visit(ply + 1);
+                const Node r = maximizing
+                    ? search(np, nd, ply + 1, beta - 1, beta, history ^ 0x9E3779B97F4A7C15ULL)
+                    : search(np, nd, ply + 1, alpha - 1, alpha, history ^ 0x9E3779B97F4A7C15ULL);
+                null_at_[ply] = false;
+                pv_lengths_[ply] = 0;
+                if (ply < MaxPly) pv_lengths_[ply + 1] = 0;
+                if (!is_mate_score(r.value)
+                    && ((maximizing && r.value >= beta) || (!maximizing && r.value < alpha))) {
+                    ++stats_.null_cutoffs;
+                    return {r.value};
+                }
+            }
+        }
+        auto moves = ordered(p, legal(p, ply), tt_move, {}, {}, ply);
         Node best{maximizing ? -Infinity : Infinity};
         bool searched = false;
         for (const auto& move : moves) {
@@ -1061,6 +1110,12 @@ private:
     unsigned reuse_mask_ = DefaultSearchReuseMask;
     unsigned threads_=2;
     unsigned probe_mask_=DefaultSearchProbeMask;
+    unsigned prune_mask_=0;
+    int null_reduction_=2;
+    int null_min_depth_=3;
+    // null_at_[ply] is true only while the node at that ply is inside its own
+    // null-move child, so the child never passes twice in a row.
+    std::array<bool, MaxPly + 2> null_at_{};
     std::array<std::array<std::string, 2>, MaxPly + 1> killers_{};
     std::array<std::array<int, 88 * 81>, 2> history_scores_{};
     bool capture_root_ties_=false;

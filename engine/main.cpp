@@ -114,6 +114,9 @@ int main() {
                       << "option name SearchNextMask type spin default 4 min 0 max 15\n"
                       << "option name SearchThreads type spin default 2 min 1 max 2\n"
                       << "option name SearchProbeMask type spin default " << shogi::strategy::DefaultSearchProbeMask << " min 0 max 7\n"
+                      << "option name SearchPruneMask type spin default 0 min 0 max 7\n"
+                      << "option name NullMoveReduction type spin default 2 min 1 max 6\n"
+                      << "option name NullMoveMinDepth type spin default 3 min 2 max 16\n"
                       << "option name Quiescence type check default true\n"
                       << "option name MateAssist type check default true\n"
                       << "option name MateLearning type check default true\n"
@@ -630,6 +633,8 @@ int main() {
                         << " research_mask " << strategy.research_mask()
                         << " search_threads " << strategy.threads()
                         << " probe_mask " << strategy.probe_mask()
+                        << " prune_mask " << strategy.prune_mask()
+                        << " null_tries " << stats.null_tries << " null_cutoffs " << stats.null_cutoffs
                         << " pvs_probes " << stats.pvs_probes << " pvs_researches " << stats.pvs_researches
                         << " killer_priorities " << stats.killer_priorities
                         << " history_priorities " << stats.history_priorities
@@ -735,6 +740,22 @@ int main() {
                         std::size_t used=0; const int mask=std::stoi(value,&used);
                         if(used==value.size() && mask>=0 && mask<=7)
                             strategy.set_probe_mask(static_cast<unsigned>(mask));
+                    } catch(const std::exception&) {}
+                } else if (name == "SearchPruneMask") {
+                    try {
+                        std::size_t used=0; const int mask=std::stoi(value,&used);
+                        if(used==value.size() && mask>=0 && mask<=7)
+                            strategy.set_prune_mask(static_cast<unsigned>(mask));
+                    } catch(const std::exception&) {}
+                } else if (name == "NullMoveReduction") {
+                    try {
+                        std::size_t used=0; const int v=std::stoi(value,&used);
+                        if(used==value.size() && v>=1 && v<=6) strategy.set_null_reduction(v);
+                    } catch(const std::exception&) {}
+                } else if (name == "NullMoveMinDepth") {
+                    try {
+                        std::size_t used=0; const int v=std::stoi(value,&used);
+                        if(used==value.size() && v>=2 && v<=16) strategy.set_null_min_depth(v);
                     } catch(const std::exception&) {}
                 } else if (name == "SearchThreads") {
                     try {
