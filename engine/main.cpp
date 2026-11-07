@@ -114,7 +114,7 @@ int main() {
                       << "option name SearchNextMask type spin default 4 min 0 max 15\n"
                       << "option name SearchThreads type spin default 2 min 1 max 2\n"
                       << "option name SearchProbeMask type spin default " << shogi::strategy::DefaultSearchProbeMask << " min 0 max 7\n"
-                      << "option name SearchPruneMask type spin default " << shogi::strategy::DefaultSearchPruneMask << " min 0 max 7\n"
+                      << "option name SearchPruneMask type spin default " << shogi::strategy::DefaultSearchPruneMask << " min 0 max 15\n"
                       << "option name NullMoveReduction type spin default 2 min 1 max 6\n"
                       << "option name FutilityMaxDepth type spin default 2 min 1 max 6\n"
                       << "option name FutilityMargin type spin default 300 min 50 max 3000\n"
@@ -639,7 +639,7 @@ int main() {
                         << " search_threads " << strategy.threads()
                         << " probe_mask " << strategy.probe_mask()
                         << " prune_mask " << strategy.prune_mask()
-                        << " futility_prunes " << stats.futility_prunes << " lmr_tries " << stats.lmr_tries << " lmr_researches " << stats.lmr_researches
+                        << " check_extensions " << stats.check_extensions << " futility_prunes " << stats.futility_prunes << " lmr_tries " << stats.lmr_tries << " lmr_researches " << stats.lmr_researches
                         << " null_tries " << stats.null_tries << " null_cutoffs " << stats.null_cutoffs
                         << " pvs_probes " << stats.pvs_probes << " pvs_researches " << stats.pvs_researches
                         << " killer_priorities " << stats.killer_priorities
@@ -750,7 +750,7 @@ int main() {
                 } else if (name == "SearchPruneMask") {
                     try {
                         std::size_t used=0; const int mask=std::stoi(value,&used);
-                        if(used==value.size() && mask>=0 && mask<=7)
+                        if(used==value.size() && mask>=0 && mask<=15)
                             strategy.set_prune_mask(static_cast<unsigned>(mask));
                     } catch(const std::exception&) {}
                 } else if (name == "NullMoveReduction") {

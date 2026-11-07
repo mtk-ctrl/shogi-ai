@@ -92,6 +92,8 @@ public:
         std::uint64_t lmr_tries = 0, lmr_researches = 0;
         // Research: futility pruning (SearchPruneMask bit 4).
         std::uint64_t futility_prunes = 0;
+        // Research: check extension (SearchPruneMask bit 8).
+        std::uint64_t check_extensions = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -206,12 +208,14 @@ public:
     // Selective search. Bit 1 (value 1): null-move pruning, research, off by
     // default. Bit 2 (value 2): late-move reduction, adopted in v2.0.22.
     // Bit 4 (value 4): futility pruning, adopted in v2.0.23.
-    void set_prune_mask(unsigned mask) { prune_mask_ = mask & 7u; }
+    void set_prune_mask(unsigned mask) { prune_mask_ = mask & 15u; }
     unsigned prune_mask() const { return prune_mask_; }
     void set_null_reduction(int r) { null_reduction_ = std::clamp(r, 1, 6); }
     int null_reduction() const { return null_reduction_; }
     void set_futility_max_depth(int d) { futility_max_depth_ = std::clamp(d, 1, 6); }
     void set_futility_margin(int m) { futility_margin_ = std::clamp(m, 50, 3000); }
+    // Research: check extension (SearchPruneMask bit 8).
+    void set_check_ext_max(int n) { check_ext_max_ = std::clamp(n, 1, 8); }
     void set_lmr_min_depth(int d) { lmr_min_depth_ = std::clamp(d, 2, 16); }
     void set_lmr_after(int n) { lmr_after_ = std::clamp(n, 1, 32); }
     void set_lmr_reduction(int r) { lmr_reduction_ = std::clamp(r, 1, 4); }
@@ -244,6 +248,7 @@ private:
         for (auto& batch : legal_batches_) batch.valid = false;
         pv_lengths_.fill(0);
         null_at_.fill(false);
+        ext_used_.fill(0);
         iteration_hints_.clear();
         // The cache contains static evaluations only. A new go must not reuse
         // evaluations from a previous position, weight set or search session.
@@ -396,7 +401,7 @@ private:
         SUM_STAT(legal_cache_replacements);
         SUM_STAT(pvs_probes);SUM_STAT(pvs_researches);SUM_STAT(killer_priorities);
         SUM_STAT(history_priorities);SUM_STAT(ordering_updates);
-        SUM_STAT(null_tries);SUM_STAT(null_cutoffs);SUM_STAT(lmr_tries);SUM_STAT(lmr_researches);SUM_STAT(futility_prunes);
+        SUM_STAT(null_tries);SUM_STAT(null_cutoffs);SUM_STAT(lmr_tries);SUM_STAT(lmr_researches);SUM_STAT(futility_prunes);SUM_STAT(check_extensions);
 #undef SUM_STAT
         for(int i=0;i<4;++i)out.nodes_by_ply[i]=a.nodes_by_ply[i]+b.nodes_by_ply[i];
         out.seldepth=std::max(a.seldepth,b.seldepth);
@@ -427,6 +432,7 @@ private:
             lane.set_null_min_depth(null_min_depth_);
             lane.set_futility_max_depth(futility_max_depth_);
             lane.set_futility_margin(futility_margin_);
+            lane.set_check_ext_max(check_ext_max_);
             lane.set_lmr_min_depth(lmr_min_depth_);
             lane.set_lmr_after(lmr_after_);
             lane.set_lmr_reduction(lmr_reduction_);
@@ -802,6 +808,7 @@ private:
                 ++stats_.null_tries;
                 const int nd = std::max(0, depth - 1 - null_reduction_);
                 null_at_[ply] = true;
+                ext_used_[ply + 1] = ext_used_[ply];
                 visit(ply + 1);
                 const Node r = maximizing
                     ? search(np, nd, ply + 1, beta - 1, beta, history ^ 0x9E3779B97F4A7C15ULL)
@@ -850,6 +857,16 @@ private:
                 if (futile) continue;
                 visit(ply + 1);
                 const auto child_history = next_history(history, p.hash_key());
+                // Research: a checking move keeps its depth (no reduction), up to
+                // check_ext_max_ extensions along one path. LMR and futility
+                // already skip checking moves.
+                int ext = 0;
+                if ((prune_mask_ & 8) && ply < MaxPly && ext_used_[ply] < check_ext_max_ && p.in_check()) {
+                    ext = 1;
+                    ++stats_.check_extensions;
+                }
+                ext_used_[ply + 1] = ext_used_[ply] + ext;
+                const int cd = depth - 1 + ext;
                 bool reduced_done = false;
                 if (lmr_node && searched && move_index >= lmr_after_
                     && quiet_key(lmr_snapshot, move) >= 0
@@ -868,17 +885,17 @@ private:
                 } else if ((probe_mask_ & 1) && searched && beta - alpha > 1) {
                     ++stats_.pvs_probes;
                     child = maximizing
-                        ? search(p, depth - 1, ply + 1, alpha, alpha + 1, child_history)
-                        : search(p, depth - 1, ply + 1, beta - 1, beta, child_history);
+                        ? search(p, cd, ply + 1, alpha, alpha + 1, child_history)
+                        : search(p, cd, ply + 1, beta - 1, beta, child_history);
                     const bool improve = maximizing
                         ? child.value > alpha && child.value < beta
                         : child.value < beta && child.value >= alpha;
                     if (improve) {
                         ++stats_.pvs_researches;
                         visit(ply + 1);
-                        child = search(p, depth - 1, ply + 1, alpha, beta, child_history);
+                        child = search(p, cd, ply + 1, alpha, beta, child_history);
                     }
-                } else child = search(p, depth - 1, ply + 1, alpha, beta, child_history);
+                } else child = search(p, cd, ply + 1, alpha, beta, child_history);
             }
             searched = true;
             const int value = child.value;
@@ -1168,6 +1185,8 @@ private:
     int null_min_depth_=3;
     int lmr_min_depth_=3;
     int lmr_after_=3;
+    int check_ext_max_=2;
+    std::array<int, MaxPly + 2> ext_used_{};
     int futility_max_depth_=2;
     int futility_margin_=300;
     int lmr_reduction_=1;
