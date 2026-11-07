@@ -716,7 +716,7 @@ private:
     // Exact board/hands/side identity; no repetition-sensitive search scores
     // are cached here. Terminal and repetition results remain uncached.
     struct EvalCell { std::uint64_t key = 0; int value = 0; std::uint32_t epoch = 0; };
-    std::vector<EvalCell> eval_cache_ = std::vector<EvalCell>(1u << 15);
+    std::vector<EvalCell> eval_cache_ = std::vector<EvalCell>(1u << 20);
     std::uint32_t eval_epoch_ = 1;
     template<class SnapshotGetter>
     int eval_cached(const rules::Position& p, SnapshotGetter get_snapshot) {
