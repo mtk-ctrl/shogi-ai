@@ -77,7 +77,7 @@ class ClaimChecks(unittest.TestCase):
         self.assertTrue(any("駒価値" in e for e in errors), errors)
 
     def test_wrong_documented_efficiency_default_fails(self):
-        self.change("docs/現行エンジン仕様.md", "| SearchEfficiencyMask | 8 |",
+        self.change("docs/現行エンジン仕様.md", "| SearchEfficiencyMask | 24 |",
                     "| SearchEfficiencyMask | 15 |")
         errors, _ = claims.check(self.root)
         self.assertTrue(any("SearchEfficiencyMask" in e for e in errors), errors)

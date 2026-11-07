@@ -101,6 +101,7 @@ int main(int argc, char** argv) {
         strategy::FeatureAlphaBeta3TT fixed;
         strategy::IterativeSearch features;
         features.set_probe_mask(probe_mask);
+        features.set_prune_mask(0); // v0.0.13 reference has no selective pruning
         features.set_quiescence_enabled(false);
         p = rules::Position();
         for (unsigned sample = 0; sample < 6; ++sample) {
