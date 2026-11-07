@@ -205,6 +205,7 @@ public:
     unsigned probe_mask() const { return probe_mask_; }
     // Selective search. Bit 1 (value 1): null-move pruning, research, off by
     // default. Bit 2 (value 2): late-move reduction, adopted in v2.0.22.
+    // Bit 4 (value 4): futility pruning, adopted in v2.0.23.
     void set_prune_mask(unsigned mask) { prune_mask_ = mask & 7u; }
     unsigned prune_mask() const { return prune_mask_; }
     void set_null_reduction(int r) { null_reduction_ = std::clamp(r, 1, 6); }

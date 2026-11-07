@@ -56,7 +56,7 @@ class Analyzer:
                 match = re.fullmatch(r'option name (.+?) type \S+ default (.*?)(?: min .*| max .*| var .*|$)', line)
                 if match:
                     self.option_defaults[match[1]] = match[2]
-            require(self.name == 'KUMOJI v2.0.22', 'unexpected analyzer identity: ' + self.name)
+            require(self.name == 'KUMOJI v2.0.23', 'unexpected analyzer identity: ' + self.name)
             options = dict(OPTIONS, PositionKnowledgeFile=str(Path(knowledge).resolve()))
             if evaluation_options is not None:
                 parent_values(evaluation_options)
