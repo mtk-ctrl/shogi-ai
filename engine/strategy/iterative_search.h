@@ -93,6 +93,7 @@ public:
         std::uint64_t lmr_tries = 0, lmr_researches = 0;
         // Research: futility pruning (SearchPruneMask bit 4).
         std::uint64_t futility_prunes = 0;
+        std::uint64_t rfp_prunes = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -207,7 +208,10 @@ public:
     // Selective search. Bit 1 (value 1): null-move pruning, research, off by
     // default. Bit 2 (value 2): late-move reduction, adopted in v2.0.22.
     // Bit 4 (value 4): futility pruning, adopted in v2.0.23.
-    void set_prune_mask(unsigned mask) { prune_mask_ = mask & 7u; }
+    // Bit 8 (value 8): reverse futility (static-value cut), research.
+    void set_prune_mask(unsigned mask) { prune_mask_ = mask & 15u; }
+    void set_rfp_margin(int m) { rfp_margin_ = std::clamp(m, 50, 3000); }
+    void set_rfp_max_depth(int d) { rfp_max_depth_ = std::clamp(d, 1, 8); }
     unsigned prune_mask() const { return prune_mask_; }
     void set_null_reduction(int r) { null_reduction_ = std::clamp(r, 1, 6); }
     int null_reduction() const { return null_reduction_; }
@@ -402,7 +406,7 @@ private:
         SUM_STAT(legal_cache_replacements);
         SUM_STAT(pvs_probes);SUM_STAT(pvs_researches);SUM_STAT(killer_priorities);
         SUM_STAT(history_priorities);SUM_STAT(ordering_updates);
-        SUM_STAT(null_tries);SUM_STAT(null_cutoffs);SUM_STAT(lmr_tries);SUM_STAT(lmr_researches);SUM_STAT(futility_prunes);
+        SUM_STAT(null_tries);SUM_STAT(null_cutoffs);SUM_STAT(lmr_tries);SUM_STAT(lmr_researches);SUM_STAT(futility_prunes);SUM_STAT(rfp_prunes);
 #undef SUM_STAT
         for(int i=0;i<4;++i)out.nodes_by_ply[i]=a.nodes_by_ply[i]+b.nodes_by_ply[i];
         out.seldepth=std::max(a.seldepth,b.seldepth);
@@ -437,6 +441,7 @@ private:
             lane.set_null_min_depth(null_min_depth_);
             lane.set_futility_max_depth(futility_max_depth_);
             lane.set_futility_margin(futility_margin_);
+            lane.set_rfp_margin(rfp_margin_);lane.set_rfp_max_depth(rfp_max_depth_);
             lane.set_lmr_min_depth(lmr_min_depth_);
             lane.set_lmr_after(lmr_after_);
             lane.set_lmr_reduction(lmr_reduction_);
@@ -797,6 +802,23 @@ private:
             return {value};
         }
         const bool maximizing = ((efficiency_mask_ & LazySnapshot) ? p.turn() : p.snapshot().turn) == root_;
+        // Research: reverse futility (SearchPruneMask bit 8). On a null-window,
+        // non-check node near the horizon, a static value that already clears the
+        // bound by a per-depth margin is returned without searching moves.
+        if ((prune_mask_ & 8) && depth <= rfp_max_depth_ && ply > 0 && beta - alpha == 1
+            && !is_mate_score(alpha) && !is_mate_score(beta)
+            && std::abs(alpha) < Infinity / 2 && std::abs(beta) < Infinity / 2
+            && !p.in_check()) {
+            const int sign = root_ == rules::Color::Black ? 1 : -1;
+            const int stat = sign * eval_node(p, p.snapshot());
+            const int slack = rfp_margin_ * depth;
+            if (maximizing ? stat - slack >= beta : stat + slack < alpha) {
+                ++stats_.rfp_prunes;
+                pv_lengths_[ply] = 0;
+                if (ply < MaxPly) pv_lengths_[ply + 1] = 0;
+                return {maximizing ? stat - slack : stat + slack};
+            }
+        }
         // Research: null-move pruning (SearchPruneMask bit 1). Own implementation
         // for the root-perspective minimax form: a max node is cut when the
         // opponent's reply after our pass still leaves value >= beta; a min node
@@ -1200,6 +1222,8 @@ private:
     int lmr_after_=3;
     int futility_max_depth_=2;
     int futility_margin_=300;
+    int rfp_margin_=350;
+    int rfp_max_depth_=3;
     int lmr_reduction_=1;
     // null_at_[ply] is true only while the node at that ply is inside its own
     // null-move child, so the child never passes twice in a row.

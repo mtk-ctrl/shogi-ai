@@ -114,7 +114,9 @@ int main() {
                       << "option name SearchNextMask type spin default 4 min 0 max 15\n"
                       << "option name SearchThreads type spin default 2 min 1 max 2\n"
                       << "option name SearchProbeMask type spin default " << shogi::strategy::DefaultSearchProbeMask << " min 0 max 7\n"
-                      << "option name SearchPruneMask type spin default " << shogi::strategy::DefaultSearchPruneMask << " min 0 max 7\n"
+                      << "option name SearchPruneMask type spin default " << shogi::strategy::DefaultSearchPruneMask << " min 0 max 15\n"
+                      << "option name RfpMargin type spin default 350 min 50 max 3000\n"
+                      << "option name RfpMaxDepth type spin default 3 min 1 max 8\n"
                       << "option name NullMoveReduction type spin default 2 min 1 max 6\n"
                       << "option name SearchSharedTT type spin default 0 min 0 max 1\n"
                       << "option name FutilityMaxDepth type spin default 2 min 1 max 6\n"
@@ -143,6 +145,7 @@ int main() {
                       << "option name EvalPotential type spin default " << evaluation_parameters.potential_weight << " min 0 max 10000\n"
                       << "option name EvalCoordination type spin default " << evaluation_parameters.coordination_weight << " min 0 max 10000\n"
                       << "option name EvalHandPotential type spin default " << evaluation_parameters.hand_potential_weight << " min 0 max 10000\n"
+                      << "option name EvalKingDrop type spin default 0 min 0 max 10000\n"
                       << "option name EvalThreat type spin default " << evaluation_parameters.threat_weight << " min 0 max 10000\n"
                       << "option name EvalPositionalCap type spin default " << evaluation_parameters.positional_cap << " min 0 max 5000\n"
                       << "option name PositionKnowledge type check default true\n"
@@ -640,7 +643,7 @@ int main() {
                         << " search_threads " << strategy.threads()
                         << " probe_mask " << strategy.probe_mask()
                         << " shared_tt " << strategy.shared_tt() << " prune_mask " << strategy.prune_mask()
-                        << " futility_prunes " << stats.futility_prunes << " lmr_tries " << stats.lmr_tries << " lmr_researches " << stats.lmr_researches
+                        << " futility_prunes " << stats.futility_prunes << " rfp_prunes " << stats.rfp_prunes << " lmr_tries " << stats.lmr_tries << " lmr_researches " << stats.lmr_researches
                         << " null_tries " << stats.null_tries << " null_cutoffs " << stats.null_cutoffs
                         << " pvs_probes " << stats.pvs_probes << " pvs_researches " << stats.pvs_researches
                         << " killer_priorities " << stats.killer_priorities
@@ -751,8 +754,15 @@ int main() {
                 } else if (name == "SearchPruneMask") {
                     try {
                         std::size_t used=0; const int mask=std::stoi(value,&used);
-                        if(used==value.size() && mask>=0 && mask<=7)
+                        if(used==value.size() && mask>=0 && mask<=15)
                             strategy.set_prune_mask(static_cast<unsigned>(mask));
+                    } catch(const std::exception&) {}
+                } else if (name == "RfpMargin" || name == "RfpMaxDepth") {
+                    try {
+                        std::size_t used=0; const int v=std::stoi(value,&used);
+                        if(used==value.size()) {
+                            if(name=="RfpMargin") strategy.set_rfp_margin(v); else strategy.set_rfp_max_depth(v);
+                        }
                     } catch(const std::exception&) {}
                 } else if (name == "NullMoveReduction") {
                     try {
@@ -859,7 +869,7 @@ int main() {
                     }
                 } else if (name == "EvalSafety" || name == "EvalPressure" || name == "EvalActivity" || name == "EvalDanger"
                            || name == "EvalMaterialWeight" || name == "EvalInfluence" || name == "EvalPotential"
-                           || name == "EvalCoordination" || name == "EvalHandPotential" || name == "EvalThreat"
+                           || name == "EvalCoordination" || name == "EvalHandPotential" || name == "EvalThreat" || name == "EvalKingDrop"
                            || name == "EvalPositionalCap") {
                     try {
                         std::size_t used = 0;
@@ -876,6 +886,7 @@ int main() {
                             else if (name == "EvalCoordination") evaluation_parameters.coordination_weight = weight;
                             else if (name == "EvalHandPotential") evaluation_parameters.hand_potential_weight = weight;
                             else if (name == "EvalThreat") evaluation_parameters.threat_weight = weight;
+                            else if (name == "EvalKingDrop") evaluation_parameters.king_drop_weight = weight;
                             else evaluation_parameters.positional_cap = weight;
                             strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
                                 ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters, strategy.reuse_mask()));
