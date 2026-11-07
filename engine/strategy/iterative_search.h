@@ -90,6 +90,8 @@ public:
         std::uint64_t null_tries = 0, null_cutoffs = 0;
         // Research: late-move reduction (SearchPruneMask bit 2).
         std::uint64_t lmr_tries = 0, lmr_researches = 0;
+        // Research: futility pruning (SearchPruneMask bit 4).
+        std::uint64_t futility_prunes = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -207,6 +209,8 @@ public:
     unsigned prune_mask() const { return prune_mask_; }
     void set_null_reduction(int r) { null_reduction_ = std::clamp(r, 1, 6); }
     int null_reduction() const { return null_reduction_; }
+    void set_futility_max_depth(int d) { futility_max_depth_ = std::clamp(d, 1, 6); }
+    void set_futility_margin(int m) { futility_margin_ = std::clamp(m, 50, 3000); }
     void set_lmr_min_depth(int d) { lmr_min_depth_ = std::clamp(d, 2, 16); }
     void set_lmr_after(int n) { lmr_after_ = std::clamp(n, 1, 32); }
     void set_lmr_reduction(int r) { lmr_reduction_ = std::clamp(r, 1, 4); }
@@ -391,7 +395,7 @@ private:
         SUM_STAT(legal_cache_replacements);
         SUM_STAT(pvs_probes);SUM_STAT(pvs_researches);SUM_STAT(killer_priorities);
         SUM_STAT(history_priorities);SUM_STAT(ordering_updates);
-        SUM_STAT(null_tries);SUM_STAT(null_cutoffs);SUM_STAT(lmr_tries);SUM_STAT(lmr_researches);
+        SUM_STAT(null_tries);SUM_STAT(null_cutoffs);SUM_STAT(lmr_tries);SUM_STAT(lmr_researches);SUM_STAT(futility_prunes);
 #undef SUM_STAT
         for(int i=0;i<4;++i)out.nodes_by_ply[i]=a.nodes_by_ply[i]+b.nodes_by_ply[i];
         out.seldepth=std::max(a.seldepth,b.seldepth);
@@ -420,6 +424,8 @@ private:
             lane.set_prune_mask(prune_mask_);
             lane.set_null_reduction(null_reduction_);
             lane.set_null_min_depth(null_min_depth_);
+            lane.set_futility_max_depth(futility_max_depth_);
+            lane.set_futility_margin(futility_margin_);
             lane.set_lmr_min_depth(lmr_min_depth_);
             lane.set_lmr_after(lmr_after_);
             lane.set_lmr_reduction(lmr_reduction_);
@@ -816,7 +822,15 @@ private:
         // non-checking, non-killer moves are first searched shallower with a null
         // window; only a result that would improve the bound is searched fully.
         const bool lmr_node = (prune_mask_ & 2) && depth >= lmr_min_depth_ && !p.in_check();
-        const rules::Snapshot lmr_snapshot = lmr_node ? p.snapshot() : rules::Snapshot{};
+        // Research: futility pruning (SearchPruneMask bit 4). Near the horizon a
+        // late quiet, non-checking move is skipped when the static value plus a
+        // per-depth margin still cannot reach the node's current bound.
+        const bool futility_node = (prune_mask_ & 4) && depth <= futility_max_depth_ && ply > 0
+            && !is_mate_score(alpha) && !is_mate_score(beta)
+            && std::abs(alpha) < Infinity / 2 && std::abs(beta) < Infinity / 2 && !p.in_check();
+        const rules::Snapshot lmr_snapshot = (lmr_node || futility_node) ? p.snapshot() : rules::Snapshot{};
+        const int futility_static = futility_node
+            ? (root_ == rules::Color::Black ? 1 : -1) * eval_node(p, lmr_snapshot) : 0;
         int move_index = -1;
         for (const auto& move : moves) {
             check_stop();
@@ -825,6 +839,14 @@ private:
             {
                 make(p, move, ply);
                 Undo undo{p};
+                bool futile = false;
+                if (futility_node && searched && quiet_key(lmr_snapshot, move) >= 0 && !p.in_check()) {
+                    const int slack = futility_margin_ * depth;
+                    futile = maximizing ? futility_static + slack <= alpha
+                                        : futility_static - slack >= beta;
+                    if (futile) ++stats_.futility_prunes;
+                }
+                if (futile) continue;
                 visit(ply + 1);
                 const auto child_history = next_history(history, p.hash_key());
                 bool reduced_done = false;
@@ -1145,6 +1167,8 @@ private:
     int null_min_depth_=3;
     int lmr_min_depth_=3;
     int lmr_after_=3;
+    int futility_max_depth_=2;
+    int futility_margin_=300;
     int lmr_reduction_=1;
     // null_at_[ply] is true only while the node at that ply is inside its own
     // null-move child, so the child never passes twice in a row.
