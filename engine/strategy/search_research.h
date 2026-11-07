@@ -7,8 +7,8 @@ enum SearchResearch : unsigned {
     GeneratedPlay = 1, SharedLegal = 2, OrderReuse = 4,
     QuiescenceReuse = 8, EarlyHints = 16,
 };
-// The owner adopted SelectiveUSI alone in v2.0.15. Other flags stay experimental/OFF.
-inline constexpr unsigned DefaultSearchEfficiencyMask = 8;
+// The owner adopted SelectiveUSI in v2.0.15 and LazyQTerminal in v2.0.24. Other flags stay experimental/OFF.
+inline constexpr unsigned DefaultSearchEfficiencyMask = 24; // v2.0.24: LazyQTerminal (16) adopted
 enum SearchEfficiency : unsigned {
     RuleCheckOrdering = 1, OrderingWorkspace = 2, LazySnapshot = 4,
     SelectiveUSI = 8, LazyQTerminal = 16, // research: skip full legal generation at stand-pat qnodes
