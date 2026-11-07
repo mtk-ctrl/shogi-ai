@@ -116,6 +116,7 @@ int main() {
                       << "option name SearchProbeMask type spin default " << shogi::strategy::DefaultSearchProbeMask << " min 0 max 7\n"
                       << "option name SearchPruneMask type spin default " << shogi::strategy::DefaultSearchPruneMask << " min 0 max 7\n"
                       << "option name NullMoveReduction type spin default 2 min 1 max 6\n"
+                      << "option name SearchSharedTT type spin default 0 min 0 max 1\n"
                       << "option name FutilityMaxDepth type spin default 2 min 1 max 6\n"
                       << "option name FutilityMargin type spin default 300 min 50 max 3000\n"
                       << "option name LmrMinDepth type spin default 3 min 2 max 16\n"
@@ -638,7 +639,7 @@ int main() {
                         << " research_mask " << strategy.research_mask()
                         << " search_threads " << strategy.threads()
                         << " probe_mask " << strategy.probe_mask()
-                        << " prune_mask " << strategy.prune_mask()
+                        << " shared_tt " << strategy.shared_tt() << " prune_mask " << strategy.prune_mask()
                         << " futility_prunes " << stats.futility_prunes << " lmr_tries " << stats.lmr_tries << " lmr_researches " << stats.lmr_researches
                         << " null_tries " << stats.null_tries << " null_cutoffs " << stats.null_cutoffs
                         << " pvs_probes " << stats.pvs_probes << " pvs_researches " << stats.pvs_researches
@@ -757,6 +758,10 @@ int main() {
                     try {
                         std::size_t used=0; const int v=std::stoi(value,&used);
                         if(used==value.size() && v>=1 && v<=6) strategy.set_null_reduction(v);
+                    } catch(const std::exception&) {}
+                } else if (name == "SearchSharedTT") {
+                    try { std::size_t used=0; const int v=std::stoi(value,&used);
+                        if(used==value.size() && v>=0 && v<=1) strategy.set_shared_tt(v!=0);
                     } catch(const std::exception&) {}
                 } else if (name == "FutilityMaxDepth") {
                     try { std::size_t used=0; const int v=std::stoi(value,&used);
