@@ -35,6 +35,9 @@ struct EvaluationParameters {
     int coordination_cap = 120;
     int hand_potential_cap = 120;
     int threat_cap = 1600;
+    // Research: attacker's supported-drop pressure on the enemy king ring (0 = off).
+    int king_drop_weight = 0;
+    int king_drop_cap = 300;
 
     // In legacy-v1 reproduction this is +/-300.  The adopted v2 profile retains
     // the wider bound validated in the parameter search.
@@ -70,7 +73,8 @@ struct EvaluationParameters {
             mobility_minor, mobility_piece_cap, danger_numerator, positional_cap,
             material_weight, hand_material_weight, influence_weight, potential_weight, coordination_weight,
             hand_potential_weight, threat_weight, influence_cap, potential_cap,
-            coordination_cap, hand_potential_cap, threat_cap};
+            coordination_cap, hand_potential_cap, threat_cap,
+            king_drop_weight, king_drop_cap};
         for (int v : values) if (v < 0 || v > 10000)
             throw std::invalid_argument("evaluation parameter outside 0..10000");
         if (danger_denominator < 1 || danger_denominator > 10000)

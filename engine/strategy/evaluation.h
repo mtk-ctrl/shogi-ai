@@ -149,6 +149,11 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
         }
     }
 
+    if(p.v2_enabled && p.king_drop_weight) {
+        const int k0=std::min(v2_king_drop_side(s,a,0),p.king_drop_cap);
+        const int k1=std::min(v2_king_drop_side(s,a,1),p.king_drop_cap);
+        b.positional_unclamped += (k0-k1)*p.king_drop_weight/100;
+    }
     b.positional=std::clamp(b.positional_unclamped,-p.positional_cap,p.positional_cap);
     b.total=std::clamp(b.material_term+b.positional,-p.StaticLimit,p.StaticLimit);
     b.clamp_adjustment=b.total-b.material_term-b.positional_unclamped;

@@ -203,6 +203,29 @@ inline int v2_threat_side(const rules::Snapshot& s, const AttackMap& a, int side
     return best + second / 2;
 }
 
+
+// Research: supported drop squares next to the enemy king. Counts empty ring
+// squares where `side` holds a droppable piece, already attacks the square and
+// the defender has no non-king cover; fewer free escapes raise the value.
+inline int v2_king_drop_side(const rules::Snapshot& s, const AttackMap& a, int side) {
+    const int king = a.kings[1-side];
+    if (king < 0) return 0;
+    int strongest = 0;
+    for (int kind = 2; kind <= 7; ++kind) {
+        if (!s.hands[side][kind-1]) continue;
+        const int w = kind == 7 ? 3 : (kind == 4 || kind == 5 || kind == 6) ? 2 : 1;
+        strongest = std::max(strongest, w);
+    }
+    int drops = 0, escapes = 0;
+    for (int sq = 0; sq < 81; ++sq) {
+        if (sq == king || a.distance(sq, king) > 1 || s.board[sq].kind) continue;
+        if (!a.escape_control[side][sq]) ++escapes;
+        if (strongest && a.count[side][sq] && !a.nonking[1-side][sq]) drops += strongest;
+    }
+    if (!drops) return 0;
+    return drops * 6 * (1 + std::max(0, 3 - escapes));
+}
+
 inline V2SideFeatures v2_features(const rules::Snapshot& s, const AttackMap& a,
                                   const EvaluationParameters& p, int side) {
     V2SideFeatures f;

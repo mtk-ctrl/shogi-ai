@@ -2,6 +2,7 @@
 
 #include "strategy/alphabeta3_tt.h"
 #include "strategy/search_research.h"
+#include "strategy/shared_transposition_table.h"
 #include "strategy/position_knowledge.h"
 #include <optional>
 #include "strategy/move_hint_cache.h"
@@ -92,6 +93,7 @@ public:
         std::uint64_t lmr_tries = 0, lmr_researches = 0;
         // Research: futility pruning (SearchPruneMask bit 4).
         std::uint64_t futility_prunes = 0;
+        std::uint64_t rfp_prunes = 0;
         int seldepth = 0;
     };
     static constexpr int MateScore = AlphaBeta3::WinScore;
@@ -206,12 +208,18 @@ public:
     // Selective search. Bit 1 (value 1): null-move pruning, research, off by
     // default. Bit 2 (value 2): late-move reduction, adopted in v2.0.22.
     // Bit 4 (value 4): futility pruning, adopted in v2.0.23.
-    void set_prune_mask(unsigned mask) { prune_mask_ = mask & 7u; }
+    // Bit 8 (value 8): reverse futility (static-value cut), research.
+    void set_prune_mask(unsigned mask) { prune_mask_ = mask & 15u; }
+    void set_rfp_margin(int m) { rfp_margin_ = std::clamp(m, 50, 3000); }
+    void set_rfp_max_depth(int d) { rfp_max_depth_ = std::clamp(d, 1, 8); }
     unsigned prune_mask() const { return prune_mask_; }
     void set_null_reduction(int r) { null_reduction_ = std::clamp(r, 1, 6); }
     int null_reduction() const { return null_reduction_; }
     void set_futility_max_depth(int d) { futility_max_depth_ = std::clamp(d, 1, 6); }
     void set_futility_margin(int m) { futility_margin_ = std::clamp(m, 50, 3000); }
+    // Research: both lanes of the two-thread search read and write one table.
+    void set_shared_tt(bool on) { shared_tt_enabled_ = on; }
+    bool shared_tt() const { return shared_tt_enabled_; }
     void set_lmr_min_depth(int d) { lmr_min_depth_ = std::clamp(d, 2, 16); }
     void set_lmr_after(int n) { lmr_after_ = std::clamp(n, 1, 32); }
     void set_lmr_reduction(int r) { lmr_reduction_ = std::clamp(r, 1, 4); }
@@ -239,7 +247,7 @@ private:
         if (probe_mask_ & 2) for (auto& row : killers_) for (auto& move : row) move.clear();
         if (probe_mask_ & 4) for (auto& side : history_scores_) side.fill(0);
         control_ = &control;
-        tt_.new_search();
+        if (!shared_tt_) tt_.new_search();
         qtt_.new_search();
         for (auto& batch : legal_batches_) batch.valid = false;
         pv_lengths_.fill(0);
@@ -306,7 +314,9 @@ private:
             // Deeper searches use the entire ordered history instead.
             // Quiescence can go beyond the shallow repetition-safe horizon.
             board_scores_ = !quiescence_enabled_ && depth <= 3 && !position.has_repeated_history();
-            if (!(next_mask_ & 8)) tt_.new_search();
+            // A shared table keeps entries across iterations (they are depth-keyed
+            // and stay valid) and is advanced once per go by the parent.
+            if (!shared_tt_ && !(next_mask_ & 8)) tt_.new_search();
             iteration_hints_.new_search();
             try {
                 check_stop();
@@ -396,7 +406,7 @@ private:
         SUM_STAT(legal_cache_replacements);
         SUM_STAT(pvs_probes);SUM_STAT(pvs_researches);SUM_STAT(killer_priorities);
         SUM_STAT(history_priorities);SUM_STAT(ordering_updates);
-        SUM_STAT(null_tries);SUM_STAT(null_cutoffs);SUM_STAT(lmr_tries);SUM_STAT(lmr_researches);SUM_STAT(futility_prunes);
+        SUM_STAT(null_tries);SUM_STAT(null_cutoffs);SUM_STAT(lmr_tries);SUM_STAT(lmr_researches);SUM_STAT(futility_prunes);SUM_STAT(rfp_prunes);
 #undef SUM_STAT
         for(int i=0;i<4;++i)out.nodes_by_ply[i]=a.nodes_by_ply[i]+b.nodes_by_ply[i];
         out.seldepth=std::max(a.seldepth,b.seldepth);
@@ -413,6 +423,10 @@ private:
         has_previous_completed_=has_last_completed_=false;
         SearchResult result;result.move=original.front();result.pv={result.move};
         const auto initial_rng=rng_;
+        if (shared_tt_enabled_) {
+            if (!shared_tt_owner_) shared_tt_owner_ = std::make_unique<SharedTranspositionTable>();
+            shared_tt_owner_->new_search();
+        }
         std::array<std::vector<std::string>,2> groups;
         for(std::size_t i=0;i<original.size();++i)groups[i%2].push_back(original[i]);
         for(int i=0;i<2;++i) {
@@ -427,10 +441,12 @@ private:
             lane.set_null_min_depth(null_min_depth_);
             lane.set_futility_max_depth(futility_max_depth_);
             lane.set_futility_margin(futility_margin_);
+            lane.set_rfp_margin(rfp_margin_);lane.set_rfp_max_depth(rfp_max_depth_);
             lane.set_lmr_min_depth(lmr_min_depth_);
             lane.set_lmr_after(lmr_after_);
             lane.set_lmr_reduction(lmr_reduction_);
             lane.set_quiescence_enabled(quiescence_enabled_);
+            lane.shared_tt_ = shared_tt_enabled_ ? shared_tt_owner_.get() : nullptr;
             lane.set_threads(1);
             lane.position_knowledge_=position_knowledge_;lane.position_knowledge_enabled_=position_knowledge_enabled_;
             lane.capture_root_ties_=true;
@@ -705,7 +721,7 @@ private:
     // Exact board/hands/side identity; no repetition-sensitive search scores
     // are cached here. Terminal and repetition results remain uncached.
     struct EvalCell { std::uint64_t key = 0; int value = 0; std::uint32_t epoch = 0; };
-    std::vector<EvalCell> eval_cache_ = std::vector<EvalCell>(1u << 15);
+    std::vector<EvalCell> eval_cache_ = std::vector<EvalCell>(1u << 20);
     std::uint32_t eval_epoch_ = 1;
     template<class SnapshotGetter>
     int eval_cached(const rules::Position& p, SnapshotGetter get_snapshot) {
@@ -752,7 +768,11 @@ private:
         const auto score_key = board_scores_ ? p.hash_key() : history;
         std::string tt_move;
         ++stats_.tt_probes;
-        if (const auto* entry = tt_.probe(score_key, depth)) {
+        TranspositionTable::Entry tt_copy;
+        const TranspositionTable::Entry* tt_entry = nullptr;
+        if (shared_tt_) { if (shared_tt_->probe(score_key, depth, tt_copy)) tt_entry = &tt_copy; }
+        else tt_entry = tt_.probe(score_key, depth);
+        if (const auto* entry = tt_entry) {
             ++stats_.tt_hits;
             tt_move = TranspositionTable::best_move(*entry);
             const int value = from_table(entry->value, ply);
@@ -778,10 +798,27 @@ private:
                 ? eval_cached(p, [&] { ++stats_.lazy_snapshots; return p.snapshot(); })
                 : eval_node(p, p.snapshot()));
             ++stats_.tt_store_calls;
-            if (tt_.store(score_key, depth, value, Bound::Exact)) ++stats_.tt_replacements;
+            if (tt_store(score_key, depth, value, Bound::Exact, {})) ++stats_.tt_replacements;
             return {value};
         }
         const bool maximizing = ((efficiency_mask_ & LazySnapshot) ? p.turn() : p.snapshot().turn) == root_;
+        // Research: reverse futility (SearchPruneMask bit 8). On a null-window,
+        // non-check node near the horizon, a static value that already clears the
+        // bound by a per-depth margin is returned without searching moves.
+        if ((prune_mask_ & 8) && depth <= rfp_max_depth_ && ply > 0 && beta - alpha == 1
+            && !is_mate_score(alpha) && !is_mate_score(beta)
+            && std::abs(alpha) < Infinity / 2 && std::abs(beta) < Infinity / 2
+            && !p.in_check()) {
+            const int sign = root_ == rules::Color::Black ? 1 : -1;
+            const int stat = sign * eval_node(p, p.snapshot());
+            const int slack = rfp_margin_ * depth;
+            if (maximizing ? stat - slack >= beta : stat + slack < alpha) {
+                ++stats_.rfp_prunes;
+                pv_lengths_[ply] = 0;
+                if (ply < MaxPly) pv_lengths_[ply + 1] = 0;
+                return {maximizing ? stat - slack : stat + slack};
+            }
+        }
         // Research: null-move pruning (SearchPruneMask bit 1). Own implementation
         // for the root-perspective minimax form: a max node is cut when the
         // opponent's reply after our pass still leaves value >= beta; a min node
@@ -901,7 +938,7 @@ private:
         const auto bound = best.value <= original_alpha ? Bound::Upper
             : best.value >= original_beta ? Bound::Lower : Bound::Exact;
         ++stats_.tt_store_calls;
-        if (tt_.store(score_key, depth, to_table(best.value, ply), bound, pv_first(ply)))
+        if (tt_store(score_key, depth, to_table(best.value, ply), bound, pv_first(ply)))
             ++stats_.tt_replacements;
         iteration_hints_.store(p.hash_key(), depth, pv_first(ply));
         return best;
@@ -1164,6 +1201,13 @@ private:
     std::mt19937 rng_;
     Evaluator evaluator_;
     Stats stats_{};
+    bool tt_store(std::uint64_t key, int depth, int value, Bound bound, const std::string& move) {
+        return shared_tt_ ? shared_tt_->store(key, depth, value, bound, move)
+                          : tt_.store(key, depth, value, bound, move);
+    }
+    SharedTranspositionTable* shared_tt_ = nullptr;
+    std::unique_ptr<SharedTranspositionTable> shared_tt_owner_;
+    bool shared_tt_enabled_ = false;
     TranspositionTable tt_;
     TranspositionTable qtt_;
     unsigned research_mask_ = DefaultSearchResearchMask;
@@ -1178,6 +1222,8 @@ private:
     int lmr_after_=3;
     int futility_max_depth_=2;
     int futility_margin_=300;
+    int rfp_margin_=350;
+    int rfp_max_depth_=3;
     int lmr_reduction_=1;
     // null_at_[ply] is true only while the node at that ply is inside its own
     // null-move child, so the child never passes twice in a row.
