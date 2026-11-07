@@ -103,7 +103,7 @@ int main() {
         if (command != "isready" && command != "stop" && command != "ponderhit" && command != "quit")
             finish_search(true);
         if (command == "usi") {
-            std::cout << "id name KUMOJI v2.0.24\nid author mtk-ctrl + ChatGPT\n"
+            std::cout << "id name KUMOJI v2.0.25\nid author mtk-ctrl + ChatGPT\n"
                       << "option name USI_Ponder type check default true\n"
                       << "option name RiskVerify type check default true\n"
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
@@ -118,13 +118,13 @@ int main() {
                       << "option name RfpMargin type spin default 350 min 50 max 3000\n"
                       << "option name RfpMaxDepth type spin default 3 min 1 max 8\n"
                       << "option name NullMoveReduction type spin default 2 min 1 max 6\n"
-                      << "option name SearchSharedTT type spin default 0 min 0 max 1\n"
+                      << "option name SearchSharedTT type spin default 1 min 0 max 1\n"
                       << "option name FutilityMaxDepth type spin default 2 min 1 max 6\n"
                       << "option name FutilityMargin type spin default 300 min 50 max 3000\n"
                       << "option name LmrMinDepth type spin default 3 min 2 max 16\n"
                       << "option name LmrAfter type spin default 3 min 1 max 32\n"
                       << "option name LmrReduction type spin default 1 min 1 max 4\n"
-                      << "option name NullMoveMinDepth type spin default 3 min 2 max 16\n"
+                      << "option name NullMoveMinDepth type spin default 2 min 2 max 16\n"
                       << "option name Quiescence type check default true\n"
                       << "option name MateAssist type check default true\n"
                       << "option name MateLearning type check default true\n"

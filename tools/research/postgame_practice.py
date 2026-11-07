@@ -227,7 +227,7 @@ def run(plan,source_games,binary,knowledge,output):
                 status=validate_game(game,info,root,scenario,source)
                 raw_game=dict(game,moves=[r['move'] for r in game['moves']],move_records=game['moves'])
                 name='game-'+str(len(results))+'.json';path=raw/name
-                metadata=dict(telemetry_schema_version=1,engine_a='KUMOJI v2.0.24',engine_b='KUMOJI v2.0.24',
+                metadata=dict(telemetry_schema_version=1,engine_a='KUMOJI v2.0.25',engine_b='KUMOJI v2.0.24',
                     sha256_a=sha256(binary.read_bytes()),sha256_b=sha256(binary.read_bytes()),
                     options_a=dict(OPTIONS,**plan['parent_options'],PositionKnowledgeFile=str(knowledge.resolve()),RandomSeed=plan['seed']+index),
                     options_b=dict(OPTIONS,**plan['parent_options'],PositionKnowledgeFile=str(knowledge.resolve()),RandomSeed=plan['seed']+index),

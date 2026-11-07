@@ -1207,7 +1207,7 @@ private:
     }
     SharedTranspositionTable* shared_tt_ = nullptr;
     std::unique_ptr<SharedTranspositionTable> shared_tt_owner_;
-    bool shared_tt_enabled_ = false;
+    bool shared_tt_enabled_ = true; // v2.0.25 adopted
     TranspositionTable tt_;
     TranspositionTable qtt_;
     unsigned research_mask_ = DefaultSearchResearchMask;
@@ -1217,7 +1217,7 @@ private:
     unsigned probe_mask_=DefaultSearchProbeMask;
     unsigned prune_mask_=DefaultSearchPruneMask;
     int null_reduction_=2;
-    int null_min_depth_=3;
+    int null_min_depth_=2;
     int lmr_min_depth_=3;
     int lmr_after_=3;
     int futility_max_depth_=2;

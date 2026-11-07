@@ -15,13 +15,13 @@ enum SearchEfficiency : unsigned {
 };
 // Formally adopted in v2.0.16: geometry distance table + occupied-square evaluation scanning.
 // LegalTokenCache=OFF; the previously adopted 23/8 defaults above stay unchanged.
-inline constexpr unsigned DefaultSearchReuseMask = 6;
+inline constexpr unsigned DefaultSearchReuseMask = 14; // v2.0.25: ray table (bit 8) adopted
 // v2.0.20: PVS + quiet cutoff killers. History ordering formally adopted in v2.0.21.
 inline constexpr unsigned DefaultSearchProbeMask = 7;
 // v2.0.22: late-move reduction (bit 2) formally adopted. v2.0.23: futility
-// pruning (bit 4) formally adopted. Bit 1 (null move) is research code and
-// stays off by default.
-inline constexpr unsigned DefaultSearchPruneMask = 6;
+// pruning (bit 4) formally adopted. v2.0.25: null move (bit 1) and reverse
+// futility (bit 8) adopted together with the shared TT as one package.
+inline constexpr unsigned DefaultSearchPruneMask = 15; // v2.0.25: null move (1) and reverse futility (8) adopted
 enum SearchReuse : unsigned {
     LegalTokenCache = 1, GeometryLookup = 2, OccupiedIndex = 4,
 };
