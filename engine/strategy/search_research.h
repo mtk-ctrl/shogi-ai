@@ -11,7 +11,7 @@ enum SearchResearch : unsigned {
 inline constexpr unsigned DefaultSearchEfficiencyMask = 8;
 enum SearchEfficiency : unsigned {
     RuleCheckOrdering = 1, OrderingWorkspace = 2, LazySnapshot = 4,
-    SelectiveUSI = 8,
+    SelectiveUSI = 8, LazyQTerminal = 16, // research: skip full legal generation at stand-pat qnodes
 };
 // Formally adopted in v2.0.16: geometry distance table + occupied-square evaluation scanning.
 // LegalTokenCache=OFF; the previously adopted 23/8 defaults above stay unchanged.

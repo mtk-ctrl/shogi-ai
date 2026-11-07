@@ -188,7 +188,7 @@ public:
     const Stats& last_stats() const { return stats_; }
     void set_research_mask(unsigned mask) { research_mask_ = mask & 31; }
     unsigned research_mask() const { return research_mask_; }
-    void set_efficiency_mask(unsigned mask) { efficiency_mask_ = mask & 15; }
+    void set_efficiency_mask(unsigned mask) { efficiency_mask_ = mask & 31; }
     unsigned efficiency_mask() const { return efficiency_mask_; }
     void set_next_mask(unsigned mask) { next_mask_ = mask & 15; }
     // Officially adopted: verify pawn drops the opponent can immediately capture.
@@ -938,7 +938,12 @@ private:
         check_stop();
         ++stats_.qnodes; // The normal leaf was already counted by visit().
         pv_lengths_[ply] = 0;
-        const auto status = node_status(p, ply);
+        // Research (LazyQTerminal): outside check, a stand-pat cutoff does not need
+        // the full legal list. Repetition is still decided here; "no legal move"
+        // is decided below only if the node has no tactical moves left to try.
+        const bool checked = p.in_check();
+        const bool lazy_terminal = (efficiency_mask_ & LazyQTerminal) && !checked;
+        const auto status = lazy_terminal ? p.repetition_status() : node_status(p, ply);
         if (status.result != rules::Result::Ongoing) {
             ++stats_.terminal_nodes;
             return {terminal(p, status, ply)};
@@ -946,7 +951,6 @@ private:
         // Never publish a static score while in check at a safety ceiling.
         // Discard this incomplete iteration just as with stop/time exhaustion.
         if (ply >= MaxPly) throw Interrupted{};
-        const bool checked = p.in_check();
         std::optional<rules::Snapshot> snapshot;
         auto get_snapshot = [&]() -> const rules::Snapshot& {
             if (!snapshot) { snapshot = p.snapshot(); ++stats_.lazy_snapshots; }
@@ -975,6 +979,10 @@ private:
         }
         const bool selective = !checked && (efficiency_mask_ & SelectiveUSI);
         auto moves = selective ? legal_tactical(p, ply) : legal(p, ply);
+        if (lazy_terminal && moves.empty() && batch(p, ply).tokens.empty()) {
+            ++stats_.terminal_nodes;
+            return {terminal(p, node_status(p, ply), ply)};
+        }
         if (!checked && !selective) {
             const auto& snapshot = get_snapshot();
             moves.erase(std::remove_if(moves.begin(), moves.end(), [&](const auto& move) {
