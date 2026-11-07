@@ -40,7 +40,7 @@ reference = Engine(sys.argv[2], 'official-v2015', options) if len(sys.argv)>2 el
 try:
     expected = [run(reference, *case)[0] for case in cases] if reference else None
     defaults = [run(e, *case) for case in cases]
-    assert all(info['reuse_mask'] == 6 for _, info in defaults)
+    assert all(info['reuse_mask'] == 14 for _, info in defaults)
     if expected is not None: assert [sig for sig, _ in defaults] == expected
     for mask in range(16):
         e.send(f'setoption name SearchReuseMask value {mask}')
@@ -51,7 +51,7 @@ try:
             observed.append(signature)
         if expected is None: expected = observed
         assert observed == expected, (mask, observed, expected)
-    print('PASS selected research default 6 and all 16 reuse combinations: exact choices/scores/depth/nodes/qnodes/cutoffs/PV and actual mask')
+    print('PASS adopted default 14 and all 16 reuse combinations: exact choices/scores/depth/nodes/qnodes/cutoffs/PV and actual mask')
 finally:
     e.close()
     if reference: reference.close()
