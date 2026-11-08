@@ -1,5 +1,6 @@
 #pragma once
 #include "strategy/attack_map.h"
+#include "strategy/evaluation_king_ext.h"
 #include "strategy/search_research.h"
 #include "strategy/evaluation_params.h"
 #include "strategy/evaluation_v2_features.h"
@@ -153,6 +154,13 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
         const int k0=std::min(v2_king_drop_side(s,a,0),p.king_drop_cap);
         const int k1=std::min(v2_king_drop_side(s,a,1),p.king_drop_cap);
         b.positional_unclamped += (k0-k1)*p.king_drop_weight/100;
+    }
+    if(p.king_ext_scale>0) {
+        int f0[KingExtFeatures],f1[KingExtFeatures];
+        king_ext_features(s,a,0,f0);king_ext_features(s,a,1,f1);
+        std::int64_t sum=0;
+        for(int i=0;i<7;++i){const int j=KingExtSelected[i];sum+=std::int64_t(p.king_ext_coef[i])*(f1[j]-f0[j]);}
+        b.positional_unclamped += static_cast<int>(sum*p.king_ext_scale/100);
     }
     b.positional=std::clamp(b.positional_unclamped,-p.positional_cap,p.positional_cap);
     b.total=std::clamp(b.material_term+b.positional,-p.StaticLimit,p.StaticLimit);

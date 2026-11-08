@@ -1,0 +1,35 @@
+name: King Feature Study (research, temporary)
+# Research only (branch-only). Tests whether candidate king-danger features add information
+# beyond the current evaluation, on finished v2.0.26 self-play games (own games only).
+on:
+  push:
+    branches: [research/king-features-20261108]
+permissions:
+  actions: read
+  contents: read
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install numpy scipy python-shogi
+      - run: python3 scripts/build.py --king-probe --output build/king_probe
+      - name: Download shards
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_IDS: "42443137600 42443155663 42446927414"
+        run: |
+          for id in $RUN_IDS; do gh run download "$id" -R "$GITHUB_REPOSITORY" -p "generic-engine-match-$id-*" -D shards/$id; done
+          i=0; for f in $(find shards -name 'shard-*.json' | sort); do i=$((i+1)); cp "$f" "shards/g$i.json"; done
+      - name: Dataset and study
+        run: |
+          python3 research/eval-tuning/build_dataset.py shards/g*.json --output data.tsv --min-ply 8
+          python3 research/eval-tuning/king_feature_test.py data.tsv build/king_probe 20 | tee study.log
+          python3 - <<'PY'
+          txt = open("study.log", encoding="utf-8").read()
+          print("::notice title=study.log::" + txt.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A"))
+          PY

@@ -147,6 +147,8 @@ int main() {
                       << "option name EvalCoordination type spin default " << evaluation_parameters.coordination_weight << " min 0 max 10000\n"
                       << "option name EvalHandPotential type spin default " << evaluation_parameters.hand_potential_weight << " min 0 max 10000\n"
                       << "option name EvalKingDrop type spin default 0 min 0 max 10000\n"
+                      << "option name EvalKingExtScale type spin default 0 min 0 max 300\n"
+                      << "option name EvalKingExtCoef type string default 0,0,0,0,0,0,0\n"
                       << "option name EvalThreat type spin default " << evaluation_parameters.threat_weight << " min 0 max 10000\n"
                       << "option name EvalPositionalCap type spin default " << evaluation_parameters.positional_cap << " min 0 max 5000\n"
                       << "option name PositionKnowledge type check default true\n"
@@ -915,6 +917,23 @@ int main() {
                                 ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters, strategy.reuse_mask()));
                         }
                     } catch (const std::exception&) {}
+                } else if (name == "EvalKingExtScale") {
+                    try {
+                        std::size_t used = 0; const int v = std::stoi(value, &used);
+                        if (used == value.size() && v >= 0 && v <= 300) evaluation_parameters.king_ext_scale = v;
+                    } catch (const std::exception&) {}
+                } else if (name == "EvalKingExtCoef") {
+                    // Research: 7 comma-separated integers (cp per unit) for ring_enemy_attacks,
+                    // ring_own_defence, weak_ring, enemy_hand_value, undefended_attacked_ring,
+                    // enemy_near_king, weak_ring_x_hand.
+                    std::vector<int> numbers; std::stringstream ss(value); std::string token; bool ok = true;
+                    while (std::getline(ss, token, ',')) {
+                        try { std::size_t used = 0; const int n = std::stoi(token, &used);
+                              if (used != token.size() || n < -5000 || n > 5000) ok = false; numbers.push_back(n); }
+                        catch (const std::exception&) { ok = false; }
+                    }
+                    if (ok && numbers.size() == 7)
+                        for (int i = 0; i < 7; ++i) evaluation_parameters.king_ext_coef[i] = numbers[i];
                 } else if (name == "RandomSeed") {
                     try {
                         auto parsed = std::stoul(value);
