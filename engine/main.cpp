@@ -48,6 +48,7 @@ int main() {
     int default_depth = 3;
     bool adaptive_long_think_enabled = true;
     int long_think_shallow_depth = 0;
+    int long_think_max_uses = 10;
     int long_think_shallow_lead = 200;
     bool usi_ponder_enabled = true;
     int long_think_used = 0;
@@ -150,6 +151,7 @@ int main() {
                       << "option name EvalHandPotential type spin default " << evaluation_parameters.hand_potential_weight << " min 0 max 10000\n"
                       << "option name EvalKingDrop type spin default 0 min 0 max 10000\n"
                       << "option name LongThinkShallowDepth type spin default 0 min 0 max 20\n"
+                      << "option name LongThinkMaxUses type spin default 10 min 0 max 100\n"
                       << "option name LongThinkShallowLead type spin default 200 min -1000 max 3000\n"
                       << "option name EvalKingExtScale type spin default 100 min 0 max 300\n"
                       << "option name EvalKingExtCoef type string default 207,7,252,11,263,67,94\n"
@@ -328,10 +330,10 @@ int main() {
                 adaptive_long_think_enabled
                 && limits.requested_movetime_ms == 200
                 && !limits.ponder && !limits.infinite && limits.nodes == 0
-                && LongThinkBudget::available(current_ply, long_think_used)
+                && LongThinkBudget::available(current_ply, long_think_used, long_think_max_uses)
                 && candidates.size() > 1;
             const bool long_think_fallback =
-                long_think_slot && LongThinkBudget::must_spend(current_ply, long_think_used);
+                long_think_slot && LongThinkBudget::must_spend(current_ply, long_think_used, long_think_max_uses);
 
             const auto started_ns = shogi::strategy::SearchControl::now_ns();
             session = std::make_unique<Session>();
@@ -614,7 +616,7 @@ int main() {
                             ++long_think_used;
                             if (!active->suppress.load()) {
                                 std::ostringstream out;
-                                out << "info string long_think used " << long_think_used << "/10"
+                                out << "info string long_think used " << long_think_used << "/" << long_think_max_uses
                                     << " reason " << shogi::strategy::long_think_reason_name(reason)
                                     << " base_ms 200 max_ms 1000\n";
                                 emit(out.str());
@@ -922,6 +924,11 @@ int main() {
                             strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
                                 ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters, strategy.reuse_mask()));
                         }
+                    } catch (const std::exception&) {}
+                } else if (name == "LongThinkMaxUses") {
+                    try {
+                        std::size_t used = 0; const int v = std::stoi(value, &used);
+                        if (used == value.size() && v >= 0 && v <= 100) long_think_max_uses = v;
                     } catch (const std::exception&) {}
                 } else if (name == "LongThinkShallowDepth" || name == "LongThinkShallowLead") {
                     try {
