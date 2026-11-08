@@ -12,30 +12,33 @@ using namespace shogi;
 static constexpr int NF = 12;
 static void features(const rules::Snapshot& s, const strategy::AttackMap& a, int side, int out[NF]) {
     for (int i = 0; i < NF; ++i) out[i] = 0;
-    const int enemy = 1 - side;
-    for (int sq = 0; sq < 81; ++sq) {
-        const auto& p = s.board[sq];
-        if (!p.kind || p.kind == 8) continue;
-        const int rank = sq % 9;
-        const int depth = side == 0 ? rank : 8 - rank;           // 0 = enemy back rank, 8 = own back rank
-        if (int(p.color) == side) {
-            const int v = strategy::piece_value(p.kind, p.promoted);
-            const int att = a.count[enemy][sq], def = a.nonking[side][sq];
-            if (att && !def) { ++out[0]; out[1] += v / 100; }                        // loose pieces
-            if (att && def && a.least[enemy][sq] < v) out[2] += (v - a.least[enemy][sq]) / 100;  // bad exchange risk
-            if (depth <= 2) { ++out[3]; if (!p.promoted && p.kind != 7) ++out[4]; }  // in enemy camp / unpromoted there
-            if (att > def) ++out[8];                                                 // attacked more than defended
-        } else {
-            out[9] += a.count[side][sq] ? 1 : 0;                                     // enemy pieces we attack
-            if (a.count[side][sq] && !a.nonking[enemy][sq]) out[10] += strategy::piece_value(p.kind, p.promoted) / 100; // enemy loose value
-        }
-    }
     const int king = a.kings[side];
-    if (king >= 0) { const int r = king % 9; const int d = side == 0 ? r : 8 - r; out[5] = d <= 2 ? 1 : 0; }
-    int hv = 0, hn = 0;
-    for (int k = 1; k <= 7; ++k) { hn += s.hands[side][k - 1]; hv += s.hands[side][k - 1] * strategy::hand_piece_value(k); }
-    out[6] = hv / 100; out[7] = hn;
-    out[11] = int(s.turn) == side ? 1 : 0;                                           // side to move
+    if (king < 0) return;
+    const int enemy = 1 - side;
+    const int kf = king / 9, kr = king % 9;
+    bool strong_drop = false;
+    for (int k = 2; k <= 7; ++k) if (s.hands[enemy][k - 1]) strong_drop = true;
+    int maxring = 0;
+    for (int sq = 0; sq < 81; ++sq) {
+        const int d = a.distance(sq, king);
+        const auto& p = s.board[sq];
+        const bool own = p.kind && int(p.color) == side && p.kind != 8;
+        if (sq != king && d <= 2 && !p.kind && strong_drop && a.count[enemy][sq] && !a.nonking[side][sq]) ++out[0];  // supported drop spots (radius 2)
+        if (own && d <= 1 && (p.kind == 7 || p.kind == 4)) ++out[1];                                              // gold/silver next to king
+        if (own && d <= 2) out[2] += strategy::piece_value(p.kind, p.promoted) / 100;                             // defender value near
+        if (p.kind && p.kind != 8 && int(p.color) == enemy && d <= 3) out[3] += strategy::piece_value(p.kind, p.promoted) / 100; // attacker value near
+        if (sq != king && d == 2 && !p.kind && !a.escape_control[enemy][sq]) ++out[6];                            // second ring free
+        if (sq != king && d <= 1) maxring = std::max(maxring, a.count[enemy][sq]);
+    }
+    // pawn shield: own pawns directly in front of king and adjacent files
+    const int fwd = side == 0 ? -1 : 1;
+    for (int df = -1; df <= 1; ++df) { const int f = kf + df, r = kr + fwd; if (f >= 0 && f < 9 && r >= 0 && r < 9) { const auto& q = s.board[f * 9 + r]; if (q.kind == 1 && !q.promoted && int(q.color) == side) ++out[4]; } }
+    out[5] = 0; for (int df = -1; df <= 1; ++df) for (int rr = 1; rr <= 2; ++rr) { const int f = kf + df, r = kr + fwd * rr; if (f >= 0 && f < 9 && r >= 0 && r < 9 && !s.board[f * 9 + r].kind) ++out[5]; } // empty squares in front (two ranks)
+    out[7] = maxring;
+    out[8] = (kf == 0 || kf == 8 ? 1 : 0) + ((side == 0 ? kr : 8 - kr) >= 7 ? 1 : 0);                             // edge file / back rank
+    out[9] = s.hands[enemy][6] + s.hands[enemy][3];                                                              // gold + silver in hand
+    out[10] = s.hands[enemy][4] + s.hands[enemy][5];                                                             // bishop + rook in hand
+    out[11] = s.hands[enemy][2];                                                                                 // knights in hand
 }
 int main() {
     std::string line, error;
