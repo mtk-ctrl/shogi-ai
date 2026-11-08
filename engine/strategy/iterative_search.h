@@ -58,6 +58,7 @@ struct SearchControl {
     int previous_score = 0;
     int shallow_depth_max = 0;   // research: 0 = off; extend when depth<=N with a lead
     int shallow_lead_min = 200;
+    int drop_threshold = 150;    // research: score-drop trigger (cp)
     std::atomic<int> long_think_reason{static_cast<int>(LongThinkReason::None)};
     static std::int64_t now_ns() {
         return std::chrono::duration_cast<std::chrono::nanoseconds>(
@@ -574,7 +575,7 @@ private:
             reason = LongThinkReason::InCheck;
         } else if (control_->has_previous_score && has_last_completed_
                    && last_completed_.has_score
-                   && control_->previous_score - last_completed_.score >= 150) {
+                   && control_->previous_score - last_completed_.score >= control_->drop_threshold) {
             reason = LongThinkReason::ScoreDrop150;
         } else if (has_previous_completed_ && has_last_completed_
                    && previous_completed_.has_score && last_completed_.has_score

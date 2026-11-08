@@ -49,6 +49,7 @@ int main() {
     bool adaptive_long_think_enabled = true;
     int long_think_shallow_depth = 0;
     int long_think_max_uses = 10;
+    int long_think_drop_threshold = 150;
     int long_think_ceiling_ms = 1000;
     int long_think_shallow_lead = 200;
     bool usi_ponder_enabled = true;
@@ -154,6 +155,7 @@ int main() {
                       << "option name LongThinkShallowDepth type spin default 0 min 0 max 20\n"
                       << "option name LongThinkMaxUses type spin default 10 min 0 max 100\n"
                       << "option name LongThinkCeilingMs type spin default 1000 min 300 max 10000\n"
+                      << "option name LongThinkDropThreshold type spin default 150 min 20 max 1000\n"
                       << "option name LongThinkShallowLead type spin default 200 min -1000 max 3000\n"
                       << "option name EvalKingExtScale type spin default 100 min 0 max 300\n"
                       << "option name EvalKingExtCoef type string default 207,7,252,11,263,67,94\n"
@@ -351,6 +353,7 @@ int main() {
                 active->control.has_previous_score = previous_root_score_valid;
                 active->control.previous_score = previous_root_score;
                 active->control.shallow_depth_max = long_think_shallow_depth;
+                active->control.drop_threshold = long_think_drop_threshold;
                 active->control.shallow_lead_min = long_think_shallow_lead;
                 // parse_go_limits keeps a 10ms communication margin. Match a
                 // "go movetime 1000" ceiling while continuing the same search.
@@ -931,6 +934,11 @@ int main() {
                     try {
                         std::size_t used = 0; const int v = std::stoi(value, &used);
                         if (used == value.size() && v >= 300 && v <= 10000) long_think_ceiling_ms = v;
+                    } catch (const std::exception&) {}
+                } else if (name == "LongThinkDropThreshold") {
+                    try {
+                        std::size_t used = 0; const int v = std::stoi(value, &used);
+                        if (used == value.size() && v >= 20 && v <= 1000) long_think_drop_threshold = v;
                     } catch (const std::exception&) {}
                 } else if (name == "LongThinkMaxUses") {
                     try {
