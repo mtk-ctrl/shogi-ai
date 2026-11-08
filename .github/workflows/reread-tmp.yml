@@ -31,5 +31,8 @@ jobs:
           python3 research/reread/reread.py --engine build/shogi-ai --files $(find shards -name 'shard-*.json') --times 200,1000,3000 --max-events 60 --options '{"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}' | tee reread.log
           python3 - <<'PY'
           txt = open("reread.log", encoding="utf-8").read()
-          print("::notice title=reread.log::" + txt.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A"))
+          i = txt.find("== summary")
+          summ = txt[i:] if i >= 0 else txt[-3000:]
+          head = txt.split("\n")[0]
+          print("::notice title=reread-summary::" + (head + "\n" + summ).replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A"))
           PY
