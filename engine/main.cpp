@@ -139,6 +139,7 @@ int main() {
                       << "option name EvalPressure type spin default " << evaluation_parameters.weights[1] << " min 0 max 10000\n"
                       << "option name EvalActivity type spin default " << evaluation_parameters.weights[2] << " min 0 max 10000\n"
                       << "option name EvalDanger type spin default " << evaluation_parameters.weights[3] << " min 0 max 10000\n"
+                      << "option name EvalStageTable type string default adopted\n"
                       << "option name EvalV2 type check default " << (evaluation_parameters.v2_enabled ? "true" : "false") << "\n"
                       << "option name EvalMaterialWeight type spin default " << evaluation_parameters.material_weight << " min 0 max 10000\n"
                       << "option name EvalInfluence type spin default " << evaluation_parameters.influence_weight << " min 0 max 10000\n"
@@ -860,6 +861,28 @@ int main() {
                         material_profile = value == "material";
                         strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
                             ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters, strategy.reuse_mask()));
+                    }
+                } else if (name == "EvalStageTable") {
+                    // Research: 27 comma-separated integers = opening, middle, end rows for the nine
+                    // positional axes (safety, pressure, activity, danger, influence, potential,
+                    // coordination, hand potential, threat). "adopted" restores profile 47.
+                    auto& ov = shogi::strategy::stage_table_override();
+                    if (value == "adopted") ov.active = false;
+                    else {
+                        std::vector<int> numbers;
+                        std::stringstream ss(value); std::string token; bool ok = true;
+                        while (std::getline(ss, token, ',')) {
+                            try { std::size_t used = 0; const int n = std::stoi(token, &used);
+                                  if (used != token.size() || n < 0 || n > 10000) ok = false; numbers.push_back(n); }
+                            catch (const std::exception&) { ok = false; }
+                        }
+                        if (ok && numbers.size() == 27) {
+                            for (int r = 0; r < 3; ++r) {
+                                ov.rows[r] = shogi::strategy::StageOpening;
+                                for (int i = 0; i < 9; ++i) ov.rows[r][i + 1] = numbers[r * 9 + i];
+                            }
+                            ov.active = true;
+                        }
                     }
                 } else if (name == "EvalV2") {
                     if (value == "true" || value == "false") {
