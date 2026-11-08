@@ -15,7 +15,7 @@ jobs:
       - name: Download ladder summaries and print
         env:
           GH_TOKEN: ${{ github.token }}
-          RUN_IDS: "42456396251 42456617663 42456837855 42457070946 42457323476 42457573299 42457829170 42458069588 42458328235"
+          RUN_IDS: "42335903823 42336169460 42337230496 42337538664 42337825063 42338111422 42338361667 42338639573"
         run: |
           for id in $RUN_IDS; do gh run download "$id" -R "$GITHUB_REPOSITORY" -n "yaneuraou-ladder-summary-$id" -D lad_$id; done
           python3 - <<'PY'
