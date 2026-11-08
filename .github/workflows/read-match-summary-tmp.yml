@@ -12,17 +12,18 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Download aggregate and print
+      - name: Download ladder summaries and print
         env:
           GH_TOKEN: ${{ github.token }}
-          RUN_IDS: "42453154197"
+          RUN_IDS: "42456396251 42456617663 42456837855 42457070946 42457323476 42457573299 42457829170 42458069588 42458328235"
         run: |
-          for RUN_ID in $RUN_IDS; do gh run download "$RUN_ID" -R "$GITHUB_REPOSITORY" -n "generic-engine-match-summary-$RUN_ID" -D agg_$RUN_ID; done
+          for id in $RUN_IDS; do gh run download "$id" -R "$GITHUB_REPOSITORY" -n "yaneuraou-ladder-summary-$id" -D lad_$id; done
           python3 - <<'PY'
           import json, glob
-          for f in sorted(glob.glob("agg_*/*.json")):
+          rows = []
+          for f in sorted(glob.glob("lad_*/*.json")):
               d = json.load(open(f))
-              keys = ("games","wins_a","wins_b","draws","score_a","illegal_games","average_plies","options_a")
-              small = {k: d.get(k) for k in keys if k in d}
-              print("::notice title=" + f.split("/")[0] + "::" + json.dumps(small, ensure_ascii=False))
+              rows.append(f"Lv{d['level']}: {d['wins']}W-{d['draws']}D-{d['losses']}L win%={d['win_pct']:.1f} point%={d['point_pct']:.1f} illegal={d['illegal_games']} -> {d['decision']}")
+          rows.sort(key=lambda r: int(r.split(':')[0][2:]))
+          print("::notice title=ladder::" + "%0A".join(rows))
           PY
