@@ -109,7 +109,8 @@ int main() {
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
                       << "option name SearchDepth type spin default 3 min 1 max 64\n"
                       << "option name SearchResearchMask type spin default " << shogi::strategy::DefaultSearchResearchMask << " min 0 max 31\n"
-                      << "option name SearchEfficiencyMask type spin default " << shogi::strategy::DefaultSearchEfficiencyMask << " min 0 max 63\n"
+                      << "option name SearchEfficiencyMask type spin default " << shogi::strategy::DefaultSearchEfficiencyMask << " min 0 max 127\n"
+                      << "option name QDeltaMargin type spin default 300 min 0 max 5000\n"
                       << "option name SearchReuseMask type spin default " << shogi::strategy::DefaultSearchReuseMask << " min 0 max 15\n"
                       << "option name SearchNextMask type spin default 4 min 0 max 15\n"
                       << "option name SearchThreads type spin default 2 min 1 max 2\n"
@@ -729,7 +730,7 @@ int main() {
                     try {
                         std::size_t used = 0;
                         const int mask = std::stoi(value, &used);
-                        if (used == value.size() && mask >= 0 && mask <= 63)
+                        if (used == value.size() && mask >= 0 && mask <= 127)
                             strategy.set_efficiency_mask(static_cast<unsigned>(mask));
                     } catch (const std::exception&) {}
                 } else if (name == "SearchReuseMask") {
@@ -793,6 +794,11 @@ int main() {
                 } else if (name == "LmrReduction") {
                     try { std::size_t used=0; const int v=std::stoi(value,&used);
                         if(used==value.size() && v>=1 && v<=4) strategy.set_lmr_reduction(v);
+                    } catch(const std::exception&) {}
+                } else if (name == "QDeltaMargin") {
+                    try {
+                        std::size_t used=0; const int v=std::stoi(value,&used);
+                        if(used==value.size() && v>=0 && v<=5000) strategy.set_qdelta_margin(v);
                     } catch(const std::exception&) {}
                 } else if (name == "NullMoveMinDepth") {
                     try {

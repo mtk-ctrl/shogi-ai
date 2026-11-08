@@ -73,7 +73,7 @@ template<class Evaluator = FeatureEvaluator>
 class BasicIterativeSearch {
 public:
     struct Stats : BasicAlphaBeta3TT<Evaluator>::Stats {
-        std::uint64_t qnodes = 0, qcutoffs = 0, qlimit_leaves = 0;
+        std::uint64_t qnodes = 0, qcutoffs = 0, qlimit_leaves = 0, qdelta_prunes = 0;
         std::uint64_t knowledge_probes = 0, knowledge_hits = 0, knowledge_promotions = 0;
         std::uint64_t knowledge_research_ms = 0, knowledge_research_nodes = 0, knowledge_stable_ms = 0;
         int knowledge_research_depth = 0, knowledge_score_value = 0;
@@ -191,7 +191,7 @@ public:
     const Stats& last_stats() const { return stats_; }
     void set_research_mask(unsigned mask) { research_mask_ = mask & 31; }
     unsigned research_mask() const { return research_mask_; }
-    void set_efficiency_mask(unsigned mask) { efficiency_mask_ = mask & 63; }
+    void set_efficiency_mask(unsigned mask) { efficiency_mask_ = mask & 127; }
     unsigned efficiency_mask() const { return efficiency_mask_; }
     void set_next_mask(unsigned mask) { next_mask_ = mask & 15; }
     // Officially adopted: verify pawn drops the opponent can immediately capture.
@@ -211,6 +211,8 @@ public:
     // Bit 4 (value 4): futility pruning, adopted in v2.0.23.
     // Bit 8 (value 8): reverse futility (static-value cut), research.
     void set_prune_mask(unsigned mask) { prune_mask_ = mask & 15u; }
+    void set_qdelta_margin(int m) { qdelta_margin_ = std::clamp(m, 0, 5000); }
+    int qdelta_margin() const { return qdelta_margin_; }
     void set_rfp_margin(int m) { rfp_margin_ = std::clamp(m, 50, 3000); }
     void set_rfp_max_depth(int d) { rfp_max_depth_ = std::clamp(d, 1, 8); }
     unsigned prune_mask() const { return prune_mask_; }
@@ -398,7 +400,7 @@ private:
         SUM_STAT(leaf_evals);SUM_STAT(terminal_nodes);SUM_STAT(order_calls);SUM_STAT(ordered_moves);
         SUM_STAT(tt_probes);SUM_STAT(tt_hits);SUM_STAT(tt_exact_hits);SUM_STAT(tt_bound_cutoffs);
         SUM_STAT(tt_store_calls);SUM_STAT(tt_replacements);SUM_STAT(tt_move_first);SUM_STAT(tt_disabled_repetition);
-        SUM_STAT(qnodes);SUM_STAT(qcutoffs);SUM_STAT(qlimit_leaves);
+        SUM_STAT(qnodes);SUM_STAT(qcutoffs);SUM_STAT(qlimit_leaves);SUM_STAT(qdelta_prunes);
         SUM_STAT(knowledge_probes);SUM_STAT(knowledge_hits);SUM_STAT(knowledge_promotions);
         SUM_STAT(knowledge_disabled_repetition);SUM_STAT(generated_plays);SUM_STAT(legal_batches);
         SUM_STAT(order_reuse_hits);SUM_STAT(qtt_probes);SUM_STAT(qtt_hits);SUM_STAT(qtt_cutoffs);
@@ -438,6 +440,7 @@ private:
             lane.set_risk_verify(risk_verify_enabled_);
             lane.set_probe_mask(probe_mask_);
             lane.set_prune_mask(prune_mask_);
+            lane.set_qdelta_margin(qdelta_margin_);
             lane.set_null_reduction(null_reduction_);
             lane.set_null_min_depth(null_min_depth_);
             lane.set_futility_max_depth(futility_max_depth_);
@@ -1076,8 +1079,23 @@ private:
                     moves[i] = std::move(scored[i].move);
             }
         }
+        const int stand_pat_legacy = best.value;
         for (const auto& move : moves) {
             check_stop();
+            if (!checked && (efficiency_mask_ & QDelta)) {
+                const auto& sn = get_snapshot();
+                const int dst = (move[2] - '1') * 9 + move[3] - 'a';
+                const int src = (move[0] - '1') * 9 + move[1] - 'a';
+                int gain = 0;
+                if (sn.board[dst].kind != 0 && sn.board[dst].kind != 8)
+                    gain += piece_value(sn.board[dst].kind, sn.board[dst].promoted);
+                if (move.size() == 5 && move[4] == '+')
+                    gain += std::max(0, piece_value(sn.board[src].kind, true)
+                                           - piece_value(sn.board[src].kind, sn.board[src].promoted));
+                if (qdelta_skip(maximizing, stand_pat_legacy, gain, alpha, beta)) {
+                    ++stats_.qdelta_prunes; continue;
+                }
+            }
             Node child;
             {
                 make(p, move, ply);
@@ -1098,6 +1116,12 @@ private:
     // Research (TacticalGen). Same move set and scoring as the SelectiveUSI path, but
     // the rule layer returns only legal captures/promotions, so quiet moves and drops
     // are never legality-checked and no full legal list is stored.
+    // Research (QDelta, SearchEfficiencyMask bit 64): outside check, skip a capture or
+    // promotion that cannot lift the stand-pat score to the window even with a margin.
+    bool qdelta_skip(bool maximizing, int stand_pat, int gain, int alpha, int beta) const {
+        return maximizing ? stand_pat + gain + qdelta_margin_ <= alpha
+                          : stand_pat - gain - qdelta_margin_ >= beta;
+    }
     Node quiescence_tactical(rules::Position& p, int ply, int qply, int alpha, int beta,
                              int original_alpha, int original_beta, bool maximizing, Node best,
                              const rules::Snapshot& snapshot) {
@@ -1111,7 +1135,7 @@ private:
             }
             return best;
         }
-        struct TacticalMove { std::string move; int score = 0; rules::GeneratedMove token; };
+        struct TacticalMove { std::string move; int score = 0; rules::GeneratedMove token; int gain = 0; };
         std::vector<TacticalMove> scored;
         scored.reserve(tokens.size());
         for (const auto& token : tokens) {
@@ -1129,12 +1153,20 @@ private:
                 score += 100 * std::max(0, piece_value(moving.kind, true)
                                                - piece_value(moving.kind, moving.promoted));
             }
-            scored.push_back({std::move(move), score, token});
+            int gain = 0;
+            if (captured.kind != 0 && captured.kind != 8) gain += piece_value(captured.kind, captured.promoted);
+            if (move.size() == 5 && move[4] == '+')
+                gain += std::max(0, piece_value(moving.kind, true) - piece_value(moving.kind, moving.promoted));
+            scored.push_back({std::move(move), score, token, gain});
         }
         std::stable_sort(scored.begin(), scored.end(),
                          [](const auto& a, const auto& b) { return a.score > b.score; });
+        const int stand_pat = best.value;
         for (const auto& entry : scored) {
             check_stop();
+            if ((efficiency_mask_ & QDelta) && qdelta_skip(maximizing, stand_pat, entry.gain, alpha, beta)) {
+                ++stats_.qdelta_prunes; continue;
+            }
             Node child;
             {
                 std::string error;
@@ -1282,6 +1314,7 @@ private:
     unsigned threads_=2;
     unsigned probe_mask_=DefaultSearchProbeMask;
     unsigned prune_mask_=DefaultSearchPruneMask;
+    int qdelta_margin_ = 300; // Research (QDelta): delta-pruning margin in cp
     int null_reduction_=2;
     int null_min_depth_=2;
     int lmr_min_depth_=3;
