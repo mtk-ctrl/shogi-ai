@@ -12,13 +12,20 @@ def load_games(paths):
             yield p, g
 
 def loser_records(g):
-    recs = [r for r in g['move_records'] if r.get('search') and 'score_cp_stm' in r['search']]
-    labels = {r['engine'] for r in recs}
+    """Works for both self-play (engine A/B with telemetry on both) and ladder (actor self/opponent)."""
+    recs = []
+    for r in g['move_records']:
+        sr = r.get('search') or r.get('self_search')
+        if sr and 'score_cp_stm' in sr:
+            recs.append(dict(r, search=sr, who=r.get('actor') or r.get('engine')))
+    labels = {r['who'] for r in recs}
     w = g.get('winner')
     if w is None: return None, []
+    if labels == {'self'}:
+        return ('self', recs) if w != 'self' else (None, [])
     lose = [l for l in labels if l != w]
     if len(lose) != 1: return None, []
-    return lose[0], [r for r in recs if r['engine'] == lose[0]]
+    return lose[0], [r for r in recs if r['who'] == lose[0]]
 
 def find_event(recs, lead, drop):
     for a, b in zip(recs, recs[1:]):
@@ -74,6 +81,12 @@ def main():
             events.append(dict(moves=g['moves'][:ply - 1], played=r0['move'], orig=r0['search']['score_cp_stm'], after=r1['search']['score_cp_stm'],
                                ply=ply, plies=g['plies'], reason=g.get('reason'), depth=r0['search'].get('depth'), mat=r0['search'].get('phase_maturity')))
     print(f'lost games {lost}, with lead-then-drop event {len(events)}')
+    if not lost:
+        import collections
+        c = collections.Counter(); first = None
+        for _, g in load_games(a.files):
+            c[(g.get('winner'), g.get('reason'))] += 1; first = first or g
+        print('winner/reason counts', dict(c)); print('game keys', list(first)); print('record', first['move_records'][:2] if first else None)
     events = events[:a.max_events]
     eng = Usi(a.engine, json.loads(a.options)); rows = []
     for e in events:
