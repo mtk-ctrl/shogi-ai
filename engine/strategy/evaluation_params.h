@@ -38,10 +38,10 @@ struct EvaluationParameters {
     // Research: attacker's supported-drop pressure on the enemy king ring (0 = off).
     int king_drop_weight = 0;
     int king_drop_cap = 300;
-    // Research (EvalKingExt): king-exposure term. scale 0 = off; coef = cp per unit of
+    // EvalKingExt (adopted in v2.0.27): king-exposure term. scale 0 = off; coef = cp per unit of
     // (feature(White king) - feature(Black king)) for KingExtSelected, scale in percent.
-    int king_ext_scale = 0;
-    std::array<int,7> king_ext_coef{0,0,0,0,0,0,0};
+    int king_ext_scale = 100;
+    std::array<int,7> king_ext_coef{207,7,252,11,263,67,94};
 
     // In legacy-v1 reproduction this is +/-300.  The adopted v2 profile retains
     // the wider bound validated in the parameter search.
@@ -59,6 +59,7 @@ struct EvaluationParameters {
         p.hand_potential_weight = 0;
         p.threat_weight = 0;
         p.positional_cap = 300;
+        p.king_ext_scale = 0;
         return p;
     }
 
@@ -68,6 +69,7 @@ struct EvaluationParameters {
         p.influence_weight = p.potential_weight = p.coordination_weight = 0;
         p.hand_potential_weight = p.threat_weight = 0;
         p.v2_enabled = false;
+        p.king_ext_scale = 0;
         return p;
     }
 

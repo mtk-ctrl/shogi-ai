@@ -103,7 +103,7 @@ int main() {
         if (command != "isready" && command != "stop" && command != "ponderhit" && command != "quit")
             finish_search(true);
         if (command == "usi") {
-            std::cout << "id name KUMOJI v2.0.26\nid author mtk-ctrl + ChatGPT\n"
+            std::cout << "id name KUMOJI v2.0.27\nid author mtk-ctrl + ChatGPT\n"
                       << "option name USI_Ponder type check default true\n"
                       << "option name RiskVerify type check default true\n"
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
@@ -147,8 +147,8 @@ int main() {
                       << "option name EvalCoordination type spin default " << evaluation_parameters.coordination_weight << " min 0 max 10000\n"
                       << "option name EvalHandPotential type spin default " << evaluation_parameters.hand_potential_weight << " min 0 max 10000\n"
                       << "option name EvalKingDrop type spin default 0 min 0 max 10000\n"
-                      << "option name EvalKingExtScale type spin default 0 min 0 max 300\n"
-                      << "option name EvalKingExtCoef type string default 0,0,0,0,0,0,0\n"
+                      << "option name EvalKingExtScale type spin default 100 min 0 max 300\n"
+                      << "option name EvalKingExtCoef type string default 207,7,252,11,263,67,94\n"
                       << "option name EvalThreat type spin default " << evaluation_parameters.threat_weight << " min 0 max 10000\n"
                       << "option name EvalPositionalCap type spin default " << evaluation_parameters.positional_cap << " min 0 max 5000\n"
                       << "option name PositionKnowledge type check default true\n"
