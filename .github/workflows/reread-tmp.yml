@@ -1,0 +1,35 @@
+name: Reread Experiment (research, temporary)
+# Research only (branch-only). Re-searches turning points of lost external-ladder games with
+# the own engine at longer time to see whether time or evaluation limited the move.
+on:
+  push:
+    branches: [research/reread-20261108]
+permissions:
+  actions: read
+  contents: read
+jobs:
+  reread:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build KUMOJI (v2.0.27 code)
+        run: python3 scripts/build.py --output build/shogi-ai
+      - name: Download ladder shards
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_IDS: "42457323476 42457573299 42457829170 42458069588 42458328235"
+        run: |
+          for id in $RUN_IDS; do gh run download "$id" -R "$GITHUB_REPOSITORY" -p "yaneuraou-ladder-$id-*" -D shards/$id; done
+          find shards -name '*.json' | wc -l
+      - name: Reread
+        run: |
+          cp position-knowledge-v1.tsv build/position-knowledge-v1.tsv
+          python3 research/reread/reread.py --engine build/shogi-ai --files $(find shards -name 'shard-*.json') --times 200,1000,3000 --max-events 60 --options '{"PositionKnowledge":true,"PositionKnowledgeFile":"build/position-knowledge-v1.tsv"}' | tee reread.log
+          python3 - <<'PY'
+          txt = open("reread.log", encoding="utf-8").read()
+          print("::notice title=reread.log::" + txt.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A"))
+          PY
