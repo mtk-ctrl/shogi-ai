@@ -114,8 +114,8 @@ class ClaimChecks(unittest.TestCase):
 
     def test_wrong_adopted_dynamic_weight_fails(self):
         self.change("docs/現行エンジン仕様.md",
-                    "| 駒の活動 | 600 | 500 | 300 |",
-                    "| 駒の活動 | 600 | 500 | 301 |")
+                    "| 駒の活動 | 600 | 500 | 101 |",
+                    "| 駒の活動 | 600 | 500 | 102 |")
         errors, _ = claims.check(self.root)
         self.assertTrue(any("採用評価" in e and "駒の活動" in e for e in errors), errors)
 
