@@ -162,6 +162,13 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
         for(int i=0;i<7;++i){const int j=KingExtSelected[i];sum+=std::int64_t(p.king_ext_coef[i])*(f1[j]-f0[j]);}
         b.positional_unclamped += static_cast<int>(sum*p.king_ext_scale/100);
     }
+    if(p.king_ext2_scale>0) {
+        int g0[KingExt2Features],g1[KingExt2Features];
+        king_ext2_features(s,a,0,g0);king_ext2_features(s,a,1,g1);
+        std::int64_t sum=0;
+        for(int i=0;i<KingExt2Features;++i)sum+=std::int64_t(p.king_ext2_coef[i])*(g1[i]-g0[i]);
+        b.positional_unclamped += static_cast<int>(sum*p.king_ext2_scale/100);
+    }
     b.positional=std::clamp(b.positional_unclamped,-p.positional_cap,p.positional_cap);
     b.total=std::clamp(b.material_term+b.positional,-p.StaticLimit,p.StaticLimit);
     b.clamp_adjustment=b.total-b.material_term-b.positional_unclamped;

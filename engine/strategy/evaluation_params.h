@@ -40,6 +40,8 @@ struct EvaluationParameters {
     int king_drop_cap = 300;
     // EvalKingExt (adopted in v2.0.27): king-exposure term. scale 0 = off; coef = cp per unit of
     // (feature(White king) - feature(Black king)) for KingExtSelected, scale in percent.
+    int king_ext2_scale = 0;   // Research (EvalKingExt2), percent; 0 = off
+    std::array<int,5> king_ext2_coef{136,-137,13,-197,174};
     int king_ext_scale = 100;
     std::array<int,7> king_ext_coef{207,7,252,11,263,67,94};
 
@@ -60,6 +62,7 @@ struct EvaluationParameters {
         p.threat_weight = 0;
         p.positional_cap = 300;
         p.king_ext_scale = 0;
+        p.king_ext2_scale = 0;
         return p;
     }
 
@@ -70,6 +73,7 @@ struct EvaluationParameters {
         p.hand_potential_weight = p.threat_weight = 0;
         p.v2_enabled = false;
         p.king_ext_scale = 0;
+        p.king_ext2_scale = 0;
         return p;
     }
 

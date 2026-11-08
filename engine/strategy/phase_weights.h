@@ -33,6 +33,7 @@ inline EvaluationParameters phase_turn_parameters(EvaluationParameters p,int mat
         &p.coordination_weight,&p.hand_potential_weight,&p.threat_weight
     }};
     // Research (EvalKingExt): the king-exposure term fades in with maturity (0 at <=20, full at >=60).
+    p.king_ext2_scale=static_cast<int>(std::lround(p.king_ext2_scale*std::clamp((maturity-20)/40.0,0.0,1.0)));
     p.king_ext_scale=static_cast<int>(std::lround(p.king_ext_scale*std::clamp((maturity-20)/40.0,0.0,1.0)));
     for(std::size_t i=0;i<target.size();++i){
         const auto& ov=stage_table_override();

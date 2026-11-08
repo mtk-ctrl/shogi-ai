@@ -149,6 +149,8 @@ int main() {
                       << "option name EvalKingDrop type spin default 0 min 0 max 10000\n"
                       << "option name EvalKingExtScale type spin default 100 min 0 max 300\n"
                       << "option name EvalKingExtCoef type string default 207,7,252,11,263,67,94\n"
+                      << "option name EvalKingExt2Scale type spin default 0 min 0 max 300\n"
+                      << "option name EvalKingExt2Coef type string default 136,-137,13,-197,174\n"
                       << "option name EvalThreat type spin default " << evaluation_parameters.threat_weight << " min 0 max 10000\n"
                       << "option name EvalPositionalCap type spin default " << evaluation_parameters.positional_cap << " min 0 max 5000\n"
                       << "option name PositionKnowledge type check default true\n"
@@ -917,6 +919,20 @@ int main() {
                                 ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters, strategy.reuse_mask()));
                         }
                     } catch (const std::exception&) {}
+                } else if (name == "EvalKingExt2Scale") {
+                    try {
+                        std::size_t used = 0; const int v = std::stoi(value, &used);
+                        if (used == value.size() && v >= 0 && v <= 300) evaluation_parameters.king_ext2_scale = v;
+                    } catch (const std::exception&) {}
+                } else if (name == "EvalKingExt2Coef") {
+                    std::vector<int> numbers; std::stringstream ss(value); std::string token; bool ok = true;
+                    while (std::getline(ss, token, ',')) {
+                        try { std::size_t used = 0; const int n = std::stoi(token, &used);
+                              if (used != token.size() || n < -5000 || n > 5000) ok = false; numbers.push_back(n); }
+                        catch (const std::exception&) { ok = false; }
+                    }
+                    if (ok && numbers.size() == 5)
+                        for (int i = 0; i < 5; ++i) evaluation_parameters.king_ext2_coef[i] = numbers[i];
                 } else if (name == "EvalKingExtScale") {
                     try {
                         std::size_t used = 0; const int v = std::stoi(value, &used);
