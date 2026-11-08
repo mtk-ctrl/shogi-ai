@@ -50,7 +50,6 @@ int main() {
     int long_think_shallow_depth = 0;
     int long_think_max_uses = 10;
     int long_think_drop_threshold = 150;
-    int long_think_ceiling_ms = 1000;
     int long_think_shallow_lead = 200;
     bool usi_ponder_enabled = true;
     int long_think_used = 0;
@@ -154,7 +153,6 @@ int main() {
                       << "option name EvalKingDrop type spin default 0 min 0 max 10000\n"
                       << "option name LongThinkShallowDepth type spin default 0 min 0 max 20\n"
                       << "option name LongThinkMaxUses type spin default 10 min 0 max 100\n"
-                      << "option name LongThinkCeilingMs type spin default 1000 min 300 max 10000\n"
                       << "option name LongThinkDropThreshold type spin default 150 min 20 max 1000\n"
                       << "option name LongThinkShallowLead type spin default 200 min -1000 max 3000\n"
                       << "option name EvalKingExtScale type spin default 100 min 0 max 300\n"
@@ -357,7 +355,7 @@ int main() {
                 active->control.shallow_lead_min = long_think_shallow_lead;
                 // parse_go_limits keeps a 10ms communication margin. Match a
                 // "go movetime 1000" ceiling while continuing the same search.
-                active->control.hard_deadline_ns = started_ns + (long_think_ceiling_ms - 10LL) * 1000000;
+                active->control.hard_deadline_ns = started_ns + 990LL * 1000000;
             }
             auto search_position = position.clone();
             active->worker = std::thread([&, active, started_ns, limits,
@@ -929,16 +927,6 @@ int main() {
                             strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
                                 ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters, strategy.reuse_mask()));
                         }
-                    } catch (const std::exception&) {}
-                } else if (name == "LongThinkCeilingMs") {
-                    try {
-                        std::size_t used = 0; const int v = std::stoi(value, &used);
-                        if (used == value.size() && v >= 300 && v <= 10000) long_think_ceiling_ms = v;
-                    } catch (const std::exception&) {}
-                } else if (name == "LongThinkDropThreshold") {
-                    try {
-                        std::size_t used = 0; const int v = std::stoi(value, &used);
-                        if (used == value.size() && v >= 20 && v <= 1000) long_think_drop_threshold = v;
                     } catch (const std::exception&) {}
                 } else if (name == "LongThinkMaxUses") {
                     try {
