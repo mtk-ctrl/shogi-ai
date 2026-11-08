@@ -1,12 +1,12 @@
 {
-  "request_id": "longthink-mat67-vs-base-400-20261108",
+  "request_id": "longthink-mat50-vs-base-400-20261108",
   "ref_a": "3f23982cb7dba6804a2c685cf78a90d120943e75",
   "ref_b": "3f23982cb7dba6804a2c685cf78a90d120943e75",
   "games": 400,
   "shards": 20,
   "go_command": "go movetime 200",
   "max_plies": 400,
-  "seed": 2026110803,
-  "options_a": "{\"AdaptiveLongThink\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"OpeningRandomNonLance\": true, \"SearchThreads\": 2, \"USI_Ponder\": true, \"LongThinkMinMaturity\": 67}",
+  "seed": 2026110804,
+  "options_a": "{\"AdaptiveLongThink\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"OpeningRandomNonLance\": true, \"SearchThreads\": 2, \"USI_Ponder\": true, \"LongThinkMinMaturity\": 50}",
   "options_b": "{\"AdaptiveLongThink\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"OpeningRandomNonLance\": true, \"SearchThreads\": 2, \"USI_Ponder\": true}"
 }
