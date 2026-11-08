@@ -49,6 +49,8 @@ int main() {
     bool adaptive_long_think_enabled = true;
     bool usi_ponder_enabled = true;
     int long_think_used = 0;
+    int long_think_min_maturity = 0; // Research: long think only from this phase maturity (0 = always)
+    int last_turn_maturity = 0;
     bool previous_root_score_valid = false;
     int previous_root_score = 0;
     std::string line;
@@ -132,6 +134,7 @@ int main() {
                       << "option name MateBudgetProfile type combo default aggressive var cautious var standard var aggressive\n"
                       << "option name MateLearningFile type string default embedded\n"
                       << "option name AdaptiveLongThink type check default true\n"
+                      << "option name LongThinkMinMaturity type spin default 0 min 0 max 100\n"
                       << "option name RandomSeed type spin default 5489 min 0 max 2147483647\n"
                       << "option name OpeningRandomNonLance type check default true\n"
                       << "option name EvalProfile type combo default features var features var material\n"
@@ -274,6 +277,7 @@ int main() {
             {
                 const auto root = position.snapshot();
                 const auto phase = shogi::strategy::classify_turn_phase(root);
+                last_turn_maturity = phase.maturity;
                 const auto active_parameters = material_profile
                     ? shogi::strategy::EvaluationParameters::material_only()
                     : shogi::strategy::phase_turn_parameters(evaluation_parameters, phase.maturity,
@@ -323,6 +327,7 @@ int main() {
                 && limits.requested_movetime_ms == 200
                 && !limits.ponder && !limits.infinite && limits.nodes == 0
                 && LongThinkBudget::available(current_ply, long_think_used)
+                && last_turn_maturity >= long_think_min_maturity
                 && candidates.size() > 1;
             const bool long_think_fallback =
                 long_think_slot && LongThinkBudget::must_spend(current_ply, long_think_used);
@@ -840,6 +845,11 @@ int main() {
                     }
                 } else if (name == "OpeningRandomNonLance") {
                     if (value == "true" || value == "false") opening_random_non_lance = value == "true";
+                } else if (name == "LongThinkMinMaturity") {
+                    try {
+                        std::size_t used=0; const int v=std::stoi(value,&used);
+                        if(used==value.size() && v>=0 && v<=100) long_think_min_maturity = v;
+                    } catch(const std::exception&) {}
                 } else if (name == "AdaptiveLongThink") {
                     if (value == "true" || value == "false")
                         adaptive_long_think_enabled = value == "true";
