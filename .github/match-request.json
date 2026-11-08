@@ -1,12 +1,12 @@
 {
-  "request_id": "longstudy-added227-vs-adopted163-100-20261026",
-  "ref_a": "671012c5540a22275652ae548847bffc0da963f7",
-  "ref_b": "671012c5540a22275652ae548847bffc0da963f7",
-  "games": 100,
+  "request_id": "eval-stage-candA-vs-adopted-400-20261108",
+  "ref_a": "1748ee40fd0bd6071298b1c46ce16168238efaf7",
+  "ref_b": "1748ee40fd0bd6071298b1c46ce16168238efaf7",
+  "games": 400,
   "shards": 20,
   "go_command": "go movetime 200",
   "max_plies": 400,
-  "seed": 2026102601,
-  "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"harness/research/long-study/knowledge-match-20261026/candidate.tsv\",\"OpeningRandomNonLance\":true,\"SearchThreads\":2,\"USI_Ponder\":true}",
+  "seed": 2026110801,
+  "options_a": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"SearchThreads\":2,\"USI_Ponder\":true,\"EvalStageTable\":\"480,469,600,168,180,300,500,60,20,480,1282,500,221,240,210,340,60,49,480,2817,101,150,65,160,220,60,40\"}",
   "options_b": "{\"AdaptiveLongThink\":true,\"PositionKnowledge\":true,\"PositionKnowledgeFile\":\"build/position-knowledge-v1.tsv\",\"OpeningRandomNonLance\":true,\"SearchThreads\":2,\"USI_Ponder\":true}"
 }
