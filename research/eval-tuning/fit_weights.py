@@ -10,9 +10,9 @@ import numpy as np
 from scipy.optimize import minimize
 
 AXES = ['safety', 'pressure', 'activity', 'danger', 'influence', 'potential', 'coordination', 'hand_potential', 'threat']
-OPEN = [480, 450, 600, 150, 180, 300, 500, 60, 20]
-MID  = [480, 750, 500, 150, 240, 210, 340, 60, 20]
-END  = [480, 1050, 300, 150, 120, 160, 220, 60, 20]
+OPEN = [480, 469, 600, 168, 180, 300, 500, 60, 20]  # v2.0.26 adopted
+MID  = [480, 1282, 500, 221, 240, 210, 340, 60, 49]
+END  = [480, 2817, 101, 150, 65, 160, 220, 60, 40]
 SIGN = np.array([1, 1, 1, -1, 1, 1, 1, 1, 1], float)
 THETA0 = np.array(OPEN + MID + END, float)
 

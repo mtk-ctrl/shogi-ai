@@ -76,7 +76,7 @@ if __name__ == '__main__':
 # ---- Final model for engine integration: selected features, maturity ramp, coefficients in cp ----
 def ramp(m): return np.clip((m - 20.0) / 40.0, 0.0, 1.0)
 if __name__ == '__main__':
-    SEL = [1, 2, 3, 6, 7, 8, 9, 10]   # ring_enemy_attacks, ring_own_defence, weak_ring, king_advance, enemy_hand_value, undefended, enemy_near_king, weak_ring_x_hand
+    SEL = [1, 2, 3, 7, 8, 9, 10]   # king_advance (6) excluded on purpose: it may encode "already winning" and invites king walks
     r = ramp(m)
     Dr = (D[:, SEL]) * r[:, None]
     # gain check (all samples, game-grouped CV)
@@ -84,7 +84,7 @@ if __name__ == '__main__':
     for lo in (0, 50, 67):
         k = m >= lo
         b0, a0 = cv(total[k], Zr[k], y[k], gid[k])
-        print(f'final model (selected {len(SEL)} features, ramp 20-60): maturity>={lo} held-out logloss base {b0:.4f} -> {a0:.4f} (gain {b0 - a0:+.4f})')
+        print(f'final model (selected {len(SEL)} features without king_advance, ramp 20-60): maturity>={lo} held-out logloss base {b0:.4f} -> {a0:.4f} (gain {b0 - a0:+.4f})')
     S0 = fit_scale(total, y); S, b = fit(total, Zr, y, 0.02, S0)
     coef = S * b / sdr
     print('S', round(S), 'cp per unit of D (Black view: + when White king is more exposed):')
