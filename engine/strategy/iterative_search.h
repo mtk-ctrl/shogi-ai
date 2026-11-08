@@ -30,6 +30,7 @@ enum class LongThinkReason : int {
     IterationScoreChange150,
     IterationMoveChange,
     UnfinishedDepth2,
+    ShallowLead,
     BudgetDeadline,
 };
 
@@ -40,6 +41,7 @@ inline const char* long_think_reason_name(LongThinkReason reason) {
     case LongThinkReason::IterationScoreChange150: return "iteration_score_change_150";
     case LongThinkReason::IterationMoveChange: return "iteration_move_change";
     case LongThinkReason::UnfinishedDepth2: return "unfinished_depth2";
+    case LongThinkReason::ShallowLead: return "shallow_lead";
     case LongThinkReason::BudgetDeadline: return "budget_deadline";
     default: return "none";
     }
@@ -54,6 +56,8 @@ struct SearchControl {
     bool force_long_think = false;
     bool has_previous_score = false;
     int previous_score = 0;
+    int shallow_depth_max = 0;   // research: 0 = off; extend when depth<=N with a lead
+    int shallow_lead_min = 200;
     std::atomic<int> long_think_reason{static_cast<int>(LongThinkReason::None)};
     static std::int64_t now_ns() {
         return std::chrono::duration_cast<std::chrono::nanoseconds>(
@@ -583,6 +587,10 @@ private:
             reason = LongThinkReason::IterationMoveChange;
         } else if (!has_last_completed_ || last_completed_.depth < 2) {
             reason = LongThinkReason::UnfinishedDepth2;
+        } else if (control_->shallow_depth_max > 0 && has_last_completed_
+                   && last_completed_.has_score && last_completed_.depth <= control_->shallow_depth_max
+                   && last_completed_.score >= control_->shallow_lead_min) {
+            reason = LongThinkReason::ShallowLead;
         } else if (control_->force_long_think) {
             reason = LongThinkReason::BudgetDeadline;
         }

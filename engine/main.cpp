@@ -47,6 +47,8 @@ int main() {
     std::string position_knowledge_file = "position-knowledge-v1.tsv";
     int default_depth = 3;
     bool adaptive_long_think_enabled = true;
+    int long_think_shallow_depth = 0;
+    int long_think_shallow_lead = 200;
     bool usi_ponder_enabled = true;
     int long_think_used = 0;
     bool previous_root_score_valid = false;
@@ -147,6 +149,8 @@ int main() {
                       << "option name EvalCoordination type spin default " << evaluation_parameters.coordination_weight << " min 0 max 10000\n"
                       << "option name EvalHandPotential type spin default " << evaluation_parameters.hand_potential_weight << " min 0 max 10000\n"
                       << "option name EvalKingDrop type spin default 0 min 0 max 10000\n"
+                      << "option name LongThinkShallowDepth type spin default 0 min 0 max 20\n"
+                      << "option name LongThinkShallowLead type spin default 200 min -1000 max 3000\n"
                       << "option name EvalKingExtScale type spin default 100 min 0 max 300\n"
                       << "option name EvalKingExtCoef type string default 207,7,252,11,263,67,94\n"
                       << "option name EvalThreat type spin default " << evaluation_parameters.threat_weight << " min 0 max 10000\n"
@@ -342,6 +346,8 @@ int main() {
                 active->control.force_long_think = long_think_fallback;
                 active->control.has_previous_score = previous_root_score_valid;
                 active->control.previous_score = previous_root_score;
+                active->control.shallow_depth_max = long_think_shallow_depth;
+                active->control.shallow_lead_min = long_think_shallow_lead;
                 // parse_go_limits keeps a 10ms communication margin. Match a
                 // "go movetime 1000" ceiling while continuing the same search.
                 active->control.hard_deadline_ns = started_ns + 990LL * 1000000;
@@ -915,6 +921,14 @@ int main() {
                             else evaluation_parameters.positional_cap = weight;
                             strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
                                 ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters, strategy.reuse_mask()));
+                        }
+                    } catch (const std::exception&) {}
+                } else if (name == "LongThinkShallowDepth" || name == "LongThinkShallowLead") {
+                    try {
+                        std::size_t used = 0; const int v = std::stoi(value, &used);
+                        if (used == value.size()) {
+                            if (name == "LongThinkShallowDepth" && v >= 0 && v <= 20) long_think_shallow_depth = v;
+                            else if (name == "LongThinkShallowLead" && v >= -1000 && v <= 3000) long_think_shallow_lead = v;
                         }
                     } catch (const std::exception&) {}
                 } else if (name == "EvalKingExtScale") {
