@@ -27,6 +27,7 @@ jobs:
           i=0; for f in $(find shards -name 'shard-*.json' | sort); do i=$((i+1)); cp "$f" "shards/g$i.json"; done
       - name: Dataset and study
         env:
+          SEL: "0,1,3,6,8,9"
           FEATURE_NAMES: supported_drop_spots_r2,gold_silver_adjacent,defender_value_near,attacker_value_near,pawn_shield,empty_in_front,second_ring_free,max_ring_attack,edge_or_back,enemy_gold_silver_hand,enemy_rook_bishop_hand,enemy_knight_hand
         run: |
           python3 research/eval-tuning/build_dataset.py shards/g*.json --output data.tsv --min-ply 8
