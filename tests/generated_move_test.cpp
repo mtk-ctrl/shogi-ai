@@ -35,6 +35,17 @@ void compare_generated_sets(const rules::Position& p) {
     require(generated_usi(p, p.checking_generated_moves()) == strings(p.checking_moves()),
             "generated checking moves must equal legacy legal+gives_check filtering");
     require(p.turn() == p.snapshot().turn, "fast turn accessor must equal snapshot turn");
+    // TacticalGen: exactly the legal captures/promotions, in or out of check.
+    std::set<std::string> expected_tactical;
+    const auto legal_tokens = p.legal_generated_moves();
+    for (const auto& move : legal_tokens)
+        if (p.generated_move_is_capture_or_promotion(move)) expected_tactical.insert(p.generated_move_usi(move));
+    bool no_legal = true;
+    const auto tactical = p.tactical_generated_moves(no_legal);
+    require(generated_usi(p, tactical) == expected_tactical && tactical.size() == expected_tactical.size(),
+            "tactical generation must equal legal captures and promotions");
+    if (tactical.empty()) require(no_legal == legal_tokens.empty(), "no_legal_moves flag must match the legal list");
+    else require(!no_legal, "no_legal_moves must be false when tactical moves exist");
 }
 
 int main() {

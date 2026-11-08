@@ -93,6 +93,7 @@ public:
         std::uint64_t lmr_tries = 0, lmr_researches = 0;
         // Research: futility pruning (SearchPruneMask bit 4).
         std::uint64_t futility_prunes = 0;
+        std::uint64_t tactical_gen_calls = 0;
         std::uint64_t rfp_prunes = 0;
         int seldepth = 0;
     };
@@ -190,7 +191,7 @@ public:
     const Stats& last_stats() const { return stats_; }
     void set_research_mask(unsigned mask) { research_mask_ = mask & 31; }
     unsigned research_mask() const { return research_mask_; }
-    void set_efficiency_mask(unsigned mask) { efficiency_mask_ = mask & 31; }
+    void set_efficiency_mask(unsigned mask) { efficiency_mask_ = mask & 63; }
     unsigned efficiency_mask() const { return efficiency_mask_; }
     void set_next_mask(unsigned mask) { next_mask_ = mask & 15; }
     // Officially adopted: verify pawn drops the opponent can immediately capture.
@@ -406,7 +407,7 @@ private:
         SUM_STAT(legal_cache_replacements);
         SUM_STAT(pvs_probes);SUM_STAT(pvs_researches);SUM_STAT(killer_priorities);
         SUM_STAT(history_priorities);SUM_STAT(ordering_updates);
-        SUM_STAT(null_tries);SUM_STAT(null_cutoffs);SUM_STAT(lmr_tries);SUM_STAT(lmr_researches);SUM_STAT(futility_prunes);SUM_STAT(rfp_prunes);
+        SUM_STAT(null_tries);SUM_STAT(null_cutoffs);SUM_STAT(lmr_tries);SUM_STAT(lmr_researches);SUM_STAT(futility_prunes);SUM_STAT(rfp_prunes);SUM_STAT(tactical_gen_calls);
 #undef SUM_STAT
         for(int i=0;i<4;++i)out.nodes_by_ply[i]=a.nodes_by_ply[i]+b.nodes_by_ply[i];
         out.seldepth=std::max(a.seldepth,b.seldepth);
@@ -1015,6 +1016,11 @@ private:
             else beta = std::min(beta, best.value);
         }
         const bool selective = !checked && (efficiency_mask_ & SelectiveUSI);
+        // Research (TacticalGen): outside check, generate only legal captures and
+        // promotions straight from the rule layer; the full legal list is not built.
+        if (!checked && lazy_terminal && selective && (efficiency_mask_ & TacticalGen))
+            return quiescence_tactical(p, ply, qply, alpha, beta, original_alpha, original_beta,
+                                       maximizing, best, get_snapshot());
         auto moves = selective ? legal_tactical(p, ply) : legal(p, ply);
         if (lazy_terminal && moves.empty() && batch(p, ply).tokens.empty()) {
             ++stats_.terminal_nodes;
@@ -1086,6 +1092,66 @@ private:
             if (maximizing) alpha = std::max(alpha, best.value);
             else beta = std::min(beta, best.value);
             if (cutoff()) { ++stats_.qcutoffs; break; }
+        }
+        return best;
+    }
+    // Research (TacticalGen). Same move set and scoring as the SelectiveUSI path, but
+    // the rule layer returns only legal captures/promotions, so quiet moves and drops
+    // are never legality-checked and no full legal list is stored.
+    Node quiescence_tactical(rules::Position& p, int ply, int qply, int alpha, int beta,
+                             int original_alpha, int original_beta, bool maximizing, Node best,
+                             const rules::Snapshot& snapshot) {
+        bool no_legal = false;
+        auto tokens = p.tactical_generated_moves(no_legal);
+        ++stats_.tactical_gen_calls;
+        if (tokens.empty()) {
+            if (no_legal) {
+                ++stats_.terminal_nodes;
+                return {terminal(p, node_status(p, ply), ply)};
+            }
+            return best;
+        }
+        struct TacticalMove { std::string move; int score = 0; rules::GeneratedMove token; };
+        std::vector<TacticalMove> scored;
+        scored.reserve(tokens.size());
+        for (const auto& token : tokens) {
+            auto move = p.generated_move_usi(token);
+            const int dst = (move[2] - '1') * 9 + move[3] - 'a';
+            const int src = (move[0] - '1') * 9 + move[1] - 'a';
+            const auto& captured = snapshot.board[dst];
+            const auto& moving = snapshot.board[src];
+            int score = 0;
+            if (captured.kind != 0 && captured.kind != 8) {
+                score += 1000000 + 1000 * piece_value(captured.kind, captured.promoted)
+                      - piece_value(moving.kind, moving.promoted);
+            }
+            if (move.size() == 5 && move[4] == '+') {
+                score += 100 * std::max(0, piece_value(moving.kind, true)
+                                               - piece_value(moving.kind, moving.promoted));
+            }
+            scored.push_back({std::move(move), score, token});
+        }
+        std::stable_sort(scored.begin(), scored.end(),
+                         [](const auto& a, const auto& b) { return a.score > b.score; });
+        for (const auto& entry : scored) {
+            check_stop();
+            Node child;
+            {
+                std::string error;
+                if (!p.play_generated_move(entry.token, error)) throw std::logic_error(error);
+                ++stats_.generated_plays;
+                Undo undo{p};
+                visit(ply + 1);
+                child = quiescence(p, ply + 1, qply + 1, alpha, beta);
+            }
+            if ((maximizing && child.value > best.value) || (!maximizing && child.value < best.value)) {
+                best.value = child.value;
+                pv_push(ply, entry.move);
+            }
+            if (maximizing) alpha = std::max(alpha, best.value);
+            else beta = std::min(beta, best.value);
+            const bool cut = maximizing ? best.value >= original_beta : best.value < original_alpha;
+            if (cut) { ++stats_.qcutoffs; break; }
         }
         return best;
     }

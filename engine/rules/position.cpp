@@ -172,6 +172,37 @@ std::vector<GeneratedMove> Position::legal_generated_moves() const {
     }
     return result;
 }
+std::vector<GeneratedMove> Position::tactical_generated_moves(bool& no_legal_moves) const {
+    std::vector<GeneratedMove> result;
+    no_legal_moves = false;
+    const auto source_key = key64(impl_->pos.key());
+    auto append = [&](yo::Move move) {
+        GeneratedMove generated;
+        generated.encoded_ = move.to_u32();
+        generated.source_key_ = source_key;
+        result.push_back(generated);
+    };
+    if (impl_->pos.in_check()) {
+        for (auto move : yo::MoveList<yo::LEGAL_ALL>(impl_->pos)) {
+            if (move.is_promote() || impl_->pos.piece_on(move.to_sq()) != yo::NO_PIECE) append(move);
+        }
+        no_legal_moves = result.empty() && yo::MoveList<yo::LEGAL_ALL>(impl_->pos).size() == 0;
+        return result;
+    }
+    for (auto move : yo::MoveList<yo::NON_EVASIONS_ALL>(impl_->pos)) {
+        if ((move.is_promote() || impl_->pos.piece_on(move.to_sq()) != yo::NO_PIECE)
+            && impl_->pos.legal(move)) append(move);
+    }
+    if (result.empty()) {
+        bool any_legal = false;
+        // Only now does the existence of any quiet legal move matter.
+        for (auto move : yo::MoveList<yo::NON_EVASIONS_ALL>(impl_->pos)) {
+            if (impl_->pos.legal(move)) { any_legal = true; break; }
+        }
+        no_legal_moves = !any_legal;
+    }
+    return result;
+}
 std::vector<GeneratedMove> Position::checking_generated_moves() const {
     std::vector<GeneratedMove> result;
     const auto source_key = key64(impl_->pos.key());
