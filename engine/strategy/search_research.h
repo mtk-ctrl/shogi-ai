@@ -12,6 +12,7 @@ inline constexpr unsigned DefaultSearchEfficiencyMask = 24; // v2.0.24: LazyQTer
 enum SearchEfficiency : unsigned {
     RuleCheckOrdering = 1, OrderingWorkspace = 2, LazySnapshot = 4,
     SelectiveUSI = 8, LazyQTerminal = 16, // research: skip full legal generation at stand-pat qnodes
+    TacticalGen = 32,   // research: generate only legal captures/promotions in qsearch (needs 8 and 16)
 };
 // Formally adopted in v2.0.16: geometry distance table + occupied-square evaluation scanning.
 // LegalTokenCache=OFF; the previously adopted 23/8 defaults above stay unchanged.

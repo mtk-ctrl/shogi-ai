@@ -68,6 +68,14 @@ public:
     // and then regenerating all legal moves merely to play it.
     std::vector<GeneratedMove> legal_generated_moves() const;
     std::vector<GeneratedMove> checking_generated_moves() const;
+    // Research (TacticalGen): legal captures and promotions only, for a position
+    // that is NOT in check (falls back to the full legal list when it is). The
+    // pseudo-legal list is filtered by capture/promotion BEFORE the costly legality
+    // test, so quiet moves and drops are never legality-checked. The order is the
+    // LEGAL_ALL order restricted to those moves (apart from upstream's
+    // swap-with-last removal of illegal moves). When the result is empty,
+    // `no_legal_moves` tells whether the side to move has no legal move at all.
+    std::vector<GeneratedMove> tactical_generated_moves(bool& no_legal_moves) const;
     std::string generated_move_usi(const GeneratedMove& move) const;
     // A rule-layer check query for a legal token from this exact position.
     bool generated_move_gives_check(const GeneratedMove& move) const;

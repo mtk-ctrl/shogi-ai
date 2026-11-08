@@ -11,6 +11,11 @@ inline constexpr int AdoptedPhaseProfile=47;
 inline constexpr std::array<int,10> StageOpening{100,480,450,600,150,180,300,500,60,20};
 inline constexpr std::array<int,10> StageMiddle{100,480,750,500,150,240,210,340,60,20};
 inline constexpr std::array<int,10> StageEnd{100,480,1050,300,150,120,160,220,60,20};
+// Research (EvalStageTable): optional override of the three anchor rows. Empty = the adopted
+// profile 47 values above. Set once from the USI option before searching; never changed
+// during a search. Index 0 (material) is not overridable.
+struct StageTableOverride { bool active=false; std::array<int,10> rows[3]; };
+inline StageTableOverride& stage_table_override(){ static StageTableOverride o; return o; }
 inline constexpr std::array<int,3> StageHandMaterial{100,100,100};
 inline constexpr std::array<int,10> MWeights{100,480,380,410,150,140,210,340,60,20};
 inline double phase_smoothstep(double x){ x=std::clamp(x,0.0,1.0); return x*x*(3.0-2.0*x); }
@@ -28,7 +33,9 @@ inline EvaluationParameters phase_turn_parameters(EvaluationParameters p,int mat
         &p.coordination_weight,&p.hand_potential_weight,&p.threat_weight
     }};
     for(std::size_t i=0;i<target.size();++i){
-        int w=phase_interpolate(maturity,StageOpening[i],StageMiddle[i],StageEnd[i]);
+        const auto& ov=stage_table_override();
+        int w=ov.active ? phase_interpolate(maturity,ov.rows[0][i],ov.rows[1][i],ov.rows[2][i])
+                        : phase_interpolate(maturity,StageOpening[i],StageMiddle[i],StageEnd[i]);
         *target[i]=std::clamp(static_cast<int>(std::lround(
             double(*target[i])*w/MWeights[i])),0,10000);
     }
