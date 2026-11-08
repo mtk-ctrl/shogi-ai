@@ -39,8 +39,11 @@ inline void pressure_features(const rules::Snapshot& s, const AttackMap& a,
     const int king=a.kings[1-side];
     if(king<0)return;
     out.king_attacked=a.nonking[side][king]>0;
-    for(int sq=0;sq<81;++sq) {
-        if(sq==king || !a.near_square(sq,king))continue;
+    for(int df=-1;df<=1;++df) for(int dr=-1;dr<=1;++dr) {
+        if(!df && !dr)continue;
+        const int f=king/9+df, r=king%9+dr;
+        if(f<0||f>=9||r<0||r>=9)continue;
+        const int sq=f*9+r;
         if(s.board[sq].kind) out.occupied_ring += a.nonking[side][sq]>0;
         else out.denied_empty += a.escape_control[side][sq];
     }
@@ -57,15 +60,18 @@ inline void pressure_features(const rules::Snapshot& s, const AttackMap& a,
 }
 inline void activity_features(const rules::Snapshot& s, const AttackMap& a,
                               int side, const EvaluationParameters& p, SideFeatures& out) {
+    const int k0=a.kings[0], k1=a.kings[1];
     for(int sq : a.squares(side)) {
         const auto& piece=s.board[sq];
         if(!piece.kind || piece.kind==8 || int(piece.color)!=side)continue;
         const int value=piece_value(piece.kind,piece.promoted);
         int n=0;
+        const auto* targets=a.targets[sq].data();
         for(int j=0;j<a.sizes[sq];++j) {
-            const int to=a.targets[sq][j];
-            if(s.board[to].kind || a.near_square(to,a.kings[0]) || a.near_square(to,a.kings[1]))continue;
+            const int to=targets[j];
+            if(s.board[to].kind)continue;
             if(a.count[1-side][to] && a.least[1-side][to]<value)continue;
+            if(a.near_square(to,k0) || a.near_square(to,k1))continue;
             ++n;
         }
         n=std::min(n,p.mobility_piece_cap);

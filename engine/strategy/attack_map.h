@@ -36,14 +36,15 @@ inline constexpr auto AllSquares = [] {
 // pins, drops and king capture legality belong to the rules layer.
 struct AttackMap {
     static constexpr int NoAttacker = std::numeric_limits<int>::max();
-    std::array<std::array<int, 81>, 2> count{}, nonking{}, least{};
+    std::array<std::array<int, 81>, 2> count{}, nonking{};
+    std::array<std::array<int, 81>, 2> least;  // filled with NoAttacker by the constructor
     // Ordinary attacks plus slider x-rays THROUGH the enemy king, used ONLY
     // for estimating empty escape-square denial after that king moves.
     std::array<std::array<bool, 81>, 2> escape_control{};
-    std::array<std::array<std::uint8_t, 32>, 81> targets{};
+    std::array<std::array<std::uint8_t, 32>, 81> targets;  // only [0,sizes) is ever read
     std::array<std::uint8_t, 81> sizes{};
     std::array<int, 2> kings{-1, -1};
-    std::array<std::array<std::uint8_t,81>,2> occupied{};
+    std::array<std::array<std::uint8_t,81>,2> occupied;  // only [0,occupied_sizes) is read
     std::array<std::uint8_t,2> occupied_sizes{};
     bool geometry_lookup=false, occupied_index=false, ray_lookup=false;
     struct SquareRange {

@@ -12,20 +12,29 @@ inline void king_ext_features(const rules::Snapshot& s, const AttackMap& a, int 
     if (king < 0) return;
     const int enemy = 1 - side;
     const int kf = king / 9, kr = king % 9;
-    for (int sq = 0; sq < 81; ++sq) {
-        const int d = a.distance(sq, king);
+    // Ring squares (distance 1) are visited directly; own/enemy pieces within range come from the
+    // occupied-piece lists. Same sums as the former 81-square scan.
+    for (int df = -1; df <= 1; ++df) for (int dr = -1; dr <= 1; ++dr) {
+        if (!df && !dr) continue;
+        const int f = kf + df, r = kr + dr;
+        if (f < 0 || f >= 9 || r < 0 || r >= 9) continue;
+        const int sq = f * 9 + r;
         const auto& piece = s.board[sq];
-        if (sq != king && d <= 1) {
-            const bool own = piece.kind && int(piece.color) == side;
-            const bool empty = !piece.kind;
-            if (empty && !a.escape_control[enemy][sq]) ++out[0];
-            out[1] += a.count[enemy][sq];
-            out[2] += (own || empty) ? std::min(a.nonking[side][sq], 3) : 0;
-            if ((own || empty) && a.count[enemy][sq] > a.nonking[side][sq]) ++out[3];
-            if (empty && a.count[enemy][sq] && !a.nonking[side][sq]) ++out[8];
-        }
-        if (sq != king && d <= 2 && piece.kind && int(piece.color) == side && piece.kind != 8) ++out[5];
-        if (piece.kind && int(piece.color) == enemy && piece.kind != 8 && d <= 3) ++out[9];
+        const bool own = piece.kind && int(piece.color) == side;
+        const bool empty = !piece.kind;
+        if (empty && !a.escape_control[enemy][sq]) ++out[0];
+        out[1] += a.count[enemy][sq];
+        out[2] += (own || empty) ? std::min(a.nonking[side][sq], 3) : 0;
+        if ((own || empty) && a.count[enemy][sq] > a.nonking[side][sq]) ++out[3];
+        if (empty && a.count[enemy][sq] && !a.nonking[side][sq]) ++out[8];
+    }
+    for (int sq : a.squares(side)) {
+        const auto& piece = s.board[sq];
+        if (sq != king && piece.kind && int(piece.color) == side && piece.kind != 8 && a.distance(sq, king) <= 2) ++out[5];
+    }
+    for (int sq : a.squares(enemy)) {
+        const auto& piece = s.board[sq];
+        if (piece.kind && int(piece.color) == enemy && piece.kind != 8 && a.distance(sq, king) <= 3) ++out[9];
     }
     int hand_attackers = 0, hand_value = 0;
     for (int k = 2; k <= 7; ++k) { hand_attackers += s.hands[enemy][k - 1]; hand_value += s.hands[enemy][k - 1] * hand_piece_value(k); }

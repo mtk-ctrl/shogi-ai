@@ -24,18 +24,18 @@ inline int v2_distance(int a, int b) {
 // king neighbourhood; Influence measures the rest of the usable board.
 inline int v2_influence_side(const rules::Snapshot& s, const AttackMap& a, int side) {
     int score = 0;
+    const int k0 = a.kings[0], k1 = a.kings[1];
     for (int sq = 0; sq < 81; ++sq) {
-        if (a.distance(sq, a.kings[0]) <= 2 || a.distance(sq, a.kings[1]) <= 2)
-            continue;
+        // Only empty squares score; test that first (no other side effects).
+        if (s.board[sq].kind) continue;
         const int mine = std::min(a.nonking[side][sq], 3);
         const int theirs = std::min(a.nonking[1-side][sq], 3);
         if (mine <= theirs) continue;
+        if (a.distance(sq, k0) <= 2 || a.distance(sq, k1) <= 2) continue;
         int points = 2 * (mine - theirs);
         const int f = sq / 9, r = sq % 9;
         if (f >= 2 && f <= 6 && r >= 2 && r <= 6) ++points;
-        // Empty controlled squares describe usable influence without double
-        // counting attacked pieces already handled by Danger/Threat.
-        if (!s.board[sq].kind) score += points;
+        score += points;
     }
     return score;
 }
