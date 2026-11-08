@@ -1,0 +1,28 @@
+name: Read Match Summary (temporary)
+# Temporary, branch-only reader: prints one finished Generic Engine Match aggregate as a
+# check annotation so it can be read without artifact download. Delete the branch afterwards.
+on:
+  push:
+    branches: [research/read-match-summary-20261108]
+permissions:
+  actions: read
+  contents: read
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Download aggregate and print
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: "42431517276"
+        run: |
+          gh run download "$RUN_ID" -R "$GITHUB_REPOSITORY" -n "generic-engine-match-summary-$RUN_ID" -D agg
+          python3 - <<'PY'
+          import json, glob
+          d = json.load(open(glob.glob("agg/*.json")[0]))
+          print(json.dumps(d, ensure_ascii=False, indent=1))
+          keys = ("games","wins_a","wins_b","draws","score_a","illegal_games","average_plies","engine_a","engine_b","options_a","options_b","go_command")
+          small = {k: d.get(k) for k in keys if k in d}
+          print("::notice title=aggregate::" + json.dumps(small, ensure_ascii=False))
+          PY
