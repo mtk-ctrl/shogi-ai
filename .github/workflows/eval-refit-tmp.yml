@@ -1,0 +1,44 @@
+name: Eval Refit (research, temporary)
+# Research only (branch-only). Downloads finished self-play match shards of v2.0.26 (own games),
+# builds the quiet-position dataset, refits the 27 anchor weights with game-level bootstrap and
+# prints the result as check annotations. Not an adoption step.
+on:
+  push:
+    branches: [research/eval-refit-20261108]
+permissions:
+  actions: read
+  contents: read
+jobs:
+  refit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: pip install numpy scipy python-shogi
+      - name: Build feature probe
+        run: python3 scripts/build.py --feature-probe --output build/feature_probe
+      - name: Download shards
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_IDS: "42443137600 42443155663"
+        run: |
+          mkdir -p shards
+          for id in $RUN_IDS; do
+            gh run download "$id" -R "$GITHUB_REPOSITORY" -p "generic-engine-match-$id-*" -D shards/$id
+          done
+          find shards -name '*.json' | wc -l
+      - name: Dataset and fit
+        run: |
+          python3 research/eval-tuning/build_dataset.py $(find shards -name 'shard-*.json') --output data.tsv --min-ply 8
+          wc -l data.tsv
+          python3 research/eval-tuning/fit_weights.py --dataset data.tsv --probe build/feature_probe --lams 0.01,0.03,0.1 --output theta.txt | tee fit.log
+          python3 research/eval-tuning/fit_bootstrap.py data.tsv 0.03 20 | tee boot.log
+          python3 - <<'PY'
+          for name in ("fit.log", "boot.log"):
+              txt = open(name, encoding="utf-8").read()
+              print("::notice title=" + name + "::" + txt.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A"))
+          PY
