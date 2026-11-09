@@ -1,0 +1,43 @@
+--- engine/strategy/iterative_search.h	2026-11-10 07:14:38.805513466 +0900
++++ engine/strategy/iterative_search.h	2026-11-10 07:32:27.824502639 +0900
+@@ -100,7 +100,7 @@
+     static constexpr int MateScore = AlphaBeta3::WinScore;
+     static constexpr int RuleWinScore = 90000000;
+     static constexpr int MaxDepth = 64;
+-    static constexpr int QuiescenceDepth = 8;
++    static inline const int QuiescenceDepth = std::getenv("KUMOJI_QD") ? std::atoi(std::getenv("KUMOJI_QD")) : 8;
+     static constexpr int MaxPly = 128;
+     static bool is_mate_score(int value) { return std::abs(value) >= MateScore - MaxPly; }
+ 
+@@ -314,7 +314,7 @@
+             // two plies between occurrences). Keep shallow board transpositions.
+             // Deeper searches use the entire ordered history instead.
+             // Quiescence can go beyond the shallow repetition-safe horizon.
+-            board_scores_ = !quiescence_enabled_ && depth <= 3 && !position.has_repeated_history();
++            board_scores_ = std::getenv("KUMOJI_BOARDTT") ? !position.has_repeated_history() : (!quiescence_enabled_ && depth <= 3 && !position.has_repeated_history());
+             // A shared table keeps entries across iterations (they are depth-keyed
+             // and stay valid) and is advanced once per go by the parent.
+             if (!shared_tt_ && !(next_mask_ & 8)) tt_.new_search();
+@@ -1077,6 +1077,14 @@
+                             piece_value(moving.kind, true)
+                             - piece_value(moving.kind, moving.promoted));
+                     }
++                    static const int kq = std::getenv("KUMOJI_QF") ? std::atoi(std::getenv("KUMOJI_QF")) : 0;
++                    const bool is_cap = captured.kind != 0 && captured.kind != 8;
++                    // 1: drop non-capturing promotions at qply>=1 ; 2: drop captures of a cheaper piece by a dearer one at qply>=2
++                    if ((kq & 1) && !is_cap && qply >= 1) continue;
++                    if ((kq & 2) && is_cap && qply >= 2
++                        && piece_value(captured.kind, captured.promoted) < piece_value(moving.kind, moving.promoted)) continue;
++                    if ((kq & 4) && is_cap && qply >= 1
++                        && piece_value(captured.kind, captured.promoted) < piece_value(moving.kind, moving.promoted)) continue;
+                     scored.push_back({move, score, i});
+                 }
+                 std::stable_sort(scored.begin(), scored.end(), [](const auto& a, const auto& b) {
+@@ -1084,6 +1092,7 @@
+                 });
+                 for (std::size_t i = 0; i < scored.size(); ++i)
+                     moves[i] = std::move(scored[i].move);
++                moves.resize(scored.size());
+             }
+         }
+         for (const auto& move : moves) {
