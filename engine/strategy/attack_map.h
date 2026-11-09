@@ -77,27 +77,35 @@ struct AttackMap {
             const int side = int(p.color), f = from / 9, r = from % 9;
             if(occupied_index)occupied[side][occupied_sizes[side]++]=from;
             if (p.kind == 8) kings[side] = from;
-            const int value = p.kind == 8 ? NoAttacker : piece_value(p.kind, p.promoted);
-            auto ray = [&](int df, int dr, bool sliding) {
+            const bool is_king = p.kind == 8;
+            const int value = is_king ? NoAttacker : piece_value(p.kind, p.promoted);
+            const bool use_ray_table = ray_lookup;
+            auto& esc_row = escape_control[side];
+            auto& count_row = count[side];
+            auto& nonking_row = nonking[side];
+            auto& least_row = least[side];
+            auto& target_row = targets[from];
+            auto& target_count = sizes[from];
+            auto ray = [&](int df, int dr, bool sliding) __attribute__((always_inline)) {
                 bool through_king = false;
                 int x=f+df, y=r+dr;
-                int next_sq = ray_lookup ? int(RayNextSquare[from][df+2][dr+2]) : -1;
-                while (ray_lookup ? next_sq != 255 : (x>=0 && x<9 && y>=0 && y<9)) {
-                    const int to = ray_lookup ? next_sq : x*9+y;
+                int next_sq = use_ray_table ? int(RayNextSquare[from][df+2][dr+2]) : -1;
+                while (use_ray_table ? next_sq != 255 : (x>=0 && x<9 && y>=0 && y<9)) {
+                    const int to = use_ray_table ? next_sq : x*9+y;
                     const auto& q=s.board[to];
-                    if (p.kind != 8) escape_control[side][to]=true;
+                    if (!is_king) esc_row[to]=true;
                     if (!through_king) {
-                        ++count[side][to];
-                        if (p.kind != 8) ++nonking[side][to];
-                        least[side][to]=std::min(least[side][to],value);
-                        targets[from][sizes[from]++]=static_cast<std::uint8_t>(to);
+                        ++count_row[to];
+                        if (!is_king) ++nonking_row[to];
+                        if (value < least_row[to]) least_row[to] = value;
+                        target_row[target_count++]=static_cast<std::uint8_t>(to);
                     }
                     if (!sliding) break;
                     if (q.kind) {
                         if (!through_king && q.kind==8 && q.color!=p.color) through_king=true;
                         else break;
                     }
-                    if (ray_lookup) next_sq = RayNextSquare[to][df+2][dr+2];
+                    if (use_ray_table) next_sq = RayNextSquare[to][df+2][dr+2];
                     else { x += df; y += dr; }
                 }
             };

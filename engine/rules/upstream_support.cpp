@@ -14,20 +14,34 @@
 
 namespace YaneuraOu {
 std::string to_usi_string(Move m) { return to_usi_string(m.to_move16()); }
+namespace {
+inline void append_square(std::string& out, Square sq) {
+    out.push_back(static_cast<char>('1' + static_cast<int>(file_of(sq))));
+    out.push_back(static_cast<char>('a' + static_cast<int>(rank_of(sq))));
+}
+} // namespace
+// Formatted directly into a string (no ostringstream); identical text to the stream version.
 std::string to_usi_string(Move16 m) {
-    std::ostringstream ss;
     if (!m.is_ok()) {
         if (m.to_u16() == MOVE_RESIGN) return "resign";
         if (m.to_u16() == MOVE_WIN) return "win";
         if (m.to_u16() == MOVE_NULL) return "null";
         return "none";
     }
-    if (m.is_drop()) ss << m.move_dropped_piece() << '*' << m.to_sq();
-    else {
-        ss << m.from_sq() << m.to_sq();
-        if (m.is_promote()) ss << '+';
+    std::string out;
+    out.reserve(5);
+    if (m.is_drop()) {
+        static const char drop_letters[] = "?PLNSBRG";
+        const int pt = static_cast<int>(m.move_dropped_piece());
+        out.push_back(drop_letters[pt]);
+        out.push_back('*');
+        append_square(out, m.to_sq());
+    } else {
+        append_square(out, m.from_sq());
+        append_square(out, m.to_sq());
+        if (m.is_promote()) out.push_back('+');
     }
-    return ss.str();
+    return out;
 }
 std::ostream& operator<<(std::ostream& os, SyncCout action) {
     static std::mutex mutex;

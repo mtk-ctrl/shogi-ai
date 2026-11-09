@@ -607,11 +607,17 @@ private:
         stats_.seldepth = std::max(stats_.seldepth, ply);
         if (ply < static_cast<int>(stats_.nodes_by_ply.size())) ++stats_.nodes_by_ply[ply];
     }
+    static std::uint64_t pack_move(const std::string& m) {
+        std::uint64_t v = 0;
+        std::memcpy(&v, m.data(), std::min<std::size_t>(m.size(), 7));
+        return v | (static_cast<std::uint64_t>(m.size()) << 56);
+    }
     struct LegalBatch {
         bool valid = false;
         std::uint64_t key = 0;
         std::vector<rules::GeneratedMove> tokens;
         std::vector<std::string> strings;
+        std::vector<std::uint64_t> packed;  // strings packed into integers (moves are at most 5 chars)
         bool tactical_ready = false;
         std::vector<std::string> tactical;
         std::vector<std::size_t> tactical_indexes;
@@ -645,6 +651,7 @@ private:
                 }
             } else b.tokens = p.legal_generated_moves();
             b.strings.clear();
+            b.packed.clear();
             b.tactical_ready = false;
             b.tactical.clear();
             b.tactical_indexes.clear();
@@ -662,8 +669,10 @@ private:
             // Convert to USI only when this node actually explores its moves.
             if (b.strings.empty() && !b.tokens.empty()) {
                 b.strings.reserve(b.tokens.size());
+                b.packed.reserve(b.tokens.size());
                 for (std::size_t i = 0; i < b.tokens.size(); ++i) {
                     b.strings.push_back(p.generated_move_usi(b.tokens[i]));
+                    b.packed.push_back(pack_move(b.strings.back()));
                     if (next_mask_ & 1) b.token_indexes.emplace(b.strings.back(), i);
                 }
             }
@@ -706,9 +715,10 @@ private:
                 if (it == b.token_indexes.end()) throw std::logic_error("move absent from indexed legal batch");
                 index = it->second;
             } else if (!b.strings.empty()) {
-                const auto it = std::find(b.strings.begin(), b.strings.end(), move);
-                if (it == b.strings.end()) throw std::logic_error("move absent from current legal batch");
-                index = it - b.strings.begin();
+                const std::uint64_t want = pack_move(move);
+                const auto it = std::find(b.packed.begin(), b.packed.end(), want);
+                if (it == b.packed.end()) throw std::logic_error("move absent from current legal batch");
+                index = it - b.packed.begin();
             } else {
                 const auto it = std::find(b.tactical.begin(), b.tactical.end(), move);
                 if (it == b.tactical.end()) throw std::logic_error("move absent from current tactical batch");
@@ -1197,15 +1207,21 @@ private:
                 auto& b = legal_batches_.at(ply);
                 if (b.strings.empty() && !b.tokens.empty()) {
                     b.strings.reserve(b.tokens.size());
+                    b.packed.reserve(b.tokens.size());
                     for (std::size_t i = 0; i < b.tokens.size(); ++i) {
                     b.strings.push_back(p.generated_move_usi(b.tokens[i]));
+                    b.packed.push_back(pack_move(b.strings.back()));
                     if (next_mask_ & 1) b.token_indexes.emplace(b.strings.back(), i);
                 }
                 }
                 checks.reserve(moves.size());
+                std::size_t hint = 0;  // moves usually follow the batch order: check the next slot first
                 for (const auto& m : moves) {
-                    const auto it = std::find(b.strings.begin(), b.strings.end(), m);
+                    auto it = (hint < b.strings.size() && b.strings[hint] == m)
+                        ? b.strings.begin() + hint
+                        : std::find(b.strings.begin(), b.strings.end(), m);
                     if (it == b.strings.end()) throw std::logic_error("ordering move absent from legal batch");
+                    hint = static_cast<std::size_t>(it - b.strings.begin()) + 1;
                     checks.push_back(p.generated_move_gives_check(b.tokens[it - b.strings.begin()]));
                     ++stats_.ordering_rule_checks;
                 }
