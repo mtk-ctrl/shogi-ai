@@ -114,6 +114,7 @@ int main() {
                       << "option name SearchNextMask type spin default 4 min 0 max 15\n"
                       << "option name SearchThreads type spin default 2 min 1 max 2\n"
                       << "option name SearchProbeMask type spin default " << shogi::strategy::DefaultSearchProbeMask << " min 0 max 7\n"
+                      << "option name SearchExtraMask type spin default 0 min 0 max 2047\n"
                       << "option name SearchPruneMask type spin default " << shogi::strategy::DefaultSearchPruneMask << " min 0 max 15\n"
                       << "option name RfpMargin type spin default 350 min 50 max 3000\n"
                       << "option name RfpMaxDepth type spin default 3 min 1 max 8\n"
@@ -753,6 +754,12 @@ int main() {
                         std::size_t used=0; const int mask=std::stoi(value,&used);
                         if(used==value.size() && mask>=0 && mask<=7)
                             strategy.set_probe_mask(static_cast<unsigned>(mask));
+                    } catch(const std::exception&) {}
+                } else if (name == "SearchExtraMask") {
+                    try {
+                        std::size_t used=0; const int mask=std::stoi(value,&used);
+                        if(used==value.size() && mask>=0 && mask<=2047)
+                            strategy.set_extra_mask(static_cast<unsigned>(mask));
                     } catch(const std::exception&) {}
                 } else if (name == "SearchPruneMask") {
                     try {

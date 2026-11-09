@@ -225,6 +225,12 @@ public:
     void set_lmr_after(int n) { lmr_after_ = std::clamp(n, 1, 32); }
     void set_lmr_reduction(int r) { lmr_reduction_ = std::clamp(r, 1, 4); }
     void set_null_min_depth(int d) { null_min_depth_ = std::clamp(d, 2, 16); }
+    // Research package (SearchExtraMask, default 0 = identical to before):
+    // 1 check extension, 2 internal iterative reduction, 4 late-move pruning,
+    // 8 countermove ordering, 16 SEE-lite qsearch capture pruning, 32 reserved (singular: not built),
+    // 128 razoring, 256 history malus, 512 deeper LMR scaling, 1024 deeper-entry TT cutoffs.
+    void set_extra_mask(unsigned mask) { extra_mask_ = mask & 2047u; }
+    unsigned extra_mask() const { return extra_mask_; }
     int null_min_depth() const { return null_min_depth_; }
 
     SearchResult choose(rules::Position& position, int max_depth, SearchControl& control,
@@ -247,6 +253,8 @@ private:
         stats_ = {};
         if (probe_mask_ & 2) for (auto& row : killers_) for (auto& move : row) move.clear();
         if (probe_mask_ & 4) for (auto& side : history_scores_) side.fill(0);
+        if (extra_mask_ & 8) for (auto& side : countermoves_) for (auto& m : side) m.clear();
+        for (auto& m : played_) m.clear();
         control_ = &control;
         if (!shared_tt_) tt_.new_search();
         qtt_.new_search();
@@ -438,6 +446,7 @@ private:
             lane.set_risk_verify(risk_verify_enabled_);
             lane.set_probe_mask(probe_mask_);
             lane.set_prune_mask(prune_mask_);
+            lane.set_extra_mask(extra_mask_);
             lane.set_null_reduction(null_reduction_);
             lane.set_null_min_depth(null_min_depth_);
             lane.set_futility_max_depth(futility_max_depth_);
@@ -773,6 +782,12 @@ private:
         const TranspositionTable::Entry* tt_entry = nullptr;
         if (shared_tt_) { if (shared_tt_->probe(score_key, depth, tt_copy)) tt_entry = &tt_copy; }
         else tt_entry = tt_.probe(score_key, depth);
+        if (!tt_entry && (extra_mask_ & 1024)) {
+            for (int d2 = depth + 1; d2 <= depth + 2 && !tt_entry; ++d2) {
+                if (shared_tt_) { if (shared_tt_->probe(score_key, d2, tt_copy)) tt_entry = &tt_copy; }
+                else tt_entry = tt_.probe(score_key, d2);
+            }
+        }
         if (const auto* entry = tt_entry) {
             ++stats_.tt_hits;
             tt_move = TranspositionTable::best_move(*entry);
@@ -803,6 +818,21 @@ private:
             return {value};
         }
         const bool maximizing = ((efficiency_mask_ & LazySnapshot) ? p.turn() : p.snapshot().turn) == root_;
+        // Research (extra 128): razoring. Near the horizon on a null-window node a static
+        // value far below alpha (above beta for a min node) is confirmed by qsearch.
+        if ((extra_mask_ & 128) && depth <= 2 && ply > 0 && beta - alpha == 1
+            && !is_mate_score(alpha) && !is_mate_score(beta)
+            && std::abs(alpha) < Infinity / 2 && std::abs(beta) < Infinity / 2
+            && !p.in_check() && quiescence_enabled_) {
+            const int sign = root_ == rules::Color::Black ? 1 : -1;
+            const int stat = sign * eval_node(p, p.snapshot());
+            const int margin = 150 + 300 * depth;
+            if (maximizing ? stat + margin <= alpha : stat - margin >= beta) {
+                const Node r = quiescence(p, ply, 0, alpha, beta);
+                if (maximizing ? r.value <= alpha : r.value >= beta) return {r.value};
+                pv_lengths_[ply] = 0;
+            }
+        }
         // Research: reverse futility (SearchPruneMask bit 8). On a null-window,
         // non-check node near the horizon, a static value that already clears the
         // bound by a per-depth margin is returned without searching moves.
@@ -854,9 +884,14 @@ private:
                 }
             }
         }
+        // Research (extra 2): internal iterative reduction. A PV node with no known move is
+        // searched one ply shallower (its result still feeds the next iteration's hints).
+        const int stored_depth = depth;
+        if ((extra_mask_ & 2) && depth >= 4 && tt_move.empty() && beta - alpha > 1) --depth;
         auto moves = ordered(p, legal(p, ply), tt_move, {}, {}, ply);
         Node best{maximizing ? -Infinity : Infinity};
         bool searched = false;
+        std::vector<int> tried_quiets;
         // Research: late-move reduction (SearchPruneMask bit 2). Late quiet,
         // non-checking, non-killer moves are first searched shallower with a null
         // window; only a result that would improve the bound is searched fully.
@@ -867,7 +902,11 @@ private:
         const bool futility_node = (prune_mask_ & 4) && depth <= futility_max_depth_ && ply > 0
             && !is_mate_score(alpha) && !is_mate_score(beta)
             && std::abs(alpha) < Infinity / 2 && std::abs(beta) < Infinity / 2 && !p.in_check();
-        const rules::Snapshot lmr_snapshot = (lmr_node || futility_node) ? p.snapshot() : rules::Snapshot{};
+        const bool lmp_node = (extra_mask_ & 4) && depth <= 3 && ply > 0 && beta - alpha == 1
+            && !is_mate_score(alpha) && !is_mate_score(beta)
+            && std::abs(alpha) < Infinity / 2 && std::abs(beta) < Infinity / 2 && !p.in_check();
+        const bool malus_node = (extra_mask_ & 256) != 0;
+        const rules::Snapshot lmr_snapshot = (lmr_node || futility_node || lmp_node || malus_node) ? p.snapshot() : rules::Snapshot{};
         const int futility_static = futility_node
             ? (root_ == rules::Color::Black ? 1 : -1) * eval_node(p, lmr_snapshot) : 0;
         int move_index = -1;
@@ -878,7 +917,11 @@ private:
             {
                 make(p, move, ply);
                 Undo undo{p};
+                played_[ply] = move;
+                const int ext = ((extra_mask_ & 1) && p.in_check() && ply < 2 * iteration_depth_ + 2) ? 1 : 0;
                 bool futile = false;
+                if (lmp_node && searched && move_index >= 6 + 6 * depth && quiet_key(lmr_snapshot, move) >= 0
+                    && !p.in_check() && move != killers_[ply][0] && move != killers_[ply][1]) continue;
                 if (futility_node && searched && quiet_key(lmr_snapshot, move) >= 0 && !p.in_check()) {
                     const int slack = futility_margin_ * depth;
                     futile = maximizing ? futility_static + slack <= alpha
@@ -894,7 +937,8 @@ private:
                     && move != killers_[ply][0] && move != killers_[ply][1]
                     && !p.in_check()) {
                     ++stats_.lmr_tries;
-                    const int rd = std::max(0, depth - 1 - lmr_reduction_);
+                    const int extra_red = (extra_mask_ & 512) ? (move_index >= 8) + (depth >= 7) : 0;
+                    const int rd = std::max(0, depth - 1 - lmr_reduction_ - extra_red);
                     child = maximizing
                         ? search(p, rd, ply + 1, alpha, alpha + 1, child_history)
                         : search(p, rd, ply + 1, beta - 1, beta, child_history);
@@ -906,19 +950,20 @@ private:
                 } else if ((probe_mask_ & 1) && searched && beta - alpha > 1) {
                     ++stats_.pvs_probes;
                     child = maximizing
-                        ? search(p, depth - 1, ply + 1, alpha, alpha + 1, child_history)
-                        : search(p, depth - 1, ply + 1, beta - 1, beta, child_history);
+                        ? search(p, depth - 1 + ext, ply + 1, alpha, alpha + 1, child_history)
+                        : search(p, depth - 1 + ext, ply + 1, beta - 1, beta, child_history);
                     const bool improve = maximizing
                         ? child.value > alpha && child.value < beta
                         : child.value < beta && child.value >= alpha;
                     if (improve) {
                         ++stats_.pvs_researches;
                         visit(ply + 1);
-                        child = search(p, depth - 1, ply + 1, alpha, beta, child_history);
+                        child = search(p, depth - 1 + ext, ply + 1, alpha, beta, child_history);
                     }
-                } else child = search(p, depth - 1, ply + 1, alpha, beta, child_history);
+                } else child = search(p, depth - 1 + ext, ply + 1, alpha, beta, child_history);
             }
             searched = true;
+            if (malus_node) { const int qk = quiet_key(lmr_snapshot, move); if (qk >= 0) tried_quiets.push_back(qk); }
             const int value = child.value;
             if ((maximizing && value > best.value) || (!maximizing && value < best.value)) {
                 best.value = value;
@@ -933,15 +978,25 @@ private:
                 ++stats_.cutoffs;
                 if (maximizing) ++stats_.max_cutoffs; else ++stats_.min_cutoffs;
                 if (probe_mask_ & 6) record_order_cutoff(p, move, depth, ply);
+                if ((extra_mask_ & 8) && ply > 0) {
+                    const int pk = move_key(played_[ply - 1]);
+                    if (pk >= 0 && quiet_key(p.snapshot(), move) >= 0)
+                        countermoves_[static_cast<int>(p.turn())][pk] = move;
+                }
+                if (malus_node && (probe_mask_ & 4) && !tried_quiets.empty()) {
+                    auto& hist = history_scores_[static_cast<int>(p.turn())];
+                    const int cut_key = quiet_key(lmr_snapshot, move);
+                    for (int k : tried_quiets) if (k != cut_key) hist[k] = std::max(0, hist[k] - depth * depth);
+                }
                 break;
             }
         }
         const auto bound = best.value <= original_alpha ? Bound::Upper
             : best.value >= original_beta ? Bound::Lower : Bound::Exact;
         ++stats_.tt_store_calls;
-        if (tt_store(score_key, depth, to_table(best.value, ply), bound, pv_first(ply)))
+        if (tt_store(score_key, stored_depth, to_table(best.value, ply), bound, pv_first(ply)))
             ++stats_.tt_replacements;
-        iteration_hints_.store(p.hash_key(), depth, pv_first(ply));
+        iteration_hints_.store(p.hash_key(), stored_depth, pv_first(ply));
         return best;
     }
     Node quiescence(rules::Position& p, int ply, int qply, int alpha, int beta) {
@@ -1033,6 +1088,25 @@ private:
                 const bool capture = snapshot.board[dst].kind != 0;
                 const bool promotion = move.size() == 5 && move[4] == '+';
                 return !capture && !promotion;
+            }), moves.end());
+        }
+        // Research (extra 16): SEE-lite. Drop a capture that gives up material on a square the
+        // opponent still defends (captured value < capturing value, no promotion gain).
+        if ((extra_mask_ & 16) && !checked && !moves.empty()) {
+            const auto& snap = get_snapshot();
+            const AttackMap amap(snap, true, true, true);
+            const int opp = 1 - static_cast<int>(snap.turn);
+            moves.erase(std::remove_if(moves.begin(), moves.end(), [&](const auto& move) {
+                if (move[1] == '*') return false;
+                const int dst = (move[2] - '1') * 9 + move[3] - 'a';
+                const int src = (move[0] - '1') * 9 + move[1] - 'a';
+                const auto& captured = snap.board[dst];
+                const auto& moving = snap.board[src];
+                if (!captured.kind || captured.kind == 8 || moving.kind == 8) return false;
+                if (move.size() == 5 && move[4] == '+') return false;
+                const int gain = piece_value(captured.kind, captured.promoted)
+                               - piece_value(moving.kind, moving.promoted);
+                return gain < 0 && amap.count[opp][dst] > 0;
             }), moves.end());
         }
         // In check, include ALL legal evasions, even quiet moves and drops.
@@ -1233,8 +1307,15 @@ private:
             for (std::size_t i = 0; i < result.size(); ++i) {
                 const int key = quiet_key(snapshot, result[i]);
                 if (key < 0) continue;
-                const int killer = !(probe_mask_ & 2) ? 0
+                int killer = !(probe_mask_ & 2) ? 0
                     : result[i] == killers_[ply][0] ? 2 : result[i] == killers_[ply][1] ? 1 : 0;
+                if (extra_mask_ & 8) {
+                    killer = killer ? killer + 1 : 0;
+                    if (!killer && ply > 0) {
+                        const int pk = move_key(played_[ply - 1]);
+                        if (pk >= 0 && countermoves_[static_cast<int>(snapshot.turn)][pk] == result[i]) killer = 1;
+                    }
+                }
                 const int history = (probe_mask_ & 4)
                     ? history_scores_[static_cast<int>(snapshot.turn)][key] : 0;
                 stats_.killer_priorities += killer > 0;
@@ -1282,6 +1363,20 @@ private:
     unsigned threads_=2;
     unsigned probe_mask_=DefaultSearchProbeMask;
     unsigned prune_mask_=DefaultSearchPruneMask;
+    unsigned extra_mask_=0;
+    std::array<std::string, MaxPly + 2> played_{};
+    std::array<std::array<std::string, 88 * 81>, 2> countermoves_{};
+    static int move_key(const std::string& m) {
+        if (m.size() < 4) return -1;
+        const int to = (m[2] - '1') * 9 + m[3] - 'a';
+        int from;
+        if (m[1] == '*') {
+            const auto piece = std::string("PLNSGBR").find(m[0]);
+            if (piece == std::string::npos) return -1;
+            from = 81 + static_cast<int>(piece);
+        } else from = (m[0] - '1') * 9 + m[1] - 'a';
+        return from * 81 + to;
+    }
     int null_reduction_=2;
     int null_min_depth_=2;
     int lmr_min_depth_=3;
