@@ -35,6 +35,7 @@ MOVE_FIELDS = (
 )
 GAME_FIELDS = (
     "winner", "reason", "plies", "a_black", "start_sfen", "final_sfen", "illegal_by",
+    "opening_pair", "opening_moves",
 )
 
 
@@ -56,7 +57,7 @@ def archive(inputs, output_dir, run_id=None, ref_a=None, ref_b=None):
     games = []
     sources = []
     seen = set()
-    plies = scored = ambiguous = no_telemetry = phase_recorded = 0
+    plies = scored = ambiguous = no_telemetry = phase_recorded = opening_plies = 0
     for path in inputs:
         path = Path(path)
         raw = path.read_bytes()
@@ -84,11 +85,22 @@ def archive(inputs, output_dir, run_id=None, ref_a=None, ref_b=None):
             if "plies" in game and game["plies"] != len(moves):
                 raise ValueError("ply count mismatch: " + str(path))
             records = game.get("move_records")
-            if records is not None and len(records) != len(moves):
+            # Paired matches start from a forced opening: those plies were not
+            # chosen by an engine and carry no telemetry (move_records starts after).
+            opening = game.get("opening_moves") or []
+            if opening and moves[:len(opening)] != opening:
+                raise ValueError("opening moves are not a prefix of the game: " + str(path))
+            skip = len(opening)
+            if records is not None and len(records) != len(moves) - skip:
                 raise ValueError("move telemetry count mismatch: " + str(path))
             selected = []
             for ply, move in enumerate(moves, 1):
-                original = records[ply - 1] if records is not None else {}
+                if ply <= skip:
+                    selected.append({"ply": ply, "move": move, "opening": True,
+                                     "search": clean_search(None)})
+                    opening_plies += 1
+                    continue
+                original = records[ply - 1 - skip] if records is not None else {}
                 if original and (original.get("move") != move or original.get("ply") != ply):
                     raise ValueError("played move / telemetry mismatch: " + str(path))
                 record = {k: original[k] for k in MOVE_FIELDS if k in original}
@@ -125,7 +137,7 @@ def archive(inputs, output_dir, run_id=None, ref_a=None, ref_b=None):
         manifest = {
             "schema_version": SCHEMA, "archive": destination.name,
             "archive_sha256": archive_hash, "archive_bytes": temporary.stat().st_size,
-            "games": len(games), "plies": plies, "scored_plies": scored,
+            "games": len(games), "plies": plies, "opening_plies": opening_plies, "scored_plies": scored,
             "missing_score_plies": plies - scored - ambiguous,
             "ambiguous_score_plies": ambiguous, "without_telemetry_plies": no_telemetry,
             "phase_recorded_plies": phase_recorded, "phase_missing_plies": plies - phase_recorded,

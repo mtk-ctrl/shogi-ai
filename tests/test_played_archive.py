@@ -50,6 +50,30 @@ class PlayedArchiveTest(unittest.TestCase):
             second = module.archive([source], Path(directory) / "other")
             self.assertEqual(result["archive_sha256"], second["archive_sha256"])
 
+    def test_paired_opening_plies_have_no_telemetry(self):
+        import gzip
+        with tempfile.TemporaryDirectory() as directory:
+            source = self.source(directory)
+            data = json.loads(source.read_text())
+            game = data["details"][0]
+            # Same game, but "7g7f" was a forced opening move: records start after it.
+            game.update(opening_pair=3, opening_moves=["7g7f"], plies=2)
+            game["move_records"] = [{"ply": 2, "move": "3c3d", "search": {"depth": 4, "score_cp_stm": 5}}]
+            source.write_text(json.dumps(data))
+            result = module.archive([source], Path(directory) / "out")
+            with gzip.open(Path(directory) / "out/played-games.jsonl.gz", "rt") as stream:
+                row = json.loads(stream.readline())
+            self.assertTrue(row["moves"][0]["opening"])
+            self.assertNotIn("opening", row["moves"][1])
+            self.assertEqual((result["plies"], result["opening_plies"]), (1, 1))
+            self.assertEqual(result["missing_score_plies"], 0)
+            self.assertEqual(row["opening_pair"], 3)
+            # Opening that is not a prefix of the moves is rejected.
+            game["opening_moves"] = ["2g2f"]
+            source.write_text(json.dumps(data))
+            with self.assertRaises(ValueError):
+                module.archive([source], Path(directory) / "bad")
+
     def test_reject_mismatched_or_duplicate_sources(self):
         with tempfile.TemporaryDirectory() as directory:
             source = self.source(directory)
