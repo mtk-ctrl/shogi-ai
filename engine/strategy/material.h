@@ -21,7 +21,7 @@ inline constexpr auto PieceValueTable = [] {
     }
     return t;
 }();
-inline int piece_value(int kind, bool promoted = false) {
+[[gnu::always_inline]] inline int piece_value(int kind, bool promoted = false) {
   if(static_cast<unsigned>(kind) > 8u) throw std::logic_error("unknown piece kind");
   return PieceValueTable[kind][promoted && kind >= 1 && kind <= 6];
 }
