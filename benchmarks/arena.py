@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import json
 import queue
+import random
 import subprocess
 import threading
 import time
@@ -384,7 +385,27 @@ class Engine:
                 self.proc.kill()
 
 
-def play_game(a, b, game_index, max_plies, seed_base, game_offset=0):
+def make_opening(plies, opening_seed, pair_index):
+    """Random legal opening of `plies` plies, a pure function of (seed, pair).
+
+    Paired matches play every opening twice with the colours swapped, so the
+    opening is keyed by the GLOBAL pair index and is identical across shards.
+    """
+    rng = random.Random(opening_seed * 1000003 + pair_index)
+    board = shogi.Board()
+    moves = []
+    for _ in range(plies):
+        legal = sorted(move.usi() for move in board.legal_moves)
+        if not legal:
+            break
+        token = rng.choice(legal)
+        board.push(shogi.Move.from_usi(token))
+        moves.append(token)
+    return moves
+
+
+def play_game(a, b, game_index, max_plies, seed_base, game_offset=0,
+              opening_plies=0, opening_seed=None):
     # Alternate across the whole match, including boundaries between shards.
     # Keep the local index for seed generation so existing seed series survive.
     a_black = ((game_offset + game_index) % 2 == 0)
@@ -397,11 +418,23 @@ def play_game(a, b, game_index, max_plies, seed_base, game_offset=0):
     moves = []
     move_records = []
     adjudicator = Adjudicator(board)
+    opening_pair = None
+    opening = []
+    if opening_plies:
+        # Games 2k and 2k+1 of the whole match share one opening (colours swapped).
+        opening_pair = (game_offset + game_index) // 2
+        opening = make_opening(opening_plies, seed_base if opening_seed is None else opening_seed,
+                               opening_pair)
+        for token in opening:
+            board.push(shogi.Move.from_usi(token))
+            moves.append(token)
+            adjudicator.after_move(board)
     def result(winner, reason, **extra):
         return {"winner": winner, "reason": reason, "plies": len(moves),
                 "a_black": a_black, "moves": moves, "move_records": move_records,
-                "final_sfen": board.sfen(), **extra}
-    for ply in range(max_plies):
+                "final_sfen": board.sfen(), "opening_pair": opening_pair,
+                "opening_moves": opening, **extra}
+    for ply in range(len(opening), max_plies):
         engine = black if board.turn == shogi.BLACK else white
         side_to_move = board.turn
         in_check_before = board.is_check()
@@ -506,8 +539,15 @@ def main():
     parser.add_argument("--max-plies", type=int, default=400)
     parser.add_argument("--seed", type=int, default=20261003)
     parser.add_argument("--go-command", default="go depth 3", help="Explicit equal search limit for both engines")
+    parser.add_argument("--opening-plies", type=int, default=0,
+                        help="Paired mode: play this many random legal plies first; each opening is "
+                             "played twice with colours swapped (0 = off, the historical behaviour)")
+    parser.add_argument("--opening-seed", type=int, default=None,
+                        help="Seed of the shared openings (default: --seed). Must be equal in every shard")
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
+    if not 0 <= args.opening_plies <= 12:
+        raise SystemExit("opening-plies must be between 0 and 12")
     if not args.go_command.startswith("go ") or "\n" in args.go_command or "\r" in args.go_command:
         raise SystemExit("go-command must be one USI go command")
     if args.games < 1 or args.max_plies < 1 or args.game_offset < 0 or not 0 <= args.seed <= 2147483647 - args.games * 2:
@@ -531,7 +571,8 @@ def main():
     games = []
     try:
         for i in range(args.games):
-            result = play_game(a, b, i, args.max_plies, args.seed, args.game_offset)
+            result = play_game(a, b, i, args.max_plies, args.seed, args.game_offset,
+                               args.opening_plies, args.opening_seed)
             games.append(result)
             print(f"game {i+1:03d}/{args.games}: {result['winner'] or 'draw'} "
                   f"{result['reason']} {result['plies']} plies")
@@ -556,6 +597,8 @@ def main():
         "options_b": options_b,
         "seed": args.seed,
         "game_offset": args.game_offset,
+        "opening_plies": args.opening_plies,
+        "opening_seed": args.seed if args.opening_seed is None else args.opening_seed,
         "max_plies": args.max_plies,
         "go_command": args.go_command,
         "response_watchdog_seconds": Engine.RESPONSE_TIMEOUT,

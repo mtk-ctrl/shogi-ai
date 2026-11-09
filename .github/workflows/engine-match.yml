@@ -38,6 +38,11 @@ on:
         required: true
         default: "2026100700"
         type: string
+      opening_plies:
+        description: "Paired mode: random legal opening plies; each opening is played twice with colours swapped (0 = off)"
+        required: false
+        default: "0"
+        type: string
       options_a:
         description: "JSON USI options for A (formal R20 default includes AdaptiveLongThink=true)"
         required: true
@@ -211,9 +216,11 @@ jobs:
           SHARD_GAMES: ${{ matrix.games }}
           SHARD_SEED: ${{ matrix.seed }}
           GAME_OFFSET: ${{ matrix.game_offset }}
+          OPENING_PLIES: ${{ inputs.opening_plies }}
+          OPENING_SEED: ${{ inputs.seed }}
         run: |
           mkdir -p results
-          python3 harness/benchmarks/arena.py             --engine-a build/engine-a             --engine-b build/engine-b             --options-a "$OPTIONS_A"             --options-b "$OPTIONS_B"             --games "$SHARD_GAMES"             --game-offset "$GAME_OFFSET"             --max-plies "$MAX_PLIES"             --seed "$SHARD_SEED"             --go-command "$GO_COMMAND"             --output "results/shard-${{ matrix.shard }}.json"
+          python3 harness/benchmarks/arena.py             --engine-a build/engine-a             --engine-b build/engine-b             --options-a "$OPTIONS_A"             --options-b "$OPTIONS_B"             --games "$SHARD_GAMES"             --game-offset "$GAME_OFFSET"             --max-plies "$MAX_PLIES"             --seed "$SHARD_SEED"             --go-command "$GO_COMMAND"             --opening-plies "${OPENING_PLIES:-0}"             --opening-seed "$OPENING_SEED"             --output "results/shard-${{ matrix.shard }}.json"
 
       - name: Upload shard
         uses: actions/upload-artifact@v4
@@ -252,6 +259,10 @@ jobs:
           import json, math, os
           from pathlib import Path
 
+          import sys
+          sys.path.insert(0, "harness/benchmarks")
+          from paired_stats import paired_summary
+
           rows=[json.loads(p.read_text()) for p in sorted(Path("results").glob("shard-*.json"))]
           if not rows:
               raise SystemExit("no shard results")
@@ -278,6 +289,10 @@ jobs:
               "average_plies":avg,"illegal_games":illegal,"shards":len(rows),
               "position_knowledge":knowledge,
           }
+          paired=paired_summary(rows)
+          if paired:
+              out["opening_plies"]=rows[0].get("opening_plies")
+              out["paired"]=paired
           Path("aggregate.json").write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n")
           with open(os.environ["GITHUB_STEP_SUMMARY"],"a",encoding="utf-8") as f:
               f.write("# Generic Engine Match\n\n")
@@ -287,6 +302,9 @@ jobs:
               f.write(f"- approximate 95% score interval: **{lo:.1%}–{hi:.1%}**\n")
               f.write(f"- games / shards: **{games} / {len(rows)}**\n")
               f.write(f"- illegal games: **{illegal}**\n")
+              if paired and "pair_score_a" in paired:
+                  pl,ph=paired["pair_95pct"]
+                  f.write(f"- paired openings ({paired['pairs']} pairs): score(A) **{paired['pair_score_a']:.1%}**, 95% interval **{pl:.1%}–{ph:.1%}**, A swept {paired['pairs_a_swept']} / split {paired['pairs_split']} / B swept {paired['pairs_b_swept']}\n")
               if knowledge:
                   ka=knowledge.get("A",{})
                   f.write(f"- position knowledge: **{ka.get('positions','?')} positions**, sha256 `{ka.get('sha256','unavailable')}`\n")

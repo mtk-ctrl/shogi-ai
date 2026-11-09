@@ -56,6 +56,7 @@ Issue作成やGitHub APIを利用できないAIは、リポジトリ所有者が
 - 指定できる基本項目は `ref_a`、`ref_b`、`games`、`shards`、`go_command`、`max_plies`、`seed`、`options_a`、`options_b`。`options_a` / `options_b` はJSON**文字列**で、後者にも同じ採用済み局面知識を指定する。
 - Issue方式は `go movetime N`、最大1万局・20並列・1000手、許可されたUSI設定のみ。`dry_run: true` なら入力検査だけ実施して対局は起動しない。
 - Issue方式が対応していない実験は、既存の `.github/match-request.json` 更新や専用Workflowで対応する。安全性チェックに拒否された操作を別経路で不当に実行してはならない。
+- 任意項目 `opening_plies`（0〜12、既定0=従来どおり）: 指定すると、ランダムな合法手の開始局面を各2局（先後入替）で指す**ペア対局**になる。開始局面は `seed` と全体の通し番号だけで決まり、shardをまたいでも同じ。`aggregate.json` に組ごとの得点率・区間（`paired`）が加わる。採否の正式条件はR20のまま（今は研究用の補助）。
 - この入口は起動だけを担当する。開始状況・終了結果・保存確認はR21に従って追跡する。
 
 ## 新しい研究・比較をしたいとき

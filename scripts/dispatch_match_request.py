@@ -61,7 +61,7 @@ def safe_ref(value: str, *, allow_baseline: bool = False) -> bool:
 def validate(req: dict, *, issue_request: bool) -> dict:
     if not isinstance(req, dict):
         raise ValueError("match request must be an object")
-    allowed = REQUIRED | {"request_id"}
+    allowed = REQUIRED | {"request_id", "opening_plies"}
     if set(req) - allowed:
         raise ValueError("unexpected fields: " + ", ".join(sorted(set(req) - allowed)))
     if REQUIRED - set(req):
@@ -82,6 +82,12 @@ def validate(req: dict, *, issue_request: bool) -> dict:
     if req["games"] < 1 or not 1 <= req["shards"] <= 20 or req["max_plies"] < 1:
         raise ValueError("games/max_plies must be positive; shards must be between 1 and 20")
     req["shards"] = min(req["shards"], req["games"])
+    if "opening_plies" in req:
+        if isinstance(req["opening_plies"], bool) or str(req["opening_plies"]) != str(int(req["opening_plies"])):
+            raise ValueError("opening_plies must be an integer")
+        req["opening_plies"] = int(req["opening_plies"])
+        if not 0 <= req["opening_plies"] <= 12:
+            raise ValueError("opening_plies must be between 0 and 12")
     if issue_request:
         # Restrict the lower-privilege Issue input to standard match invocations.
         if req["games"] > 10000 or req["max_plies"] > 1000:
@@ -121,6 +127,8 @@ def dispatch_command(req: dict, repository: str) -> list[str]:
         "max_plies", "seed", "options_a", "options_b",
     ):
         args.extend(["-f", name + "=" + str(req[name])])
+    if req.get("opening_plies"):
+        args.extend(["-f", "opening_plies=" + str(req["opening_plies"])])
     return args
 
 
