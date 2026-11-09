@@ -1,15 +1,26 @@
 #pragma once
 #include "rules/position.h"
 #include <algorithm>
+#include <array>
 #include <limits>
 #include <random>
 #include <stdexcept>
 
 namespace shogi::strategy {
 // Our values, independent of the upstream engine. One pawn = 100.
-// Value table indexed [kind][promoted-and-promotable]; same numbers as before.
-inline constexpr int PieceValueTable[9][2] = {
-    {0, 0}, {120, 760}, {310, 810}, {440, 860}, {650, 920}, {1250, 1850}, {1650, 2400}, {750, 750}, {0, 0}};
+namespace piece_value_data {
+inline constexpr int base[] = {0, 120, 310, 440, 650, 1250, 1650, 750, 0};
+inline constexpr int promoted_values[] = {0, 760, 810, 860, 920, 1850, 2400, 0, 0};
+} // namespace piece_value_data
+// Lookup table [kind][promoted-and-promotable], built from the arrays above (same numbers as before).
+inline constexpr auto PieceValueTable = [] {
+    std::array<std::array<int,2>,9> t{};
+    for (int k = 0; k <= 8; ++k) {
+        t[k][0] = piece_value_data::base[k];
+        t[k][1] = (k >= 1 && k <= 6) ? piece_value_data::promoted_values[k] : piece_value_data::base[k];
+    }
+    return t;
+}();
 inline int piece_value(int kind, bool promoted = false) {
   if(static_cast<unsigned>(kind) > 8u) throw std::logic_error("unknown piece kind");
   return PieceValueTable[kind][promoted && kind >= 1 && kind <= 6];
