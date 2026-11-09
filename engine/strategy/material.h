@@ -7,12 +7,12 @@
 
 namespace shogi::strategy {
 // Our values, independent of the upstream engine. One pawn = 100.
+// Value table indexed [kind][promoted-and-promotable]; same numbers as before.
+inline constexpr int PieceValueTable[9][2] = {
+    {0, 0}, {120, 760}, {310, 810}, {440, 860}, {650, 920}, {1250, 1850}, {1650, 2400}, {750, 750}, {0, 0}};
 inline int piece_value(int kind, bool promoted = false) {
-  constexpr int base[] = {0, 120, 310, 440, 650, 1250, 1650, 750, 0};
-  constexpr int promoted_values[] = {0, 760, 810, 860, 920, 1850, 2400, 0, 0};
-  if(kind < 0 || kind > 8) throw std::logic_error("unknown piece kind");
-  if(promoted && kind>=1 && kind<=6) return promoted_values[kind];
-  return base[kind];
+  if(static_cast<unsigned>(kind) > 8u) throw std::logic_error("unknown piece kind");
+  return PieceValueTable[kind][promoted && kind >= 1 && kind <= 6];
 }
 inline int hand_piece_value(int kind) {
   constexpr int hand_values[] = {0, 180, 460, 630, 900, 1850, 2350, 1060, 0};
@@ -23,9 +23,11 @@ inline int hand_piece_value(int kind) {
 // Always Black minus White; independent of whose turn the snapshot has.
 inline int material_black(const rules::Snapshot& snapshot) {
     int score = 0;
-    for (const auto& piece : snapshot.board)
-        score += (piece.color == rules::Color::Black ? 1 : -1)
-                 * piece_value(piece.kind, piece.promoted);
+    for (const auto& piece : snapshot.board) {
+        if (!piece.kind) continue;  // empty squares are worth 0
+        const int v = piece_value(piece.kind, piece.promoted);
+        score += piece.color == rules::Color::Black ? v : -v;
+    }
     for (int color = 0; color < 2; ++color)
         for (int kind = 1; kind <= 7; ++kind)
             score += (color == 0 ? 1 : -1) * snapshot.hands[color][kind - 1]

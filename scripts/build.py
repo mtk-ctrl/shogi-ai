@@ -27,6 +27,7 @@ tests.add_argument("--kifu-validator", action="store_true")
 tests.add_argument("--phase-probe", action="store_true")
 tests.add_argument("--feature-probe", action="store_true")
 tests.add_argument("--king-probe", action="store_true")
+tests.add_argument("--attack-bench", action="store_true")
 parser.add_argument("--sanitize", action="store_true")
 parser.add_argument("--android", action="store_true")
 args = parser.parse_args()
@@ -96,6 +97,7 @@ test_source = ("tests/rules_test.cpp" if args.test else
                "tools/phase/phase_probe.cpp" if args.phase_probe else
                "research/eval-tuning/feature_probe.cpp" if args.feature_probe else
                "research/eval-tuning/king_feature_probe.cpp" if args.king_probe else
+               "research/incremental/attack_bench.cpp" if args.attack_bench else
                "engine/main.cpp")
 own = [ROOT / "engine/rules/upstream_support.cpp", ROOT / "engine/rules/position.cpp", ROOT / test_source]
 command = [args.cxx, *flags, *map(str, upstream + own), "-o", str(out)]
