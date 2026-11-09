@@ -103,7 +103,7 @@ int main() {
         if (command != "isready" && command != "stop" && command != "ponderhit" && command != "quit")
             finish_search(true);
         if (command == "usi") {
-            std::cout << "id name KUMOJI v2.0.27\nid author mtk-ctrl + ChatGPT\n"
+            std::cout << "id name KUMOJI v2.0.28\nid author mtk-ctrl + ChatGPT\n"
                       << "option name USI_Ponder type check default true\n"
                       << "option name RiskVerify type check default true\n"
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
