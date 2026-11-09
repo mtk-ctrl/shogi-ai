@@ -86,7 +86,7 @@ struct AttackMap {
             auto& least_row = least[side];
             auto& target_row = targets[from];
             auto& target_count = sizes[from];
-            auto ray = [&](int df, int dr, bool sliding) {
+            auto ray = [&](int df, int dr, bool sliding) __attribute__((always_inline)) {
                 bool through_king = false;
                 int x=f+df, y=r+dr;
                 int next_sq = use_ray_table ? int(RayNextSquare[from][df+2][dr+2]) : -1;
