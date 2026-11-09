@@ -1,12 +1,12 @@
 {
-  "request_id": "longthink-drop80-shallow4-uses10-vs-v2027-400-20261109",
-  "ref_a": "09ae62f349ee413dc1f9f9a6172801b55390c1c1",
-  "ref_b": "09ae62f349ee413dc1f9f9a6172801b55390c1c1",
+  "request_id": "fast-eval-vs-v2027-400-20261109",
+  "ref_a": "a92f58766c04bcfda1cd4662dd1f441cf522060b",
+  "ref_b": "d4ad02a79d5ce3172d59bc3cb2b9b527e26cf6cd",
   "games": 400,
   "shards": 20,
   "go_command": "go movetime 200",
   "max_plies": 400,
-  "seed": 2026110912,
-  "options_a": "{\"AdaptiveLongThink\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"OpeningRandomNonLance\": true, \"SearchThreads\": 2, \"USI_Ponder\": true, \"LongThinkShallowDepth\": 4, \"LongThinkShallowLead\": 200, \"LongThinkDropThreshold\": 80}",
+  "seed": 2026110913,
+  "options_a": "{\"AdaptiveLongThink\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"OpeningRandomNonLance\": true, \"SearchThreads\": 2, \"USI_Ponder\": true}",
   "options_b": "{\"AdaptiveLongThink\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"OpeningRandomNonLance\": true, \"SearchThreads\": 2, \"USI_Ponder\": true}"
 }
