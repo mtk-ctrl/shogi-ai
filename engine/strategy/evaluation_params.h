@@ -42,6 +42,10 @@ struct EvaluationParameters {
     // (feature(White king) - feature(Black king)) for KingExtSelected, scale in percent.
     int king_ext_scale = 100;
     std::array<int,7> king_ext_coef{207,7,252,11,263,67,94};
+    // Research (EvalStratExt, default OFF): cp per unit of (Black - White) for castle2, pawn_hand,
+    // zone_control, major_adv, hand_kinds, and cp for side to move (+Black to move / -White). Scale in percent.
+    int strat_ext_scale = 0;
+    std::array<int,6> strat_ext_coef{742,-327,124,101,204,664};
 
     // In legacy-v1 reproduction this is +/-300.  The adopted v2 profile retains
     // the wider bound validated in the parameter search.

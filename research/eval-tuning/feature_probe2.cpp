@@ -8,6 +8,7 @@
 #include "strategy/phase_weights.h"
 #include "strategy/turn_phase.h"
 #include "strategy/attack_map.h"
+#include "strategy/evaluation_strategic_ext.h"
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -77,7 +78,15 @@ int main(int argc, char** argv) {
         const auto b = strategy::evaluate(s, params, 14);
         strategy::AttackMap a(s, true, true, true);
         std::cout << maturity << '\t' << b.total << '\t' << (int(s.turn) == 0 ? 1 : -1);
-        for (int side = 0; side < 2; ++side) { int f[NF]; features(s, a, side, f); for (int i = 0; i < NF; ++i) std::cout << '\t' << f[i]; }
+        for (int side = 0; side < 2; ++side) {
+            int f[NF]; features(s, a, side, f);
+            // The engine's EvalStratExt uses its own copy; they must agree (castle2, pawn_hand, zone_control, major_adv, hand_kinds).
+            int g[strategy::StratExtFeatures]; strategy::strategic_ext_features(s, a, side, g);
+            const int idx[strategy::StratExtFeatures] = {11, 0, 17, 4, 15};
+            for (int i = 0; i < strategy::StratExtFeatures; ++i)
+                if (g[i] != f[idx[i]]) { std::cerr << "feature mismatch " << kNames[idx[i]] << ": " << line << "\n"; return 2; }
+            for (int i = 0; i < NF; ++i) std::cout << '\t' << f[i];
+        }
         std::cout << '\n';
     }
 }
