@@ -115,6 +115,8 @@ int main() {
                       << "option name SearchThreads type spin default 2 min 1 max 2\n"
                       << "option name SearchProbeMask type spin default " << shogi::strategy::DefaultSearchProbeMask << " min 0 max 7\n"
                       << "option name SearchPruneMask type spin default " << shogi::strategy::DefaultSearchPruneMask << " min 0 max 15\n"
+                      << "option name IirMinDepth type spin default 0 min 0 max 16\n"
+                      << "option name RazorMargin type spin default 0 min 0 max 3000\n"
                       << "option name RfpMargin type spin default 350 min 50 max 3000\n"
                       << "option name RfpMaxDepth type spin default 3 min 1 max 8\n"
                       << "option name NullMoveReduction type spin default 2 min 1 max 6\n"
@@ -777,6 +779,12 @@ int main() {
                 } else if (name == "SearchSharedTT") {
                     try { std::size_t used=0; const int v=std::stoi(value,&used);
                         if(used==value.size() && v>=0 && v<=1) strategy.set_shared_tt(v!=0);
+                    } catch(const std::exception&) {}
+                } else if (name == "IirMinDepth" || name == "RazorMargin") {
+                    try { std::size_t used=0; const int v=std::stoi(value,&used);
+                        if(used==value.size() && v>=0 && v<=3000) {
+                            if(name=="IirMinDepth") strategy.set_iir_min_depth(v); else strategy.set_razor_margin(v);
+                        }
                     } catch(const std::exception&) {}
                 } else if (name == "FutilityMaxDepth") {
                     try { std::size_t used=0; const int v=std::stoi(value,&used);

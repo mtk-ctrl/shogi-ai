@@ -218,6 +218,9 @@ public:
     int null_reduction() const { return null_reduction_; }
     void set_futility_max_depth(int d) { futility_max_depth_ = std::clamp(d, 1, 6); }
     void set_futility_margin(int m) { futility_margin_ = std::clamp(m, 50, 3000); }
+    // Research (default off): internal iterative reduction and razoring.
+    void set_iir_min_depth(int d) { iir_min_depth_ = std::clamp(d, 0, 16); }
+    void set_razor_margin(int m) { razor_margin_ = std::clamp(m, 0, 3000); }
     // Research: both lanes of the two-thread search read and write one table.
     void set_shared_tt(bool on) { shared_tt_enabled_ = on; }
     bool shared_tt() const { return shared_tt_enabled_; }
@@ -442,6 +445,7 @@ private:
             lane.set_null_min_depth(null_min_depth_);
             lane.set_futility_max_depth(futility_max_depth_);
             lane.set_futility_margin(futility_margin_);
+            lane.set_iir_min_depth(iir_min_depth_);lane.set_razor_margin(razor_margin_);
             lane.set_rfp_margin(rfp_margin_);lane.set_rfp_max_depth(rfp_max_depth_);
             lane.set_lmr_min_depth(lmr_min_depth_);
             lane.set_lmr_after(lmr_after_);
@@ -802,6 +806,7 @@ private:
                 return {value};
             }
         }
+        if (iir_min_depth_ > 0 && tt_move.empty() && depth >= iir_min_depth_) --depth;
         if (depth == 0) {
             ++stats_.leaf_evals;
             const int sign = root_ == rules::Color::Black ? 1 : -1;
@@ -829,6 +834,18 @@ private:
                 if (ply < MaxPly) pv_lengths_[ply + 1] = 0;
                 return {maximizing ? stat - slack : stat + slack};
             }
+        }
+        // Research (RazorMargin>0): on a null-window, non-check node at depth<=2 whose static
+        // value is far outside the window, resolve by quiescence instead of full-width search.
+        if (razor_margin_ > 0 && quiescence_enabled_ && depth <= 2 && ply > 0 && beta - alpha == 1
+            && !is_mate_score(alpha) && !is_mate_score(beta)
+            && std::abs(alpha) < Infinity / 2 && std::abs(beta) < Infinity / 2
+            && !p.in_check()) {
+            const int sign = root_ == rules::Color::Black ? 1 : -1;
+            const int stat = sign * eval_node(p, p.snapshot());
+            const int slack = razor_margin_ * depth;
+            if (maximizing ? stat + slack <= alpha : stat - slack >= beta)
+                return quiescence(p, ply, 0, alpha, beta);
         }
         // Research: null-move pruning (SearchPruneMask bit 1). Own implementation
         // for the root-perspective minimax form: a max node is cut when the
@@ -1305,6 +1322,8 @@ private:
     int futility_max_depth_=2;
     int futility_margin_=300;
     int rfp_margin_=350;
+    int iir_min_depth_=0;
+    int razor_margin_=0;
     int rfp_max_depth_=3;
     int lmr_reduction_=1;
     // null_at_[ply] is true only while the node at that ply is inside its own
