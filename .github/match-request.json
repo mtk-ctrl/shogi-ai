@@ -1,13 +1,13 @@
 {
-  "request_id": "knob-quiescencecheckplies-2-on-stm332-paired-400-20261110",
-  "ref_a": "c3cf189f3cead4962b150a0f5c766e34ce981252",
-  "ref_b": "c3cf189f3cead4962b150a0f5c766e34ce981252",
+  "request_id": "mining-v2030-vs-v2029-paired-400-20261111",
+  "ref_a": "40d986a5a207d082dfcaf6e85e96d8f891d71a4b",
+  "ref_b": "1c0810bc82eea4f1d51b3b38bc79113bc9323682",
   "games": 400,
   "shards": 20,
   "go_command": "go movetime 200",
   "max_plies": 400,
-  "seed": 2026111801,
-  "options_a": "{\"AdaptiveLongThink\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"OpeningRandomNonLance\": true, \"SearchThreads\": 2, \"USI_Ponder\": true, \"EvalStratExtScale\": 100, \"EvalStratExtCoef\": \"0,0,0,0,0,332\", \"NullMoveReduction\": 3, \"LmrAfter\": 5, \"FutilityMargin\": 450, \"RfpMargin\": 500, \"IirMinDepth\": 3, \"RazorMargin\": 600, \"QuiescenceCheckPlies\": 2}",
-  "options_b": "{\"AdaptiveLongThink\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"OpeningRandomNonLance\": true, \"SearchThreads\": 2, \"USI_Ponder\": true, \"EvalStratExtScale\": 100, \"EvalStratExtCoef\": \"0,0,0,0,0,332\"}",
+  "seed": 2026112000,
+  "options_a": "{\"AdaptiveLongThink\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"OpeningRandomNonLance\": true, \"SearchThreads\": 2, \"USI_Ponder\": true}",
+  "options_b": "{\"AdaptiveLongThink\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"OpeningRandomNonLance\": true, \"SearchThreads\": 2, \"USI_Ponder\": true}",
   "opening_plies": 6
 }
