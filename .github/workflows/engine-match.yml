@@ -318,6 +318,21 @@ jobs:
         run: |
           python3 harness/tools/records/archive_played_moves.py --input results/shard-*.json --output-dir played-archive --run-id "$GITHUB_RUN_ID" --ref-a "$REF_A" --ref-b "$REF_B"
 
+      - name: Print game records to the log
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          for p in sorted(Path("results").glob("shard-*.json")):
+              d = json.loads(p.read_text())
+              for g in d.get("details", []):
+                  recs = g.get("move_records", [])
+                  ev = [(r.get("engine"), (r.get("search") or {}).get("score_cp_stm", (r.get("search") or {}).get("score_cp")),
+                         (r.get("search") or {}).get("score_mate")) for r in recs]
+                  print("GAMEREC " + json.dumps({"a_black": g.get("a_black"), "winner": g.get("winner"), "reason": g.get("reason"),
+                        "pair": g.get("opening_pair"), "moves": g.get("moves"), "ev": ev}, separators=(",", ":"), ensure_ascii=False))
+          PY
+
       - name: Upload played-move archive
         uses: actions/upload-artifact@v4
         with:
