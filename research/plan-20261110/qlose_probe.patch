@@ -1,0 +1,50 @@
+--- engine/strategy/iterative_search.h	2026-11-10 07:14:38.805513466 +0900
++++ /tmp/claude-0/-home-claude/daa93b49-7eb9-5254-868e-711dce0f5bf1/scratchpad/exp3/engine/strategy/iterative_search.h	2026-11-10 13:49:56.865728194 +0900
+@@ -1,3 +1,4 @@
++#include <cstdlib>
+ #pragma once
+ 
+ #include "strategy/alphabeta3_tt.h"
+@@ -93,7 +94,7 @@
+         std::uint64_t lmr_tries = 0, lmr_researches = 0;
+         // Research: futility pruning (SearchPruneMask bit 4).
+         std::uint64_t futility_prunes = 0;
+-        std::uint64_t tactical_gen_calls = 0;
++        std::uint64_t tactical_gen_calls = 0; std::uint64_t qlose_skipped = 0;
+         std::uint64_t rfp_prunes = 0;
+         int seldepth = 0;
+     };
+@@ -1143,8 +1144,33 @@
+         }
+         std::stable_sort(scored.begin(), scored.end(),
+                          [](const auto& a, const auto& b) { return a.score > b.score; });
++        static const int qlose = std::getenv("QLOSE") ? std::atoi(std::getenv("QLOSE")) : 0;
++        static const int qmargin = std::getenv("QMARGIN") ? std::atoi(std::getenv("QMARGIN")) : 0;
++        static const int qminply = std::getenv("QMINPLY") ? std::atoi(std::getenv("QMINPLY")) : 1;
++        static const int qking = std::getenv("QKING") ? std::atoi(std::getenv("QKING")) : 1;
++        std::optional<AttackMap> amap;
+         for (const auto& entry : scored) {
+             check_stop();
++            if (qlose && qply >= qminply) {
++                const auto& mv = entry.move;
++                const int dst = (mv[2] - '1') * 9 + mv[3] - 'a';
++                const int src = (mv[0] - '1') * 9 + mv[1] - 'a';
++                const auto& cap = snapshot.board[dst];
++                const auto& mov = snapshot.board[src];
++                if (cap.kind && cap.kind != 8 && !(mv.size() == 5 && mv[4] == '+')
++                    && piece_value(cap.kind, cap.promoted) + qmargin < piece_value(mov.kind, mov.promoted) && mov.kind != 8) {
++                    if (!amap) amap.emplace(snapshot, true, true, true);
++                    const int enemy = 1 - static_cast<int>(snapshot.turn);
++                    const int me = static_cast<int>(snapshot.turn);
++                    const int vc = piece_value(cap.kind, cap.promoted), vm = piece_value(mov.kind, mov.promoted);
++                    bool exempt = false;
++                    if (qking && (amap->near_square(dst, amap->kings[enemy]) || amap->near_square(dst, amap->kings[me]))) exempt = true;
++                    if (mov.kind == 8) exempt = true;
++                    if (!exempt && amap->count[enemy][dst] > 0 && vc + qmargin < vm && amap->count[me][dst] <= 1) {
++                        ++stats_.qlose_skipped; continue;
++                    }
++                }
++            }
+             Node child;
+             {
+                 std::string error;
