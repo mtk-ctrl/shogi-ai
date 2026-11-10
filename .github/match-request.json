@@ -1,13 +1,13 @@
 {
-  "request_id": "stratext-e-stm-quarter-vs-v2029-paired-400-20261110",
+  "request_id": "stratext-f-stm-332-confirm-vs-v2029-paired-400-20261110",
   "ref_a": "c3cf189f3cead4962b150a0f5c766e34ce981252",
   "ref_b": "c3cf189f3cead4962b150a0f5c766e34ce981252",
   "games": 400,
   "shards": 20,
   "go_command": "go movetime 200",
   "max_plies": 400,
-  "seed": 2026111008,
-  "options_a": "{\"AdaptiveLongThink\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"OpeningRandomNonLance\": true, \"SearchThreads\": 2, \"USI_Ponder\": true, \"EvalStratExtScale\": 100, \"EvalStratExtCoef\": \"0,0,0,0,0,166\"}",
+  "seed": 2026111099,
+  "options_a": "{\"AdaptiveLongThink\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"OpeningRandomNonLance\": true, \"SearchThreads\": 2, \"USI_Ponder\": true, \"EvalStratExtScale\": 100, \"EvalStratExtCoef\": \"0,0,0,0,0,332\"}",
   "options_b": "{\"AdaptiveLongThink\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"OpeningRandomNonLance\": true, \"SearchThreads\": 2, \"USI_Ponder\": true}",
   "opening_plies": 6
 }
