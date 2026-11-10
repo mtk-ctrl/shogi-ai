@@ -219,6 +219,7 @@ public:
     void set_futility_max_depth(int d) { futility_max_depth_ = std::clamp(d, 1, 6); }
     void set_futility_margin(int m) { futility_margin_ = std::clamp(m, 50, 3000); }
     // Research (default off): internal iterative reduction and razoring.
+    void set_q_check_plies(int d) { q_check_plies_ = std::clamp(d, 0, 8); }
     void set_iir_min_depth(int d) { iir_min_depth_ = std::clamp(d, 0, 16); }
     void set_razor_margin(int m) { razor_margin_ = std::clamp(m, 0, 3000); }
     // Research: both lanes of the two-thread search read and write one table.
@@ -445,7 +446,7 @@ private:
             lane.set_null_min_depth(null_min_depth_);
             lane.set_futility_max_depth(futility_max_depth_);
             lane.set_futility_margin(futility_margin_);
-            lane.set_iir_min_depth(iir_min_depth_);lane.set_razor_margin(razor_margin_);
+            lane.set_q_check_plies(q_check_plies_);lane.set_iir_min_depth(iir_min_depth_);lane.set_razor_margin(razor_margin_);
             lane.set_rfp_margin(rfp_margin_);lane.set_rfp_max_depth(rfp_max_depth_);
             lane.set_lmr_min_depth(lmr_min_depth_);
             lane.set_lmr_after(lmr_after_);
@@ -623,6 +624,7 @@ private:
         std::vector<std::string> strings;
         std::vector<std::uint64_t> packed;  // strings packed into integers (moves are at most 5 chars)
         bool tactical_ready = false;
+        bool tactical_checks = false;
         std::vector<std::string> tactical;
         std::vector<std::size_t> tactical_indexes;
         std::unordered_map<std::string, std::size_t> token_indexes;
@@ -684,12 +686,17 @@ private:
         }
         return p.legal_moves();
     }
-    std::vector<std::string> legal_tactical(const rules::Position& p, int ply) {
+    std::vector<std::string> legal_tactical(const rules::Position& p, int ply, bool checks = false) {
         batch(p, ply);
         auto& b = legal_batches_.at(ply);
+        if (b.tactical_ready && b.tactical_checks != checks) {
+            b.tactical_ready = false; b.tactical.clear(); b.tactical_indexes.clear();
+        }
         if (!b.tactical_ready) {
+            b.tactical_checks = checks;
             for (std::size_t i = 0; i < b.tokens.size(); ++i) {
-                if (!p.generated_move_is_capture_or_promotion(b.tokens[i])) continue;
+                if (!p.generated_move_is_capture_or_promotion(b.tokens[i])
+                    && !(checks && p.generated_move_gives_check(b.tokens[i]))) continue;
                 b.tactical.push_back(b.strings.empty() ? p.generated_move_usi(b.tokens[i]) : b.strings[i]);
                 b.tactical_indexes.push_back(i);
                 if (next_mask_ & 1) b.token_indexes.emplace(b.tactical.back(), i);
@@ -1045,10 +1052,10 @@ private:
         const bool selective = !checked && (efficiency_mask_ & SelectiveUSI);
         // Research (TacticalGen): outside check, generate only legal captures and
         // promotions straight from the rule layer; the full legal list is not built.
-        if (!checked && lazy_terminal && selective && (efficiency_mask_ & TacticalGen))
+        if (!checked && lazy_terminal && selective && (efficiency_mask_ & TacticalGen) && !(qply < q_check_plies_))
             return quiescence_tactical(p, ply, qply, alpha, beta, original_alpha, original_beta,
                                        maximizing, best, get_snapshot());
-        auto moves = selective ? legal_tactical(p, ply) : legal(p, ply);
+        auto moves = selective ? legal_tactical(p, ply, qply < q_check_plies_) : legal(p, ply);
         if (lazy_terminal && moves.empty() && batch(p, ply).tokens.empty()) {
             ++stats_.terminal_nodes;
             return {terminal(p, node_status(p, ply), ply)};
@@ -1323,6 +1330,7 @@ private:
     int futility_margin_=300;
     int rfp_margin_=350;
     int iir_min_depth_=0;
+    int q_check_plies_=0;
     int razor_margin_=0;
     int rfp_max_depth_=3;
     int lmr_reduction_=1;
