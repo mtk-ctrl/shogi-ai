@@ -226,6 +226,8 @@ public:
     void set_shared_tt(bool on) { shared_tt_enabled_ = on; }
     bool shared_tt() const { return shared_tt_enabled_; }
     void set_lmr_min_depth(int d) { lmr_min_depth_ = std::clamp(d, 2, 16); }
+    void set_q_depth(int d) { q_depth_ = std::clamp(d, 1, QuiescenceDepth); }
+    void set_q_delta(int m) { q_delta_ = std::clamp(m, 0, 5000); }
     void set_lmp_depth(int d) { lmp_depth_ = std::clamp(d, 0, 8); }
     void set_lmr_grade(int d) { lmr_grade_ = std::clamp(d, 0, 16); }
     void set_lmr_after(int n) { lmr_after_ = std::clamp(n, 1, 32); }
@@ -454,6 +456,7 @@ private:
             lane.set_lmr_after(lmr_after_);
             lane.set_lmr_grade(lmr_grade_);
             lane.set_lmp_depth(lmp_depth_);
+            lane.set_q_depth(q_depth_);lane.set_q_delta(q_delta_);
             lane.set_lmr_reduction(lmr_reduction_);
             lane.set_quiescence_enabled(quiescence_enabled_);
             lane.shared_tt_ = shared_tt_enabled_ ? shared_tt_owner_.get() : nullptr;
@@ -1055,7 +1058,7 @@ private:
             best.value = (root_ == rules::Color::Black ? 1 : -1)
                 * ((efficiency_mask_ & LazySnapshot) ? eval_cached(p, get_snapshot)
                                                     : eval_node(p, get_snapshot()));
-            if (qply >= QuiescenceDepth) {
+            if (qply >= q_depth_) {
                 ++stats_.qlimit_leaves;
                 return best;
             }
@@ -1064,6 +1067,8 @@ private:
             if (maximizing) alpha = std::max(alpha, best.value);
             else beta = std::min(beta, best.value);
         }
+        const int stand_pat = best.value;
+        std::vector<int> q_gains;
         const bool selective = !checked && (efficiency_mask_ & SelectiveUSI);
         // Research (TacticalGen): outside check, generate only legal captures and
         // promotions straight from the rule layer; the full legal list is not built.
@@ -1096,6 +1101,7 @@ private:
                     std::string move;
                     int score = 0;
                     std::size_t original_index = 0;
+                    int gain = 0;
                 };
                 std::vector<TacticalMove> scored;
                 scored.reserve(moves.size());
@@ -1105,28 +1111,40 @@ private:
                     const int src = (move[0] - '1') * 9 + move[1] - 'a';
                     const auto& captured = snapshot.board[dst];
                     const auto& moving = snapshot.board[src];
-                    int score = 0;
+                    int score = 0, gain = 0;
                     if (captured.kind != 0 && captured.kind != 8) {
                         score += 1000000
                               + 1000 * piece_value(captured.kind, captured.promoted)
                               - piece_value(moving.kind, moving.promoted);
+                        gain += 2 * piece_value(captured.kind, captured.promoted);
                     }
                     if (move.size() == 5 && move[4] == '+') {
                         score += 100 * std::max(0,
                             piece_value(moving.kind, true)
                             - piece_value(moving.kind, moving.promoted));
+                        gain += std::max(0, piece_value(moving.kind, true) - piece_value(moving.kind, moving.promoted));
                     }
-                    scored.push_back({move, score, i});
+                    scored.push_back({move, score, i, gain});
                 }
                 std::stable_sort(scored.begin(), scored.end(), [](const auto& a, const auto& b) {
                     return a.score > b.score;
                 });
-                for (std::size_t i = 0; i < scored.size(); ++i)
+                for (std::size_t i = 0; i < scored.size(); ++i) {
                     moves[i] = std::move(scored[i].move);
+                    if (q_delta_ > 0) q_gains.push_back(scored[i].gain);
+                }
             }
         }
+        std::size_t q_index = 0;
         for (const auto& move : moves) {
             check_stop();
+            // Research (QDelta>0): skip a capture/promotion whose best-case material gain
+            // plus the margin still cannot bring the stand-pat value back into the window.
+            const std::size_t qi = q_index++;
+            if (qi < q_gains.size() && !is_mate_score(alpha) && !is_mate_score(beta)
+                && (maximizing ? stand_pat + q_gains[qi] + q_delta_ <= alpha
+                               : stand_pat - q_gains[qi] - q_delta_ >= beta))
+                continue;
             Node child;
             {
                 make(p, move, ply);
@@ -1343,6 +1361,8 @@ private:
     int lmr_after_=3;
     int lmr_grade_=0;
     int lmp_depth_=0;
+    int q_depth_=QuiescenceDepth;
+    int q_delta_=0;
     int futility_max_depth_=2;
     int futility_margin_=300;
     int rfp_margin_=350;

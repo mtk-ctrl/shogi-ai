@@ -115,6 +115,8 @@ int main() {
                       << "option name SearchThreads type spin default 2 min 1 max 2\n"
                       << "option name SearchProbeMask type spin default " << shogi::strategy::DefaultSearchProbeMask << " min 0 max 7\n"
                       << "option name SearchPruneMask type spin default " << shogi::strategy::DefaultSearchPruneMask << " min 0 max 15\n"
+                      << "option name QDepth type spin default 8 min 1 max 8\n"
+                      << "option name QDelta type spin default 0 min 0 max 5000\n"
                       << "option name LmpDepth type spin default 0 min 0 max 8\n"
                       << "option name LmrGrade type spin default 0 min 0 max 16\n"
                       << "option name QuiescenceCheckPlies type spin default 0 min 0 max 8\n"
@@ -782,6 +784,10 @@ int main() {
                 } else if (name == "SearchSharedTT") {
                     try { std::size_t used=0; const int v=std::stoi(value,&used);
                         if(used==value.size() && v>=0 && v<=1) strategy.set_shared_tt(v!=0);
+                    } catch(const std::exception&) {}
+                } else if (name == "QDepth" || name == "QDelta") {
+                    try { std::size_t used=0; const int v=std::stoi(value,&used);
+                        if(used==value.size() && v>=0 && v<=5000) { if(name=="QDepth") strategy.set_q_depth(v); else strategy.set_q_delta(v); }
                     } catch(const std::exception&) {}
                 } else if (name == "LmpDepth") {
                     try { std::size_t used=0; const int v=std::stoi(value,&used);
