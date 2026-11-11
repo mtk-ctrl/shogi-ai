@@ -50,6 +50,11 @@ struct EvaluationParameters {
     // In legacy-v1 reproduction this is +/-300.  The adopted v2 profile retains
     // the wider bound validated in the parameter search.
     int positional_cap = 5000;
+    // Research (EvalTableFile): learned king-relative piece-square table. When set, the static
+    // value is material + table + side-to-move and the hand-written positional terms are skipped.
+    // Layout: [2 tables: own king, enemy king][13 piece types][17 dx][17 dy], cp from the piece owner's view.
+    const short* kp_table = nullptr;
+    int kp_stm = 0;
     static constexpr int StaticLimit = 1000000; // Far below mate=100000000.
 
     static EvaluationParameters legacy_v1() {

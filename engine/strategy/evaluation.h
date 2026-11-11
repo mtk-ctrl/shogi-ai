@@ -95,6 +95,28 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
                                      unsigned reuse_mask=0) {
     EvaluationBreakdown b;
     b.material=material_black(s);
+    if (p.kp_table) {
+        int kf[2]={-1,-1}, kr[2]={0,0};
+        for (int sq=0; sq<81; ++sq) { const auto& q=s.board[sq]; if (q.kind==8) { kf[int(q.color)]=sq/9; kr[int(q.color)]=sq%9; } }
+        int sum=0;
+        if (kf[0]>=0 && kf[1]>=0) for (int sq=0; sq<81; ++sq) {
+            const auto& q=s.board[sq];
+            if (!q.kind || q.kind==8) continue;
+            const int c=int(q.color), f=sq/9, r=sq%9;
+            const int t=(q.promoted && q.kind<=6) ? 6+q.kind : q.kind-1;
+            int v=0;
+            for (int tab=0; tab<2; ++tab) {
+                const int k=tab==0 ? c : 1-c;
+                const int dx=c==0 ? f-kf[k] : kf[k]-f, dy=c==0 ? r-kr[k] : kr[k]-r;
+                v+=p.kp_table[tab*13*289+(t*17+dx+8)*17+dy+8];
+            }
+            sum+=c==0 ? v : -v;
+        }
+        b.material_term=b.material;
+        b.positional_unclamped=b.positional=sum+(s.turn==rules::Color::Black ? p.kp_stm : -p.kp_stm);
+        b.total=std::clamp(b.material_term+b.positional,-p.StaticLimit,p.StaticLimit);
+        return b;
+    }
     // Distinguish pieces on board from pieces in hand: their strategic
     // values need not follow the same maturity trajectory. Reference 100
     // reproduces earlier fixed-M material evaluation when used directly.

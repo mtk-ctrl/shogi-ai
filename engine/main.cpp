@@ -17,6 +17,7 @@
 #include <condition_variable>
 #include <mutex>
 #include <thread>
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -158,6 +159,7 @@ int main() {
                       << "option name EvalKingExtCoef type string default 207,7,252,11,263,67,94\n"
                       << "option name EvalStratExtScale type spin default 100 min 0 max 300\n"
                       << "option name EvalStratExtCoef type string default 0,0,0,0,0,332\n"
+                      << "option name EvalTableFile type string default <empty>\n"
                       << "option name EvalThreat type spin default " << evaluation_parameters.threat_weight << " min 0 max 10000\n"
                       << "option name EvalPositionalCap type spin default " << evaluation_parameters.positional_cap << " min 0 max 5000\n"
                       << "option name PositionKnowledge type check default true\n"
@@ -958,6 +960,19 @@ int main() {
                         std::size_t used = 0; const int v = std::stoi(value, &used);
                         if (used == value.size() && v >= 0 && v <= 300) evaluation_parameters.strat_ext_scale = v;
                     } catch (const std::exception&) {}
+                } else if (name == "EvalTableFile") {
+                    // Research: text file "stm_cp v0 v1 ..." (2*13*17*17 table values in cp).
+                    static std::vector<short> kp_storage;
+                    std::ifstream in(value);
+                    int stm_cp = 0; std::vector<short> loaded; int v = 0;
+                    if (in && (in >> stm_cp)) while (in >> v) loaded.push_back(static_cast<short>(std::clamp(v, -30000, 30000)));
+                    if (loaded.size() == 2u * 13u * 289u) {
+                        kp_storage = std::move(loaded);
+                        evaluation_parameters.kp_table = kp_storage.data();
+                        evaluation_parameters.kp_stm = stm_cp;
+                    } else evaluation_parameters.kp_table = nullptr;
+                    strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
+                        ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters, strategy.reuse_mask()));
                 } else if (name == "EvalStratExtCoef") {
                     // Research: 6 comma-separated integers: castle2, pawn_hand, zone_control, major_adv, hand_kinds, side_to_move.
                     std::vector<int> numbers; std::stringstream ss(value); std::string token; bool ok = true;
