@@ -226,6 +226,7 @@ public:
     void set_shared_tt(bool on) { shared_tt_enabled_ = on; }
     bool shared_tt() const { return shared_tt_enabled_; }
     void set_lmr_min_depth(int d) { lmr_min_depth_ = std::clamp(d, 2, 16); }
+    void set_lmp_depth(int d) { lmp_depth_ = std::clamp(d, 0, 8); }
     void set_lmr_grade(int d) { lmr_grade_ = std::clamp(d, 0, 16); }
     void set_lmr_after(int n) { lmr_after_ = std::clamp(n, 1, 32); }
     void set_lmr_reduction(int r) { lmr_reduction_ = std::clamp(r, 1, 4); }
@@ -452,6 +453,7 @@ private:
             lane.set_lmr_min_depth(lmr_min_depth_);
             lane.set_lmr_after(lmr_after_);
             lane.set_lmr_grade(lmr_grade_);
+            lane.set_lmp_depth(lmp_depth_);
             lane.set_lmr_reduction(lmr_reduction_);
             lane.set_quiescence_enabled(quiescence_enabled_);
             lane.shared_tt_ = shared_tt_enabled_ ? shared_tt_owner_.get() : nullptr;
@@ -906,6 +908,12 @@ private:
         const rules::Snapshot lmr_snapshot = (lmr_node || futility_node) ? p.snapshot() : rules::Snapshot{};
         const int futility_static = futility_node
             ? (root_ == rules::Color::Black ? 1 : -1) * eval_node(p, lmr_snapshot) : 0;
+        // Research (LmpDepth>0): at shallow depth, late quiet moves are not searched at all.
+        const bool lmp_node = lmp_depth_ > 0 && depth <= lmp_depth_ && ply > 0
+            && !is_mate_score(alpha) && !is_mate_score(beta)
+            && std::abs(alpha) < Infinity / 2 && std::abs(beta) < Infinity / 2 && !p.in_check();
+        const rules::Snapshot lmp_snapshot = (lmp_node && !(lmr_node || futility_node)) ? p.snapshot() : rules::Snapshot{};
+        const rules::Snapshot& quiet_snapshot = (lmr_node || futility_node) ? lmr_snapshot : lmp_snapshot;
         int move_index = -1;
         for (const auto& move : moves) {
             check_stop();
@@ -915,6 +923,10 @@ private:
                 make(p, move, ply);
                 Undo undo{p};
                 bool futile = false;
+                if (lmp_node && searched && move_index >= 3 + 2 * depth * depth
+                    && quiet_key(quiet_snapshot, move) >= 0
+                    && move != killers_[ply][0] && move != killers_[ply][1] && !p.in_check())
+                    continue;
                 if (futility_node && searched && quiet_key(lmr_snapshot, move) >= 0 && !p.in_check()) {
                     const int slack = futility_margin_ * depth;
                     futile = maximizing ? futility_static + slack <= alpha
@@ -1330,6 +1342,7 @@ private:
     int lmr_min_depth_=3;
     int lmr_after_=3;
     int lmr_grade_=0;
+    int lmp_depth_=0;
     int futility_max_depth_=2;
     int futility_margin_=300;
     int rfp_margin_=350;
