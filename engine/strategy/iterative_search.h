@@ -226,6 +226,7 @@ public:
     void set_shared_tt(bool on) { shared_tt_enabled_ = on; }
     bool shared_tt() const { return shared_tt_enabled_; }
     void set_lmr_min_depth(int d) { lmr_min_depth_ = std::clamp(d, 2, 16); }
+    void set_lmr_grade(int d) { lmr_grade_ = std::clamp(d, 0, 16); }
     void set_lmr_after(int n) { lmr_after_ = std::clamp(n, 1, 32); }
     void set_lmr_reduction(int r) { lmr_reduction_ = std::clamp(r, 1, 4); }
     void set_null_min_depth(int d) { null_min_depth_ = std::clamp(d, 2, 16); }
@@ -450,6 +451,7 @@ private:
             lane.set_rfp_margin(rfp_margin_);lane.set_rfp_max_depth(rfp_max_depth_);
             lane.set_lmr_min_depth(lmr_min_depth_);
             lane.set_lmr_after(lmr_after_);
+            lane.set_lmr_grade(lmr_grade_);
             lane.set_lmr_reduction(lmr_reduction_);
             lane.set_quiescence_enabled(quiescence_enabled_);
             lane.shared_tt_ = shared_tt_enabled_ ? shared_tt_owner_.get() : nullptr;
@@ -928,7 +930,8 @@ private:
                     && move != killers_[ply][0] && move != killers_[ply][1]
                     && !p.in_check()) {
                     ++stats_.lmr_tries;
-                    const int rd = std::max(0, depth - 1 - lmr_reduction_);
+                    const int extra = (lmr_grade_ > 0 && depth >= lmr_grade_ && move_index >= lmr_after_ + 3) ? 1 : 0;
+                    const int rd = std::max(0, depth - 1 - lmr_reduction_ - extra);
                     child = maximizing
                         ? search(p, rd, ply + 1, alpha, alpha + 1, child_history)
                         : search(p, rd, ply + 1, beta - 1, beta, child_history);
@@ -1326,6 +1329,7 @@ private:
     int null_min_depth_=2;
     int lmr_min_depth_=3;
     int lmr_after_=3;
+    int lmr_grade_=0;
     int futility_max_depth_=2;
     int futility_margin_=300;
     int rfp_margin_=350;
