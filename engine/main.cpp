@@ -9,6 +9,7 @@
 #include "strategy/long_think_budget.h"
 #include "strategy/turn_phase.h"
 #include "strategy/phase_weights.h"
+#include "strategy/cpu_budget.h"
 #include <algorithm>
 #include <chrono>
 #include <random>
@@ -49,6 +50,14 @@ int main() {
     int default_depth = 3;
     bool adaptive_long_think_enabled = true;
     bool usi_ponder_enabled = true;
+    // SearchThreads is the requested upper bound; AutoThreads caps it by usable cores.
+    unsigned requested_threads = strategy.threads();
+    bool auto_threads = true;
+    const unsigned usable_cores = shogi::strategy::available_cores();
+    auto apply_threads = [&] {
+        strategy.set_threads(shogi::strategy::effective_threads(requested_threads, usable_cores, auto_threads));
+    };
+    apply_threads();
     int long_think_used = 0;
     bool previous_root_score_valid = false;
     int previous_root_score = 0;
@@ -104,7 +113,7 @@ int main() {
         if (command != "isready" && command != "stop" && command != "ponderhit" && command != "quit")
             finish_search(true);
         if (command == "usi") {
-            std::cout << "id name KUMOJI v2.0.30\nid author mtk-ctrl + ChatGPT\n"
+            std::cout << "id name KUMOJI v2.0.31\nid author mtk-ctrl + ChatGPT\n"
                       << "option name USI_Ponder type check default true\n"
                       << "option name RiskVerify type check default true\n"
                       << "option name USI_EnteringKingRule type combo default CSARule27 var CSARule27 var NoEnteringKing\n"
@@ -114,6 +123,7 @@ int main() {
                       << "option name SearchReuseMask type spin default " << shogi::strategy::DefaultSearchReuseMask << " min 0 max 15\n"
                       << "option name SearchNextMask type spin default 4 min 0 max 15\n"
                       << "option name SearchThreads type spin default 2 min 1 max 2\n"
+                      << "option name AutoThreads type check default true\n"
                       << "option name SearchProbeMask type spin default " << shogi::strategy::DefaultSearchProbeMask << " min 0 max 7\n"
                       << "option name SearchPruneMask type spin default " << shogi::strategy::DefaultSearchPruneMask << " min 0 max 15\n"
                       << "option name QDepth type spin default 8 min 1 max 8\n"
@@ -186,6 +196,10 @@ int main() {
             if (!session) {
                 ensure_position_knowledge_loaded();
             }
+            emit("info string search_threads requested " + std::to_string(requested_threads)
+                 + " usable_cores " + std::to_string(usable_cores)
+                 + " auto " + (auto_threads ? "true" : "false")
+                 + " using " + std::to_string(strategy.threads()) + "\n");
             emit("readyok\n");
         } else if (command == "usinewgame") {
             ensure_position_knowledge_loaded();
@@ -837,9 +851,16 @@ int main() {
                 } else if (name == "SearchThreads") {
                     try {
                         std::size_t used=0; const int count=std::stoi(value,&used);
-                        if(used==value.size() && count>=1 && count<=2)
-                            strategy.set_threads(static_cast<unsigned>(count));
+                        if(used==value.size() && count>=1 && count<=2) {
+                            requested_threads = static_cast<unsigned>(count);
+                            apply_threads();
+                        }
                     } catch(const std::exception&) {}
+                } else if (name == "AutoThreads") {
+                    if (value == "true" || value == "false") {
+                        auto_threads = value == "true";
+                        apply_threads();
+                    }
                 } else if (name == "Quiescence") {
                     if (value == "true" || value == "false") {
                         quiescence_enabled = value == "true";
