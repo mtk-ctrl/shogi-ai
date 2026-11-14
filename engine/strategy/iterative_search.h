@@ -203,6 +203,10 @@ public:
     }
     unsigned reuse_mask() const { return reuse_mask_; }
     void set_threads(unsigned count) { threads_=std::clamp(count,1u,2u); }
+    void set_root_split(int v) { root_split_=v; }
+    void set_split_min_depth(int v) { split_min_depth_=v; }
+    void set_split_max_ply(int v) { split_max_ply_=std::clamp(v,1,7); }
+    void set_root_spec_margin(int v) { root_spec_margin_=v; }
     unsigned threads() const { return threads_; }
     void set_probe_mask(unsigned mask) { probe_mask_ = mask & 7u; }
     unsigned probe_mask() const { return probe_mask_; }
@@ -243,7 +247,8 @@ public:
             if(!allowed.empty())moves.erase(std::remove_if(moves.begin(),moves.end(),[&](const auto& m){
                 return std::find(allowed.begin(),allowed.end(),m)==allowed.end();}),moves.end());
             if(moves.size()>1 && position.status().result==rules::Result::Ongoing)
-                return choose_parallel(position,max_depth,control,moves,completed);
+                return root_split_>=1 ? choose_shared(position,max_depth,control,moves,completed)
+                                      : choose_parallel(position,max_depth,control,moves,completed);
         }
         return choose_serial(position,max_depth,control,allowed,completed);
     }
@@ -440,29 +445,7 @@ private:
         for(std::size_t i=0;i<original.size();++i)groups[i%2].push_back(original[i]);
         for(int i=0;i<2;++i) {
             if(!parallel_lanes_[i])parallel_lanes_[i]=std::make_unique<BasicIterativeSearch>();
-            auto& lane=*parallel_lanes_[i];lane.rng_=initial_rng;lane.set_evaluator(evaluator_);
-            lane.set_research_mask(research_mask_);lane.set_efficiency_mask(efficiency_mask_);
-            lane.set_reuse_mask(reuse_mask_);lane.set_next_mask(next_mask_);
-            lane.set_risk_verify(risk_verify_enabled_);
-            lane.set_probe_mask(probe_mask_);
-            lane.set_prune_mask(prune_mask_);
-            lane.set_null_reduction(null_reduction_);
-            lane.set_null_min_depth(null_min_depth_);
-            lane.set_futility_max_depth(futility_max_depth_);
-            lane.set_futility_margin(futility_margin_);
-            lane.set_q_check_plies(q_check_plies_);lane.set_iir_min_depth(iir_min_depth_);lane.set_razor_margin(razor_margin_);
-            lane.set_rfp_margin(rfp_margin_);lane.set_rfp_max_depth(rfp_max_depth_);
-            lane.set_lmr_min_depth(lmr_min_depth_);
-            lane.set_lmr_after(lmr_after_);
-            lane.set_lmr_grade(lmr_grade_);
-            lane.set_lmp_depth(lmp_depth_);
-            lane.set_q_depth(q_depth_);lane.set_q_delta(q_delta_);
-            lane.set_lmr_reduction(lmr_reduction_);
-            lane.set_quiescence_enabled(quiescence_enabled_);
-            lane.shared_tt_ = shared_tt_enabled_ ? shared_tt_owner_.get() : nullptr;
-            lane.set_threads(1);
-            lane.position_knowledge_=position_knowledge_;lane.position_knowledge_enabled_=position_knowledge_enabled_;
-            lane.capture_root_ties_=true;
+            configure_lane(*parallel_lanes_[i],initial_rng);
         }
         std::array<SearchControl,2> controls;
         for(auto& c:controls)c.deadline_ns.store(control.adaptive_long_think && control.hard_deadline_ns
@@ -537,6 +520,471 @@ private:
         return result;
     }
 
+    template<class Rng> void configure_lane(BasicIterativeSearch& lane,const Rng& initial_rng) {
+        lane.rng_=initial_rng;lane.root_split_=root_split_;lane.root_spec_margin_=root_spec_margin_;
+        lane.split_min_depth_=split_min_depth_;lane.split_max_ply_=split_max_ply_;lane.set_evaluator(evaluator_);
+        lane.set_research_mask(research_mask_);lane.set_efficiency_mask(efficiency_mask_);
+        lane.set_reuse_mask(reuse_mask_);lane.set_next_mask(next_mask_);
+        lane.set_risk_verify(risk_verify_enabled_);
+        lane.set_probe_mask(probe_mask_);
+        lane.set_prune_mask(prune_mask_);
+        lane.set_null_reduction(null_reduction_);
+        lane.set_null_min_depth(null_min_depth_);
+        lane.set_futility_max_depth(futility_max_depth_);
+        lane.set_futility_margin(futility_margin_);
+        lane.set_q_check_plies(q_check_plies_);lane.set_iir_min_depth(iir_min_depth_);lane.set_razor_margin(razor_margin_);
+        lane.set_rfp_margin(rfp_margin_);lane.set_rfp_max_depth(rfp_max_depth_);
+        lane.set_lmr_min_depth(lmr_min_depth_);
+        lane.set_lmr_after(lmr_after_);
+        lane.set_lmr_grade(lmr_grade_);
+        lane.set_lmp_depth(lmp_depth_);
+        lane.set_q_depth(q_depth_);lane.set_q_delta(q_delta_);
+        lane.set_lmr_reduction(lmr_reduction_);
+        lane.set_quiescence_enabled(quiescence_enabled_);
+        lane.shared_tt_ = shared_tt_enabled_ ? shared_tt_owner_.get() : nullptr;
+        lane.set_threads(1);
+        lane.position_knowledge_=position_knowledge_;lane.position_knowledge_enabled_=position_knowledge_enabled_;
+        lane.capture_root_ties_=true;
+    }
+
+    // ---- Shared-root two-thread search (RootSplit=1, research) ----
+    // Both lanes take root moves from one queue and share the best root score,
+    // so the second lane always searches against the real bar. While lane 0
+    // searches the first (principal) move, lane 1 speculatively refutes later
+    // moves against a guessed bar taken from an earlier iteration.
+    struct SplitAbort {};
+    // One PV node whose later moves are shared by both lanes (RootSplit=2).
+    struct Split {
+        const std::vector<std::string>* moves=nullptr; std::size_t next=0;
+        int depth=0, ply=0; std::uint64_t history=0; bool maximizing=true;
+        std::atomic<int> alpha{0}, beta{0}; int original_alpha=0, original_beta=0;
+        int best=0; std::string best_move; std::vector<std::string> best_tail; bool improved=false;
+        std::atomic<bool> cutoff{false}; std::string cutoff_move;
+        int outstanding=0; bool helper_in=false, helper_done=false;
+        bool lmr_node=false, futility_node=false, lmp_node=false; int futility_static=0;
+        const rules::Snapshot* snap=nullptr;
+        std::array<std::string,8> path;
+    };
+    struct SharedRoot {
+        Split* job=nullptr;
+        std::uint64_t splits=0, split_helped=0;
+        std::mutex mutex; std::condition_variable cv;
+        std::vector<std::string> moves; std::size_t next=0;
+        std::vector<std::string> requeue;
+        std::vector<std::pair<std::string,int>> spec_done; // (move, upper bound)
+        bool first_taken=false, first_done=false, has_guess=false;
+        int guess=0, outstanding=0, depth=0;
+        std::atomic<int> best{0};
+        std::vector<SearchResult> tied;
+        std::atomic<bool> interrupted{false};
+        std::uint64_t root_history=0;
+        std::uint64_t spec_tried=0, spec_ok=0;
+    };
+    enum class RootTask { None, First, Normal, Spec };
+    void begin_lane(rules::Position& position, SearchControl& control) {
+        stats_ = {};
+        if (probe_mask_ & 2) for (auto& row : killers_) for (auto& move : row) move.clear();
+        if (probe_mask_ & 4) for (auto& side : history_scores_) side.fill(0);
+        control_ = &control;
+        if (!shared_tt_) tt_.new_search();
+        qtt_.new_search();
+        for (auto& batch : legal_batches_) batch.valid = false;
+        pv_lengths_.fill(0);
+        null_at_.fill(false);
+        iteration_hints_.clear();
+        ++eval_epoch_;
+        if (!eval_epoch_) {
+            for (auto& cell : eval_cache_) cell.epoch = 0;
+            for (auto& cell : order_cache_) cell.epoch = 0;
+            for (auto& cell : legal_cache_) cell.epoch = 0;
+            eval_epoch_ = 1;
+        }
+        root_in_check_ = position.in_check();
+        has_previous_completed_ = false;
+        has_last_completed_ = false;
+        root_ = (efficiency_mask_ & LazySnapshot) ? position.turn() : position.snapshot().turn;
+        (void)legal(position, 0); // make() at ply 0 needs this lane's own root move batch
+    }
+    void resolve_spec(SharedRoot& sh) { // mutex held, first_done == true
+        const int b = sh.best.load();
+        for (auto& [move, ub] : sh.spec_done) {
+            if (ub < b) ++sh.spec_ok; else sh.requeue.push_back(move);
+        }
+        sh.spec_done.clear();
+    }
+    void root_work(rules::Position& position, SharedRoot& sh, int role) {
+        const int depth = sh.depth;
+        iteration_depth_ = depth;
+        board_scores_ = !quiescence_enabled_ && depth <= 3 && !position.has_repeated_history();
+        if (!shared_tt_ && !(next_mask_ & 8)) tt_.new_search();
+        iteration_hints_.new_search();
+        bool holding = false;
+        try {
+            for (;;) {
+                check_stop();
+                RootTask task = RootTask::None; std::string move; int spec_alpha = 0;
+                {
+                    std::unique_lock<std::mutex> lock(sh.mutex);
+                    for (;;) {
+                        if (sh.interrupted.load()) return;
+                        if (role == 1 && !sh.first_done && sh.job && !sh.job->helper_done) {
+                            Split* sp = sh.job; sp->helper_in = true; sp->helper_done = true; ++sh.split_helped;
+                            lock.unlock();
+                            split_work(position, *sp, sh, true);
+                            lock.lock();
+                            continue;
+                        }
+                        if (!sh.first_done) {
+                            if (role == 0 && !sh.first_taken) {
+                                sh.first_taken = true; move = sh.moves[sh.next++]; task = RootTask::First; break;
+                            }
+                            if (sh.first_taken && sh.has_guess && sh.next < sh.moves.size()) {
+                                move = sh.moves[sh.next++]; task = RootTask::Spec;
+                                spec_alpha = sh.guess - root_spec_margin_; ++sh.spec_tried; break;
+                            }
+                        } else {
+                            if (!sh.requeue.empty()) { move = sh.requeue.back(); sh.requeue.pop_back(); task = RootTask::Normal; break; }
+                            if (sh.next < sh.moves.size()) { move = sh.moves[sh.next++]; task = RootTask::Normal; break; }
+                            if (sh.outstanding == 0) return;
+                        }
+                        sh.cv.wait_for(lock, std::chrono::milliseconds(1));
+                        lock.unlock(); check_stop(); lock.lock();
+                    }
+                    ++sh.outstanding; holding = true;
+                }
+                Node child{0}; bool fail_low_spec = false, spec_failed = false;
+                std::vector<std::string> tail;
+                {
+                    make(position, move, 0);
+                    Undo undo{position};
+                    visit(1);
+                    int child_depth = depth - 1;
+                    if (risk_verify_enabled_ && depth >= 2 && move.size() == 4 && move[0] == 'P' && move[1] == '*') {
+                        for (const auto& reply : legal(position, 1)) {
+                            if (reply.size() >= 4 && reply[1] != '*' && reply[2] == move[2] && reply[3] == move[3]) {
+                                child_depth = depth; break;
+                            }
+                        }
+                    }
+                    const auto child_history = next_history(sh.root_history, position.hash_key());
+                    if (task == RootTask::First) {
+                        if (root_split_ == 2) { shared_root_ = &sh; path_[0] = move; }
+                        struct Clear { BasicIterativeSearch& s; ~Clear() { s.shared_root_ = nullptr; } } clear{*this};
+                        child = search(position, child_depth, 1, -Infinity, Infinity, child_history);
+                    } else if (task == RootTask::Spec) {
+                        child = search(position, child_depth, 1, spec_alpha, spec_alpha + 1, child_history);
+                        if (child.value <= spec_alpha) fail_low_spec = true; else spec_failed = true;
+                    } else {
+                        int a = sh.best.load();
+                        if (probe_mask_ & 1) {
+                            ++stats_.pvs_probes;
+                            child = search(position, child_depth, 1, a, a + 1, child_history);
+                            while (child.value > a) {
+                                const int cur = sh.best.load();
+                                visit(1);
+                                if (cur > a && child.value <= cur) {
+                                    a = cur; child = search(position, child_depth, 1, a, a + 1, child_history); continue;
+                                }
+                                ++stats_.pvs_researches;
+                                child = search(position, child_depth, 1, cur, Infinity, child_history);
+                                break;
+                            }
+                        } else child = search(position, child_depth, 1, a, Infinity, child_history);
+                    }
+                    tail = pv_materialize(1);
+                }
+                {
+                    std::lock_guard<std::mutex> lock(sh.mutex);
+                    --sh.outstanding; holding = false;
+                    if (task == RootTask::Spec) {
+                        if (spec_failed) sh.requeue.push_back(move);
+                        else if (fail_low_spec) {
+                            sh.spec_done.emplace_back(move, child.value);
+                            if (sh.first_done) resolve_spec(sh);
+                        }
+                    } else {
+                        const int value = child.value;
+                        int best = sh.best.load();
+                        if (task == RootTask::First || value > best) { sh.best.store(value); best = value; sh.tied.clear(); }
+                        if (value == best) {
+                            SearchResult candidate;
+                            candidate.move = move; candidate.score = value;
+                            candidate.depth = depth; candidate.has_score = true;
+                            candidate.pv = {move};
+                            candidate.pv.insert(candidate.pv.end(), tail.begin(), tail.end());
+                            sh.tied.push_back(std::move(candidate));
+                        }
+                        if (task == RootTask::First) { sh.first_done = true; resolve_spec(sh); }
+                    }
+                }
+                sh.cv.notify_all();
+            }
+        } catch (const Interrupted&) {
+            std::lock_guard<std::mutex> lock(sh.mutex);
+            if (holding) --sh.outstanding;
+            sh.interrupted.store(true);
+            sh.cv.notify_all();
+        }
+    }
+
+    void pv_set_tail(int ply, const std::vector<std::string>& tail) {
+        const int n = std::min<int>(tail.size(), MaxPly - ply);
+        for (int i = 0; i < n; ++i) {
+            pv_rows_[ply][i].fill(0);
+            std::memcpy(pv_rows_[ply][i].data(), tail[i].data(), std::min<std::size_t>(5, tail[i].size()));
+        }
+        pv_lengths_[ply] = std::max(0, n);
+    }
+    bool split_child(rules::Position& p, Split& sp, const std::string& move, int move_index, int& out) {
+        const int depth = sp.depth, ply = sp.ply; const bool maximizing = sp.maximizing;
+        make(p, move, ply);
+        Undo undo{p};
+        int alpha = sp.alpha.load(), beta = sp.beta.load();
+        const auto& snap = *sp.snap;
+        if (sp.lmp_node && move_index >= 3 + 2 * depth * depth && quiet_key(snap, move) >= 0
+            && move != killers_[ply][0] && move != killers_[ply][1] && !p.in_check()) return false;
+        if (sp.futility_node && quiet_key(snap, move) >= 0 && !p.in_check()) {
+            const int slack = futility_margin_ * depth;
+            if (maximizing ? sp.futility_static + slack <= alpha : sp.futility_static - slack >= beta) {
+                ++stats_.futility_prunes; return false;
+            }
+        }
+        visit(ply + 1);
+        const auto child_history = next_history(sp.history, p.hash_key());
+        Node child{0}; bool reduced_done = false;
+        if (sp.lmr_node && move_index >= lmr_after_ && quiet_key(snap, move) >= 0
+            && move != killers_[ply][0] && move != killers_[ply][1] && !p.in_check()) {
+            ++stats_.lmr_tries;
+            const int extra = (lmr_grade_ > 0 && depth >= lmr_grade_ && move_index >= lmr_after_ + 3) ? 1 : 0;
+            const int rd = std::max(0, depth - 1 - lmr_reduction_ - extra);
+            child = maximizing ? search(p, rd, ply + 1, alpha, alpha + 1, child_history)
+                               : search(p, rd, ply + 1, beta - 1, beta, child_history);
+            const bool improve = maximizing ? child.value > alpha : child.value < beta;
+            if (improve) { ++stats_.lmr_researches; visit(ply + 1); } else reduced_done = true;
+        }
+        if (!reduced_done) {
+            if (probe_mask_ & 1) {
+                ++stats_.pvs_probes;
+                for (;;) {
+                    child = maximizing ? search(p, depth - 1, ply + 1, alpha, alpha + 1, child_history)
+                                       : search(p, depth - 1, ply + 1, beta - 1, beta, child_history);
+                    const bool improve = maximizing ? child.value > alpha && child.value < beta
+                                                    : child.value < beta && child.value >= alpha;
+                    if (!improve) break;
+                    const int na = sp.alpha.load(), nb = sp.beta.load();
+                    visit(ply + 1);
+                    const bool bar_moved = maximizing ? (na > alpha && child.value <= na)
+                                                      : (nb < beta && child.value >= nb);
+                    alpha = na; beta = nb;
+                    if (bar_moved) continue;
+                    ++stats_.pvs_researches;
+                    child = search(p, depth - 1, ply + 1, alpha, beta, child_history);
+                    break;
+                }
+            } else child = search(p, depth - 1, ply + 1, alpha, beta, child_history);
+        }
+        out = child.value;
+        return true;
+    }
+    void split_work(rules::Position& p, Split& sp, SharedRoot& sh, bool helper) {
+        int replayed = 0;
+        auto leave = [&] {
+            active_split_ = nullptr;
+            while (replayed-- > 0) p.undo();
+            if (helper) { std::lock_guard<std::mutex> lock(sh.mutex); sp.helper_in = false; }
+            sh.cv.notify_all();
+        };
+        try {
+            if (helper) {
+                for (int i = 0; i < sp.ply; ++i) { (void)legal(p, i); make(p, sp.path[i], i); ++replayed; }
+                (void)legal(p, sp.ply);
+            }
+            active_split_ = &sp;
+            for (;;) {
+                std::size_t idx;
+                {
+                    std::lock_guard<std::mutex> lock(sh.mutex);
+                    if (sp.cutoff.load() || sp.next >= sp.moves->size()) break;
+                    idx = sp.next++; ++sp.outstanding;
+                }
+                const auto& move = (*sp.moves)[idx];
+                int value = 0; bool done = false; std::vector<std::string> tail;
+                try {
+                    done = split_child(p, sp, move, static_cast<int>(idx), value);
+                    if (done) tail = pv_materialize(sp.ply + 1);
+                } catch (const SplitAbort&) {
+                    for (int i = sp.ply; i <= MaxPly; ++i) null_at_[i] = false;
+                    std::lock_guard<std::mutex> lock(sh.mutex); --sp.outstanding; break;
+                } catch (...) {
+                    { std::lock_guard<std::mutex> lock(sh.mutex); --sp.outstanding; }
+                    throw;
+                }
+                {
+                    std::lock_guard<std::mutex> lock(sh.mutex);
+                    --sp.outstanding;
+                    if (done) {
+                        if (sp.maximizing ? value > sp.best : value < sp.best) {
+                            sp.best = value; sp.best_move = move; sp.best_tail = std::move(tail); sp.improved = true;
+                        }
+                        if (sp.maximizing) { if (value > sp.alpha.load()) sp.alpha.store(value); }
+                        else if (value < sp.beta.load()) sp.beta.store(value);
+                        if ((sp.maximizing && sp.best >= sp.original_beta) || (!sp.maximizing && sp.best < sp.original_alpha)) {
+                            if (!sp.cutoff.load()) sp.cutoff_move = move;
+                            sp.cutoff.store(true);
+                        }
+                    }
+                }
+            }
+        } catch (...) { leave(); throw; }
+        leave();
+    }
+    bool run_split(rules::Position& p, const std::vector<std::string>& moves, int first, int depth, int ply,
+                   int& alpha, int& beta, int original_alpha, int original_beta, std::uint64_t history,
+                   bool maximizing, int& best_value, bool lmr_node, bool futility_node, bool lmp_node,
+                   int futility_static, const rules::Snapshot& snap) {
+        auto& sh = *shared_root_;
+        Split sp;
+        sp.moves = &moves; sp.next = first; sp.depth = depth; sp.ply = ply; sp.history = history;
+        sp.maximizing = maximizing; sp.alpha.store(alpha); sp.beta.store(beta);
+        sp.original_alpha = original_alpha; sp.original_beta = original_beta; sp.best = best_value;
+        sp.lmr_node = lmr_node; sp.futility_node = futility_node; sp.lmp_node = lmp_node;
+        sp.futility_static = futility_static; sp.snap = &snap;
+        for (int i = 0; i < ply && i < 8; ++i) sp.path[i] = path_[i];
+        {
+            std::lock_guard<std::mutex> lock(sh.mutex);
+            if (sh.first_done || sh.job) return false;
+            sh.job = &sp; ++sh.splits;
+        }
+        sh.cv.notify_all();
+        shared_root_ = nullptr; // no nested split while this one is open
+        std::exception_ptr err;
+        try { split_work(p, sp, sh, false); } catch (...) { err = std::current_exception(); }
+        {
+            std::unique_lock<std::mutex> lock(sh.mutex);
+            sh.job = nullptr;
+            if (err) sp.cutoff.store(true);
+            while (sp.helper_in || sp.outstanding) sh.cv.wait_for(lock, std::chrono::milliseconds(1));
+        }
+        shared_root_ = &sh;
+        if (err) std::rethrow_exception(err);
+        if (sp.improved) {
+            best_value = sp.best;
+            pv_set_tail(ply + 1, sp.best_tail);
+            pv_push(ply, sp.best_move);
+        }
+        alpha = sp.alpha.load(); beta = sp.beta.load();
+        if (sp.cutoff.load()) {
+            ++stats_.cutoffs;
+            if (maximizing) ++stats_.max_cutoffs; else ++stats_.min_cutoffs;
+            if (probe_mask_ & 6) record_order_cutoff(p, sp.cutoff_move, depth, ply);
+        }
+        return true;
+    }
+    SearchResult choose_shared(rules::Position& position,int max_depth,SearchControl& control,
+                               const std::vector<std::string>& original,
+                               const std::function<void(const SearchResult&)>& completed) {
+        stats_={};control_=&control;root_in_check_=position.in_check();
+        has_previous_completed_=has_last_completed_=false;
+        SearchResult result;result.move=original.front();result.pv={result.move};
+        const auto initial_rng=rng_;
+        if (shared_tt_enabled_) {
+            if (!shared_tt_owner_) shared_tt_owner_ = std::make_unique<SharedTranspositionTable>();
+            shared_tt_owner_->new_search();
+        }
+        for(int i=0;i<2;++i) {
+            if(!parallel_lanes_[i])parallel_lanes_[i]=std::make_unique<BasicIterativeSearch>();
+            configure_lane(*parallel_lanes_[i],initial_rng);
+        }
+        std::array<SearchControl,2> controls;
+        for(auto& c:controls)c.deadline_ns.store(control.adaptive_long_think && control.hard_deadline_ns
+            ? control.hard_deadline_ns : control.deadline_ns.load());
+        std::mutex mutex;std::condition_variable cv;
+        std::vector<SearchResult> published;
+        auto final_rng=initial_rng;
+        Stats observed;
+        bool done=false;
+        std::exception_ptr error;
+        auto p0=position.clone();
+        auto p1=position.clone();
+        std::thread leader([&,p0=std::move(p0),p1=std::move(p1)]()mutable{
+            try {
+                auto& l0=*parallel_lanes_[0];auto& l1=*parallel_lanes_[1];
+                l0.begin_lane(p0,controls[0]);l1.begin_lane(p1,controls[1]);
+                std::string knowledge_move;
+                if (l0.position_knowledge_enabled_ && !p0.has_repeated_history()) {
+                    if (const auto* hint = l0.position_knowledge_.probe(p0))
+                        if (std::find(original.begin(), original.end(), hint->move) != original.end())
+                            knowledge_move = hint->move;
+                }
+                SharedRoot sh;
+                sh.root_history=p0.history_key();
+                std::array<int,MaxDepth+2> scores{};std::array<bool,MaxDepth+2> have{};
+                SearchResult last;
+                for(int depth=1;depth<=std::clamp(max_depth,1,MaxDepth);++depth) {
+                    if(controls[0].stop.load())break;
+                    try {
+                        sh.moves=l0.ordered(p0,original,{},depth>=((research_mask_&EarlyHints)?2:4)&&last.depth?last.move:"",knowledge_move);
+                    } catch(const Interrupted&) { break; }
+                    sh.next=0;sh.requeue.clear();sh.spec_done.clear();sh.tied.clear();
+                    sh.first_taken=sh.first_done=false;sh.outstanding=0;sh.depth=depth;
+                    sh.best.store(-Infinity);sh.interrupted.store(false);
+                    // Scores swing with the parity of the depth, so guess from two iterations back.
+                    sh.has_guess=root_split_==1 && root_spec_margin_>=0 && depth>=3 && have[depth-2];sh.job=nullptr;
+                    sh.guess=sh.has_guess?scores[depth-2]:0;
+                    std::thread helper([&]{l1.root_work(p1,sh,1);});
+                    try { l0.root_work(p0,sh,0); }
+                    catch(...) { sh.interrupted.store(true); controls[1].stop.store(true); helper.join(); throw; }
+                    helper.join();
+                    if(sh.interrupted.load() || sh.tied.empty())break;
+                    auto tied=sh.tied;
+                    std::sort(tied.begin(),tied.end(),[&](const auto& a,const auto& b){
+                        return std::find(original.begin(),original.end(),a.move)<std::find(original.begin(),original.end(),b.move);});
+                    auto choice_rng=initial_rng;
+                    last=tied[std::uniform_int_distribution<std::size_t>(0,tied.size()-1)(choice_rng)];
+                    scores[depth]=last.score;have[depth]=true;
+                    {std::lock_guard<std::mutex> lock(mutex);
+                        published.push_back(last);final_rng=choice_rng;
+                        observed=combine_stats(l0.last_stats(),l1.last_stats());}
+                    cv.notify_one();
+                }
+            }catch(...){error=std::current_exception();}
+            {std::lock_guard<std::mutex> lock(mutex);done=true;}
+            cv.notify_one();
+        });
+        auto stop_join=[&]{for(auto& c:controls)c.stop.store(true);if(leader.joinable())leader.join();};
+        try {
+            std::size_t shown=0;
+            for(;;) {
+                std::vector<SearchResult> fresh;bool all_done;
+                {
+                    std::unique_lock<std::mutex> lock(mutex);
+                    while(shown<published.size())fresh.push_back(published[shown++]);
+                    stats_=observed;all_done=done;
+                    if(fresh.empty() && !all_done)cv.wait_for(lock,std::chrono::milliseconds(1));
+                }
+                bool cancelled=false;
+                for(const auto& r:fresh) {
+                    result=r;previous_completed_=last_completed_;has_previous_completed_=has_last_completed_;
+                    last_completed_=r;has_last_completed_=true;
+                    if(completed)completed(r);
+                    if(control.stop.load()){cancelled=true;break;}
+                }
+                if(all_done || cancelled)break;
+                if(control.stop.load())break;
+                const auto deadline=control.deadline_ns.load();
+                if(deadline) {
+                    const auto now=SearchControl::now_ns();
+                    if(now>=deadline && !maybe_extend_deadline(now))break;
+                }
+            }
+        }catch(...){stop_join();throw;}
+        stop_join();
+        if(has_last_completed_)rng_=final_rng;
+        stats_=combine_stats(parallel_lanes_[0]->last_stats(),parallel_lanes_[1]->last_stats());
+        if(error)std::rethrow_exception(error);
+        return result;
+    }
+
     static constexpr int Infinity = MateScore + 1000;
     struct Interrupted {};
     struct Node { int value; };
@@ -605,6 +1053,7 @@ private:
         return true;
     }
     void check_stop() const {
+        if (active_split_ && active_split_->cutoff.load(std::memory_order_relaxed)) throw SplitAbort{};
         if (control_->stop.load(std::memory_order_relaxed)
             || (control_->node_limit && stats_.nodes >= control_->node_limit))
             throw Interrupted{};
@@ -725,6 +1174,7 @@ private:
     }
     void make(rules::Position& position, const std::string& move, int ply) {
         std::string error;
+        if (shared_root_ && ply < 8) path_[ply] = move;
         if (research_mask_ & GeneratedPlay) {
             const auto& b = batch(position, ply);
             std::size_t index;
@@ -920,6 +1370,11 @@ private:
         int move_index = -1;
         for (const auto& move : moves) {
             check_stop();
+            if (shared_root_ && searched && beta - alpha > 1 && depth >= split_min_depth_ && ply <= split_max_ply_
+                && move_index + 3 <= static_cast<int>(moves.size())
+                && run_split(p, moves, move_index + 1, depth, ply, alpha, beta, original_alpha, original_beta,
+                             history, maximizing, best.value, lmr_node, futility_node, lmp_node, futility_static, quiet_snapshot))
+                break;
             ++move_index;
             Node child;
             {
@@ -1353,6 +1808,11 @@ private:
     unsigned efficiency_mask_ = DefaultSearchEfficiencyMask;
     unsigned reuse_mask_ = DefaultSearchReuseMask;
     unsigned threads_=2;
+    SharedRoot* shared_root_=nullptr; Split* active_split_=nullptr;
+    std::array<std::string,8> path_;
+    int split_min_depth_=2, split_max_ply_=4;
+    int root_split_=0;        // 0 = two independent halves (adopted), 1 = shared-root queue (research)
+    int root_spec_margin_=100; // <0 disables speculative refutation
     unsigned probe_mask_=DefaultSearchProbeMask;
     unsigned prune_mask_=DefaultSearchPruneMask;
     int null_reduction_=2;
