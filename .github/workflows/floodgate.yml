@@ -1,0 +1,134 @@
+name: Floodgate entry (probe / rehearsal / live)
+run-name: "Floodgate ${{ inputs.mode }} / ${{ inputs.username }} / games=${{ inputs.games }}"
+# 雲路をFloodgate(wdoor.c.u-tokyo.ac.jp:4081, floodgate-300-10F)へ出すための入口。R50に従う。
+# probe: TCP到達確認だけ(ログインしない)。rehearsal: 模擬サーバ相手に通しで1局(外部へ接続しない)。
+# live: 実参戦。confirm_live に LIVE と入力し、リポジトリsecret FLOODGATE_TRIP がある場合だけ動く。
+# 棋力測定専用。相手の評価値・読み筋・指し手は学習に使わない。エンジン本体は変更しない。定期実行なし。
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "probe / rehearsal / live"
+        required: true
+        default: "probe"
+        type: choice
+        options: [probe, rehearsal, live]
+      games:
+        description: "liveの局数 1-6 (1局は待ち時間込みで最大約2時間)"
+        required: true
+        default: "1"
+        type: string
+      username:
+        description: "Floodgateでの名前(英数字・_・-)"
+        required: true
+        default: "KUMOJI"
+        type: string
+      engine_ref:
+        description: "固定する雲路のコミットSHA(空ならmain)"
+        required: false
+        default: ""
+        type: string
+      confirm_live:
+        description: "実参戦するときだけ LIVE と入力"
+        required: false
+        default: ""
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: floodgate-entry
+  cancel-in-progress: false
+jobs:
+  floodgate:
+    if: github.repository == 'mtk-ctrl/shogi-ai'
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - name: Validate request
+        env:
+          MODE: ${{ inputs.mode }}
+          GAMES: ${{ inputs.games }}
+          USERNAME: ${{ inputs.username }}
+          CONFIRM: ${{ inputs.confirm_live }}
+          HAS_TRIP: ${{ secrets.FLOODGATE_TRIP != '' }}
+        run: |
+          python3 - <<'PY'
+          import os, re
+          g=int(os.environ["GAMES"])
+          if not 1<=g<=6: raise SystemExit("games must be 1-6")
+          if not re.fullmatch(r"[A-Za-z0-9_-]{1,32}", os.environ["USERNAME"]): raise SystemExit("invalid username")
+          if os.environ["MODE"]=="live":
+              if os.environ["CONFIRM"]!="LIVE": raise SystemExit("live requires confirm_live=LIVE (R50: explicit live participation only)")
+              if os.environ["HAS_TRIP"]!="true": raise SystemExit("repository secret FLOODGATE_TRIP is not set")
+          print("request OK")
+          PY
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.engine_ref || github.sha }}
+      - name: Install python-shogi
+        run: python3 -m pip install python-shogi==1.1.1
+      - name: Build KUMOJI and prepare adopted knowledge
+        run: |
+          set -euo pipefail
+          python3 scripts/build.py --output build/shogi-ai
+          cp position-knowledge-v1.tsv build/position-knowledge-v1.tsv
+          python3 tests/test_floodgate_client.py
+          python3 tools/floodgate/client.py --engine build/shogi-ai --clock-probe \
+            --setoption PositionKnowledge=true --setoption "PositionKnowledgeFile=$PWD/build/position-knowledge-v1.tsv"
+          git rev-parse HEAD
+      - name: Probe (TCP reachability only, no login)
+        run: |
+          python3 - <<'PY'
+          import socket
+          s=socket.create_connection(("wdoor.c.u-tokyo.ac.jp",4081),timeout=20)
+          print("FLOODGATE_PROBE connected to",s.getpeername()); s.close()
+          PY
+      - name: Rehearsal against the local mock CSA server (no external connection)
+        if: inputs.mode != 'probe'
+        env:
+          FLOODGATE_TRIP: rehearsal-trip-1
+        run: |
+          set -euo pipefail
+          for side in + -; do
+            python3 tools/floodgate/mock_server.py --port 14081 --client-side "$side" --total 60 --inc 2 --seed 3 > mock.log 2>&1 &
+            sleep 1
+            python3 tools/floodgate/client.py --engine build/shogi-ai --username KUMOJI_rehearsal --host 127.0.0.1 --port 14081 --games 1 --live \
+              --setoption PositionKnowledge=true --setoption "PositionKnowledgeFile=$PWD/build/position-knowledge-v1.tsv" \
+              --result-log rehearsal.jsonl
+            wait; cat mock.log; grep -q "MOCK opponent" mock.log
+          done
+      - name: Live games on Floodgate (floodgate-300-10F)
+        if: inputs.mode == 'live' && inputs.confirm_live == 'LIVE'
+        env:
+          FLOODGATE_TRIP: ${{ secrets.FLOODGATE_TRIP }}
+          USERNAME: ${{ inputs.username }}
+          GAMES: ${{ inputs.games }}
+        run: |
+          set -euo pipefail
+          python3 tools/floodgate/client.py --engine build/shogi-ai --username "$USERNAME" --games "$GAMES" --live \
+            --setoption PositionKnowledge=true --setoption "PositionKnowledgeFile=$PWD/build/position-knowledge-v1.tsv" \
+            --result-log floodgate-results.jsonl
+      - name: Summarize live results
+        if: always() && inputs.mode == 'live'
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          p=Path("floodgate-results.jsonl")
+          rows=[json.loads(l) for l in p.read_text().splitlines() if l.strip()] if p.exists() else []
+          with open(os.environ["GITHUB_STEP_SUMMARY"],"a") as f:
+              f.write("# Floodgate live results\n\n")
+              for r in rows:
+                  line=f"{r['game_id']} | {r['name_black']} vs {r['name_white']} | we={r['your_turn']} | {r['result']} {r['cause']} | {r['plies']} plies"
+                  f.write("- "+line+"\n"); print("FLOODGATE_RESULT "+line)
+          print(f"FLOODGATE_GAMES {len(rows)}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always() && inputs.mode != 'probe'
+        with:
+          name: floodgate-${{ inputs.mode }}-${{ github.run_id }}
+          path: |
+            floodgate-results.jsonl
+            rehearsal.jsonl
+          retention-days: 90
+          if-no-files-found: warn

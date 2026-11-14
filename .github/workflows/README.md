@@ -34,6 +34,7 @@ GitHub Actions workflowは、GitHub上のrunnerでビルド・テスト・対局
 | `.github/workflows/position-knowledge-refresh.yml` | 知識更新request / 手動 | 承認した候補データから採用済み局面知識を生成する。新候補を自動採用しない |
 | `.github/workflows/yaneuraou-nnue-trial.yml` | 専用依頼ファイル変更 / 手動 | やねうら王NNUE（公開学習済み評価）の40局対局。固定雲路200ms＋採用済み知識・長考、NNUE各1000/5000節点20局、20runner、結果と実設定・違法対局を集計。Material梯子とは別尺度で正式採用なし |
 | `.github/workflows/yaneuraou-ladder.yml` | 依頼ファイル更新 / 手動 / 条件付き自動進行 | やねうら王Material版で正式棋力測定（雲路200ms・長考ON・局面知識ON）。100局ごとにレベルを1上げ、勝率30%未満で自動停止。レベル別対局記録と集計を保存し、固定エンジンcommitを引き継ぐ |
+| `.github/workflows/floodgate.yml` | 手動のみ | Floodgate出場の入口。probe（TCP到達確認のみ・ログインなし）／rehearsal（模擬CSAサーバ相手に先後1局ずつ通し確認・外部接続なし）／live（実参戦。`confirm_live=LIVE` とsecret `FLOODGATE_TRIP` が必須、R50）。採用済み局面知識ON。結果は棋力測定専用で学習に使わない |
 | `.github/workflows/external-engine-benchmark.yml` | 関連pushでunit / 手動Benchmark | やねうら王MaterialのCore外部尺度 |
 | `.github/workflows/tsume-benchmark.yml` | 手動 | 固定詰将棋データセットのBenchmark |
 | `.github/workflows/android-apk.yml` | 明示的release変更 / 手動 | 完成版全車検・Android APK生成 |
