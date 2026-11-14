@@ -1811,7 +1811,7 @@ private:
     SharedRoot* shared_root_=nullptr; Split* active_split_=nullptr;
     std::array<std::string,8> path_;
     int split_min_depth_=2, split_max_ply_=4;
-    int root_split_=0;        // 0 = two independent halves (adopted), 1 = shared-root queue (research)
+    int root_split_=2;        // 2 = shared root + PV split (adopted v2.0.32), 1 = shared root only, 0 = two independent halves (v2.0.18-31)
     int root_spec_margin_=100; // <0 disables speculative refutation
     unsigned probe_mask_=DefaultSearchProbeMask;
     unsigned prune_mask_=DefaultSearchPruneMask;
