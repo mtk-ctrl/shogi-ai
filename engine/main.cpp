@@ -124,6 +124,10 @@ int main() {
                       << "option name SearchNextMask type spin default 4 min 0 max 15\n"
                       << "option name SearchThreads type spin default 2 min 1 max 2\n"
                       << "option name AutoThreads type check default true\n"
+                      << "option name RootSplit type spin default 0 min 0 max 2\n"
+                      << "option name SplitMinDepth type spin default 2 min 1 max 16\n"
+                      << "option name SplitMaxPly type spin default 4 min 1 max 7\n"
+                      << "option name RootSpecMargin type spin default 100 min -1 max 100000\n"
                       << "option name SearchProbeMask type spin default " << shogi::strategy::DefaultSearchProbeMask << " min 0 max 7\n"
                       << "option name SearchPruneMask type spin default " << shogi::strategy::DefaultSearchPruneMask << " min 0 max 15\n"
                       << "option name QDepth type spin default 8 min 1 max 8\n"
@@ -855,6 +859,11 @@ int main() {
                             requested_threads = static_cast<unsigned>(count);
                             apply_threads();
                         }
+                    } catch(const std::exception&) {}
+                } else if (name == "RootSplit" || name == "RootSpecMargin" || name == "SplitMinDepth" || name == "SplitMaxPly") {
+                    try { std::size_t used=0; const int v=std::stoi(value,&used);
+                        if(used==value.size()) { if(name=="RootSplit") strategy.set_root_split(v); else if(name=="RootSpecMargin") strategy.set_root_spec_margin(v);
+                            else if(name=="SplitMinDepth") strategy.set_split_min_depth(v); else strategy.set_split_max_ply(v); }
                     } catch(const std::exception&) {}
                 } else if (name == "AutoThreads") {
                     if (value == "true" || value == "false") {
