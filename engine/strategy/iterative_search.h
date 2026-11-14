@@ -221,6 +221,14 @@ public:
     // Research (default off): internal iterative reduction and razoring.
     void set_q_check_plies(int d) { q_check_plies_ = std::clamp(d, 0, 8); }
     void set_iir_min_depth(int d) { iir_min_depth_ = std::clamp(d, 0, 16); }
+    // Research: 1 = board-keyed table that also answers from deeper entries (see search()).
+    void set_tt_mode(int m) { tt_mode_ = std::clamp(m, 0, 1); }
+    // Research: 0 = the two lanes split the root moves; 1 = both lanes search every
+    // root move over one shared table, the second lane skipping even depths so it
+    // runs ahead of the first, and the deepest finished depth is published.
+    void set_thread_mode(int m) { thread_mode_ = std::clamp(m, 0, 3); }
+    int thread_mode() const { return thread_mode_; }
+    int tt_mode() const { return tt_mode_; }
     void set_razor_margin(int m) { razor_margin_ = std::clamp(m, 0, 3000); }
     // Research: both lanes of the two-thread search read and write one table.
     void set_shared_tt(bool on) { shared_tt_enabled_ = on; }
@@ -272,6 +280,7 @@ private:
             eval_epoch_ = 1;
         }
         root_in_check_ = position.in_check();
+        root_repeat_free_ = tt_mode_ && !position.has_repeated_history();
         has_previous_completed_ = false;
         has_last_completed_ = false;
         auto original = legal(position, 0);
@@ -316,6 +325,9 @@ private:
         const auto root_history = position.history_key();
         const auto initial_rng = rng_;
         for (int depth = 1; depth <= std::clamp(max_depth, 1, MaxDepth); ++depth) {
+            if (lane_skip_ == 1 && depth >= 2 && (depth & 1) == 0) continue;
+            if (lane_skip_ == 2 && depth >= 3 && (depth & 1) == 1) continue;
+            if (lane_skip_ == 3 && depth >= 3 && ((depth >> 1) & 1) == 1) continue;
             iteration_depth_ = depth;
             // With a unique incoming history, three additional plies cannot
             // produce a fourth occurrence (the same side-to-move needs at least
@@ -325,7 +337,7 @@ private:
             board_scores_ = !quiescence_enabled_ && depth <= 3 && !position.has_repeated_history();
             // A shared table keeps entries across iterations (they are depth-keyed
             // and stay valid) and is advanced once per go by the parent.
-            if (!shared_tt_ && !(next_mask_ & 8)) tt_.new_search();
+            if (!shared_tt_ && !(next_mask_ & 8) && !tt_mode_) tt_.new_search();
             iteration_hints_.new_search();
             try {
                 check_stop();
@@ -437,7 +449,10 @@ private:
             shared_tt_owner_->new_search();
         }
         std::array<std::vector<std::string>,2> groups;
-        for(std::size_t i=0;i<original.size();++i)groups[i%2].push_back(original[i]);
+        for(std::size_t i=0;i<original.size();++i) {
+            if(thread_mode_>=1) { groups[0].push_back(original[i]); groups[1].push_back(original[i]); }
+            else groups[i%2].push_back(original[i]);
+        }
         for(int i=0;i<2;++i) {
             if(!parallel_lanes_[i])parallel_lanes_[i]=std::make_unique<BasicIterativeSearch>();
             auto& lane=*parallel_lanes_[i];lane.rng_=initial_rng;lane.set_evaluator(evaluator_);
@@ -450,6 +465,8 @@ private:
             lane.set_null_min_depth(null_min_depth_);
             lane.set_futility_max_depth(futility_max_depth_);
             lane.set_futility_margin(futility_margin_);
+            lane.set_tt_mode(tt_mode_);
+            lane.lane_skip_=(i==1 && thread_mode_>=1) ? thread_mode_ : 0;
             lane.set_q_check_plies(q_check_plies_);lane.set_iir_min_depth(iir_min_depth_);lane.set_razor_margin(razor_margin_);
             lane.set_rfp_margin(rfp_margin_);lane.set_rfp_max_depth(rfp_max_depth_);
             lane.set_lmr_min_depth(lmr_min_depth_);
@@ -499,6 +516,22 @@ private:
                 bool all_done;
                 {
                     std::unique_lock<std::mutex> lock(mutex);
+                    if(thread_mode_>=1) {
+                        // Both lanes searched every root move: publish the deepest depth either
+                        // has finished, once. A lane's own tie set is used as it is.
+                        const int top=std::clamp(max_depth,1,MaxDepth);
+                        for(int d=top;d>=next_depth;--d) {
+                            const auto& src=!roots[0][d].empty() ? roots[0][d] : roots[1][d];
+                            if(src.empty()) continue;
+                            auto tied=src;
+                            std::sort(tied.begin(),tied.end(),[&](const auto& a,const auto& b){
+                                return std::find(original.begin(),original.end(),a.move)<std::find(original.begin(),original.end(),b.move);});
+                            auto choice_rng=initial_rng;
+                            newly_completed.push_back(tied[std::uniform_int_distribution<std::size_t>(0,tied.size()-1)(choice_rng)]);
+                            rng_=choice_rng;next_depth=d+1;
+                            break;
+                        }
+                    } else
                     while(next_depth<=std::clamp(max_depth,1,MaxDepth)
                         && !roots[0][next_depth].empty() && !roots[1][next_depth].empty()) {
                         auto tied=roots[0][next_depth];
@@ -794,30 +827,40 @@ private:
             return {terminal(p, status, ply)};
         }
         const int original_alpha = alpha, original_beta = beta;
-        const auto score_key = board_scores_ ? p.hash_key() : history;
+        // TTMode 1: while no repetition result is reachable below this node, look the
+        // position up by board alone and accept any entry searched at least as deep.
+        const bool key_tt = root_repeat_free_ && ply + depth <= TTSafePlies;
+        const auto score_key = key_tt ? p.hash_key() : (board_scores_ ? p.hash_key() : history);
         std::string tt_move;
         ++stats_.tt_probes;
         TranspositionTable::Entry tt_copy;
         const TranspositionTable::Entry* tt_entry = nullptr;
-        if (shared_tt_) { if (shared_tt_->probe(score_key, depth, tt_copy)) tt_entry = &tt_copy; }
+        bool tt_usable = true;
+        if (key_tt) {
+            if (shared_tt_) { if (shared_tt_->probe_key(score_key, tt_copy)) tt_entry = &tt_copy; }
+            else tt_entry = tt_.probe_key(score_key);
+            if (tt_entry) tt_usable = tt_entry->depth >= depth;
+        } else if (shared_tt_) { if (shared_tt_->probe(score_key, depth, tt_copy)) tt_entry = &tt_copy; }
         else tt_entry = tt_.probe(score_key, depth);
         if (const auto* entry = tt_entry) {
             ++stats_.tt_hits;
             tt_move = TranspositionTable::best_move(*entry);
             const int value = from_table(entry->value, ply);
-            // A PV may be shorter on a cache hit; it is still a legal prefix.
-            if (entry->bound == Bound::Exact) {
-                ++stats_.tt_exact_hits;
-                if (!tt_move.empty()) {
-                    if (ply < MaxPly) pv_lengths_[ply + 1] = 0;
-                    pv_push(ply, tt_move);
+            if (tt_usable) {
+                // A PV may be shorter on a cache hit; it is still a legal prefix.
+                if (entry->bound == Bound::Exact) {
+                    ++stats_.tt_exact_hits;
+                    if (!tt_move.empty()) {
+                        if (ply < MaxPly) pv_lengths_[ply + 1] = 0;
+                        pv_push(ply, tt_move);
+                    }
+                    return {value};
                 }
-                return {value};
-            }
-            if ((entry->bound == Bound::Lower && value >= beta)
-                || (entry->bound == Bound::Upper && value < alpha)) {
-                ++stats_.tt_bound_cutoffs;
-                return {value};
+                if ((entry->bound == Bound::Lower && value >= beta)
+                    || (entry->bound == Bound::Upper && value < alpha)) {
+                    ++stats_.tt_bound_cutoffs;
+                    return {value};
+                }
             }
         }
         if (iir_min_depth_ > 0 && tt_move.empty() && depth >= iir_min_depth_) --depth;
@@ -828,7 +871,7 @@ private:
                 ? eval_cached(p, [&] { ++stats_.lazy_snapshots; return p.snapshot(); })
                 : eval_node(p, p.snapshot()));
             ++stats_.tt_store_calls;
-            if (tt_store(score_key, depth, value, Bound::Exact, {})) ++stats_.tt_replacements;
+            if (tt_store(score_key, depth, value, Bound::Exact, {}, key_tt)) ++stats_.tt_replacements;
             return {value};
         }
         const bool maximizing = ((efficiency_mask_ & LazySnapshot) ? p.turn() : p.snapshot().turn) == root_;
@@ -991,7 +1034,7 @@ private:
         const auto bound = best.value <= original_alpha ? Bound::Upper
             : best.value >= original_beta ? Bound::Lower : Bound::Exact;
         ++stats_.tt_store_calls;
-        if (tt_store(score_key, depth, to_table(best.value, ply), bound, pv_first(ply)))
+        if (tt_store(score_key, depth, to_table(best.value, ply), bound, pv_first(ply), key_tt))
             ++stats_.tt_replacements;
         iteration_hints_.store(p.hash_key(), depth, pv_first(ply));
         return best;
@@ -1340,7 +1383,11 @@ private:
     std::mt19937 rng_;
     Evaluator evaluator_;
     Stats stats_{};
-    bool tt_store(std::uint64_t key, int depth, int value, Bound bound, const std::string& move) {
+    bool tt_store(std::uint64_t key, int depth, int value, Bound bound, const std::string& move,
+                  bool by_board = false) {
+        if (by_board)
+            return shared_tt_ ? shared_tt_->store_key(key, depth, value, bound, move)
+                              : tt_.store_key(key, depth, value, bound, move);
         return shared_tt_ ? shared_tt_->store(key, depth, value, bound, move)
                           : tt_.store(key, depth, value, bound, move);
     }
@@ -1399,6 +1446,14 @@ private:
     bool position_knowledge_enabled_ = true;
     bool quiescence_enabled_ = true;
     bool board_scores_ = false;
+    int tt_mode_ = 0;
+    int thread_mode_ = 0;
+    int lane_skip_ = 0; // 1 = skip even depths from 2, 2 = skip odd depths from 3, 3 = skip depths 2,3 mod 4
+    // True when the incoming game history has no repeated position. Then no
+    // fourfold-repetition result can occur within TTSafePlies of the root (the same
+    // position needs three returns, four plies apart each), so a board key is exact.
+    bool root_repeat_free_ = false;
+    static constexpr int TTSafePlies = 11;
     rules::Color root_ = rules::Color::Black;
     int iteration_depth_ = 0;
     bool root_in_check_ = false;

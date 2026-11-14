@@ -119,6 +119,8 @@ int main() {
                       << "option name QDepth type spin default 8 min 1 max 8\n"
                       << "option name QDelta type spin default 0 min 0 max 5000\n"
                       << "option name LmpDepth type spin default 0 min 0 max 8\n"
+                      << "option name TTMode type spin default 0 min 0 max 1\n"
+                      << "option name ThreadMode type spin default 0 min 0 max 3\n"
                       << "option name LmrGrade type spin default 0 min 0 max 16\n"
                       << "option name QuiescenceCheckPlies type spin default 0 min 0 max 8\n"
                       << "option name IirMinDepth type spin default 0 min 0 max 16\n"
@@ -790,6 +792,14 @@ int main() {
                 } else if (name == "QDepth" || name == "QDelta") {
                     try { std::size_t used=0; const int v=std::stoi(value,&used);
                         if(used==value.size() && v>=0 && v<=5000) { if(name=="QDepth") strategy.set_q_depth(v); else strategy.set_q_delta(v); }
+                    } catch(const std::exception&) {}
+                } else if (name == "ThreadMode") {
+                    try { std::size_t used=0; const int v=std::stoi(value,&used);
+                        if(used==value.size() && v>=0 && v<=3) strategy.set_thread_mode(v);
+                    } catch(const std::exception&) {}
+                } else if (name == "TTMode") {
+                    try { std::size_t used=0; const int v=std::stoi(value,&used);
+                        if(used==value.size() && v>=0 && v<=1) strategy.set_tt_mode(v);
                     } catch(const std::exception&) {}
                 } else if (name == "LmpDepth") {
                     try { std::size_t used=0; const int v=std::stoi(value,&used);

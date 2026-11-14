@@ -71,6 +71,54 @@ public:
         return replaced;
     }
 
+    // Research (TTMode 1): board-keyed lookup that ignores the searched depth, so a
+    // deeper entry can answer a shallower request and any entry can supply a move
+    // hint. A bucket is two neighbouring slots. The caller checks entry.depth.
+    const Entry* probe_key(std::uint64_t key) const {
+        const std::size_t base = key & Mask & ~std::size_t(1);
+        for (std::size_t i = base; i < base + 2; ++i) {
+            const auto& entry = entries_[i];
+            if (entry.generation == generation_ && entry.key == key && entry.depth >= 0) return &entry;
+        }
+        return nullptr;
+    }
+
+    // Returns true when a different live entry had to be replaced.
+    bool store_key(std::uint64_t key, int depth, int value, Bound bound,
+                   const std::string& best_move = {}) {
+        const std::size_t base = key & Mask & ~std::size_t(1);
+        Entry* slot = nullptr;
+        bool replaced = false;
+        for (std::size_t i = base; i < base + 2 && !slot; ++i) {
+            auto& entry = entries_[i];
+            if (entry.generation == generation_ && entry.key == key) {
+                // Keep a clearly deeper result for the same position.
+                if (entry.depth > depth + 2 && bound != Bound::Exact) return false;
+                slot = &entry;
+            }
+        }
+        if (!slot) {
+            Entry* weakest = nullptr;
+            for (std::size_t i = base; i < base + 2; ++i) {
+                auto& entry = entries_[i];
+                if (entry.generation != generation_) { weakest = &entry; break; }
+                if (!weakest || entry.depth < weakest->depth) weakest = &entry;
+            }
+            if (weakest->generation == generation_ && depth < weakest->depth) return false;
+            replaced = weakest->generation == generation_;
+            slot = weakest;
+        }
+        slot->key = key;
+        slot->value = value;
+        slot->generation = generation_;
+        slot->depth = static_cast<std::int8_t>(depth);
+        slot->bound = bound;
+        slot->best_move.fill('\0');
+        const auto n = std::min(best_move.size(), slot->best_move.size() - 1);
+        std::copy_n(best_move.data(), n, slot->best_move.data());
+        return replaced;
+    }
+
     static std::string best_move(const Entry& entry) {
         return std::string(entry.best_move.data());
     }

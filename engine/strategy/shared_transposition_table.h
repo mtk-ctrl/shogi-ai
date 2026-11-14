@@ -71,6 +71,60 @@ public:
         return replaced;
     }
 
+    // Research (TTMode 1): board-keyed, depth-agnostic lookup in a two-slot bucket.
+    // The caller checks out.depth. Same torn-read protection as probe().
+    bool probe_key(std::uint64_t key, Entry& out) const {
+        const std::size_t base = key & Mask & ~std::size_t(1);
+        const auto generation = generation_.load(std::memory_order_relaxed);
+        for (std::size_t i = base; i < base + 2; ++i) {
+            Entry e;
+            if (!read(i, e)) continue;
+            if (e.generation == generation && e.key == key && e.depth >= 0) { out = e; return true; }
+        }
+        return false;
+    }
+
+    bool store_key(std::uint64_t key, int depth, int value, Bound bound, const std::string& best_move = {}) {
+        const std::size_t base = key & Mask & ~std::size_t(1);
+        const auto generation = generation_.load(std::memory_order_relaxed);
+        std::size_t target = base;
+        bool found = false, replaced = false;
+        Entry cur[2];
+        bool valid[2];
+        for (int i = 0; i < 2; ++i) valid[i] = read(base + i, cur[i]);
+        for (int i = 0; i < 2; ++i) {
+            if (valid[i] && cur[i].generation == generation && cur[i].key == key) {
+                if (cur[i].depth > depth + 2 && bound != Bound::Exact) return false;
+                target = base + i; found = true; break;
+            }
+        }
+        if (!found) {
+            int weakest = -1;
+            for (int i = 0; i < 2; ++i) {
+                const bool live = valid[i] && cur[i].generation == generation;
+                if (!live) { weakest = i; break; }
+                if (weakest < 0 || cur[i].depth < cur[weakest].depth) weakest = i;
+            }
+            const bool live = valid[weakest] && cur[weakest].generation == generation;
+            if (live && depth < cur[weakest].depth) return false;
+            replaced = live;
+            target = base + weakest;
+        }
+        std::uint64_t d1 = std::uint64_t(static_cast<std::uint32_t>(value))
+            | (std::uint64_t(generation) << 32);
+        std::uint64_t d2 = 0;
+        char move[6] = {};
+        const auto n = std::min<std::size_t>(best_move.size(), 5);
+        std::memcpy(move, best_move.data(), n);
+        std::memcpy(&d2, move, 6);
+        d2 |= std::uint64_t(static_cast<std::uint8_t>(depth)) << 48;
+        d2 |= std::uint64_t(static_cast<std::uint8_t>(bound)) << 56;
+        words_[target * 3 + 1].store(d1, std::memory_order_relaxed);
+        words_[target * 3 + 2].store(d2, std::memory_order_relaxed);
+        words_[target * 3].store(key ^ d1 ^ d2, std::memory_order_relaxed);
+        return replaced;
+    }
+
 private:
     static constexpr std::uint64_t DepthSalt = 0x9E3779B97F4A7C15ULL;
     static constexpr std::size_t Mask = Capacity - 1;
