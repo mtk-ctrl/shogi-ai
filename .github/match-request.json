@@ -1,13 +1,13 @@
 {
-  "request_id": "threads1-vs-threads2-v2031-paired400-2026111401",
-  "ref_a": "0620c734c0e7dfff8e23ac65a55230d4f08bc972",
-  "ref_b": "0620c734c0e7dfff8e23ac65a55230d4f08bc972",
+  "request_id": "pvsplit2t-vs-threads1-paired400-2026111501",
+  "ref_a": "2171c11ac244e71bb7b666afc43a02159defc04f",
+  "ref_b": "2171c11ac244e71bb7b666afc43a02159defc04f",
   "games": 400,
   "shards": 20,
   "go_command": "go movetime 200",
   "max_plies": 400,
-  "seed": 2026111401,
-  "options_a": "{\"AdaptiveLongThink\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"OpeningRandomNonLance\": true, \"SearchThreads\": 1, \"USI_Ponder\": true}",
-  "options_b": "{\"AdaptiveLongThink\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"OpeningRandomNonLance\": true, \"SearchThreads\": 2, \"USI_Ponder\": true}",
+  "seed": 2026111501,
+  "options_a": "{\"AdaptiveLongThink\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"OpeningRandomNonLance\": true, \"SearchThreads\": 2, \"RootSplit\": 2, \"USI_Ponder\": true}",
+  "options_b": "{\"AdaptiveLongThink\": true, \"PositionKnowledge\": true, \"PositionKnowledgeFile\": \"build/position-knowledge-v1.tsv\", \"OpeningRandomNonLance\": true, \"SearchThreads\": 1, \"USI_Ponder\": true}",
   "opening_plies": 6
 }
