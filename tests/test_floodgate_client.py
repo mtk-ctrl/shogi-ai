@@ -178,5 +178,43 @@ class FloodgateProtocolTest(unittest.TestCase):
         self.assertTrue(reserve.should_stop(8000))
 
 
+class KeepaliveTest(unittest.TestCase):
+    def test_seconds_until_login(self):
+        # 12:00 JST = 03:00 UTC。epoch秒の1800秒区切りが組み合わせの時刻
+        slot = 1800 * 1_000_000
+        self.assertAlmostEqual(fc.seconds_until_login(slot + 60), 1800 - 60 - 180)
+        self.assertEqual(fc.seconds_until_login(slot - 100), 0.0)    # 組み合わせの100秒前: すぐログイン
+        self.assertEqual(fc.seconds_until_login(slot - 180), 0.0)
+        self.assertAlmostEqual(fc.seconds_until_login(slot - 600), 420.0)
+
+    def test_keepalive_lines_sent_and_blank_replies_ignored(self):
+        import socket as sk
+        import threading
+        srv = sk.socket(); srv.bind(("127.0.0.1", 0)); srv.listen(1)
+        port = srv.getsockname()[1]
+        got = []
+
+        def serve():
+            c, _ = srv.accept()
+            f = c.makefile("rw", encoding="utf-8", newline="\n")
+            c.settimeout(3)
+            try:
+                while len(got) < 3:
+                    got.append(f.readline())
+                f.write("\n"); f.write(" \n"); f.write("LOGIN:x OK\n"); f.flush()   # 空行の返事のあとに実メッセージ
+            finally:
+                c.close()
+        t = threading.Thread(target=serve, daemon=True); t.start()
+        conn = fc.CsaSocket("127.0.0.1", port, keepalive_s=0.1)
+        try:
+            conn.send("LOGIN x y")
+            self.assertEqual(conn.recv(), "LOGIN:x OK")   # 空行・空白だけの行は読み飛ばされる
+        finally:
+            conn.close(); srv.close()
+        t.join(timeout=3)
+        self.assertEqual(got[0], "LOGIN x y\n")
+        self.assertTrue(all(g == "\n" for g in got[1:3]), got)  # 以降は生存信号の空行
+
+
 if __name__ == "__main__":
     unittest.main()

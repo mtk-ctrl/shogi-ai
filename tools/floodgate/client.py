@@ -293,26 +293,71 @@ class UsiEngine:
             self.proc.wait(timeout=3)
 
 
+KEEPALIVE_SECONDS = 60.0     # サーバのkeep-alive規約: 改行(LF)を送る間隔は30秒より空ける
+LOGIN_LEAD_SECONDS = 180.0   # 常時参加では、次の組み合わせ(毎時0分・30分)のこの秒数前にログインする
+
+
+def seconds_until_login(now_epoch: float, lead: float = LOGIN_LEAD_SECONDS) -> float:
+    """次の:00/:30の組み合わせの lead 秒前までの待ち時間（すでにその範囲内なら0）。
+
+    JSTはUTC+9時間で、30分の倍数だけずれているため、epoch秒の1800秒区切りがそのまま:00/:30になる。
+    2026-11-15、ログインから組み合わせまで20〜30分空けた接続は、組み合わせの通知を受け取れず、
+    0手・結果なしの対局が3局できた。待ち時間中に接続が黙って切れたと見ている。待ちを短くして通信も絶やさない。
+    """
+    to_slot = 1800.0 - (now_epoch % 1800.0)
+    return max(0.0, to_slot - lead)
+
+
 class CsaSocket:
-    def __init__(self, host: str, port: int) -> None:
+    def __init__(self, host: str, port: int, keepalive_s: float = KEEPALIVE_SECONDS) -> None:
         self.sock = socket.create_connection((host, port), timeout=15)
         # A client may connect shortly after a pairing boundary and wait nearly
         # 30 minutes for the next :00/:30 Floodgate pairing.
         self.sock.settimeout(2100)
+        # 待ち時間に通信がないと、実行環境の途中で接続が黙って切られることがある。TCPとアプリの両方で生存を知らせる。
+        try:
+            self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+            for name, value in (("TCP_KEEPIDLE", 60), ("TCP_KEEPINTVL", 20), ("TCP_KEEPCNT", 3)):
+                if hasattr(socket, name):
+                    self.sock.setsockopt(socket.IPPROTO_TCP, getattr(socket, name), value)
+        except OSError:
+            pass
         self.reader: TextIO = self.sock.makefile("r", encoding="utf-8", errors="replace", newline="\n")
         self.writer: TextIO = self.sock.makefile("w", encoding="utf-8", newline="\n")
+        self._lock = threading.Lock()
+        self._stop = threading.Event()
+        self._keepalive = None
+        if keepalive_s > 0:
+            self._keepalive = threading.Thread(target=self._keepalive_loop, args=(keepalive_s,), daemon=True)
+            self._keepalive.start()
+
+    def _keepalive_loop(self, interval: float) -> None:
+        # CSAのkeep-alive: 空の1行(LF)を送る。サーバは無視するか、LFを返す（recvは空行を読み飛ばす）。
+        while not self._stop.wait(interval):
+            try:
+                with self._lock:
+                    self.writer.write("\n")
+                    self.writer.flush()
+            except (OSError, ValueError):
+                return
 
     def send(self, line: str) -> None:
-        self.writer.write(line + "\n")
-        self.writer.flush()
+        with self._lock:
+            self.writer.write(line + "\n")
+            self.writer.flush()
 
     def recv(self) -> str:
-        raw = self.reader.readline()
-        if raw == "":
-            raise ConnectionError("Floodgate closed the connection")
-        return raw.rstrip("\r\n")
+        while True:
+            raw = self.reader.readline()
+            if raw == "":
+                raise ConnectionError("Floodgate closed the connection")
+            line = raw.rstrip("\r\n")
+            if line.strip() == "":
+                continue  # keep-alive の返事（空行）
+            return line
 
     def close(self) -> None:
+        self._stop.set()
         try:
             self.writer.close()
         finally:
@@ -572,6 +617,15 @@ def main() -> None:
                 break
             if played or errors:
                 time.sleep(max(0.0, args.reconnect_delay))
+            if args.session_minutes > 0:
+                # 次の組み合わせの直前にログインする（待ち時間中に接続が切れるのを避ける）
+                wait = seconds_until_login(time.time())
+                if wait > 0:
+                    remaining = args.session_minutes * 60.0 - (time.monotonic() - session_started)
+                    if wait >= remaining:
+                        break  # 次の組み合わせまでに時間切れ。次の回に任せる
+                    print(json.dumps({"floodgate_wait_login_s": round(wait)}), flush=True)
+                    time.sleep(wait)
             try:
                 record = client.play_one()
             except (OSError, ConnectionError, RuntimeError, TimeoutError, ValueError) as exc:

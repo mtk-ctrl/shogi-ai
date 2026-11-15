@@ -19,6 +19,12 @@ def main():
     srv = socket.socket(); srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1); srv.bind(("127.0.0.1", a.port)); srv.listen(1)
     c, _ = srv.accept(); f = c.makefile("rw", encoding="utf-8", newline="\n")
     def send(s): f.write(s + "\n"); f.flush()
+    def rl():
+        # 本物のサーバと同じく、keep-alive の空行(LF)は読み飛ばす（LFを1つ返す）
+        while True:
+            l = f.readline()
+            if l == "" or l.strip() != "": return l
+            f.write("\n"); f.flush()
     login = f.readline().split(); assert login[0] == "LOGIN" and login[2].startswith("floodgate-300-10F,"), login
     name = login[1]; send(f"LOGIN:{name} OK")
     gid = "wdoor+floodgate-300-10F+mock+test+20261114000000"
@@ -30,7 +36,7 @@ def main():
               "P4 *  *  *  *  *  *  *  *  * ","P5 *  *  *  *  *  *  *  *  * ","P6 *  *  *  *  *  *  *  *  * ",
               "P7+FU+FU+FU+FU+FU+FU+FU+FU+FU","P8 * +KA *  *  *  *  * +HI * ","P9+KY+KE+GI+KI+OU+KI+GI+KE+KY","+","END Position","END Game_Summary"]:
         send(l)
-    assert f.readline().strip() == f"AGREE {gid}"; send(f"START:{gid}")
+    assert rl().strip() == f"AGREE {gid}"; send(f"START:{gid}")
     eng = None
     if a.opponent_engine:
         import subprocess
@@ -46,7 +52,7 @@ def main():
     while True:
         sign = "+" if board.turn == shogi.BLACK else "-"
         if sign == a.client_side:
-            t0 = time.monotonic(); line = f.readline().strip(); used = int(time.monotonic() - t0)
+            t0 = time.monotonic(); line = rl().strip(); used = int(time.monotonic() - t0)
             if ",'" in line: line, cm = line.split(",'", 1); comments.append(cm)
             maxt = max(maxt, used); remain[sign] -= used
             if remain[sign] < 0: send("#TIME_UP"); send("#LOSE"); print("MOCK client TIME_UP"); break

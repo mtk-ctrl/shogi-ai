@@ -119,6 +119,7 @@ KUMOJIはUSIの `btime/wtime/binc/winc/byoyomi` を解釈できる。
 - 始めるとき（連鎖の開始）: Actionsの `floodgate.yml` を mode=live、continuous=yes、confirm_live=LIVE で起動する。定期起動が動いた場合も同じ連鎖になる。
 - 止めるとき: `continuous.json` の `enabled` を false にする（次の連鎖から止まる）。すぐ止めるなら実行中のrunを取り消す。`pause_dates_jst` の日は参加しない（2026-12-06はFloodgateの計画停止）。
 - 連鎖の配線確認: continuous=selftest（probeを1回だけ連鎖させる。Floodgateへ接続しない）。
+- **待ち時間中の接続切れ対策（2026-11-15）**: ログインから組み合わせまで20〜30分空けると、接続が黙って切れて組み合わせの通知を受け取れず、0手・結果なしの対局ができた（12:00・12:30・13:00の3局）。このため、(1) 常時参加では次の:00/:30の3分前にログインする（`seconds_until_login`）、(2) 接続中は60秒ごとに空行(LF)を送る（CSAのkeep-alive）、TCP keepaliveも有効にする、(3) 空行の返事は読み飛ばす。
 - 設定: `PositionKnowledge=true`、`OpeningRandomNonLance=false`（無作為な初手を切る）、`--send-eval`、`--time-plan`。
 - 接続の失敗が続けて3回起きたら、その回は失敗で終わる。
 - 結果は各runの成果物（90日）とログの `FLOODGATE_RESULT`／`FLOODGATE_MOVE`／`FLOODGATE_CHAIN` 行、Floodgateの公開棋譜に残る。
