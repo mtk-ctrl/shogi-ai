@@ -54,6 +54,61 @@ def validate_identity(username: str, trip: str) -> None:
         raise ValueError("Floodgate trip must be 1-32 non-space ASCII characters without comma")
 
 
+MATE_COMMENT_CP = 30000
+
+
+def parse_usi_info(line: str) -> dict | None:
+    """Return depth/score/pv of a USI `info ... score ... pv ...` line, else None.
+
+    The score is KUMOJI's own search result, from the side to move's view.
+    """
+    if not line.startswith("info ") or " score " not in line:
+        return None
+    tok = line.split()
+    out: dict = {}
+    i = 1
+    while i < len(tok):
+        key = tok[i]
+        if key in ("depth", "seldepth", "time", "nodes") and i + 1 < len(tok):
+            try:
+                out[key] = int(tok[i + 1])
+            except ValueError:
+                pass
+            i += 2
+        elif key == "score" and i + 2 < len(tok):
+            out["score_kind"] = tok[i + 1]
+            out["score_raw"] = tok[i + 2]
+            i += 3
+            if i < len(tok) and tok[i] in ("lowerbound", "upperbound"):
+                out["score_bound"] = tok[i]
+                i += 1
+        elif key == "pv":
+            out["pv"] = tok[i + 1:]
+            break
+        elif key == "string":
+            break
+        else:
+            i += 1
+    if out.get("score_kind") not in ("cp", "mate"):
+        return None
+    return out
+
+
+def score_for_black(search: dict, side: str) -> int | None:
+    """Centipawn-like value from Black's (sente) view, as Floodgate records it."""
+    kind, raw = search.get("score_kind"), search.get("score_raw")
+    if kind == "cp":
+        try:
+            own = int(raw)
+        except (TypeError, ValueError):
+            return None
+    elif kind == "mate":
+        own = -MATE_COMMENT_CP if str(raw).startswith("-") else MATE_COMMENT_CP
+    else:
+        return None
+    return own if side == "+" else -own
+
+
 class UsiEngine:
     def __init__(self, path: str, options: dict[str, str]) -> None:
         binary = Path(path).resolve()
@@ -78,6 +133,7 @@ class UsiEngine:
         self.id_name = ""
         self.id_author = ""
         self.applied_options: dict[str, str] = {}
+        self.last_search: dict = {}
         self._handshake(options)
 
     def _read_stdout(self) -> None:
@@ -142,19 +198,35 @@ class UsiEngine:
             position += " moves " + " ".join(moves)
         self.send(position)
         self.send(go_command)
-        deadline = time.monotonic() + max(1.0, hard_timeout_s)
+        began = time.monotonic()
+        info: dict = {}
+        self.last_search = {"go": go_command}
+
+        def finish(line: str) -> str:
+            self.last_search.update(info)
+            self.last_search["wall_ms"] = int((time.monotonic() - began) * 1000)
+            return line.split()[1]
+
+        deadline = began + max(1.0, hard_timeout_s)
         try:
             while True:
                 line = self._next(deadline, "waiting for bestmove")
                 if line.startswith("bestmove "):
-                    return line.split()[1]
+                    return finish(line)
+                parsed = parse_usi_info(line)
+                if parsed:
+                    info = parsed
         except TimeoutError:
             self.send("stop")
+            self.last_search["watchdog_stop"] = True
             grace = time.monotonic() + 2.0
             while True:
                 line = self._next(grace, "waiting for bestmove after stop")
                 if line.startswith("bestmove "):
-                    return line.split()[1]
+                    return finish(line)
+                parsed = parse_usi_info(line)
+                if parsed:
+                    info = parsed
 
     def metadata(self) -> dict:
         return {
@@ -209,8 +281,9 @@ class CsaSocket:
 
 class FloodgateClient:
     def __init__(self, engine: UsiEngine, username: str, trip: str,
-                 host: str, port: int, game_name: str) -> None:
+                 host: str, port: int, game_name: str, send_eval: bool = False) -> None:
         validate_identity(username, trip)
+        self.send_eval = send_eval
         self.engine = engine
         self.username = username
         self.game_name = game_name
@@ -231,6 +304,8 @@ class FloodgateClient:
         summary_parser = SummaryParser()
         board = StartposBoard()
         moves: list[str] = []
+        our_search: list[dict] = []
+        server_lines: list[str] = []
         summary = None
         cause = ""
         result = ""
@@ -271,13 +346,24 @@ class FloodgateClient:
                 token = self.engine.bestmove(
                     moves, go, self._watchdog_seconds(clock, my_side)
                 )
+                entry = dict(self.engine.last_search)
+                entry["ply"] = len(moves) + 1
+                entry["move_usi"] = token
+                entry["clock_before_ms"] = dict(clock.remaining)
+                black_cp = score_for_black(entry, my_side)
+                entry["score_black_view"] = black_cp
+                our_search.append(entry)
                 if token == "resign":
                     conn.send("%TORYO")
                     return
                 if token == "win":
                     conn.send("%KACHI")
                     return
-                conn.send(board.usi_to_csa(token, my_side))
+                line_out = board.usi_to_csa(token, my_side)
+                if self.send_eval and black_cp is not None:
+                    # Floodgate's optional move comment: evaluation from Black's view.
+                    line_out += f",'* {black_cp}"
+                conn.send(line_out)
 
             if to_move == my_side:
                 make_our_move()
@@ -285,6 +371,7 @@ class FloodgateClient:
             while True:
                 line = conn.recv()
                 if CSA_MOVE_RE.match(line):
+                    server_lines.append(line)
                     usi = board.csa_to_usi(line)
                     board.apply_csa(line)
                     moves.append(usi)
@@ -326,6 +413,11 @@ class FloodgateClient:
                 "cause": cause,
                 "plies": len(moves),
                 "moves_usi": moves,
+                # Server echo of every move with its consumed seconds (",Tn").
+                "moves_csa_timed": server_lines,
+                # KUMOJI's own search per move (never the opponent's evaluation).
+                "our_search": our_search,
+                "send_eval": self.send_eval,
                 "started_unix": started,
                 "finished_unix": time.time(),
             }
@@ -355,6 +447,8 @@ def main() -> None:
                         help="fail if the USI id name does not exactly match this generation label")
     parser.add_argument("--clock-probe", action="store_true",
                         help="in dry-run mode, verify a short btime/wtime search and legal startpos move")
+    parser.add_argument("--send-eval", action="store_true",
+                        help="attach KUMOJI's own evaluation (Black's view) to each move as a Floodgate comment")
     parser.add_argument("--live", action="store_true",
                         help="actually connect to Floodgate; omitted by default for safety")
     args = parser.parse_args()
@@ -392,7 +486,8 @@ def main() -> None:
             ) from exc
 
         client = FloodgateClient(
-            engine, args.username, trip, args.host, args.port, args.game_name
+            engine, args.username, trip, args.host, args.port, args.game_name,
+            send_eval=args.send_eval,
         )
         for index in range(args.games):
             if index:

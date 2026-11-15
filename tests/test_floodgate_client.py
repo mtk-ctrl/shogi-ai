@@ -118,6 +118,19 @@ class FloodgateProtocolTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             fc.validate_identity("KUMOJI", "")
 
+    def test_usi_info_score_is_parsed_and_turned_to_black_view(self):
+        info = fc.parse_usi_info("info depth 10 seldepth 20 time 7944 nodes 3244314 score cp 13 pv 8h2b+ 3a2b")
+        self.assertEqual((info["depth"], info["score_kind"], info["score_raw"], info["pv"]),
+                         (10, "cp", "13", ["8h2b+", "3a2b"]))
+        self.assertEqual(fc.score_for_black(info, "+"), 13)
+        self.assertEqual(fc.score_for_black(info, "-"), -13)
+        mate = fc.parse_usi_info("info depth 5 score mate -3 pv 5a4b")
+        self.assertEqual(fc.score_for_black(mate, "+"), -fc.MATE_COMMENT_CP)
+        self.assertEqual(fc.score_for_black(mate, "-"), fc.MATE_COMMENT_CP)
+        self.assertIsNone(fc.parse_usi_info("info nodes 10 string cutoffs 3 score"))
+        self.assertIsNone(fc.parse_usi_info("info string opening_random_non_lance move 5i4h"))
+        self.assertIsNone(fc.score_for_black({}, "+"))
+
 
 if __name__ == "__main__":
     unittest.main()

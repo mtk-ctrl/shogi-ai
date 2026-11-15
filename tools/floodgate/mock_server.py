@@ -41,12 +41,13 @@ def main():
                 l = eng.stdout.readline().strip()
                 if l.startswith(until): return l
         ecmd("usi", "usiok"); ecmd("setoption name Threads value 1"); ecmd("setoption name USI_Hash value 16"); ecmd("setoption name USI_OwnBook value false"); ecmd("isready", "readyok"); ecmd("usinewgame")
-    usi_moves = []
+    usi_moves = []; comments = []
     board = shogi.Board(); remain = {"+": a.total, "-": a.total}; maxt = 0; n = 0
     while True:
         sign = "+" if board.turn == shogi.BLACK else "-"
         if sign == a.client_side:
             t0 = time.monotonic(); line = f.readline().strip(); used = int(time.monotonic() - t0)
+            if ",'" in line: line, cm = line.split(",'", 1); comments.append(cm)
             maxt = max(maxt, used); remain[sign] -= used
             if remain[sign] < 0: send("#TIME_UP"); send("#LOSE"); print("MOCK client TIME_UP"); break
             remain[sign] += a.inc
@@ -64,5 +65,6 @@ def main():
                 if bm in ("resign", "win"): send("%TORYO,T0"); send("#RESIGN"); send("#WIN"); print(f"MOCK opponent engine resigned after {n} client moves, max client think {maxt}s, client clock {remain[a.client_side]}s"); break
                 m = shogi.Move.from_usi(bm)
             usi_moves.append(m.usi()); line = to_csa(board, m, sign); board.push(m); send(f"{line},T1")
+    print(f"MOCK client move comments {len(comments)} first {comments[:2]}")
     f.close(); c.close(); srv.close()
 main()

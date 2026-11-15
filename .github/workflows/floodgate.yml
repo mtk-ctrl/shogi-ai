@@ -94,8 +94,9 @@ jobs:
             sleep 1
             python3 tools/floodgate/client.py --engine build/shogi-ai --username KUMOJI_rehearsal --host 127.0.0.1 --port 14081 --games 1 --live \
               --setoption PositionKnowledge=true --setoption "PositionKnowledgeFile=$PWD/build/position-knowledge-v1.tsv" \
-              --result-log rehearsal.jsonl
+              --send-eval --result-log rehearsal.jsonl
             wait; cat mock.log; grep -q "MOCK opponent" mock.log
+            grep -Eq "MOCK client move comments [1-9]" mock.log
           done
       - name: Live games on Floodgate (floodgate-300-10F)
         if: inputs.mode == 'live' && inputs.confirm_live == 'LIVE'
@@ -107,7 +108,7 @@ jobs:
           set -euo pipefail
           python3 tools/floodgate/client.py --engine build/shogi-ai --username "$USERNAME" --games "$GAMES" --live \
             --setoption PositionKnowledge=true --setoption "PositionKnowledgeFile=$PWD/build/position-knowledge-v1.tsv" \
-            --result-log floodgate-results.jsonl
+            --send-eval --result-log floodgate-results.jsonl
       - name: Summarize live results
         if: always() && inputs.mode == 'live'
         run: |
@@ -121,6 +122,11 @@ jobs:
               for r in rows:
                   line=f"{r['game_id']} | {r['name_black']} vs {r['name_white']} | we={r['your_turn']} | {r['result']} {r['cause']} | {r['plies']} plies"
                   f.write("- "+line+"\n"); print("FLOODGATE_RESULT "+line)
+                  # 手ごとの記録（artifactを読めない環境でもログから追えるようにする）
+                  ours={e["ply"]:e for e in r.get("our_search",[])}
+                  for n,mv in enumerate(r.get("moves_csa_timed",[]),1):
+                      e=ours.get(n,{})
+                      print(f"FLOODGATE_MOVE {n} {mv} eval_black={e.get('score_black_view','')} depth={e.get('depth','')} wall_ms={e.get('wall_ms','')} clock_before={e.get('clock_before_ms','')} pv={' '.join(e.get('pv',[])[:6])}")
           print(f"FLOODGATE_GAMES {len(rows)}")
           PY
       - uses: actions/upload-artifact@v4
