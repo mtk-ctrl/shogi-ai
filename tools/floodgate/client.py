@@ -21,6 +21,7 @@ import time
 from typing import TextIO
 
 from protocol import Clock, CSA_MOVE_RE, StartposBoard, SummaryParser
+from timeplan import StopController, make_plan
 
 DEFAULT_HOST = "wdoor.c.u-tokyo.ac.jp"
 DEFAULT_PORT = 4081
@@ -192,7 +193,10 @@ class UsiEngine:
         while self._next(deadline, "waiting for readyok after usinewgame") != "readyok":
             pass
 
-    def bestmove(self, moves: list[str], go_command: str, hard_timeout_s: float) -> str:
+    def bestmove(self, moves: list[str], go_command: str, hard_timeout_s: float,
+                 controller=None) -> str:
+        if controller is not None:
+            return self._bestmove_controlled(moves, go_command, hard_timeout_s, controller)
         position = "position startpos"
         if moves:
             position += " moves " + " ".join(moves)
@@ -227,6 +231,45 @@ class UsiEngine:
                 parsed = parse_usi_info(line)
                 if parsed:
                     info = parsed
+
+    def _bestmove_controlled(self, moves: list[str], go_command: str, hard_timeout_s: float,
+                             controller) -> str:
+        """Floodgate time plan: the bridge sends `stop` when the controller says so."""
+        position = "position startpos"
+        if moves:
+            position += " moves " + " ".join(moves)
+        self.send(position)
+        self.send(go_command)
+        began = time.monotonic()
+        info: dict = {}
+        self.last_search = {"go": go_command}
+        stopped_at = None
+        while True:
+            elapsed = time.monotonic() - began
+            try:
+                line = self._lines.get(timeout=0.05)
+            except queue.Empty:
+                line = None
+                if self.proc.poll() is not None:
+                    raise RuntimeError(f"engine exited while waiting for bestmove: {self.proc.returncode}")
+            if line is not None:
+                if line.startswith("bestmove "):
+                    self.last_search.update(info)
+                    self.last_search["wall_ms"] = int((time.monotonic() - began) * 1000)
+                    self.last_search["stop_reason"] = controller.reason or "engine"
+                    return line.split()[1]
+                parsed = parse_usi_info(line)
+                if parsed:
+                    info = parsed
+                    controller.observe(parsed)
+            if stopped_at is None:
+                if controller.should_stop(int(elapsed * 1000)) or elapsed >= hard_timeout_s:
+                    if not controller.reason:
+                        controller.reason = "watchdog"
+                    self.send("stop")
+                    stopped_at = time.monotonic()
+            elif time.monotonic() - stopped_at > 2.5:
+                raise TimeoutError("timeout waiting for bestmove after stop")
 
     def metadata(self) -> dict:
         return {
@@ -281,9 +324,11 @@ class CsaSocket:
 
 class FloodgateClient:
     def __init__(self, engine: UsiEngine, username: str, trip: str,
-                 host: str, port: int, game_name: str, send_eval: bool = False) -> None:
+                 host: str, port: int, game_name: str, send_eval: bool = False,
+                 time_plan: bool = False) -> None:
         validate_identity(username, trip)
         self.send_eval = send_eval
+        self.time_plan = time_plan
         self.engine = engine
         self.username = username
         self.game_name = game_name
@@ -341,12 +386,30 @@ class FloodgateClient:
             to_move = summary.to_move
             max_moves = summary.max_moves or (512 if self.game_name == DEFAULT_GAME else 0)
 
+            previous_own_score: list = [None]
+
             def make_our_move() -> None:
-                go = clock.usi_go()
-                token = self.engine.bestmove(
-                    moves, go, self._watchdog_seconds(clock, my_side)
-                )
+                plan = None
+                if self.time_plan and clock.has_total and clock.increment_ms > 0:
+                    # Floodgate専用の読み時間。接続層が上限を渡し、途中経過を見て stop する。
+                    plan = make_plan(clock.remaining[my_side], clock.increment_ms, len(moves) // 2 + 1)
+                    controller = StopController(plan, previous_score=previous_own_score[0])
+                    token = self.engine.bestmove(
+                        moves, f"go movetime {plan.max_ms}",
+                        min(self._watchdog_seconds(clock, my_side), plan.max_ms / 1000.0 + 1.5),
+                        controller,
+                    )
+                else:
+                    go = clock.usi_go()
+                    token = self.engine.bestmove(
+                        moves, go, self._watchdog_seconds(clock, my_side)
+                    )
                 entry = dict(self.engine.last_search)
+                if plan is not None:
+                    entry["time_plan"] = plan.as_dict()
+                    own = controller.history[-1][2] if controller.history else None
+                    if own is not None:
+                        previous_own_score[0] = own
                 entry["ply"] = len(moves) + 1
                 entry["move_usi"] = token
                 entry["clock_before_ms"] = dict(clock.remaining)
@@ -418,6 +481,7 @@ class FloodgateClient:
                 # KUMOJI's own search per move (never the opponent's evaluation).
                 "our_search": our_search,
                 "send_eval": self.send_eval,
+                "time_plan": self.time_plan,
                 "started_unix": started,
                 "finished_unix": time.time(),
             }
@@ -451,6 +515,8 @@ def main() -> None:
                         help="continuous mode: keep starting games until this many minutes have passed "
                              "(0 = play exactly --games)")
     parser.add_argument("--max-consecutive-errors", type=int, default=3)
+    parser.add_argument("--time-plan", action="store_true",
+                        help="Floodgate-only time allocation (tools/floodgate/timeplan.py); never used for self-play")
     parser.add_argument("--send-eval", action="store_true",
                         help="attach KUMOJI's own evaluation (Black's view) to each move as a Floodgate comment")
     parser.add_argument("--live", action="store_true",
@@ -491,7 +557,7 @@ def main() -> None:
 
         client = FloodgateClient(
             engine, args.username, trip, args.host, args.port, args.game_name,
-            send_eval=args.send_eval,
+            send_eval=args.send_eval, time_plan=args.time_plan,
         )
         session_started = time.monotonic()
         played = 0

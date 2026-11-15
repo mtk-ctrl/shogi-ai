@@ -8,6 +8,7 @@ sys.path.insert(0, str(ROOT / "tools" / "floodgate"))
 
 import protocol as fg
 import client as fc
+import timeplan as tp
 
 
 class FloodgateProtocolTest(unittest.TestCase):
@@ -130,6 +131,51 @@ class FloodgateProtocolTest(unittest.TestCase):
         self.assertIsNone(fc.parse_usi_info("info nodes 10 string cutoffs 3 score"))
         self.assertIsNone(fc.parse_usi_info("info string opening_random_non_lance move 5i4h"))
         self.assertIsNone(fc.score_for_black({}, "+"))
+
+    def test_time_plan_stages_for_300_plus_10(self):
+        opening = tp.make_plan(300000, 10000, 1)
+        self.assertEqual((opening.stage, opening.base_ms), ("opening", 5000))
+        middle = tp.make_plan(340000, 10000, 9)
+        self.assertEqual((middle.stage, middle.base_ms, middle.max_ms), ("middle", 25000, 75000))
+        end = tp.make_plan(120000, 10000, 41)
+        self.assertEqual((end.stage, end.base_ms), ("end", 12000))
+        low = tp.make_plan(25000, 10000, 30)
+        self.assertEqual((low.stage, low.base_ms, low.max_ms), ("reserve", 8000, 8000))
+        # never plans beyond the clock minus the safety margin
+        for rem in (500, 3000, 5000, 12000, 31000, 600000):
+            for n in (1, 9, 41):
+                plan = tp.make_plan(rem, 10000, n)
+                self.assertLessEqual(plan.max_ms, max(100, rem - tp.SAFETY_MARGIN_MS))
+                self.assertLessEqual(plan.min_ms, plan.base_ms)
+                self.assertLessEqual(plan.base_ms, plan.max_ms)
+
+    def test_stop_controller_shortens_extends_and_caps(self):
+        plan = tp.make_plan(340000, 10000, 9)  # base 25s, min 8.3s, max 75s
+        info = lambda d, mv, cp: {"depth": d, "pv": [mv], "score_kind": "cp", "score_raw": str(cp)}
+        stable = tp.StopController(plan)
+        for d in range(5, 9):
+            stable.observe(info(d, "7g7f", 30))
+        self.assertFalse(stable.should_stop(plan.min_ms - 1))
+        self.assertTrue(stable.should_stop(plan.min_ms))
+        self.assertEqual(stable.reason, "stable")
+        changing = tp.StopController(plan)
+        changing.observe(info(8, "7g7f", 30)); changing.observe(info(9, "2g2f", 35))
+        self.assertFalse(changing.should_stop(plan.base_ms))
+        self.assertTrue(changing.should_stop(plan.max_ms))
+        self.assertEqual(changing.reason, "max")
+        dropped = tp.StopController(plan, previous_score=200)
+        dropped.observe(info(8, "7g7f", 60)); dropped.observe(info(9, "7g7f", 50))
+        self.assertFalse(dropped.should_stop(plan.base_ms))
+        calm = tp.StopController(plan, previous_score=40)
+        calm.observe(info(8, "7g7f", 30)); calm.observe(info(9, "7g7f", 35))
+        self.assertTrue(calm.should_stop(plan.base_ms))
+        self.assertEqual(calm.reason, "base")
+        mate = tp.StopController(plan)
+        mate.observe({"depth": 7, "pv": ["5b5a"], "score_kind": "mate", "score_raw": "3"})
+        self.assertTrue(mate.should_stop(300))
+        reserve = tp.StopController(tp.make_plan(25000, 10000, 30))
+        reserve.observe(info(8, "7g7f", 30)); reserve.observe(info(9, "2g2f", -300))
+        self.assertTrue(reserve.should_stop(8000))
 
 
 if __name__ == "__main__":

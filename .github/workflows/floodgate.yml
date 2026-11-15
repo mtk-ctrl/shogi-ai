@@ -6,6 +6,7 @@ run-name: "Floodgate ${{ github.event_name == 'schedule' && '常時参加' || in
 # 常時参加(2026-11-15オーナー指示): 毎時の定期起動が tools/floodgate/continuous.json を読み、enabled のときだけ
 #   mainの雲路で session_minutes 分のあいだ続けて対局する(組み合わせは毎時0分・30分)。同時に動くのは1本だけで、
 #   前の回が対局中なら、その回の定期起動は何もせず終わる。止めるときは continuous.json の enabled を false にする。
+# Floodgate専用の読み時間(tools/floodgate/timeplan.py、--time-plan)を使う。自己対局・比較・梯子では使わない(2026-11-15オーナー指示)。
 # Floodgateでは無作為な初手(OpeningRandomNonLance)を切る(2026-11-15オーナー指示)。
 # 棋力測定専用。相手の評価値・読み筋・指し手は学習に使わない。エンジン本体は変更しない。
 on:
@@ -129,7 +130,7 @@ jobs:
             sleep 1
             python3 tools/floodgate/client.py --engine build/shogi-ai --username KUMOJI_rehearsal --host 127.0.0.1 --port 14081 --games 1 --live \
               --setoption PositionKnowledge=true --setoption "PositionKnowledgeFile=$PWD/build/position-knowledge-v1.tsv" --setoption OpeningRandomNonLance=false \
-              --send-eval --result-log rehearsal.jsonl
+              --send-eval --time-plan --result-log rehearsal.jsonl
             wait; cat mock.log; grep -q "MOCK opponent" mock.log
             grep -Eq "MOCK client move comments [1-9]" mock.log
           done
@@ -144,7 +145,7 @@ jobs:
           set -euo pipefail
           python3 tools/floodgate/client.py --engine build/shogi-ai --username "$USERNAME" --games "$GAMES" --session-minutes "$SESSION" --live \
             --setoption PositionKnowledge=true --setoption "PositionKnowledgeFile=$PWD/build/position-knowledge-v1.tsv" --setoption OpeningRandomNonLance=false \
-            --send-eval --result-log floodgate-results.jsonl
+            --send-eval --time-plan --result-log floodgate-results.jsonl
       - name: Summarize live results
         if: always() && steps.req.outputs.mode == 'live'
         run: |
@@ -162,7 +163,7 @@ jobs:
                   ours={e["ply"]:e for e in r.get("our_search",[])}
                   for n,mv in enumerate(r.get("moves_csa_timed",[]),1):
                       e=ours.get(n,{})
-                      print(f"FLOODGATE_MOVE {n} {mv} eval_black={e.get('score_black_view','')} depth={e.get('depth','')} wall_ms={e.get('wall_ms','')} clock_before={e.get('clock_before_ms','')} pv={' '.join(e.get('pv',[])[:6])}")
+                      print(f"FLOODGATE_MOVE {n} {mv} eval_black={e.get('score_black_view','')} depth={e.get('depth','')} wall_ms={e.get('wall_ms','')} plan={(e.get('time_plan') or {}).get('stage','')}/{(e.get('time_plan') or {}).get('base_ms','')} stop={e.get('stop_reason','')} clock_before={e.get('clock_before_ms','')} pv={' '.join(e.get('pv',[])[:6])}")
           print(f"FLOODGATE_GAMES {len(rows)}")
           PY
       - uses: actions/upload-artifact@v4
