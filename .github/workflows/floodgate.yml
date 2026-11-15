@@ -1,10 +1,16 @@
-name: Floodgate entry (probe / rehearsal / live)
-run-name: "Floodgate ${{ inputs.mode }} / ${{ inputs.username }} / games=${{ inputs.games }}"
+name: Floodgate entry (probe / rehearsal / live / 常時参加)
+run-name: "Floodgate ${{ github.event_name == 'schedule' && '常時参加' || inputs.mode }} / ${{ inputs.username || 'KUMOJI' }}"
 # 雲路をFloodgate(wdoor.c.u-tokyo.ac.jp:4081, floodgate-300-10F)へ出すための入口。R50に従う。
 # probe: TCP到達確認だけ(ログインしない)。rehearsal: 模擬サーバ相手に通しで1局(外部へ接続しない)。
 # live: 実参戦。confirm_live に LIVE と入力し、リポジトリsecret FLOODGATE_TRIP がある場合だけ動く。
-# 棋力測定専用。相手の評価値・読み筋・指し手は学習に使わない。エンジン本体は変更しない。定期実行なし。
+# 常時参加(2026-11-15オーナー指示): 毎時の定期起動が tools/floodgate/continuous.json を読み、enabled のときだけ
+#   mainの雲路で session_minutes 分のあいだ続けて対局する(組み合わせは毎時0分・30分)。同時に動くのは1本だけで、
+#   前の回が対局中なら、その回の定期起動は何もせず終わる。止めるときは continuous.json の enabled を false にする。
+# Floodgateでは無作為な初手(OpeningRandomNonLance)を切る(2026-11-15オーナー指示)。
+# 棋力測定専用。相手の評価値・読み筋・指し手は学習に使わない。エンジン本体は変更しない。
 on:
+  schedule:
+    - cron: "17,47 * * * *"
   workflow_dispatch:
     inputs:
       mode:
@@ -35,8 +41,10 @@ on:
         type: string
 permissions:
   contents: read
+  actions: read
 concurrency:
-  group: floodgate-entry
+  # 実参戦(手動live・常時参加)は同じ名前で二重ログインしないよう1本に直列化する。probe/rehearsalは別枠。
+  group: floodgate-${{ (github.event_name == 'schedule' || inputs.mode == 'live') && 'live' || 'check' }}
   cancel-in-progress: false
 jobs:
   floodgate:
@@ -44,39 +52,66 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 350
     steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.engine_ref || github.sha }}
       - name: Validate request
+        id: req
         env:
+          EVENT: ${{ github.event_name }}
           MODE: ${{ inputs.mode }}
           GAMES: ${{ inputs.games }}
           USERNAME: ${{ inputs.username }}
           CONFIRM: ${{ inputs.confirm_live }}
           HAS_TRIP: ${{ secrets.FLOODGATE_TRIP != '' }}
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
         run: |
+          gh api "repos/${{ github.repository }}/actions/workflows/floodgate.yml/runs?status=in_progress&per_page=20" \
+            --jq '[.workflow_runs[].id]' > other-runs.json
           python3 - <<'PY'
-          import os, re
-          g=int(os.environ["GAMES"])
-          if not 1<=g<=6: raise SystemExit("games must be 1-6")
-          if not re.fullmatch(r"[A-Za-z0-9_-]{1,32}", os.environ["USERNAME"]): raise SystemExit("invalid username")
-          if os.environ["MODE"]=="live":
-              if os.environ["CONFIRM"]!="LIVE": raise SystemExit("live requires confirm_live=LIVE (R50: explicit live participation only)")
-              if os.environ["HAS_TRIP"]!="true": raise SystemExit("repository secret FLOODGATE_TRIP is not set")
-          print("request OK")
+          import datetime, json, os, re
+          others=[i for i in json.load(open("other-runs.json")) if str(i)!=os.environ["RUN_ID"]]
+          out=dict(mode="skip", games="1", username="KUMOJI", session="0")
+          if os.environ["EVENT"]=="schedule":
+              cfg=json.load(open("tools/floodgate/continuous.json",encoding="utf-8"))
+              today=(datetime.datetime.utcnow()+datetime.timedelta(hours=9)).strftime("%Y-%m-%d")
+              at_end=(datetime.datetime.utcnow()+datetime.timedelta(hours=9+6)).strftime("%Y-%m-%d")
+              paused={today,at_end} & set(cfg.get("pause_dates_jst",[]))
+              minutes=int(cfg.get("session_minutes",225))
+              if not cfg.get("enabled"): print("continuous participation is disabled")
+              elif others: print("another Floodgate run is in progress; nothing to do", others)
+              elif paused: print("paused for", sorted(paused))
+              elif os.environ["HAS_TRIP"]!="true": raise SystemExit("repository secret FLOODGATE_TRIP is not set")
+              elif not 30<=minutes<=225: raise SystemExit("session_minutes must be 30-225 (job limit)")
+              else: out.update(mode="live", username=str(cfg.get("username","KUMOJI")), session=str(minutes))
+          else:
+              g=int(os.environ["GAMES"])
+              if not 1<=g<=6: raise SystemExit("games must be 1-6")
+              out.update(mode=os.environ["MODE"], games=str(g), username=os.environ["USERNAME"])
+              if out["mode"]=="live":
+                  if os.environ["CONFIRM"]!="LIVE": raise SystemExit("live requires confirm_live=LIVE (R50: explicit live participation only)")
+                  if os.environ["HAS_TRIP"]!="true": raise SystemExit("repository secret FLOODGATE_TRIP is not set")
+          if not re.fullmatch(r"[A-Za-z0-9_-]{1,32}", out["username"]): raise SystemExit("invalid username")
+          with open(os.environ["GITHUB_OUTPUT"],"a") as f:
+              for k,v in out.items(): f.write(f"{k}={v}\n")
+          print("request OK", out)
           PY
-      - uses: actions/checkout@v5
-        with:
-          ref: ${{ inputs.engine_ref || github.sha }}
       - name: Install python-shogi
+        if: steps.req.outputs.mode != 'skip'
         run: python3 -m pip install python-shogi==1.1.1
       - name: Build KUMOJI and prepare adopted knowledge
+        if: steps.req.outputs.mode != 'skip'
         run: |
           set -euo pipefail
           python3 scripts/build.py --output build/shogi-ai
           cp position-knowledge-v1.tsv build/position-knowledge-v1.tsv
           python3 tests/test_floodgate_client.py
           python3 tools/floodgate/client.py --engine build/shogi-ai --clock-probe \
-            --setoption PositionKnowledge=true --setoption "PositionKnowledgeFile=$PWD/build/position-knowledge-v1.tsv"
+            --setoption PositionKnowledge=true --setoption "PositionKnowledgeFile=$PWD/build/position-knowledge-v1.tsv" --setoption OpeningRandomNonLance=false
           git rev-parse HEAD
       - name: Probe (TCP reachability only, no login)
+        if: steps.req.outputs.mode != 'skip'
         run: |
           python3 - <<'PY'
           import socket
@@ -84,7 +119,7 @@ jobs:
           print("FLOODGATE_PROBE connected to",s.getpeername()); s.close()
           PY
       - name: Rehearsal against the local mock CSA server (no external connection)
-        if: inputs.mode != 'probe'
+        if: steps.req.outputs.mode == 'rehearsal' || steps.req.outputs.mode == 'live'
         env:
           FLOODGATE_TRIP: rehearsal-trip-1
         run: |
@@ -93,24 +128,25 @@ jobs:
             python3 tools/floodgate/mock_server.py --port 14081 --client-side "$side" --total 60 --inc 2 --seed 3 > mock.log 2>&1 &
             sleep 1
             python3 tools/floodgate/client.py --engine build/shogi-ai --username KUMOJI_rehearsal --host 127.0.0.1 --port 14081 --games 1 --live \
-              --setoption PositionKnowledge=true --setoption "PositionKnowledgeFile=$PWD/build/position-knowledge-v1.tsv" \
+              --setoption PositionKnowledge=true --setoption "PositionKnowledgeFile=$PWD/build/position-knowledge-v1.tsv" --setoption OpeningRandomNonLance=false \
               --send-eval --result-log rehearsal.jsonl
             wait; cat mock.log; grep -q "MOCK opponent" mock.log
             grep -Eq "MOCK client move comments [1-9]" mock.log
           done
       - name: Live games on Floodgate (floodgate-300-10F)
-        if: inputs.mode == 'live' && inputs.confirm_live == 'LIVE'
+        if: steps.req.outputs.mode == 'live'
         env:
           FLOODGATE_TRIP: ${{ secrets.FLOODGATE_TRIP }}
-          USERNAME: ${{ inputs.username }}
-          GAMES: ${{ inputs.games }}
+          USERNAME: ${{ steps.req.outputs.username }}
+          GAMES: ${{ steps.req.outputs.games }}
+          SESSION: ${{ steps.req.outputs.session }}
         run: |
           set -euo pipefail
-          python3 tools/floodgate/client.py --engine build/shogi-ai --username "$USERNAME" --games "$GAMES" --live \
-            --setoption PositionKnowledge=true --setoption "PositionKnowledgeFile=$PWD/build/position-knowledge-v1.tsv" \
+          python3 tools/floodgate/client.py --engine build/shogi-ai --username "$USERNAME" --games "$GAMES" --session-minutes "$SESSION" --live \
+            --setoption PositionKnowledge=true --setoption "PositionKnowledgeFile=$PWD/build/position-knowledge-v1.tsv" --setoption OpeningRandomNonLance=false \
             --send-eval --result-log floodgate-results.jsonl
       - name: Summarize live results
-        if: always() && inputs.mode == 'live'
+        if: always() && steps.req.outputs.mode == 'live'
         run: |
           python3 - <<'PY'
           import json, os
@@ -130,9 +166,9 @@ jobs:
           print(f"FLOODGATE_GAMES {len(rows)}")
           PY
       - uses: actions/upload-artifact@v4
-        if: always() && inputs.mode != 'probe'
+        if: always() && (steps.req.outputs.mode == 'rehearsal' || steps.req.outputs.mode == 'live')
         with:
-          name: floodgate-${{ inputs.mode }}-${{ github.run_id }}
+          name: floodgate-${{ steps.req.outputs.mode }}-${{ github.run_id }}
           path: |
             floodgate-results.jsonl
             rehearsal.jsonl

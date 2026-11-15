@@ -79,8 +79,8 @@ def validate(req: dict, *, issue_request: bool) -> dict:
         if str(req[name]) != str(value):
             raise ValueError(name + " must be an integer")
         req[name] = value
-    if req["games"] < 1 or not 1 <= req["shards"] <= 20 or req["max_plies"] < 1:
-        raise ValueError("games/max_plies must be positive; shards must be between 1 and 20")
+    if req["games"] < 1 or not 1 <= req["shards"] <= 18 or req["max_plies"] < 1:
+        raise ValueError("games/max_plies must be positive; shards must be between 1 and 18 (R21: 2 runners stay free for Floodgate)")
     req["shards"] = min(req["shards"], req["games"])
     if "opening_plies" in req:
         if isinstance(req["opening_plies"], bool) or str(req["opening_plies"]) != str(int(req["opening_plies"])):

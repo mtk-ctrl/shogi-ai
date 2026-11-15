@@ -19,7 +19,7 @@ def valid_request():
         "ref_a": "main",
         "ref_b": "BASELINE_FILE",
         "games": "200",
-        "shards": "20",
+        "shards": "18",
         "go_command": "go movetime 200",
         "max_plies": "300",
         "seed": "2026101020",
@@ -39,7 +39,7 @@ class MatchRequestDispatchTest(unittest.TestCase):
         self.assertTrue(dry_run)
         validated = validate(loaded, issue_request=True)
         self.assertEqual(validated["games"], 200)
-        self.assertEqual(validated["shards"], 20)
+        self.assertEqual(validated["shards"], 18)
 
     def test_other_author_rejected(self):
         event = {"issue": {"title": "[KUMOJI MATCH] test",

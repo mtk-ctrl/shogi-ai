@@ -19,9 +19,9 @@ on:
         default: "100"
         type: string
       shards:
-        description: "Concurrent match runners, 1-20"
+        description: "Concurrent match runners, 1-18 (R21: Floodgate用に2台空ける)"
         required: true
-        default: "20"
+        default: "18"
         type: string
       series_id:
         description: "Ladder identifier"
@@ -97,7 +97,7 @@ jobs:
           shards=int(req["shards"])
           series_id=str(req["series_id"]).strip() or "ladder-"+os.environ["GITHUB_RUN_ID"]
           engine_ref=str(req["engine_ref"]).strip() or os.environ["GITHUB_SHA"]
-          if not 1<=level<=100 or games<1 or not 1<=shards<=min(20,games):
+          if not 1<=level<=100 or games<1 or not 1<=shards<=min(18,games):
               raise SystemExit("invalid level/games/shards")
           if not re.fullmatch(r"[a-zA-Z0-9_-]{1,80}",series_id):
               raise SystemExit("invalid series_id")

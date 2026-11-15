@@ -89,6 +89,14 @@ KUMOJIはUSIの `btime/wtime/binc/winc/byoyomi` を解釈できる。
 - `--send-eval` を付けると、雲路の評価値を先手から見た値に直し、Floodgateの着手コメント（`,'* 値`）として送る。公開棋譜に評価値が載る。詰みの読み切りは±30000で送る。
 - 記録するのは雲路自身の探索結果だけで、相手の評価値は取り込まない（R50）。接続層の変更であり、雲路本体の探索・評価は変えない。
 
+## 常時参加（2026-11-15開始）
+
+- `floodgate.yml` が毎時17分・47分に定期起動する。`tools/floodgate/continuous.json` の `enabled` が true で、ほかにFloodgateの回が動いていなければ、mainの雲路をビルドして `session_minutes`（既定210分）のあいだ続けて対局する。時間を過ぎたら新しい対局を始めず、対局中の1局を終えて終了する。次の定期起動が引き継ぐ。
+- 止めるとき: `continuous.json` の `enabled` を false にする（次の回から止まる）。すぐ止めるなら実行中のrunも取り消す。`pause_dates_jst` の日は参加しない（2026-12-06はFloodgateの計画停止）。
+- 設定: `PositionKnowledge=true`、`OpeningRandomNonLance=false`（無作為な初手を切る）、`--send-eval`。
+- 接続の失敗が続けて3回起きたら、その回は失敗で終わる。
+- 結果は各runの成果物（90日）とログの `FLOODGATE_RESULT`／`FLOODGATE_MOVE` 行、Floodgateの公開棋譜に残る。
+
 ## 外部対局と学習の分離
 
 FloodgateはR50どおり「教師」ではなく「物差し」として扱う。

@@ -1,0 +1,9 @@
+{
+  "enabled": true,
+  "username": "KUMOJI",
+  "session_minutes": 210,
+  "pause_dates_jst": [
+    "2026-12-06"
+  ],
+  "note": "Floodgate常時参加の設定。enabledをfalseにすると次の回から止まる。pause_dates_jstの日は参加しない。"
+}

@@ -69,8 +69,8 @@ jobs:
           shards=int(os.environ["SHARDS_INPUT"])
           if games < 1:
               raise SystemExit("games must be >= 1")
-          if shards < 1 or shards > 20:
-              raise SystemExit("shards must be between 1 and 20")
+          if shards < 1 or shards > 18:
+              raise SystemExit("shards must be between 1 and 18 (R21)")
           shards=min(shards,games)
           q,r=divmod(games,shards)
           include=[]

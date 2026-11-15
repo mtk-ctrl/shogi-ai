@@ -447,6 +447,10 @@ def main() -> None:
                         help="fail if the USI id name does not exactly match this generation label")
     parser.add_argument("--clock-probe", action="store_true",
                         help="in dry-run mode, verify a short btime/wtime search and legal startpos move")
+    parser.add_argument("--session-minutes", type=float, default=0.0,
+                        help="continuous mode: keep starting games until this many minutes have passed "
+                             "(0 = play exactly --games)")
+    parser.add_argument("--max-consecutive-errors", type=int, default=3)
     parser.add_argument("--send-eval", action="store_true",
                         help="attach KUMOJI's own evaluation (Black's view) to each move as a Floodgate comment")
     parser.add_argument("--live", action="store_true",
@@ -489,15 +493,38 @@ def main() -> None:
             engine, args.username, trip, args.host, args.port, args.game_name,
             send_eval=args.send_eval,
         )
-        for index in range(args.games):
-            if index:
+        session_started = time.monotonic()
+        played = 0
+        errors = 0
+        while True:
+            if args.session_minutes > 0:
+                # Continuous mode: do not start another game once the budget is spent,
+                # so that pairing wait + one full game still fits the job time limit.
+                if (time.monotonic() - session_started) / 60.0 >= args.session_minutes:
+                    break
+            elif played >= args.games:
+                break
+            if played or errors:
                 time.sleep(max(0.0, args.reconnect_delay))
-            record = client.play_one()
+            try:
+                record = client.play_one()
+            except (OSError, ConnectionError, RuntimeError, TimeoutError, ValueError) as exc:
+                errors += 1
+                print(json.dumps({"floodgate_error": type(exc).__name__, "detail": str(exc)[:200],
+                                  "consecutive": errors}, ensure_ascii=False), flush=True)
+                if args.session_minutes <= 0 or errors >= args.max_consecutive_errors:
+                    raise
+                time.sleep(60)
+                if engine.proc.poll() is not None:
+                    raise
+                continue
+            errors = 0
+            played += 1
             append_jsonl(args.result_log, record)
             print(json.dumps(
                 {k: record[k] for k in ("game_id", "result", "cause", "plies")},
                 ensure_ascii=False,
-            ))
+            ), flush=True)
     finally:
         engine.close()
 

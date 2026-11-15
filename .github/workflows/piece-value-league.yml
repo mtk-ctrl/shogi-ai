@@ -37,7 +37,7 @@ jobs:
               raise SystemExit(f"request fields must be exactly {expected}")
           shards = int(request["shards"])
           ref = request["engine_ref"]
-          if not 1 <= shards <= 20 or not re.fullmatch(r"[a-f0-9]{40}",ref):
+          if not 1 <= shards <= 18 or not re.fullmatch(r"[a-f0-9]{40}",ref):
               raise SystemExit("invalid shard count or engine SHA")
           if not str(request["request_id"]).strip():
               raise SystemExit("missing request_id")

@@ -51,7 +51,7 @@ class MatchShardingTest(unittest.TestCase):
             ("engine-match.yml", arena.play_game, "a_black"),
             ("external-engine-benchmark.yml", external_match.play_game, "self_black"),
         ]:
-            for games, shards in [(100, 20), (101, 20), (7, 3), (4, 20), (100, 1)]:
+            for games, shards in [(108, 18), (101, 18), (7, 3), (4, 18), (100, 1)]:
                 with self.subTest(workflow=filename, games=games, shards=shards):
                     plan, workflow = workflow_plan(filename, games, shards)
                     self.assertIn('GAME_OFFSET: ${{ matrix.game_offset }}', workflow)
@@ -85,7 +85,7 @@ class MatchShardingTest(unittest.TestCase):
         # Reject both an oversized base and a base which overflows in a later shard.
         for seed in [202610072235, 2147483600, -1]:
             with self.subTest(seed=seed), self.assertRaises(subprocess.CalledProcessError):
-                workflow_plan("engine-match.yml", 100, 20, seed)
+                workflow_plan("engine-match.yml", 108, 18, seed)
 
 
 if __name__ == "__main__":
