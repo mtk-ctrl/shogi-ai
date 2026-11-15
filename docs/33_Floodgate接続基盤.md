@@ -110,11 +110,18 @@ KUMOJIはUSIの `btime/wtime/binc/winc/byoyomi` を解釈できる。
 
 ## 常時参加（2026-11-15開始）
 
-- `floodgate.yml` が毎時17分・47分に定期起動する。`tools/floodgate/continuous.json` の `enabled` が true で、ほかにFloodgateの回が動いていなければ、mainの雲路をビルドして `session_minutes`（既定210分）のあいだ続けて対局する。時間を過ぎたら新しい対局を始めず、対局中の1局を終えて終了する。次の定期起動が引き継ぐ。
-- 止めるとき: `continuous.json` の `enabled` を false にする（次の回から止まる）。すぐ止めるなら実行中のrunも取り消す。`pause_dates_jst` の日は参加しない（2026-12-06はFloodgateの計画停止）。
+- `tools/floodgate/continuous.json` の `enabled` が true のとき、mainの雲路をビルドして `session_minutes`（既定210分）のあいだ続けて対局する。時間を過ぎたら新しい対局を始めず、対局中の1局を終えて終了する。
+- **次の回は自分で起動する（連鎖、`tools/floodgate/chain.py`）。** 各回の最後に最新のmainの `continuous.json` を読み、続けてよければ `floodgate.yml` を `workflow_dispatch`（mode=live、continuous=yes、chained=true）で起動する。前の回が終わるまで `concurrency` で待つので、同時に動く実参戦は1本だけ。連鎖で起動した回はリハーサルを省く（空きが約4分短くなる。ビルド時の単体試験と時計確認は毎回行う）。
+  - 成功したら次を起動する。失敗（ビルド失敗を含む）なら最大3回まで再起動し、4回続けて失敗したら止める。
+  - 取り消し（cancel）では連鎖しない。
+  - `enabled` が false、または次の回が `pause_dates_jst` の日に掛かるなら起動しない。
+- **定期起動（毎時17分・47分）は予備**として残す。連鎖が切れたとき（手動の1回だけの実参戦が終わった後など）に再開させる。**GitHubの定期起動は遅れたり飛ばされたりする**（2026-11-15は設定直後の10:47・11:17・11:47の3回が動かなかった。journal/2026-11-15_04）ため、定期起動だけに頼らない。
+- 始めるとき（連鎖の開始）: Actionsの `floodgate.yml` を mode=live、continuous=yes、confirm_live=LIVE で起動する。定期起動が動いた場合も同じ連鎖になる。
+- 止めるとき: `continuous.json` の `enabled` を false にする（次の連鎖から止まる）。すぐ止めるなら実行中のrunを取り消す。`pause_dates_jst` の日は参加しない（2026-12-06はFloodgateの計画停止）。
+- 連鎖の配線確認: continuous=selftest（probeを1回だけ連鎖させる。Floodgateへ接続しない）。
 - 設定: `PositionKnowledge=true`、`OpeningRandomNonLance=false`（無作為な初手を切る）、`--send-eval`、`--time-plan`。
 - 接続の失敗が続けて3回起きたら、その回は失敗で終わる。
-- 結果は各runの成果物（90日）とログの `FLOODGATE_RESULT`／`FLOODGATE_MOVE` 行、Floodgateの公開棋譜に残る。
+- 結果は各runの成果物（90日）とログの `FLOODGATE_RESULT`／`FLOODGATE_MOVE`／`FLOODGATE_CHAIN` 行、Floodgateの公開棋譜に残る。
 
 ## 外部対局と学習の分離
 
