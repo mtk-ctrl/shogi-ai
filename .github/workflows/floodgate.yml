@@ -136,8 +136,9 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/build.py --output build/shogi-ai
-          cp position-knowledge-v1.tsv build/position-knowledge-v1.tsv
+          python3 tools/floodgate/build_knowledge.py --out build/position-knowledge-v1.tsv
           python3 tests/test_floodgate_client.py
+          python3 tests/test_floodgate_knowledge.py
           python3 tests/test_floodgate_chain.py
           python3 tools/floodgate/client.py --engine build/shogi-ai --clock-probe \
             --setoption PositionKnowledge=true --setoption "PositionKnowledgeFile=$PWD/build/position-knowledge-v1.tsv" --setoption OpeningRandomNonLance=false

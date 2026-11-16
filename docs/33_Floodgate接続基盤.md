@@ -121,6 +121,7 @@ KUMOJIはUSIの `btime/wtime/binc/winc/byoyomi` を解釈できる。
 - 連鎖の配線確認: continuous=selftest（probeを1回だけ連鎖させる。Floodgateへ接続しない）。
 - **待ち時間中の接続切れ対策（2026-11-15）**: ログインから組み合わせまで20〜30分空けると、接続が黙って切れて組み合わせの通知を受け取れず、0手・結果なしの対局ができた（12:00・12:30・13:00の3局）。このため、(1) 常時参加では次の:00/:30の3分前にログインする（`seconds_until_login`）、(2) 接続中は60秒ごとに空行(LF)を送る（CSAのkeep-alive）、TCP keepaliveも有効にする、(3) 空行の返事は読み飛ばす。
 - 設定: `PositionKnowledge=true`、`OpeningRandomNonLance=false`（無作為な初手を切る）、`--send-eval`、`--time-plan`。
+- **Floodgate専用の局面知識（2026-11-16）**: 局面知識は、正式採用の163局面（`position-knowledge-v1.tsv`、変更しない）に、`tools/floodgate/knowledge-additions.tsv` の追加分を足した一時ファイルを、`tools/floodgate/build_knowledge.py` が実行のたびに作って使う。追加分は、今のエンジン（v2.0.32）が1局面5分読んだ序盤の手で、本人が承認したもの。自己対局・比較対局・梯子には使わない。追加分は手順から局面キーが再現できること、手が合法であることを `tests/test_floodgate_knowledge.py` が確かめる。経緯は `docs/decisions/2026-11-16_Floodgate専用の局面知識と序盤の読み直し.md`。
 - 接続の失敗が続けて3回起きたら、その回は失敗で終わる。
 - 結果は各runの成果物（90日）とログの `FLOODGATE_RESULT`／`FLOODGATE_MOVE`／`FLOODGATE_CHAIN` 行、Floodgateの公開棋譜に残る。
 
