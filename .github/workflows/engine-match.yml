@@ -43,6 +43,11 @@ on:
         required: false
         default: "0"
         type: string
+      opening_moves:
+        description: "Fixed opening: space-separated USI moves from startpos played first in every game (book candidate test; empty = off)"
+        required: false
+        default: ""
+        type: string
       options_a:
         description: "JSON USI options for A (formal R20 default includes AdaptiveLongThink=true)"
         required: true
@@ -218,9 +223,10 @@ jobs:
           GAME_OFFSET: ${{ matrix.game_offset }}
           OPENING_PLIES: ${{ inputs.opening_plies }}
           OPENING_SEED: ${{ inputs.seed }}
+          OPENING_MOVES: ${{ inputs.opening_moves }}
         run: |
           mkdir -p results
-          python3 harness/benchmarks/arena.py             --engine-a build/engine-a             --engine-b build/engine-b             --options-a "$OPTIONS_A"             --options-b "$OPTIONS_B"             --games "$SHARD_GAMES"             --game-offset "$GAME_OFFSET"             --max-plies "$MAX_PLIES"             --seed "$SHARD_SEED"             --go-command "$GO_COMMAND"             --opening-plies "${OPENING_PLIES:-0}"             --opening-seed "$OPENING_SEED"             --output "results/shard-${{ matrix.shard }}.json"
+          python3 harness/benchmarks/arena.py             --engine-a build/engine-a             --engine-b build/engine-b             --options-a "$OPTIONS_A"             --options-b "$OPTIONS_B"             --games "$SHARD_GAMES"             --game-offset "$GAME_OFFSET"             --max-plies "$MAX_PLIES"             --seed "$SHARD_SEED"             --go-command "$GO_COMMAND"             --opening-plies "${OPENING_PLIES:-0}"             --opening-seed "$OPENING_SEED"             --opening-moves "$OPENING_MOVES"             --output "results/shard-${{ matrix.shard }}.json"
 
       - name: Upload shard
         uses: actions/upload-artifact@v4

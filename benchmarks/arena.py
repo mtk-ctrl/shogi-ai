@@ -405,7 +405,7 @@ def make_opening(plies, opening_seed, pair_index):
 
 
 def play_game(a, b, game_index, max_plies, seed_base, game_offset=0,
-              opening_plies=0, opening_seed=None):
+              opening_plies=0, opening_seed=None, opening_moves=None):
     # Alternate across the whole match, including boundaries between shards.
     # Keep the local index for seed generation so existing seed series survive.
     a_black = ((game_offset + game_index) % 2 == 0)
@@ -420,7 +420,14 @@ def play_game(a, b, game_index, max_plies, seed_base, game_offset=0,
     adjudicator = Adjudicator(board)
     opening_pair = None
     opening = []
-    if opening_plies:
+    if opening_moves:
+        # Fixed opening (book candidate test): identical in every game; colours alternate by game index.
+        opening = list(opening_moves)
+        for token in opening:
+            board.push(shogi.Move.from_usi(token))
+            moves.append(token)
+            adjudicator.after_move(board)
+    elif opening_plies:
         # Games 2k and 2k+1 of the whole match share one opening (colours swapped).
         opening_pair = (game_offset + game_index) // 2
         opening = make_opening(opening_plies, seed_base if opening_seed is None else opening_seed,
@@ -544,8 +551,18 @@ def main():
                              "played twice with colours swapped (0 = off, the historical behaviour)")
     parser.add_argument("--opening-seed", type=int, default=None,
                         help="Seed of the shared openings (default: --seed). Must be equal in every shard")
+    parser.add_argument("--opening-moves", default="",
+                        help="Space-separated USI moves from startpos played first in every game (fixed opening)")
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
+    fixed_opening = args.opening_moves.split()
+    if fixed_opening:
+        _check = shogi.Board()
+        for token in fixed_opening:
+            move = shogi.Move.from_usi(token)
+            if move not in _check.legal_moves:
+                raise SystemExit(f"illegal --opening-moves token: {token}")
+            _check.push(move)
     if not 0 <= args.opening_plies <= 12:
         raise SystemExit("opening-plies must be between 0 and 12")
     if not args.go_command.startswith("go ") or "\n" in args.go_command or "\r" in args.go_command:
@@ -572,10 +589,13 @@ def main():
     try:
         for i in range(args.games):
             result = play_game(a, b, i, args.max_plies, args.seed, args.game_offset,
-                               args.opening_plies, args.opening_seed)
+                               args.opening_plies, args.opening_seed, fixed_opening)
             games.append(result)
             print(f"game {i+1:03d}/{args.games}: {result['winner'] or 'draw'} "
                   f"{result['reason']} {result['plies']} plies")
+            print(f"BOOKTEST_GAME index={args.game_offset + i} a_black={int(result['a_black'])} "
+                  f"winner={result['winner'] or 'draw'} plies={result['plies']} "
+                  f"moves={' '.join(result['moves'])}")
     finally:
         a.close()
         b.close()
