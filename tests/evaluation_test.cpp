@@ -27,7 +27,13 @@ void symmetry(const rules::Snapshot& s){
     require(a.total==-b.total && a.material==-b.material,"total/material color symmetry");
     for(int i=0;i<4;++i){require(a.terms[i]==-b.terms[i],"term color symmetry");require(a.side_points[0][i]==b.side_points[1][i],"side points symmetry");}
     auto turn=s;turn.turn=turn.turn==rules::Color::Black?rules::Color::White:rules::Color::Black;
-    require(strategy::evaluate(turn).total==a.total,"static evaluation independent of turn");
+    // 手番加点（v2.0.30から正式採用）で静的評価は手番に依存する。加点を切れば手番に依存しない。
+    auto no_turn=strategy::EvaluationParameters{};no_turn.strat_ext_scale=0;
+    require(strategy::evaluate(turn,no_turn).total==strategy::evaluate(s,no_turn).total,"static evaluation independent of turn without the side-to-move term");
+    const int bonus=strategy::EvaluationParameters{}.strat_ext_coef[5];
+    // 位置評価の上限（5000）に当たる極端な局面では差が縮むので、上限に当たらない局面だけ確かめる。
+    if(strategy::evaluate(s).clamp_adjustment==0&&strategy::evaluate(turn).clamp_adjustment==0)
+        require(std::abs(strategy::evaluate(s).total-strategy::evaluate(turn).total)==2*bonus,"side-to-move term is the adopted bonus");
 }
 // Exhaustive test oracle has no alpha-beta, ordering or TT.
 int brute(rules::Position& p,int depth,rules::Color root) {

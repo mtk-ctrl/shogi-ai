@@ -72,6 +72,7 @@ struct EvaluationParameters {
         p.threat_weight = 0;
         p.positional_cap = 300;
         p.king_ext_scale = 0;
+        p.strat_ext_scale = 0;  // 手番加点（v2.0.30）も旧版の再現には含めない
         return p;
     }
 
