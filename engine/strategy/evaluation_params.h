@@ -24,6 +24,9 @@ struct EvaluationParameters {
     // Independent scale for material value in hand. Profile 47 holds this at 100 across maturity;
     // reference 100 preserves fixed-M behavior.
     int hand_material_weight = 100;
+    // Research (EvalHandPremium, 2026-11-17): percent of the in-hand premium
+    // (hand value - board value) that counts. 100 = adopted behaviour.
+    int hand_premium = 100;
     std::array<int, 4> v2_caps{160, 240, 200, 400};
     int influence_weight = 140;
     int potential_weight = 210;

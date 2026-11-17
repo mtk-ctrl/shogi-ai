@@ -195,6 +195,7 @@ int main() {
                       << "option name EvalStratExtCoef type string default 0,0,0,0,0,332\n"
                       << "option name EvalTableFile type string default <empty>\n"
                       << "option name EvalThreat type spin default " << evaluation_parameters.threat_weight << " min 0 max 10000\n"
+                      << "option name EvalHandPremium type spin default 100 min 0 max 200\n"
                       << "option name EvalPositionalCap type spin default " << evaluation_parameters.positional_cap << " min 0 max 5000\n"
                       << "option name PositionKnowledge type check default true\n"
                       << "option name PositionKnowledgeFile type string default position-knowledge-v1.tsv\n"
@@ -1021,7 +1022,7 @@ int main() {
                     }
                 } else if (name == "EvalSafety" || name == "EvalPressure" || name == "EvalActivity" || name == "EvalDanger"
                            || name == "EvalMaterialWeight" || name == "EvalInfluence" || name == "EvalPotential"
-                           || name == "EvalCoordination" || name == "EvalHandPotential" || name == "EvalThreat" || name == "EvalKingDrop"
+                           || name == "EvalCoordination" || name == "EvalHandPotential" || name == "EvalThreat" || name == "EvalKingDrop" || name == "EvalHandPremium"
                            || name == "EvalPositionalCap") {
                     try {
                         std::size_t used = 0;
@@ -1039,6 +1040,7 @@ int main() {
                             else if (name == "EvalHandPotential") evaluation_parameters.hand_potential_weight = weight;
                             else if (name == "EvalThreat") evaluation_parameters.threat_weight = weight;
                             else if (name == "EvalKingDrop") evaluation_parameters.king_drop_weight = weight;
+                            else if (name == "EvalHandPremium") evaluation_parameters.hand_premium = std::min(weight, 200);
                             else evaluation_parameters.positional_cap = weight;
                             strategy.set_evaluator(shogi::strategy::FeatureEvaluator(material_profile
                                 ? shogi::strategy::EvaluationParameters::material_only() : evaluation_parameters, strategy.reuse_mask()));

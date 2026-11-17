@@ -125,6 +125,16 @@ inline EvaluationBreakdown evaluate(const rules::Snapshot& s,
         for (int kind=1; kind<=7; ++kind)
             hand_material += (color==0 ? 1 : -1) * s.hands[color][kind-1]
                              * hand_piece_value(kind);
+    if (p.hand_premium != 100) {
+        int adj=0;
+        for (int color=0; color<2; ++color)
+            for (int kind=1; kind<=7; ++kind)
+                adj += (color==0 ? 1 : -1) * s.hands[color][kind-1]
+                       * (hand_piece_value(kind)-piece_value(kind));
+        adj = adj*(100-p.hand_premium)/100;
+        hand_material -= adj;
+        b.material -= adj;
+    }
     const int board_material=b.material-hand_material;
     b.material_term = p.v2_enabled
         ? int((std::int64_t(board_material)*p.material_weight
