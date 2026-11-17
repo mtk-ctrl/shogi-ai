@@ -236,6 +236,10 @@ public:
     void set_lmr_grade(int d) { lmr_grade_ = std::clamp(d, 0, 16); }
     void set_lmr_after(int n) { lmr_after_ = std::clamp(n, 1, 32); }
     void set_lmr_reduction(int r) { lmr_reduction_ = std::clamp(r, 1, 4); }
+    // Research (ThreatAware, 2026-11-17): quiet moves and drops that create a
+    // threat are exempt from LMR / futility / LMP. bit1 = lands within 2 squares
+    // of the enemy king, bit2 = newly attacks an enemy Silver or better.
+    void set_threat_aware(int m) { threat_mask_ = std::clamp(m, 0, 3); }
     void set_null_min_depth(int d) { null_min_depth_ = std::clamp(d, 2, 16); }
     int null_min_depth() const { return null_min_depth_; }
 
@@ -540,6 +544,7 @@ private:
         lane.set_lmp_depth(lmp_depth_);
         lane.set_q_depth(q_depth_);lane.set_q_delta(q_delta_);
         lane.set_lmr_reduction(lmr_reduction_);
+        lane.set_threat_aware(threat_mask_);
         lane.set_quiescence_enabled(quiescence_enabled_);
         lane.shared_tt_ = shared_tt_enabled_ ? shared_tt_owner_.get() : nullptr;
         lane.set_threads(1);
@@ -741,9 +746,10 @@ private:
         Undo undo{p};
         int alpha = sp.alpha.load(), beta = sp.beta.load();
         const auto& snap = *sp.snap;
-        if (sp.lmp_node && move_index >= 3 + 2 * depth * depth && quiet_key(snap, move) >= 0
+        const bool threat = threat_mask_ && threat_move(snap, move);
+        if (sp.lmp_node && !threat && move_index >= 3 + 2 * depth * depth && quiet_key(snap, move) >= 0
             && move != killers_[ply][0] && move != killers_[ply][1] && !p.in_check()) return false;
-        if (sp.futility_node && quiet_key(snap, move) >= 0 && !p.in_check()) {
+        if (sp.futility_node && !threat && quiet_key(snap, move) >= 0 && !p.in_check()) {
             const int slack = futility_margin_ * depth;
             if (maximizing ? sp.futility_static + slack <= alpha : sp.futility_static - slack >= beta) {
                 ++stats_.futility_prunes; return false;
@@ -752,7 +758,7 @@ private:
         visit(ply + 1);
         const auto child_history = next_history(sp.history, p.hash_key());
         Node child{0}; bool reduced_done = false;
-        if (sp.lmr_node && move_index >= lmr_after_ && quiet_key(snap, move) >= 0
+        if (sp.lmr_node && !threat && move_index >= lmr_after_ && quiet_key(snap, move) >= 0
             && move != killers_[ply][0] && move != killers_[ply][1] && !p.in_check()) {
             ++stats_.lmr_tries;
             const int extra = (lmr_grade_ > 0 && depth >= lmr_grade_ && move_index >= lmr_after_ + 3) ? 1 : 0;
@@ -1381,11 +1387,13 @@ private:
                 make(p, move, ply);
                 Undo undo{p};
                 bool futile = false;
-                if (lmp_node && searched && move_index >= 3 + 2 * depth * depth
+                const bool threat = threat_mask_ && (lmp_node || futility_node || lmr_node)
+                    && threat_move(quiet_snapshot, move);
+                if (lmp_node && searched && !threat && move_index >= 3 + 2 * depth * depth
                     && quiet_key(quiet_snapshot, move) >= 0
                     && move != killers_[ply][0] && move != killers_[ply][1] && !p.in_check())
                     continue;
-                if (futility_node && searched && quiet_key(lmr_snapshot, move) >= 0 && !p.in_check()) {
+                if (futility_node && searched && !threat && quiet_key(lmr_snapshot, move) >= 0 && !p.in_check()) {
                     const int slack = futility_margin_ * depth;
                     futile = maximizing ? futility_static + slack <= alpha
                                         : futility_static - slack >= beta;
@@ -1395,7 +1403,7 @@ private:
                 visit(ply + 1);
                 const auto child_history = next_history(history, p.hash_key());
                 bool reduced_done = false;
-                if (lmr_node && searched && move_index >= lmr_after_
+                if (lmr_node && searched && !threat && move_index >= lmr_after_
                     && quiet_key(lmr_snapshot, move) >= 0
                     && move != killers_[ply][0] && move != killers_[ply][1]
                     && !p.in_check()) {
@@ -1689,6 +1697,64 @@ private:
         } else from = (move[0] - '1') * 9 + move[1] - 'a';
         return from * 81 + to;
     }
+    // True when a quiet move/drop creates a threat (see set_threat_aware).
+    bool threat_move(const rules::Snapshot& s, const std::string& move) const {
+        if (!threat_mask_ || move.size() != 4) return false;
+        const auto us = s.turn;
+        const int to = (move[2] - '1') * 9 + move[3] - 'a';
+        int from = -1; rules::Piece mover;
+        if (move[1] == '*') {
+            const auto k = std::string("PLNSBRG").find(move[0]);
+            if (k == std::string::npos) return false;
+            mover.kind = static_cast<int>(k) + 1; mover.color = us;
+        } else {
+            from = (move[0] - '1') * 9 + move[1] - 'a';
+            mover = s.board[from];
+        }
+        int enemy_king = -1;
+        for (int i = 0; i < 81; ++i)
+            if (s.board[i].kind == 8 && s.board[i].color != us) { enemy_king = i; break; }
+        const int tf = to / 9, tr = to % 9;
+        if ((threat_mask_ & 1) && enemy_king >= 0
+            && std::max(std::abs(enemy_king / 9 - tf), std::abs(enemy_king % 9 - tr)) <= 2) return true;
+        if (!(threat_mask_ & 2)) return false;
+        const int fwd = us == rules::Color::Black ? -1 : 1;   // rank index direction
+        auto occupied = [&](int f, int r) -> const rules::Piece* {
+            const int i = f * 9 + r;
+            if (i == from) return nullptr;
+            return s.board[i].kind ? &s.board[i] : nullptr;
+        };
+        auto valuable = [&](const rules::Piece* q) {
+            return q && q->color != us && q->kind != 8 && (q->kind >= 4 || q->promoted);
+        };
+        auto step = [&](int df, int dr) {
+            const int f = tf + df, r = tr + dr;
+            return f >= 0 && f < 9 && r >= 0 && r < 9 && valuable(occupied(f, r));
+        };
+        auto slide = [&](int df, int dr) {
+            for (int f = tf + df, r = tr + dr; f >= 0 && f < 9 && r >= 0 && r < 9; f += df, r += dr) {
+                const auto* q = occupied(f, r);
+                if (q) return valuable(q);
+            }
+            return false;
+        };
+        const int k = mover.kind; const bool pr = mover.promoted;
+        const bool gold_like = k == 7 || (pr && k >= 1 && k <= 4);
+        if (k == 1 && !pr) return step(0, fwd);
+        if (k == 2 && !pr) return slide(0, fwd);
+        if (k == 3 && !pr) return step(-1, 2 * fwd) || step(1, 2 * fwd);
+        if (k == 4 && !pr) return step(0, fwd) || step(-1, fwd) || step(1, fwd) || step(-1, -fwd) || step(1, -fwd);
+        if (gold_like) return step(0, fwd) || step(-1, fwd) || step(1, fwd) || step(-1, 0) || step(1, 0) || step(0, -fwd);
+        if (k == 5) {
+            if (slide(1,1) || slide(1,-1) || slide(-1,1) || slide(-1,-1)) return true;
+            return pr && (step(0,1) || step(0,-1) || step(1,0) || step(-1,0));
+        }
+        if (k == 6) {
+            if (slide(0,1) || slide(0,-1) || slide(1,0) || slide(-1,0)) return true;
+            return pr && (step(1,1) || step(1,-1) || step(-1,1) || step(-1,-1));
+        }
+        return false;
+    }
     void record_order_cutoff(const rules::Position& p, const std::string& move, int depth, int ply) {
         const auto snapshot = p.snapshot();
         const int key = quiet_key(snapshot, move);
@@ -1831,6 +1897,7 @@ private:
     int razor_margin_=0;
     int rfp_max_depth_=3;
     int lmr_reduction_=1;
+    int threat_mask_=0;
     // null_at_[ply] is true only while the node at that ply is inside its own
     // null-move child, so the child never passes twice in a row.
     std::array<bool, MaxPly + 2> null_at_{};

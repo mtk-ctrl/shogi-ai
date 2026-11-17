@@ -166,6 +166,7 @@ int main() {
                       << "option name LmrMinDepth type spin default 3 min 2 max 16\n"
                       << "option name LmrAfter type spin default 3 min 1 max 32\n"
                       << "option name LmrReduction type spin default 1 min 1 max 4\n"
+                      << "option name ThreatAware type spin default 0 min 0 max 3\n"
                       << "option name NullMoveMinDepth type spin default 2 min 2 max 16\n"
                       << "option name Quiescence type check default true\n"
                       << "option name MateAssist type check default true\n"
@@ -900,6 +901,10 @@ int main() {
                 } else if (name == "LmrAfter") {
                     try { std::size_t used=0; const int v=std::stoi(value,&used);
                         if(used==value.size() && v>=1 && v<=32) strategy.set_lmr_after(v);
+                    } catch(const std::exception&) {}
+                } else if (name == "ThreatAware") {
+                    try { std::size_t used=0; const int v=std::stoi(value,&used);
+                        if(used==value.size() && v>=0 && v<=3) strategy.set_threat_aware(v);
                     } catch(const std::exception&) {}
                 } else if (name == "LmrReduction") {
                     try { std::size_t used=0; const int v=std::stoi(value,&used);
