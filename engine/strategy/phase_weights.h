@@ -8,9 +8,9 @@
 #include <cstddef>
 namespace shogi::strategy {
 inline constexpr int AdoptedPhaseProfile=47;
-inline constexpr std::array<int,10> StageOpening{100,480,469,600,168,180,300,500,60,20};
-inline constexpr std::array<int,10> StageMiddle{100,480,1282,500,221,240,210,340,60,49};
-inline constexpr std::array<int,10> StageEnd{100,480,2817,101,150,65,160,220,60,40};
+inline constexpr std::array<int,10> StageOpening{100,480,469,600,300,180,300,500,60,20};
+inline constexpr std::array<int,10> StageMiddle{100,480,1282,500,700,240,210,340,60,49};
+inline constexpr std::array<int,10> StageEnd{100,480,2817,101,250,65,160,220,60,40};
 // Research (EvalStageTable): optional override of the three anchor rows. Empty = the adopted
 // profile 47 values above. Set once from the USI option before searching; never changed
 // during a search. Index 0 (material) is not overridable.
