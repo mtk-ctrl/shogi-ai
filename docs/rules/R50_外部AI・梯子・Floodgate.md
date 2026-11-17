@@ -56,3 +56,4 @@ authority: normative
 - 2026-11-15本人指示: Floodgateでは無作為な初手（`OpeningRandomNonLance`）を切って出す。雲路自身の評価値・思考時間を記録し、評価値は着手コメントで送る。
 - 2026-11-15本人指示: Floodgateでは専用の読み時間（`tools/floodgate/timeplan.py`）を使う。Floodgate専用であり、自己対局・比較対局・梯子の時間条件（R20）には使わない。
 - 2026-11-15本人提案により、雲路は毎時2回の組み合わせに続けて参加する（常時参加）。入口は `.github/workflows/floodgate.yml`。各回の最後に自分で次を起動する連鎖が主で、定期起動は予備（GitHubの定期起動は飛ばされることがあるため）。設定と停止は `tools/floodgate/continuous.json`。使うランナーはR21の確保枠。詳細は `docs/33_Floodgate接続基盤.md`。
+- 2026-11-17本人指示: 常時参加はそのまま続ける。各回は起動時のmainをビルドするので、正式採用した新版は次の回から自動で使われる。
