@@ -24,6 +24,8 @@ class Usi:
         # Knowledge tests exercise root search, not the adopted random opening.
         # It is disabled explicitly so root knowledge telemetry is observable.
         self.send("setoption name OpeningRandomNonLance value false")
+        # v2.0.32の共有ルートでは2本が別々に探らないので、2本が独立する方式（RootSplit=0）で数える。
+        self.send("setoption name RootSplit value 0")
         if threads is not None:
             self.send(f"setoption name SearchThreads value {threads}")
 

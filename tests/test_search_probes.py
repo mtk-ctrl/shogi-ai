@@ -63,8 +63,8 @@ default_mask = int(re.search(r'DefaultSearchProbeMask\s*=\s*(\d+)', header).grou
 checks = 0
 usage = {k: 0 for k in ('pvs_probes','pvs_researches','killer_priorities','history_priorities','ordering_updates')}
 for threads in (1, 2):
-    engines = [Engine(baseline, 'baseline', {**options,'SearchThreads':threads,'SearchProbeMask':0}),
-               Engine(candidate, 'candidate', {**options,'SearchThreads':threads})]
+    engines = [Engine(baseline, 'baseline', {**options,'SearchThreads':threads,'SearchProbeMask':0,'RootSplit':0}),
+               Engine(candidate, 'candidate', {**options,'SearchThreads':threads,'RootSplit':0})]
     try:
         # The runtime default must match the actual source setting and an explicit request.
         default = run(engines[1], *cases[0])
