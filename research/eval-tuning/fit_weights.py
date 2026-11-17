@@ -26,6 +26,8 @@ def basis(m):
     bA = np.where(lo, 1 - t, 0.0); bB = np.where(lo, t, 1 - u); bC = np.where(lo, 0.0, u)
     return bA, bB, bC
 
+FIXED_EXTRA = False
+
 def load(dataset, probe):
     rows = [l.rstrip('\n').split('\t') for l in open(dataset, encoding='utf-8')]
     sfens = '\n'.join(r[3] for r in rows) + '\n'
@@ -33,10 +35,18 @@ def load(dataset, probe):
     feats = np.array([[float(x) for x in l.split('\t')] for l in out.strip().split('\n')])
     gid = np.array([r[0] for r in rows]); y = np.array([float(r[2]) for r in rows])
     ply = np.array([int(r[1]) for r in rows])
+    if FIXED_EXTRA:
+        # エンジン総評価と、本スクリプトの再構成（上記9軸のみ）との差を固定項として足す
+        m = feats[:, 0]; mat = feats[:, 1] + feats[:, 2]; d = feats[:, 3:12]
+        bA, bB, bC = basis(m)
+        w = (bA[:, None] * THETA0[0:9] + bB[:, None] * THETA0[9:18] + bC[:, None] * THETA0[18:27])
+        recon = mat + (d * SIGN * w).sum(1) / 100.0
+        feats = np.hstack([feats, (feats[:, 12] - recon)[:, None]])
     return gid, ply, y, feats
 
 def model_eval(theta, feats):
     m = feats[:, 0]; mat = feats[:, 1] + feats[:, 2]; d = feats[:, 3:12]
+    if feats.shape[1] > 13: mat = mat + feats[:, 13]  # 固定項（玉の危険度・手番など、重みを動かさない項）
     bA, bB, bC = basis(m)
     w = (bA[:, None] * theta[0:9] + bB[:, None] * theta[9:18] + bC[:, None] * theta[18:27])
     return mat + (d * SIGN * w).sum(1) / 100.0
@@ -65,8 +75,9 @@ if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('--dataset', required=True); ap.add_argument('--probe', default='build/feature_probe')
     ap.add_argument('--folds', type=int, default=5); ap.add_argument('--lams', default='0.003,0.01,0.03,0.1')
-    ap.add_argument('--output')
+    ap.add_argument('--output'); ap.add_argument('--fixed-extra', action='store_true'); ap.add_argument('--final-lam', type=float)
     a = ap.parse_args()
+    FIXED_EXTRA = a.fixed_extra
     gid, ply, y, F = load(a.dataset, a.probe)
     print('samples', len(y), 'games', len(set(gid)), 'mean result', y.mean().round(3))
     # sanity: our reconstruction vs the engine's own total (rounding/clamp differences only)
@@ -86,7 +97,7 @@ if __name__ == '__main__':
             fitd.append(nll(sigmoid(model_eval(th, F[te]) / s), y[te]))
         res[lam] = (np.mean(base), np.mean(mat), np.mean(fitd))
         print(f'lam={lam}: held-out logloss  material-only {np.mean(mat):.4f} | adopted weights {np.mean(base):.4f} | refit {np.mean(fitd):.4f}')
-    best = min(res, key=lambda l: res[l][2])
+    best = a.final_lam if a.final_lam else min(res, key=lambda l: res[l][2])
     s_cur = fit_scale(model_eval(THETA0, F), y)
     th, s = fit(THETA0, F, y, best, np.log(s_cur))
     print('best lam', best, 'scale S (adopted)', round(s_cur, 1), 'S (refit)', round(s, 1))
