@@ -31,6 +31,8 @@ on:
       - "tests/test_search_next.py"
       - "tests/test_turn_phase_usi.py"
       - "tests/test_position_knowledge_usi.py"
+      - "tests/test_opening_book_usi.py"
+      - "books/**"
       - "tests/test_eval_usi.py"
       - "tests/test_phase_diagnostics.py"
       - "tools/phase/**"
@@ -127,6 +129,7 @@ jobs:
           python3 tests/test_search_next.py build/shogi-ai
           python3 tests/test_turn_phase_usi.py build/shogi-ai
           python3 tests/test_position_knowledge_usi.py build/shogi-ai
+          python3 tests/test_opening_book_usi.py build/shogi-ai
           python3 tests/test_eval_usi.py build/shogi-ai
           python3 tests/test_mate_usi.py build/shogi-ai
           python3 tests/test_mate_adoption_usi.py build/shogi-ai

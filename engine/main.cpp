@@ -10,6 +10,7 @@
 #include "strategy/turn_phase.h"
 #include "strategy/phase_weights.h"
 #include "strategy/cpu_budget.h"
+#include "strategy/opening_book.h"
 #include <algorithm>
 #include <chrono>
 #include <random>
@@ -47,6 +48,12 @@ int main() {
     unsigned random_seed = 5489u;
     bool random_seed_explicit = false;
     std::string position_knowledge_file = "position-knowledge-v1.tsv";
+    // Opening book (YaneuraOu DB2016 text format). Off unless BookFile is set.
+    shogi::strategy::BookDatabase opening_book;
+    std::string book_file;            // empty or "<empty>" = no book
+    bool book_loaded = false;
+    int book_moves = 40;              // use the book up to this game ply
+    bool book_weighted = true;        // weighted by count vs. best only
     int default_depth = 3;
     bool adaptive_long_think_enabled = true;
     bool usi_ponder_enabled = true;
@@ -100,6 +107,19 @@ int main() {
             emit("info string position_knowledge unavailable file " + position_knowledge_file + "\n");
         }
         position_knowledge_loaded = true;
+    };
+
+    auto ensure_book_loaded = [&]() {
+        if (book_loaded) return;
+        book_loaded = true;
+        opening_book.clear();
+        if (book_file.empty() || book_file == "<empty>") return;
+        std::string error;
+        if (opening_book.load(book_file, error))
+            emit("info string book loaded " + std::to_string(opening_book.size())
+                 + " positions file " + book_file + "\n");
+        else
+            emit("info string book unavailable file " + book_file + " reason " + error + "\n");
     };
 
     auto bestmove = [&](const std::string& move, const std::string& ponder = "") {
@@ -178,6 +198,9 @@ int main() {
                       << "option name EvalPositionalCap type spin default " << evaluation_parameters.positional_cap << " min 0 max 5000\n"
                       << "option name PositionKnowledge type check default true\n"
                       << "option name PositionKnowledgeFile type string default position-knowledge-v1.tsv\n"
+                      << "option name BookFile type string default <empty>\n"
+                      << "option name BookMoves type spin default 40 min 0 max 512\n"
+                      << "option name BookSelect type combo default weighted var weighted var best\n"
                       << "usiok\n" << std::flush;
         } else if (command == "eval") {
             const auto root = position.snapshot();
@@ -199,6 +222,7 @@ int main() {
         } else if (command == "isready") {
             if (!session) {
                 ensure_position_knowledge_loaded();
+                ensure_book_loaded();
             }
             emit("info string search_threads requested " + std::to_string(requested_threads)
                  + " usable_cores " + std::to_string(usable_cores)
@@ -220,6 +244,7 @@ int main() {
             if (!valid_position) std::cout << "info string " << error << '\n' << std::flush;
         } else if (command == "go") {
             ensure_position_knowledge_loaded();
+            ensure_book_loaded();
             std::vector<std::string> tokens, allowed;
             std::string token;
             while (input >> token) tokens.push_back(token);
@@ -348,6 +373,25 @@ int main() {
                     } catch (...) {}
                 }
             }
+            // Opening book: consulted before research knowledge and search.
+            // Explicit searchmoves restrictions and the random first move
+            // take precedence. Only moves that are legal here are used.
+            std::string book_move, book_ponder, book_note;
+            if (!restrict && !opening_random_choice && opening_book.size() > 0
+                && current_ply <= book_moves) {
+                const unsigned book_seed = random_seed_explicit
+                    ? random_seed + static_cast<unsigned>(current_ply) : std::random_device{}();
+                if (const auto* hit = opening_book.choose(position, candidates, book_weighted, book_seed)) {
+                    book_move = hit->move;
+                    book_ponder = hit->ponder;
+                    const auto* all = opening_book.probe(position);
+                    book_note = "info string book hit ply " + std::to_string(current_ply)
+                        + " move " + hit->move + " count " + std::to_string(hit->count)
+                        + " eval " + std::to_string(hit->eval) + " depth " + std::to_string(hit->depth)
+                        + " candidates " + std::to_string(all ? all->size() : 0)
+                        + " select " + (book_weighted ? "weighted" : "best") + "\n";
+                }
+            }
             using LongThinkBudget = shogi::strategy::LongThinkBudget;
             const bool long_think_slot =
                 adaptive_long_think_enabled
@@ -379,6 +423,7 @@ int main() {
             active->worker = std::thread([&, active, started_ns, limits,
                                           allowed = std::move(allowed),
                                           opening_random_choice, opening_seed,
+                                          book_move, book_ponder, book_note,
                                           candidates = std::move(candidates),
                                           ponder_enabled = usi_ponder_enabled,
                                            p = std::move(search_position)]() mutable {
@@ -429,9 +474,21 @@ int main() {
                         }
                     }
 
+                    // The opening book overrides research knowledge and search.
+                    // research_forced is reused as the "skip search" gate.
+                    if (!opening_forced && !book_move.empty()) {
+                        research_forced = true;
+                        result.move = book_move;
+                        result.pv = {book_move};
+                        if (!book_ponder.empty()) result.pv.push_back(book_ponder);
+                        result.depth = 0;
+                        result.has_score = false;
+                        previous_root_score_valid = false;
+                        if (!active->suppress.load()) emit(book_note);
+                    }
                     // Adopted research overrides 200ms search and MateAssist.
                     // No old research score is presented as a fresh evaluation.
-                    if (!opening_forced) if (const auto research = strategy.select_research_move(p, allowed)) {
+                    if (!opening_forced && book_move.empty()) if (const auto research = strategy.select_research_move(p, allowed)) {
                         research_forced = true;
                         result.move = research->move;
                         result.pv = {result.move};
@@ -915,6 +972,13 @@ int main() {
                         strategy.set_position_knowledge_enabled(position_knowledge_enabled);
                         if (position_knowledge_enabled) position_knowledge_loaded = false;
                     }
+                } else if (name == "BookFile") {
+                    book_file = value;
+                    book_loaded = false;
+                } else if (name == "BookMoves") {
+                    try { book_moves = std::stoi(value); } catch (...) {}
+                } else if (name == "BookSelect") {
+                    book_weighted = value != "best";
                 } else if (name == "PositionKnowledgeFile") {
                     if (!value.empty() && value.find('\n') == std::string::npos && value.find('\r') == std::string::npos) {
                         position_knowledge_file = value;
